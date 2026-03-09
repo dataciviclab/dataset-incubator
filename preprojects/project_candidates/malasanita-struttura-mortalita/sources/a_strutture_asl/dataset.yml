@@ -1,0 +1,31 @@
+root: "../../../../../out"
+schema_version: 1
+
+dataset:
+  name: "malasanita_a_strutture_asl"
+  years: [2022]
+
+raw:
+  sources:
+    # Strutture e attività ASL — dati.salute.gov.it
+    # Granularità: ASL | Anno copertura: fino al 2022
+    - name: "strutture_asl"
+      type: "http_file"
+      args:
+        url: "https://www.dati.salute.gov.it/sites/default/files/2024-05/Strutture_e_attivit%C3%A0_ASL.csv"
+        filename: "strutture_asl_2022.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ";"
+    encoding: "latin-1"
+    header: true
+  validate:
+    min_rows: 20
+
+validation:
+  fail_on_error: true

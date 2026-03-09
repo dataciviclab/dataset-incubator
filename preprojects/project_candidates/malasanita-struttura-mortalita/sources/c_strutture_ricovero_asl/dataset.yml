@@ -1,0 +1,31 @@
+root: "../../../../../out"
+schema_version: 1
+
+dataset:
+  name: "malasanita_c_strutture_ricovero"
+  years: [2022]
+
+raw:
+  sources:
+    # Strutture ricovero per ASL — dati.salute.gov.it
+    # Granularità: struttura | Anno copertura: fino al 2022
+    - name: "strutture_ricovero_asl"
+      type: "http_file"
+      args:
+        url: "https://www.dati.salute.gov.it/sites/default/files/2025-01/Strutture_di_ricovero_pubbliche_presenti_nel_territorio_della_ASL.csv"
+        filename: "strutture_ricovero_asl_2022.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ";"
+    encoding: "latin-1"
+    header: true
+  validate:
+    min_rows: 100
+
+validation:
+  fail_on_error: true

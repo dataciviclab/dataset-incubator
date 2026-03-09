@@ -1,0 +1,32 @@
+root: "../../../../../out"
+schema_version: 1
+
+dataset:
+  name: "malasanita_b_reparti_ricovero"
+  years: [2022]
+
+raw:
+  sources:
+    # Reparti strutture di ricovero — dati.salute.gov.it
+    # Granularità: reparto/struttura | Anno copertura: fino al 2022
+    - name: "reparti_ricovero"
+      type: "http_file"
+      args:
+        url: "https://www.dati.salute.gov.it/sites/default/files/2024-05/Dati_di_anagrafe_e_di_attivit%C3%A0_delle_Strutture_di_Ricovero_Pubbliche_ed_equiparate.csv"
+        filename: "reparti_ricovero_2022.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ";"
+    encoding: "latin-1"
+    header: true
+    decimal: ","
+  validate:
+    min_rows: 100
+
+validation:
+  fail_on_error: true
