@@ -1,0 +1,3 @@
+# Keep the runtime root tracked, but ignore generated content.
+*
+!.gitignore

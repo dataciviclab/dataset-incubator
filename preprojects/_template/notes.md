@@ -1,0 +1,13 @@
+# Notes
+
+## Tecnico
+
+-
+
+## Analitico
+
+-
+
+## Cautele
+
+-

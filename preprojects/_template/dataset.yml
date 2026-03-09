@@ -1,0 +1,22 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "template_dataset"
+  years: [2024]
+
+raw:
+  sources: []
+
+clean:
+  sql: "sql/clean.sql"
+  validate: {}
+
+mart:
+  tables:
+    - name: "template_table"
+      sql: "sql/mart.sql"
+  validate: {}
+
+validation:
+  fail_on_error: true
