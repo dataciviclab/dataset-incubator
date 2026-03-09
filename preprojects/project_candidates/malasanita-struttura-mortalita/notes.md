@@ -10,7 +10,7 @@ La fonte D è disponibile, completa e scaricabile senza login, ma richiede uno s
 
 Opzioni per la fonte D:
 1. Usare `http_file` + extractor ZIP del toolkit (`unzip_first`) ✅ testato
-2. Pre-processare D localmente → esportare CSV → trattare come `local_file` nel dataset.yml
+2. Pre-processare D localmente → esportare CSV → trattare come `local_file` in `compose/dataset_source_d_test.yml`
 3. Scrivere un custom step di pre-ingest in Python prima del run
 
 ## Verifica fonti (stato al 2026-03-09)
@@ -57,7 +57,7 @@ Opzioni per la fonte D:
 
 **Compatibilità toolkit (esito test):** `http_zip` non è un plugin disponibile. Il path nativo funzionante è `type: http_file` con `extractor: unzip_first`, ma dipende dall'ordine interno del ZIP.
 
-**Hardening applicato:** il dataset principale resta runnable da clone pulito con `http_file + unzip_first`. Per maggiore controllo e disponibile uno script opzionale (`scripts/prepare_source_d.ps1`) che estrae esplicitamente `data_base_2022.xlsx` in `inputs/` senza lasciare artefatti temporanei nel repository.
+**Hardening applicato:** il dataset principale resta runnable da clone pulito con `http_file + unzip_first`. Per maggiore controllo e disponibile uno script opzionale (`scripts/prepare_source_d.ps1`) che estrae esplicitamente `data_base_2022.xlsx` in `sources/d_mortalita_istat/` senza lasciare artefatti temporanei nel repository.
 
 **Definizione "mortalità evitabile":** non è una colonna diretta — va operazionalizzata selezionando le cause pertinenti tra le 25 disponibili (es. metodologia Euro-2013 o scelta ragionata). Questo è un passaggio metodologico da documentare esplicitamente.
 

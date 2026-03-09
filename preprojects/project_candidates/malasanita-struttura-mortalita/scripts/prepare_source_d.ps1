@@ -2,7 +2,7 @@ $ErrorActionPreference = "Stop"
 
 $projectDir = Split-Path -Parent $PSScriptRoot
 $tmpDir = Join-Path ([System.IO.Path]::GetTempPath()) ("malasanita_source_d_" + [guid]::NewGuid().ToString("N"))
-$inputsDir = Join-Path $projectDir "inputs"
+$inputsDir = Join-Path $projectDir "sources\\d_mortalita_istat"
 $zipPath = Join-Path $tmpDir "Tavole.zip"
 $extractDir = Join-Path $tmpDir "unzipped"
 $targetFile = Join-Path $inputsDir "data_base_2022.xlsx"

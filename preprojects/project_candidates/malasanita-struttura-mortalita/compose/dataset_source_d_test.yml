@@ -1,4 +1,4 @@
-root: "../../../out"
+root: "../../../../out"
 schema_version: 1
 
 dataset:
@@ -10,7 +10,7 @@ raw:
     - name: "mortalita_causa_istat"
       type: "local_file"
       args:
-        path: "inputs/data_base_2022.xlsx"
+        path: "../sources/d_mortalita_istat/data_base_2022.xlsx"
       primary: true
 
 clean:

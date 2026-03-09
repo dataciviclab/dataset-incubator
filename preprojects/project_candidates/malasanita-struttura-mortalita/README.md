@@ -54,7 +54,7 @@ Testare il path nativo della fonte D (`ZIP extractor + clean XLSX`) in incubator
 
 ## Setup fonte D (hardening)
 
-Il flusso standard in `dataset.yml` resta eseguibile da clone pulito (`http_file` + extractor ZIP).
+Il flusso standard in `compose/dataset.yml` resta eseguibile da clone pulito (`http_file` + extractor ZIP).
 Per hardening su file esplicito, e disponibile un pre-ingest opzionale:
 
 ```powershell
@@ -63,6 +63,22 @@ pwsh preprojects/project_candidates/malasanita-struttura-mortalita/scripts/prepa
 
 Questo step copia esattamente `data_base_2022.xlsx` in:
 
-`preprojects/project_candidates/malasanita-struttura-mortalita/inputs/data_base_2022.xlsx`
+`preprojects/project_candidates/malasanita-struttura-mortalita/sources/d_mortalita_istat/data_base_2022.xlsx`
 
 Lo script usa una cartella temporanea di sistema e la rimuove a fine esecuzione.
+
+## Run
+
+Esecuzione principale (online):
+
+```powershell
+toolkit run all -c preprojects/project_candidates/malasanita-struttura-mortalita/compose/dataset.yml
+```
+
+Fallback locale (A/B/C/D da file locali):
+
+```powershell
+toolkit run all -c preprojects/project_candidates/malasanita-struttura-mortalita/compose/dataset_local_test.yml
+```
+
+Nota: al 2026-03-09 il run principale può fallire in RAW per handshake TLS verso `www.dati.salute.gov.it`; il fallback locale è verde end-to-end.
