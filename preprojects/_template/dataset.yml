@@ -6,17 +6,32 @@ dataset:
   years: [2024]
 
 raw:
-  sources: []
+  sources:
+    - name: "template_source"
+      type: "local_file"
+      args:
+        path: "data/raw/template_{year}.csv"
+        filename: "template_{year}.csv"
+      primary: true
 
 clean:
   sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
   validate: {}
 
 mart:
   tables:
     - name: "template_table"
       sql: "sql/mart.sql"
+  required_tables:
+    - "template_table"
   validate: {}
 
 validation:
   fail_on_error: true
+
+output:
+  artifacts: "minimal"
