@@ -1,0 +1,31 @@
+root: "../../../../../out"
+schema_version: 1
+
+dataset:
+  name: "malasanita_d_mortalita_istat"
+  years: [2022]
+
+raw:
+  sources:
+    # Mortalità per causa — ISTAT 2022
+    # Granularità: regione × causa × sesso × classe età × titolo di studio
+    # File locale: data_base_2022.xlsx (foglio d_base_2022), non versionato
+    - name: "mortalita_causa_istat"
+      type: "local_file"
+      args:
+        path: "data_base_2022.xlsx"
+        filename: "data_base_2022.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    sheet_name: "d_base_2022"
+    header: true
+  validate:
+    min_rows: 1000
+
+validation:
+  fail_on_error: true
