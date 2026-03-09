@@ -41,9 +41,11 @@ raw:
     # Nota: richiede aggregazione (somma su sesso, eta, titolo di studio) per ottenere totali regionali
     # Nota: join con A/B/C solo su nome regione testuale (no codice numerico)
     - name: "mortalita_causa_istat"
-      type: "local_file"
+      type: "http_file"
       args:
-        path: "inputs/data_base_2022.xlsx"
+        url: "https://www.istat.it/wp-content/uploads/2025/09/Tavole.zip"
+      extractor:
+        type: "unzip_first"
 
 clean:
   sql: "sql/clean.sql"

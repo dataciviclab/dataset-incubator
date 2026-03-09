@@ -54,7 +54,8 @@ Testare il path nativo della fonte D (`ZIP extractor + clean XLSX`) in incubator
 
 ## Setup fonte D (hardening)
 
-Per evitare dipendenze dall'ordine interno del file ZIP ISTAT, il progetto usa un pre-ingest esplicito:
+Il flusso standard in `dataset.yml` resta eseguibile da clone pulito (`http_file` + extractor ZIP).
+Per hardening su file esplicito, e disponibile un pre-ingest opzionale:
 
 ```powershell
 pwsh preprojects/project_candidates/malasanita-struttura-mortalita/scripts/prepare_source_d.ps1
@@ -63,3 +64,5 @@ pwsh preprojects/project_candidates/malasanita-struttura-mortalita/scripts/prepa
 Questo step copia esattamente `data_base_2022.xlsx` in:
 
 `preprojects/project_candidates/malasanita-struttura-mortalita/inputs/data_base_2022.xlsx`
+
+Lo script usa una cartella temporanea di sistema e la rimuove a fine esecuzione.

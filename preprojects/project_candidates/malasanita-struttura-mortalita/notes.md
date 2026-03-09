@@ -57,7 +57,7 @@ Opzioni per la fonte D:
 
 **Compatibilità toolkit (esito test):** `http_zip` non è un plugin disponibile. Il path nativo funzionante è `type: http_file` con `extractor: unzip_first`, ma dipende dall'ordine interno del ZIP.
 
-**Hardening applicato:** per selezionare in modo esplicito `data_base_2022.xlsx`, il dataset usa ora `local_file` su `inputs/data_base_2022.xlsx` popolato con script `scripts/prepare_source_d.ps1`.
+**Hardening applicato:** il dataset principale resta runnable da clone pulito con `http_file + unzip_first`. Per maggiore controllo e disponibile uno script opzionale (`scripts/prepare_source_d.ps1`) che estrae esplicitamente `data_base_2022.xlsx` in `inputs/` senza lasciare artefatti temporanei nel repository.
 
 **Definizione "mortalità evitabile":** non è una colonna diretta — va operazionalizzata selezionando le cause pertinenti tra le 25 disponibili (es. metodologia Euro-2013 o scelta ragionata). Questo è un passaggio metodologico da documentare esplicitamente.
 
