@@ -26,7 +26,6 @@ dataset-incubator/
     active.md
     archived.md
   templates/
-    preproject.md
     dataset-notes.md
   preprojects/
     _template/
@@ -40,20 +39,26 @@ dataset-incubator/
 ## Significato delle cartelle
 
 - `registry/`: quadro umano dei filoni attivi e archiviati
-- `templates/`: template minimi riusabili
+- `templates/`: note di supporto riusabili
 - `preprojects/project_candidates/`: filoni con domanda e potenziale di promozione
 - `preprojects/support_datasets/`: basi trasversali riusabili per join o controlli
-- `preprojects/_template/`: base minima per nuovi ingressi
+- `preprojects/_template/`: base operativa canonica per nuovi ingressi
 - `out/`: runtime locale del toolkit, mai contenuto di progetto
 
-## Cosa c'e nella v1
+## Contenuto attuale
 
-La repo parte volutamente stretta:
+La repo parte volutamente stretta.
 
-- `project_candidates/civile-flussi`
-- `support_datasets/popolazione-istat-comunale-2019-2025`
+La fonte di verita per i filoni attivi e:
 
-Fuori dalla v1:
+- `registry/active.md`
+
+In questo momento la repo contiene un mix minimo di:
+
+- `project_candidates/`
+- `support_datasets/`
+
+Fuori dal perimetro attuale:
 
 - `IRPEF`, gia nel flusso pubblico `dataciviclab/preanalysis`
 - `SIOPE`, gia repo progetto dedicata
