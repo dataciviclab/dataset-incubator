@@ -63,7 +63,9 @@ SELECT
     ROUND(c.personale_ospedaliero * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS personale_osp_per_100k,
     ROUND(c.posti_letto_previsti * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS posti_letto_previsti_per_100k,
     ROUND(c.posti_letto_utilizzati * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS posti_letto_utilizzati_per_100k,
-    ROUND(d.decessi_totali * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS decessi_totali_per_100k,
+    -- Numeratore 30+ da D, denominatore popolazione totale da A.
+    -- Nome esplicito per evitare di farlo leggere come tasso grezzo standard.
+    ROUND(d.decessi_totali * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS decessi_30plus_per_100k_pop_totale,
 
     CASE WHEN c.codice_regione IS NOT NULL THEN true ELSE false END AS join_c_ok,
     CASE WHEN d.cod_territorio IS NOT NULL THEN true ELSE false END AS join_d_ok

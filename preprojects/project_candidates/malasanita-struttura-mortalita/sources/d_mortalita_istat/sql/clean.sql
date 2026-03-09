@@ -28,3 +28,4 @@ SELECT
 FROM raw_input
 WHERE CAST(anno AS INTEGER) = {year}
   AND CAST("Cod_Territorio" AS INTEGER) BETWEEN 1 AND 22
+  AND CAST("Cod_Territorio" AS INTEGER) <> 4

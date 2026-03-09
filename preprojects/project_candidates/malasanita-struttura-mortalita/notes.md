@@ -67,11 +67,14 @@ Mapping usato nel compose:
   - `041 -> 21` Bolzano
   - `042 -> 22` Trento
 
+Nota: nel dataset ISTAT 2022 i codici territoriali sono gia presenti come stringhe a due cifre (`01`-`22`), quindi il join regge senza padding extra. Questa assunzione va comunque ricontrollata se cambia la sorgente.
+
 ## Limiti della v1
 
 - `B` non entra ancora nel compose finale
 - `D` e` ancora un proxy regionale, non la metrica finale desiderata
 - i tassi `30+` di `D` non vanno confusi con un denominatore generale di popolazione residente
+- il campo `decessi_30plus_per_100k_pop_totale` usa un numeratore `30+` e un denominatore di popolazione totale: e` un indicatore proxy, non un tasso grezzo canonico
 
 ## Prossima v2
 
