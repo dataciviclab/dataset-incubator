@@ -6,7 +6,7 @@ Le fonti A, B, C reggono il flusso canonico RAW → CLEAN → MART senza passagg
 La fonte D è disponibile, completa e scaricabile senza login, ma richiede uno step extra
 (unzip + lettura XLSX) che non è un blocco ma va dichiarato esplicitamente.
 
-**Azione:** applicare path nativo per D e proseguire con clean/mart.
+**Azione:** applicare path hardenizzato su file esplicito per D e proseguire con clean/mart.
 
 Opzioni per la fonte D:
 1. Usare `http_file` + extractor ZIP del toolkit (`unzip_first`) ✅ testato
@@ -55,7 +55,9 @@ Opzioni per la fonte D:
 
 **Granularità:** regione × causa × sesso × classe età × titolo di studio — richiede aggregazione per ottenere totali regionali
 
-**Compatibilità toolkit (esito test):** `http_zip` non è un plugin disponibile. Il path nativo funzionante è `type: http_file` con `extractor: unzip_first`, che estrae correttamente `data_base_2022.xlsx` in RAW.
+**Compatibilità toolkit (esito test):** `http_zip` non è un plugin disponibile. Il path nativo funzionante è `type: http_file` con `extractor: unzip_first`, ma dipende dall'ordine interno del ZIP.
+
+**Hardening applicato:** per selezionare in modo esplicito `data_base_2022.xlsx`, il dataset usa ora `local_file` su `inputs/data_base_2022.xlsx` popolato con script `scripts/prepare_source_d.ps1`.
 
 **Definizione "mortalità evitabile":** non è una colonna diretta — va operazionalizzata selezionando le cause pertinenti tra le 25 disponibili (es. metodologia Euro-2013 o scelta ragionata). Questo è un passaggio metodologico da documentare esplicitamente.
 

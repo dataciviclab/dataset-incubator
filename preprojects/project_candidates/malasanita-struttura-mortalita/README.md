@@ -51,3 +51,15 @@ active — verifica fonti completata, avvio task tecnico su fonte D
 ## Prossimo passo
 
 Testare il path nativo della fonte D (`ZIP extractor + clean XLSX`) in incubator privato; se instabile, applicare fallback documentato (`pre-ingest` + `local_file`).
+
+## Setup fonte D (hardening)
+
+Per evitare dipendenze dall'ordine interno del file ZIP ISTAT, il progetto usa un pre-ingest esplicito:
+
+```powershell
+pwsh preprojects/project_candidates/malasanita-struttura-mortalita/scripts/prepare_source_d.ps1
+```
+
+Questo step copia esattamente `data_base_2022.xlsx` in:
+
+`preprojects/project_candidates/malasanita-struttura-mortalita/inputs/data_base_2022.xlsx`

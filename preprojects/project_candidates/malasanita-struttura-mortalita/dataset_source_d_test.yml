@@ -8,11 +8,9 @@ dataset:
 raw:
   sources:
     - name: "mortalita_causa_istat"
-      type: "http_file"
+      type: "local_file"
       args:
-        url: "https://www.istat.it/wp-content/uploads/2025/09/Tavole.zip"
-      extractor:
-        type: "unzip_first"
+        path: "inputs/data_base_2022.xlsx"
       primary: true
 
 clean:
