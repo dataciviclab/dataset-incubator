@@ -1,4 +1,4 @@
-# Notes
+# Notes - storico incubator (candidato promosso, non aggiornare)
 
 ## Tecnico
 
