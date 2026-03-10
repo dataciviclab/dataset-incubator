@@ -1,122 +1,85 @@
-# Notes — malasanita-struttura-mortalita
+# Notes - malasanita-struttura-mortalita
 
-## Stato verifica — da dichiarare a @Gabrymi93 prima di aprire l'issue preanalysis
+## Stato tecnico
 
-Le fonti A, B, C reggono il flusso canonico RAW → CLEAN → MART senza passaggi manuali.
-La fonte D è disponibile, completa e scaricabile senza login, ma richiede uno step extra
-(unzip + lettura XLSX) che non è un blocco ma va dichiarato esplicitamente.
+Nel branch `feat/malasanita-mart-hardening` il candidato ha una prima base eseguibile e verificata:
 
-**Azione:** applicare path hardenizzato su file esplicito per D e proseguire con clean/mart.
+- `A` raw/clean/mart ok
+- `C` raw/clean/mart ok
+- `D` raw/clean/mart ok
+- compose finale `A + C + D` ok
 
-Opzioni per la fonte D:
-1. Usare `http_file` + extractor ZIP del toolkit (`unzip_first`) ✅ testato
-2. Pre-processare D localmente → esportare CSV → trattare come `local_file` in un config di test separato (non versionato nel candidate)
-3. Scrivere un custom step di pre-ingest in Python prima del run
+Join finale verificato:
+- `join_c_ok = 21/21`
+- `join_d_ok = 21/21`
 
-## Verifica fonti (stato al 2026-03-09)
+## Architettura adottata
 
-| ID | Fonte | URL diretto | HTTP | Formato | Anno | Dimensione | Autenticazione |
-|---|---|---|---|---|---|---|---|
-| A | Strutture e attività ASL | https://www.dati.salute.gov.it/sites/default/files/2024-05/Strutture_e_attivit%C3%A0_ASL.csv | 200 ✅ | CSV | 2022 | 24 KB | nessuna |
-| B | Reparti strutture di ricovero | https://www.dati.salute.gov.it/sites/default/files/2024-05/Dati_di_anagrafe_e_di_attivit%C3%A0_delle_Strutture_di_Ricovero_Pubbliche_ed_equiparate.csv | 200 ✅ | CSV | 2022 | 2,4 MB | nessuna |
-| C | Strutture ricovero per ASL | https://www.dati.salute.gov.it/sites/default/files/2025-01/Strutture_di_ricovero_pubbliche_presenti_nel_territorio_della_ASL.csv | 200 ✅ | CSV | 2022 | 144 KB | nessuna |
-| D | Mortalità per causa — ISTAT | https://www.istat.it/wp-content/uploads/2025/09/Tavole.zip | 200 ✅ | ZIP→XLSX | 2022 | 3,6 MB | nessuna |
+Pattern multi-fonte:
 
-## Tecnico
+- un source dataset per ogni fonte
+- un mart regionale minimo per fonte
+- un compose finale che legge solo output gia aggregati
 
-### Fonti A, B, C — Ministero della Salute
+Implementazione attuale:
 
-- Delimitatore: `;`
-- Encoding: non verificato (presumibile latin-1 o utf-8-sig — da testare in ingest)
-- Chiave regionale: `Codice Regione` (fonte A) / `codice_regione` (fonti B, C) — codice numerico 3 cifre (es. `010` = Piemonte)
-- Anno confermato in dati: `2022` (colonna `Anno di Riferimento` / `anno`)
+- `sources/a_strutture_asl/sql/mart.sql`
+- `sources/c_strutture_ricovero_asl/sql/mart.sql`
+- `sources/d_mortalita_istat/sql/mart.sql`
+- `sources/a_strutture_asl/sql/mart_compose_regioni.sql`
 
-**Colonne chiave fonte A (Strutture e attività ASL):**
-`Anno di Riferimento`, `Codice Regione`, `Regione`, `Totale medici`, `Totale pediatri`, `Totale scelte per classe di scelte`, `Numero medio medici titolari`, granularità ASL
+Il compose finale e` agganciato al dataset di `A` per un vincolo del toolkit: il file SQL del mart deve stare sotto la base dir del dataset che lo esegue.
 
-**Colonne chiave fonte B (Reparti strutture di ricovero):**
-`anno`, `codice_regione`, `regione`, `codice_disciplina`, `disciplina`, `posti_letto_day_hospital`, `posti_letto_degenza_ordinaria`, `num_dimessi`, `giornate_degenza`, granularità reparto/struttura
+## Fonte D
 
-**Colonne chiave fonte C (Strutture ricovero per ASL):**
-`anno`, `codice_struttura`, `codice_regione`, `Regione`, `totale_personale`, `medici`, `infermieri`, `posti_letto_previsti`, granularità struttura
+La fonte `D` e` il punto metodologicamente piu delicato.
 
-### Fonte D — ISTAT Mortalità per causa 2022
+Problema verificato:
+- sommare tutte le righe del clean sovraconta i decessi
 
-**Situazione portale:** il portale dati.istat.it è irraggiungibile (redirect a avvisi.istat.it). I dati sono accessibili tramite pagina statica ISTAT.
+Scelta adottata nella v1:
+- `cod_sesso = 3`
+- `cod_classe_eta = 9`
+- `cod_titolo_studio = 9`
+- `cod_causa = 25`
 
-**File:** `Tavole.zip` → `Tavole/data_base_2022.xlsx` → foglio `d_base_2022`
+Questo produce una riga per territorio regionale con:
+- `decessi_totali`
+- `pop_media_30_plus`
+- `tasso_std_10000_30_plus`
+- `tasso_std_100k_30_plus`
 
-**Struttura colonne:**
-`anno`, `Cod_Territorio`, `Territorio`, `Cod_Sesso`, `Sesso`, `Cod_Classe età`, `Classe età`, `Cod_Titolo di studio`, `Titolo di studio`, `Cod_Causa`, `Causa`, `pop media`, `decessi`, `tassi_standardizzati per 10.000`
+Quindi:
+- la v1 usa **mortalita totale regionale 30+**
+- non usa ancora **mortalita evitabile**
 
-**Territori presenti:** tutte le regioni italiane incluse Valle d'Aosta, Bolzano, Trento + aggregati macro-area + ITALIA
+## Join regionale
 
-**25 cause di morte raggruppate** (es. "Malattie del sistema circolatorio", "Tumori", "Malattie cerebrovascolari", "Covid-19", ecc.)
+Fonte A e C:
+- `codice_regione` a 3 cifre Ministero
 
-**Granularità:** regione × causa × sesso × classe età × titolo di studio — richiede aggregazione per ottenere totali regionali
+Fonte D:
+- `cod_territorio` ISTAT a 2 cifre
 
-**Compatibilità toolkit (esito test):** `http_zip` non è un plugin disponibile. Il path nativo funzionante è `type: http_file` con `extractor: unzip_first`, ma dipende dall'ordine interno del ZIP.
+Mapping usato nel compose:
+- `LEFT(codice_regione, 2)` per le regioni ordinarie
+- eccezioni:
+  - `041 -> 21` Bolzano
+  - `042 -> 22` Trento
 
-**Hardening applicato:** il dataset principale resta runnable da clone pulito con `http_file + unzip_first`.
+Nota: nel dataset ISTAT 2022 i codici territoriali sono gia presenti come stringhe a due cifre (`01`-`22`), quindi il join regge senza padding extra. Questa assunzione va comunque ricontrollata se cambia la sorgente.
 
-**Definizione "mortalità evitabile":** non è una colonna diretta — va operazionalizzata selezionando le cause pertinenti tra le 25 disponibili (es. metodologia Euro-2013 o scelta ragionata). Questo è un passaggio metodologico da documentare esplicitamente.
+## Limiti della v1
 
-## Architettura mart — pattern multi-fonte
+- `B` non entra ancora nel compose finale
+- `D` e` ancora un proxy regionale, non la metrica finale desiderata
+- i tassi `30+` di `D` non vanno confusi con un denominatore generale di popolazione residente
+- il campo `decessi_30plus_per_100k_pop_totale` usa un numeratore `30+` e un denominatore di popolazione totale: e` un indicatore proxy, non un tasso grezzo canonico
 
-Il toolkit richiede un clean layer per il dataset indicato nel dataset.yml prima di eseguire il mart.
-Il compose non ha un raw/clean proprio, quindi il mart è agganciato a `sources/a_strutture_asl/dataset.yml`.
+## Prossima v2
 
-**Come eseguire il mart:**
-```
-cd dataset-incubator
-py -m toolkit.cli.app run mart --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
-```
+Per una versione piu forte del progetto:
 
-**SQL:** `compose/sql/mart.sql` (referenziato dal dataset.yml di A con `sql: "../../compose/sql/mart.sql"`)
-
-**Prerequisiti:** i clean di A, C, D devono essere già stati eseguiti (i parquet devono esistere in `out/`).
-
-**Output:** `out/data/mart/malasanita_a_strutture_asl/2022/mart_regioni.parquet`
-
-### Opzione 1 — mart flat regionale (implementato, preanalysis)
-
-Una riga per regione (21 righe). Fonti: A (medici MMG, pop), C (personale ospedaliero, posti letto), D (decessi totali). Join A+C su codice_regione; join con D su nome regione normalizzato.
-
-### Opzione 3 — due tabelle mart separate (Power BI / approfondimento futuro)
-
-Separare `mart_strutture` (A+C aggregato per regione) e `mart_mortalita` (D per regione×causa) senza join nel mart. Il join viene fatto in Power BI o nel notebook, dove si può:
-- filtrare per causa specifica (es. mortalità evitabile secondo metodologia Euro-2013)
-- espandere per disciplina da fonte B (reparti) → correlazione per specialità
-- drill-down per ASL invece che per regione
-
-Questa opzione è interessante per la dashboard Power BI finale ma è fuori scope per la preanalysis.
-
-## Chiave di join regionale
-
-- Fonti A/B/C usano codice regione numerico 3 cifre (es. `010` per Piemonte)
-- Fonte D usa nome regione testuale (es. `PIEMONTE`)
-- Il join richiede una tabella di corrispondenza codice_regione ↔ nome_regione ISTAT
-- 21 unità territoriali (19 regioni + 2 province autonome Bolzano e Trento)
-
-## Analitico
-
-- Domanda: correlazione struttura sanitaria (personale) ↔ mortalità evitabile per regione, anno 2022
-- Unità di analisi: regione (aggregare le fonti A/B/C da granularità ASL/struttura)
-- Asse principale: medici e infermieri per 100.000 ab. vs tasso mortalità evitabile per 100.000 ab.
-- Dati popolazione per il denominatore: usare `pop media` dalla fonte D o fonte esterna (ISTAT POSAS)
-
-## Cautele
-
-- **Gap temporale Ministero:** dati strutture (A, B, C) fermi al 2022 — documentare come dato narrativo ("la PA non aggiorna da 3 anni")
-- **Fonte D — codice regione assente:** join solo su nome testuale → rischio errori su nomi con spazi/accenti; serve pulizia
-- **Mortalità evitabile non è una colonna diretta:** va costruita selezionando cause — scelta metodologica da documentare
-- **Emilia-Romagna:** benchmark metodologico opzionale, esclusa dall'analisi principale
-- **Titolo di studio nella fonte D:** non necessario per questa analisi, da ignorare nell'aggregazione
-- **Fonti di Livello 2** (AGENAS/SIMES, MedMal Marsh): non usare nella preanalysis
-
-## Pagine sorgente (per aggiornamenti futuri)
-
-- A: https://www.dati.salute.gov.it/it/dataset/strutture-e-attivita-asl/
-- B: https://www.dati.salute.gov.it/it/dataset/dati-di-struttura-e-di-attivita-dei-reparti-presenti-ciascuna-struttura-di-ricovero/
-- C: https://www.dati.salute.gov.it/it/dataset/strutture-di-ricovero-pubbliche-e-equiparate-presenti-nel-territorio-della-asl/
-- D: https://www.istat.it/tavole-di-dati/disuguaglianze-nella-mortalita-per-causa-in-italia-secondo-caratteristiche-demografiche-sociali-e-territoriali-anno-2022/
+- costruire una definizione esplicita di mortalita evitabile da `D`
+- valutare un `mart_regioni` utile anche per `B`
+- decidere se il compose finale debba restare flat o sdoppiarsi in due tavole (`strutture` / `mortalita`)

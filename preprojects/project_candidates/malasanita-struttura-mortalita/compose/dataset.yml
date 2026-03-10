@@ -1,24 +1,28 @@
-# compose/dataset.yml — malasanita-struttura-mortalita
+# compose/dataset.yml - malasanita-struttura-mortalita
 #
-# Questo file NON è un dataset.yml runnable.
-# È un riferimento documentale per l'architettura multi-fonte.
+# Questo file NON e` un dataset.yml runnable.
+# E` un riferimento documentale per l'architettura multi-fonte.
 #
-# Come eseguire il mart:
+# Come eseguire i mart:
 #   cd dataset-incubator
 #   py -m toolkit.cli.app run mart --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
 #
-# Perché il mart è in sources/a_strutture_asl/dataset.yml e non qui:
-#   Il toolkit richiede che esista un clean layer per il dataset indicato
-#   prima di poter eseguire il mart. Il compose non ha un raw/clean proprio.
-#   La soluzione adottata: aggiungere la sezione mart al dataset.yml della
-#   fonte A (che ha già il suo clean), con sql: "../../compose/sql/mart.sql".
-#   Il mart legge A via clean_input e C/D via read_parquet() con path relativi
-#   alla CWD del toolkit (dataset-incubator/).
+# Perche il compose e` agganciato a sources/a_strutture_asl/dataset.yml:
+#   Il toolkit richiede un clean layer nel dataset indicato dal config.
+#   Il compose non ha raw/clean propri.
+#   La soluzione transitoria adottata:
+#   - A espone il suo mart regionale minimo
+#   - A espone anche il mart finale di compose via "sql/mart_compose_regioni.sql"
+#   - il compose legge i mart regionali gia prodotti da A, C, D
 #
-# Fonti nel mart:
-#   clean_input → malasanita_a_strutture_asl (personale MMG, pop residente)
-#   read_parquet → malasanita_c_strutture_ricovero (personale ospedaliero, posti letto)
-#   read_parquet → malasanita_d_mortalita_istat (decessi per regione)
-#   (fonte B reparti → Opzione 3, Power BI, fuori dalla preanalysis)
+# Ordine di esecuzione:
+#   1. run raw+clean+mart su sources/a_strutture_asl
+#   2. run raw+clean+mart su sources/c_strutture_ricovero_asl
+#   3. run raw+clean+mart su sources/d_mortalita_istat
+#   4. run mart su sources/a_strutture_asl per materializzare anche il compose finale
 #
-# Output mart: out/data/mart/malasanita_a_strutture_asl/2022/mart_regioni.parquet
+# Output principali:
+#   out/data/mart/malasanita_a_strutture_asl/2022/mart_regioni.parquet
+#   out/data/mart/malasanita_c_strutture_ricovero/2022/mart_regioni.parquet
+#   out/data/mart/malasanita_d_mortalita_istat/2022/mart_regioni.parquet
+#   out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni.parquet

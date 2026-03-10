@@ -10,9 +10,9 @@ raw:
     # Strutture ricovero per ASL — dati.salute.gov.it
     # Granularità: struttura | Anno copertura: fino al 2022
     - name: "strutture_ricovero_asl"
-      type: "http_file"
+      type: "local_file"
       args:
-        url: "https://www.dati.salute.gov.it/sites/default/files/2025-01/Strutture_di_ricovero_pubbliche_presenti_nel_territorio_della_ASL.csv"
+        path: "inputs/strutture_ricovero_asl_2022.csv"
         filename: "strutture_ricovero_asl_2022.csv"
       primary: true
 
@@ -26,6 +26,15 @@ clean:
     header: true
   validate:
     min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_regioni"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      mart_regioni:
+        min_rows: 21
 
 validation:
   fail_on_error: true
