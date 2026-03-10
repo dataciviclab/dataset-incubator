@@ -36,6 +36,51 @@ dataset-incubator/
     logs/
 ```
 
+## Pattern di struttura
+
+I candidati seguono due pattern a seconda del numero di fonti.
+
+**Single-source** - fonte unica, dataset.yml in root del candidato:
+
+```text
+project_candidates/caso/
+  dataset.yml
+  notes.md
+  README.md
+  sql/
+    clean.sql
+    mart.sql
+```
+
+**Multi-source** - piu fonti indipendenti + compose finale:
+
+```text
+project_candidates/caso/
+  notes.md
+  README.md
+  sources/
+    a_fonte/
+      dataset.yml
+      sql/clean.sql, mart.sql
+    b_fonte/
+      ...
+  compose/
+    dataset.yml
+    sql/mart_compose.sql
+```
+
+Il template base in `preprojects/_template/` segue il pattern single-source.
+
+## Regola di archiviazione
+
+Quando un candidato viene promosso o chiuso:
+
+- aggiornare `registry/archived.md` con motivo e target finale
+- aggiornare `registry/active.md` rimuovendo la riga
+- ridurre il README del candidato a traccia minima (stato, motivo, puntatore)
+- i file tecnici (SQL, yml, notebook) restano come storico - non vanno rimossi
+- nessun altro file del candidato va aggiornato: e storico, non operativo
+
 ## Significato delle cartelle
 
 - `registry/`: quadro umano dei filoni attivi e archiviati
