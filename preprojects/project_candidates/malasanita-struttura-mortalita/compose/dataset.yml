@@ -1,66 +1,24 @@
-root: "../../../../out"
-schema_version: 1
-
-dataset:
-  name: "malasanita_struttura_mortalita"
-  years: [2022]  # anno pivot — unico anno di sovrapposizione completa tra tutte le fonti
-
-raw:
-  sources:
-    # Fonte A: Strutture e attivita ASL — dati.salute.gov.it
-    # Colonne chiave: Codice Regione, Regione, Totale medici, Totale pediatri
-    # Granularita: ASL
-    - name: "strutture_asl"
-      type: "http_file"
-      args:
-        url: "https://www.dati.salute.gov.it/sites/default/files/2024-05/Strutture_e_attivit%C3%A0_ASL.csv"
-        filename: "strutture_asl_2022.csv"
-      primary: true
-
-    # Fonte B: Reparti strutture di ricovero — dati.salute.gov.it
-    # Colonne chiave: codice_regione, regione, disciplina, posti_letto_*, num_dimessi
-    # Granularita: reparto / struttura
-    - name: "reparti_ricovero"
-      type: "http_file"
-      args:
-        url: "https://www.dati.salute.gov.it/sites/default/files/2024-05/Dati_di_anagrafe_e_di_attivit%C3%A0_delle_Strutture_di_Ricovero_Pubbliche_ed_equiparate.csv"
-        filename: "reparti_ricovero_2022.csv"
-
-    # Fonte C: Strutture ricovero per ASL — dati.salute.gov.it
-    # Colonne chiave: codice_regione, Regione, totale_personale, medici, infermieri
-    # Granularita: struttura
-    - name: "strutture_ricovero_asl"
-      type: "http_file"
-      args:
-        url: "https://www.dati.salute.gov.it/sites/default/files/2025-01/Strutture_di_ricovero_pubbliche_presenti_nel_territorio_della_ASL.csv"
-        filename: "strutture_ricovero_asl_2022.csv"
-
-    # Fonte D: Mortalita per causa — ISTAT 2022
-    # ZIP contenente data_base_2022.xlsx, foglio d_base_2022
-    # Colonne chiave: Territorio, Causa, decessi, tassi_standardizzati per 10.000
-    # Nota: richiede aggregazione (somma su sesso, eta, titolo di studio) per ottenere totali regionali
-    # Nota: join con A/B/C solo su nome regione testuale (no codice numerico)
-    - name: "mortalita_causa_istat"
-      type: "http_file"
-      args:
-        url: "https://www.istat.it/wp-content/uploads/2025/09/Tavole.zip"
-      extractor:
-        type: "unzip_first"
-
-clean:
-  sql: "sql/clean.sql"
-  read:
-    source: auto  # usa la fonte primaria configurata
-    mode: latest
-    header: true
-    delim: ";"
-  validate: {}
-
-mart:
-  tables:
-    - name: "mart_regioni_2022"
-      sql: "sql/mart.sql"
-  validate: {}
-
-validation:
-  fail_on_error: true
+# compose/dataset.yml — malasanita-struttura-mortalita
+#
+# Questo file NON è un dataset.yml runnable.
+# È un riferimento documentale per l'architettura multi-fonte.
+#
+# Come eseguire il mart:
+#   cd dataset-incubator
+#   py -m toolkit.cli.app run mart --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
+#
+# Perché il mart è in sources/a_strutture_asl/dataset.yml e non qui:
+#   Il toolkit richiede che esista un clean layer per il dataset indicato
+#   prima di poter eseguire il mart. Il compose non ha un raw/clean proprio.
+#   La soluzione adottata: aggiungere la sezione mart al dataset.yml della
+#   fonte A (che ha già il suo clean), con sql: "../../compose/sql/mart.sql".
+#   Il mart legge A via clean_input e C/D via read_parquet() con path relativi
+#   alla CWD del toolkit (dataset-incubator/).
+#
+# Fonti nel mart:
+#   clean_input → malasanita_a_strutture_asl (personale MMG, pop residente)
+#   read_parquet → malasanita_c_strutture_ricovero (personale ospedaliero, posti letto)
+#   read_parquet → malasanita_d_mortalita_istat (decessi per regione)
+#   (fonte B reparti → Opzione 3, Power BI, fuori dalla preanalysis)
+#
+# Output mart: out/data/mart/malasanita_a_strutture_asl/2022/mart_regioni.parquet

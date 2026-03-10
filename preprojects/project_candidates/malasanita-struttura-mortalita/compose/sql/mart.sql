@@ -1,12 +1,7 @@
--- mart.sql — malasanita_struttura_mortalita — mart_regioni_2022
--- TODO: definire dopo verifica CSV A/B/C/D e stabilizzazione del clean
+-- compose/sql/mart.sql — STUB DOCUMENTALE
+-- Il mart SQL effettivo si trova in:
+--   sources/a_strutture_asl/sql/mart.sql
 --
--- Struttura attesa:
---   - join regionale tra personale sanitario (fonti A/B/C) e mortalita evitabile (fonte D)
---   - chiave di join: codice_regione ISTAT (2 cifre)
---   - output: una riga per regione con indicatori chiave 2022
---   - escludere Emilia-Romagna dall'analisi principale (benchmark opzionale)
-
-select
-  *
-from clean_input
+-- Motivo: il toolkit richiede che il file SQL del mart sia sotto la base_dir
+-- del dataset.yml che lo esegue (sources/a_strutture_asl/).
+-- Vedere compose/dataset.yml per i dettagli architetturali.

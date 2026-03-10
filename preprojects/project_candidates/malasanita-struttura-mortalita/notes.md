@@ -61,6 +61,36 @@ Opzioni per la fonte D:
 
 **Definizione "mortalità evitabile":** non è una colonna diretta — va operazionalizzata selezionando le cause pertinenti tra le 25 disponibili (es. metodologia Euro-2013 o scelta ragionata). Questo è un passaggio metodologico da documentare esplicitamente.
 
+## Architettura mart — pattern multi-fonte
+
+Il toolkit richiede un clean layer per il dataset indicato nel dataset.yml prima di eseguire il mart.
+Il compose non ha un raw/clean proprio, quindi il mart è agganciato a `sources/a_strutture_asl/dataset.yml`.
+
+**Come eseguire il mart:**
+```
+cd dataset-incubator
+py -m toolkit.cli.app run mart --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
+```
+
+**SQL:** `compose/sql/mart.sql` (referenziato dal dataset.yml di A con `sql: "../../compose/sql/mart.sql"`)
+
+**Prerequisiti:** i clean di A, C, D devono essere già stati eseguiti (i parquet devono esistere in `out/`).
+
+**Output:** `out/data/mart/malasanita_a_strutture_asl/2022/mart_regioni.parquet`
+
+### Opzione 1 — mart flat regionale (implementato, preanalysis)
+
+Una riga per regione (21 righe). Fonti: A (medici MMG, pop), C (personale ospedaliero, posti letto), D (decessi totali). Join A+C su codice_regione; join con D su nome regione normalizzato.
+
+### Opzione 3 — due tabelle mart separate (Power BI / approfondimento futuro)
+
+Separare `mart_strutture` (A+C aggregato per regione) e `mart_mortalita` (D per regione×causa) senza join nel mart. Il join viene fatto in Power BI o nel notebook, dove si può:
+- filtrare per causa specifica (es. mortalità evitabile secondo metodologia Euro-2013)
+- espandere per disciplina da fonte B (reparti) → correlazione per specialità
+- drill-down per ASL invece che per regione
+
+Questa opzione è interessante per la dashboard Power BI finale ma è fuori scope per la preanalysis.
+
 ## Chiave di join regionale
 
 - Fonti A/B/C usano codice regione numerico 3 cifre (es. `010` per Piemonte)

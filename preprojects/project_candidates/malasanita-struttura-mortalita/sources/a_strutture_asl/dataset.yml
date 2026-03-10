@@ -27,5 +27,14 @@ clean:
   validate:
     min_rows: 20
 
+mart:
+  tables:
+    - name: "mart_regioni"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      mart_regioni:
+        min_rows: 18
+
 validation:
   fail_on_error: true
