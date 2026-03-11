@@ -23,6 +23,7 @@ Come cambia tra 2023 e 2024 il peso delle diverse fonti nel mix di produzione el
 - clean unico del workbook `Export`
 - mart regionale per fonte su produzione netta
 - primo confronto 2023 vs 2024 del mix regionale
+- notebook `v0` con lettura nazionale e regionale dei delta principali
 
 ## Criterio di promozione
 
