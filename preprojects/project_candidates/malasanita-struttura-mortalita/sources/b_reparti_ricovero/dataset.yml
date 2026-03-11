@@ -1,3 +1,8 @@
+# STATO: deferred — non integrato nel compose v1.
+# Raw e clean sono configurati e SQL clean e pronto.
+# Manca mart.sql. B non entra nel compose regionale finche il mart non e definito.
+# Rivalutare in v2 se il dato di reparto aggiunge segnale rispetto ad A e C.
+
 root: "../../../../../out"
 schema_version: 1
 

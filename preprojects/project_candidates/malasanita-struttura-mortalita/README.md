@@ -21,18 +21,25 @@ Fonti di secondo livello, fuori dalla preanalysis finche il nucleo non regge:
 
 ## Stato attuale
 
-Il candidato ha una struttura multi-fonte eseguibile e due notebook di preanalysis:
+Il candidato ha una struttura multi-fonte eseguibile e due notebook di preanalysis con artifact separati:
 
 - `A` espone un `mart_regioni` con personale territoriale e residenti
 - `C` espone un `mart_regioni` con personale e dotazione ospedaliera
-- `D` espone un `mart_regioni` con mortalita evitabile regionale (Euro-2013 proxy, v2)
-- `A` espone anche un `mart_compose_regioni` finale che legge i mart di `A/C/D`
+- `D` espone due mart distinti: `mart_regioni_v1` (mortalita totale 30+) e `mart_regioni_v2` (Euro-2013 proxy)
+- `A` espone due compose distinti: `mart_compose_regioni_v1` e `mart_compose_regioni_v2`
 
-### v1
+### Matrice notebook — artifact — metrica
+
+| Notebook | Artifact parquet | Metrica mortalita | Metodologia |
+|---|---|---|---|
+| `malasanita_preanalysis_v1.ipynb` | `mart_compose_regioni_v1.parquet` | `decessi_30plus_per_100k_pop_totale` | baseline storica — mortalita totale 30+ (main) |
+| `malasanita_preanalysis_v2.ipynb` | `mart_compose_regioni_v2.parquet` | `decessi_evitabili_30plus_per_100k_pop_totale` | Euro-2013 proxy — 12 cause amenable/preventable |
+
+### v1 — baseline storica (main)
 
 Proxy mortalita totale 30+ (`cod_causa=25`). Notebook: `malasanita_preanalysis_v1.ipynb`.
 
-### v2
+### v2 — branch evolutivo Euro-2013
 
 Proxy Euro-2013 (12 cause amenable/preventable, tasso grezzo 30+).
 Notebook: `malasanita_preanalysis_v2.ipynb`.
@@ -41,11 +48,15 @@ Notebook: `malasanita_preanalysis_v2.ipynb`.
 nel compose finale usa numeratore 30+ e denominatore popolazione totale regionale.
 Non e` un tasso grezzo canonico — documentato nel mart, nel compose e nel notebook.
 
+**Nota dati fonte C:** Molise e Valle d'Aosta mostrano valori anomali su `personale_osp_per_100k`
+(possibile problema di copertura dati, segnalato in PR #15). Interpretare con cautela.
+
 ## Output disponibile
 
-- tabella regionale 2022 con indicatori struttura sanitaria e mortalita evitabile proxy
+- `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v1.parquet` — tabella regionale 2022, metrica v1
+- `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v2.parquet` — tabella regionale 2022, metrica v2
 - join A/C/D stabile su 21 unita territoriali (join_c_ok e join_d_ok = 21/21)
-- due notebook eseguibili (v1 e v2) con narrativa metodologica esplicita
+- due notebook eseguibili (v1 e v2) con artifact separati e narrativa metodologica esplicita
 
 ## Criterio di promozione
 
@@ -68,7 +79,8 @@ py -m toolkit.cli.app run all --config preprojects/project_candidates/malasanita
 py -m toolkit.cli.app run mart --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
 ```
 
-L'ultimo comando rigenera anche il compose finale:
+L'ultimo comando rigenera i due compose finali:
 
-- `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni.parquet`
+- `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v1.parquet`
+- `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v2.parquet`
 

@@ -21,10 +21,17 @@ Pattern multi-fonte:
 - un mart regionale minimo per fonte
 - un compose finale che legge solo output gia aggregati
 
-Implementazione attuale:
+Implementazione attuale (branch `feat/malasanita-v2-euro2013`):
 
 - `sources/a_strutture_asl/sql/mart.sql`
 - `sources/c_strutture_ricovero_asl/sql/mart.sql`
+- `sources/d_mortalita_istat/sql/mart_regioni_v1.sql` (v1 — baseline `cod_causa=25`)
+- `sources/d_mortalita_istat/sql/mart_regioni_v2.sql` (v2 — Euro-2013, 12 cause)
+- `sources/a_strutture_asl/sql/mart_compose_regioni_v1.sql`
+- `sources/a_strutture_asl/sql/mart_compose_regioni_v2.sql`
+
+File legacy (non eseguiti dal dataset.yml, mantenuti come riferimento storico):
+
 - `sources/d_mortalita_istat/sql/mart.sql`
 - `sources/a_strutture_asl/sql/mart_compose_regioni.sql`
 
@@ -83,10 +90,29 @@ Nota: nel dataset ISTAT 2022 i codici territoriali sono gia presenti come string
 
 ## v2 — stato (branch `feat/malasanita-v2-euro2013`, PR #16)
 
+### Decisione naming (Opzione A — rinomina esplicita)
+
+Adottata Opzione A: nomi espliciti v1/v2 su tutti gli artifact.
+
+| Layer | v1 | v2 |
+|---|---|---|
+| D mart | `mart_regioni_v1.sql` / `.parquet` | `mart_regioni_v2.sql` / `.parquet` |
+| A compose | `mart_compose_regioni_v1.sql` / `.parquet` | `mart_compose_regioni_v2.sql` / `.parquet` |
+| Notebook | `malasanita_preanalysis_v1.ipynb` | `malasanita_preanalysis_v2.ipynb` |
+| Metrica | `decessi_30plus_per_100k_pop_totale` | `decessi_evitabili_30plus_per_100k_pop_totale` |
+
+I file `mart.sql` (D) e `mart_compose_regioni.sql` (A) sono marcati LEGACY nel commento di testa.
+
+### Checklist
+
 - [x] definizione esplicita mortalita evitabile da `D` (Euro-2013 proxy, 12 cause)
-- [x] notebook v2 separato, v1 intatta su main
-- [ ] outlier fonte C da verificare: Molise e Valle d'Aosta su `personale_osp_per_100k`
-      (segnalati da Gabrymi93 in PR #15 — possibile problema copertura dati)
+- [x] artifact v1 e v2 separati — nessuna competizione sullo stesso parquet
+- [x] notebook v1 legge `mart_compose_regioni_v1.parquet`
+- [x] notebook v2 legge `mart_compose_regioni_v2.parquet`
+- [x] placeholder campo mancante chiuso in notebook v2 (cella nota metodologica)
+- [x] caveat Molise/Valle d'Aosta su `personale_osp_per_100k` in notebook v2 e README
+- [x] smoke test: run mart D (v1+v2) + run mart A (compose v1+v2), verifica parquet e schema
+- [x] smoke test colonne: v1 ha `decessi_30plus_per_100k_pop_totale`, v2 ha `decessi_evitabili_30plus_per_100k_pop_totale`, nessuna contaminazione incrociata
+- [x] join_c_ok e join_d_ok = 21/21 su entrambi gli artifact
 - [ ] age-standardizzazione esplicita (possibile v3)
 - [ ] valutare mart_regioni utile per `B`
-- [ ] decidere se compose finale resta flat o si sdoppia (strutture / mortalita)
