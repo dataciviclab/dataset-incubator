@@ -83,6 +83,7 @@ Tabella:
 - `raw` OK
 - `clean` OK
 - `mart` OK
+- notebook `v0` aggiunto
 
 Output finale attuale:
 
@@ -103,5 +104,5 @@ Primi casi con ratio basso da rivedere:
 
 1. fare una query di QA sui casi con `ratio_spesa = 0`
 2. costruire una tabella ordinata per regione sul rapporto medio o ponderato
-3. preparare notebook o query v0
+3. notebook `v0` gia presente: usarlo per scegliere il primo taglio pubblico
 4. decidere se il filone regge una prima discussion pubblica

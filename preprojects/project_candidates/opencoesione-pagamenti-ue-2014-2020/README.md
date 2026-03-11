@@ -29,6 +29,7 @@ Run verificati nel repo:
 - `raw` OK
 - `clean` OK
 - `mart` OK
+- notebook `v0` presente
 
 Problemi gia identificati:
 
@@ -74,5 +75,5 @@ Primi segnali emersi:
 - [ ] raw eseguibile
 - [ ] clean eseguibile sul ciclo `2014-2020`
 - [ ] mart leggibile a livello `regione x tema`
-- [ ] primo notebook o query v0 con lettura prudente
+- [x] primo notebook o query v0 con lettura prudente
 - [ ] decisione se entra in `dataciviclab/preanalysis`
