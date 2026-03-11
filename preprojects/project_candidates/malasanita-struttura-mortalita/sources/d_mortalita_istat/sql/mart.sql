@@ -1,18 +1,52 @@
 -- mart.sql - malasanita_d_mortalita_istat - mart_regioni
 -- Output: una riga per territorio regionale (21 righe attese)
 --
--- Scelta metodologica v2 (Euro-2013 proxy):
--- - filtro totale su sesso, classe eta (30+), titolo di studio
--- - 12 cause amenable/preventable mappate da Euro-2013 framework
---   (2=Sepsi, 5=Colon-retto, 6=Polmone, 7=Seno, 9=Diabete,
---    15=Ischemiche cuore, 16=Cerebrovascolari, 17=Ipertensive,
---    19=Influenza/Polmonite, 20=BPCO, 22=Cirrosi, 24=Cause esterne)
--- - aggregazione: SUM(decessi), MAX(pop_media) per territorio
--- - tasso_grezzo: non e` tasso age-standardized, e` grezzo 30+
---   denominatore = pop_media 30+ (uguale per tutte le cause dello stesso territorio)
--- - tasso_std_10000 della fonte NON e` sommabile tra cause diverse: conservato nel clean
+-- Metodologia v2: Euro-2013 proxy (Eurostat Avoidable Mortality framework)
+-- Riferimento: Eurostat 2019 — lista cause amenable e preventable per eta 30-74.
+-- Il perimetro qui e` esteso a 30+ (non 30-74) per coerenza con le fonti Ministero.
 --
--- Nota: perimetro 30+ dichiarato esplicitamente (cod_classe_eta=9 non ovvio dal codice).
+-- Mapping codici ISTAT -> Euro-2013:
+--
+--   AMENABLE (mortalita evitabile con cure adeguate):
+--     2  = Sepsi                          -> amenable
+--     5  = Colon, retto, ano              -> amenable
+--     7  = Tumore maligno del seno        -> amenable
+--     9  = Diabete mellito                -> amenable
+--    15  = Malattie ischemiche del cuore  -> amenable
+--    16  = Malattie cerebrovascolari      -> amenable
+--    17  = Malattie ipertensive           -> amenable (parziale)
+--    19  = Influenza e polmonite          -> amenable
+--
+--   PREVENTABLE (mortalita riducibile con prevenzione primaria):
+--     6  = Tumore trachea/bronchi/polmone -> preventable
+--    20  = Malattie croniche basse vie resp (BPCO) -> preventable
+--    22  = Cirrosi, fibrosi, epatite cronica       -> preventable
+--    24  = Cause esterne di traumatismo             -> preventable (parziale)
+--
+--   ESCLUSI (aggregati, non mappabili, distorsivi):
+--    25  = Totale                  -> proxy v1, non usare in v2
+--    26  = Covid-19                -> distorce confronti 2022, escluso
+--     3  = Tumori (aggregato)      -> sovraconta, cause specifiche gia incluse
+--    23  = Cause mal definite      -> escluso sempre
+--
+-- Cause Euro-2013 non mappabili dalla fonte (peso epidemiologico marginale):
+--   tumore cervice (C53), testicolo, tiroide, appendicite
+--
+-- Aggregazione:
+-- - SUM(decessi): somma delle 12 cause per territorio — non sovrasconta perche
+--   le cause sono mutualmente esclusive a livello di riga nel clean
+-- - MAX(pop_media): la pop_media 30+ e` identica per tutte le righe dello stesso
+--   territorio/anno (e` la popolazione di riferimento della fascia 30+, non della
+--   singola causa). MAX() equivale a prendere il valore unico — verificato sul clean.
+-- - tasso_grezzo_evitabile_10000_30plus: tasso grezzo, NON age-standardized.
+--   Denominatore = pop_media 30+ (non popolazione totale del compose).
+--   La colonna nel compose finale usa denominatore pop_totale: denominatore ibrido,
+--   documentato esplicitamente nel notebook e nel compose.
+-- - tasso_std_10000 della fonte e` pre-calcolato per singola causa: NON sommabile
+--   tra cause diverse, conservato solo nel clean per analisi future.
+--
+-- Perimetro 30+: cod_classe_eta=9 corrisponde alla fascia "30 anni e oltre".
+-- Il valore 9 non e` intuitivo dal codice — dichiarato esplicitamente qui.
 
 WITH base AS (
     SELECT

@@ -37,21 +37,26 @@ La fonte `D` e` il punto metodologicamente piu delicato.
 Problema verificato:
 - sommare tutte le righe del clean sovraconta i decessi
 
-Scelta adottata nella v1:
-- `cod_sesso = 3`
-- `cod_classe_eta = 9`
-- `cod_titolo_studio = 9`
-- `cod_causa = 25`
+Scelta adottata nella v1 (main):
+- `cod_sesso = 3`, `cod_classe_eta = 9`, `cod_titolo_studio = 9`, `cod_causa = 25`
+- produce una riga per territorio: mortalita totale 30+
 
-Questo produce una riga per territorio regionale con:
-- `decessi_totali`
-- `pop_media_30_plus`
-- `tasso_std_10000_30_plus`
-- `tasso_std_100k_30_plus`
+Scelta adottata nella v2 (branch `feat/malasanita-v2-euro2013`):
+- stessi filtri su sesso/eta/studio
+- `cod_causa IN (2,5,6,7,9,15,16,17,19,20,22,24)` — 12 cause Euro-2013 proxy
+- aggregazione: `SUM(decessi)`, `MAX(pop_media)`, tasso grezzo 30+
+- `MAX(pop_media)` verificato: e` identico per tutte le cause dello stesso territorio/anno
+  (e` la popolazione 30+ di riferimento, non specifica per causa)
 
-Quindi:
-- la v1 usa **mortalita totale regionale 30+**
-- non usa ancora **mortalita evitabile**
+Nota denominatore ibrido (documentata in mart.sql e notebook v2):
+- il campo `decessi_evitabili_30plus_per_100k_pop_totale` nel compose finale
+  usa numeratore 30+ e denominatore pop totale regionale (da fonte A)
+- non e` un tasso grezzo canonico, e` un indicatore proxy comparativo inter-regionale
+
+Causa cod_territorio=4 esclusa nel clean:
+- cod 4 = Trentino-Alto Adige aggregato
+- cod 21 (Bolzano) e 22 (Trento) gia presenti come righe separate
+- escludere 4 evita doppio conteggio nel join
 
 ## Join regionale
 
@@ -76,10 +81,12 @@ Nota: nel dataset ISTAT 2022 i codici territoriali sono gia presenti come string
 - i tassi `30+` di `D` non vanno confusi con un denominatore generale di popolazione residente
 - il campo `decessi_30plus_per_100k_pop_totale` usa un numeratore `30+` e un denominatore di popolazione totale: e` un indicatore proxy, non un tasso grezzo canonico
 
-## Prossima v2
+## v2 — stato (branch `feat/malasanita-v2-euro2013`, PR #16)
 
-Per una versione piu forte del progetto:
-
-- costruire una definizione esplicita di mortalita evitabile da `D`
-- valutare un `mart_regioni` utile anche per `B`
-- decidere se il compose finale debba restare flat o sdoppiarsi in due tavole (`strutture` / `mortalita`)
+- [x] definizione esplicita mortalita evitabile da `D` (Euro-2013 proxy, 12 cause)
+- [x] notebook v2 separato, v1 intatta su main
+- [ ] outlier fonte C da verificare: Molise e Valle d'Aosta su `personale_osp_per_100k`
+      (segnalati da Gabrymi93 in PR #15 — possibile problema copertura dati)
+- [ ] age-standardizzazione esplicita (possibile v3)
+- [ ] valutare mart_regioni utile per `B`
+- [ ] decidere se compose finale resta flat o si sdoppia (strutture / mortalita)
