@@ -1,12 +1,9 @@
--- mart_compose_regioni.sql - LEGACY (non usato dal dataset.yml corrente)
--- Riferimento storico mantenuto per retrocompatibilita locale.
--- Flusso attivo: mart_compose_regioni_v1.sql e mart_compose_regioni_v2.sql.
+-- mart_compose_regioni_v1.sql - compose finale eseguito da sources/a_strutture_asl
 -- Input: mart regionali gia aggregati di A, C, D
--- Output: una riga per regione / PA con indicatori di struttura + mortalita evitabile
+-- Output: una riga per regione / PA con indicatori di struttura + mortalita totale 30+
 --
--- Nota metodologica v2 (Euro-2013 proxy):
--- - usa mortalita evitabile 30+ (12 cause Euro-2013) da mart D v2
--- - tasso_grezzo_evitabile: grezzo 30+, non age-standardized
+-- Nota metodologica v1 (baseline storica):
+-- - usa mortalita totale 30+ (cod_causa=25) da mart D v1
 -- - denominatore colonna _per_100k_pop_totale: popolazione totale da A (non 30+)
 -- - il join con D passa da codice_regione a cod_territorio (ultime due cifre)
 -- - fonte B resta fuori dal compose della preanalysis
@@ -26,7 +23,7 @@ c AS (
 d AS (
     SELECT *
     FROM read_parquet(
-        'out/data/mart/malasanita_d_mortalita_istat/{year}/mart_regioni.parquet'
+        'out/data/mart/malasanita_d_mortalita_istat/{year}/mart_regioni_v1.parquet'
     )
 ),
 a_lookup AS (
@@ -55,9 +52,9 @@ SELECT
     c.posti_letto_previsti,
     c.posti_letto_utilizzati,
 
-    d.decessi_evitabili_30plus AS decessi_evitabili_regionali,
+    d.decessi_30plus AS decessi_regionali,
     d.pop_media_30plus,
-    d.tasso_grezzo_evitabile_10000_30plus,
+    d.tasso_grezzo_10000_30plus,
 
     a.medici_mmg_per_100k,
     a.pediatri_per_100k,
@@ -66,9 +63,8 @@ SELECT
     ROUND(c.personale_ospedaliero * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS personale_osp_per_100k,
     ROUND(c.posti_letto_previsti * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS posti_letto_previsti_per_100k,
     ROUND(c.posti_letto_utilizzati * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS posti_letto_utilizzati_per_100k,
-    -- Numeratore evitabili 30+ da D, denominatore popolazione totale da A.
-    -- Nome esplicito: tasso grezzo su popolazione totale, non age-standardized.
-    ROUND(d.decessi_evitabili_30plus * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS decessi_evitabili_30plus_per_100k_pop_totale,
+    -- Numeratore 30+ da D v1, denominatore popolazione totale da A.
+    ROUND(d.decessi_30plus * 100000.0 / NULLIF(a.pop_residente, 0), 2) AS decessi_30plus_per_100k_pop_totale,
 
     CASE WHEN c.codice_regione IS NOT NULL THEN true ELSE false END AS join_c_ok,
     CASE WHEN d.cod_territorio IS NOT NULL THEN true ELSE false END AS join_d_ok

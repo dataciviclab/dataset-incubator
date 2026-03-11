@@ -1,6 +1,4 @@
--- mart.sql - LEGACY (non usato dal dataset.yml corrente)
--- Riferimento storico mantenuto per retrocompatibilita locale.
--- Flusso attivo: mart_regioni_v1.sql e mart_regioni_v2.sql.
+-- mart_regioni_v2.sql - malasanita_d_mortalita_istat
 -- Output: una riga per territorio regionale (21 righe attese)
 --
 -- Metodologia v2: Euro-2013 proxy (Eurostat Avoidable Mortality framework)

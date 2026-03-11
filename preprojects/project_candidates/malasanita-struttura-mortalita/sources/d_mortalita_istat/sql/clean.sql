@@ -6,6 +6,9 @@
 --
 -- Codici territorio:
 --   01–22  → regioni e province autonome  ← tenere
+--   04     → Trentino-Alto Adige (aggregato delle due PA) ← escludere:
+--            21 (Bolzano) e 22 (Trento) sono gia presenti come righe separate,
+--            includerlo causerebbe doppio conteggio nel join con le fonti Ministero
 --   25     → ITALIA (totale nazionale)    ← escludere
 --   31–35  → ripartizioni geografiche     ← escludere
 

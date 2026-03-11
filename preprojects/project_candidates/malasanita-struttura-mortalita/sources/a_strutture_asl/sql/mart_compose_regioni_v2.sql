@@ -1,6 +1,4 @@
--- mart_compose_regioni.sql - LEGACY (non usato dal dataset.yml corrente)
--- Riferimento storico mantenuto per retrocompatibilita locale.
--- Flusso attivo: mart_compose_regioni_v1.sql e mart_compose_regioni_v2.sql.
+-- mart_compose_regioni_v2.sql - compose finale eseguito da sources/a_strutture_asl
 -- Input: mart regionali gia aggregati di A, C, D
 -- Output: una riga per regione / PA con indicatori di struttura + mortalita evitabile
 --
@@ -26,7 +24,7 @@ c AS (
 d AS (
     SELECT *
     FROM read_parquet(
-        'out/data/mart/malasanita_d_mortalita_istat/{year}/mart_regioni.parquet'
+        'out/data/mart/malasanita_d_mortalita_istat/{year}/mart_regioni_v2.parquet'
     )
 ),
 a_lookup AS (

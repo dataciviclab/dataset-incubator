@@ -29,11 +29,15 @@ clean:
 
 mart:
   tables:
-    - name: "mart_regioni"
-      sql: "sql/mart.sql"
+    - name: "mart_regioni_v1"
+      sql: "sql/mart_regioni_v1.sql"
+    - name: "mart_regioni_v2"
+      sql: "sql/mart_regioni_v2.sql"
   validate:
     table_rules:
-      mart_regioni:
+      mart_regioni_v1:
+        min_rows: 21
+      mart_regioni_v2:
         min_rows: 21
 
 validation:
