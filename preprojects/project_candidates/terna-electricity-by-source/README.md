@@ -2,7 +2,7 @@
 
 ## Domanda
 
-Come cambia il mix di generazione elettrica per fonte tra 2023 e 2024?
+Come cambia tra 2023 e 2024 il peso delle diverse fonti nel mix di produzione elettrica regionale?
 
 ## Dataset
 
@@ -20,8 +20,9 @@ Come cambia il mix di generazione elettrica per fonte tra 2023 e 2024?
 ## Output minimo atteso
 
 - raw 2023 e raw 2024 scaricati con il toolkit
-- prima lettura della struttura del workbook
-- decisione su foglio, unita di analisi e taglio del primo clean
+- clean unico del workbook `Export`
+- mart regionale per fonte su produzione netta
+- primo confronto 2023 vs 2024 del mix regionale
 
 ## Criterio di promozione
 
@@ -35,8 +36,14 @@ Promuovere il filone solo se:
 
 - intake
 
+## Domande complementari
+
+- quali regioni restano piu dipendenti dal termoelettrico?
+- dove cresce di piu il peso del fotovoltaico?
+- quanto pesa davvero l'idroelettrico nel riequilibrio 2024?
+
 ## Prossimo passo
 
-- verificare il run `raw`
-- ispezionare fogli e colonne del workbook
-- decidere il primo output minimo del `clean`
+- eseguire `clean` e `mart`
+- verificare se `lorda` e `netta` sono davvero ridondanti o solo vicine
+- decidere se il primo output resta regionale o scende a livello provinciale
