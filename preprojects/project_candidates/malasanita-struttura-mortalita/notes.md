@@ -81,9 +81,22 @@ Mapping usato nel compose:
 
 Nota: nel dataset ISTAT 2022 i codici territoriali sono gia presenti come stringhe a due cifre (`01`-`22`), quindi il join regge senza padding extra. Questa assunzione va comunque ricontrollata se cambia la sorgente.
 
-## Limiti della v1
+## Fonte B
 
-- `B` non entra ancora nel compose finale
+Spike chiuso su issue #22. Esito tecnico:
+
+- 6.989 righe, 21 regioni/PA complete, 504 strutture, 65 discipline
+- `sources/b_reparti_ricovero/sql/mart.sql` definito; output: `mart_regioni`
+- join regionale compatibile: B e C hanno lo stesso formato `codice_regione` a 3 cifre
+- a livello regionale B e` tendenzialmente ridondante rispetto a C sui posti letto
+  (`posti_letto_utilizzati` B/C differiscono di sole 6 unita sul totale nazionale)
+- il valore distintivo di B e` il dettaglio per `codice_disciplina` / `disciplina`, assente in C
+
+**Decisione:** B non entra nel compose regionale principale. Resta fonte separata con `mart_regioni` proprio, utile per analisi su specializzazione/offerta disciplinare in un follow-up dedicato.
+
+## Limiti della v1/v2
+
+- `B` ha un mart regionale ma non entra nel compose principale (vedi sezione Fonte B)
 - `D` e` ancora un proxy regionale, non la metrica finale desiderata
 - i tassi `30+` di `D` non vanno confusi con un denominatore generale di popolazione residente
 - il campo `decessi_30plus_per_100k_pop_totale` usa un numeratore `30+` e un denominatore di popolazione totale: e` un indicatore proxy, non un tasso grezzo canonico
@@ -115,4 +128,4 @@ I file `mart.sql` (D) e `mart_compose_regioni.sql` (A) sono marcati LEGACY nel c
 - [x] smoke test colonne: v1 ha `decessi_30plus_per_100k_pop_totale`, v2 ha `decessi_evitabili_30plus_per_100k_pop_totale`, nessuna contaminazione incrociata
 - [x] join_c_ok e join_d_ok = 21/21 su entrambi gli artifact
 - [ ] age-standardizzazione esplicita (possibile v3)
-- [ ] valutare mart_regioni utile per `B`
+- [x] fonte B: definito `mart_regioni` minimo, join verificato, decisione presa — fuori dal compose principale (vedi sezione Fonte B e issue #22)

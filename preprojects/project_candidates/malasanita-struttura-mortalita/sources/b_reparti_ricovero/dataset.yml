@@ -1,7 +1,7 @@
-# STATO: deferred — non integrato nel compose v1.
-# Raw e clean sono configurati e SQL clean e pronto.
-# Manca mart.sql. B non entra nel compose regionale finche il mart non e definito.
-# Rivalutare in v2 se il dato di reparto aggiunge segnale rispetto ad A e C.
+# STATO: spike completato su issue #22.
+# mart_regioni definito; a livello regionale B e` tendenzialmente ridondante rispetto a C
+# sui posti letto. Valore distintivo = dettaglio per disciplina/reparto.
+# Decisione: B resta fuori dal compose principale (vedi notes.md sezione Fonte B).
 
 root: "../../../../../out"
 schema_version: 1
@@ -32,6 +32,15 @@ clean:
     decimal: ","
   validate:
     min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_regioni"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      mart_regioni:
+        min_rows: 21
 
 validation:
   fail_on_error: true
