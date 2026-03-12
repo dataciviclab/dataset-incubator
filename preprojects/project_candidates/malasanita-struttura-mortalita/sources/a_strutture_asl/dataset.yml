@@ -35,6 +35,8 @@ mart:
       sql: "sql/mart_compose_regioni_v1.sql"
     - name: "mart_compose_regioni_v2"
       sql: "sql/mart_compose_regioni_v2.sql"
+    - name: "mart_compose_regioni_v3"
+      sql: "sql/mart_compose_regioni_v3.sql"
   validate:
     table_rules:
       mart_regioni:
@@ -42,6 +44,8 @@ mart:
       mart_compose_regioni_v1:
         min_rows: 21
       mart_compose_regioni_v2:
+        min_rows: 21
+      mart_compose_regioni_v3:
         min_rows: 21
 
 validation:

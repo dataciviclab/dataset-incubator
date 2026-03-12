@@ -33,7 +33,8 @@ Il candidato ha una struttura multi-fonte eseguibile e due notebook di preanalys
 | Notebook | Artifact parquet | Metrica mortalita | Metodologia |
 |---|---|---|---|
 | `malasanita_preanalysis_v1.ipynb` | `mart_compose_regioni_v1.parquet` | `decessi_30plus_per_100k_pop_totale` | baseline storica — mortalita totale 30+ (main) |
-| `malasanita_preanalysis_v2.ipynb` | `mart_compose_regioni_v2.parquet` | `decessi_evitabili_30plus_per_100k_pop_totale` | Euro-2013 proxy — 12 cause amenable/preventable |
+| `malasanita_preanalysis_v2.ipynb` | `mart_compose_regioni_v2.parquet` | `decessi_evitabili_30plus_per_100k_pop_totale` | Euro-2013 proxy — 12 cause amenable/preventable, tasso grezzo 30+ |
+| `malasanita_preanalysis_v3.ipynb` | `mart_compose_regioni_v3.parquet` | `tasso_std_broad_evitabile_100k_30plus` | broad age-standardization 30+ su 3 bande età, pesi ESP2013 aggregati |
 
 ### v1 — baseline storica (main)
 
@@ -51,12 +52,25 @@ Non e` un tasso grezzo canonico — documentato nel mart, nel compose e nel note
 **Nota dati fonte C:** Molise e Valle d'Aosta mostrano valori anomali su `personale_osp_per_100k`
 (possibile problema di copertura dati, segnalato in PR #15). Interpretare con cautela.
 
+### v3 — broad age-standardization 30+
+
+Stesse 12 cause della v2, ma con standardizzazione esplicita su tre classi età disponibili in `D`:
+`30-69`, `70-84`, `85+`.
+
+La fonte ISTAT non consente una ESP2013 piena a 5 anni; per questo la v3 aggrega i pesi
+ESP2013 sulle tre bande presenti nel dataset e calcola un tasso standardizzato broad.
+
+Il campo principale nel compose v3 e` `tasso_std_broad_evitabile_100k_30plus`.
+Questa scelta elimina il denominatore ibrido della v2 e produce una metrica piu difendibile
+per il confronto inter-regionale, pur restando piu grossolana di una age-standardization piena.
+
 ## Output disponibile
 
 - `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v1.parquet` — tabella regionale 2022, metrica v1
 - `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v2.parquet` — tabella regionale 2022, metrica v2
+- `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v3.parquet` — tabella regionale 2022, metrica v3
 - join A/C/D stabile su 21 unita territoriali (join_c_ok e join_d_ok = 21/21)
-- due notebook eseguibili (v1 e v2) con artifact separati e narrativa metodologica esplicita
+- tre notebook eseguibili (v1, v2, v3) con artifact separati e narrativa metodologica esplicita
 
 ## Criterio di promozione
 
@@ -64,7 +78,7 @@ Non e` un tasso grezzo canonico — documentato nel mart, nel compose e nel note
 - [x] join regionale stabile
 - [x] output regionale leggibile
 - [x] perimetro metodologico dichiarato in modo onesto
-- [ ] age-standardizzazione esplicita (v3, fuori scope preanalysis)
+- [x] age-standardizzazione esplicita broad 30+ (v3)
 
 ## Run
 
@@ -83,4 +97,4 @@ L'ultimo comando rigenera i due compose finali:
 
 - `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v1.parquet`
 - `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v2.parquet`
-
+- `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v3.parquet`

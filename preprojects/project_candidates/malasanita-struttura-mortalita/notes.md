@@ -27,8 +27,10 @@ Implementazione attuale (branch `feat/malasanita-v2-euro2013`):
 - `sources/c_strutture_ricovero_asl/sql/mart.sql`
 - `sources/d_mortalita_istat/sql/mart_regioni_v1.sql` (v1 — baseline `cod_causa=25`)
 - `sources/d_mortalita_istat/sql/mart_regioni_v2.sql` (v2 — Euro-2013, 12 cause)
+- `sources/d_mortalita_istat/sql/mart_regioni_v3.sql` (v3 — broad age-standardization 30+)
 - `sources/a_strutture_asl/sql/mart_compose_regioni_v1.sql`
 - `sources/a_strutture_asl/sql/mart_compose_regioni_v2.sql`
+- `sources/a_strutture_asl/sql/mart_compose_regioni_v3.sql`
 
 File legacy (non eseguiti dal dataset.yml, mantenuti come riferimento storico):
 
@@ -94,12 +96,40 @@ Spike chiuso su issue #22. Esito tecnico:
 
 **Decisione:** B non entra nel compose regionale principale. Resta fonte separata con `mart_regioni` proprio, utile per analisi su specializzazione/offerta disciplinare in un follow-up dedicato.
 
-## Limiti della v1/v2
+## Limiti residui
 
 - `B` ha un mart regionale ma non entra nel compose principale (vedi sezione Fonte B)
 - `D` e` ancora un proxy regionale, non la metrica finale desiderata
 - i tassi `30+` di `D` non vanno confusi con un denominatore generale di popolazione residente
 - il campo `decessi_30plus_per_100k_pop_totale` usa un numeratore `30+` e un denominatore di popolazione totale: e` un indicatore proxy, non un tasso grezzo canonico
+
+## v3 - age-standardizzazione broad 30+
+
+Esito tecnico:
+
+- la fonte `D` espone tre classi età utili per il 30+: `30-69`, `70-84`, `85+`
+- questo non consente una standardizzazione piena a bande quinquennali
+- consente pero una standardizzazione esplicita broad, aggregando i pesi ESP2013 sulle tre classi disponibili
+
+Pesi usati:
+
+- `30-69` -> `52.500`
+- `70-84` -> `11.500`
+- `85+` -> `2.500`
+- totale `30+` -> `66.500`
+
+Validazione interna:
+
+- applicata al totale cause (`cod_causa=25`), la broad-standardization replica bene il `tasso_std_10000` della fonte su 30+
+- correlazione broad vs tasso standardizzato fonte: `~0,99`
+- correlazione tasso grezzo vs tasso standardizzato fonte: molto piu bassa (`~0,41`)
+
+Decisione:
+
+- `v2` resta il proxy grezzo 30+ sulle 12 cause Euro-2013
+- `v3` aggiunge una metrica piu difendibile per confronto inter-regionale
+- `v3` non sostituisce una age-standardization piena a 5 anni, che la fonte non consente
+- follow-up aperto su issue `#24`: decidere se `v3` diventa la baseline consigliata
 
 ## v2 — stato (branch `feat/malasanita-v2-euro2013`, PR #16)
 
@@ -107,12 +137,12 @@ Spike chiuso su issue #22. Esito tecnico:
 
 Adottata Opzione A: nomi espliciti v1/v2 su tutti gli artifact.
 
-| Layer | v1 | v2 |
-|---|---|---|
-| D mart | `mart_regioni_v1.sql` / `.parquet` | `mart_regioni_v2.sql` / `.parquet` |
-| A compose | `mart_compose_regioni_v1.sql` / `.parquet` | `mart_compose_regioni_v2.sql` / `.parquet` |
-| Notebook | `malasanita_preanalysis_v1.ipynb` | `malasanita_preanalysis_v2.ipynb` |
-| Metrica | `decessi_30plus_per_100k_pop_totale` | `decessi_evitabili_30plus_per_100k_pop_totale` |
+| Layer | v1 | v2 | v3 |
+|---|---|---|---|
+| D mart | `mart_regioni_v1.sql` / `.parquet` | `mart_regioni_v2.sql` / `.parquet` | `mart_regioni_v3.sql` / `.parquet` |
+| A compose | `mart_compose_regioni_v1.sql` / `.parquet` | `mart_compose_regioni_v2.sql` / `.parquet` | `mart_compose_regioni_v3.sql` / `.parquet` |
+| Notebook | `malasanita_preanalysis_v1.ipynb` | `malasanita_preanalysis_v2.ipynb` | `malasanita_preanalysis_v3.ipynb` |
+| Metrica | `decessi_30plus_per_100k_pop_totale` | `decessi_evitabili_30plus_per_100k_pop_totale` | `tasso_std_broad_evitabile_100k_30plus` |
 
 I file `mart.sql` (D) e `mart_compose_regioni.sql` (A) sono marcati LEGACY nel commento di testa.
 
@@ -127,5 +157,5 @@ I file `mart.sql` (D) e `mart_compose_regioni.sql` (A) sono marcati LEGACY nel c
 - [x] smoke test: run mart D (v1+v2) + run mart A (compose v1+v2), verifica parquet e schema
 - [x] smoke test colonne: v1 ha `decessi_30plus_per_100k_pop_totale`, v2 ha `decessi_evitabili_30plus_per_100k_pop_totale`, nessuna contaminazione incrociata
 - [x] join_c_ok e join_d_ok = 21/21 su entrambi gli artifact
-- [ ] age-standardizzazione esplicita (possibile v3)
+- [x] age-standardizzazione broad 30+ implementata come v3 (`mart_regioni_v3` + `mart_compose_regioni_v3`)
 - [x] fonte B: definito `mart_regioni` minimo, join verificato, decisione presa — fuori dal compose principale (vedi sezione Fonte B e issue #22)

@@ -33,11 +33,15 @@ mart:
       sql: "sql/mart_regioni_v1.sql"
     - name: "mart_regioni_v2"
       sql: "sql/mart_regioni_v2.sql"
+    - name: "mart_regioni_v3"
+      sql: "sql/mart_regioni_v3.sql"
   validate:
     table_rules:
       mart_regioni_v1:
         min_rows: 21
       mart_regioni_v2:
+        min_rows: 21
+      mart_regioni_v3:
         min_rows: 21
 
 validation:
