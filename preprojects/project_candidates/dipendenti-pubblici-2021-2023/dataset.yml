@@ -6,6 +6,7 @@ dataset:
   years: [2021, 2022, 2023]
 
 raw:
+  output_policy: overwrite
   sources:
     - name: "bdap_csv"
       type: "http_file"
@@ -18,6 +19,7 @@ clean:
   sql: "sql/clean.sql"
   read:
     source: auto
+    mode: latest
     header: true
     delim: ";"
     encoding: "cp1252"
