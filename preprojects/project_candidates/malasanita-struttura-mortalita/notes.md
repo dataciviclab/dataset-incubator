@@ -124,12 +124,13 @@ Validazione interna:
 - correlazione broad vs tasso standardizzato fonte: `~0,99`
 - correlazione tasso grezzo vs tasso standardizzato fonte: molto piu bassa (`~0,41`)
 
-Decisione:
+Decisione (issue #24 — chiusa):
 
-- `v2` resta il proxy grezzo 30+ sulle 12 cause Euro-2013
-- `v3` aggiunge una metrica piu difendibile per confronto inter-regionale
+- **`v3` e` la baseline raccomandata per il confronto inter-regionale**
+- `v2` resta proxy grezzo 30+ di supporto — documentato, non eliminato
 - `v3` non sostituisce una age-standardization piena a 5 anni, che la fonte non consente
-- follow-up aperto su issue `#24`: decidere se `v3` diventa la baseline consigliata
+- il ranking v2 era distorto dall'artefatto demografico (es. Liguria anziana: #1 in v2, #9 in v3); v3 corregge questo confond
+- `medici_osp_per_100k` a -0.43 e` l'unica correlazione direzionalmente coerente con l'ipotesi; mmg (+0.49) e personale (+0.21) riflettono confond noti (Molise, demografia) — documentare onestamente nel notebook
 
 ## v2 — stato (branch `feat/malasanita-v2-euro2013`, PR #16)
 
