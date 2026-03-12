@@ -12,6 +12,7 @@
 
 - tra 2021 e 2023 i dipendenti totali crescono
 - nel 2023 assunzioni e cessazioni mostrano un saldo nettamente piu favorevole
+- `Istruzione e ricerca` e `Sanita` trainano gia una parte rilevante della crescita
 - i comparti sembrano gia sufficienti per una prima lettura pubblica forte
 
 ## Cautele
@@ -19,3 +20,8 @@
 - non partire da ranking ente per ente: rischio inventario troppo dispersivo
 - non estendere subito lo storico finche il perimetro 2021-2023 non regge da solo
 - verificare se il primo output migliore e stock/turnover per comparto oppure composizione di genere
+
+## Stato branch
+
+- `run all` completato con esito positivo su `2021-2023`
+- notebook `v0` pronto come primo pacchetto analitico

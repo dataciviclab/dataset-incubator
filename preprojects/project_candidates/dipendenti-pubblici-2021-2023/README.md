@@ -25,7 +25,7 @@ Il pubblico impiego sta tornando a crescere davvero, e in quali comparti si conc
   - cessati
   - saldo netto
   - quota donne
-- prima lettura dei comparti che trainano la crescita 2021-2023
+- notebook `v0` con prima lettura dei comparti che trainano la crescita 2021-2023
 
 ## Criterio di promozione
 
@@ -37,10 +37,12 @@ Promuovere il filone solo se:
 
 ## Stato
 
-- intake
+- active
+- `run all` riuscito su `2021-2023`
+- notebook `v0` pronto
 
 ## Prossimo passo
 
-- eseguire `run all`
-- verificare se il primo output migliore e per comparto, per tipo istituzione o per genere
+- verificare se il primo output migliore resta per comparto oppure va esteso a genere / tipo istituzione
+- decidere se il filone e gia pronto per entrare in `dataciviclab/preanalysis`
 - tenere `inputs/` solo come fallback locale se il feed pubblico cambia o si rompe
