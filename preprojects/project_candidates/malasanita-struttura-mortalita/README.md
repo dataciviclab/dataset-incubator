@@ -21,12 +21,12 @@ Fonti di secondo livello, fuori dalla preanalysis finche il nucleo non regge:
 
 ## Stato attuale
 
-Il candidato ha una struttura multi-fonte eseguibile e due notebook di preanalysis con artifact separati:
+Il candidato ha una struttura multi-fonte eseguibile e tre notebook di preanalysis con artifact separati:
 
 - `A` espone un `mart_regioni` con personale territoriale e residenti
 - `C` espone un `mart_regioni` con personale e dotazione ospedaliera
-- `D` espone due mart distinti: `mart_regioni_v1` (mortalita totale 30+) e `mart_regioni_v2` (Euro-2013 proxy)
-- `A` espone due compose distinti: `mart_compose_regioni_v1` e `mart_compose_regioni_v2`
+- `D` espone tre mart distinti: `mart_regioni_v1` (mortalita totale 30+), `mart_regioni_v2` (Euro-2013 proxy) e `mart_regioni_v3` (broad age-standardization 30+)
+- `A` espone tre compose distinti: `mart_compose_regioni_v1`, `mart_compose_regioni_v2` e `mart_compose_regioni_v3`
 
 ### Matrice notebook — artifact — metrica
 
@@ -40,10 +40,13 @@ Il candidato ha una struttura multi-fonte eseguibile e due notebook di preanalys
 
 Proxy mortalita totale 30+ (`cod_causa=25`). Notebook: `malasanita_preanalysis_v1.ipynb`.
 
-### v2 — branch evolutivo Euro-2013
+### v2 — proxy grezzo Euro-2013 (supporto)
 
 Proxy Euro-2013 (12 cause amenable/preventable, tasso grezzo 30+).
 Notebook: `malasanita_preanalysis_v2.ipynb`.
+
+Ruolo attuale: proxy grezzo di supporto, documentato e mantenuto, non eliminato.
+La v3 e` la metrica raccomandata per il confronto inter-regionale (vedi sotto).
 
 **Nota denominatore ibrido:** il campo `decessi_evitabili_30plus_per_100k_pop_totale`
 nel compose finale usa numeratore 30+ e denominatore popolazione totale regionale.
@@ -52,7 +55,9 @@ Non e` un tasso grezzo canonico — documentato nel mart, nel compose e nel note
 **Nota dati fonte C:** Molise e Valle d'Aosta mostrano valori anomali su `personale_osp_per_100k`
 (possibile problema di copertura dati, segnalato in PR #15). Interpretare con cautela.
 
-### v3 — broad age-standardization 30+
+### v3 — broad age-standardization 30+ ⭐ baseline raccomandata
+
+**Metrica raccomandata per il confronto inter-regionale** (decisione su issue #24).
 
 Stesse 12 cause della v2, ma con standardizzazione esplicita su tre classi età disponibili in `D`:
 `30-69`, `70-84`, `85+`.
@@ -63,6 +68,10 @@ ESP2013 sulle tre bande presenti nel dataset e calcola un tasso standardizzato b
 Il campo principale nel compose v3 e` `tasso_std_broad_evitabile_100k_30plus`.
 Questa scelta elimina il denominatore ibrido della v2 e produce una metrica piu difendibile
 per il confronto inter-regionale, pur restando piu grossolana di una age-standardization piena.
+
+Validazione: correlazione broad vs `tasso_std_10000` ISTAT (totale cause) ~0.99.
+Il ranking regionale cambia in modo non cosmetics rispetto alla v2 (avg abs shift 3.8, max 10):
+Liguria scende da #1 (artefatto demografico) a #9; Campania sale da #11 a #1.
 
 ## Output disponibile
 
@@ -93,7 +102,7 @@ py -m toolkit.cli.app run all --config preprojects/project_candidates/malasanita
 py -m toolkit.cli.app run mart --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
 ```
 
-L'ultimo comando rigenera i due compose finali:
+L'ultimo comando rigenera i tre compose finali:
 
 - `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v1.parquet`
 - `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v2.parquet`
