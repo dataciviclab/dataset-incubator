@@ -49,7 +49,7 @@ body:
     attributes:
       label: Perimetro iniziale
       description: Stringi il caso iniziale. Anni, filtro, livello territoriale o unità di analisi.
-      placeholder: Esempio: solo 2014-2020, solo progetti con FINANZ_UE > 0, output regione x tema.
+      placeholder: Esempio - solo 2014-2020, solo progetti con FINANZ_UE > 0, output regione x tema.
     validations:
       required: true
 
