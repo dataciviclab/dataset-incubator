@@ -1,0 +1,88 @@
+name: Nuovo candidato o support dataset
+description: Proponi un nuovo candidato da incubare o un support dataset riusabile.
+title: "intake: "
+labels:
+  - intake
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa questa issue per proporre un nuovo ingresso in `dataset-incubator`.
+
+        Questo template copre due casi:
+        - `candidate`: filone con domanda civica e potenziale passaggio a `dataciviclab/preanalysis`
+        - `support`: dataset di supporto pensato per join, controlli o arricchimenti riusabili
+
+        Mantieni il perimetro stretto: primo taglio, primo output minimo, prossimo passo concreto.
+
+  - type: dropdown
+    id: intake_type
+    attributes:
+      label: Tipo di intake
+      description: Che cosa stai proponendo?
+      options:
+        - candidate
+        - support
+    validations:
+      required: true
+
+  - type: textarea
+    id: question
+    attributes:
+      label: Domanda guida o uso previsto
+      description: Per un candidate, indica la domanda civica. Per un support dataset, indica a cosa serve.
+      placeholder: Quale domanda pubblica vuoi affrontare, oppure quale supporto riusabile vuoi costruire?
+    validations:
+      required: true
+
+  - type: textarea
+    id: source
+    attributes:
+      label: Fonte principale
+      description: URL, ente, pagina dataset o percorso noto della fonte.
+      placeholder: Inserisci fonte ufficiale, URL o riferimento utile.
+    validations:
+      required: true
+
+  - type: textarea
+    id: scope
+    attributes:
+      label: Perimetro iniziale
+      description: Stringi il caso iniziale. Anni, filtro, livello territoriale o unità di analisi.
+      placeholder: Esempio - solo 2014-2020, solo progetti con FINANZ_UE > 0, output regione x tema.
+    validations:
+      required: true
+
+  - type: textarea
+    id: why_now
+    attributes:
+      label: Perché vale la pena incubarlo
+      description: Spiega perché questo ingresso merita un primo ciclo in DI.
+      placeholder: Tema leggibile, dataset promettente, domanda forte, supporto riusabile, ecc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: output
+    attributes:
+      label: Output minimo atteso
+      description: Qual è il primo artefatto o risultato minimo che renderebbe utile il candidato?
+      placeholder: Mart minimo, notebook v0, tabella di supporto, join di prova, ecc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: next_step
+    attributes:
+      label: Prossimo passo operativo
+      description: Qual è il primo passo concreto che vale la pena fare?
+      placeholder: Eseguire run all, verificare la fonte, stringere il framing, aggiungere notebook v0, ecc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: notes
+    attributes:
+      label: Note o rischi noti
+      description: Limiti, dubbi tecnici, rischio schema drift, problemi di dimensione o qualità dati.
+      placeholder: Aggiungi solo note che aiutano a decidere meglio l'intake.
