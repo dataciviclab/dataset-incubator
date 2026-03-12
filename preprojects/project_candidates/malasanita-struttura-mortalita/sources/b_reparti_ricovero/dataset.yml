@@ -37,10 +37,14 @@ mart:
   tables:
     - name: "mart_regioni"
       sql: "sql/mart.sql"
+    - name: "mart_regioni_disciplina"
+      sql: "sql/mart_regioni_disciplina.sql"
   validate:
     table_rules:
       mart_regioni:
         min_rows: 21
+      mart_regioni_disciplina:
+        min_rows: 500
 
 validation:
   fail_on_error: true
