@@ -32,7 +32,10 @@ mart:
       sql: "sql/mart.sql"
   required_tables:
     - "mart_comparti_anno"
-  validate: {}
+  validate:
+    table_rules:
+      mart_comparti_anno:
+        min_rows: 6
 
 validation:
   fail_on_error: true
