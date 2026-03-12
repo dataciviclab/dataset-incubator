@@ -32,7 +32,12 @@ mart:
   tables:
     - name: "mart_regione_tema"
       sql: "sql/mart.sql"
-  validate: {}
+    - name: "mart_regione_tema_qa"
+      sql: "sql/mart_qa.sql"
+  validate:
+    table_rules:
+      mart_regione_tema:
+        min_rows: 100
 
 validation:
   fail_on_error: true

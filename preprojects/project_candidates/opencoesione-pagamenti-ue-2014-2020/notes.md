@@ -102,7 +102,12 @@ Primi casi con ratio basso da rivedere:
 
 ## Prossimo passo minimo
 
-1. fare una query di QA sui casi con `ratio_spesa = 0`
-2. costruire una tabella ordinata per regione sul rapporto medio o ponderato
-3. notebook `v0` gia presente: usarlo per scegliere il primo taglio pubblico
-4. decidere se il filone regge una prima discussion pubblica
+1. [x] fare una query di QA sui casi con `ratio_spesa = 0`
+2. [x] aggiungere una validazione minima su `mart_regione_tema`
+3. costruire una tabella ordinata per regione sul rapporto medio o ponderato
+4. notebook `v0` gia presente: usarlo per scegliere il primo taglio pubblico
+5. decidere se il filone regge una prima discussion pubblica
+
+Nota:
+
+- pronto per prima discussion pubblica se il QA non mostra anomalie strutturali
