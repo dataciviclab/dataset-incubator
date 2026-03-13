@@ -1,0 +1,43 @@
+root: "../../../out"
+schema_version: 1
+
+dataset:
+  name: "opencoesione_pagamenti_ue_2014_2020"
+  years: [2020]
+
+raw:
+  extractor:
+    type: "unzip_first_csv"
+  sources:
+    - name: "opencoesione_progetti_esteso_zip"
+      type: "http_file"
+      args:
+        url: "https://opencoesione.gov.it/it/opendata/progetti_esteso.zip"
+        filename: "progetti_esteso.zip"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: latest
+    header: true
+    delim: ";"
+    encoding: "utf-8"
+    trim_whitespace: true
+  validate:
+    min_rows: 1000
+
+mart:
+  tables:
+    - name: "mart_regione_tema"
+      sql: "sql/mart.sql"
+    - name: "mart_regione_tema_qa"
+      sql: "sql/mart_qa.sql"
+  validate:
+    table_rules:
+      mart_regione_tema:
+        min_rows: 100
+
+validation:
+  fail_on_error: true
