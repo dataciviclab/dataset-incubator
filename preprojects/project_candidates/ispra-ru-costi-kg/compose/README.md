@@ -1,6 +1,6 @@
 # Compose
 
-Questa cartella ospitera il `compose/` finale del filone.
+Questa cartella documenta il `compose/` finale del filone.
 
 Obiettivo previsto:
 
@@ -16,4 +16,13 @@ Campi minimi attesi nel mart finale:
 - `costo_per_abitante`
 - `% raccolta differenziata` se disponibile e compatibile
 
-Il `compose/` verra formalizzato con `dataset.yml` e SQL solo dopo la verifica reale delle tre sorgenti.
+Scelta adottata:
+
+- il `compose` eseguibile e` agganciato a `sources/a_ru_base/dataset.yml`
+- il file SQL reale e`:
+  - `sources/a_ru_base/sql/mart_cross_comuni.sql`
+
+Motivo:
+
+- il toolkit esegue il mart dal `dataset.yml` di un source dataset
+- il `compose/` qui resta documentale, come nel pattern multi-fonte di `malasanita`

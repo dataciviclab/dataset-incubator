@@ -57,12 +57,17 @@ mart:
   tables:
     - name: "mart_comuni"
       sql: "sql/mart.sql"
+    - name: "mart_cross_comuni"
+      sql: "sql/mart_cross_comuni.sql"
   required_tables:
     - "mart_comuni"
+    - "mart_cross_comuni"
   validate:
     table_rules:
       mart_comuni:
         min_rows: 7000
+      mart_cross_comuni:
+        min_rows: 4000
 
 validation:
   fail_on_error: true

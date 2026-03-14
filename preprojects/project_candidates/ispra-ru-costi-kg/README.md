@@ -47,6 +47,13 @@ Pattern multi-fonte, stile `malasanita`:
   - support dataset
   - stop
 
+Output ora disponibili nel primo step:
+
+- `sources/a_ru_base` con `mart_comuni`
+- `sources/b_kg_per_abitante` con `mart_comuni`
+- `sources/c_costo_per_abitante` con `mart_comuni`
+- `sources/a_ru_base/sql/mart_cross_comuni.sql` come primo compose comunale minimo
+
 ## Criterio di promozione
 
 Promuovere il filone solo se:
