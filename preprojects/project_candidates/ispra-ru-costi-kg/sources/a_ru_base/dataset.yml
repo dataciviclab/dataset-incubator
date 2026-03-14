@@ -1,0 +1,71 @@
+root: "../../../../../out"
+schema_version: 1
+
+dataset:
+  name: "ispra_ru_base"
+  years: [2020, 2021, 2022, 2023, 2024]
+
+raw:
+  sources:
+    - name: "ispra_ru_base_http_csv"
+      type: "http_file"
+      args:
+        url: "https://www.catasto-rifiuti.isprambiente.it/get/getDettaglioComunale.csv.php?&aa={year}"
+        filename: "ispra_ru_base_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: false
+    skip: 2
+    delim: ";"
+    encoding: "utf-8"
+    trim_whitespace: true
+    columns:
+      IstatComune: VARCHAR
+      Regione: VARCHAR
+      Provincia: VARCHAR
+      Comune: VARCHAR
+      Popolazione: VARCHAR
+      Dato riferito a: VARCHAR
+      Frazione umida(1) (t): VARCHAR
+      Verde (t): VARCHAR
+      Carta e cartone (t): VARCHAR
+      Vetro (t): VARCHAR
+      Legno (t): VARCHAR
+      Metallo (t): VARCHAR
+      Plastica (t): VARCHAR
+      RAEE (t): VARCHAR
+      Tessili (t): VARCHAR
+      Selettiva (t): VARCHAR
+      Rifiuti da C e D (t): VARCHAR
+      Pulizia stradale a recupero (t): VARCHAR
+      Ingombranti misti a recupero (t): VARCHAR
+      Altro (t): VARCHAR
+      Totale RD (t): VARCHAR
+      Ingombranti a smaltimento (t): VARCHAR
+      Indifferenziato (t): VARCHAR
+      Totale RU (t): VARCHAR
+      Percentuale RD (%): VARCHAR
+  validate:
+    min_rows: 7000
+
+mart:
+  tables:
+    - name: "mart_comuni"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_comuni"
+  validate:
+    table_rules:
+      mart_comuni:
+        min_rows: 7000
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"

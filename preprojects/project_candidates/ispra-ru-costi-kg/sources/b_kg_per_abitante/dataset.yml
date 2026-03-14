@@ -1,0 +1,61 @@
+root: "../../../../../out"
+schema_version: 1
+
+dataset:
+  name: "ispra_ru_costi_kg"
+  years: [2020, 2021, 2022, 2023, 2024]
+
+raw:
+  sources:
+    - name: "ispra_ru_costi_kg_http_csv"
+      type: "http_file"
+      args:
+        url: "https://www.catasto-rifiuti.isprambiente.it/costi/getCostiComunalechilo.csv.php?costicomuneproc&aa={year}&regid=1&regid2=Italia&reg1=Italia&p=1"
+        filename: "ispra_ru_costi_kg_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: false
+    skip: 5
+    delim: ";"
+    encoding: "utf-8"
+    trim_whitespace: true
+    ignore_errors: true
+    null_padding: true
+    strict_mode: false
+    sample_size: -1
+    columns:
+      IstatComune: VARCHAR
+      Comune o Aggregazione: VARCHAR
+      Provincia: VARCHAR
+      Numero di comuni: VARCHAR
+      Pop.(abitanti): VARCHAR
+      CRTkg: VARCHAR
+      CRDkg: VARCHAR
+      CSLkg: VARCHAR
+      CCkg: VARCHAR
+      CKkg: VARCHAR
+      CTOTkg: VARCHAR
+  validate:
+    min_rows: 4000
+
+mart:
+  tables:
+    - name: "mart_comuni"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_comuni"
+  validate:
+    table_rules:
+      mart_comuni:
+        min_rows: 4000
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
