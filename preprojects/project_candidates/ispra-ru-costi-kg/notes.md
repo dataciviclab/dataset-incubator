@@ -29,8 +29,9 @@ Scelta adottata:
 - `B` kg per abitante eseguito con successo su `2020-2024`
 - `C` costo per abitante eseguito con successo su `2020-2024`
 - per `B/C` il parser robusto è stato reso esplicito nel `dataset.yml` per gestire le note testuali in coda ai CSV
-- primo `compose` minimo definito in `sources/a_ru_base/sql/mart_cross_comuni.sql`
-- il `compose/` finale resta ancora da chiudere
+- `mart_cross_comuni.sql` spostato in `compose/sql/`
+- il `compose/` non è eseguibile da solo: il `run mart` resta agganciato a `sources/a_ru_base/dataset.yml`
+- il toolkit non consente di eseguire un SQL `mart` fuori dalla `base_dir` del dataset, quindi in `sources/a_ru_base/sql/` resta una copia eseguibile del cross
 - il gate vero resta la verifica di:
   - chiavi di join
   - overlap temporale
@@ -74,7 +75,7 @@ Primo gate chiuso:
 
 - i tre endpoint ISPRA reggono davvero su `2020-2024`
 - i tre `source dataset` producono `raw`, `clean` e `mart`
-- il filone ha un primo `compose` minimo su `codice_comune_istat x anno`
+- il filone ha un primo `compose` minimo eseguibile su `codice_comune_istat x anno`
 
 Copertura join del primo compose:
 

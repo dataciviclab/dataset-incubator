@@ -52,7 +52,7 @@ Output ora disponibili nel primo step:
 - `sources/a_ru_base` con `mart_comuni`
 - `sources/b_kg_per_abitante` con `mart_comuni`
 - `sources/c_costo_per_abitante` con `mart_comuni`
-- `sources/a_ru_base/sql/mart_cross_comuni.sql` come primo compose comunale minimo
+- `compose/sql/mart_cross_comuni.sql` come layer cross del filone
 - notebook `v0` sul perimetro joinato `A + B + C`
 
 Stato attuale del candidate:
@@ -60,6 +60,7 @@ Stato attuale del candidate:
 - source dataset `A/B/C` eseguiti su `2020-2024`
 - compose minimo chiuso sul join `codice_comune_istat x anno`
 - notebook `v0` disponibile sul perimetro joinato
+- per vincolo del toolkit, il SQL del cross resta anche in `sources/a_ru_base/sql/` come copia eseguibile
 
 ## Criterio di promozione
 

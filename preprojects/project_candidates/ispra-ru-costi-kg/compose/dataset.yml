@@ -1,21 +1,19 @@
 # compose/dataset.yml - ispra-ru-costi-kg
 #
 # Questo file NON e` un dataset.yml runnable.
-# E` un riferimento documentale per l'architettura multi-fonte.
+# Documenta il layer `compose/` come spazio proprio del cross multi-fonte.
+#
+# Perche non e` eseguibile direttamente:
+#   il toolkit richiede comunque una `clean dir` per il dataset che lancia `run mart`
+#   e oggi il compose non ha una clean propria.
+#
+# Scelta adottata:
+#   il file SQL del cross vive in `compose/sql/`
+#   ma viene eseguito da `sources/a_ru_base/dataset.yml`
 #
 # Come eseguire il compose:
 #   cd dataset-incubator
 #   py -m toolkit.cli.app run mart --config preprojects/project_candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml
-#
-# Perche il compose e` agganciato a sources/a_ru_base/dataset.yml:
-#   il toolkit richiede che il file SQL del mart stia sotto la base_dir
-#   del dataset che lo esegue.
-#
-# Ordine pratico:
-#   1. run all su sources/a_ru_base
-#   2. run all su sources/b_kg_per_abitante
-#   3. run all su sources/c_costo_per_abitante
-#   4. run mart su sources/a_ru_base per materializzare anche mart_cross_comuni
 #
 # Output principali:
 #   out/data/mart/ispra_ru_base/{year}/mart_comuni.parquet

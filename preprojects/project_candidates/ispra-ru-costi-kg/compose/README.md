@@ -1,8 +1,8 @@
 # Compose
 
-Questa cartella documenta il `compose/` finale del filone.
+Questa cartella contiene il layer `compose/` del filone.
 
-Obiettivo previsto:
+Obiettivo:
 
 - leggere gli output dei tre `source dataset`
 - costruire un mart minimo `territorio x anno`
@@ -18,11 +18,13 @@ Campi minimi attesi nel mart finale:
 
 Scelta adottata:
 
-- il `compose` eseguibile e` agganciato a `sources/a_ru_base/dataset.yml`
-- il file SQL reale e`:
-  - `sources/a_ru_base/sql/mart_cross_comuni.sql`
+- il file SQL del cross vive anche in `compose/sql/` come riferimento architetturale
+- il `compose/` resta documentato in una cartella propria
+- l'esecuzione resta agganciata a `sources/a_ru_base/dataset.yml`, per un vincolo del toolkit sul layer `mart`
+- in `sources/a_ru_base/sql/` resta quindi una copia eseguibile dello stesso SQL
 
-Motivo:
+Esecuzione:
 
-- il toolkit esegue il mart dal `dataset.yml` di un source dataset
-- il `compose/` qui resta documentale, come nel pattern multi-fonte di `malasanita`
+```powershell
+py -m toolkit.cli.app run mart --config preprojects/project_candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml
+```
