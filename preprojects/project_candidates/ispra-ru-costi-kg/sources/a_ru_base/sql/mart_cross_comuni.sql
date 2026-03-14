@@ -53,8 +53,6 @@ SELECT
     c.ck_euro_ab,
     c.altri_costi_euro_ab,
 
-    ROUND(a.totale_ru_tonnellate * 1000.0 / NULLIF(a.popolazione, 0), 3) AS kg_ru_per_abitante_recomputed,
-
     CASE WHEN b.codice_comune_istat IS NOT NULL THEN true ELSE false END AS join_b_ok,
     CASE WHEN c.codice_comune_istat IS NOT NULL THEN true ELSE false END AS join_c_ok
 FROM a
