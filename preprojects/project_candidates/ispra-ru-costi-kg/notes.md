@@ -92,3 +92,21 @@ Interpretazione iniziale:
 - il primo notebook dovra distinguere bene:
   - perimetro completo RU
   - perimetro ridotto con join `A + B + C`
+
+## Esito del notebook v0
+
+Notebook creato:
+
+- `notebooks/ispra_ru_costi_kg_v0.ipynb`
+
+Scelta metodologica:
+
+- lettura pubblica limitata al perimetro con `join_b_ok` e `join_c_ok`
+- overview di copertura `2020-2024`
+- focus principale sul `2024`
+
+Prime evidenze da verificare meglio:
+
+- la copertura del join cresce in modo netto tra `2020` e `2024`
+- nel perimetro joinato `2024` la relazione tra `kg RU per abitante` e `costo per abitante` e` positiva
+- la relazione tra `% RD` e `costo per abitante` e` piu debole e va letta con cautela

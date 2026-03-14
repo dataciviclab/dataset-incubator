@@ -53,6 +53,7 @@ Output ora disponibili nel primo step:
 - `sources/b_kg_per_abitante` con `mart_comuni`
 - `sources/c_costo_per_abitante` con `mart_comuni`
 - `sources/a_ru_base/sql/mart_cross_comuni.sql` come primo compose comunale minimo
+- notebook `v0` sul perimetro joinato `A + B + C`
 
 ## Criterio di promozione
 
