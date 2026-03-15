@@ -1,5 +1,7 @@
 # malasanita-struttura-mortalita
 
+> **Promosso.** Il lavoro vivo e in `dataciviclab/preanalysis/malasanita-struttura-mortalita`. I file qui sotto sono storico di incubazione.
+
 ## Domanda
 
 Le regioni con meno personale sanitario hanno livelli piu alti di mortalita evitabile?

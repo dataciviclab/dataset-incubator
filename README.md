@@ -18,12 +18,28 @@ Non serve per:
 - se un filone e pronto, esce da qui
 - i dataset trasversali non entrano in `preanalysis` per default
 
+## Stato dei filoni
+
+Ogni filone attivo ha una issue con label di stato:
+
+- `intake` — entrato, source-check non ancora completato
+- `incubating` — lavoro attivo in corso
+- `ready-for-promotion` — pronto per passare a `dataciviclab/preanalysis`
+- `promoted` — uscito; storico in `registry/archived.md`
+- `support-dataset` — base trasversale riusabile, non candidato di filone
+
+Regola pratica:
+
+- le **issues** sono il tracker vivo di ingresso, stato e uscita dei filoni
+- l'intake entra con issue dedicata
+- il passaggio fuori da DI si registra con issue o label di promozione coerente
+- `registry/archived.md` resta la memoria dei filoni usciti
+
 ## Struttura
 
 ```text
 dataset-incubator/
   registry/
-    active.md
     archived.md
   templates/
     dataset-notes.md
@@ -76,7 +92,6 @@ Il template base in `preprojects/_template/` segue il pattern single-source.
 Quando un candidato viene promosso o chiuso:
 
 - aggiornare `registry/archived.md` con motivo e target finale
-- aggiornare `registry/active.md` rimuovendo la riga
 - ridurre il README del candidato a traccia minima (stato, motivo, puntatore)
 - i file tecnici (SQL, yml, notebook) restano come storico - non vanno rimossi
 - nessun altro file del candidato va aggiornato: e storico, non operativo
@@ -94,9 +109,7 @@ Quando un candidato viene promosso o chiuso:
 
 La repo parte volutamente stretta.
 
-La fonte di verita per i filoni attivi e:
-
-- `registry/active.md`
+Il tracker operativo dei filoni attivi sono le **issues di questa repo**, con label di stato (`intake`, `incubating`, `ready-for-promotion`). La storia dei filoni usciti e in `registry/archived.md`.
 
 In questo momento la repo contiene un mix minimo di:
 
