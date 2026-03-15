@@ -26,5 +26,5 @@ Scelta adottata:
 Esecuzione:
 
 ```powershell
-py -m toolkit.cli.app run mart --config preprojects/project_candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml
+py -m toolkit.cli.app run mart --config candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml
 ```

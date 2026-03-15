@@ -13,7 +13,7 @@
 #
 # Come eseguire il compose:
 #   cd dataset-incubator
-#   py -m toolkit.cli.app run mart --config preprojects/project_candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml
+#   py -m toolkit.cli.app run mart --config candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml
 #
 # Output principali:
 #   out/data/mart/ispra_ru_base/{year}/mart_comuni.parquet

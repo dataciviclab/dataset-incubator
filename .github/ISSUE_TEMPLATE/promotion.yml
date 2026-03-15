@@ -18,8 +18,8 @@ body:
     id: candidate_slug
     attributes:
       label: Filone o candidate
-      description: Slug o percorso del filone in `preprojects/`.
-      placeholder: project_candidates/aifa-spesa-consumo-2016-2024
+      description: Slug o percorso del filone in `candidates/`.
+      placeholder: candidates/aifa-spesa-consumo-2016-2024
     validations:
       required: true
 
