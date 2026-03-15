@@ -1,0 +1,47 @@
+root: "../../../../../out"
+schema_version: 1
+
+dataset:
+  name: "aifa_spesa_consumo"
+  years: [2022, 2023, 2024]
+  # anni raw disponibili localmente: 2022-2024
+  # estendere a [2016..2024] dopo download manuale degli anni mancanti
+
+raw:
+  sources:
+    - name: "aifa_spesa_consumo_csv"
+      type: "local_file"
+      args:
+        path: "../../../../../out/data/raw/aifa_spesa_consumo/{year}/aifa_spesa_consumo_{year}.csv"
+        filename: "aifa_spesa_consumo_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    delim: "|"
+    encoding: "utf-8"
+    trim_whitespace: true
+  validate:
+    min_rows: 80000
+    # 2022: 91.850 righe convenzionata; 2023: ~92.654. Soglia conservativa.
+
+mart:
+  tables:
+    - name: "mart_mensile_regione_atc4"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_mensile_regione_atc4"
+  validate:
+    table_rules:
+      mart_mensile_regione_atc4:
+        min_rows: 10000
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
