@@ -34,6 +34,7 @@
 ## Stato
 
 - incubating
+- notebook `v0` aggiunto: `notebooks/mit_opere_incompiute_2020_preanalysis_v0.ipynb`
 
 Issue collegata:
 - `dataset-incubator#35`
