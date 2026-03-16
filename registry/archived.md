@@ -6,9 +6,10 @@ Usare questa nota per i filoni chiusi, sospesi o non promossi.
 
 | slug | type | motivo uscita | target finale | nota |
 |---|---|---|---|---|
-| project_candidates/civile-flussi | candidate | promosso fuori da `dataset-incubator` | `dataciviclab/preanalysis/civile-flussi-2014-2024` | candidato maturo, notebook D1 pronto, follow-up pubblico in preparazione |
-| project_candidates/malasanita-struttura-mortalita | candidate | promosso fuori da `dataset-incubator` | `dataciviclab/preanalysis/malasanita-struttura-mortalita` | v3 promossa a baseline raccomandata; PR `dataciviclab#118` mergiata; v2 resta proxy di supporto e B resta fuori dal compose principale |
-| project_candidates/dipendenti-pubblici-2021-2023 | candidate | promosso fuori da `dataset-incubator` | `dataciviclab/preanalysis/dipendenti-pubblici-2021-2023` | il filone regge come preanalysis autosufficiente; issue pubblica `dataciviclab#131` |
+| candidates/terna-electricity-by-source | candidate | promosso fuori da `dataset-incubator` | `dataciviclab/preanalysis/terna-electricity-by-source` | notebook v0 e v1 presenti; issue dataciviclab #133; discussion pubblica pubblicata |
+| candidates/civile-flussi | candidate | promosso fuori da `dataset-incubator` | `dataciviclab/preanalysis/civile-flussi-2014-2024` | candidato maturo, notebook D1 pronto, follow-up pubblico in preparazione |
+| candidates/malasanita-struttura-mortalita | candidate | promosso fuori da `dataset-incubator` | `dataciviclab/preanalysis/malasanita-struttura-mortalita` | v3 promossa a baseline raccomandata; PR `dataciviclab#118` mergiata; v2 resta proxy di supporto e B resta fuori dal compose principale |
+| candidates/dipendenti-pubblici-2021-2023 | candidate | promosso fuori da `dataset-incubator` | `dataciviclab/preanalysis/dipendenti-pubblici-2021-2023` | il filone regge come preanalysis autosufficiente; issue pubblica `dataciviclab#131` |
 
 Nota pratica:
 

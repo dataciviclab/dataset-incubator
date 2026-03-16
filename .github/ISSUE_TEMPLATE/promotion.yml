@@ -1,0 +1,72 @@
+name: Promozione o uscita del filone
+description: Proponi il passaggio di un filone fuori da dataset-incubator verso preanalysis, repo progetto o archiviazione.
+title: "promotion: "
+labels:
+  - ready-for-promotion
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Usa questa issue quando un filone sembra pronto a uscire da `dataset-incubator`.
+
+        Obiettivo:
+        - chiarire se il filone va verso `dataciviclab/preanalysis`, una repo progetto o archiviazione
+        - fissare cosa e' gia pronto
+        - rendere espliciti i rischi aperti prima del passaggio
+
+  - type: input
+    id: candidate_slug
+    attributes:
+      label: Filone o candidate
+      description: Slug o percorso del filone in `candidates/`.
+      placeholder: candidates/aifa-spesa-consumo-2016-2024
+    validations:
+      required: true
+
+  - type: dropdown
+    id: target_type
+    attributes:
+      label: Target di uscita
+      description: Dove dovrebbe andare il filone?
+      options:
+        - dataciviclab/preanalysis
+        - repo progetto dedicata
+        - archiviazione
+    validations:
+      required: true
+
+  - type: textarea
+    id: reason
+    attributes:
+      label: Perche e' pronto a uscire
+      description: Spiega in modo sintetico perche il filone merita il passaggio.
+      placeholder: Domanda chiara, dataset verificato, mart stabile, notebook v0/v1, discussion pronta, ecc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: assets
+    attributes:
+      label: Artefatti gia pronti
+      description: Indica cosa esiste gia e puo sostenere il passaggio.
+      placeholder: README, notes, dataset.yml, clean/mart, notebook, issue pubblica, draft discussion, ecc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: open_risks
+    attributes:
+      label: Rischi o caveat aperti
+      description: Cosa resta da chiarire prima o subito dopo la promozione.
+      placeholder: Limiti metodologici, anni mancanti, support dataset non pronto, dubbio sul framing pubblico, ecc.
+    validations:
+      required: true
+
+  - type: textarea
+    id: next_step
+    attributes:
+      label: Prossimo passo operativo
+      description: Qual e' il passo concreto successivo?
+      placeholder: Aprire issue pubblica, creare repo progetto, spostare notebook, chiudere intake, aggiornare archived.md, ecc.
+    validations:
+      required: true

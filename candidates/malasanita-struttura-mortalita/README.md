@@ -1,5 +1,7 @@
 # malasanita-struttura-mortalita
 
+> **Promosso.** Il lavoro vivo e in `dataciviclab/preanalysis/malasanita-struttura-mortalita`. I file qui sotto sono storico di incubazione.
+
 ## Domanda
 
 Le regioni con meno personale sanitario hanno livelli piu alti di mortalita evitabile?
@@ -96,10 +98,10 @@ I source dataset sono eseguibili dal repo `dataset-incubator`.
 Ordine pratico:
 
 ```powershell
-py -m toolkit.cli.app run all --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
-py -m toolkit.cli.app run all --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/c_strutture_ricovero_asl/dataset.yml
-py -m toolkit.cli.app run all --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/d_mortalita_istat/dataset.yml
-py -m toolkit.cli.app run mart --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
+py -m toolkit.cli.app run all --config candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
+py -m toolkit.cli.app run all --config candidates/malasanita-struttura-mortalita/sources/c_strutture_ricovero_asl/dataset.yml
+py -m toolkit.cli.app run all --config candidates/malasanita-struttura-mortalita/sources/d_mortalita_istat/dataset.yml
+py -m toolkit.cli.app run mart --config candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
 ```
 
 L'ultimo comando rigenera i tre compose finali:

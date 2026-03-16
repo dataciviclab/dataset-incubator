@@ -5,7 +5,7 @@
 #
 # Come eseguire i mart:
 #   cd dataset-incubator
-#   py -m toolkit.cli.app run mart --config preprojects/project_candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
+#   py -m toolkit.cli.app run mart --config candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
 #
 # Perche il compose e` agganciato a sources/a_strutture_asl/dataset.yml:
 #   Il toolkit richiede un clean layer nel dataset indicato dal config.
