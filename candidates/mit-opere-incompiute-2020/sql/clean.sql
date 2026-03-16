@@ -1,7 +1,7 @@
 with base as (
     select
         trim("Graduatoria_pubblicata_da") as graduatoria_pubblicata_da,
-        cast(trim("Anno_di_riferimento") as integer) as anno_di_riferimento,
+        cast("Anno_di_riferimento" as integer) as anno_di_riferimento,
         nullif(trim("Codice_CUP"), '') as codice_cup,
         trim("Ambito_soggettivo") as ambito_soggettivo,
         trim("Denominazione_Stazione_appaltante") as stazione_appaltante,
@@ -16,7 +16,7 @@ with base as (
         cast(replace(replace(nullif(trim("Importo_lavori_ultimo_q.e._approvato"), ''), '.', ''), ',', '.') as double) as importo_lavori_qe,
         cast(replace(replace(nullif(trim("Importo_complessivo_lavori_ultimo SAL"), ''), '.', ''), ',', '.') as double) as importo_lavori_sal,
         cast(replace(replace(nullif(trim("Importo_oneri_ultimazione"), ''), '.', ''), ',', '.') as double) as importo_oneri_ultimazione,
-        cast(replace(nullif(trim("Perc_avanzamento_lavori"), ''), ',', '.') as double) as perc_avanzamento_lavori,
+        cast("Perc_avanzamento_lavori" as double) as perc_avanzamento_lavori,
         trim("Mancanza_fondi") as mancanza_fondi,
         trim("Cause_tecniche") as cause_tecniche,
         trim("Soprav_norme_tec./disp.legge") as sopravvenienza_norme,

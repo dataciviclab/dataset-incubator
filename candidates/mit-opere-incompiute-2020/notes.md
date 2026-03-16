@@ -16,5 +16,5 @@
 ## Cautele
 
 - il file nazionale e incompleto per design: non copre tutte le regioni
-- `capacita nazionale` o confronti pieni tra regioni non sono difendibili senza chiarire la copertura
+- confronti nazionali o pieni tra regioni non sono difendibili senza chiarire la copertura
 - alcune opere risultano con avanzamento `100%` pur essendo classificate come incompiute: da trattare come segnale amministrativo, non errore automatico
