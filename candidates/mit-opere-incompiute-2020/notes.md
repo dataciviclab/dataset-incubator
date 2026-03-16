@@ -5,6 +5,7 @@
 - CSV verificato con `UTF-8-BOM` e separatore `;`
 - il file contiene una riga `TOT` e due righe vuote finali da ignorare
 - `Codice_CUP` e la chiave naturale piu solida per dedup prudente
+- il dedup mantiene la prima riga in ordine alfabetico per `titolo_opera_incompiuta`, `stazione_appaltante`; nel run iniziale rimuove 2 duplicati su `Codice_CUP`
 - `Localizzazione_codice_ISTAT` e quasi completo; `Localizzazione_codice_NUTS` molto meno affidabile
 
 ## Analitico

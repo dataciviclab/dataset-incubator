@@ -35,7 +35,10 @@ mart:
       sql: "sql/mart.sql"
   required_tables:
     - "mart_opere_snapshot"
-  validate: {}
+  validate:
+    table_rules:
+      mart_opere_snapshot:
+        min_rows: 380
 
 validation:
   fail_on_error: true

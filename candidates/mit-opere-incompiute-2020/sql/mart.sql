@@ -5,6 +5,7 @@ select
     stazione_appaltante,
     localizzazione_codice_istat,
     localizzazione_codice_nuts,
+    ambito_oggettivo,
     stato_opera,
     livello_sviluppo,
     perc_avanzamento_lavori,

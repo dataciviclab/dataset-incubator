@@ -10,6 +10,7 @@
 - risorsa iniziale: CSV nazionale `MIMS e regioni`
 - URL pagina dataset: `https://dati.mit.gov.it/catalog/dataset/opere-pubbliche-incompiute-al-31-dicembre-2020`
 - URL download CSV: `https://dati.mit.gov.it/catalog/dataset/64ea5931-39b2-47d6-9e37-41a9074dbf23/resource/e0f8b469-8d77-4c64-abca-58a17b6da82f/download/opere-incompiute-al-31-dicembre-2020mims-e-regioni.csv`
+- nota: il file nazionale non copre tutte le regioni per dichiarazione esplicita della fonte; confronti regionali pieni non sono difendibili senza chiarire la copertura
 
 ## Perche vale la pena testarlo
 
@@ -31,10 +32,10 @@
 - primo output leggibile su distribuzione e cause
 - caveat metodologici dichiarati in modo esplicito
 
-## Stato
+## Stato del candidate
 
-- incubating
 - notebook `v0` aggiunto: `notebooks/mit_opere_incompiute_2020_preanalysis_v0.ipynb`
+- tracking operativo: issue `dataset-incubator#35`
 
 Issue collegata:
 - `dataset-incubator#35`
