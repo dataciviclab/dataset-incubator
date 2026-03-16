@@ -1,0 +1,44 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mit_opere_incompiute_2020"
+  years: [2020]
+
+raw:
+  sources:
+    - name: "mit_opere_incompiute_csv"
+      type: "http_file"
+      args:
+        url: "https://dati.mit.gov.it/catalog/dataset/64ea5931-39b2-47d6-9e37-41a9074dbf23/resource/e0f8b469-8d77-4c64-abca-58a17b6da82f/download/opere-incompiute-al-31-dicembre-2020mims-e-regioni.csv"
+        filename: "mit_opere_incompiute_2020.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    delim: ";"
+    encoding: "utf-8"
+    decimal: ","
+  validate:
+    min_rows: 300
+    not_null:
+      - "codice_cup"
+      - "titolo_opera_incompiuta"
+
+mart:
+  tables:
+    - name: "mart_opere_snapshot"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_opere_snapshot"
+  validate: {}
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
