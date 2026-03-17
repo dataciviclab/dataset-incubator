@@ -3,7 +3,7 @@
 # sui posti letto. Valore distintivo = dettaglio per disciplina/reparto.
 # Decisione: B resta fuori dal compose principale (vedi notes.md sezione Fonte B).
 
-root: "../../../../../out"
+root: "../../../../out"
 schema_version: 1
 
 dataset:
