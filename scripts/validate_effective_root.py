@@ -6,7 +6,7 @@ import sys
 from pathlib import Path
 
 
-def inspect_root(toolkit_dir: Path, config_path: Path) -> Path:
+def inspect_root(repo_root: Path, config_path: Path) -> Path:
     cmd = [
         sys.executable,
         "-m",
@@ -19,7 +19,7 @@ def inspect_root(toolkit_dir: Path, config_path: Path) -> Path:
     ]
     result = subprocess.run(
         cmd,
-        cwd=toolkit_dir,
+        cwd=repo_root,
         check=True,
         capture_output=True,
         text=True,
@@ -48,7 +48,7 @@ def main() -> int:
     failures: list[str] = []
 
     for config_path in config_paths:
-        actual_root = inspect_root(toolkit_dir, config_path)
+        actual_root = inspect_root(repo_root, config_path)
         print(f"{config_path.relative_to(repo_root)} -> {actual_root}")
         if actual_root != expected_root:
             failures.append(
