@@ -1,0 +1,46 @@
+root: "../../../../out"
+schema_version: 1
+
+dataset:
+  name: "ispra_consumo_suolo"
+  years: [2024]
+  # Anno nominale: il file XLSX copre l'intera serie 2006-2024.
+  # Non esistono file separati per anno: year=2024 e` il rilascio piu recente.
+
+raw:
+  sources:
+    - name: "ispra_consumo_suolo_xlsx"
+      type: "http_file"
+      args:
+        url: "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/consumo_di_suolo_estratto_dati_2025_anni_2006_2024.xlsx"
+        filename: "ispra_consumo_suolo_{year}.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    sheet_name: "Comuni_2006_2024"
+    # La riga 0 e` header (nomi colonne originali ISPRA)
+    # La riga 1 e` spesso una riga di unita` misura: skippiata in clean.sql
+  validate:
+    min_rows: 7000
+    # ISPRA 2024: ~8.000 comuni con dati
+
+mart:
+  tables:
+    - name: "mart_comuni"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_comuni"
+  validate:
+    table_rules:
+      mart_comuni:
+        min_rows: 7000
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
