@@ -42,6 +42,19 @@ Template esistenti:
 - `.github/ISSUE_TEMPLATE/new-candidate.yml`
 - `.github/ISSUE_TEMPLATE/promotion.yml`
 
+## Quando usare una Discussion
+
+Se stai ancora esplorando:
+
+- una fonte non ancora verificata
+- una domanda civica ancora troppo larga
+- un possible filone da stringere meglio
+
+usa prima una `Discussion` del repo, nella category `Datasets`.
+
+Quando invece hai gia' fonte, perimetro iniziale e prossimo passo concreto,
+apri direttamente una issue di intake.
+
 ## Intake: come entra un nuovo filone
 
 Usa il template `new-candidate.yml` quando vuoi proporre:
