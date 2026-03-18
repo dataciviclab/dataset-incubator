@@ -104,6 +104,10 @@ Quando un filone matura, può uscire in tre modi:
 `dataset-incubator` resta il luogo di intake e incubazione.  
 `dataciviclab` resta l'hub pubblico e il layer editoriale del Lab.
 
+Checklist operativa breve:
+
+- vedi [PROMOTION_CHECKLIST.md](PROMOTION_CHECKLIST.md)
+
 ## Regola di archiviazione
 
 Quando un candidato viene promosso o chiuso:

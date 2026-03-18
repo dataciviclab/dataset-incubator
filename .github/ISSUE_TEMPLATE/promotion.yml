@@ -14,6 +14,9 @@ body:
         - fissare cosa e' gia pronto
         - rendere espliciti i rischi aperti prima del passaggio
 
+        Prima di compilare la issue:
+        - verifica la checklist breve in `PROMOTION_CHECKLIST.md`
+
   - type: input
     id: candidate_slug
     attributes:
