@@ -4,6 +4,10 @@ Repo di incubazione leggera per dataset candidati e basi trasversali del Lab.
 
 Questa repo serve a validare filoni ancora non pronti per il flusso pubblico completo, restringere domanda e output minimo, e decidere se promuoverli verso `dataciviclab/preanalysis` o una repo progetto dedicata.
 
+Se vuoi contribuire operativamente in questa repo:
+
+- leggi [CONTRIBUTING.md](CONTRIBUTING.md)
+
 Non serve per:
 
 - backlog indefinito
