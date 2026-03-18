@@ -12,7 +12,7 @@ raw:
     - name: "aifa_spesa_consumo_csv"
       type: "local_file"
       args:
-        path: "../../../../../out/data/raw/aifa_spesa_consumo/{year}/aifa_spesa_consumo_{year}.csv"
+        path: "../../../../out/data/raw/aifa_spesa_consumo/{year}/aifa_spesa_consumo_{year}.csv"
         filename: "aifa_spesa_consumo_{year}.csv"
       primary: true
 
