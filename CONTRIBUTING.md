@@ -1,0 +1,192 @@
+# Contributing to dataset-incubator
+
+Questa guida vale per la repo `dataset-incubator`.
+
+Per le regole GitHub condivise dell'organizzazione, parti prima da
+[`.github`](https://github.com/dataciviclab/.github).
+
+## A cosa serve questa repo
+
+`dataset-incubator` e' il luogo di intake e incubazione tecnica leggera dei
+filoni dati del Lab.
+
+Qui stanno soprattutto:
+
+- candidate con domanda civica e potenziale di promozione
+- support dataset riusabili per join o controlli
+- contratto tecnico minimo del filone:
+  - `dataset.yml`
+  - `sql/`
+  - note tecniche
+  - notebook iniziali
+
+Qui non stanno:
+
+- docs pubbliche del Lab
+- output editoriali o community ops
+- feature del `toolkit`
+- note personali o backlog indefinito
+- filoni gia' promossi come contenuto attivo
+
+## Quando aprire una issue qui
+
+Apri una issue in `dataset-incubator` se il lavoro riguarda:
+
+- intake di un nuovo candidate o support dataset
+- promozione o uscita di un filone da DI
+- workflow o QA interna della repo
+- chiarimenti sulla struttura minima dei candidate
+
+Template esistenti:
+
+- `.github/ISSUE_TEMPLATE/new-candidate.yml`
+- `.github/ISSUE_TEMPLATE/promotion.yml`
+
+## Quando usare una Discussion
+
+Se stai ancora esplorando:
+
+- una fonte non ancora verificata
+- una domanda civica ancora troppo larga
+- un possible filone da stringere meglio
+
+usa prima una `Discussion` del repo, nella category `Datasets`.
+
+Quando invece hai gia' fonte, perimetro iniziale e prossimo passo concreto,
+apri direttamente una issue di intake.
+
+## Intake: come entra un nuovo filone
+
+Usa il template `new-candidate.yml` quando vuoi proporre:
+
+- un `candidate`
+- un `support` dataset
+
+Nel dubbio, l'intake deve avere almeno:
+
+- domanda guida o uso previsto
+- fonte principale
+- perimetro iniziale stretto
+- output minimo atteso
+- prossimo passo concreto
+
+Lo stato iniziale tipico e':
+
+- label `intake`
+
+## Stati e label di lavoro
+
+In DI le issue sono il tracker vivo del filone.
+
+Stati pratici:
+
+- `intake`: ingresso iniziale, source-check o framing ancora da stringere
+- `incubating`: lavoro attivo sul candidate
+- `ready-for-promotion`: filone pronto a uscire da DI
+- `promoted`: filone uscito; storico in `registry/archived.md`
+- `support-dataset`: base trasversale, non candidate di filone
+
+Regola pratica:
+
+- una volta preso in carico un intake serio, il filone passa di solito da `intake` a `incubating`
+- quando il passaggio fuori da DI e' maturo, si apre o usa l'issue di promotion
+
+## Struttura minima di un candidate
+
+### Single-source
+
+Caso piu' comune:
+
+```text
+candidates/caso/
+  dataset.yml
+  README.md
+  notes.md
+  sql/
+    clean.sql
+    mart.sql
+```
+
+Template di partenza:
+
+- `templates/candidate/`
+
+### Multi-source
+
+Quando il filone ha piu' fonti indipendenti:
+
+```text
+candidates/caso/
+  README.md
+  notes.md
+  sources/
+    a_fonte/
+      dataset.yml
+      sql/
+    b_fonte/
+      dataset.yml
+      sql/
+  compose/
+    dataset.yml
+    sql/
+```
+
+Regola pratica:
+
+- non complicare la struttura se una fonte sola basta
+- usa `sources/` solo quando ci sono davvero piu' contratti tecnici separati
+
+## Setup minimo per contribuire
+
+La configurazione locale minima del Lab e' documentata in:
+
+- `dataciviclab/docs/local-setup.md`
+
+Per contribuire qui ti serve soprattutto:
+
+1. avere `dataset-incubator` e `toolkit` nello stesso workspace
+2. usare una `.venv` locale funzionante
+3. installare il `toolkit` in editable mode
+4. saper lanciare almeno:
+
+```bash
+cd toolkit
+python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/dataset.yml
+```
+
+Per candidate nested:
+
+```bash
+cd toolkit
+python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/sources/{source}/dataset.yml
+```
+
+## Promotion: quando un filone esce da DI
+
+Usa il template `promotion.yml` quando il filone sembra pronto per:
+
+- `dataciviclab/preanalysis`
+- repo progetto dedicata
+- archiviazione
+
+La promotion serve a fissare:
+
+- perche' il filone e' pronto a uscire
+- quali artefatti esistono gia'
+- quali rischi restano aperti
+- quale passo concreto viene dopo
+
+## Prima di aprire una PR
+
+- verifica se esiste gia' una issue intake o promotion collegata
+- tieni il perimetro stretto
+- evita di aprire candidate troppo larghi senza una domanda minima chiara
+- se tocchi struttura o workflow della repo, controlla anche `README.md`
+- se aggiungi o modifichi un candidate, prova almeno il `run all` o il `dry-run` piu' adatto
+
+## Dove orientarsi
+
+- [README.md](README.md)
+- [templates/candidate/README.md](templates/candidate/README.md)
+- [.github/ISSUE_TEMPLATE/new-candidate.yml](.github/ISSUE_TEMPLATE/new-candidate.yml)
+- [.github/ISSUE_TEMPLATE/promotion.yml](.github/ISSUE_TEMPLATE/promotion.yml)
