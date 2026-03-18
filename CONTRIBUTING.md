@@ -183,6 +183,7 @@ La promotion serve a fissare:
 - evita di aprire candidate troppo larghi senza una domanda minima chiara
 - se tocchi struttura o workflow della repo, controlla anche `README.md`
 - se aggiungi o modifichi un candidate, prova almeno il `run all` o il `dry-run` piu' adatto
+- se aggiungi o modifichi candidate/support dataset, esegui anche `python scripts/validate_candidate_structure.py`
 
 ## Dove orientarsi
 
