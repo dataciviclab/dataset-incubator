@@ -92,10 +92,13 @@ def validate_multi_source(base_dir: Path, failures: list[str]) -> None:
 def validate_entry(base_dir: Path, archived_paths: set[str], failures: list[str]) -> None:
     rel_str = base_dir.relative_to(ROOT).as_posix()
 
-    validate_root_docs(base_dir, failures)
-
     if rel_str in archived_paths:
+        # Archived entries are historical handoff traces. They are tracked in
+        # registry/archived.md and are exempt from the active-candidate
+        # structure check, including root docs and technical package files.
         return
+
+    validate_root_docs(base_dir, failures)
 
     if base_dir.parts[-2] == "support_datasets":
         validate_single_source(base_dir, failures)
@@ -103,6 +106,12 @@ def validate_entry(base_dir: Path, archived_paths: set[str], failures: list[str]
 
     has_root_dataset = (base_dir / "dataset.yml").exists()
     has_sources = (base_dir / "sources").is_dir()
+
+    if has_root_dataset and has_sources:
+        failures.append(
+            f"{rel_str} has ambiguous structure: root dataset.yml and sources/ cannot coexist"
+        )
+        return
 
     if has_root_dataset:
         validate_single_source(base_dir, failures)
