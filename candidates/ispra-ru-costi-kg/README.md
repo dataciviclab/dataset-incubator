@@ -13,8 +13,8 @@ Fonti previste nel primo ciclo:
 | ID | Fonte | Ruolo previsto | Stato |
 |---|---|---|---|
 | A | ISPRA RU base | base territoriale con totale RU, RD e popolazione | run verde `2020-2024` |
-| B | ISPRA kg per abitante | metrica pro capite del volume di RU | run verde `2020-2024` |
-| C | ISPRA costo per abitante | asse economico minimo del servizio | run verde `2020-2024` |
+| B | ISPRA kg per abitante | metrica pro capite del volume di RU | run verde `2020-2024`, mart cross mancante nel `2022` sul clone corrente |
+| C | ISPRA costo per abitante | asse economico minimo del servizio | run verde `2020-2024`, mart cross mancante nel `2021` sul clone corrente |
 
 ## Perché vale la pena testarlo
 
@@ -34,32 +34,33 @@ Pattern multi-fonte, stile `malasanita`:
   - overlap temporale
   - comparabilità minima delle metriche
 
-## Output minimo atteso
+## Output disponibili oggi
 
-- nota breve su compatibilità di anni, granularità e chiavi territoriali
-- primo join di prova tra le tre tabelle
-- mart minimo `territorio x anno` con:
-  - `kg_per_abitante`
-  - `costo_per_abitante`
-  - `% raccolta differenziata`, se già disponibile e compatibile
-- decisione finale:
-  - filone promettente
-  - support dataset
-  - stop
+Il filone ha già superato il primo gate tecnico.
 
-Output ora disponibili nel primo step:
+Output già disponibili:
 
 - `sources/a_ru_base` con `mart_comuni`
 - `sources/b_kg_per_abitante` con `mart_comuni`
 - `sources/c_costo_per_abitante` con `mart_comuni`
 - `compose/sql/mart_cross_comuni.sql` come layer cross del filone
-- notebook `v0` sul perimetro joinato `A + B + C`
+- `compose/sql/mart_compose_v2.sql` come primo layer `v2` costo-performance
+- notebook `v0`
+- notebook `v1` con prima lettura pubblica già riusata nella Discussion `#22`
+
+Sul clone corrente, il cross mart è fisicamente disponibile per:
+
+- `2020`
+- `2023`
+- `2024`
+
+Gli anni `2021` e `2022` non sono oggi presenti nel cross mart locale per un vincolo operativo di sync/lock OneDrive sui run delle sorgenti `C` e `B`.
 
 Stato attuale del candidate:
 
 - source dataset `A/B/C` eseguiti su `2020-2024`
 - compose minimo chiuso sul join `codice_comune_istat x anno`
-- notebook `v0` disponibile sul perimetro joinato
+- notebook `v1` disponibile sul perimetro joinato
 - per vincolo del toolkit, il SQL del cross resta anche in `sources/a_ru_base/sql/` come copia eseguibile
 
 ## Criterio di promozione
@@ -73,7 +74,7 @@ Promuovere il filone solo se:
 
 ## Stato
 
-- intake
+- candidate attivo con `v1` disponibile
 
 ## Domande complementari
 
@@ -87,6 +88,18 @@ Il filone nasce come estensione ordinata del vecchio `progetto-pilota` ISPRA RU,
 
 ## Prossimo passo
 
-- decidere se il filone resta ancora un candidate tecnico o è pronto per una prima discussione pubblica
-- capire se il prossimo output debba restare sul `2024` o allargarsi a una lettura `2020-2024`
-- chiarire quali profili territoriali meritano un notebook `v1` più forte
+Il prossimo step non è più costruire il `v1`, ma definire e chiudere il `v2`.
+
+Perimetro operativo del `v2`:
+
+- base principale: `2024`
+- contesto evolutivo: `2020`, `2023`, `2024`
+- ponte metodologico con il `progetto-pilota`: confronto `2020 -> 2023`
+
+Direzioni già approvate in `#33`:
+
+- riusare la logica dei quadranti del `progetto-pilota`
+- aggiungere un nuovo `quadrante_costo` su livello `2024`
+- usare come soglie le mediane del campione joinato `A + B + C` nel `2024`
+- tenere il join ISTAT popolazione come robustezza successiva, non come blocco iniziale
+- chiudere il mart `v2` anche senza join ISTAT, con nota metodologica dedicata ai comuni turistici
