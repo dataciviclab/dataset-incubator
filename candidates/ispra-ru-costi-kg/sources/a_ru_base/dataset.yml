@@ -59,15 +59,20 @@ mart:
       sql: "sql/mart.sql"
     - name: "mart_cross_comuni"
       sql: "sql/mart_cross_comuni.sql"
+    - name: "mart_compose_v2"
+      sql: "sql/mart_compose_v2.sql"
   required_tables:
     - "mart_comuni"
     - "mart_cross_comuni"
+    - "mart_compose_v2"
   validate:
     table_rules:
       mart_comuni:
         min_rows: 7000
       mart_cross_comuni:
         min_rows: 4000
+      mart_compose_v2:
+        min_rows: 7000
 
 validation:
   fail_on_error: true
