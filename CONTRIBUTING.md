@@ -136,6 +136,45 @@ Regola pratica:
 - non complicare la struttura se una fonte sola basta
 - usa `sources/` solo quando ci sono davvero piu' contratti tecnici separati
 
+## Confine minimo tra clean e mart
+
+Regola di fondo:
+
+- `clean` serve a normalizzare il `raw`
+- `mart` serve a interpretare, restringere, aggregare e leggere il dato
+
+In `clean` sono normalmente accettabili:
+
+- rinomina colonne
+- cast e tipizzazione
+- trim, normalizzazione minima di stringhe e null
+- rimozione di righe spurie, header ripetuti, unita di misura o record chiaramente fuori contratto
+- aggiunta di poche colonne tecniche utili a stabilizzare il dato
+
+In `clean` non dovrebbero entrare di default:
+
+- aggregazioni
+- labeling analitico
+- benchmark, cluster o categorie interpretative
+- join con altre fonti
+- riduzioni forti del dataset guidate gia' dalla domanda analitica
+
+Filtri o trasformazioni piu' forti sono accettabili solo quando servono a
+rendere il dato coerente con il suo contratto tecnico minimo e non con il
+risultato analitico finale.
+
+Esempi tipici di area grigia:
+
+- dedup prudente
+- esclusioni per evitare doppio conteggio
+- restringimenti di perimetro gia' orientati a un compose o a un join
+
+Quando succede, la scelta va spiegata in `notes.md` con una riga chiara:
+
+- che cosa viene escluso o trasformato
+- perche' non basta lasciarlo al `mart`
+- quale rischio si evita
+
 ## Setup minimo per contribuire
 
 La configurazione locale minima del Lab e' documentata in:
