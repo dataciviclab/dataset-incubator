@@ -1,3 +1,12 @@
+-- NOTE OPERATIVA:
+-- Questo mart usa intenzionalmente il 2024 come lookup fisso per:
+-- 1. calcolare le mediane del quadrante_costo;
+-- 2. derivare il cluster_demografico dal mart_cross_comuni 2024.
+--
+-- Conseguenza: su un clone fresco va materializzato prima il 2024 e solo dopo
+-- gli altri anni. I path read_parquet sotto out/... riflettono il vincolo
+-- operativo attuale del toolkit e restano un punto da migliorare in un follow-up.
+
 WITH base AS (
     SELECT *
     FROM read_parquet(
@@ -99,7 +108,7 @@ SELECT
         WHEN base.percentuale_rd < thresholds.soglia_rd_2024
          AND base.costo_totale_euro_ab < thresholds.soglia_costo_euro_ab_2024
             THEN 'Costo contenuto ma performance debole (RD bassa, costo basso)'
-        ELSE 'Criticita su entrambi gli assi (RD bassa, costo alto)'
+        ELSE 'Criticità su entrambi gli assi (RD bassa, costo alto)'
     END AS quadrante_costo
 FROM base
 LEFT JOIN cluster_lookup_2024

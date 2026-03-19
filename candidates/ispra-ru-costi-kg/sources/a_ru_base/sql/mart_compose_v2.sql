@@ -1,3 +1,27 @@
+-- mart_compose_v2.sql — ISPRA RU costi kg
+--
+-- PREREQUISITO: eseguire con CWD = root di dataset-incubator
+-- I path read_parquet sono relativi a out/data/mart/ispra_ru_base/
+-- e dipendono dal working directory al momento del run.
+--
+-- ORDINE OBBLIGATORIO:
+--   1. Materializzare l'anno 2024 prima di qualsiasi altro anno
+--   2. Solo dopo eseguire gli altri anni (es. 2020, 2021, 2022, 2023)
+--   Motivo: sample_2024 e cluster_lookup_2024 leggono sempre
+--   out/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet
+--   che deve esistere prima che gli altri anni vengano processati.
+--
+-- SCELTA ANALITICA: le soglie (soglia_rd_2024, soglia_costo_euro_ab_2024)
+-- e il cluster demografico sono calcolati sui dati 2024 e usati come
+-- riferimento fisso per tutti gli anni. Questo è intenzionale: vogliamo
+-- classificare la serie storica rispetto al contesto attuale (2024),
+-- non rispetto alle mediane di ogni singolo anno.
+-- quadrante_costo è valorizzato solo per anno = 2024.
+--
+-- FOLLOW-UP TECNICO (issue da aprire): i path out/data/mart/... sono
+-- hardcoded e fragili rispetto a ambienti con layout diverso.
+-- Agganciare al root reale del dataset in una versione futura del toolkit.
+
 WITH base AS (
     SELECT *
     FROM read_parquet(
@@ -99,7 +123,7 @@ SELECT
         WHEN base.percentuale_rd < thresholds.soglia_rd_2024
          AND base.costo_totale_euro_ab < thresholds.soglia_costo_euro_ab_2024
             THEN 'Costo contenuto ma performance debole (RD bassa, costo basso)'
-        ELSE 'Criticita su entrambi gli assi (RD bassa, costo alto)'
+        ELSE 'Criticità su entrambi gli assi (RD bassa, costo alto)'
     END AS quadrante_costo
 FROM base
 LEFT JOIN cluster_lookup_2024
