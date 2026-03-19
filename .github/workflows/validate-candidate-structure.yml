@@ -1,0 +1,27 @@
+name: Validate Candidate Structure
+
+on:
+  pull_request:
+    paths:
+      - "candidates/**"
+      - "support_datasets/**"
+      - "registry/archived.md"
+      - "scripts/validate_candidate_structure.py"
+      - "README.md"
+      - "CONTRIBUTING.md"
+
+jobs:
+  validate-candidate-structure:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout dataset-incubator
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Validate candidate structure
+        run: python scripts/validate_candidate_structure.py
