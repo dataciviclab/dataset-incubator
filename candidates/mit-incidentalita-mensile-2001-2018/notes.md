@@ -20,6 +20,7 @@ Gli artefatti runtime locali non sono versionati nella repo.
 - decimal nei campi percentuale/indice: `,` nel raw quoted -> `REPLACE(',', '.')`
 - totale righe raw: `288` (`216` mensili + `72` trimestrali)
 - copertura mensile: `18` anni x `12` mesi = `216` righe esatte
+- nel notebook v0 sono emerse anche `19` righe mensili con trailing zero mancante in `incidenti` o `feriti`; `morti` resta il campo piu affidabile sull'intera serie mensile
 - il campo `Mese` ha leading spaces nel raw -> `TRIM` in clean
 - il campo `Anno` ha trailing space nell'header originale -> gestito con colonne esplicite
 

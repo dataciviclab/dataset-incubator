@@ -1,6 +1,6 @@
 # mit-incidentalita-mensile-2001-2018
 
-Candidate - incidentalita stradale mensile in Italia, 2001-2018.
+Candidate - incidentalità stradale mensile in Italia, 2001-2018.
 
 Fonte: MIT (Ministero delle Infrastrutture e dei Trasporti), portale open data.
 
@@ -15,6 +15,7 @@ Issue: dataciviclab/dataset-incubator#34
 - solo righe mensili (216 su 288): le 72 righe trimestrali sono escluse per anomalie nella fonte
 - copertura: 2001-2018, livello nazionale
 - output minimo: `mart_mensile` con incidenti, morti, feriti, incidenti mortali e indici principali
+- `morti`: campo pulito su tutta la serie; `incidenti` e `feriti`: 19 righe mensili con anomalie nella fonte MIT
 
 ## Domanda guida
 
