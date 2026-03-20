@@ -23,7 +23,12 @@ def load_archived_paths() -> set[str]:
 
 
 def has_mart_sql(sql_dir: Path) -> bool:
-    return any(path.name.startswith("mart") and path.suffix == ".sql" for path in sql_dir.glob("*.sql"))
+    has_root_mart = any(
+        path.name.startswith("mart") and path.suffix == ".sql"
+        for path in sql_dir.glob("*.sql")
+    )
+    has_nested_mart = any(path.suffix == ".sql" for path in (sql_dir / "mart").glob("*.sql"))
+    return has_root_mart or has_nested_mart
 
 
 def validate_root_docs(base_dir: Path, failures: list[str]) -> None:
