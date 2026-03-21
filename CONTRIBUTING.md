@@ -52,6 +52,12 @@ Se stai ancora esplorando:
 
 usa prima una `Discussion` del repo, nella category `Datasets`.
 
+Per un source-check leggero prima di aprire una Discussion o una issue di
+intake, vedi anche:
+
+- [docs/source-check-template.md](docs/source-check-template.md)
+- [docs/scouting-checklist.md](docs/scouting-checklist.md)
+
 Quando invece hai gia' fonte, perimetro iniziale e prossimo passo concreto,
 apri direttamente una issue di intake.
 
@@ -227,6 +233,8 @@ La promotion serve a fissare:
 ## Dove orientarsi
 
 - [README.md](README.md)
+- [docs/source-check-template.md](docs/source-check-template.md)
+- [docs/scouting-checklist.md](docs/scouting-checklist.md)
 - [templates/candidate/README.md](templates/candidate/README.md)
 - [.github/ISSUE_TEMPLATE/new-candidate.yml](.github/ISSUE_TEMPLATE/new-candidate.yml)
 - [.github/ISSUE_TEMPLATE/promotion.yml](.github/ISSUE_TEMPLATE/promotion.yml)
