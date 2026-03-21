@@ -25,11 +25,11 @@ Campi minimi attesi nel mart finale:
 Scelta adottata:
 
 - il file SQL del compose vive anche in `compose/sql/` come riferimento architetturale
-- l'esecuzione resta agganciata a `sources/a_fsc_2025/dataset.yml`, per un vincolo del toolkit sul layer `mart`
-- in `sources/a_fsc_2025/sql/` resta quindi una copia eseguibile del compose
+- l'esecuzione resta agganciata a `sources/a_fsc/dataset.yml`, per un vincolo del toolkit sul layer `mart`
+- in `sources/a_fsc/sql/` resta quindi una copia eseguibile del compose
 
 Esecuzione:
 
 ```powershell
-py -m toolkit.cli.app run mart --config candidates/opencivitas-fsc-rso/sources/a_fsc_2025/dataset.yml
+py -m toolkit.cli.app run mart --config candidates/opencivitas-fsc-rso/sources/a_fsc/dataset.yml
 ```

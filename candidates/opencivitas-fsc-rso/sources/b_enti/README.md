@@ -1,4 +1,4 @@
-# b_enti_2025
+# b_enti
 
 Source `B` - metadati enti FSC 2025 per il mapping `USERNAME -> comune`.
 

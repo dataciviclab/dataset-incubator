@@ -20,7 +20,7 @@
   del candidate
 
 - il compose minimo vive in `compose/` come layer documentato, ma viene
-  eseguito da `sources/a_fsc_2025/sql/mart_compose.sql`
+  eseguito da `sources/a_fsc/sql/mart_compose.sql`
 
 ## Cautele
 

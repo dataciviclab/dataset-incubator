@@ -1,2 +1,2 @@
 -- compose/sql/mart.sql - riferimento documentale
--- SQL eseguibile: sources/a_fsc_2025/sql/mart_compose.sql
+-- SQL eseguibile: sources/a_fsc/sql/mart_compose.sql

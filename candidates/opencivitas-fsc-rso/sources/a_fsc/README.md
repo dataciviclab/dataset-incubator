@@ -1,4 +1,4 @@
-# a_fsc_2025
+# a_fsc
 
 Source `A` - file FSC 2025 in formato long variabile-valore.
 
@@ -11,4 +11,4 @@ Source `A` - file FSC 2025 in formato long variabile-valore.
 
 - normalizzare il file annuale FSC 2025 per Comuni RSO
 - esporre un primo mart per comune con poche componenti chiave
-- fare da base al join con `sources/b_enti_2025`
+- fare da base al join con `sources/b_enti`

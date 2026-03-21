@@ -51,8 +51,8 @@ Perimetro iniziale volutamente stretto:
 
 ## Output minimo atteso
 
-- `sources/a_fsc_2025` verde
-- `sources/b_enti_2025` verde
+- `sources/a_fsc` verde
+- `sources/b_enti` verde
 - `compose/` documentato
 - primo join leggibile per comune
 

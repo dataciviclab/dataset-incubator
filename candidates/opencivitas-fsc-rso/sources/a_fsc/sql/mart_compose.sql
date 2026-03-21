@@ -1,4 +1,4 @@
--- mart_compose.sql - compose minimo FSC 2025 eseguito da sources/a_fsc_2025
+-- mart_compose.sql - compose minimo FSC 2025 eseguito da sources/a_fsc
 --
 -- Il layer compose e` documentato anche in candidates/opencivitas-fsc-rso/compose/.
 -- Per vincolo del toolkit, l'SQL eseguibile resta agganciato al dataset di A.
