@@ -1,0 +1,49 @@
+root: "../../../../out"
+schema_version: 1
+
+dataset:
+  name: "opencivitas_fsc_2025_rso"
+  years: [2025]
+
+raw:
+  extractor:
+    type: "unzip_first_csv"
+  sources:
+    - name: "opencivitas_fsc_2025_zip"
+      type: "http_file"
+      args:
+        url: "https://docs.opencivitas.it/2025_VAR_FSC_1_2025_csv.zip"
+        filename: "2025_VAR_FSC_1_2025_csv.zip"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: latest
+    header: true
+    delim: ";"
+    encoding: "utf-8"
+    trim_whitespace: true
+  validate:
+    min_rows: 1000
+    not_null:
+      - "username"
+      - "componente"
+
+mart:
+  tables:
+    - name: "mart_fsc_comune"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_fsc_comune"
+  validate:
+    table_rules:
+      mart_fsc_comune:
+        min_rows: 1000
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
