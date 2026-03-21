@@ -36,7 +36,7 @@ Il candidato ha una struttura multi-fonte eseguibile e tre notebook di analisi c
 |---|---|---|---|
 | `malasanita_preanalysis_v1.ipynb` | `mart_compose_regioni_v1.parquet` | `decessi_30plus_per_100k_pop_totale` | baseline storica — mortalita totale 30+ (main) |
 | `malasanita_preanalysis_v2.ipynb` | `mart_compose_regioni_v2.parquet` | `decessi_evitabili_30plus_per_100k_pop_totale` | Euro-2013 proxy — 12 cause amenable/preventable, tasso grezzo 30+ |
-| `malasanita_preanalysis_v3.ipynb` | `mart_compose_regioni_v3.parquet` | `tasso_std_broad_evitabile_100k_30plus` | broad age-standardization 30+ su 3 bande età, pesi ESP2013 aggregati |
+| `malasanita_v3.ipynb` | `mart_compose_regioni_v3.parquet` | `tasso_std_broad_evitabile_100k_30plus` | broad age-standardization 30+ su 3 bande età, pesi ESP2013 aggregati |
 
 ### v1 — baseline storica (main)
 
