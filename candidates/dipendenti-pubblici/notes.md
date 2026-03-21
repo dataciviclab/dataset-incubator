@@ -28,6 +28,6 @@
 
 ## Handoff
 
-- promosso a `dataciviclab/preanalysis/dipendenti-pubblici-2021-2023`
+- promosso a `dataciviclab/analisi/dipendenti-pubblici`
 - issue pubblica di passaggio: `dataciviclab#131`
 - il pacchetto tecnico non viene piu mantenuto qui

@@ -1,6 +1,6 @@
 # malasanita-struttura-mortalita
 
-> **Promosso.** Il lavoro vivo e in `dataciviclab/preanalysis/malasanita-struttura-mortalita`. I file qui sotto sono storico di incubazione.
+> **Promosso.** Il layer pubblico vive in `dataciviclab/analisi/malasanita-struttura-mortalita`. I file qui sotto sono storico di incubazione.
 
 ## Domanda
 
@@ -17,13 +17,13 @@ Anno pivot: **2022**, unico anno di sovrapposizione completa tra le fonti del nu
 | C | Strutture ricovero per ASL - dati.salute.gov.it | fino al 2022 | CSV/XLSX |
 | D | Mortalita per causa - ISTAT | fino al 2022 | ZIP -> XLSX |
 
-Fonti di secondo livello, fuori dalla preanalysis finche il nucleo non regge:
+Fonti di secondo livello, fuori dal perimetro iniziale finche il nucleo non regge:
 - AGENAS/SIMES
 - MedMal Marsh
 
 ## Stato attuale
 
-Il candidato ha una struttura multi-fonte eseguibile e tre notebook di preanalysis con artifact separati:
+Il candidato ha una struttura multi-fonte eseguibile e tre notebook di analisi con artifact separati:
 
 - `A` espone un `mart_regioni` con personale territoriale e residenti
 - `C` espone un `mart_regioni` con personale e dotazione ospedaliera

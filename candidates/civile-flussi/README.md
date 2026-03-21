@@ -2,7 +2,7 @@
 
 ## Stato
 
-Promosso. Il lavoro vivo e in `dataciviclab/preanalysis/civile-flussi-2014-2024`.
+Promosso. Il layer pubblico vive in `dataciviclab/analisi/civile-flussi`.
 Questo candidato non e piu attivo in `dataset-incubator`.
 
 ## Motivo della promozione
@@ -20,4 +20,4 @@ Questo candidato non e piu attivo in `dataset-incubator`.
 
 ## Riferimento attivo
 
-`dataciviclab/preanalysis/civile-flussi-2014-2024`
+`dataciviclab/analisi/civile-flussi`

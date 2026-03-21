@@ -1,6 +1,6 @@
 # Terna electricity by source 2023-2024
 
-> **Promosso.** Il lavoro vivo e in `dataciviclab/preanalysis/terna-electricity-by-source`. I file qui sotto sono storico di incubazione.
+> **Promosso.** Il layer pubblico vive in `dataciviclab/analisi/terna-electricity-by-source`. I file qui sotto sono storico di incubazione.
 
 ## Domanda
 

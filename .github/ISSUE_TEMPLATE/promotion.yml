@@ -1,5 +1,5 @@
 name: Promozione o uscita del filone
-description: Proponi il passaggio di un filone fuori da dataset-incubator verso preanalysis, repo progetto o archiviazione.
+description: Proponi il passaggio di un filone fuori da dataset-incubator verso analisi/, repo progetto o archiviazione.
 title: "promotion: "
 labels:
   - ready-for-promotion
