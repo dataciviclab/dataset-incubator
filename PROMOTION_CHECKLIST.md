@@ -9,7 +9,7 @@ Non aggiunge burocrazia nuova: rende esplicite decisioni gia' prese nel Lab.
 
 Usala quando un candidate sembra pronto a:
 
-- uscire verso `dataciviclab/preanalysis`
+- uscire verso `dataciviclab/analisi/`
 - uscire verso una repo progetto dedicata
 - essere archiviato come storico
 
