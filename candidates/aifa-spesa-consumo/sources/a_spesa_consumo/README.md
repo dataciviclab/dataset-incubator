@@ -1,4 +1,4 @@
-# Source A - spesa e consumo AIFA 2016-2024
+# Source A - spesa e consumo AIFA
 
 Fonte principale del candidate. Contiene entrambi i flussi (`convenzionata` e `tracciabilita`)
 nello stesso file, con null strutturali per il flusso non applicabile a ciascuna riga.
