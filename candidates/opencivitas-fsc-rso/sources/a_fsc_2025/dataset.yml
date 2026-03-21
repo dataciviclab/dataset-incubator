@@ -35,11 +35,16 @@ mart:
   tables:
     - name: "mart_fsc_comune"
       sql: "sql/mart.sql"
+    - name: "mart_compose_comuni"
+      sql: "sql/mart_compose.sql"
   required_tables:
     - "mart_fsc_comune"
+    - "mart_compose_comuni"
   validate:
     table_rules:
       mart_fsc_comune:
+        min_rows: 1000
+      mart_compose_comuni:
         min_rows: 1000
 
 validation:

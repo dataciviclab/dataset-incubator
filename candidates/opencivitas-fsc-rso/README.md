@@ -31,7 +31,8 @@ Perimetro iniziale volutamente stretto:
 - solo RSO
 - primo asse pulito nel source `A`
 - primo mapping anagrafico nel source `B`
-- prossimo passo: join minimo leggibile con poche componenti chiave:
+- primo compose minimo documentato in `compose/`, eseguito da source `A`
+- il join minimo leggibile resta su poche componenti chiave:
   - `POPOLAZIONE`
   - `CAPACITA_FISCALE`
   - `FONDO_PEREQUATIVO`
@@ -52,12 +53,14 @@ Perimetro iniziale volutamente stretto:
 
 - `sources/a_fsc_2025` verde
 - `sources/b_enti_2025` verde
-- primo join leggibile per comune come step successivo del candidate
+- `compose/` documentato
+- primo join leggibile per comune
 
 ## Criterio di promozione
 
 - [x] source `A` eseguibile
 - [x] source `B` eseguibile
-- [ ] join minimo leggibile tra `A` e `B`
+- [x] layer `compose/` documentato
+- [x] join minimo leggibile tra `A` e `B`
 - [ ] lettura v0 con almeno un output o notebook prudente
 - [ ] decisione se entra in `dataciviclab/preanalysis`
