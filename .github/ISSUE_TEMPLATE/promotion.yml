@@ -10,7 +10,7 @@ body:
         Usa questa issue quando un filone sembra pronto a uscire da `dataset-incubator`.
 
         Obiettivo:
-        - chiarire se il filone va verso `dataciviclab/preanalysis`, una repo progetto o archiviazione
+        - chiarire se il filone va verso `dataciviclab/analisi/`, una repo progetto o archiviazione
         - fissare cosa e' gia pronto
         - rendere espliciti i rischi aperti prima del passaggio
 
@@ -32,7 +32,7 @@ body:
       label: Target di uscita
       description: Dove dovrebbe andare il filone?
       options:
-        - dataciviclab/preanalysis
+        - dataciviclab/analisi/
         - repo progetto dedicata
         - archiviazione
     validations:

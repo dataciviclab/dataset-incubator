@@ -10,7 +10,7 @@ body:
         Usa questa issue per proporre un nuovo ingresso in `dataset-incubator`.
 
         Questo template copre due casi:
-        - `candidate`: filone con domanda civica e potenziale passaggio a `dataciviclab/preanalysis`
+        - `candidate`: filone con domanda civica e potenziale passaggio a `dataciviclab/analisi/`
         - `support`: dataset di supporto pensato per join, controlli o arricchimenti riusabili
 
         Mantieni il perimetro stretto: primo taglio, primo output minimo, prossimo passo concreto.
