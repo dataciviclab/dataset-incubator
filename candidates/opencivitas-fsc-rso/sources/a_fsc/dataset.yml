@@ -46,6 +46,12 @@ mart:
         min_rows: 1000
       mart_compose_comuni:
         min_rows: 1000
+        required_columns:
+          - "join_enti_ok"
+        # join_enti_ok e` una colonna booleana: required_columns garantisce
+        # che il join sia presente nell'output. Il tasso effettivo di join
+        # (percentuale di TRUE) va verificato manualmente nel notebook
+        # prima della pubblicazione.
 
 validation:
   fail_on_error: true
