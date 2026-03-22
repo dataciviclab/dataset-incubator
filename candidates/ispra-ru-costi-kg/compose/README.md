@@ -34,14 +34,16 @@ Scelta adottata:
 - il `compose/` resta documentato in una cartella propria
 - l'esecuzione resta agganciata a `sources/a_ru_base/dataset.yml`, per un vincolo del toolkit sul layer `mart`
 - in `sources/a_ru_base/sql/` resta quindi una copia eseguibile degli SQL del compose
+- gli SQL eseguibili del compose leggono gli artifact MART tramite `{root_posix}`, quindi seguono l'`effective_root` del dataset
 
 Dipendenza operativa del `v2`:
 
-- `mart_compose_v2` usa come lookup fisso il file `out/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet`
+- `mart_compose_v2` usa come lookup fisso il file `{root_posix}/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet`
 - quindi, su un clone fresco, conviene eseguire prima il `run mart` per il `2024` e solo dopo gli altri anni
 - il `2024` serve per:
   - calcolare le mediane del `quadrante_costo`
   - derivare il `cluster_demografico` dalla popolazione del cross mart
+- il path non dipende piu' dal current working directory: segue l'`effective_root` del dataset risolto dal toolkit
 
 Esecuzione:
 
