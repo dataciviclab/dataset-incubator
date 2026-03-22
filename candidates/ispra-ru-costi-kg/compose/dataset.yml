@@ -15,8 +15,8 @@
 #   cd dataset-incubator
 #   py -m toolkit.cli.app run mart --config candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml
 #
-# Output principali:
-#   out/data/mart/ispra_ru_base/{year}/mart_comuni.parquet
-#   out/data/mart/ispra_ru_costi_kg/{year}/mart_comuni.parquet
-#   out/data/mart/ispra_ru_costi_procapite/{year}/mart_comuni.parquet
-#   out/data/mart/ispra_ru_base/{year}/mart_cross_comuni.parquet
+# Output principali sotto l'effective_root del dataset:
+#   {root_posix}/data/mart/ispra_ru_base/{year}/mart_comuni.parquet
+#   {root_posix}/data/mart/ispra_ru_costi_kg/{year}/mart_comuni.parquet
+#   {root_posix}/data/mart/ispra_ru_costi_procapite/{year}/mart_comuni.parquet
+#   {root_posix}/data/mart/ispra_ru_base/{year}/mart_cross_comuni.parquet
