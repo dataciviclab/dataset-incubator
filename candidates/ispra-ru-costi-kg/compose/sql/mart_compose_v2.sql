@@ -4,19 +4,20 @@
 -- 2. derivare il cluster_demografico dal mart_cross_comuni 2024.
 --
 -- Conseguenza: su un clone fresco va materializzato prima il 2024 e solo dopo
--- gli altri anni. I path read_parquet sotto out/... riflettono il vincolo
--- operativo attuale del toolkit e restano un punto da migliorare in un follow-up.
+-- gli altri anni. Il lookup 2024 segue l'effective_root del dataset tramite
+-- il placeholder {root_posix}, quindi non dipende piu' dal current working
+-- directory.
 
 WITH base AS (
     SELECT *
     FROM read_parquet(
-        'out/data/mart/ispra_ru_base/{year}/mart_cross_comuni.parquet'
+        '{root_posix}/data/mart/ispra_ru_base/{year}/mart_cross_comuni.parquet'
     )
 ),
 sample_2024 AS (
     SELECT *
     FROM read_parquet(
-        'out/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet'
+        '{root_posix}/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet'
     )
     WHERE join_b_ok
       AND join_c_ok
@@ -40,7 +41,7 @@ cluster_lookup_2024 AS (
             ELSE '>100k'
         END AS cluster_demografico
     FROM read_parquet(
-        'out/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet'
+        '{root_posix}/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet'
     )
 )
 SELECT

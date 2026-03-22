@@ -3,7 +3,7 @@ WITH a AS (
         {year} AS anno,
         *
     FROM read_parquet(
-        'out/data/mart/ispra_ru_base/{year}/mart_comuni.parquet'
+        '{root_posix}/data/mart/ispra_ru_base/{year}/mart_comuni.parquet'
     )
 ),
 b AS (
@@ -11,7 +11,7 @@ b AS (
         {year} AS anno,
         *
     FROM read_parquet(
-        'out/data/mart/ispra_ru_costi_kg/{year}/mart_comuni.parquet'
+        '{root_posix}/data/mart/ispra_ru_costi_kg/{year}/mart_comuni.parquet'
     )
 ),
 c AS (
@@ -19,7 +19,7 @@ c AS (
         {year} AS anno,
         *
     FROM read_parquet(
-        'out/data/mart/ispra_ru_costi_procapite/{year}/mart_comuni.parquet'
+        '{root_posix}/data/mart/ispra_ru_costi_procapite/{year}/mart_comuni.parquet'
     )
 )
 SELECT

@@ -1,14 +1,14 @@
 -- mart_compose_v2.sql — ISPRA RU costi kg
 --
--- PREREQUISITO: eseguire con CWD = root di dataset-incubator
--- I path read_parquet sono relativi a out/data/mart/ispra_ru_base/
--- e dipendono dal working directory al momento del run.
+-- PREREQUISITO: questo SQL richiede un toolkit che espone {root_posix}
+-- nel template runtime. I read_parquet seguono l'effective_root del dataset
+-- invece di dipendere dal current working directory.
 --
 -- ORDINE OBBLIGATORIO:
 --   1. Materializzare l'anno 2024 prima di qualsiasi altro anno
 --   2. Solo dopo eseguire gli altri anni (es. 2020, 2021, 2022, 2023)
 --   Motivo: sample_2024 e cluster_lookup_2024 leggono sempre
---   out/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet
+--   {root_posix}/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet
 --   che deve esistere prima che gli altri anni vengano processati.
 --
 -- SCELTA ANALITICA: le soglie (soglia_rd_2024, soglia_costo_euro_ab_2024)
@@ -18,20 +18,16 @@
 -- non rispetto alle mediane di ogni singolo anno.
 -- quadrante_costo è valorizzato solo per anno = 2024.
 --
--- FOLLOW-UP TECNICO (issue da aprire): i path out/data/mart/... sono
--- hardcoded e fragili rispetto a ambienti con layout diverso.
--- Agganciare al root reale del dataset in una versione futura del toolkit.
-
 WITH base AS (
     SELECT *
     FROM read_parquet(
-        'out/data/mart/ispra_ru_base/{year}/mart_cross_comuni.parquet'
+        '{root_posix}/data/mart/ispra_ru_base/{year}/mart_cross_comuni.parquet'
     )
 ),
 sample_2024 AS (
     SELECT *
     FROM read_parquet(
-        'out/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet'
+        '{root_posix}/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet'
     )
     WHERE join_b_ok
       AND join_c_ok
@@ -55,7 +51,7 @@ cluster_lookup_2024 AS (
             ELSE '>100k'
         END AS cluster_demografico
     FROM read_parquet(
-        'out/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet'
+        '{root_posix}/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet'
     )
 )
 SELECT
