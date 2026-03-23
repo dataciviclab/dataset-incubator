@@ -1,0 +1,48 @@
+root: "../../../../out"
+schema_version: 1
+
+dataset:
+  name: "opencivitas_fsc_enti_rso"
+  years: [2025]
+
+raw:
+  extractor:
+    type: "unzip_first"
+  sources:
+    - name: "opencivitas_fsc_enti_2025_zip"
+      type: "http_file"
+      args:
+        url: "https://docs.opencivitas.it/Metadati_Enti_FSC_2025_xlsx.zip"
+        filename: "Metadati_Enti_FSC_2025_xlsx.zip"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    sheet_name: "anagrafica_enti2025"
+    trim_whitespace: true
+  validate:
+    min_rows: 1000
+    not_null:
+      - "username"
+      - "denominazione"
+
+mart:
+  tables:
+    - name: "mart_enti"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_enti"
+  validate:
+    table_rules:
+      mart_enti:
+        min_rows: 1000
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"

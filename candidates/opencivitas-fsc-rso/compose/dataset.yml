@@ -1,0 +1,24 @@
+# compose/dataset.yml - opencivitas-fsc-rso
+#
+# Questo file NON e` un dataset.yml eseguibile direttamente.
+# Documenta il layer compose/ come spazio del cross multi-source.
+#
+# Perche non e` eseguibile:
+#   il toolkit richiede che il mart viva sotto la base dir del dataset che lo esegue
+#   e il compose non ha raw/clean propri.
+#
+# Il SQL del compose vive in compose/sql/ ma viene eseguito da
+# sources/a_fsc/dataset.yml (vedi mart_compose_comuni).
+#
+# Come eseguire il compose:
+#   py -m toolkit.cli.app run mart --config candidates/opencivitas-fsc-rso/sources/a_fsc/dataset.yml
+#
+# Output principali:
+#   out/data/mart/opencivitas_fsc_2025_rso/2025/mart_compose_comuni.parquet
+
+root: "../../../out"
+schema_version: 1
+
+dataset:
+  name: "opencivitas_fsc_compose_rso"
+  years: [2025]

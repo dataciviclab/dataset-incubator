@@ -1,0 +1,60 @@
+root: "../../../../out"
+schema_version: 1
+
+dataset:
+  name: "opencivitas_fsc_2025_rso"
+  years: [2025]
+
+raw:
+  extractor:
+    type: "unzip_first_csv"
+  sources:
+    - name: "opencivitas_fsc_2025_zip"
+      type: "http_file"
+      args:
+        url: "https://docs.opencivitas.it/2025_VAR_FSC_1_2025_csv.zip"
+        filename: "2025_VAR_FSC_1_2025_csv.zip"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: latest
+    header: true
+    delim: ";"
+    encoding: "utf-8"
+    trim_whitespace: true
+  validate:
+    min_rows: 1000
+    not_null:
+      - "username"
+      - "componente"
+
+mart:
+  tables:
+    - name: "mart_fsc_comune"
+      sql: "sql/mart.sql"
+    - name: "mart_compose_comuni"
+      sql: "sql/mart_compose.sql"
+  required_tables:
+    - "mart_fsc_comune"
+    - "mart_compose_comuni"
+  validate:
+    table_rules:
+      mart_fsc_comune:
+        min_rows: 1000
+      mart_compose_comuni:
+        min_rows: 1000
+        required_columns:
+          - "join_enti_ok"
+        # join_enti_ok e` una colonna booleana: required_columns garantisce
+        # che il join sia presente nell'output. Il tasso effettivo di join
+        # (percentuale di TRUE) va verificato manualmente nel notebook
+        # prima della pubblicazione.
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
