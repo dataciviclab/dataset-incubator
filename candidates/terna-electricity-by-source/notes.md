@@ -9,7 +9,7 @@
 - workbook con un solo foglio: `Export`
 - presente una riga finale di testo `Applied filters...` da scartare nel clean
 - colonne rilevate: `Anno`, `Tipo produzione`, `Regione`, `Provincia`, `Fonte`, `Produzione (GWh)`
-- notebook iniziale previsto: `notebooks/terna_electricity_by_source_preanalysis_v0.ipynb`
+- notebook iniziale previsto: `v0`, oggi promosso nel layer pubblico del filone
 
 ## Analitico
 

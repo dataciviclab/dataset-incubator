@@ -23,29 +23,31 @@ Fonti di secondo livello, fuori dal perimetro iniziale finche il nucleo non regg
 
 ## Stato attuale
 
-Il candidato ha una struttura multi-fonte eseguibile e tre notebook di analisi con artifact separati:
+Il candidato ha una struttura multi-fonte eseguibile e tre linee di analisi con artifact separati.
+
+I notebook pubblici associati al filone vivono ora nel layer `dataciviclab/analisi/`; qui restano soprattutto pipeline, compose e artifact di riferimento.
 
 - `A` espone un `mart_regioni` con personale territoriale e residenti
 - `C` espone un `mart_regioni` con personale e dotazione ospedaliera
 - `D` espone tre mart distinti: `mart_regioni_v1` (mortalita totale 30+), `mart_regioni_v2` (Euro-2013 proxy) e `mart_regioni_v3` (broad age-standardization 30+)
 - `A` espone tre compose distinti: `mart_compose_regioni_v1`, `mart_compose_regioni_v2` e `mart_compose_regioni_v3`
 
-### Matrice notebook — artifact — metrica
+### Matrice analisi — artifact — metrica
 
-| Notebook | Artifact parquet | Metrica mortalita | Metodologia |
+| Analisi | Artifact parquet | Metrica mortalita | Metodologia |
 |---|---|---|---|
-| `malasanita_preanalysis_v1.ipynb` | `mart_compose_regioni_v1.parquet` | `decessi_30plus_per_100k_pop_totale` | baseline storica — mortalita totale 30+ (main) |
-| `malasanita_preanalysis_v2.ipynb` | `mart_compose_regioni_v2.parquet` | `decessi_evitabili_30plus_per_100k_pop_totale` | Euro-2013 proxy — 12 cause amenable/preventable, tasso grezzo 30+ |
-| `malasanita_v3.ipynb` | `mart_compose_regioni_v3.parquet` | `tasso_std_broad_evitabile_100k_30plus` | broad age-standardization 30+ su 3 bande età, pesi ESP2013 aggregati |
+| `v1` | `mart_compose_regioni_v1.parquet` | `decessi_30plus_per_100k_pop_totale` | baseline storica — mortalita totale 30+ (main) |
+| `v2` | `mart_compose_regioni_v2.parquet` | `decessi_evitabili_30plus_per_100k_pop_totale` | Euro-2013 proxy — 12 cause amenable/preventable, tasso grezzo 30+ |
+| `v3` | `mart_compose_regioni_v3.parquet` | `tasso_std_broad_evitabile_100k_30plus` | broad age-standardization 30+ su 3 bande età, pesi ESP2013 aggregati |
 
 ### v1 — baseline storica (main)
 
-Proxy mortalita totale 30+ (`cod_causa=25`). Notebook: `malasanita_preanalysis_v1.ipynb`.
+Proxy mortalita totale 30+ (`cod_causa=25`). Riferimento pubblico: analisi `v1`.
 
 ### v2 — proxy grezzo Euro-2013 (supporto)
 
 Proxy Euro-2013 (12 cause amenable/preventable, tasso grezzo 30+).
-Notebook: `malasanita_preanalysis_v2.ipynb`.
+Riferimento pubblico: analisi `v2`.
 
 Ruolo attuale: proxy grezzo di supporto, documentato e mantenuto, non eliminato.
 La v3 e` la metrica raccomandata per il confronto inter-regionale (vedi sotto).
@@ -81,7 +83,7 @@ Liguria scende da #1 (artefatto demografico) a #9; Campania sale da #11 a #1.
 - `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v2.parquet` — tabella regionale 2022, metrica v2
 - `out/data/mart/malasanita_a_strutture_asl/2022/mart_compose_regioni_v3.parquet` — tabella regionale 2022, metrica v3
 - join A/C/D stabile su 21 unita territoriali (join_c_ok e join_d_ok = 21/21)
-- tre notebook eseguibili (v1, v2, v3) con artifact separati e narrativa metodologica esplicita
+- tre linee di analisi (v1, v2, v3) con artifact separati e narrativa metodologica esplicita nel layer pubblico
 
 ## Criterio di promozione
 

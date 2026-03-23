@@ -16,7 +16,7 @@ Questo candidato non e piu attivo in `dataset-incubator`.
 - fonte: `CivileFlussi20142024.xlsx` (Ministero della Giustizia / dati e statistiche)
 - copertura: 2014-2024 nel file sorgente; `years: [2024]` usato come chiave di snapshot del run
 - nota struttura: foglio `data` + foglio descrittivo `Read me`; classificazione modificata dal 2021 (tribunale imprese) e dal 2022 (CCII)
-- sql, yml e notebook D1 restano come riferimento storico del lavoro in incubator
+- sql, yml e riferimenti tecnici al notebook D1 restano come traccia storica del lavoro in incubator
 
 ## Riferimento attivo
 
