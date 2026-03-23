@@ -2,14 +2,13 @@
 --
 -- Input: foglio Comuni_2006_2024 dal file XLSX ISPRA (rilascio 2025, anni 2006-2024)
 -- La riga 0 del foglio contiene header ISPRA originali.
--- Colonne selezionate (perimetro minimo v0):
---   pro_com                  — codice ISTAT comune (6 cifre: 3 provincia + 3 comune)
---   comune                   — nome comune
---   provincia                — nome provincia
---   regione                  — nome regione
---   incremento_ha_2023_2024  — incremento netto consumo suolo 2023-2024 [ettari]
---   stock_ha_2024            — suolo consumato cumulato 2024 [ettari]
---   stock_pct_2024           — suolo consumato 2024 [% superficie]
+-- Colonne selezionate:
+--   pro_com / comune / provincia / regione
+--   incremento_netto_ha_<periodo>  — incremento netto consumo suolo [ettari]
+--   incremento_lordo_ha_<periodo>  — incremento lordo consumo suolo [ettari]
+--   incremento_ha_2023_2024        — alias backward-compatible del netto 2023-2024
+--   stock_ha_2024                  — suolo consumato cumulato 2024 [ettari]
+--   stock_pct_2024                 — suolo consumato 2024 [% superficie]
 --
 -- Nomi colonne verificati sul file reale (rilascio 2025): unita = [ettari], non [ha].
 
@@ -20,9 +19,119 @@ SELECT
     TRIM(CAST("Nome_Regione"   AS VARCHAR))              AS regione,
     TRY_CAST(
         REPLACE(
+            TRIM(CAST("Incremento netto 2006-2012 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2006_2012,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2006-2012 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2006_2012,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2012-2015 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2012_2015,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2012-2015 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2012_2015,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2015-2016 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2015_2016,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2015-2016 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2015_2016,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2016-2017 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2016_2017,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2016-2017 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2016_2017,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2017-2018 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2017_2018,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2017-2018 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2017_2018,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2018-2019 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2018_2019,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2018-2019 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2018_2019,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2019-2020 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2019_2020,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2019-2020 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2019_2020,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2020-2021 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2020_2021,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2020-2021 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2020_2021,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2021-2022 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2021_2022,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2021-2022 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2021_2022,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2022-2023 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2022_2023,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2022-2023 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2022_2023,
+    TRY_CAST(
+        REPLACE(
             TRIM(CAST("Incremento netto 2023-2024 [ettari]" AS VARCHAR)), ',', '.'
         ) AS DOUBLE
     )                                                    AS incremento_ha_2023_2024,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento netto 2023-2024 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_netto_ha_2023_2024,
+    TRY_CAST(
+        REPLACE(
+            TRIM(CAST("Incremento lordo 2023-2024 [ettari]" AS VARCHAR)), ',', '.'
+        ) AS DOUBLE
+    )                                                    AS incremento_lordo_ha_2023_2024,
     TRY_CAST(
         REPLACE(
             TRIM(CAST("Suolo consumato 2024 [ettari]"  AS VARCHAR)), ',', '.'
