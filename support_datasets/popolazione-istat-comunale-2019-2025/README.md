@@ -22,7 +22,7 @@ Vale soprattutto come base infrastrutturale per:
 - indicatori pro capite
 - doppio check su variazioni territoriali o anomalie nei dataset comunali
 
-Non entra in `preanalysis` per default: il suo ruolo iniziale e supportare altri filoni.
+Non entra in `analisi/` per default: il suo ruolo iniziale e supportare altri filoni.
 
 ## Output minimo atteso
 

@@ -63,4 +63,4 @@ Perimetro iniziale volutamente stretto:
 - [x] layer `compose/` documentato
 - [x] join minimo leggibile tra `A` e `B`
 - [ ] lettura v0 con almeno un output o notebook prudente
-- [ ] decisione se entra in `dataciviclab/preanalysis`
+- [ ] decisione se entra in `dataciviclab/analisi/`

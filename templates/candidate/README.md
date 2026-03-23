@@ -1,4 +1,4 @@
-# Template preproject
+# Template candidato
 
 Questo e il template operativo canonico della repo.
 

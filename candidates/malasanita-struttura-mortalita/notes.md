@@ -142,7 +142,7 @@ Adottata Opzione A: nomi espliciti v1/v2 su tutti gli artifact.
 |---|---|---|---|
 | D mart | `mart_regioni_v1.sql` / `.parquet` | `mart_regioni_v2.sql` / `.parquet` | `mart_regioni_v3.sql` / `.parquet` |
 | A compose | `mart_compose_regioni_v1.sql` / `.parquet` | `mart_compose_regioni_v2.sql` / `.parquet` | `mart_compose_regioni_v3.sql` / `.parquet` |
-| Notebook | `malasanita_preanalysis_v1.ipynb` | `malasanita_preanalysis_v2.ipynb` | `malasanita_preanalysis_v3.ipynb` |
+| Analisi pubblica | `v1` | `v2` | `v3` |
 | Metrica | `decessi_30plus_per_100k_pop_totale` | `decessi_evitabili_30plus_per_100k_pop_totale` | `tasso_std_broad_evitabile_100k_30plus` |
 
 I file `mart.sql` (D) e `mart_compose_regioni.sql` (A) sono marcati LEGACY nel commento di testa.

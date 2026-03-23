@@ -34,7 +34,7 @@
 
 ## Stato del candidate
 
-- notebook `v0` aggiunto: `notebooks/mit_opere_incompiute_2020_preanalysis_v0.ipynb`
+- notebook `v1` aggiunto: `notebooks/mit_opere_incompiute_2020_v1.ipynb`
 - tracking operativo: issue `dataset-incubator#35`
 
 Issue collegata:

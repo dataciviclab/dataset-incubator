@@ -1,4 +1,4 @@
-# AIFA spesa e consumo farmaceutica 2016-2024
+# AIFA spesa e consumo farmaceutica
 
 ## Domanda
 

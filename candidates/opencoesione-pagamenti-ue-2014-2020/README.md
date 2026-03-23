@@ -76,4 +76,4 @@ Primi segnali emersi:
 - [ ] clean eseguibile sul ciclo `2014-2020`
 - [ ] mart leggibile a livello `regione x tema`
 - [x] primo notebook o query v0 con lettura prudente
-- [ ] decisione se entra in `dataciviclab/preanalysis`
+- [ ] decisione se entra in `dataciviclab/analisi/`

@@ -210,7 +210,7 @@ python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug
 
 Usa il template `promotion.yml` quando il filone sembra pronto per:
 
-- `dataciviclab/preanalysis`
+- `dataciviclab/analisi/`
 - repo progetto dedicata
 - archiviazione
 
