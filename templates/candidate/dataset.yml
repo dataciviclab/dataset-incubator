@@ -36,7 +36,7 @@ clean:
     header: true
   validate: 
     # min_rows: 100 # Esempio check qualita
-    fail_on_error: true
+    primary_key: []
 
 # --- MART LAYER ---
 # Tabelle finali pronte per l'analisi o l'explorer.
