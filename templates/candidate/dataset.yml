@@ -5,30 +5,56 @@ dataset:
   name: "template_dataset"
   years: [2024]
 
+# --- RAW LAYER ---
+# Configurazione delle fonti dati originali.
 raw:
+  # extractor: 
+  #   type: "unzip_first_csv" # Decommenta se la fonte e un ZIP
   sources:
-    - name: "template_source"
-      type: "local_file"
+    # Esempio http_file (caso piu comune):
+    - name: "fonte_principale_http"
+      type: "http_file"
       args:
-        path: "data/raw/template_{year}.csv"
-        filename: "template_{year}.csv"
+        url: "https://example.com/data/dataset_{year}.csv"
+        filename: "dataset_{year}.csv"
       primary: true
+    
+    # Esempio local_file (alternativo):
+    # - name: "template_local"
+    #   type: "local_file"
+    #   args:
+    #     path: "data/raw/template_{year}.csv"
+    #     filename: "template_{year}.csv"
 
+# --- CLEAN LAYER ---
+# Lettura dei dati RAW e prima trasformazione SQL.
 clean:
   sql: "sql/clean.sql"
   read:
-    source: "auto"
+    source: "auto" # 'auto' rileva formato da estensione filename
     mode: "latest"
     header: true
-  validate: {}
+  validate: 
+    # min_rows: 100 # Esempio check qualita
+    primary_key: []
 
+# --- MART LAYER ---
+# Tabelle finali pronte per l'analisi o l'explorer.
 mart:
   tables:
-    - name: "template_table"
+    - name: "mart_template"
       sql: "sql/mart.sql"
   required_tables:
-    - "template_table"
+    - "mart_template"
   validate: {}
+
+# --- CROSS YEAR LAYER (Optional) ---
+# Operazioni che richiedono il join di piu anni (es. trend storici).
+# cross_year:
+#   tables:
+#     - name: "trend_multi_anno"
+#       sql: "sql/mart_multi_anno.sql"
+#       source_layer: "clean"
 
 validation:
   fail_on_error: true

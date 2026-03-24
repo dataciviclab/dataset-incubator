@@ -1,6 +1,6 @@
 # Template candidato
 
-Questo e il template operativo canonico della repo.
+Questo e il template operativo canonico della repo.   
 
 Ogni nuovo ingresso in `dataset-incubator` dovrebbe partire da questa cartella, adattando:
 
@@ -13,6 +13,8 @@ Ogni nuovo ingresso in `dataset-incubator` dovrebbe partire da questa cartella, 
 ## Domanda
 
 -
+> Una domanda civica valida ha una tensione ("sta migliorando o peggiorando?", "c'e un divario?"),
+> non e puramente descrittiva ("quanti sono") ed e verificabile con i dati disponibili.
 
 ## Dataset
 
