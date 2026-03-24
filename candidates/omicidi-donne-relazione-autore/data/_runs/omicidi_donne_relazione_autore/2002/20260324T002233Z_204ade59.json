@@ -1,0 +1,32 @@
+{
+  "dataset": "omicidi_donne_relazione_autore",
+  "year": 2002,
+  "run_id": "20260324T002233Z_204ade59",
+  "started_at": "2026-03-24T00:22:33.579798+00:00",
+  "finished_at": "2026-03-24T00:22:33.584164+00:00",
+  "status": "FAILED",
+  "layers": {
+    "raw": {
+      "status": "FAILED",
+      "started_at": "2026-03-24T00:22:33.582841+00:00",
+      "finished_at": "2026-03-24T00:22:33.583903+00:00"
+    },
+    "clean": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    },
+    "mart": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    }
+  },
+  "validations": {
+    "raw": {},
+    "clean": {},
+    "mart": {}
+  },
+  "resumed_from": null,
+  "error": "'url'"
+}
