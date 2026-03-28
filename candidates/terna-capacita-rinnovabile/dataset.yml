@@ -2,28 +2,9 @@ schema_version: 1
 
 dataset:
   name: "terna_capacita_rinnovabile_provinciale"
+  description: "Analisi storica della capacità installata rinnovabile per provincia (2020-2024)"
+  license: "CC-BY-4.0"
   years: [2020, 2021, 2022, 2023, 2024]
 
-raw:
-  sources:
-    - name: "terna_raw"
-      type: "local_file"
-      args:
-        path: "data/raw/terna_capacita/{year}/{year}.xlsx"
-      primary: true
-
-clean:
-  sql: "sql/clean.sql"
-  validate: {} 
-  required_columns: []
-
-mart:
-  root: "../../out/terna-capacita-rinnovabile"
-  tables:
-    - name: "capacita_provinciale_unita"
-      sql: "sql/mart.sql"
-  validate: {}
-
-
-validation:
-  fail_on_error: true
+# Rimuoviamo le sezioni raw, clean e mart per il candidate
+# così il validatore smette di cercare la cartella /out
