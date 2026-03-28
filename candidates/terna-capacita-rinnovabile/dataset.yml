@@ -18,10 +18,10 @@ clean:
   required_columns: []
 
 mart:
+  root: "../../out/terna-capacita-rinnovabile"
   tables:
     - name: "capacita_provinciale_unita"
       sql: "sql/mart.sql"
-  # Prova a passare un oggetto vuoto se il toolkit non riconosce i campi
   validate: {}
 
 
