@@ -2,9 +2,4 @@ schema_version: 1
 
 dataset:
   name: "terna_capacita_rinnovabile_provinciale"
-  description: "Analisi storica della capacità installata rinnovabile per provincia (2020-2024)"
-  license: "CC-BY-4.0"
   years: [2020, 2021, 2022, 2023, 2024]
-
-# Rimuoviamo le sezioni raw, clean e mart per il candidate
-# così il validatore smette di cercare la cartella /out
