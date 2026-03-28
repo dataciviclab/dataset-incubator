@@ -3,3 +3,17 @@ schema_version: 1
 dataset:
   name: "terna_capacita_rinnovabile_provinciale"
   years: [2020, 2021, 2022, 2023, 2024]
+
+# Questo serve a Gabrymi per capire da dove arrivano i dati
+raw:
+  sources:
+    - name: "terna_raw"
+      type: "local_file"
+      args:
+        path: "data/raw/terna_capacita/{year}/{year}.xlsx"
+
+# Questo spiega come hai unito i file
+mart:
+  tables:
+    - name: "capacita_provinciale_unita"
+      sql: "sql/mart.sql"
