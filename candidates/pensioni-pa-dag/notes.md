@@ -12,6 +12,7 @@
 - shape clean verificata via `duckdb_describe`: `63.547` righe x `18` colonne
 - shape mart verificata via `duckdb_describe`: `40` righe x `7` colonne
 - rischio residuo di runtime: su Windows il comando `toolkit run all` chiude i layer ma fallisce nel rename finale del file `_runs/` con `WinError 5`; il bug sembra nel run record, non nel candidate
+- notebook v0 eseguito - celle 1-5 ok, output cleared
 
 ## Metodologia di ingestion
 
