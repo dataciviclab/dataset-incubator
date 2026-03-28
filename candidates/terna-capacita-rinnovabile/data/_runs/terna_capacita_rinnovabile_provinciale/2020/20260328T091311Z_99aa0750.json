@@ -1,0 +1,32 @@
+{
+  "dataset": "terna_capacita_rinnovabile_provinciale",
+  "year": 2020,
+  "run_id": "20260328T091311Z_99aa0750",
+  "started_at": "2026-03-28T09:13:11.521545+00:00",
+  "finished_at": "2026-03-28T09:13:12.956131+00:00",
+  "status": "FAILED",
+  "layers": {
+    "raw": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    },
+    "clean": {
+      "status": "FAILED",
+      "started_at": "2026-03-28T09:13:11.527362+00:00",
+      "finished_at": "2026-03-28T09:13:12.955401+00:00"
+    },
+    "mart": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    }
+  },
+  "validations": {
+    "raw": {},
+    "clean": {},
+    "mart": {}
+  },
+  "resumed_from": null,
+  "error": "Catalog Error: Table with name terna_raw does not exist!\nDid you mean \"pg_prepared_statements\"?\n\nLINE 13: FROM terna_raw\n              ^"
+}

@@ -1,0 +1,45 @@
+{
+  "metadata_schema_version": 1,
+  "timestamp_utc": "2026-03-28T09:19:36.734307+00:00",
+  "toolkit_version": "1.1.1",
+  "layer": "clean",
+  "dataset": "terna_capacita_rinnovabile_provinciale",
+  "year": 2023,
+  "sql": "sql/clean.sql",
+  "sql_rendered": "data/clean/terna_capacita_rinnovabile_provinciale/2023/_run/clean_rendered.sql",
+  "template_ctx": {
+    "year": 2023,
+    "dataset": "terna_capacita_rinnovabile_provinciale"
+  },
+  "read": null,
+  "read_mode": "fallback",
+  "read_params_source": [
+    "defaults",
+    "suggested"
+  ],
+  "read_source_used": "excel",
+  "read_params_used": {
+    "sheet_name": 0,
+    "header": true,
+    "skip": 0,
+    "trim_whitespace": true
+  },
+  "config_hash": "54247626ada5b900160bd5d4d441e7402f8ad266a1687849137c7f8b1b0d3c8e",
+  "inputs": [
+    {
+      "file": "terna_raw.xlsx",
+      "sha256": "32764227395567b1f68d86e8dabdb72dfad4ce10fe933e0efc80cb5a5d537bf5",
+      "bytes": 35360
+    }
+  ],
+  "outputs": [
+    {
+      "file": "terna_capacita_rinnovabile_provinciale_2023_clean.parquet",
+      "sha256": "28b8ae341edf3bd46f4d1d4e8d1c56f36fc9daddcfb1e5e8672017231d6b123b",
+      "bytes": 7616
+    }
+  ],
+  "input_files": [
+    "terna_raw.xlsx"
+  ]
+}

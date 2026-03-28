@@ -1,0 +1,48 @@
+{
+  "dataset": "terna_capacita_rinnovabile_provinciale",
+  "year": 2021,
+  "run_id": "20260328T090943Z_8e534928",
+  "started_at": "2026-03-28T09:09:43.689296+00:00",
+  "finished_at": "2026-03-28T09:09:43.708961+00:00",
+  "status": "SUCCESS",
+  "layers": {
+    "raw": {
+      "status": "SUCCESS",
+      "started_at": "2026-03-28T09:09:43.692867+00:00",
+      "finished_at": "2026-03-28T09:09:43.703521+00:00"
+    },
+    "clean": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    },
+    "mart": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    }
+  },
+  "validations": {
+    "raw": {
+      "passed": true,
+      "errors_count": 0,
+      "warnings_count": 0,
+      "checks": [
+        {
+          "name": "errors",
+          "status": "passed",
+          "details": "errors=0"
+        },
+        {
+          "name": "warnings",
+          "status": "passed",
+          "details": "warnings=0"
+        }
+      ]
+    },
+    "clean": {},
+    "mart": {}
+  },
+  "resumed_from": null,
+  "error": null
+}

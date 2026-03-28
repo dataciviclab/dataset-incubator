@@ -1,0 +1,16 @@
+{
+  "metadata": "metadata.json",
+  "validation": "_validate/clean_validation.json",
+  "summary": {
+    "ok": true,
+    "errors_count": 0,
+    "warnings_count": 0
+  },
+  "outputs": [
+    {
+      "file": "terna_capacita_rinnovabile_provinciale_2024_clean.parquet",
+      "sha256": "07bf62f327243a15991152d85236db6e041148349bbf6773a2ba32a791c2175b",
+      "bytes": 7638
+    }
+  ]
+}

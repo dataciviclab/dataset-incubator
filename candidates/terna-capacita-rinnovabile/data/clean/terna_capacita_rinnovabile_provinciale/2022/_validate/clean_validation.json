@@ -1,0 +1,24 @@
+{
+  "validation_schema_version": 1,
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "summary": {
+    "path": "data/clean/terna_capacita_rinnovabile_provinciale/2022/terna_capacita_rinnovabile_provinciale_2022_clean.parquet",
+    "row_count": 1154,
+    "columns": [
+      "anno",
+      "tipo_capacita",
+      "regione",
+      "provincia",
+      "fonti",
+      "potenza_mw"
+    ],
+    "required": [],
+    "primary_key": [],
+    "not_null": [],
+    "ranges": {},
+    "max_null_pct": {},
+    "min_rows": null
+  }
+}

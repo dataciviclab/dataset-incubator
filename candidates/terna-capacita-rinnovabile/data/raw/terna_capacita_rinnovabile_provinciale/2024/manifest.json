@@ -1,0 +1,27 @@
+{
+  "dataset": "terna_capacita_rinnovabile_provinciale",
+  "year": 2024,
+  "run_id": "20260328T090943Z_1db0539d",
+  "created_at": "2026-03-28T09:09:43.787400+00:00",
+  "sources": [
+    {
+      "name": "terna_raw",
+      "output_file": "terna_raw.xlsx"
+    }
+  ],
+  "primary_output_file": "terna_raw.xlsx",
+  "metadata": "metadata.json",
+  "validation": "raw_validation.json",
+  "summary": {
+    "ok": true,
+    "errors_count": 0,
+    "warnings_count": 0
+  },
+  "outputs": [
+    {
+      "file": "terna_raw.xlsx",
+      "sha256": "ea4aa1ad3c8d62df2d420574e8b96cc618629ab4b07b3d109e787449ba43aa26",
+      "bytes": 33055
+    }
+  ]
+}

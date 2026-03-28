@@ -1,0 +1,16 @@
+{
+  "metadata": "metadata.json",
+  "validation": "_validate/mart_validation.json",
+  "summary": {
+    "ok": true,
+    "errors_count": 0,
+    "warnings_count": 0
+  },
+  "outputs": [
+    {
+      "file": "capacita_provinciale_unita.parquet",
+      "sha256": "da6cdd6fa539a16439763e6e3052b7c655320c0ebe256e823978d45965cae2c5",
+      "bytes": 6419
+    }
+  ]
+}

@@ -1,0 +1,38 @@
+{
+  "metadata_schema_version": 1,
+  "timestamp_utc": "2026-03-28T09:29:40.338282+00:00",
+  "toolkit_version": "1.1.1",
+  "layer": "mart",
+  "dataset": "terna_capacita_rinnovabile_provinciale",
+  "year": 2024,
+  "config_hash": "a3e772d623596cecba4316bb216486f4af6cff9061ee2183beb28f319697e192",
+  "inputs": [
+    {
+      "file": "terna_capacita_rinnovabile_provinciale_2024_clean.parquet",
+      "sha256": "07bf62f327243a15991152d85236db6e041148349bbf6773a2ba32a791c2175b",
+      "bytes": 7638
+    }
+  ],
+  "outputs": [
+    {
+      "file": "capacita_provinciale_unita.parquet",
+      "sha256": "4f1b5fb90978da5865d94f24a291cb8ea33fd5c7b2b730943f675ddcd7812da6",
+      "bytes": 6258
+    }
+  ],
+  "output_paths": [
+    "data/mart/terna_capacita_rinnovabile_provinciale/2024/capacita_provinciale_unita.parquet"
+  ],
+  "template_ctx": {
+    "year": 2024,
+    "dataset": "terna_capacita_rinnovabile_provinciale"
+  },
+  "tables": [
+    {
+      "name": "capacita_provinciale_unita",
+      "sql": "sql/mart.sql",
+      "sql_rendered": "data/mart/terna_capacita_rinnovabile_provinciale/2024/_run/01_capacita_provinciale_unita_rendered.sql",
+      "output": "data/mart/terna_capacita_rinnovabile_provinciale/2024/capacita_provinciale_unita.parquet"
+    }
+  ]
+}

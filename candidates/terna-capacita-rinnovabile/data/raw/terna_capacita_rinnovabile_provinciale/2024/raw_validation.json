@@ -1,0 +1,10 @@
+{
+  "validation_schema_version": 1,
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "summary": {
+    "files": 1,
+    "total_bytes": 33055
+  }
+}

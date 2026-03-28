@@ -1,0 +1,32 @@
+{
+  "dataset": "terna_capacita_rinnovabile_provinciale",
+  "year": 2020,
+  "run_id": "20260327T121052Z_50d96086",
+  "started_at": "2026-03-27T12:10:52.451835+00:00",
+  "finished_at": "2026-03-27T12:10:52.459934+00:00",
+  "status": "FAILED",
+  "layers": {
+    "raw": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    },
+    "clean": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    },
+    "mart": {
+      "status": "FAILED",
+      "started_at": "2026-03-27T12:10:52.458207+00:00",
+      "finished_at": "2026-03-27T12:10:52.459329+00:00"
+    }
+  },
+  "validations": {
+    "raw": {},
+    "clean": {},
+    "mart": {}
+  },
+  "resumed_from": null,
+  "error": "CLEAN dir not found: /Users/alessio/Documents/dataciviclab-workspace/dataset-incubator/candidates/terna-capacita-rinnovabile/data/clean/terna_capacita_rinnovabile_provinciale/2020. Run: toolkit run clean -c dataset.yml"
+}

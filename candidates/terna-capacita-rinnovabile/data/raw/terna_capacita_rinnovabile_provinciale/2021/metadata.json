@@ -1,0 +1,36 @@
+{
+  "metadata_schema_version": 1,
+  "timestamp_utc": "2026-03-28T09:09:43.699888+00:00",
+  "toolkit_version": "1.1.1",
+  "layer": "raw",
+  "dataset": "terna_capacita_rinnovabile_provinciale",
+  "year": 2021,
+  "run_id": "20260328T090943Z_8e534928",
+  "config_hash": "47a268c18ade0df316163b696055419b0079351ba09fde51da5192a55cea71e5",
+  "inputs": [
+    {
+      "file": "terna_raw",
+      "bytes": 34757,
+      "sha256": "e5c8eb0e293ee21721f7bbba2ca0b61b55bae76ea0d54070f302b92cea7fcffc",
+      "origin": "/Users/alessio/Documents/dataciviclab-workspace/dataset-incubator/candidates/terna-capacita-rinnovabile/data/raw/terna_capacita/2021/2021.xlsx"
+    }
+  ],
+  "outputs": [
+    {
+      "file": "terna_raw.xlsx",
+      "sha256": "e5c8eb0e293ee21721f7bbba2ca0b61b55bae76ea0d54070f302b92cea7fcffc",
+      "bytes": 34757
+    }
+  ],
+  "files": [
+    {
+      "file": "terna_raw.xlsx",
+      "bytes": 34757,
+      "sha256": "e5c8eb0e293ee21721f7bbba2ca0b61b55bae76ea0d54070f302b92cea7fcffc",
+      "source_name": "terna_raw",
+      "source_type": "local_file",
+      "origin": "/Users/alessio/Documents/dataciviclab-workspace/dataset-incubator/candidates/terna-capacita-rinnovabile/data/raw/terna_capacita/2021/2021.xlsx"
+    }
+  ],
+  "profile_hints": null
+}

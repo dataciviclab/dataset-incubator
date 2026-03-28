@@ -1,0 +1,22 @@
+{
+  "validation_schema_version": 1,
+  "ok": true,
+  "errors": [],
+  "warnings": [],
+  "summary": {
+    "dir": "data/mart/terna_capacita_rinnovabile_provinciale/2024",
+    "tables": [
+      "capacita_provinciale_unita"
+    ],
+    "required_tables": [],
+    "declared_tables": [
+      "capacita_provinciale_unita"
+    ],
+    "row_counts": {
+      "capacita_provinciale_unita": 535
+    },
+    "orphan_table_rules": [],
+    "table_rules": {},
+    "per_table": {}
+  }
+}
