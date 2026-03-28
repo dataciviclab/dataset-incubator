@@ -1,0 +1,29 @@
+schema_version: 1
+
+dataset:
+  name: "terna_capacita_rinnovabile_provinciale"
+  years: [2020, 2021, 2022, 2023, 2024]
+
+raw:
+  sources:
+    - name: "terna_raw"
+      type: "local_file"
+      args:
+        path: "data/raw/terna_capacita/{year}/{year}.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  validate: {} 
+  required_columns: []
+
+mart:
+  tables:
+    - name: "capacita_provinciale_unita"
+      sql: "sql/mart.sql"
+  # Prova a passare un oggetto vuoto se il toolkit non riconosce i campi
+  validate: {}
+
+
+validation:
+  fail_on_error: true
