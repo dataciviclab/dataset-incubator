@@ -1,0 +1,46 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "pensioni_pa_dag_2024"
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "dag_pensioni_totale_local"
+      type: "local_file"
+      args:
+        path: "inputs/Dati_Tipo_Pensione_totale.csv"
+        filename: "Dati_Tipo_Pensione_totale_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    min_rows: 5000
+
+mart:
+  tables:
+    - name: "mart_regioni_dicembre"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_regioni_dicembre"
+  validate:
+    table_rules:
+      mart_regioni_dicembre:
+        min_rows: 40
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"

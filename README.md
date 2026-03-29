@@ -76,6 +76,8 @@ candidates/caso/
   dataset.yml
   notes.md
   README.md
+  notebooks/
+    caso_v0.ipynb
   sql/
     clean.sql
     mart.sql
@@ -99,6 +101,7 @@ candidates/caso/
 ```
 
 Il template base e' in `templates/candidate/` e segue il pattern single-source.
+Il notebook `v0` e' opzionale ma consigliato come sanity check del mart prima della promozione.
 
 ## Uscita da `dataset-incubator`
 
