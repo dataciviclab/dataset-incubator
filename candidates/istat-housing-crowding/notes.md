@@ -11,6 +11,10 @@
 
 `ABITAZ_AFFOLL_MED` non e il tasso EU-SILC di sovraffollamento.
 Qui il pilot usa un indicatore di densita abitativa media (`componenti per 100 mq`).
+La formulazione e ancorata alle label SDMX osservate nel flow:
+
+- `DATA_TYPE_label = household crowding index (number of components of household per square meter)`
+- `MEASURE_label = per hundred values`
 
 ## Nota tecnica importante
 

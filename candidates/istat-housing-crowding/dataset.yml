@@ -32,7 +32,8 @@ raw:
           AGE_MAIN_EARNIER: "9"
           EDU_LEV_MAIN_EARN: "99"
           LABPROF_STATUS_C_MAIN_EARNER: "99"
-        filename: "istat_housing_crowding_{year}.csv"
+        # `year` here is only the runtime partition. The SDMX fetch returns the whole series.
+        filename: "istat_housing_crowding_series.csv"
       primary: true
 
 clean:
@@ -55,7 +56,7 @@ mart:
   validate:
     table_rules:
       mart_crowding_tenure_italy:
-        min_rows: 20
+        min_rows: 35
 
 validation:
   fail_on_error: true

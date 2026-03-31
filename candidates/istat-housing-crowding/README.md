@@ -11,6 +11,13 @@
 - misura: `10` (`per hundred values`)
 - provider: `IT1`
 - endpoint dati usato nel pilot: `https://esploradati.istat.it/SDMXWS/rest`
+- definizione usata nel candidate:
+  - label SDMX di `DATA_TYPE`: `household crowding index (number of components of household per square meter)`
+  - label SDMX di `MEASURE`: `per hundred values`
+
+> [!IMPORTANT]
+> Questo candidate usa un indicatore di densita abitativa media.
+> Non e il tasso EU-SILC di sovraffollamento binario.
 
 ## Perche vale la pena testarlo
 
