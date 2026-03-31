@@ -23,7 +23,7 @@
 - raw: download diretto del CSV INPS
 - clean: tabella normalizzata con anno, trimestre, sesso, classe età, classe importo, regione e numero pensioni
 - mart: aggregato regionale per classe importo, sesso e trimestre
-- base pronta per notebook v0 su quota pensioni basse e gap territoriale
+- notebook v0 esplorativo su quota pensioni basse e gap territoriale
 
 ## Criterio di promozione
 
@@ -40,4 +40,4 @@ Issue collegata:
 
 ## Prossimo passo
 
-- verificare primo run reale su CSV e controllare se le classi di importo restano stabili lungo la serie
+- verificare nel notebook v0 se le classi di importo restano stabili lungo la serie 2017-2024
