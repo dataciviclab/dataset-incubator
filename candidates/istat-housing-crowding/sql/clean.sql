@@ -11,5 +11,3 @@ select
     try_cast(value as double) as componenti_per_100mq
 from raw_input
 where try_cast(TIME_PERIOD as integer) is not null
-  and REF_AREA = 'IT'
-  and TENURE_STATUS in ('1', '2')
