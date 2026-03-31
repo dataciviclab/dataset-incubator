@@ -1,0 +1,46 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "inps_pensioni_2017_2024"
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "inps_pensioni_csv"
+      type: "http_file"
+      args:
+        url: "https://www.inps.it/content/dam/inps-site/opendata/2024/08/dataset_6002.csv"
+        filename: "dataset_6002_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    min_rows: 100000
+
+mart:
+  tables:
+    - name: "mart_pensioni_regione_importo"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_pensioni_regione_importo"
+  validate:
+    table_rules:
+      mart_pensioni_regione_importo:
+        min_rows: 5000
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
