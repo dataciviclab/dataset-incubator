@@ -1,0 +1,64 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_housing_crowding"
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sdmx_housing_crowding"
+      type: "sdmx"
+      client:
+        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+      args:
+        agency: "IT1"
+        flow: "33_179"
+        version: "1.0"
+        filters:
+          FREQ: "A"
+          REF_AREA: "IT"
+          DATA_TYPE: "ABITAZ_AFFOLL_MED"
+          MEASURE: "10"
+          TENURE_STATUS: ["1", "2"]
+          NUMBER_HOUSEHOLD_COMP: "99"
+          HOUSEHOLD_TYPOLOGY: "99"
+          NUMB_OF_CHILDREN: "9"
+          NUMB_OF_ELDERLY: "9"
+          FIFTH_EQUIV_HOUSE_INC: "9"
+          SEX_MAIN_PERCEPTOR: "9"
+          AGE_MAIN_EARNIER: "9"
+          EDU_LEV_MAIN_EARN: "99"
+          LABPROF_STATUS_C_MAIN_EARNER: "99"
+        filename: "istat_housing_crowding_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    min_rows: 20
+
+mart:
+  tables:
+    - name: "mart_crowding_tenure_italy"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_crowding_tenure_italy"
+  validate:
+    table_rules:
+      mart_crowding_tenure_italy:
+        min_rows: 20
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
