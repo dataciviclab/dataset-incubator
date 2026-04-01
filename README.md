@@ -8,6 +8,7 @@ Il lavoro qui serve a validare la fonte, restringere la domanda e stabilizzare l
 Se vuoi contribuire operativamente in questa repo:
 
 - leggi [CONTRIBUTING.md](CONTRIBUTING.md)
+- vedi anche [workflows/README.md](workflows/README.md)
 
 Non serve per:
 
@@ -169,3 +170,14 @@ Regola pratica:
 
 - usa `out/data/...` per il runtime reale
 - usa `registry/` e le cartelle `candidates/`, `support_datasets/` per il contenuto della repo
+
+## Workflow pubblici del repo
+
+I workflow ricorrenti e propri di `dataset-incubator` stanno in:
+
+- [workflows/README.md](workflows/README.md)
+
+Per ora:
+
+- [intake-candidate.md](workflows/intake-candidate.md)
+- [run-candidate.md](workflows/run-candidate.md)

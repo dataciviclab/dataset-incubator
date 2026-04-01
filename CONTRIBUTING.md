@@ -5,6 +5,12 @@ Questa guida vale per la repo `dataset-incubator`.
 Per le regole GitHub condivise dell'organizzazione, parti prima da
 [`.github`](https://github.com/dataciviclab/.github).
 
+Workflow pubblici del repo:
+
+- [workflows/README.md](workflows/README.md)
+- [workflows/intake-candidate.md](workflows/intake-candidate.md)
+- [workflows/run-candidate.md](workflows/run-candidate.md)
+
 ## A cosa serve questa repo
 
 `dataset-incubator` e' il luogo di intake e incubazione tecnica leggera dei
