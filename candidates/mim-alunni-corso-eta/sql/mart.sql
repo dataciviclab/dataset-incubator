@@ -17,7 +17,7 @@ SELECT
     COUNT(DISTINCT a.codice_scuola) AS scuole_osservate,
     SUM(a.alunni) AS alunni_totali
 FROM alunni a
-LEFT JOIN scuole s
+INNER JOIN scuole s
     ON a.codice_scuola = s.codice_scuola
 GROUP BY
     a.anno_scolastico,

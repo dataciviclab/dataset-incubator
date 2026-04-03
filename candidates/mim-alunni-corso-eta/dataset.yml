@@ -37,7 +37,10 @@ mart:
       sql: "sql/mart.sql"
   required_tables:
     - "mart_alunni_primaria_comune"
-  validate: {}
+  validate:
+    table_rules:
+      mart_alunni_primaria_comune:
+        min_rows: 5000
 
 validation:
   fail_on_error: true
