@@ -1,0 +1,41 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mim_anagrafica_scuole_statali"
+  years: [2024]
+
+raw:
+  sources:
+    - name: "mim_anagrafica_scuole_csv"
+      type: "http_file"
+      args:
+        url: "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/SCUANAGRAFESTAT20242520250831.csv"
+        filename: "SCUANAGRAFESTAT20242520250831.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate: {}
+
+mart:
+  tables:
+    - name: "mart_scuole_statali_geo"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_scuole_statali_geo"
+  validate: {}
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
