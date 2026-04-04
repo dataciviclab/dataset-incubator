@@ -1,0 +1,27 @@
+select
+  try_cast("Anno di Riferimento" as integer) as anno_riferimento,
+  "Codice Regione" as codice_regione,
+  "Descrizione Regione" as descrizione_regione,
+  "Codice Ente SSN" as codice_ente_ssn,
+  "Codice Ente BDAP" as codice_ente_bdap,
+  "Descrizione Ente" as descrizione_ente,
+  "Codice Voce Contabile" as codice_voce_contabile,
+  "Descrizione Voce Contabile" as descrizione_voce_contabile,
+  try_cast("Oneri Finanziari" as double) as oneri_finanziari,
+  "Data Aggiornamento" as data_aggiornamento,
+  try_cast("Consumi sanitari" as double) as consumi_sanitari,
+  try_cast("Consumi non sanitari" as double) as consumi_non_sanitari,
+  try_cast("Prestazioni sanitarie" as double) as prestazioni_sanitarie,
+  try_cast("Servizi sanitari" as double) as servizi_sanitari,
+  try_cast("Servizi non sanitari" as double) as servizi_non_sanitari,
+  try_cast("Personale Sanitario" as double) as personale_sanitario,
+  try_cast("Personale Professionale" as double) as personale_professionale,
+  try_cast("Personale Tecnico" as double) as personale_tecnico,
+  try_cast("Personale Amministrativo" as double) as personale_amministrativo,
+  try_cast("Ammortamenti" as double) as ammortamenti,
+  try_cast("Sopravvenienze e Insussistenze" as double) as sopravvenienze_e_insussistenze,
+  try_cast("Altri costi" as double) as altri_costi,
+  try_cast("Importo Totale" as double) as importo_totale
+from raw_input
+where "Codice Ente SSN" <> '000'
+  and try_cast("Anno di Riferimento" as integer) = 2024
