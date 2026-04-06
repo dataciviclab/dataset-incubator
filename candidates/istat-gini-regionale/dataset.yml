@@ -44,7 +44,7 @@ mart:
   validate:
     table_rules:
       mart_gini_regionale:
-        min_rows: 30
+        min_rows: 400
 
 validation:
   fail_on_error: true

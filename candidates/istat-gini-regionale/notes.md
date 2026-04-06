@@ -1,4 +1,4 @@
-# Note — istat-gini-regionale
+# Note - istat-gini-regionale
 
 ## Source-check
 
