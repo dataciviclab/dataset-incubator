@@ -10,7 +10,7 @@ Le disuguaglianze di reddito tra regioni italiane stanno convergendo o divergend
 
 ## Fonte
 
-- **Ente**: ISTAT — Dataflow 32_221 (Omogeneita' del reddito regionale), DSD `DCCV_GINIREDD`
+- **Ente**: ISTAT - Dataflow 32_221 (Omogeneita' del reddito regionale), DSD `DCCV_GINIREDD`
 - **Endpoint**: `https://esploradati.istat.it/SDMXWS/rest`
 - **Formato**: SDMX-CSV
 - **Granularita**: regionale (ITTER107), serie storica annuale
@@ -18,7 +18,7 @@ Le disuguaglianze di reddito tra regioni italiane stanno convergendo o divergend
 
 ## Nota metodologica
 
-Il dataflow distingue tra reddito con fitti imputati (`PRES_AFF_IMP=1`) e senza (`PRES_AFF_IMP=2`). In Italia la proprieta' della casa abbassa la disuguaglianza percepita sul reddito disponibile — la scelta va dichiarata esplicitamente.
+Il dataflow distingue tra reddito con fitti imputati (`PRES_AFF_IMP=1`) e senza (`PRES_AFF_IMP=2`). In Italia la proprieta' della casa abbassa la disuguaglianza percepita sul reddito disponibile - la scelta va dichiarata esplicitamente.
 
 ## Perimetro v0
 
