@@ -2,6 +2,8 @@
 
 Indice di Gini sul reddito netto regionale, con serie storica annuale.
 
+Il candidate usa `2023` come snapshot piu' recente disponibile e conserva nel mart la serie annuale regionale.
+
 ## Domanda civica
 
 Le disuguaglianze di reddito tra regioni italiane stanno convergendo o divergendo?

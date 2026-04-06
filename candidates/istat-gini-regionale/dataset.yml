@@ -18,9 +18,9 @@ raw:
         flow: "32_221"
         version: "1.0"
         filters:
-          TIPO_DATO: "DISUG_REDDNET_GINI"
-          PRES_AFF_IMP: ["1", "2"]
-        year: "latest"
+          DATA_TYPE: "DISUG_REDDNET_GINI"
+          IMPUTED_RENTS: ["1", "2"]
+        year: "2023"
         filename: "istat_gini_regionale_series.csv"
       primary: true
 

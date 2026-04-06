@@ -1,9 +1,11 @@
 select
-    REF_AREA as regione,
-    TIPO_DATO as tipo_dato,
-    PRES_AFF_IMP as pres_aff_imp,
+    REF_AREA as regione_codice,
+    REF_AREA_label as regione,
+    DATA_TYPE as tipo_dato,
+    IMPUTED_RENTS as pres_aff_imp,
     TIME_PERIOD as anno,
-    cast(OBS_VALUE as double) as gini
+    cast(value as double) as gini
 from raw_input
-where TIPO_DATO = 'DISUG_REDDNET_GINI'
-  and PRES_AFF_IMP in ('1', '2')
+where DATA_TYPE = 'DISUG_REDDNET_GINI'
+  and IMPUTED_RENTS in ('1', '2')
+  and length(REF_AREA) = 4
