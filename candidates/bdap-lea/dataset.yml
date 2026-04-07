@@ -1,0 +1,44 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "bdap_lea"
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "bdap_lea_csv"
+      type: "http_file"
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/d598ebd9-949d-4214-bb33-cd9c1be08f15.csv"
+        filename: "bdap_lea_2024.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+    delim: ";"
+    encoding: "cp1252"
+  validate:
+    min_rows: 1000
+
+mart:
+  tables:
+    - name: "mart_spesa_enti_2024"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_spesa_enti_2024"
+  validate:
+    table_rules:
+      mart_spesa_enti_2024:
+        min_rows: 1000
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
