@@ -2,7 +2,7 @@ root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "istat_ipab_regionale"
+  name: "istat_ipab_aree"
   years: [2024]
 
 raw:
@@ -39,9 +39,9 @@ clean:
 
 mart:
   tables:
-    - name: "ipab_regionale"
+    - name: "ipab_aree"
       sql: "sql/mart.sql"
-  required_tables: ["ipab_regionale"]
+  required_tables: ["ipab_aree"]
   validate: {}
 
 validation:
