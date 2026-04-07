@@ -1,11 +1,11 @@
-# Note candidate — ISTAT IPAB regionale
+# Note candidate - ISTAT IPAB regionale
 
 ## Parametri tecnici
-- Flow ISTAT: `143_497` (IPAB — Indice Prezzi Abitazioni)
+- Flow ISTAT: `143_497` (IPAB - Indice Prezzi Abitazioni)
 - Base URL SDMX: `https://esploradati.istat.it/SDMXWS/rest`
 - Filtri obbligatori: `IND_TYPE=59` (indice trimestrale), `MISURA1=4` (numeri indici)
 - Misure: `ABIT_COMPRAV = NEW_DW` (nuove) e `EXST_DW` (esistenti)
-- Granularita: regionale (`ITTER107`)
+- Granularità: regionale (`ITTER107`)
 - Perimetro v0: serie 2020-2025, livello regionale
 
 ## Caveat

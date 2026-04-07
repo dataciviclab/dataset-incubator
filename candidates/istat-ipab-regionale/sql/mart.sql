@@ -7,3 +7,4 @@ select
     indice_prezzi
 from clean_input
 where trimestre is not null
+order by trimestre, regione_codice, tipo_abitazione
