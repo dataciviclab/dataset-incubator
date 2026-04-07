@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_ipab_regionale"
-  years: [2020, 2021, 2022, 2023, 2024, 2025]
+  years: [2024]
 
 raw:
   output_policy: overwrite
@@ -18,9 +18,10 @@ raw:
         flow: "143_497"
         version: "1.0"
         filters:
-          IND_TYPE: "59"
-          MISURA1: "4"
-          ABIT_COMPRAV: ["NEW_DW", "EXST_DW"]
+          DATA_TYPE: "59"
+          MEASURE: "4"
+          PURCHASES_DWELLINGS: ["NEW_DW", "EXST_DW"]
+          FREQ: "Q"
         # `year` non passato: l'endpoint SDMX restituisce l'intera serie con questi filtri.
         filename: "istat_ipab_regionale_series.csv"
       primary: true
@@ -34,7 +35,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    min_rows: 800
+    min_rows: 900
 
 mart:
   tables:
