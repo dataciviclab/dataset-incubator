@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_ipab_regionale"
-  years: [2024]
+  years: [2020, 2021, 2022, 2023, 2024, 2025]
 
 raw:
   output_policy: overwrite
@@ -34,7 +34,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    min_rows: 20
+    min_rows: 800
 
 mart:
   tables:
