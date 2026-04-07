@@ -21,8 +21,7 @@ raw:
           IND_TYPE: "59"
           MISURA1: "4"
           ABIT_COMPRAV: ["NEW_DW", "EXST_DW"]
-        # Year omitted: l'endpoint SDMX restituisce l'intera serie con questi filtri.
-        # `year` here is only the runtime partition. The SDMX fetch returns the whole series.
+        # `year` non passato: l'endpoint SDMX restituisce l'intera serie con questi filtri.
         filename: "istat_ipab_regionale_series.csv"
       primary: true
 
