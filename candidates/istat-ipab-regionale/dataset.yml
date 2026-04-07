@@ -1,0 +1,51 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_ipab_aree"
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sdmx_ipab_aree"
+      type: "sdmx"
+      client:
+        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+      args:
+        agency: "IT1"
+        flow: "143_497"
+        version: "1.0"
+        filters:
+          DATA_TYPE: "59"
+          MEASURE: "4"
+          PURCHASES_DWELLINGS: ["NEW_DW", "EXST_DW"]
+          FREQ: "Q"
+        # `year` non passato: l'endpoint SDMX restituisce l'intera serie con questi filtri.
+        filename: "istat_ipab_aree_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    min_rows: 900
+
+mart:
+  tables:
+    - name: "ipab_aree"
+      sql: "sql/mart.sql"
+  required_tables: ["ipab_aree"]
+  validate: {}
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
