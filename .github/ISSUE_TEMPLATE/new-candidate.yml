@@ -15,6 +15,20 @@ body:
 
         Mantieni il perimetro stretto: primo taglio, primo output minimo, prossimo passo concreto.
 
+  - type: markdown
+    attributes:
+      value: |
+        ## Procedura
+        1. crea un branch `intake/{slug}`
+        2. crea la cartella `candidates/{slug}/` con la struttura standard
+        3. scrivi `dataset.yml`
+        4. esegui il toolkit run sul perimetro iniziale
+        5. apri la PR con la checklist DI
+
+        Riferimenti utili:
+        - `docs/source-check-template.md`
+        - https://github.com/dataciviclab/docs/blob/main/dataset-project-flow.md
+
   - type: dropdown
     id: intake_type
     attributes:
