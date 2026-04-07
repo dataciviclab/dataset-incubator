@@ -1,0 +1,53 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_gini_regionale"
+  years: [2023]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sdmx_gini"
+      type: "sdmx"
+      client:
+        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+      args:
+        agency: "IT1"
+        flow: "32_221"
+        version: "1.0"
+        filters:
+          DATA_TYPE: "DISUG_REDDNET_GINI"
+          IMPUTED_RENTS: ["1", "2"]
+        year: "2023"
+        filename: "istat_gini_regionale_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    min_rows: 50
+
+mart:
+  tables:
+    - name: "mart_gini_regionale"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_gini_regionale"
+  validate:
+    table_rules:
+      mart_gini_regionale:
+        min_rows: 400
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
