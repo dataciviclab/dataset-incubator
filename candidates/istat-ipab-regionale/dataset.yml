@@ -8,7 +8,7 @@ dataset:
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_sdmx_ipab_regionale"
+    - name: "istat_sdmx_ipab_aree"
       type: "sdmx"
       client:
         data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
@@ -23,7 +23,7 @@ raw:
           PURCHASES_DWELLINGS: ["NEW_DW", "EXST_DW"]
           FREQ: "Q"
         # `year` non passato: l'endpoint SDMX restituisce l'intera serie con questi filtri.
-        filename: "istat_ipab_regionale_series.csv"
+        filename: "istat_ipab_aree_series.csv"
       primary: true
 
 clean:
