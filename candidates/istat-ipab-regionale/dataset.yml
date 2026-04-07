@@ -1,0 +1,43 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_ipab_regionale"
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sdmx_ipab_regionale"
+      type: "sdmx"
+      client:
+        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+      args:
+        agency: "IT1"
+        flow: "143_497"
+        version: "1.0"
+        filters:
+          IND_TYPE: "59"
+          MISURA1: "4"
+          ABIT_COMPRAV: ["NEW_DW", "EXST_DW"]
+        # `year` here is only the runtime partition. The SDMX fetch returns the whole series.
+        filename: "istat_ipab_regionale_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    min_rows: 20
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
