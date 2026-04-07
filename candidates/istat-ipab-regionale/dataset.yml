@@ -36,6 +36,13 @@ clean:
   validate:
     min_rows: 20
 
+mart:
+  tables:
+    - name: "ipab_regionale"
+      sql: "sql/mart.sql"
+  required_tables: ["ipab_regionale"]
+  validate: {}
+
 validation:
   fail_on_error: true
 
