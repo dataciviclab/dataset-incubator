@@ -1,3 +1,13 @@
+---
+name: intake-candidate
+description: Workflow canonico di dataset-incubator per decidere se una fonte o discussion abbastanza matura puo' entrare come candidate tecnico credibile.
+license: MIT
+metadata:
+  version: "0.2"
+  owner: "DataCivicLab"
+  tags: [dataset-incubator, intake, candidate, support-dataset]
+---
+
 # Workflow: intake-candidate
 
 Workflow canonico di `dataset-incubator`.
@@ -222,6 +232,15 @@ Il candidate deve uscire almeno in uno di questi stati:
 - `wait`
 
 Non forzare `runnable` se il primo run non regge davvero.
+
+## Errori tipici
+
+- aprire intake quando il caso e' ancora troppo esplorativo
+- usare un source-check troppo debole e chiamarlo comunque pronto per DI
+- lasciare mismatch tra issue, `dataset.yml`, README, notes e notebook
+- far fare a `clean` il lavoro che dovrebbe stare in `mart`
+- lasciare il notebook v0 come placeholder invece che come check reale
+- aprire o chiedere review sulla PR con perimetro ancora instabile
 
 ## Output minimo atteso
 

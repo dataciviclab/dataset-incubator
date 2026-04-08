@@ -1,3 +1,13 @@
+---
+name: run-candidate
+description: Workflow canonico di dataset-incubator per eseguire un candidate, verificare gli output e chiudere con uno stato tecnico chiaro.
+license: MIT
+metadata:
+  version: "0.2"
+  owner: "DataCivicLab"
+  tags: [dataset-incubator, run, candidate, validation]
+---
+
 # Workflow: run-candidate
 
 Workflow canonico di `dataset-incubator`.
@@ -45,20 +55,14 @@ Non usarlo quando:
 - la fonte non e' ancora abbastanza verificata
 - il lavoro vero e' ormai debugging complesso di pipeline e richiede un workflow piu' stretto
 
-## Input minimi
-
-Per partire servono almeno:
-
-- slug del candidate
-- config entrypoint chiaro
-- struttura minima del candidate
-- accesso al repo `toolkit`
-- aspettativa minima su cosa dovrebbe produrre il run
-
 ## Preconditions minime
 
 Prima del run dovrebbero esserci almeno:
 
+- slug del candidate
+- config entrypoint chiaro
+- accesso al repo `toolkit`
+- aspettativa minima su cosa dovrebbe produrre il run
 - candidate esistente in `candidates/{slug}/`
 - `dataset.yml` presente e coerente col layer che vuoi eseguire
 - `sql/` presenti se il candidate prevede `clean` e `mart`
