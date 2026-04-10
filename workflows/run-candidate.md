@@ -1,42 +1,91 @@
+---
+name: run-candidate
+description: Workflow canonico di dataset-incubator per eseguire un candidate, verificare gli output e chiudere con uno stato tecnico chiaro.
+license: MIT
+metadata:
+  version: "0.2"
+  owner: "DataCivicLab"
+  tags: [dataset-incubator, run, candidate, validation]
+---
+
 # Workflow: run-candidate
 
-Workflow pubblico/light di `dataset-incubator`.
-Versione: 0.1 - 2026-04-01
+Workflow canonico di `dataset-incubator`.
+Versione: 0.2 - 2026-04-08
 
 ## Obiettivo di fase
 
-Eseguire un candidate in `dataset-incubator` in modo end-to-end e capire se
-produce output leggibili.
+Eseguire un candidate in `dataset-incubator` in modo reale e capire, in modo
+disciplinato, se:
 
-Questo workflow serve a rispondere a:
+- il candidate gira davvero
+- i layer `raw`, `clean` e `mart` vengono prodotti
+- gli output risultano leggibili
+- il problema, se c'e', e' un blocker tecnico chiaro oppure solo rumore
 
-- quale config usare
-- quale comando lanciare
-- dove leggere `raw`, `clean` e `mart`
-- come capire se il candidate e' andato a buon fine
+Questo workflow serve a:
+
+- scegliere il config giusto
+- fare un run reale o il minimo check eseguibile
+- capire dove guardare gli output
+- distinguere tra `runnable`, `scaffolded_with_blocker` e `wait`
 
 Non serve a:
 
-- fare scouting della fonte
-- rifattorizzare il candidate in grande
-- nascondere un blocker dietro run casuali
+- fare scouting di una fonte ancora opaca
+- rifare il candidate da zero
+- trasformare il run in refactor largo
+- nascondere un blocker dietro tentativi casuali
 
 ## Quando usarlo
 
-Usalo quando:
+Usalo quando hai gia':
 
-- il candidate esiste gia'
-- vuoi farlo girare davvero
-- vuoi vedere i dati prodotti
-- vuoi distinguere tra run riuscito e blocco tecnico reale
+- un candidate con struttura minima reale
+- un `dataset.yml` chiaro da usare come entrypoint
+- un motivo preciso per eseguirlo:
+  - validazione tecnica
+  - primo run reale
+  - verifica dopo fix
 
 Non usarlo quando:
 
-- il candidate non ha ancora una struttura minima
-- sei ancora al livello discussion/source-check
-- il lavoro vero e' ormai fix di pipeline complessa
+- il candidate e' ancora nella fase di intake immaturo
+- manca ancora il boundary tra `clean` e `mart`
+- la fonte non e' ancora abbastanza verificata
+- il lavoro vero e' ormai debugging complesso di pipeline e richiede un workflow piu' stretto
 
-## Workflow step-by-step
+## Preconditions minime
+
+Prima del run dovrebbero esserci almeno:
+
+- slug del candidate
+- config entrypoint chiaro
+- accesso al repo `toolkit`
+- aspettativa minima su cosa dovrebbe produrre il run
+- candidate esistente in `candidates/{slug}/`
+- `dataset.yml` presente e coerente col layer che vuoi eseguire
+- `sql/` presenti se il candidate prevede `clean` e `mart`
+- un `README.md` o `notes.md` che dica almeno qual e' il perimetro
+
+Nel dubbio:
+
+- se il candidate non ha ancora una forma minima verificabile, fermati e torna prima al workflow di intake
+
+## Stop rules
+
+Fermati e non forzare il run quando:
+
+- il candidate non ha ancora una struttura minima
+- non e' chiaro quale config sia l'entrypoint reale
+- il problema e' ancora di fase precedente:
+  - scouting
+  - source-check
+  - boundary del candidate
+- il `clean` e' gia' un mart travestito e il run starebbe solo nascondendo il problema
+- dopo un primo errore reale stai gia' cambiando troppe cose insieme senza aver isolato il blocker
+
+## Passi canonici
 
 ### 1. Controlla la struttura minima
 
@@ -44,16 +93,19 @@ Verifica che il candidate abbia almeno:
 
 - `README.md`
 - `notes.md`
-- `dataset.yml` oppure config rilevanti in `sources/`
+- `dataset.yml`
 
-Se la struttura minima manca, fermati prima del run.
+e, se previsti:
 
-### 2. Scegli il config giusto
+- `sql/clean.sql`
+- `sql/mart.sql`
+- notebook v0
 
-Chiarisci:
+Se manca la struttura minima, fermati prima del run.
 
-- se il candidate e' single-source o multi-source
-- quale `dataset.yml` usare come entrypoint
+### 2. Scegli l'entrypoint giusto
+
+Chiarisci subito quale config vuoi eseguire.
 
 Caso tipico single-source:
 
@@ -66,68 +118,149 @@ Caso tipico multi-source:
 
 Regola pratica:
 
-- non partire dal compose se i source layer non sono ancora chiari
+- non partire dal compose se i source layer non sono ancora chiari o verificati
+- se non hai un motivo specifico per fare altro, parti da `run all` sul `dataset.yml` principale del candidate
 
-### 3. Lancia il candidate
+### 3. Fai prima un controllo path/config
+
+Prima di lanciare tutto, verifica almeno:
+
+- che il config punti ai path attesi
+- che `root` e cartelle di output siano coerenti
+- che il candidate non stia leggendo o scrivendo in percorsi inattesi
+
+Se il contract dei path non e' chiaro, fermati prima del run completo.
+
+### 4. Lancia il run minimo giusto
+
 Il run tipico usa `toolkit` sul config del candidate.
 
-Esempio:
+Esempio single-source:
 
 ```bash
 cd toolkit
 python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/dataset.yml
 ```
 
-Per candidate nested:
+Esempio nested:
 
 ```bash
 cd toolkit
 python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/sources/{source}/dataset.yml
 ```
 
-### 4. Guarda gli output
+Regola:
+
+- partire dal minimo run che risponde alla domanda tecnica del momento
+- non fare subito piu' run diversi se il primo non e' ancora chiaro
+
+### 5. Controlla gli output
 
 Dopo il run, controlla almeno:
 
-- se il comando ha completato senza errori
-- se il candidate ha prodotto dati sotto `dataset-incubator/out/`
+- se il comando e' completato senza errori
+- se `raw`, `clean` e `mart` sono stati prodotti dove atteso
 - qual e' il primo file utile da aprire
 
-In genere il percorso utile e' uno tra:
+I percorsi tipici sono dentro:
 
 - `out/data/raw/...`
 - `out/data/clean/...`
 - `out/data/mart/...`
 
-Il file piu' utile da guardare per primo e' quasi sempre il `mart`, se esiste.
+Se esiste, il primo file piu' utile da guardare e' spesso il `mart`.
 
-### 5. Se fallisce, isola il primo errore vero
+Segnale minimo di output leggibile:
 
-Se il run non regge, non allargare subito il lavoro.
-Isola prima:
+- il file si apre
+- non e' vuoto
+- le colonne principali sono coerenti con la domanda o col layer atteso
+- non ci sono rotture evidenti o valori palesemente fuori posto
 
-- primo errore vero
-- file coinvolti
-- se il blocco e' di accesso, config o SQL
+### 6. Se fallisce, isola il primo errore vero
+
+Se il run non regge:
+
+- isola il primo errore vero
+- annota file e layer coinvolti
+- distingui tra:
+  - accesso fonte
+  - config/path
+  - parsing
+  - SQL
+  - validazione
+
+Se utile, chiudi il blocker con una formula semplice:
+
+- `blocco fonte`
+- `blocco config/path`
+- `blocco parsing`
+- `blocco SQL`
+- `blocco validazione`
 
 Non usare questo workflow per:
 
 - cambiare la domanda civica
-- rifare il candidate da zero
-- aggiungere complessita' non necessaria
+- allargare il candidate
+- fare refactor larghi prima di aver capito il blocker
+
+### 7. Chiudi con uno stato chiaro
+
+Il workflow dovrebbe uscire in uno di questi stati:
+
+- `runnable`
+- `scaffolded_with_blocker`
+- `wait`
+
+`runnable`:
+
+- il candidate gira davvero e produce output leggibili
+
+`scaffolded_with_blocker`:
+
+- la struttura regge, ma esiste un blocker tecnico preciso
+
+`wait`:
+
+- manca ancora un pezzo di fase precedente e non ha senso insistere col run
+
+## Errori tipici
+
+- partire dal config sbagliato
+- lanciare `compose` troppo presto
+- non controllare i path prima del run
+- guardare solo il codice di uscita e non gli output reali
+- cambiare troppe cose insieme dopo il primo errore
+- usare il run per coprire un candidate ancora immaturo
 
 ## Output minimo atteso
 
 Un run utile lascia:
 
-- comando eseguito
 - config usato
-- conferma che il candidate produce output leggibili oppure primo errore vero
-- primo file o layer da guardare
-- prossimo passo consigliato
+- esito del run
+- layer prodotti o primo blocker reale
+- primo file o output da guardare
+- prossimo passo tecnico chiaro
+
+## Definition of done
+
+Il workflow e' chiuso bene quando:
+
+- l'entrypoint usato e' chiaro
+- l'esito e' classificato in modo netto
+- esiste almeno un output verificato oppure un blocker tecnico preciso
+- non sono stati nascosti problemi di boundary del candidate dietro il run
+- il prossimo passo e' esplicito e piccolo
+
+## Stati finali ammessi
+
+- `runnable`
+- `scaffolded_with_blocker`
+- `wait`
 
 ## Dove orientarsi
 
-- [CONTRIBUTING.md](../CONTRIBUTING.md)
 - [README.md](../README.md)
-- [PROMOTION_CHECKLIST.md](../PROMOTION_CHECKLIST.md)
+- [CONTRIBUTING.md](../CONTRIBUTING.md)
+- [intake-candidate.md](./intake-candidate.md)
