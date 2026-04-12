@@ -131,6 +131,10 @@ Prima di lanciare tutto, verifica almeno:
 
 Se il contract dei path non e' chiaro, fermati prima del run completo.
 
+Se il server MCP `toolkit` e' attivo nel runtime:
+
+- `toolkit_inspect_paths(config_path)` - alternativa al controllo manuale di path e contract
+
 ### 4. Lancia il run minimo giusto
 
 Il run tipico usa `toolkit` sul config del candidate.
@@ -177,6 +181,10 @@ Segnale minimo di output leggibile:
 - le colonne principali sono coerenti con la domanda o col layer atteso
 - non ci sono rotture evidenti o valori palesemente fuori posto
 
+Se il server MCP `toolkit` e' attivo nel runtime:
+
+- `toolkit_blocker_hints(config_path)` - evidenzia mismatch tra output risolti e run record
+
 ### 6. Se fallisce, isola il primo errore vero
 
 Se il run non regge:
@@ -211,6 +219,8 @@ Il workflow dovrebbe uscire in uno di questi stati:
 - `runnable`
 - `scaffolded_with_blocker`
 - `wait`
+
+Se il server MCP `toolkit` e' attivo, `toolkit_review_readiness(config_path)` esegue i check di readiness prima di passare alla review: config valida, layer presenti, output leggibili, coerenza run record.
 
 `runnable`:
 
