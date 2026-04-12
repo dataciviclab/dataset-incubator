@@ -1,0 +1,74 @@
+name: monitor-triage
+
+on:
+  workflow_dispatch:
+    inputs:
+      diff_url:
+        description: 'URL del diff_summary.json prodotto da source-observatory'
+        required: true
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  triage:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install PyYAML pytest
+
+      - name: Run tests
+        run: pytest tests/test_triage_monitor_diff.py -q
+
+      - name: Download diff_summary.json
+        env:
+          TRIAGE_WORK: ${{ runner.temp }}/monitor-triage
+        run: |
+          mkdir -p "$TRIAGE_WORK"
+          curl -fsSL "${{ github.event.inputs.diff_url }}" -o "$TRIAGE_WORK/diff_summary.json"
+
+      - name: Run triage
+        env:
+          TRIAGE_WORK: ${{ runner.temp }}/monitor-triage
+        run: |
+          python scripts/triage_monitor_diff.py \
+            --diff "$TRIAGE_WORK/diff_summary.json" \
+            --map config/monitor/source_candidate_map.yml \
+            --output-dir "$TRIAGE_WORK/output"
+
+      - name: Verify checkout remains clean
+        run: git diff --quiet --exit-code
+
+      - name: Publish summary
+        env:
+          TRIAGE_WORK: ${{ runner.temp }}/monitor-triage
+        run: |
+          report="$TRIAGE_WORK/output/triage_report.md"
+          if [[ -f "$report" ]]; then
+            cat "$report" >> "$GITHUB_STEP_SUMMARY"
+          fi
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: monitor-triage
+          path: |
+            ${{ runner.temp }}/monitor-triage/output/triage_report.md
+            ${{ runner.temp }}/monitor-triage/output/triage_result.json
+          if-no-files-found: error

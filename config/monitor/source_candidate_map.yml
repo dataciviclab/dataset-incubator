@@ -1,0 +1,29 @@
+# Mapping source_id (SO monitor) -> candidate slug (DI)
+#
+# source_id: identificativo della fonte in resource_monitor.sources.yml di source-observatory
+# candidates: lista di slug candidate in DI che dipendono da quella fonte
+# active: se false, la fonte viene ignorata dal workflow di triage
+#
+# Aggiornare quando si aggiunge una nuova fonte monitorata in SO
+# o un nuovo candidate in DI collegato a una fonte gia' monitorata.
+
+mappings:
+  - source_id: ispra-consumo-suolo
+    candidates:
+      - ispra-consumo-suolo
+    active: true
+
+  - source_id: civile-flussi
+    candidates:
+      - civile-flussi
+    active: true
+
+  - source_id: opencoesione-pagamenti
+    candidates:
+      - opencoesione-pagamenti-ue-2014-2020
+    active: true
+
+  - source_id: terna-electricity-by-source
+    candidates:
+      - terna-electricity-by-source
+    active: true
