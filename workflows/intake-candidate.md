@@ -180,6 +180,11 @@ python -m toolkit.cli.app run mart --config ../dataset-incubator/candidates/{slu
 
 Se il candidate e' nested, usa il `dataset.yml` del source layer giusto.
 
+Se il server MCP `toolkit` e' attivo nel runtime, puoi usare in alternativa alla CLI:
+
+- `toolkit_inspect_paths(config_path)` - verifica path e contract del config
+- `toolkit_blocker_hints(config_path)` - evidenzia mismatch pratici tra output risolti e stato run
+
 Per il dettaglio del run e dei blocker, il riferimento resta:
 
 - [run-candidate.md](./run-candidate.md)
@@ -275,6 +280,7 @@ Prima di considerare l'intake abbastanza sano da aprire una PR o chiedere review
   - `runnable`
   - `scaffolded_with_blocker`
   - `wait`
+- se il server MCP `toolkit` e' disponibile, `toolkit_review_readiness(config_path)` anticipa i check minimi di readiness: config valida, layer presenti, output leggibili, coerenza run record
 
 ## Dove orientarsi
 
