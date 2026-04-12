@@ -45,6 +45,23 @@ def test_load_map_empty_mappings(tmp_path: Path) -> None:
     assert load_map(map_file) == {}
 
 
+def test_load_map_invalid_root_type(tmp_path: Path) -> None:
+    map_file = tmp_path / "map.yml"
+    map_file.write_text("- just a list\n", encoding="utf-8")
+
+    with pytest.raises(ValueError, match="non valido"):
+        load_map(map_file)
+
+
+def test_load_map_entry_missing_source_id(tmp_path: Path) -> None:
+    map_data = {"mappings": [{"candidates": ["c1"], "active": True}]}
+    map_file = tmp_path / "map.yml"
+    map_file.write_text(yaml.dump(map_data), encoding="utf-8")
+
+    with pytest.raises(ValueError, match="source_id"):
+        load_map(map_file)
+
+
 # --- triage ---
 
 def _make_diff(
@@ -79,6 +96,32 @@ def test_triage_source_in_map_with_changes() -> None:
     assert item["source_id"] == "s1"
     assert item["candidates"] == ["c1", "c2"]
     assert item["changed"] == 2
+
+
+def test_triage_missing_per_source_entry_degrades() -> None:
+    """Se sources_with_changes elenca una fonte ma per_source e' incompleto, non crasha."""
+    diff = _make_diff(
+        sources_with_changes=["s1"],
+        per_source={},  # chiave mancante
+    )
+    result = triage(diff, source_map={"s1": ["c1"]})
+
+    assert result["impacted_count"] == 1
+    item = result["impacted"][0]
+    assert item["new"] == 0
+    assert item["changed"] == 0
+    assert item["removed"] == 0
+
+
+def test_triage_missing_count_keys_degrades() -> None:
+    """Se per_source ha la entry ma mancano le chiavi di conteggio, usa 0 come default."""
+    diff = _make_diff(
+        sources_with_changes=["s1"],
+        per_source={"s1": {}},  # entry presente ma senza new/changed/removed
+    )
+    result = triage(diff, source_map={"s1": ["c1"]})
+
+    assert result["impacted"][0]["changed"] == 0
 
 
 def test_triage_unknown_source_ignored() -> None:

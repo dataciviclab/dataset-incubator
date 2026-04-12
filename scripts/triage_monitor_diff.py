@@ -18,8 +18,12 @@ import yaml
 def load_map(map_path: Path) -> dict[str, list[str]]:
     """Carica il mapping source_id -> candidates. Restituisce solo le entry active."""
     data = yaml.safe_load(map_path.read_text(encoding="utf-8"))
+    if not isinstance(data, dict):
+        raise ValueError(f"source_candidate_map.yml non valido: atteso dict, trovato {type(data).__name__}")
     result: dict[str, list[str]] = {}
-    for entry in data.get("mappings", []):
+    for i, entry in enumerate(data.get("mappings", [])):
+        if not isinstance(entry, dict) or "source_id" not in entry:
+            raise ValueError(f"mappings[{i}]: entry non valida, 'source_id' richiesto")
         if entry.get("active", True):
             result[entry["source_id"]] = entry.get("candidates", [])
     return result
@@ -32,13 +36,13 @@ def triage(diff: dict, source_map: dict[str, list[str]]) -> dict:
         candidates = source_map.get(source_id, [])
         if not candidates:
             continue
-        source_diff = diff["per_source"][source_id]
+        source_diff = diff.get("per_source", {}).get(source_id, {})
         impacted.append({
             "source_id": source_id,
             "candidates": candidates,
-            "new": source_diff["new"],
-            "changed": source_diff["changed"],
-            "removed": source_diff["removed"],
+            "new": source_diff.get("new", 0),
+            "changed": source_diff.get("changed", 0),
+            "removed": source_diff.get("removed", 0),
         })
 
     errors_in_map: list[str] = [
