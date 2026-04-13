@@ -136,6 +136,21 @@ candidates/caso/
     mart.sql
 ```
 
+Il notebook v0 si copia dal template:
+
+```bash
+cp "templates/candidate/notebooks/{slug}_v0.ipynb" "candidates/{slug}/notebooks/{slug}_v0.ipynb"
+```
+
+Poi apri il notebook e imposta i due parametri manuali in cima alla cella `setup`:
+
+```python
+METRICA       = "..."  # colonna numerica principale nel mart
+METRICA_CLEAN = "..."  # colonna corrispondente nel clean
+```
+
+Il resto (slug, anni, mart table, encoding, separatore) viene letto automaticamente dal `dataset.yml`.
+
 Regola pratica:
 
 - meglio un primo candidate piccolo ma eseguibile
@@ -195,10 +210,13 @@ Il notebook v0 non e' opzionale.
 
 Deve:
 
-- partire dal template DI quando disponibile
-- essere coerente col mart reale
-- mostrare almeno un sanity check concreto
+- essere copiato da `templates/candidate/notebooks/{slug}_v0.ipynb`
+- avere `METRICA` e `METRICA_CLEAN` impostati manualmente
+- girare senza errori su raw, clean e mart reali
 - non restare placeholder o TODO
+
+Il notebook valida la pipeline per fasi (raw → clean → mart) e mostra le SQL come contesto.
+Non deve contenere analisi del dato: quella va in `analisi-civiche`.
 
 ### 7. Riallinea tutto se cambia il perimetro
 
