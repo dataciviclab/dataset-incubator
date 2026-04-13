@@ -47,6 +47,6 @@ Issue intake:
 
 ## Prossimo passo
 
-- aprire o riallineare la issue intake collegata al perimetro reale del candidate
+- verificare allineamento della issue intake #133 col perimetro reale del candidate
 - rifinire il notebook v0 con una lettura prudente su `Titolo I` e `Titolo IV`
 - decidere se il passo successivo resta in `Datasets` oppure apre una `Domande` piu stretta
