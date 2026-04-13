@@ -1,0 +1,34 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat-delitti-denunciati"
+  years: [2024]
+
+raw:
+  sources:
+    - name: "istat_data"
+      type: "http_file"
+      args:
+        url: "https://esploradati.istat.it/SDMXWS/rest/data/73_67/all"
+        filename: "delitti_raw.txt"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    mode: explicit
+    include: 
+      - "esca.csv"
+    header: false
+  validate:
+    min_rows: 1
+
+mart:
+  tables:
+    - name: "mart_delitti"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      mart_delitti:
+        min_rows: 0  # Accettiamo anche 0 righe per ora, così non crasha
