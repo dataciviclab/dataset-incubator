@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 -- candidates/istat-delitti-denunciati/sql/mart.sql
 
 WITH base AS (
@@ -30,3 +31,12 @@ SELECT
 FROM observations
 WHERE codice_territorio IS NOT NULL 
   AND numero_denunce IS NOT NULL;
+=======
+SELECT 
+    codice_territorio,
+    codice_reato,
+    anno,
+    numero_denunce
+FROM clean_input
+ORDER BY anno, codice_territorio;
+>>>>>>> feat/istat-delitti
