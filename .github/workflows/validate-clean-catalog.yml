@@ -1,0 +1,32 @@
+name: Validate Clean Catalog
+
+on:
+  pull_request:
+    paths:
+      - "registry/clean_catalog.json"
+      - "registry/clean_catalog.schema.json"
+      - "scripts/build_clean_catalog.py"
+      - "tools/clean-query-mcp/**"
+      - ".github/workflows/validate-clean-catalog.yml"
+
+jobs:
+  validate-clean-catalog:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout dataset-incubator
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install clean-query MCP dependencies
+        run: python -m pip install -r tools/clean-query-mcp/requirements.txt
+
+      - name: Validate catalog and public GCS paths
+        run: python scripts/build_clean_catalog.py --check-gcs
+
+      - name: Smoke test clean-query MCP
+        run: python tools/clean-query-mcp/scripts/smoke.py
