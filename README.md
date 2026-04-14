@@ -176,6 +176,25 @@ Regola pratica:
 - usa `out/data/...` per il runtime reale
 - usa `registry/` e le cartelle `candidates/`, `support_datasets/` per il contenuto della repo
 
+## Lab Clean Registry
+
+Il catalogo dei clean pubblici vive in:
+
+- `registry/clean_catalog.json`
+- `registry/clean_catalog.schema.json`
+
+Per normalizzare il catalogo:
+
+```bash
+python scripts/build_clean_catalog.py --write
+```
+
+Per verificare anche i path GCS pubblici:
+
+```bash
+python scripts/build_clean_catalog.py --check-gcs
+```
+
 ## Workflow pubblici del repo
 
 I workflow ricorrenti e propri di `dataset-incubator` stanno in:
