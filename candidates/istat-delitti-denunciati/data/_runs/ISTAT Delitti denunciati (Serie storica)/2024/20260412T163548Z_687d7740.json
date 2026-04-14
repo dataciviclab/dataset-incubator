@@ -1,0 +1,32 @@
+{
+  "dataset": "ISTAT Delitti denunciati (Serie storica)",
+  "year": 2024,
+  "run_id": "20260412T163548Z_687d7740",
+  "started_at": "2026-04-12T16:35:48.722676+00:00",
+  "finished_at": "2026-04-12T16:35:48.753582+00:00",
+  "status": "FAILED",
+  "layers": {
+    "raw": {
+      "status": "FAILED",
+      "started_at": "2026-04-12T16:35:48.729710+00:00",
+      "finished_at": "2026-04-12T16:35:48.752824+00:00"
+    },
+    "clean": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    },
+    "mart": {
+      "status": "PENDING",
+      "started_at": null,
+      "finished_at": null
+    }
+  },
+  "validations": {
+    "raw": {},
+    "clean": {},
+    "mart": {}
+  },
+  "resumed_from": null,
+  "error": "raw.sources missing or empty in dataset.yml"
+}
