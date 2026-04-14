@@ -10,8 +10,10 @@ raw:
     - name: "istat_data"
       type: "http_file"
       args:
-        url: "https://esploradati.istat.it/SDMXWS/rest/data/73_67/all"
+        # Abbiamo aggiunto il filtro per l'anno alla fine dell'URL
+        url: "https://esploradati.istat.it/SDMXWS/rest/data/73_67/all?startPeriod=2023"
         filename: "delitti_raw.txt"
+        timeout: 300
       primary: true
 
 clean:
@@ -19,8 +21,8 @@ clean:
   read:
     mode: explicit
     include: 
-      - "esca.csv"
-    header: false
+      - "trigger.csv"
+    header: true
   validate:
     min_rows: 1
 
@@ -31,4 +33,4 @@ mart:
   validate:
     table_rules:
       mart_delitti:
-        min_rows: 0  # Accettiamo anche 0 righe per ora, così non crasha
+        min_rows: 100
