@@ -19,12 +19,12 @@ Il file locale `datasets.yml` non è più fonte di verità. Il catalogo MCP deve
 | `run_query(sql, dataset, max_rows, year)` | Query DuckDB read-only sul parquet clean |
 | `cache_stats()` | Stato della cache di risoluzione GCS |
 
-## Runtime locale
+## Runtime
 
-Nel workspace DataCivicLab il runtime canonico è la venv del toolkit:
+Da root del repository `dataset-incubator`:
 
 ```bash
-/home/gabry/dev/dataciviclab-workspace/toolkit/.venv/bin/python -m pip install -r /home/gabry/dev/dataciviclab-workspace/dataset-incubator/tools/clean-query-mcp/requirements.txt
+python -m pip install -r tools/clean-query-mcp/requirements.txt
 ```
 
 Config MCP:
@@ -33,9 +33,9 @@ Config MCP:
 {
   "mcpServers": {
     "clean-query": {
-      "command": "/home/gabry/dev/dataciviclab-workspace/toolkit/.venv/bin/python",
+      "command": "python",
       "args": [
-        "/home/gabry/dev/dataciviclab-workspace/dataset-incubator/tools/clean-query-mcp/server.py"
+        "/absolute/path/to/dataset-incubator/tools/clean-query-mcp/server.py"
       ]
     }
   }
@@ -77,13 +77,13 @@ gs://dataciviclab-clean/catalog/clean_catalog.json
 ## Smoke test
 
 ```bash
-/home/gabry/dev/dataciviclab-workspace/toolkit/.venv/bin/python tools/clean-query-mcp/scripts/smoke.py
+python tools/clean-query-mcp/scripts/smoke.py
 ```
 
 Limitato a un dataset:
 
 ```bash
-/home/gabry/dev/dataciviclab-workspace/toolkit/.venv/bin/python tools/clean-query-mcp/scripts/smoke.py --dataset ispra_ru_base
+python tools/clean-query-mcp/scripts/smoke.py --dataset ispra_ru_base
 ```
 
 ## Limiti noti
