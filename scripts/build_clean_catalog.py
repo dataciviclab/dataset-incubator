@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import re
 import sys
 from datetime import date
 from fnmatch import fnmatchcase
@@ -13,6 +14,7 @@ from urllib.request import Request, urlopen
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CATALOG = ROOT / "registry" / "clean_catalog.json"
+DEFAULT_SCHEMA = ROOT / "registry" / "clean_catalog.schema.json"
 
 
 def main() -> int:
@@ -20,7 +22,10 @@ def main() -> int:
         description="Normalize and optionally verify the Lab Clean Registry."
     )
     parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
-    parser.add_argument("--write", action="store_true", help="Rewrite catalog in canonical form.")
+    parser.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
+    parser.add_argument(
+        "--write", action="store_true", help="Rewrite catalog in canonical form."
+    )
     parser.add_argument(
         "--refresh-date",
         action="store_true",
@@ -35,9 +40,10 @@ def main() -> int:
 
     original_text = args.catalog.read_text(encoding="utf-8")
     catalog = json.loads(original_text)
+    schema = json.loads(args.schema.read_text(encoding="utf-8"))
     normalized = normalize_catalog(catalog, refresh_date=args.refresh_date)
 
-    errors = validate_catalog(normalized)
+    errors = validate_catalog(normalized, schema)
     if args.check_gcs:
         errors.extend(validate_gcs_locations(normalized))
 
@@ -83,8 +89,8 @@ def normalize_catalog(catalog: dict[str, Any], *, refresh_date: bool = False) ->
     return normalized
 
 
-def validate_catalog(catalog: dict[str, Any]) -> list[str]:
-    errors: list[str] = []
+def validate_catalog(catalog: dict[str, Any], schema: dict[str, Any]) -> list[str]:
+    errors = validate_json_schema(catalog, schema)
     if catalog.get("schema_version") != 1:
         errors.append("schema_version must be 1")
     datasets = catalog.get("datasets")
@@ -122,6 +128,97 @@ def validate_catalog(catalog: dict[str, Any]) -> list[str]:
         if not location.get("path"):
             errors.append(f"{slug}: missing location.path")
     return errors
+
+
+def validate_json_schema(instance: Any, schema: dict[str, Any]) -> list[str]:
+    """Validate the catalog against the local schema subset used by DI.
+
+    This intentionally supports only the JSON Schema keywords present in
+    registry/clean_catalog.schema.json, avoiding a runtime dependency just for
+    the catalog check.
+    """
+    return _validate_node(instance, schema, schema, "$")
+
+
+def _validate_node(
+    instance: Any,
+    node: dict[str, Any],
+    root_schema: dict[str, Any],
+    path: str,
+) -> list[str]:
+    errors: list[str] = []
+    if "$ref" in node:
+        node = _resolve_ref(root_schema, node["$ref"])
+
+    expected_type = node.get("type")
+    if expected_type and not _matches_json_type(instance, expected_type):
+        return [f"{path}: expected {expected_type}, got {type(instance).__name__}"]
+
+    if "const" in node and instance != node["const"]:
+        errors.append(f"{path}: expected const {node['const']!r}")
+
+    if "enum" in node and instance not in node["enum"]:
+        errors.append(f"{path}: value {instance!r} not in enum {node['enum']!r}")
+
+    if "pattern" in node and isinstance(instance, str):
+        if re.fullmatch(node["pattern"], instance) is None:
+            errors.append(f"{path}: value {instance!r} does not match {node['pattern']}")
+
+    if isinstance(instance, dict):
+        properties = node.get("properties", {})
+        for field in node.get("required", []):
+            if field not in instance:
+                errors.append(f"{path}: missing required property {field!r}")
+
+        if node.get("additionalProperties") is False:
+            allowed = set(properties)
+            for field in instance:
+                if field not in allowed:
+                    errors.append(f"{path}: additional property {field!r} not allowed")
+
+        for field, value in instance.items():
+            if field in properties:
+                errors.extend(
+                    _validate_node(
+                        value, properties[field], root_schema, f"{path}.{field}"
+                    )
+                )
+
+    if isinstance(instance, list):
+        min_items = node.get("minItems")
+        if min_items is not None and len(instance) < int(min_items):
+            errors.append(f"{path}: expected at least {min_items} items")
+        item_schema = node.get("items")
+        if item_schema:
+            for index, value in enumerate(instance):
+                errors.extend(
+                    _validate_node(value, item_schema, root_schema, f"{path}[{index}]")
+                )
+
+    return errors
+
+
+def _resolve_ref(schema: dict[str, Any], ref: str) -> dict[str, Any]:
+    if not ref.startswith("#/"):
+        raise ValueError(f"unsupported schema ref: {ref}")
+    node: Any = schema
+    for part in ref[2:].split("/"):
+        node = node[part]
+    return node
+
+
+def _matches_json_type(instance: Any, expected_type: str) -> bool:
+    if expected_type == "object":
+        return isinstance(instance, dict)
+    if expected_type == "array":
+        return isinstance(instance, list)
+    if expected_type == "string":
+        return isinstance(instance, str)
+    if expected_type == "integer":
+        return isinstance(instance, int) and not isinstance(instance, bool)
+    if expected_type == "boolean":
+        return isinstance(instance, bool)
+    return True
 
 
 def validate_gcs_locations(catalog: dict[str, Any]) -> list[str]:

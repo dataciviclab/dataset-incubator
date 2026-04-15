@@ -8,6 +8,16 @@ on:
       - "scripts/build_clean_catalog.py"
       - "tools/clean-query-mcp/**"
       - ".github/workflows/validate-clean-catalog.yml"
+  push:
+    branches:
+      - main
+    paths:
+      - "registry/clean_catalog.json"
+      - "registry/clean_catalog.schema.json"
+      - "scripts/build_clean_catalog.py"
+      - "tools/clean-query-mcp/**"
+      - ".github/workflows/validate-clean-catalog.yml"
+  workflow_dispatch:
 
 jobs:
   validate-clean-catalog:
@@ -30,3 +40,6 @@ jobs:
 
       - name: Smoke test clean-query MCP
         run: python tools/clean-query-mcp/scripts/smoke.py
+
+      - name: Run clean-query tests
+        run: python -m unittest discover -s tests -p "test_clean_query_*.py"
