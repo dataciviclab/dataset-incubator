@@ -1,9 +1,3 @@
-<<<<<<< HEAD
--- candidates/istat-delitti-denunciati/sql/clean.sql
-SELECT 
-    regexp_extract(CAST(content AS VARCHAR), '(<.*)', 1) as payload_xml
-FROM read_blob('out/data/raw/istat-delitti-denunciati/2024/temp/delitti_raw.txt');
-=======
 WITH raw_blob AS (
     SELECT content as xml_content
     FROM read_text('out/data/raw/istat-delitti-denunciati/2024/delitti_raw.txt')
@@ -28,7 +22,6 @@ SELECT
     regexp_extract(o, '<generic:ObsDimension id="TIME_PERIOD" value="([^"]*)"', 1) as anno,
     TRY_CAST(regexp_extract(o, '<generic:ObsValue value="([^"]*)"', 1) AS DOUBLE) as numero_denunce
 FROM observations
--- Filtriamo solo l'anno 2024 (o quello che ti serve) e puliamo i null
+-- Filtriamo solo l'anno 2024 e puliamo i null
 WHERE anno = '2024' 
   AND codice_territorio IS NOT NULL;
->>>>>>> feat/istat-delitti
