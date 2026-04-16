@@ -18,11 +18,6 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  read:
-    mode: explicit
-    include: 
-      - "trigger.csv"
-    header: true
   validate:
     min_rows: 1
 
