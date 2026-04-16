@@ -164,6 +164,12 @@ def _validate_node(
         if re.fullmatch(node["pattern"], instance) is None:
             errors.append(f"{path}: value {instance!r} does not match {node['pattern']}")
 
+    if node.get("format") == "date" and isinstance(instance, str):
+        try:
+            date.fromisoformat(instance)
+        except ValueError:
+            errors.append(f"{path}: value {instance!r} is not a valid date (expected YYYY-MM-DD)")
+
     if isinstance(instance, dict):
         properties = node.get("properties", {})
         for field in node.get("required", []):

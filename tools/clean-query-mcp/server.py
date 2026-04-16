@@ -251,7 +251,7 @@ def run_query(
             "dataset": dataset,
         }
 
-    return guard(_exec, handled_exceptions=(DuckdbClientError,))
+    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
 
 
 @mcp.tool(
