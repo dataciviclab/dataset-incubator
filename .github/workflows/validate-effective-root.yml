@@ -11,12 +11,12 @@ jobs:
 
     steps:
       - name: Checkout dataset-incubator
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Checkout toolkit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           repository: dataciviclab/toolkit
           path: toolkit
