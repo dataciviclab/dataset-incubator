@@ -56,6 +56,10 @@ Regola pratica:
 dataset-incubator/
   registry/
     archived.md
+    clean_catalog.json
+    clean_catalog.schema.json
+  tools/
+    clean-query-mcp/
   templates/
     dataset-notes.md
     candidate/
@@ -131,7 +135,8 @@ Quando un candidato viene promosso o chiuso:
 
 ## Significato delle cartelle
 
-- `registry/`: storia dei filoni usciti (`archived.md`)
+- `registry/`: storia dei filoni usciti (`archived.md`) e catalogo clean pubblico (`clean_catalog.json`)
+- `tools/clean-query-mcp/`: MCP read-only per interrogare i clean pubblici dal Lab Clean Registry
 - `templates/`: note di supporto e template operativo (`candidate/`)
 - `candidates/`: filoni con domanda e potenziale di promozione
 - `support_datasets/`: basi trasversali riusabili per join o controlli
@@ -170,6 +175,25 @@ Regola pratica:
 
 - usa `out/data/...` per il runtime reale
 - usa `registry/` e le cartelle `candidates/`, `support_datasets/` per il contenuto della repo
+
+## Lab Clean Registry
+
+Il catalogo dei clean pubblici vive in:
+
+- `registry/clean_catalog.json`
+- `registry/clean_catalog.schema.json`
+
+Per normalizzare il catalogo:
+
+```bash
+python scripts/build_clean_catalog.py --write
+```
+
+Per verificare anche i path GCS pubblici:
+
+```bash
+python scripts/build_clean_catalog.py --check-gcs
+```
 
 ## Workflow pubblici del repo
 

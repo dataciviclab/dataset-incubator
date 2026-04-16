@@ -1,0 +1,680 @@
+{
+  "schema_version": 1,
+  "name": "Lab Clean Registry",
+  "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
+  "updated_at": "2026-04-14",
+  "source_repo": "dataciviclab/dataset-incubator",
+  "datasets": [
+    {
+      "slug": "bdap_entrate_stato",
+      "name": "BDAP Entrate Stato - Serie Storica",
+      "description": "Entrate statali da BDAP, aggregate per titolo, natura, tipologia, provento",
+      "source": "MEF-BDAP",
+      "period": {
+        "start": 2008,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "esercizio_finanziario",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "codice_titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice del titolo di entrata"
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione del titolo (es: TITOLO I - ENTRATE TRIBUTARIE)"
+        },
+        {
+          "name": "codice_natura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice della natura"
+        },
+        {
+          "name": "natura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione della natura (es: Entrate ricorrenti)"
+        },
+        {
+          "name": "codice_tipologia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice della tipologia"
+        },
+        {
+          "name": "tipologia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione della tipologia"
+        },
+        {
+          "name": "codice_provento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice del provento"
+        },
+        {
+          "name": "provento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione del provento"
+        },
+        {
+          "name": "previsioni_definitive_cp",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Previsioni definitive competenze di cassa"
+        },
+        {
+          "name": "previsioni_definitive_cs",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Previsioni definitive competenze di competenza"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/bdap_entrate_stato/2024/bdap_entrate_stato_2024_clean.parquet"
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "civile_flussi_2014_2024",
+      "name": "Giustizia Civile - Flussi 2014-2024",
+      "description": "Dati sui flussi della giustizia civile: sopravvenuti, definiti, pendenti per distretto, materia, macromateria",
+      "source": "Ministero Giustizia",
+      "period": {
+        "start": 2014,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "fonte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Fonte del dato"
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di ufficio"
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Distretto giudiziario"
+        },
+        {
+          "name": "sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sede"
+        },
+        {
+          "name": "macromateria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Macromateria giudiziaria"
+        },
+        {
+          "name": "materia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Materia specifica"
+        },
+        {
+          "name": "sopravvenuti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero di procedimenti sopravvenuti"
+        },
+        {
+          "name": "definiti_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero totale di procedimenti definiti"
+        },
+        {
+          "name": "pendenti_finali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero di procedimenti pendenti finali"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/civile_flussi_2014_2024/2024/civile_flussi_2014_2024_2024_clean.parquet"
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "dipendenti_pubblici",
+      "name": "Dipendenti Pubblici - Occupazione e Turnover",
+      "description": "Dipendenti pubblici per ente, comparto, categoria, genere e tipo di orario (2010-2023)",
+      "source": "MEF-BDAP",
+      "period": {
+        "start": 2010,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di rilevazione"
+        },
+        {
+          "name": "tipo_istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di istituzione"
+        },
+        {
+          "name": "codice_istituzione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice istituzione"
+        },
+        {
+          "name": "codice_ente_bdap",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice ente BDAP"
+        },
+        {
+          "name": "ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ente"
+        },
+        {
+          "name": "codice_comparto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice comparto"
+        },
+        {
+          "name": "comparto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione comparto"
+        },
+        {
+          "name": "codice_contratto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice contratto di lavoro"
+        },
+        {
+          "name": "contratto_lavoro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione contratto di lavoro"
+        },
+        {
+          "name": "codice_macrocategoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice macrocategoria"
+        },
+        {
+          "name": "macrocategoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione macrocategoria"
+        },
+        {
+          "name": "codice_categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice categoria"
+        },
+        {
+          "name": "categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione categoria"
+        },
+        {
+          "name": "donne_tempo_pieno",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti donne tempo pieno"
+        },
+        {
+          "name": "uomini_tempo_pieno",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti uomini tempo pieno"
+        },
+        {
+          "name": "donne_part_time_inf_50",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti donne part time <50%"
+        },
+        {
+          "name": "uomini_part_time_inf_50",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti uomini part time <50%"
+        },
+        {
+          "name": "donne_part_time_sup_50",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti donne part time >50%"
+        },
+        {
+          "name": "uomini_part_time_sup_50",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti uomini part time >50%"
+        },
+        {
+          "name": "donne_assunte",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti donne assunte"
+        },
+        {
+          "name": "uomini_assunti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti uomini assunti"
+        },
+        {
+          "name": "donne_cessate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti donne cessate"
+        },
+        {
+          "name": "uomini_cessati",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti uomini cessati"
+        },
+        {
+          "name": "donne_totali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale dipendenti donne"
+        },
+        {
+          "name": "uomini_totali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale dipendenti uomini"
+        },
+        {
+          "name": "assunti_totali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale assunti"
+        },
+        {
+          "name": "cessati_totali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale cessati"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/dipendenti_pubblici/*/dipendenti_pubblici_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "ispra_consumo_suolo",
+      "name": "ISPRA - Consumo di Suolo 2024",
+      "description": "Consumo di suolo per comune: incremento annuo e stock territoriale (7896 comuni)",
+      "source": "ISPRA",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "pro_com",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione comune"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione"
+        },
+        {
+          "name": "incremento_ha_2023_2024",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Incremento consumo suolo (ettari) 2023-2024"
+        },
+        {
+          "name": "stock_ha_2024",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Stock consumo suolo 2024 (ettari)"
+        },
+        {
+          "name": "stock_pct_2024",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Stock consumo suolo 2024 (% territorio comunale)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ispra_consumo_suolo/2024/ispra_consumo_suolo_2024_clean.parquet"
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "ispra_ru_base",
+      "name": "ISPRA - Rifiuti Urbani (dati base)",
+      "description": "Produzione e raccolta differenziata rifiuti urbani per comune (7671 comuni, 2020-2024)",
+      "source": "ISPRA",
+      "period": {
+        "start": 2020,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione comune"
+        },
+        {
+          "name": "popolazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Popolazione residente"
+        },
+        {
+          "name": "dato_riferito_a",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Anno di riferimento del dato"
+        },
+        {
+          "name": "totale_ru_tonnellate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale rifiuti urbani prodotti (tonnellate)"
+        },
+        {
+          "name": "totale_rd_tonnellate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale raccolta differenziata (tonnellate)"
+        },
+        {
+          "name": "percentuale_rd",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Percentuale raccolta differenziata"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ispra_ru_base/*/ispra_ru_base_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "ispra_ru_costi_kg",
+      "name": "ISPRA - Costi gestione rifiuti (EUR/kg)",
+      "description": "Costi di gestione rifiuti urbani per comune, per fase (raccolta, trasporto, smaltimento, recupero) in centesimi/kg",
+      "source": "ISPRA",
+      "period": {
+        "start": 2020,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
+        },
+        {
+          "name": "comune_o_aggregazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune o aggregazione territoriale"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "numero_comuni",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Numero di comuni nell'aggregazione"
+        },
+        {
+          "name": "popolazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Popolazione"
+        },
+        {
+          "name": "crt_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo raccolta e trasporto (cent/kg)"
+        },
+        {
+          "name": "crd_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo raccolta differenziata (cent/kg)"
+        },
+        {
+          "name": "csl_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo smaltimento in discarica (cent/kg)"
+        },
+        {
+          "name": "cc_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo compostaggio (cent/kg)"
+        },
+        {
+          "name": "ck_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo incenerimento (cent/kg)"
+        },
+        {
+          "name": "ctot_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo totale (cent/kg)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ispra_ru_costi_kg/*/ispra_ru_costi_kg_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "ispra_ru_costi_procapite",
+      "name": "ISPRA - Costi gestione rifiuti (EUR/abitante)",
+      "description": "Costi di gestione rifiuti urbani per abitante, per fase (raccolta, trattamento, smaltimento)",
+      "source": "ISPRA",
+      "period": {
+        "start": 2020,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
+        },
+        {
+          "name": "comune_o_aggregazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune o aggregazione territoriale"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "numero_comuni",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Numero di comuni nell'aggregazione"
+        },
+        {
+          "name": "popolazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Popolazione"
+        },
+        {
+          "name": "crt_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo raccolta e trasporto (EUR/ab)"
+        },
+        {
+          "name": "cts_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo trattamento selezionato (EUR/ab)"
+        },
+        {
+          "name": "crd_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo raccolta differenziata (EUR/ab)"
+        },
+        {
+          "name": "ctr_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo trattamento recupero (EUR/ab)"
+        },
+        {
+          "name": "csl_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo smaltimento in discarica (EUR/ab)"
+        },
+        {
+          "name": "cc_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo compostaggio (EUR/ab)"
+        },
+        {
+          "name": "ck_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo incenerimento (EUR/ab)"
+        },
+        {
+          "name": "altri_costi_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Altri costi (EUR/ab)"
+        },
+        {
+          "name": "ctot_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo totale (EUR/ab)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ispra_ru_costi_procapite/*/ispra_ru_costi_procapite_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    }
+  ]
+}
