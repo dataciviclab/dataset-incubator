@@ -32,7 +32,7 @@ jobs:
         run: python scripts/build_pipeline_signals.py
 
       - name: Commit updated pipeline_signals.json
-        uses: stefanzweifel/git-auto-commit-action@v5
+        uses: stefanzweifel/git-auto-commit-action@v7
         with:
           commit_message: "chore: aggiorna pipeline_signals.json"
           file_pattern: registry/pipeline_signals.json
