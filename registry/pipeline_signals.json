@@ -1,0 +1,128 @@
+{
+  "schema_version": "1",
+  "generated_at": "2026-04-16",
+  "repo": "dataset-incubator",
+  "topic": "pipeline_state",
+  "summary": {
+    "total": 16,
+    "by_status": {
+      "ok": 16,
+      "warn": 0,
+      "error": 0
+    }
+  },
+  "signals": [
+    {
+      "id": "aifa-spesa-consumo",
+      "status": "ok",
+      "label": "aifa-spesa-consumo",
+      "detail": "anni 2022-2024 — multi-source (1 fonte) — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "bdap-entrate-stato",
+      "status": "ok",
+      "label": "bdap-entrate-stato",
+      "detail": "anno 2024 — fonte: openbdap_entrate_csv — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "bdap-lea",
+      "status": "ok",
+      "label": "bdap-lea",
+      "detail": "anno 2024 — fonte: bdap_lea_csv — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "inps-pensioni",
+      "status": "ok",
+      "label": "inps-pensioni",
+      "detail": "anno 2024 — fonte: inps_pensioni_csv — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "ispra-consumo-suolo",
+      "status": "ok",
+      "label": "ispra-consumo-suolo",
+      "detail": "anno 2024 — multi-source (1 fonte) — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "ispra-ru-costi-kg",
+      "status": "ok",
+      "label": "ispra-ru-costi-kg",
+      "detail": "anni 2020-2024 — multi-source (3 fonti) — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "istat-gini-regionale",
+      "status": "ok",
+      "label": "istat-gini-regionale",
+      "detail": "anno 2023 — fonte: istat_sdmx_gini — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "istat-housing-crowding",
+      "status": "ok",
+      "label": "istat-housing-crowding",
+      "detail": "anno 2024 — fonte: istat_sdmx_housing_crowding — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "istat-ipab-aree",
+      "status": "ok",
+      "label": "istat-ipab-aree",
+      "detail": "anno 2024 — fonte: istat_sdmx_ipab_aree — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "mim-alunni-corso-eta",
+      "status": "ok",
+      "label": "mim-alunni-corso-eta",
+      "detail": "anno 2024 — fonte: mim_alunni_corso_eta_csv — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "mit-incidentalita-mensile-2001-2018",
+      "status": "ok",
+      "label": "mit-incidentalita-mensile-2001-2018",
+      "detail": "anno 2001 — fonte: mit_incidentalita_mensile_csv — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "mit-opere-incompiute-2020",
+      "status": "ok",
+      "label": "mit-opere-incompiute-2020",
+      "detail": "anno 2020 — fonte: mit_opere_incompiute_csv — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "opencivitas-fsc-rso",
+      "status": "ok",
+      "label": "opencivitas-fsc-rso",
+      "detail": "anno 2025 — multi-source (2 fonti) — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "opencoesione-pagamenti-ue-2014-2020",
+      "status": "ok",
+      "label": "opencoesione-pagamenti-ue-2014-2020",
+      "detail": "anno 2020 — fonte: opencoesione_progetti_esteso_zip — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "pensioni-pa-dag",
+      "status": "ok",
+      "label": "pensioni-pa-dag",
+      "detail": "anno 2024 — fonte: dag_pensioni_totale_local — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "terna-capacita-rinnovabile",
+      "status": "ok",
+      "label": "terna-capacita-rinnovabile",
+      "detail": "anni 2023-2024 — fonte: terna_capacity_renewable_sources_xlsx — mart: sì",
+      "action": ""
+    }
+  ]
+}
