@@ -139,7 +139,13 @@ candidates/caso/
 Il notebook v0 si copia dal template:
 
 ```bash
-cp "templates/candidate/notebooks/{slug}_v0.ipynb" "candidates/{slug}/notebooks/{slug}_v0.ipynb"
+python scripts/scaffold_candidate.py \
+  --slug {slug} \
+  --title "Titolo candidate" \
+  --discussion-url "https://github.com/dataciviclab/datasets/discussions/..." \
+  --issue-url "https://github.com/dataciviclab/dataset-incubator/issues/..." \
+  --source-url "https://..." \
+  --write
 ```
 
 Poi apri il notebook e imposta i due parametri manuali in cima alla cella `setup`:

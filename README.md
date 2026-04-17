@@ -108,6 +108,18 @@ candidates/caso/
 Il template base e' in `templates/candidate/` e segue il pattern single-source.
 Il notebook `v0` e' opzionale ma consigliato come sanity check del mart prima della promozione.
 
+Per creare lo scaffold da template:
+
+```bash
+python scripts/scaffold_candidate.py \
+  --slug nuovo-candidato \
+  --title "Nuovo candidato" \
+  --discussion-url "https://github.com/dataciviclab/datasets/discussions/..." \
+  --issue-url "https://github.com/dataciviclab/dataset-incubator/issues/..." \
+  --source-url "https://..." \
+  --write
+```
+
 ## Uscita da `dataset-incubator`
 
 Quando un filone matura, puo' uscire in tre modi:

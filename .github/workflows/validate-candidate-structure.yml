@@ -6,7 +6,10 @@ on:
       - "candidates/**"
       - "support_datasets/**"
       - "registry/archived.md"
+      - "templates/candidate/**"
+      - "scripts/scaffold_candidate.py"
       - "scripts/validate_candidate_structure.py"
+      - "tests/test_scaffold_candidate.py"
       - "README.md"
       - "CONTRIBUTING.md"
 
@@ -25,3 +28,6 @@ jobs:
 
       - name: Validate candidate structure
         run: python scripts/validate_candidate_structure.py
+
+      - name: Test candidate scaffold
+        run: python -m unittest tests/test_scaffold_candidate.py

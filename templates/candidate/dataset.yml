@@ -2,7 +2,7 @@ root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "template_dataset"
+  name: "__slug__"
   years: [2024]
 
 # --- RAW LAYER ---
@@ -15,8 +15,8 @@ raw:
     - name: "fonte_principale_http"
       type: "http_file"
       args:
-        url: "https://example.com/data/dataset_{year}.csv"
-        filename: "dataset_{year}.csv"
+        url: "{source_url}"
+        filename: "{slug}_{year}.csv"
       primary: true
     
     # Esempio local_file (alternativo):
@@ -42,10 +42,10 @@ clean:
 # Tabelle finali pronte per l'analisi o l'explorer.
 mart:
   tables:
-    - name: "mart_template"
+    - name: "mart___slug_sql__"
       sql: "sql/mart.sql"
   required_tables:
-    - "mart_template"
+    - "mart___slug_sql__"
   validate: {}
 
 # --- CROSS YEAR LAYER (Optional) ---

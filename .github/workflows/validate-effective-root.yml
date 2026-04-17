@@ -3,7 +3,8 @@ name: Validate Effective Root
 on:
   pull_request:
     paths:
-      - "**/dataset.yml"
+      - "candidates/**/dataset.yml"
+      - "support_datasets/**/dataset.yml"
 
 jobs:
   validate-effective-root:
@@ -35,7 +36,9 @@ jobs:
         run: |
           base_sha="${{ github.event.pull_request.base.sha }}"
           head_sha="${{ github.event.pull_request.head.sha }}"
-          git diff --name-only "$base_sha" "$head_sha" -- '**/dataset.yml' > changed_dataset_yml.txt
+          git diff --name-only "$base_sha" "$head_sha" \
+            -- 'candidates/**/dataset.yml' 'support_datasets/**/dataset.yml' \
+            > changed_dataset_yml.txt
           if [ ! -s changed_dataset_yml.txt ]; then
             echo "has_files=false" >> "$GITHUB_OUTPUT"
             exit 0

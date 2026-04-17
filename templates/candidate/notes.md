@@ -1,12 +1,17 @@
-# Notes
+# Notes - {title}
+
+- slug: `{slug}`
+- created: {created_date}
+- discussion/issue: {discussion_url}
+- source: {source_url}
 
 ## Tecnico
 
--
+- TODO
 
 ## Analitico
 
--
+- TODO
 
 ## Cautele
 

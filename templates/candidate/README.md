@@ -1,37 +1,43 @@
-# Template candidato
+---
+lab:
+  topics: []
+  sources: []
+  discussion: "{discussion_url}"
+  issue: "{issue_url}"
+---
 
-Questo e il template operativo canonico della repo.   
+# {title}
 
-Ogni nuovo ingresso in `dataset-incubator` dovrebbe partire da questa cartella, adattando:
+Creato il: {created_date}
 
-- `README.md`
-- `dataset.yml`
-- `notes.md`
-- `sql/clean.sql`
-- `sql/mart.sql`
-- `notebooks/{slug}_v0.ipynb` quando il filone beneficia di un notebook v0 di validazione
+## Link
+
+- Discussion: {discussion_url}
+- Issue: {issue_url}
+- Fonte: {source_url}
 
 ## Domanda
 
--
+- TODO
+
 > Una domanda civica valida ha una tensione ("sta migliorando o peggiorando?", "c'e un divario?"),
 > non e puramente descrittiva ("quanti sono") ed e verificabile con i dati disponibili.
 
 ## Dataset
 
--
+- TODO
 
 ## Perche vale la pena testarlo
 
--
+- TODO
 
 ## Output minimo atteso
 
--
+- TODO
 
 ## Criterio di promozione
 
--
+- TODO
 
 ## Stato
 
@@ -39,4 +45,4 @@ Ogni nuovo ingresso in `dataset-incubator` dovrebbe partire da questa cartella, 
 
 ## Prossimo passo
 
--
+- TODO
