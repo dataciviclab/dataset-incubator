@@ -1,6 +1,5 @@
 dataset:
   name: "istat-delitti-denunciati"
-  resource_id: "istat-delitti-denunciati" # Questo aiuta il toolkit a mappare la cartella /out/data/
   years: ["2010", "2011", "2012", "2013", "2014", "2015"]
 
 raw:
