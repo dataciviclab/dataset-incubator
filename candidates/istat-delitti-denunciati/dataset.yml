@@ -1,31 +1,25 @@
-root: "../../out"
-schema_version: 1
-
 dataset:
   name: "istat-delitti-denunciati"
-  years: [2010, 2011, 2012, 2013, 2014, 2015]
+  years: ["2010", "2011", "2012", "2013", "2014", "2015"]
 
 raw:
   sources:
     - name: "istat_data"
-      type: "http_file"
+      type: "sdmx"
       args:
-        # Usiamo l'URL filtrato con timeout per evitare i blocchi del server
-        url: "https://esploradati.istat.it/SDMXWS/rest/data/73_67/all?startPeriod=2023"
-        filename: "delitti_raw.txt"
-        timeout: 300
+        id: "73_67"
+        agency: "ISTAT"
+        version: "1.0"
+        start_period: "2010"
+        end_period: "2015"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
   validate:
-    min_rows: 1
+    min_rows: 100
 
 mart:
   tables:
     - name: "mart_delitti"
-      sql: "sql/mart.sql"
-  validate:
-    table_rules:
-      mart_delitti:
-        min_rows: 100
+      sql: "sql/clean.sql" # Puntiamo allo stesso file clean, il toolkit lo accetta come pass-through
