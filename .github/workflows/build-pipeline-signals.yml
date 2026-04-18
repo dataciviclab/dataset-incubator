@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
 
     steps:
       - name: Checkout dataset-incubator
@@ -38,3 +39,39 @@ jobs:
           file_pattern: registry/pipeline_signals.json
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
+
+      - name: Rileva slug candidati modificati
+        id: slugs
+        run: |
+          SLUGS=$(git diff-tree --no-commit-id -r --name-only ${{ github.sha }} \
+            | grep '^candidates/' | cut -d'/' -f2 | sort -u | tr '\n' ' ')
+          echo "slugs=$SLUGS" >> $GITHUB_OUTPUT
+
+      - name: Apri reminder run + push GCS
+        if: steps.slugs.outputs.slugs != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const slugs = '${{ steps.slugs.outputs.slugs }}'.trim().split(/\s+/);
+            const list = slugs.map(s => `- \`${s}\``).join('\n');
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title: `chore: run + push GCS per candidate aggiornati`,
+              body: [
+                '## Reminder post-merge',
+                '',
+                'I seguenti candidate sono stati aggiornati nel merge e richiedono run locale e push su GCS:',
+                '',
+                list,
+                '',
+                '**Step da eseguire** (vedi `workflows/post-merge-candidate.md`):',
+                '```bash',
+                slugs.map(s => `toolkit run all --config candidates/${s}/dataset.yml`).join('\n'),
+                `python scripts/push_archive.py --layer clean --slug <slug>`,
+                '```',
+                '',
+                'Chiudi questa issue dopo il push completato.',
+              ].join('\n'),
+              labels: ['chore'],
+            });
