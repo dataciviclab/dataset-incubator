@@ -1,7 +1,9 @@
-SELECT 
-    codice_territorio,
-    codice_reato,
+select
     anno,
+    codice_territorio,
+    territorio,
+    codice_reato,
+    reato,
     numero_denunce
-FROM clean_input
-ORDER BY anno, codice_territorio;
+from clean_input
+order by anno, codice_territorio, codice_reato

@@ -1,23 +1,102 @@
+root: "../../out"
+schema_version: 1
+
 dataset:
   name: "istat-delitti-denunciati"
-  years: ["2010", "2011", "2012", "2013", "2014", "2015"]
+  years: [2015]
 
 raw:
+  output_policy: overwrite
   sources:
-    - name: "istat_data"
-      type: "sdmx"
+    - name: "istat_dbnomics_delitti_denunciati"
+      type: "http_file"
       args:
-        id: "73_67"
-        agency: "ISTAT"
-        version: "1.0"
-        start_period: "2010"
-        end_period: "2015"
+        url: "https://api.db.nomics.world/v22/series/ISTAT/73_67_DF_DCCV_DELITTIPS_1?dimensions=%7B%22REF_AREA%22%3A%5B%22IT%22%5D%2C%22DATA_TYPE%22%3A%5B%22CRIMEN%22%5D%2C%22Y_KNOWN_OFFENDER_IDEN%22%3A%5B%229%22%5D%2C%22REFERENCE_PERIOD_CRIME%22%3A%5B%22YRDUR%22%5D%7D&observations=1&format=csv&limit=100"
+        filename: "istat_delitti_denunciati_series.csv"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    columns:
+      "period": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – arson – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.ARSON.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – theft of art objets – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.ARTTHEF.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – attacks – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.ATTACK.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – attempted homicides – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.ATTEMPHOM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – bag-snatching – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.BAGTHEF.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – bank robbery – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.BANKROB.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – blows – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.BLOWS.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – burglary – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.BURGTHEF.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – car theft – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.CARTHEF.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – corruption of a minor – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.CORRUPUN18.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – counteractions of goods and industrial products – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.COUNTER.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – criminal association – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.CRIMASS.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – culpable injuries – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.CULPINJU.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – cybercrime – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.CYBERCRIM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – damages – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.DAMAGE.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – damage followed by arson – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.DAMARS.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – trafficking and drugs possession – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.DRUG.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – extortions – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.EXTORT.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – forest arson – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.FOREARS.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – house robbery – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.HOUSEROB.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – infanticides – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.INFANTHOM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – intentional homicides – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.INTENHOM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – intellectual property violations – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.INTPROP.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – kidnappings – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.KIDNAPP.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – homicides of mafia – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.MAFIAHOM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – mafia criminal association – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.MAFIASS.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – manslaughter – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.MANSHOM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – mass murder – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.MASSMURD.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – menaces – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.MENACE.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – money laundering – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.MONEYLAU.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – moped theft – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.MOPETHEF.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – motorcycle theft – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.MOTORTHEF.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – offences – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.OFFENCE.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – other crimes – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.OTHCRIM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – pickpocketing – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.PICKTHEF.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – child pornography and possession of paedo-pornographic materials – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.PORNO.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – post office robbery – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.POSTROB.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – exploitation and abetting prostitution – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.PROSTI.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – sexual violence – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.RAPE.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – sexual activity with a minor – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.RAPEUN18.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – receiving stolen goods – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.RECEIV.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – homicides from road accident – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.ROADHOM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – robberies – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.ROBBER.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – homicides for theft or robbery – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.ROBBHOM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – shop robbery – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.SHOPROB.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – shoplifting – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.SHOPTHEF.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – smuggling – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.SMUGGL.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – street robbery – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.STREETROB.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – swindles and cyber frauds – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.SWINCYB.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – terrorist homicides – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.TERRORHOM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – thefts – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.THEFT.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – total – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.TOT.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – theft of cargo trucks carrying freights – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.TRUCKTHEF.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – unintentional homicides – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.UNINTHOM.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – usury – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.USURY.9.YRDUR)": "VARCHAR"
+      "annual – Italy – number of crimes reported by the police forces to the judicial authority – theft from vehicle – total – during the reference year (ISTAT/73_67_DF_DCCV_DELITTIPS_1/A.IT.CRIMEN.VEHITHEF.9.YRDUR)": "VARCHAR"
+  validate:
+    min_rows: 50
 
 mart:
   tables:
     - name: "mart_delitti"
-      sql: "sql/clean.sql"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_delitti"
+  validate:
+    table_rules:
+      mart_delitti:
+        min_rows: 50
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
