@@ -16,6 +16,18 @@ Non serve per:
 - test puramente engine del `toolkit`
 - contenuti editoriali o community ops
 
+## Ruolo nell'ecosistema
+
+```
+source-observatory  →  dataset-incubator  →  toolkit  →  GCS  →  data-explorer
+```
+
+I candidati arrivano principalmente da due percorsi:
+- **source-observatory**: portali PA scoperti e classificati da portal-scout, promossi manualmente a intake dopo verifica
+- **Discussions**: domanda civica aperta in `dataciviclab`, che identifica una fonte e avvia il ciclo di intake
+
+Una volta qui, il contratto tecnico (`dataset.yml`, SQL, pipeline) rimane permanente — anche quando i dati vengono pubblicati altrove.
+
 ## Relazione con analisi/ e le repo progetto
 
 Il contratto tecnico (dataset.yml, sql/, pipeline) vive qui — anche dopo che il filone
