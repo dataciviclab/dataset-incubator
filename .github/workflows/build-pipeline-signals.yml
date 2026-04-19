@@ -53,11 +53,38 @@ jobs:
         with:
           script: |
             const slugs = '${{ steps.slugs.outputs.slugs }}'.trim().split(/\s+/);
+            const title = `chore: run + push GCS — ${slugs.join(', ')}`;
+
+            // Idempotenza: non aprire se esiste già issue aperta con stesso titolo
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'chore',
+            });
+            if (existing.data.some(i => i.title === title)) {
+              console.log('Issue reminder già aperta, skip.');
+              return;
+            }
+
             const list = slugs.map(s => `- \`${s}\``).join('\n');
+
+            // Genera comandi corretti rilevando layout single-source vs multi-source
+            const fs = require('fs');
+            const cmds = slugs.flatMap(s => {
+              const multiSrcDir = `candidates/${s}/sources`;
+              if (fs.existsSync(multiSrcDir)) {
+                return fs.readdirSync(multiSrcDir).map(src =>
+                  `toolkit run all --config candidates/${s}/sources/${src}/dataset.yml`
+                );
+              }
+              return [`toolkit run all --config candidates/${s}/dataset.yml`];
+            });
+
             await github.rest.issues.create({
               owner: context.repo.owner,
               repo: context.repo.repo,
-              title: `chore: run + push GCS per candidate aggiornati`,
+              title,
               body: [
                 '## Reminder post-merge',
                 '',
@@ -67,7 +94,7 @@ jobs:
                 '',
                 '**Step da eseguire** (vedi `workflows/post-merge-candidate.md`):',
                 '```bash',
-                slugs.map(s => `toolkit run all --config candidates/${s}/dataset.yml`).join('\n'),
+                ...cmds,
                 `python scripts/push_archive.py --layer clean --slug <slug>`,
                 '```',
                 '',
