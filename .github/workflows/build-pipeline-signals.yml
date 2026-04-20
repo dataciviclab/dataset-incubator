@@ -15,6 +15,7 @@ jobs:
     runs-on: ubuntu-latest
     permissions:
       contents: write
+      issues: write
 
     steps:
       - name: Checkout dataset-incubator
@@ -38,3 +39,66 @@ jobs:
           file_pattern: registry/pipeline_signals.json
           commit_user_name: github-actions[bot]
           commit_user_email: github-actions[bot]@users.noreply.github.com
+
+      - name: Rileva slug candidati modificati
+        id: slugs
+        run: |
+          SLUGS=$(git diff-tree --no-commit-id -r --name-only ${{ github.sha }} \
+            | grep '^candidates/' | cut -d'/' -f2 | sort -u | tr '\n' ' ')
+          echo "slugs=$SLUGS" >> $GITHUB_OUTPUT
+
+      - name: Apri reminder run + push GCS
+        if: steps.slugs.outputs.slugs != ''
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const slugs = '${{ steps.slugs.outputs.slugs }}'.trim().split(/\s+/);
+            const title = `chore: run + push GCS — ${slugs.join(', ')}`;
+
+            // Idempotenza: non aprire se esiste già issue aperta con stesso titolo
+            const existing = await github.rest.issues.listForRepo({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              state: 'open',
+              labels: 'chore',
+            });
+            if (existing.data.some(i => i.title === title)) {
+              console.log('Issue reminder già aperta, skip.');
+              return;
+            }
+
+            const list = slugs.map(s => `- \`${s}\``).join('\n');
+
+            // Genera comandi corretti rilevando layout single-source vs multi-source
+            const fs = require('fs');
+            const cmds = slugs.flatMap(s => {
+              const multiSrcDir = `candidates/${s}/sources`;
+              if (fs.existsSync(multiSrcDir)) {
+                return fs.readdirSync(multiSrcDir).map(src =>
+                  `toolkit run all --config candidates/${s}/sources/${src}/dataset.yml`
+                );
+              }
+              return [`toolkit run all --config candidates/${s}/dataset.yml`];
+            });
+
+            await github.rest.issues.create({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              title,
+              body: [
+                '## Reminder post-merge',
+                '',
+                'I seguenti candidate sono stati aggiornati nel merge e richiedono run locale e push su GCS:',
+                '',
+                list,
+                '',
+                '**Step da eseguire** (vedi `workflows/post-merge-candidate.md`):',
+                '```bash',
+                ...cmds,
+                `python scripts/push_archive.py --layer clean --slug <slug>`,
+                '```',
+                '',
+                'Chiudi questa issue dopo il push completato.',
+              ].join('\n'),
+              labels: ['chore'],
+            });
