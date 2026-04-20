@@ -352,331 +352,6 @@
       "registry_source": "initial_clean_query_catalog"
     },
     {
-      "slug": "ispra_consumo_suolo",
-      "name": "ISPRA - Consumo di Suolo 2024",
-      "description": "Consumo di suolo per comune: incremento annuo e stock territoriale (7896 comuni)",
-      "source": "ISPRA",
-      "period": {
-        "start": 2024,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "pro_com",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT comune"
-        },
-        {
-          "name": "comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione comune"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia"
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Regione"
-        },
-        {
-          "name": "incremento_ha_2023_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento consumo suolo (ettari) 2023-2024"
-        },
-        {
-          "name": "stock_ha_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Stock consumo suolo 2024 (ettari)"
-        },
-        {
-          "name": "stock_pct_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Stock consumo suolo 2024 (% territorio comunale)"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/ispra_consumo_suolo/2024/ispra_consumo_suolo_2024_clean.parquet"
-      },
-      "status": "clean_ready",
-      "visibility": "public",
-      "registry_source": "initial_clean_query_catalog"
-    },
-    {
-      "slug": "ispra_ru_base",
-      "name": "ISPRA - Rifiuti Urbani (dati base)",
-      "description": "Produzione e raccolta differenziata rifiuti urbani per comune (7671 comuni, 2020-2024)",
-      "source": "ISPRA",
-      "period": {
-        "start": 2020,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "codice_comune_istat",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT comune"
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Regione"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia"
-        },
-        {
-          "name": "comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione comune"
-        },
-        {
-          "name": "popolazione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Popolazione residente"
-        },
-        {
-          "name": "dato_riferito_a",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Anno di riferimento del dato"
-        },
-        {
-          "name": "totale_ru_tonnellate",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Totale rifiuti urbani prodotti (tonnellate)"
-        },
-        {
-          "name": "totale_rd_tonnellate",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Totale raccolta differenziata (tonnellate)"
-        },
-        {
-          "name": "percentuale_rd",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Percentuale raccolta differenziata"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/ispra_ru_base/*/ispra_ru_base_*_clean.parquet",
-        "multi_file": true
-      },
-      "status": "clean_ready",
-      "visibility": "public",
-      "registry_source": "initial_clean_query_catalog"
-    },
-    {
-      "slug": "ispra_ru_costi_kg",
-      "name": "ISPRA - Costi gestione rifiuti (EUR/kg)",
-      "description": "Costi di gestione rifiuti urbani per comune, per fase (raccolta, trasporto, smaltimento, recupero) in centesimi/kg",
-      "source": "ISPRA",
-      "period": {
-        "start": 2020,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "codice_comune_istat",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT comune"
-        },
-        {
-          "name": "comune_o_aggregazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Comune o aggregazione territoriale"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia"
-        },
-        {
-          "name": "numero_comuni",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Numero di comuni nell'aggregazione"
-        },
-        {
-          "name": "popolazione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Popolazione"
-        },
-        {
-          "name": "crt_cent_kg",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo raccolta e trasporto (cent/kg)"
-        },
-        {
-          "name": "crd_cent_kg",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo raccolta differenziata (cent/kg)"
-        },
-        {
-          "name": "csl_cent_kg",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo smaltimento in discarica (cent/kg)"
-        },
-        {
-          "name": "cc_cent_kg",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo compostaggio (cent/kg)"
-        },
-        {
-          "name": "ck_cent_kg",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo incenerimento (cent/kg)"
-        },
-        {
-          "name": "ctot_cent_kg",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo totale (cent/kg)"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/ispra_ru_costi_kg/*/ispra_ru_costi_kg_*_clean.parquet",
-        "multi_file": true
-      },
-      "status": "clean_ready",
-      "visibility": "public",
-      "registry_source": "initial_clean_query_catalog"
-    },
-    {
-      "slug": "ispra_ru_costi_procapite",
-      "name": "ISPRA - Costi gestione rifiuti (EUR/abitante)",
-      "description": "Costi di gestione rifiuti urbani per abitante, per fase (raccolta, trattamento, smaltimento)",
-      "source": "ISPRA",
-      "period": {
-        "start": 2020,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "codice_comune_istat",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT comune"
-        },
-        {
-          "name": "comune_o_aggregazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Comune o aggregazione territoriale"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia"
-        },
-        {
-          "name": "numero_comuni",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Numero di comuni nell'aggregazione"
-        },
-        {
-          "name": "popolazione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Popolazione"
-        },
-        {
-          "name": "crt_euro_ab",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo raccolta e trasporto (EUR/ab)"
-        },
-        {
-          "name": "cts_euro_ab",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo trattamento selezionato (EUR/ab)"
-        },
-        {
-          "name": "crd_euro_ab",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo raccolta differenziata (EUR/ab)"
-        },
-        {
-          "name": "ctr_euro_ab",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo trattamento recupero (EUR/ab)"
-        },
-        {
-          "name": "csl_euro_ab",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo smaltimento in discarica (EUR/ab)"
-        },
-        {
-          "name": "cc_euro_ab",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo compostaggio (EUR/ab)"
-        },
-        {
-          "name": "ck_euro_ab",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo incenerimento (EUR/ab)"
-        },
-        {
-          "name": "altri_costi_euro_ab",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Altri costi (EUR/ab)"
-        },
-        {
-          "name": "ctot_euro_ab",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costo totale (EUR/ab)"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/ispra_ru_costi_procapite/*/ispra_ru_costi_procapite_*_clean.parquet",
-        "multi_file": true
-      },
-      "status": "clean_ready",
-      "visibility": "public",
-      "registry_source": "initial_clean_query_catalog"
-    },
-    {
       "slug": "irpef_comunale_2019_2023",
       "name": "IRPEF Comunale - Dichiarazioni per Comune",
       "description": "Statistiche IRPEF per comune: contribuenti, redditi per categoria, imposta netta e addizionali. Fonte MEF, anni d'imposta 2019-2023.",
@@ -1037,6 +712,331 @@
       "status": "clean_ready",
       "visibility": "public",
       "registry_source": "push_archive_auto"
+    },
+    {
+      "slug": "ispra_consumo_suolo",
+      "name": "ISPRA - Consumo di Suolo 2024",
+      "description": "Consumo di suolo per comune: incremento annuo e stock territoriale (7896 comuni)",
+      "source": "ISPRA",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "pro_com",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione comune"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione"
+        },
+        {
+          "name": "incremento_ha_2023_2024",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Incremento consumo suolo (ettari) 2023-2024"
+        },
+        {
+          "name": "stock_ha_2024",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Stock consumo suolo 2024 (ettari)"
+        },
+        {
+          "name": "stock_pct_2024",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Stock consumo suolo 2024 (% territorio comunale)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ispra_consumo_suolo/2024/ispra_consumo_suolo_2024_clean.parquet"
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "ispra_ru_base",
+      "name": "ISPRA - Rifiuti Urbani (dati base)",
+      "description": "Produzione e raccolta differenziata rifiuti urbani per comune (7671 comuni, 2020-2024)",
+      "source": "ISPRA",
+      "period": {
+        "start": 2020,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione comune"
+        },
+        {
+          "name": "popolazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Popolazione residente"
+        },
+        {
+          "name": "dato_riferito_a",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Anno di riferimento del dato"
+        },
+        {
+          "name": "totale_ru_tonnellate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale rifiuti urbani prodotti (tonnellate)"
+        },
+        {
+          "name": "totale_rd_tonnellate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale raccolta differenziata (tonnellate)"
+        },
+        {
+          "name": "percentuale_rd",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Percentuale raccolta differenziata"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ispra_ru_base/*/ispra_ru_base_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "ispra_ru_costi_kg",
+      "name": "ISPRA - Costi gestione rifiuti (EUR/kg)",
+      "description": "Costi di gestione rifiuti urbani per comune, per fase (raccolta, trasporto, smaltimento, recupero) in centesimi/kg",
+      "source": "ISPRA",
+      "period": {
+        "start": 2020,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
+        },
+        {
+          "name": "comune_o_aggregazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune o aggregazione territoriale"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "numero_comuni",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Numero di comuni nell'aggregazione"
+        },
+        {
+          "name": "popolazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Popolazione"
+        },
+        {
+          "name": "crt_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo raccolta e trasporto (cent/kg)"
+        },
+        {
+          "name": "crd_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo raccolta differenziata (cent/kg)"
+        },
+        {
+          "name": "csl_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo smaltimento in discarica (cent/kg)"
+        },
+        {
+          "name": "cc_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo compostaggio (cent/kg)"
+        },
+        {
+          "name": "ck_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo incenerimento (cent/kg)"
+        },
+        {
+          "name": "ctot_cent_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo totale (cent/kg)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ispra_ru_costi_kg/*/ispra_ru_costi_kg_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "ispra_ru_costi_procapite",
+      "name": "ISPRA - Costi gestione rifiuti (EUR/abitante)",
+      "description": "Costi di gestione rifiuti urbani per abitante, per fase (raccolta, trattamento, smaltimento)",
+      "source": "ISPRA",
+      "period": {
+        "start": 2020,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
+        },
+        {
+          "name": "comune_o_aggregazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune o aggregazione territoriale"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "numero_comuni",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Numero di comuni nell'aggregazione"
+        },
+        {
+          "name": "popolazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Popolazione"
+        },
+        {
+          "name": "crt_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo raccolta e trasporto (EUR/ab)"
+        },
+        {
+          "name": "cts_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo trattamento selezionato (EUR/ab)"
+        },
+        {
+          "name": "crd_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo raccolta differenziata (EUR/ab)"
+        },
+        {
+          "name": "ctr_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo trattamento recupero (EUR/ab)"
+        },
+        {
+          "name": "csl_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo smaltimento in discarica (EUR/ab)"
+        },
+        {
+          "name": "cc_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo compostaggio (EUR/ab)"
+        },
+        {
+          "name": "ck_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo incenerimento (EUR/ab)"
+        },
+        {
+          "name": "altri_costi_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Altri costi (EUR/ab)"
+        },
+        {
+          "name": "ctot_euro_ab",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo totale (EUR/ab)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ispra_ru_costi_procapite/*/ispra_ru_costi_procapite_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "initial_clean_query_catalog"
     }
   ]
 }

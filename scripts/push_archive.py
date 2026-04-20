@@ -271,14 +271,14 @@ def update_catalog(slug: str, years: list[str], dry_run: bool = False) -> None:
         datasets.append(new_entry)
         action = "aggiunto (needs_review)"
 
-    catalog["datasets"] = datasets
+    catalog["datasets"] = sorted(datasets, key=lambda d: d["slug"])
     catalog["updated_at"] = datetime.date.today().isoformat()
 
     if dry_run:
         print(f"  [dry] catalog: {slug} {action}")
         return
 
-    CATALOG_PATH.write_text(json.dumps(catalog, ensure_ascii=False, indent=2), encoding="utf-8")
+    CATALOG_PATH.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
     print(f"  catalog: {slug} {action}")
 
 
