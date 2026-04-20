@@ -33,16 +33,30 @@ Dopo il merge di una PR che aggiunge o aggiorna un candidate in `candidates/{slu
    ```
    Verifica che il run completi senza errori e che `out/data/clean/{slug}/` sia popolato.
 
-3. **Push clean su GCS** (dry-run prima)
+3. **Validare i layer**
+   ```bash
+   toolkit validate all --config candidates/{slug}/dataset.yml
+   ```
+   Il comando esegue raw → clean (con cross-layer raw→clean) → mart in sequenza.
+   Verifica che non ci siano errori; i warning sono accettabili ma vanno letti.
+
+4. **Push clean su GCS + aggiorna catalog + crea external table BQ** (dry-run prima)
    ```bash
    # installa dipendenze GCS se non già presenti
    pip install -r requirements-gcs.txt
 
-   python scripts/push_archive.py --layer clean --slug {slug} --dry-run
-   python scripts/push_archive.py --layer clean --slug {slug}
+   python scripts/push_archive.py --layer clean --slug {slug} --update-catalog --create-bq-table --dry-run
+   python scripts/push_archive.py --layer clean --slug {slug} --update-catalog --create-bq-table
    ```
+   Il push include:
+   - parquet clean per ogni anno
+   - `pipeline_run.json` (traccia del run) accanto ad ogni anno
+   - aggiornamento di `registry/clean_catalog.json` (upsert period, location, colonne da schema)
+   - external table BQ `dataciviclab.{slug}.clean` che punta ai file GCS
 
-4. **Verifica**
+   Se lo slug è nuovo, il catalog aggiunge l'entry con `status: needs_review` — completare `name`, `description`, `source` e i `role`/`description` delle colonne prima di fare PR.
+
+5. **Verifica**
    Il workflow `validate-clean-catalog` parte automaticamente dopo il push. Controlla che passi.
 
 ## Note
