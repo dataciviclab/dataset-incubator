@@ -132,7 +132,7 @@ def create_bq_external_table(bq_client, slug, dry_run=False):
     gcs_uri = f"gs://{GCS_CLEAN_BUCKET}/{slug}/*/*.parquet"
 
     if dry_run:
-        print(f"  [dry] BQ external table: {table_id} <- {', '.join(source_uris)}")
+        print(f"  [dry] BQ external table: {table_id} <- {gcs_uri}")
         return
 
     ensure_bq_dataset(bq_client, dataset_id)
