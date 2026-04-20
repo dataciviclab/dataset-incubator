@@ -678,9 +678,9 @@
     },
     {
       "slug": "irpef_comunale_2019_2023",
-      "name": "Irpef Comunale 2019 2023",
-      "description": "",
-      "source": "",
+      "name": "IRPEF Comunale - Dichiarazioni per Comune",
+      "description": "Statistiche IRPEF per comune: contribuenti, redditi per categoria, imposta netta e addizionali. Fonte MEF, anni d'imposta 2019-2023.",
+      "source": "MEF - Ministero dell'Economia e delle Finanze",
       "period": {
         "start": 2019,
         "end": 2023
@@ -689,344 +689,344 @@
         {
           "name": "anno_imposta",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno d'imposta di riferimento"
         },
         {
           "name": "codice_catastale",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice catastale del comune"
         },
         {
           "name": "codice_istat_comune",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Denominazione comune"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Sigla provincia"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Regione"
         },
         {
           "name": "codice_istat_regione",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT regione"
         },
         {
           "name": "numero_contribuenti",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Numero di contribuenti dichiaranti"
         },
         {
           "name": "reddito_fabbricati_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito da fabbricati"
         },
         {
           "name": "reddito_fabbricati_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito da fabbricati (€)"
         },
         {
           "name": "reddito_lavoro_dipendente_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito da lavoro dipendente"
         },
         {
           "name": "reddito_lavoro_dipendente_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito da lavoro dipendente (€)"
         },
         {
           "name": "reddito_pensione_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito da pensione"
         },
         {
           "name": "reddito_pensione_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito da pensione (€)"
         },
         {
           "name": "reddito_lavoro_autonomo_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito da lavoro autonomo"
         },
         {
           "name": "reddito_lavoro_autonomo_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito da lavoro autonomo (€)"
         },
         {
           "name": "reddito_impresa_ordinaria_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito da impresa ordinaria"
         },
         {
           "name": "reddito_impresa_ordinaria_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito da impresa ordinaria (€)"
         },
         {
           "name": "reddito_impresa_semplificata_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito da impresa semplificata"
         },
         {
           "name": "reddito_impresa_semplificata_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito da impresa semplificata (€)"
         },
         {
           "name": "reddito_partecipazione_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito da partecipazione"
         },
         {
           "name": "reddito_partecipazione_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito da partecipazione (€)"
         },
         {
           "name": "reddito_imponibile_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito imponibile IRPEF"
         },
         {
           "name": "reddito_imponibile_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito imponibile IRPEF (€)"
         },
         {
           "name": "imposta_netta_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con imposta netta positiva"
         },
         {
           "name": "imposta_netta_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Imposta netta IRPEF (€)"
         },
         {
           "name": "bonus_spettante_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con bonus Renzi/80€"
         },
         {
           "name": "bonus_spettante_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Importo bonus Renzi/80€ spettante (€)"
         },
         {
           "name": "trattamento_spettante_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con trattamento integrativo (ex bonus 100€)"
         },
         {
           "name": "trattamento_spettante_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Importo trattamento integrativo spettante (€)"
         },
         {
           "name": "misura_spettante_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con ulteriore misura di sostegno"
         },
         {
           "name": "misura_spettante_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Importo ulteriore misura di sostegno (€)"
         },
         {
           "name": "reddito_imponibile_addizionale_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con base imponibile per addizionali"
         },
         {
           "name": "reddito_imponibile_addizionale_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Base imponibile per addizionali (€)"
         },
         {
           "name": "addizionale_regionale_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con addizionale regionale"
         },
         {
           "name": "addizionale_regionale_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Addizionale regionale IRPEF (€)"
         },
         {
           "name": "addizionale_comunale_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con addizionale comunale"
         },
         {
           "name": "addizionale_comunale_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Addizionale comunale IRPEF (€)"
         },
         {
           "name": "reddito_complessivo_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito complessivo positivo"
         },
         {
           "name": "reddito_complessivo_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito complessivo (€)"
         },
         {
           "name": "reddito_complessivo_le_zero_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito complessivo ≤ 0"
         },
         {
           "name": "reddito_complessivo_le_zero_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito complessivo ≤ 0 (€)"
         },
         {
           "name": "reddito_0_10000_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito 0-10.000€"
         },
         {
           "name": "reddito_0_10000_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito complessivo fascia 0-10.000€ (€)"
         },
         {
           "name": "reddito_10000_15000_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito 10.000-15.000€"
         },
         {
           "name": "reddito_10000_15000_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito complessivo fascia 10.000-15.000€ (€)"
         },
         {
           "name": "reddito_15000_26000_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito 15.000-26.000€"
         },
         {
           "name": "reddito_15000_26000_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito complessivo fascia 15.000-26.000€ (€)"
         },
         {
           "name": "reddito_26000_55000_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito 26.000-55.000€"
         },
         {
           "name": "reddito_26000_55000_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito complessivo fascia 26.000-55.000€ (€)"
         },
         {
           "name": "reddito_55000_75000_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito 55.000-75.000€"
         },
         {
           "name": "reddito_55000_75000_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito complessivo fascia 55.000-75.000€ (€)"
         },
         {
           "name": "reddito_75000_120000_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito 75.000-120.000€"
         },
         {
           "name": "reddito_75000_120000_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito complessivo fascia 75.000-120.000€ (€)"
         },
         {
           "name": "reddito_oltre_120000_freq",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Contribuenti con reddito oltre 120.000€"
         },
         {
           "name": "reddito_oltre_120000_eur",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Reddito complessivo fascia oltre 120.000€ (€)"
         },
         {
           "name": "popolazione_comune",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Popolazione residente nel comune (fonte ISTAT)"
         }
       ],
       "location": {
@@ -1034,7 +1034,7 @@
         "path": "gs://dataciviclab-clean/irpef_comunale_2019_2023/*/irpef_comunale_2019_2023_*_clean.parquet",
         "multi_file": true
       },
-      "status": "needs_review",
+      "status": "clean_ready",
       "visibility": "public",
       "registry_source": "push_archive_auto"
     }
