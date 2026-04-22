@@ -26,12 +26,14 @@ import argparse
 import sys
 import json
 import datetime
+import os
 from pathlib import Path
 
 import pandas as pd
 import pyarrow.parquet as pq
 from google.cloud import bigquery, storage
 from google.api_core.exceptions import Conflict
+from google.oauth2 import credentials as google_oauth2_credentials
 
 # ---------------------------------------------------------------------------
 # Config
@@ -50,6 +52,21 @@ RUNS_ROOT = DI_ROOT / "out" / "data" / "_runs"
 
 SKIP_DIRS = {"_validate", "_run"}
 SKIP_SLUGS = {"malasanita_struttura_mortalita_source_d_test"}  # slug da escludere dal push
+
+
+def load_google_credentials():
+    """Carica credenziali esplicite se GOOGLE_APPLICATION_CREDENTIALS punta a un ADC user file.
+
+    In alcuni ambienti WSL la discovery standard resta appesa sul `gcloud` Windows nel PATH.
+    """
+    adc_path = Path(
+        os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "")
+    ).expanduser()
+    if adc_path.is_file():
+        return google_oauth2_credentials.Credentials.from_authorized_user_file(
+            str(adc_path)
+        )
+    return None
 
 
 # ---------------------------------------------------------------------------
@@ -382,8 +399,13 @@ def main():
                         help="Aggiorna registry/clean_catalog.json con period e location aggiornati")
     args = parser.parse_args()
 
-    gcs_client = storage.Client(project=GCP_PROJECT)
-    bq_client = bigquery.Client(project=GCP_PROJECT) if (not args.no_bq or args.create_bq_table) else None
+    google_credentials = load_google_credentials()
+    gcs_client = storage.Client(project=GCP_PROJECT, credentials=google_credentials)
+    bq_client = (
+        bigquery.Client(project=GCP_PROJECT, credentials=google_credentials)
+        if (not args.no_bq or args.create_bq_table)
+        else None
+    )
 
     if args.layer in ("clean", "all"):
         push_clean(gcs_client, args.slug, args.year, args.dry_run)
