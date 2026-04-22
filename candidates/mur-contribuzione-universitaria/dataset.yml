@@ -1,0 +1,70 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mur_contribuzione_universitaria"
+  years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+
+raw:
+  sources:
+    - name: "mur_gettito_ckan"
+      type: "ckan"
+      args:
+        portal_url: "https://dati-ustat.mur.gov.it/api/3/action"
+        dataset_id: "{year}-contribuzione-e-interventi-atenei"
+        resource_name: "{year} Gettito della contribuzione studentesca"
+        filename: "gettito_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ";"
+    encoding: "cp1252"
+    header: true
+  validate:
+    min_rows: 500
+
+mart:
+  tables:
+    - name: "mart_gettito_ateneo_tipo"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_gettito_ateneo_tipo"
+  validate:
+    table_rules:
+      mart_gettito_ateneo_tipo:
+        required_columns:
+          - anno
+          - cod_ateneo
+          - nome_ateneo
+          - codice_gettito
+          - descrizione_gettito
+          - totale_euro
+        primary_key:
+          - anno
+          - cod_ateneo
+          - codice_gettito
+        not_null:
+          - anno
+          - cod_ateneo
+          - nome_ateneo
+          - codice_gettito
+          - descrizione_gettito
+          - totale_euro
+        min_rows: 500
+
+cross_year:
+  tables:
+    - name: "mart_gettito_ateneo_tipo_multi_anno"
+      sql: "sql/mart_multi_anno.sql"
+      source_layer: "mart"
+      source_table: "mart_gettito_ateneo_tipo"
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "minimal"
