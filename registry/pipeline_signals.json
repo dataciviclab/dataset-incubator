@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-04-16",
+  "generated_at": "2026-04-22",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 16,
+    "total": 17,
     "by_status": {
-      "ok": 16,
+      "ok": 17,
       "warn": 0,
       "error": 0
     }
@@ -94,6 +94,13 @@
       "status": "ok",
       "label": "mit-opere-incompiute-2020",
       "detail": "anno 2020 — fonte: mit_opere_incompiute_csv — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "mur-contribuzione-universitaria",
+      "status": "ok",
+      "label": "mur-contribuzione-universitaria",
+      "detail": "anni 2017-2024 — fonte: mur_gettito_ckan — mart: sì",
       "action": ""
     },
     {
