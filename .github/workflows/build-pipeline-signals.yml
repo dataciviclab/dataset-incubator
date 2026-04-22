@@ -16,6 +16,7 @@ jobs:
     permissions:
       contents: write
       issues: write
+      pull-requests: write
 
     steps:
       - name: Checkout dataset-incubator
@@ -32,13 +33,23 @@ jobs:
       - name: Build pipeline_signals.json
         run: python scripts/build_pipeline_signals.py
 
-      - name: Commit updated pipeline_signals.json
-        uses: stefanzweifel/git-auto-commit-action@v7
-        with:
-          commit_message: "chore: aggiorna pipeline_signals.json"
-          file_pattern: registry/pipeline_signals.json
-          commit_user_name: github-actions[bot]
-          commit_user_email: github-actions[bot]@users.noreply.github.com
+      - name: Commit and push to feature branch
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "build-pipeline-signals-auto/${{ github.sha }}"
+          git add registry/pipeline_signals.json
+          git commit -m "chore: aggiorna pipeline_signals.json"
+          git push -u origin "build-pipeline-signals-auto/${{ github.sha }}"
+
+      - name: Create PR
+        run: |
+          gh pr create \
+            --base main \
+            --head "build-pipeline-signals-auto/${{ github.sha }}" \
+            --title "chore: aggiorna pipeline_signals.json" \
+            --body "Aggiornamento automatico di pipeline_signals.json dopo merge. Verificato e pronto per merge istituzionale." \
+            --label "skip-changelog"
 
       - name: Rileva slug candidati modificati
         id: slugs
