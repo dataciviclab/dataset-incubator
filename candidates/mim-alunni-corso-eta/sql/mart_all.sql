@@ -1,3 +1,4 @@
+-- Aggregato alunni per comune — TUTTI GLI ORDINI (unica tabella)
 WITH scuole AS (
     SELECT *
     FROM read_parquet('{support.scu_anagrafica_statali.mart}')
@@ -5,10 +6,10 @@ WITH scuole AS (
 alunni AS (
     SELECT *
     FROM clean
-    WHERE ordine_scuola = 'SCUOLA PRIMARIA'
 )
 SELECT
     a.anno_scolastico,
+    a.ordine_scuola,
     s.area_geografica,
     s.regione,
     s.provincia,
@@ -21,6 +22,7 @@ INNER JOIN scuole s
     ON a.codice_scuola = s.codice_scuola
 GROUP BY
     a.anno_scolastico,
+    a.ordine_scuola,
     s.area_geografica,
     s.regione,
     s.provincia,

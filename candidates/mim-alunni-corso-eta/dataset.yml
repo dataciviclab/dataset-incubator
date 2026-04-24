@@ -34,12 +34,27 @@ clean:
 mart:
   tables:
     - name: "mart_alunni_primaria_comune"
-      sql: "sql/mart.sql"
+      sql: "sql/mart_primaria.sql"
+    - name: "mart_alunni_secondaria_i_comune"
+      sql: "sql/mart_secondaria_i.sql"
+    - name: "mart_alunni_secondaria_ii_comune"
+      sql: "sql/mart_secondaria_ii.sql"
+    - name: "mart_alunni_all_comune"
+      sql: "sql/mart_all.sql"
   required_tables:
     - "mart_alunni_primaria_comune"
+    - "mart_alunni_secondaria_i_comune"
+    - "mart_alunni_secondaria_ii_comune"
+    - "mart_alunni_all_comune"
   validate:
     table_rules:
       mart_alunni_primaria_comune:
+        min_rows: 5000
+      mart_alunni_secondaria_i_comune:
+        min_rows: 3000
+      mart_alunni_secondaria_ii_comune:
+        min_rows: 1000
+      mart_alunni_all_comune:
         min_rows: 5000
 
 validation:
