@@ -163,8 +163,7 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/civile_flussi/*/civile_flussi_*_clean.parquet",
-        "multi_file": true
+        "path": "gs://dataciviclab-clean/civile_flussi/*/civile_flussi_*_clean.parquet"
       },
       "status": "candidate",
       "visibility": "public",

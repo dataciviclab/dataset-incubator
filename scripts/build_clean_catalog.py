@@ -244,17 +244,9 @@ def validate_gcs_locations(catalog: dict[str, Any]) -> list[str]:
             errors.append(f"{slug}: no public GCS object matches {path}")
             continue
         if location.get("multi_file"):
-            # Guard: if only one GCS file matches, assume it's a snapshot
-            # containing the full series (e.g. civile_flussi_2025 contains
-            # 2014-2025) — skip per-year check. Only validate per-year when
-            # multiple files exist. This avoids false negatives on single-snapshot
-            # datasets but means a missing-file push (0 matches) also passes.
-            # TODO: add explicit snapshot: true to location schema to model
-            # this properly instead of inferring from match count.
-            if len(matches) > 1:
-                missing_years = missing_period_years(matches, dataset["period"])
-                if missing_years:
-                    errors.append(f"{slug}: missing GCS files for years {missing_years}")
+            missing_years = missing_period_years(matches, dataset["period"])
+            if missing_years:
+                errors.append(f"{slug}: missing GCS files for years {missing_years}")
     return errors
 
 
