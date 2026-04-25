@@ -93,7 +93,7 @@
     {
       "slug": "civile_flussi",
       "name": "Flussi Civile — Giustizia civile italiana",
-      "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 del Ministero della Giustizia.",
+      "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 (file snapshot 2025).",
       "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
       "period": {
         "start": 2025,
@@ -169,85 +169,6 @@
       "status": "candidate",
       "visibility": "public",
       "registry_source": "push_archive_auto"
-    },
-    {
-      "slug": "civile_flussi_2014_2024",
-      "name": "Giustizia Civile - Flussi 2014-2024",
-      "description": "Dati sui flussi della giustizia civile: sopravvenuti, definiti, pendenti per distretto, materia, macromateria",
-      "source": "Ministero Giustizia",
-      "period": {
-        "start": 2014,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento"
-        },
-        {
-          "name": "fonte",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Fonte del dato"
-        },
-        {
-          "name": "tipo_ufficio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo di ufficio"
-        },
-        {
-          "name": "distretto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Distretto giudiziario"
-        },
-        {
-          "name": "sede",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sede"
-        },
-        {
-          "name": "macromateria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Macromateria giudiziaria"
-        },
-        {
-          "name": "materia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Materia specifica"
-        },
-        {
-          "name": "sopravvenuti",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero di procedimenti sopravvenuti"
-        },
-        {
-          "name": "definiti_totale",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero totale di procedimenti definiti"
-        },
-        {
-          "name": "pendenti_finali",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero di procedimenti pendenti finali"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/civile_flussi_2014_2024/2024/civile_flussi_2014_2024_2024_clean.parquet"
-      },
-      "status": "clean_ready",
-      "visibility": "public",
-      "registry_source": "initial_clean_query_catalog"
     },
     {
       "slug": "dipendenti_pubblici",
