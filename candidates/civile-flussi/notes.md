@@ -4,8 +4,8 @@
 
 - workbook reale con foglio descrittivo `Read me` e foglio dati `data`
 - caso utile per testare `clean.read.sheet_name` su `.xlsx`
-- il contenuto copre piu anni nel file stesso (`2014`-`2024`)
-- `years: [2024]` e usato come chiave di snapshot del run e del path output, non come filtro dei dati
+- il contenuto copre piu anni nel file stesso (`2014`-`2025`)
+- `years: [2025]` e usato come chiave di snapshot del run e del path output, non come filtro dei dati
 - il run del toolkit resta oggi sul year-dir del caso
 - stato tecnico: `OK`
 - fonte diretta: file XLSX pubblico del Ministero della Giustizia / dati e statistiche
