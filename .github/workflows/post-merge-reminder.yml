@@ -27,7 +27,7 @@ jobs:
 
       - name: Create reminder issue
         if: steps.slugs.outputs.slugs != ''
-        uses: actions/github-script@v7
+        uses: actions/github-script@v9
         with:
           script: |
             const slugs = '${{ steps.slugs.outputs.slugs }}'.trim().split(/\s+/).filter(Boolean);
