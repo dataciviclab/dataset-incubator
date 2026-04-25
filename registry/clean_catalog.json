@@ -96,7 +96,7 @@
       "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 (file snapshot 2025).",
       "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
       "period": {
-        "start": 2025,
+        "start": 2014,
         "end": 2025
       },
       "columns": [
