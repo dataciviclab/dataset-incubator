@@ -14,14 +14,18 @@ jobs:
       issues: write
 
     steps:
-      - name: Checkout dataset-incubator
+      - name: Checkout merge commit
         uses: actions/checkout@v6
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
 
       - name: Detect changed slugs
         id: slugs
         run: |
-          # Use the merge commit SHA (the commit that merged)
-          SLUGS=$(git diff-tree --no-commit-id -r --name-only ${{ github.sha }} \
+          # git diff-tree with single SHA auto-differs against parent commit
+          MERGE=${{ github.event.pull_request.merge_commit_sha }}
+          SLUGS=$(git diff-tree --no-commit-id -r --name-only "$MERGE" \
             | grep '^candidates/' | cut -d'/' -f2 | sort -u | tr '\n' ' ')
           echo "slugs=$SLUGS" >> $GITHUB_OUTPUT
 
