@@ -60,8 +60,8 @@ Il clean è raw-faithful: nessuna logica interpretativa, nessun case/when, nessu
 23 reddito_imponibile_eur
 24 imposta_netta_freq
 25 imposta_netta_eur
-26 trattamento_spettante_freq          ← NULL per 2019-2020 (ha bonus_spettante)
-27 trattamento_spettante_eur            ← NULL per 2019-2020 (ha bonus_spettante)
+63  trattamento_spettante_freq          ← contiene Bonus spettante per 2019-2020 (semantica diversa — vedi Limiti); NULL per 2021-2023
+64  trattamento_spettante_eur            ← contiene Bonus spettante per 2019-2020 (semantica diversa — vedi Limiti); NULL per 2021-2023
 28 reddito_imponibile_addizionale_freq
 29 reddito_imponibile_addizionale_eur
 30 addizionale_regionale_dovuta_freq
