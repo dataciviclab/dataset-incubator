@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-04-22",
+  "updated_at": "2026-04-25",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -89,6 +89,86 @@
       "status": "clean_ready",
       "visibility": "public",
       "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "civile_flussi",
+      "name": "Flussi Civile — Giustizia civile italiana",
+      "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 del Ministero della Giustizia.",
+      "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
+      "period": {
+        "start": 2025,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno giudiziario di riferimento"
+        },
+        {
+          "name": "fonte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Fonte del dato (DGM/ISTAT/altro)"
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia di ufficio giudiziario (Tribunale, Procura, ecc.)"
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Distretto giudiziario di appartenenza"
+        },
+        {
+          "name": "sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sede centrale o distaccata del tribunale"
+        },
+        {
+          "name": "macromateria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Macro-categoria della materia controversa"
+        },
+        {
+          "name": "materia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Materia specifica della controversia"
+        },
+        {
+          "name": "sopravvenuti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero di cause sopravvenute nel periodo"
+        },
+        {
+          "name": "definiti_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero di cause definite (totale, tutte le fasi)"
+        },
+        {
+          "name": "pendenti_finali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero di cause pendenti a fine periodo"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/civile_flussi/*/civile_flussi_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "civile_flussi_2014_2024",
