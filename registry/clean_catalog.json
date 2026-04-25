@@ -92,9 +92,9 @@
     },
     {
       "slug": "civile_flussi",
-      "name": "Civile Flussi",
-      "description": "",
-      "source": "",
+      "name": "Flussi Civile — Giustizia civile italiana",
+      "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 del Ministero della Giustizia.",
+      "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
       "period": {
         "start": 2014,
         "end": 2025
@@ -103,62 +103,62 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno giudiziario di riferimento"
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Fonte del dato (DGM/ISTAT/altro)"
         },
         {
           "name": "tipo_ufficio",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Tipologia di ufficio giudiziario (Tribunale, Procura, ecc.)"
         },
         {
           "name": "distretto",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Distretto giudiziario di appartenenza"
         },
         {
           "name": "sede",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Sede centrale o distaccata del tribunale"
         },
         {
           "name": "macromateria",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Macro-categoria della materia controversa"
         },
         {
           "name": "materia",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Materia specifica della controversia"
         },
         {
           "name": "sopravvenuti",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Numero di cause sopravvenute nel periodo"
         },
         {
           "name": "definiti_totale",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Numero di cause definite (totale, tutte le fasi)"
         },
         {
           "name": "pendenti_finali",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Numero di cause pendenti a fine periodo"
         }
       ],
       "location": {
