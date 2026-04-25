@@ -757,6 +757,62 @@
       "registry_source": "initial_clean_query_catalog"
     },
     {
+      "slug": "mim_alunni_corso_eta",
+      "name": "Alunni per corso ed età — MIM",
+      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
+      "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno_scolastico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Anno scolastico di riferimento (es. 2024/25)"
+        },
+        {
+          "name": "codice_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ministeriale della scuola"
+        },
+        {
+          "name": "ordine_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ordine scolastico: Primaria, Secondaria di I grado, Secondaria di II grado"
+        },
+        {
+          "name": "anno_corso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Anno di corso all'interno dell'ordine"
+        },
+        {
+          "name": "fascia_eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Fascia di età dell'alunno"
+        },
+        {
+          "name": "alunni",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di alunni"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mim_alunni_corso_eta/*/mim_alunni_corso_eta_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
+    {
       "slug": "mur_contribuzione_universitaria",
       "name": "MUR - Gettito della contribuzione universitaria",
       "description": "Gettito della contribuzione studentesca per ateneo e tipologia di entrata (2017-2024).",
