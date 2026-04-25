@@ -247,7 +247,7 @@ def _parquet_columns(parquet_path: Path) -> list[dict]:
     return cols
 
 
-def update_catalog(slug: str, years: list[str], dry_run: bool = False) -> None:
+def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = False) -> None:
     """Aggiorna clean_catalog.json per lo slug: upsert period, location e colonne."""
     catalog = json.loads(CATALOG_PATH.read_text(encoding="utf-8"))
     datasets = catalog.get("datasets", [])
@@ -281,12 +281,12 @@ def update_catalog(slug: str, years: list[str], dry_run: bool = False) -> None:
             "period": {"start": int_years[0], "end": int_years[-1]},
             "columns": cols,
             "location": {"type": "gcs", "path": gcs_path, "multi_file": True},
-            "status": "needs_review",
+            "status": status,
             "visibility": "public",
             "registry_source": "push_archive_auto",
         }
         datasets.append(new_entry)
-        action = "aggiunto (needs_review)"
+        action = f"aggiunto ({status})"
 
     catalog["datasets"] = sorted(datasets, key=lambda d: d["slug"])
     catalog["updated_at"] = datetime.date.today().isoformat()
@@ -397,6 +397,9 @@ def main():
                         help="Crea/aggiorna external table BQ per i clean pushati")
     parser.add_argument("--update-catalog", action="store_true",
                         help="Aggiorna registry/clean_catalog.json con period e location aggiornati")
+    parser.add_argument("--status", default="candidate",
+                        choices=["candidate", "clean_ready", "public_catalog_ready"],
+                        help="Status da impostare nel catalog per i nuovi entry (default: candidate)")
     args = parser.parse_args()
 
     google_credentials = load_google_credentials()
@@ -415,7 +418,7 @@ def main():
         for slug in slugs:
             if args.update_catalog:
                 years = get_years(CLEAN_ROOT / slug)
-                update_catalog(slug, years, args.dry_run)
+                update_catalog(slug, years, args.status, args.dry_run)
             if args.create_bq_table:
                 create_bq_external_table(bq_client, slug, args.dry_run)
 
