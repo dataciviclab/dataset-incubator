@@ -166,7 +166,7 @@
         "path": "gs://dataciviclab-clean/civile_flussi/*/civile_flussi_*_clean.parquet",
         "multi_file": true
       },
-      "status": "needs_review",
+      "status": "candidate",
       "visibility": "public",
       "registry_source": "push_archive_auto"
     },
