@@ -1,27 +1,27 @@
 with comuni_base as (
   select
-    anno_imposta,
+    anno_di_imposta,
     'comune' as livello_territoriale,
     codice_istat_comune as codice_territorio,
-    comune as territorio,
+    denominazione_comune as territorio,
     regione,
     codice_istat_regione,
     sigla_provincia,
     cast(numero_contribuenti as double) as numero_contribuenti,
     reddito_imponibile_eur as reddito_imponibile_totale_eur,
     imposta_netta_eur as imposta_netta_totale_eur,
-    addizionale_comunale_eur as addizionale_comunale_totale_eur
+    addizionale_comunale_dovuta_eur as addizionale_comunale_totale_eur
   from clean_all_years
-  where anno_imposta is not null
+  where anno_di_imposta is not null
     and codice_istat_comune is not null
-    and comune is not null
+    and denominazione_comune is not null
     and regione is not null
     and numero_contribuenti is not null
     and reddito_imponibile_eur is not null
 ),
 regioni_base as (
   select
-    anno_imposta,
+    anno_di_imposta,
     'regione' as livello_territoriale,
     codice_istat_regione as codice_territorio,
     regione as territorio,
@@ -31,7 +31,7 @@ regioni_base as (
     cast(sum(numero_contribuenti) as double) as numero_contribuenti,
     sum(reddito_imponibile_eur) as reddito_imponibile_totale_eur,
     sum(imposta_netta_eur) as imposta_netta_totale_eur,
-    sum(addizionale_comunale_eur) as addizionale_comunale_totale_eur
+    sum(addizionale_comunale_dovuta_eur) as addizionale_comunale_totale_eur
   from clean_all_years
   group by 1, 2, 3, 4, 5, 6, 7
 ),
@@ -42,7 +42,7 @@ territori as (
 ),
 regioni_anno as (
   select
-    anno_imposta,
+    anno_di_imposta,
     regione,
     sum(numero_contribuenti) as contribuenti_regione,
     sum(reddito_imponibile_totale_eur) as reddito_imponibile_regione_eur
@@ -62,15 +62,15 @@ territori_con_quote as (
     end as quota_reddito_imponibile_su_regione
   from territori t
   left join regioni_anno r
-    on t.anno_imposta = r.anno_imposta
+    on t.anno_di_imposta = r.anno_di_imposta
    and t.regione = r.regione
 ),
 comuni_rank_regione as (
   select
-    anno_imposta,
+    anno_di_imposta,
     codice_territorio,
     row_number() over (
-      partition by anno_imposta, regione
+      partition by anno_di_imposta, regione
       order by reddito_imponibile_totale_eur desc, territorio asc
     ) as rank_regionale_reddito_imponibile
   from territori_con_quote
@@ -83,7 +83,7 @@ territori_metriche as (
     t.imposta_netta_totale_eur / nullif(t.numero_contribuenti, 0) as imposta_netta_media_per_contribuente_eur,
     t.addizionale_comunale_totale_eur / nullif(t.numero_contribuenti, 0) as addizionale_comunale_media_per_contribuente_eur,
     row_number() over (
-      partition by t.anno_imposta, t.livello_territoriale
+      partition by t.anno_di_imposta, t.livello_territoriale
       order by t.reddito_imponibile_totale_eur desc, t.territorio asc
     ) as rank_nazionale_reddito_imponibile,
     case
@@ -92,7 +92,7 @@ territori_metriche as (
     end as rank_regionale_reddito_imponibile
   from territori_con_quote t
   left join comuni_rank_regione crr
-    on t.anno_imposta = crr.anno_imposta
+    on t.anno_di_imposta = crr.anno_di_imposta
    and t.codice_territorio = crr.codice_territorio
 ),
 territori_delta as (
@@ -100,20 +100,20 @@ territori_delta as (
     *,
     lag(numero_contribuenti) over (
       partition by livello_territoriale, codice_territorio
-      order by anno_imposta
+      order by anno_di_imposta
     ) as prev_numero_contribuenti,
     lag(reddito_imponibile_totale_eur) over (
       partition by livello_territoriale, codice_territorio
-      order by anno_imposta
+      order by anno_di_imposta
     ) as prev_reddito_imponibile_totale_eur,
     lag(imposta_netta_totale_eur) over (
       partition by livello_territoriale, codice_territorio
-      order by anno_imposta
+      order by anno_di_imposta
     ) as prev_imposta_netta_totale_eur
   from territori_metriche
 )
 select
-  anno_imposta,
+  anno_di_imposta,
   livello_territoriale,
   codice_territorio,
   territorio,
@@ -147,4 +147,4 @@ select
     else (imposta_netta_totale_eur - prev_imposta_netta_totale_eur) / nullif(prev_imposta_netta_totale_eur, 0)
   end as delta_imposta_netta_vs_anno_precedente_pct
 from territori_delta
-order by anno_imposta, livello_territoriale, rank_nazionale_reddito_imponibile, territorio
+order by anno_di_imposta, livello_territoriale, rank_nazionale_reddito_imponibile, territorio
