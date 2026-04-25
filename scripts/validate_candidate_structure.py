@@ -1,25 +1,10 @@
 from __future__ import annotations
 
-import re
 import sys
 from pathlib import Path
 
 
 ROOT = Path(__file__).resolve().parents[1]
-ARCHIVED_REGISTRY = ROOT / "registry" / "archived.md"
-
-
-def load_archived_paths() -> set[str]:
-    archived: set[str] = set()
-    if not ARCHIVED_REGISTRY.exists():
-        return archived
-
-    pattern = re.compile(r"^\|\s*(candidates/[^|]+|support_datasets/[^|]+)\s*\|")
-    for line in ARCHIVED_REGISTRY.read_text(encoding="utf-8").splitlines():
-        match = pattern.match(line.strip())
-        if match:
-            archived.add(match.group(1).strip())
-    return archived
 
 
 def has_mart_sql(sql_dir: Path) -> bool:
@@ -94,14 +79,8 @@ def validate_multi_source(base_dir: Path, failures: list[str]) -> None:
     validate_compose(base_dir, failures)
 
 
-def validate_entry(base_dir: Path, archived_paths: set[str], failures: list[str]) -> None:
+def validate_entry(base_dir: Path, failures: list[str]) -> None:
     rel_str = base_dir.relative_to(ROOT).as_posix()
-
-    if rel_str in archived_paths:
-        # Archived entries are historical handoff traces. They are tracked in
-        # registry/archived.md and are exempt from the active-candidate
-        # structure check, including root docs and technical package files.
-        return
 
     validate_root_docs(base_dir, failures)
 
@@ -127,12 +106,11 @@ def validate_entry(base_dir: Path, archived_paths: set[str], failures: list[str]
         return
 
     failures.append(
-        f"{rel_str} has no valid structure: expected root dataset.yml or sources/ (archived entries excluded)"
+        f"{rel_str} has no valid structure: expected root dataset.yml or sources/"
     )
 
 
 def main() -> int:
-    archived_paths = load_archived_paths()
     failures: list[str] = []
 
     for section in ("candidates", "support_datasets"):
@@ -140,7 +118,7 @@ def main() -> int:
         if not base.exists():
             continue
         for entry in sorted(path for path in base.iterdir() if path.is_dir()):
-            validate_entry(entry, archived_paths, failures)
+            validate_entry(entry, failures)
 
     if failures:
         print("Candidate structure validation failed:", file=sys.stderr)

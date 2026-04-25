@@ -52,7 +52,7 @@ Ogni filone attivo ha una issue con label di stato:
 - `intake` — entrato, source-check non ancora completato
 - `incubating` — lavoro attivo in corso
 - `ready-for-promotion` — pronto per il layer pubblico in `dataciviclab/analisi/`
-- `promoted` — layer pubblico attivo; storico in `registry/archived.md`
+- `promoted` — layer pubblico attivo
 - `support-dataset` — base trasversale riusabile, non candidato di filone
 
 Regola pratica:
@@ -60,14 +60,12 @@ Regola pratica:
 - le **issues** sono il tracker vivo di ingresso, stato e uscita dei filoni
 - l'intake entra con issue dedicata
 - il passaggio a `analisi/` si registra con issue o label di promozione coerente
-- `registry/archived.md` resta la memoria dei filoni archiviati
 
 ## Struttura
 
 ```text
 dataset-incubator/
   registry/
-    archived.md
     clean_catalog.json
     clean_catalog.schema.json
   tools/
@@ -141,13 +139,12 @@ Checklist operativa breve:
 
 Quando un candidato viene promosso o chiuso:
 
-- aggiornare `registry/archived.md` con motivo e target finale
 - ridurre il README del candidato a traccia minima (stato, motivo, puntatore)
 - i file tecnici (dataset.yml, sql/, notebook) restano come riferimento permanente
 
 ## Significato delle cartelle
 
-- `registry/`: storia dei filoni usciti (`archived.md`) e catalogo clean pubblico (`clean_catalog.json`)
+- `registry/`: catalogo clean pubblico (`clean_catalog.json`)
 - `tools/clean-query-mcp/`: MCP read-only per interrogare i clean pubblici dal Lab Clean Registry
 - `templates/`: note di supporto e template operativo (`candidate/`)
 - `candidates/`: filoni con domanda e potenziale di promozione

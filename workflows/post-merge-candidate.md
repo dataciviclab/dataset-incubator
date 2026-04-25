@@ -54,7 +54,7 @@ Dopo il merge di una PR che aggiunge o aggiorna un candidate in `candidates/{slu
    - aggiornamento di `registry/clean_catalog.json` (upsert period, location, colonne da schema)
    - external table BQ `dataciviclab.{slug}.clean` che punta ai file GCS
 
-   Se lo slug è nuovo, il catalog aggiunge l'entry con `status: needs_review` — completare `name`, `description`, `source` e i `role`/`description` delle colonne prima di fare PR.
+   Se lo slug è nuovo, il catalog aggiunge l'entry con `status: candidate` — completare `name`, `description`, `source` e i `role`/`description` delle colonne prima di fare PR.
 
 5. **Verifica**
    Il workflow `validate-clean-catalog` parte automaticamente dopo il push. Controlla che passi.

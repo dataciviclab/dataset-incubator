@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Import helpers from the existing validation script — no duplication
 sys.path.insert(0, str(ROOT / "scripts"))
-from validate_candidate_structure import has_mart_sql, load_archived_paths  # noqa: E402
+from validate_candidate_structure import has_mart_sql  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -207,7 +207,6 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
 # ---------------------------------------------------------------------------
 
 def build_signals(out_path: Path) -> int:
-    archived_paths = load_archived_paths()
     signals = []
 
     candidates_dir = ROOT / "candidates"
@@ -216,9 +215,6 @@ def build_signals(out_path: Path) -> int:
         return 1
 
     for entry in sorted(p for p in candidates_dir.iterdir() if p.is_dir()):
-        rel = entry.relative_to(ROOT).as_posix()
-        if rel in archived_paths:
-            continue  # promoted or closed — not operationally active
         slug = entry.name
         signals.append(_build_signal(slug, entry))
 

@@ -26,7 +26,6 @@ body:
         5. apri la PR con la checklist DI
 
         Riferimenti utili:
-        - `docs/source-check-template.md`
         - https://github.com/dataciviclab/dataciviclab/blob/main/docs/dataset-project-flow.md
 
   - type: dropdown

@@ -1,22 +1,13 @@
 name: Build Pipeline Signals
 
 on:
-  push:
-    branches:
-      - main
-    paths:
-      - "candidates/**"
-      - "registry/archived.md"
-      - "scripts/build_pipeline_signals.py"
-      - "scripts/validate_candidate_structure.py"
+  workflow_dispatch:
 
 jobs:
   build-pipeline-signals:
     runs-on: ubuntu-latest
     permissions:
       contents: write
-      issues: write
-      pull-requests: write
 
     steps:
       - name: Checkout dataset-incubator
@@ -33,85 +24,20 @@ jobs:
       - name: Build pipeline_signals.json
         run: python scripts/build_pipeline_signals.py
 
-      - name: Commit and push to feature branch
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -b "build-pipeline-signals-auto/${{ github.sha }}"
-          git add registry/pipeline_signals.json
-          git commit -m "chore: aggiorna pipeline_signals.json"
-          git push -u origin "build-pipeline-signals-auto/${{ github.sha }}"
-
-      - name: Create PR
+      - name: Create update PR
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
+          BRANCH="build-pipeline-signals-auto/${{ github.sha }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -b "$BRANCH"
+          git add registry/pipeline_signals.json
+          git commit -m "chore: aggiorna pipeline_signals.json"
+          git push -u origin "$BRANCH"
           gh pr create \
             --base main \
-            --head "build-pipeline-signals-auto/${{ github.sha }}" \
+            --head "$BRANCH" \
             --title "chore: aggiorna pipeline_signals.json" \
-            --body "Aggiornamento automatico di pipeline_signals.json dopo merge. Verificato e pronto per merge istituzionale." \
+            --body "Aggiornamento manuale di pipeline_signals.json. Verificato e pronto per merge istituzionale." \
             --label "skip-changelog"
-
-      - name: Rileva slug candidati modificati
-        id: slugs
-        run: |
-          SLUGS=$(git diff-tree --no-commit-id -r --name-only ${{ github.sha }} \
-            | grep '^candidates/' | cut -d'/' -f2 | sort -u | tr '\n' ' ')
-          echo "slugs=$SLUGS" >> $GITHUB_OUTPUT
-
-      - name: Apri reminder run + push GCS
-        if: steps.slugs.outputs.slugs != ''
-        uses: actions/github-script@v7
-        with:
-          script: |
-            const slugs = '${{ steps.slugs.outputs.slugs }}'.trim().split(/\s+/);
-            const title = `chore: run + push GCS — ${slugs.join(', ')}`;
-
-            // Idempotenza: non aprire se esiste già issue aperta con stesso titolo
-            const existing = await github.rest.issues.listForRepo({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              state: 'open',
-              labels: 'chore',
-            });
-            if (existing.data.some(i => i.title === title)) {
-              console.log('Issue reminder già aperta, skip.');
-              return;
-            }
-
-            const list = slugs.map(s => `- \`${s}\``).join('\n');
-
-            // Genera comandi corretti rilevando layout single-source vs multi-source
-            const fs = require('fs');
-            const cmds = slugs.flatMap(s => {
-              const multiSrcDir = `candidates/${s}/sources`;
-              if (fs.existsSync(multiSrcDir)) {
-                return fs.readdirSync(multiSrcDir).map(src =>
-                  `toolkit run all --config candidates/${s}/sources/${src}/dataset.yml`
-                );
-              }
-              return [`toolkit run all --config candidates/${s}/dataset.yml`];
-            });
-
-            await github.rest.issues.create({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              title,
-              body: [
-                '## Reminder post-merge',
-                '',
-                'I seguenti candidate sono stati aggiornati nel merge e richiedono run locale e push su GCS:',
-                '',
-                list,
-                '',
-                '**Step da eseguire** (vedi `workflows/post-merge-candidate.md`):',
-                '```bash',
-                ...cmds,
-                `python scripts/push_archive.py --layer clean --slug <slug>`,
-                '```',
-                '',
-                'Chiudi questa issue dopo il push completato.',
-              ].join('\n'),
-              labels: ['chore'],
-            });

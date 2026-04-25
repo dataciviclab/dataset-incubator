@@ -5,7 +5,6 @@ on:
     paths:
       - "candidates/**"
       - "support_datasets/**"
-      - "registry/archived.md"
       - "scripts/validate_candidate_structure.py"
       - "README.md"
       - "CONTRIBUTING.md"

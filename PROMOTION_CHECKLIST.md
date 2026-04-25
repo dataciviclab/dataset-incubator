@@ -35,4 +35,3 @@ o prioritizzazione, la promozione puo' avere senso.
 
 - issue di promotion coerente
 - label di stato aggiornata
-- `registry/archived.md` aggiornato quando il filone esce davvero

@@ -83,6 +83,6 @@ body:
     attributes:
       label: Prossimo passo operativo
       description: Qual e' il passo concreto successivo?
-      placeholder: Aprire issue pubblica, creare repo progetto, spostare notebook, chiudere intake, aggiornare archived.md, ecc.
+      placeholder: Aprire issue pubblica, creare repo progetto, spostare notebook, chiudere intake, ecc.
     validations:
       required: true
