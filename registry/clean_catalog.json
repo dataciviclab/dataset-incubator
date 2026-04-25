@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-04-22",
+  "updated_at": "2026-04-25",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -89,6 +89,86 @@
       "status": "clean_ready",
       "visibility": "public",
       "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "civile_flussi",
+      "name": "Civile Flussi",
+      "description": "",
+      "source": "",
+      "period": {
+        "start": 2025,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "fonte",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "sede",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "macromateria",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "materia",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "sopravvenuti",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "definiti_totale",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "pendenti_finali",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/civile_flussi/*/civile_flussi_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "needs_review",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "civile_flussi_2014_2024",
