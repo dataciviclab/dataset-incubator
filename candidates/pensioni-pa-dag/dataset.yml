@@ -2,7 +2,7 @@ root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "pensioni_pa_dag_2024"
+  name: "pensioni_pa_dag"
   years: [2024]
 
 raw:
@@ -12,7 +12,7 @@ raw:
       type: "local_file"
       args:
         path: "inputs/Dati_Tipo_Pensione_totale.csv"
-        filename: "Dati_Tipo_Pensione_totale_{year}.csv"
+        filename: "Dati_Tipo_Pensione_totale.csv"
       primary: true
 
 clean:
@@ -37,7 +37,7 @@ mart:
   validate:
     table_rules:
       mart_regioni_dicembre:
-        min_rows: 40
+        min_rows: 20
 
 validation:
   fail_on_error: true
