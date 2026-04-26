@@ -23,5 +23,3 @@ select
   try_cast("Altri costi" as double) as altri_costi,
   try_cast("Importo Totale" as double) as importo_totale
 from raw_input
-where "Codice Ente SSN" <> '000'
-  and try_cast("Anno di Riferimento" as integer) = 2024
