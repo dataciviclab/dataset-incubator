@@ -8,5 +8,7 @@ select
   count(*) as righe_granulari
 from clean_input
 where mese = 12
+  and tipo_pensione in ('DIRETTA', 'INDIRETTA/REVERSIBILE')
+  and regione not in ('Italia', 'Estero')
 group by 1, 2, 3, 4
-order by numero_partite desc, regione, tipo_pensione
+order by anno desc, numero_partite desc, regione, tipo_pensione
