@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-04-25",
+  "updated_at": "2026-04-26",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -351,6 +351,338 @@
       "status": "clean_ready",
       "visibility": "public",
       "registry_source": "initial_clean_query_catalog"
+    },
+    {
+      "slug": "irpef_comunale",
+      "name": "Irpef Comunale",
+      "description": "IRPEF comunale: redditi e imponibile per comune italiano, anni d'imposta 2019-2023",
+      "source": "Ministero dell'Economia e delle Finanze - OpenData",
+      "period": {
+        "start": 2019,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "anno_di_imposta",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_istat_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "denominazione_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_istat_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "numero_contribuenti",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_fabbricati_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_fabbricati_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_lavoro_dipendente_e_assimilati_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_lavoro_dipendente_e_assimilati_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_pensione_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_pensione_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_lavoro_autonomo_comprensivo_valori_nulli_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_lavoro_autonomo_comprensivo_valori_nulli_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_di_spettanza_imprenditore_contabilita_ordinaria_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_di_spettanza_imprenditore_contabilita_ordinaria_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_di_spettanza_imprenditore_contabilita_semplificata_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_di_spettanza_imprenditore_contabilita_semplificata_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_partecipazione_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_da_partecipazione_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_imponibile_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_imponibile_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "imposta_netta_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "imposta_netta_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "trattamento_spettante_freq",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "trattamento_spettante_eur",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "reddito_imponibile_addizionale_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_imponibile_addizionale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "addizionale_regionale_dovuta_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "addizionale_regionale_dovuta_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "addizionale_comunale_dovuta_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "addizionale_comunale_dovuta_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_minore_o_uguale_a_zero_euro_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_minore_o_uguale_a_zero_euro_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_0_a_10000_euro_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_0_a_10000_euro_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_10000_a_15000_euro_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_10000_a_15000_euro_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_15000_a_26000_euro_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_15000_a_26000_euro_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_26000_a_55000_euro_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_26000_a_55000_euro_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_55000_a_75000_euro_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_55000_a_75000_euro_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_75000_a_120000_euro_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_da_75000_a_120000_euro_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_oltre_120000_euro_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_oltre_120000_euro_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/irpef_comunale/*/irpef_comunale_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "ispra_consumo_suolo",
