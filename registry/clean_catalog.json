@@ -1120,6 +1120,135 @@
       "status": "clean_ready",
       "visibility": "public",
       "registry_source": "push_archive_auto"
+    },
+    {
+      "slug": "pensioni_pa_dag",
+      "name": "Pensioni Pa Dag",
+      "description": "Pensioni PA: importi pensionistici per gestione, categoria e caratteristiche pensionato",
+      "source": "INPS - OpenData",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento della pensione"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Mese di riferimento della pensione"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione di residenza del pensionato"
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla della provincia di residenza"
+        },
+        {
+          "name": "ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ufficio INPS competente"
+        },
+        {
+          "name": "tipo_pensione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia di pensione"
+        },
+        {
+          "name": "codice_tipo_pensione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice identificativo della tipologia di pensione"
+        },
+        {
+          "name": "descrizione_pensione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione testuale del tipo di pensione"
+        },
+        {
+          "name": "codice_pensione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice identificativo della pensione"
+        },
+        {
+          "name": "descrizione_microqualifica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione della microqualifica professionale"
+        },
+        {
+          "name": "codice_microqualifica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice della microqualifica professionale"
+        },
+        {
+          "name": "codice_titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice del titolo di pensione"
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo di pensione"
+        },
+        {
+          "name": "numero_partite",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Numero di partite pensionistiche"
+        },
+        {
+          "name": "importi_arretrati_eur",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Importi arretrati in euro"
+        },
+        {
+          "name": "importi_ratei_eur",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Importi ratei in euro"
+        },
+        {
+          "name": "importi_tredicesima_eur",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Importi tredicesima mensilita in euro"
+        },
+        {
+          "name": "importi_mensili_pagati_eur",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Importi mensili pagati in euro"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/pensioni_pa_dag/*/pensioni_pa_dag_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto",
+      "multi_file": false
     }
   ]
 }
