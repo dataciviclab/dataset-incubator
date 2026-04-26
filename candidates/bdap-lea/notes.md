@@ -8,17 +8,14 @@
 - delimitatore `;`
 - encoding da gestire esplicitamente nel `clean.read`
 - `toolkit inspect paths` OK: `effective_root` risolve a `dataset-incubator/out`
-- run reale del 2026-04-04:
-  - `run all` ha prodotto `raw` e `clean`, poi si e' fermato su `WinError 5` nel rename del run record
-  - `run mart` eseguito separatamente con esito OK
-  - output verificati:
-    - clean `23.321` righe
-    - mart `23.321` righe
+- run aggiornato 2026-04-26:
+  - clean: 24.813 righe (raw-faithful, nessun filtro)
+  - mart: 23.321 righe (filtro `codice_ente_ssn <> '000'` applicato in mart)
 
 ## Analitico
 
 - il v0 parte sul solo `2024`
-- il perimetro corretto esclude `Codice Ente SSN = '000'`
+- perimetro analitico: esclude `codice_ente_ssn = '000'` (filtro in mart)
 - la domanda guida resta sulla prevenzione collettiva, ma il candidate lascia anche altre voci contabili per letture successive
 
 ## Cautele
