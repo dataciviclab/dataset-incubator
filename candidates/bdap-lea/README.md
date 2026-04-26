@@ -1,56 +1,52 @@
 # bdap-lea
 
-Fonte: OpenBDAP - Modello LEA degli enti del SSN.
-
-Discussion pubblica di riferimento:
-- `dataciviclab` Datasets #179
-
-Issue intake:
-- `dataset-incubator` #113
-
 ## Domanda guida
 
-Quanto pesa la prevenzione collettiva nel consuntivo 2024 delle ASL italiane, e quanto varia questo peso tra enti e territori quando si escludono le aggregazioni regionali?
+Quanto pesa la prevenzione collettiva nel consuntivo 2024 delle ASL italiane, e quanto varia questo peso tra enti e territori quando si escludono le aggregazioni Regionali?
 
-## Perimetro v0
+## Fonte
 
-- solo annualita `2024`
-- soli enti operativi (`Codice Ente SSN != '000'`)
-- granularita per ente SSN e regione
-- nessun confronto storico completo nel primo ciclo
+OpenBDAP — Ragioneria Generale dello Stato / Modello LEA enti SSN.
+Discussion: `dataciviclab` Datasets #179
+Issue intake: `dataset-incubator` #113
 
-## Dataset
+## Perimetro
 
-- fonte: Ragioneria Generale dello Stato / OpenBDAP
-- formato: CSV
-- delimitatore: `;`
-- encoding atteso: `cp1252` / `latin-1`
-- accesso: usare il dump HTTPS del datastore CKAN
+- Annualità: `2024`
+- Enti operativi: `codice_ente_ssn != '000'` (esclusi aggregati Regionali)
+- Granularità: per ente SSN e regione
 
-## Perche vale la pena testarlo
+## Schema
 
-- fonte civicamente forte su spesa sanitaria di consuntivo
-- buon test reale del plugin CKAN su un caso non banale ma stretto
-- consente un v0 leggibile senza partire subito dalla serie 2012-2024
+| Colonna | Tipo | Descrizione |
+|---|---|---|
+| `anno_riferimento` | INTEGER | Anno di riferimento |
+| `codice_regione` | VARCHAR | Codice regione |
+| `denominazione_regione` | VARCHAR | Denominazione regione |
+| `codice_ente_ssn` | VARCHAR | Codice ente SSN |
+| `denominazione_ente` | VARCHAR | Denominazione ente |
+| `codice_modello_lea` | VARCHAR | Codice modello LEA |
+| `descrizione_modello_lea` | VARCHAR | Descrizione modello LEA |
+| `importo_totale` | DOUBLE | Importo totale |
+| `flag_aggregazione` | VARCHAR | Flag aggregazione |
 
-## Output minimo atteso
+## Layer
 
-- `clean` con colonne guida normalizzate sul 2024
-- `mart` minimo per enti operativi
-- notebook v0 di lettura prudente sulla prevenzione collettiva
+- **Clean**: raw-faithful, nessun filtro (24.813 righe)
+- **Mart**: `mart_spesa_enti_2024` — filtro `codice_ente_ssn != '000'`, aggregato per ente/regione/modello (righe in fase di verifica)
 
-## Criterio di promozione
+## Output
 
-- run reale riuscito
-- mart leggibile e coerente col perimetro v0
-- gestione esplicita di HTTPS, encoding e aggregazioni regionali
+- `out/data/clean/bdap_lea/2024/bdap_lea_2024_clean.parquet`
+- `out/data/mart/bdap_lea/2024/mart_spesa_enti_2024.parquet`
+
+## Run
+
+```bash
+cd toolkit
+python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/bdap-lea/dataset.yml
+```
 
 ## Stato
 
-- intake
-
-## Prossimo passo
-
-- verificare `effective_root`
-- eseguire un primo `run all`
-- classificare il candidate come `runnable` o `scaffolded_with_blocker`
+`runnable` — pipeline completa.

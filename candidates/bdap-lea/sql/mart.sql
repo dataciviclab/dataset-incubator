@@ -21,3 +21,4 @@ select
   altri_costi,
   importo_totale
 from clean_input
+where codice_ente_ssn <> '000'
