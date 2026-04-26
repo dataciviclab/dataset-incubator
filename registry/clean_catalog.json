@@ -84,7 +84,8 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_entrate_stato/2024/bdap_entrate_stato_2024_clean.parquet"
+        "path": "gs://dataciviclab-clean/bdap_entrate_stato/*/bdap_entrate_stato_*_clean.parquet",
+        "multi_file": true
       },
       "status": "clean_ready",
       "visibility": "public",
