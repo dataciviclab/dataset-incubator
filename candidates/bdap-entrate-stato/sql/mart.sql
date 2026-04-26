@@ -8,6 +8,10 @@ with base as (
     sum(previsioni_definitive_cp) as totale_cp,
     sum(previsioni_definitive_cs) as totale_cs
   from clean_input
+  where esercizio_finanziario between 2008 and 2024
+    and codice_titolo is not null
+    and codice_natura is not null
+    and codice_tipologia is not null
   group by 1, 2, 3, 4, 5
 ),
 totali_anno as (
@@ -37,4 +41,4 @@ select
   end as quota_cs
 from base b
 join totali_anno t using (anno)
-order by anno, try_cast(codice_titolo as integer), try_cast(codice_natura as integer)
+order by anno, try_cast(b.codice_titolo as integer), try_cast(b.codice_natura as integer)

@@ -11,7 +11,4 @@ select
   try_cast(column09 as double) as previsioni_definitive_cp,
   try_cast(column10 as double) as previsioni_definitive_cs
 from raw_input
-where try_cast(column00 as integer) between 2008 and 2024
-  and nullif(trim(column01), '') is not null
-  and nullif(trim(column03), '') is not null
-  and nullif(trim(column05), '') is not null
+where try_cast(column00 as integer) is not null
