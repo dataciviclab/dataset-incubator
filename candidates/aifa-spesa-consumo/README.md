@@ -8,11 +8,11 @@ per il canale della farmaceutica convenzionata (prescrizioni SSN dispensate in f
 ## Dataset
 
 - fonte principale: AIFA - Spesa e consumo della farmaceutica convenzionata e acquisti diretti
-- copertura filone: 2016-2024 (9 file annuali)
-- run verificato: 2022-2024 (clean + mart passati, schema stabile)
-- formato sorgente: CSV pipe-separated (`|`), UTF-8-BOM
+- copertura filone: 2018-2024 (7 file annuali)
+- run verificato: 2018-2024 (raw + clean + mart passati, schema stabile)
+- formato sorgente: CSV pipe-separated (`|`), UTF-8
 - granularita: anno x mese x regione x classe terapeutica x ATC4
-- source attiva: `sources/a_spesa_consumo/`
+- source: singola (single-source, non piu nested in `sources/`)
 
 ## Perche vale la pena testarlo
 
@@ -24,18 +24,14 @@ per il canale della farmaceutica convenzionata (prescrizioni SSN dispensate in f
 
 ## Perimetro iniziale scelto
 
-**Solo convenzionata.** Motivazione: il dataset contiene due flussi distinti
-(`convenzionata` e `tracciabilita`), con null strutturali nelle colonne dell'altro flusso.
-La convenzionata (prescrizioni SSN dispensate in farmacia) e il canale piu leggibile
-per una prima analisi civica e non richiede conoscenza del sistema DPC/ospedaliero.
-La tracciabilita viene demandata a una eventuale source `b_tracciabilita` solo se
-la community ne fa richiesta esplicita.
+**Convenzionata (focus analitico), tracciabilita (presente in clean per completezza).**
+Clean raw-faithful: include tutte le 17 colonne. Mart usa solo flusso convenzionata.
 
 ## Output minimo atteso
 
-- clean multi-anno (2016-2024) su flusso convenzionata
-- mart mensile per anno x mese x regione x ATC4 con spesa e confezioni
-- notebook v0 con lettura regionale e per classe terapeutica
+- clean multi-anno (2018-2024) raw-faithful (17 colonne)
+- mart mensile per anno x mese x regione x ATC4 con spesa, confezioni e quota %
+- notebook v0 con validazione layer e check chiavi GROUP BY
 
 ## Criterio di promozione
 
@@ -47,16 +43,16 @@ Promuovere il filone solo se:
 
 ## Stato
 
-- intake - primo run completato (2022-2024)
+- **runnable**: pipeline completa 2018-2024 (raw + clean + mart + notebook v0)
+- GATE 1 e GATE 2 risolti
 
 ## Gate aperti
 
 - **[GATE 1 - risolto]** nomi colonna verificati sui file reali 2022-2024. Il link "Manuale Operativo"
   sulla pagina AIFA punta a un CV Europass (link rotto), ma il tracciato e leggibile dai nomi colonna.
   Schema stabile tra i 3 anni verificati.
-- **[GATE 2 - aperto]** URL di download AIFA contengono UUID non parametrici: i file vanno scaricati
-  manualmente dalla pagina ufficiale. Gli URL per anno (2016-2024) sono documentati in `notes.md`.
-  Anni mancanti da scaricare: 2016-2021.
+- **[GATE 2 - risolto]** URL di download automatizzati via `url_suffix_by_year` in `dataset.yml`.
+  Suffissi per-anno documentati in `notes.md`.
 
 ## Domande complementari
 
@@ -66,6 +62,6 @@ Promuovere il filone solo se:
 
 ## Prossimo passo
 
-- scaricare gli anni mancanti (2016-2021) e verificare stabilita schema su serie lunga
-- aprire discussion in `dataciviclab` con i risultati del primo run
-- decidere se il filone merita approfondimento intra-regionale o per classe terapeutica
+- pull request: clean raw-faithful (17 colonne), mart, notebook v0, notes aggiornate
+- discussione dataciviclab: risultati regionali su spesa convenzionata 2018-2024
+- valutare aggiunta 2016-2017 se schema compatibile
