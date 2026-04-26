@@ -1,47 +1,46 @@
-# Notes
+# Notes — bdap-entrate-stato
 
-## Tecnico
+## Tech
 
-- fonte ufficiale verificata nella discussion `#154` e nel source-check del `2026-03-31`
-- URL usato nel candidate:
-  `https://bdap-opendata.rgs.mef.gov.it/export/csv/Rendiconto-Pubblicato---Serie-storica---Entrate-Aggregato-per-Titolo-Natura-Tipologia-e-Provento.csv`
-- il file e un export storico cumulativo: il run year usato nel candidate e `2024`, ma il contenuto copre `2008-2024`
-- delimitatore reale verificato: `;`
-- encoding reale da trattare in lettura: `cp1252` / `latin-1`
-- il CSV termina con un separatore finale: la lettura config assegna una colonna tecnica extra (`column11`) poi ignorata nel `clean`
-- cardinalita osservata sul dump verificato il `2026-04-13`: `1321` righe totali inclusa header
+- fonte: MEF BDAP — Rendiconto Pubblicato, Serie Storica Entrate per Titolo/Natura/Tipologia/Provento
+- URL: `https://bdap-opendata.rgs.mef.gov.it/export/csv/Rendiconto-Pubblicato---Serie-storica---Entrate-Aggregato-per-Titolo-Natura-Tipologia-e-Provento.csv`
+- formato: CSV `;`-delimitato, encoding `cp1252`
+- serie storica: **2008–2024** (17 anni) in un unico file cumulativo
+- raw row count: **1320** righe — tutte le righe hanno codice_titolo, codice_natura, codice_tipologia non null
+- clean row count: **1320** righe (raw-faithful — nessun filtro sostanziale, solo `is not null` su esercizio)
+- mart row count: **104** righe (aggregato per anno + titolo + natura)
 
-## Analitico
+## Struttura clean
 
-- il v0 resta nel perimetro `Datasets`: niente claim su tenuta effettiva del gettito
-- lettura minima consigliata: composizione per `Titolo` e distinzione `ricorrenti / non ricorrenti`
-- anni guida per il notebook v0: `2008`, `2020`, `2024`
+11 colonne (raw-faithful, nessuna logica interpretativa):
 
-## Cautele
+| colonna | tipo | nota |
+|---|---|---|
+| esercizio_finanziario | int | anno contabile |
+| codice_titolo / titolo | string | classificazione principale |
+| codice_natura / natura | string | sottoclasse |
+| codice_tipologia / tipologia | string | dettaglio |
+| codice_provento / provento | string | voci specifiche |
+| previsioni_definitive_cp/cs | double | previsioni competenza/cassa |
 
-- `Previsioni Definitive CP/CS` non equivalgono a incasso effettivo
-- la domanda pubblica va formulata come lettura del perimetro autorizzato a consuntivo, non come misura diretta della riscossione
-- eventuali confronti lunghi richiedono prudenza sulla stabilita delle classificazioni contabili
-- il dataset riguarda lo Stato centrale, non il perimetro consolidato delle amministrazioni pubbliche
+**Nota sui filtri**: il vecchio clean.sql aveva filtri `codice_titolo is not null` ecc. nella WHERE — questi non filtravano nulla sui dati attuali (tutti i codici erano già presenti), ma erano concettualmente sbagliati: se il raw avesse dati mancanti, verrebbero rimossi in clean invece che in mart. Il clean corretto è raw-faithful: solo `is not null` su esercizio per rimuovere righe non parsing.
 
-## Stato operativo
+## Struttura mart
 
-- scaffold iniziale creato su branch `intake/bdap-entrate-stato`
-- issue intake aperta: `https://github.com/dataciviclab/dataset-incubator/issues/133`
-- `validate_candidate_structure.py` eseguito con esito OK
-- `toolkit inspect paths` OK: `effective_root` risolve a `dataset-incubator/out`
-- run reale eseguito il `2026-04-13`
-  - comando (venv toolkit): `/home/gabry/dev/dataciviclab-workspace/toolkit/.venv/bin/python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/bdap-entrate-stato/dataset.yml`
-  - run_id: `20260413T122412Z_fb39bdf2`
-  - esito: `SUCCESS`
-  - output verificati:
-    - clean `1320` righe
-    - mart `104` righe
-- warning mart presente ma non bloccante: rimozione attesa di colonne di dettaglio nel passaggio `clean -> mart`
-- verdict intake: `runnable`
+`mart_entrate_titolo_natura_anno` — 104 righe:
+- GROUP BY esercizio_finanziario, codice_titolo, titolo, codice_natura, natura
+- somma previsioni CP e CS
+- quota percentuale sul totale anno (quota_cp, quota_cs)
+- `titolo_breve`: TITOLO I - ... → I (strip prefix con regexp)
 
-### Nota ambiente (venv)
+## Caveat analitici
 
-- se il terminale e aperto in `dataset-incubator`, usare comunque la venv del repo `toolkit` per i comandi CLI:
-  - `/home/gabry/dev/dataciviclab-workspace/toolkit/.venv/bin/python -m toolkit.cli.app ...`
-- il comando `toolkit ...` puo fallire con `exit 127` quando la shell non ha la venv toolkit attiva
+- `Previsioni Definitive` ≠ incasso effettivo
+- confronto anni richiede attenzione sulla stabilità delle classificazioni contabili
+- riguarda lo Stato centrale, non il perimetro consolidato PA
+
+## Stato
+
+- run SUCCESS: `20260426T110853Z_e5861e7b`
+- clean raw-faithful: 1320 righe
+- mart: 104 righe (2008–2024)
