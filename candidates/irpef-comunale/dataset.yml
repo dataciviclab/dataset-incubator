@@ -2,7 +2,7 @@ root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "irpef_comunale_2019_2023"
+  name: "irpef_comunale"
   years: [2019, 2020, 2021, 2022, 2023]
 
 raw:
