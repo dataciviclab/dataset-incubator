@@ -475,6 +475,92 @@
       "registry_source": "initial_clean_query_catalog"
     },
     {
+      "slug": "inps_pensioni_2017_2024",
+      "name": "INPS Pensioni",
+      "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2017-2024)",
+      "source": "https://www.inps.it/gestione-previdenziale",
+      "period": {
+        "start": 2017,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di decorrenza della pensione"
+        },
+        {
+          "name": "trimestre",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Trimestre (1-4)"
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sesso del pensionato"
+        },
+        {
+          "name": "classe_eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Classe di eta"
+        },
+        {
+          "name": "classe_importo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Classe di importo della pensione"
+        },
+        {
+          "name": "area_geografica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Area geografica (Nord, Centro, Sud, Isole)"
+        },
+        {
+          "name": "gestione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Gestione INPS (es. Dipendenti, Autonomi)"
+        },
+        {
+          "name": "tipo_gestione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia di gestione"
+        },
+        {
+          "name": "categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Categoria della pensione"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione italiana"
+        },
+        {
+          "name": "numero_pensioni",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero di pensioni"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/inps_pensioni_2017_2024/2024/inps_pensioni_2017_2024_2024_clean.parquet",
+        "multi_file": false
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
+    {
       "slug": "irpef_comunale",
       "name": "Irpef Comunale",
       "description": "IRPEF comunale: redditi e imponibile per comune italiano, anni d'imposta 2019-2023",
