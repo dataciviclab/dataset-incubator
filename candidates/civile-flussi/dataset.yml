@@ -21,7 +21,7 @@ clean:
     source: auto
     mode: latest
     header: true
-    sheet_name: "data"
+    sheet_name: "Data"
   validate:
     min_rows: 100000
 
