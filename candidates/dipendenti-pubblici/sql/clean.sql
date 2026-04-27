@@ -21,15 +21,5 @@ select
   cast("Numero Dipendenti Donne Assunte" as double) as donne_assunte,
   cast("Numero Dipendenti Uomini Assunti" as double) as uomini_assunti,
   cast("Numero Dipendenti Donne Cessate" as double) as donne_cessate,
-  cast("Numero Dipendenti Uomini Cessati" as double) as uomini_cessati,
-  coalesce(cast("Numero Dipendenti Donne Tempo Pieno" as double), 0)
-    + coalesce(cast("Numero Dipendenti Donne Part time Inf. 50%" as double), 0)
-    + coalesce(cast("Numero Dipendenti Donne Part time Sup. 50%" as double), 0) as donne_totali,
-  coalesce(cast("Numero Dipendenti Uomini Tempo Pieno" as double), 0)
-    + coalesce(cast("Numero Dipendenti Uomini Part time Inf. 50%" as double), 0)
-    + coalesce(cast("Numero Dipendenti Uomini Part time Sup. 50%" as double), 0) as uomini_totali,
-  coalesce(cast("Numero Dipendenti Donne Assunte" as double), 0)
-    + coalesce(cast("Numero Dipendenti Uomini Assunti" as double), 0) as assunti_totali,
-  coalesce(cast("Numero Dipendenti Donne Cessate" as double), 0)
-    + coalesce(cast("Numero Dipendenti Uomini Cessati" as double), 0) as cessati_totali
+  cast("Numero Dipendenti Uomini Cessati" as double) as uomini_cessati
 from raw_input
