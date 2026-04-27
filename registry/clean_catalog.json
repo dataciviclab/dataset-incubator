@@ -213,6 +213,56 @@
       "registry_source": "initial_clean_query_catalog"
     },
     {
+      "slug": "camera_deputati_legislature",
+      "name": "Camera Deputati — Legislature",
+      "description": "Deputati italiani per legislature alla Camera dei Deputati",
+      "source": "https://dati.camera.it/sparql",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "deputato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI RDF del deputato"
+        },
+        {
+          "name": "cogn",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome"
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome"
+        },
+        {
+          "name": "legislatura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero della legislature (es. 17, 18, 19)"
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sesso"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/camera_deputati_legislature/*/camera_deputati_legislature_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
+    {
       "slug": "civile_flussi",
       "name": "Flussi Civile — Giustizia civile italiana",
       "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 (file snapshot 2025).",
