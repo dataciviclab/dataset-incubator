@@ -8,8 +8,8 @@
     {
       "slug": "aifa_spesa_consumo",
       "name": "AIFA Spesa Farmaceutica Convenzionata",
-      "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC — AIFA 2018-2024",
-      "source": "AIFA — Open Data Spesa e Consumo Farmaceutico",
+      "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC \u2014 AIFA 2018-2024",
+      "source": "AIFA \u2014 Open Data Spesa e Consumo Farmaceutico",
       "period": {
         "start": 2018,
         "end": 2024
@@ -97,13 +97,13 @@
           "name": "numero_confezioni_traccia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero confezioni tracciabilità"
+          "description": "Numero confezioni tracciabilit\u00e0"
         },
         {
           "name": "spesa_flusso_tracciabilita",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Spesa flusso tracciabilità (euro)"
+          "description": "Spesa flusso tracciabilit\u00e0 (euro)"
         },
         {
           "name": "numero_confezioni_convenzionata",
@@ -214,9 +214,9 @@
     },
     {
       "slug": "civile_flussi",
-      "name": "Flussi Civile — Giustizia civile italiana",
+      "name": "Flussi Civile \u2014 Giustizia civile italiana",
       "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 (file snapshot 2025).",
-      "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
+      "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia \u2014 Direzione Generale di Statistica)",
       "period": {
         "start": 2014,
         "end": 2025
@@ -553,7 +553,7 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/inps_pensioni_2017_2024/*/inps_pensioni_2017_2024_*_clean.parquet",
+        "path": "gs://dataciviclab-clean/inps_pensioni_2017_2024/2024/inps_pensioni_2017_2024_2024_clean.parquet",
         "multi_file": false
       },
       "status": "candidate",
@@ -1219,9 +1219,9 @@
     },
     {
       "slug": "mim_alunni_corso_eta",
-      "name": "Alunni per corso ed età — MIM",
-      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
-      "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
+      "name": "Alunni per corso ed et\u00e0 \u2014 MIM",
+      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di et\u00e0. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
+      "source": "https://dati.istruzione.it/opendata/ \u2014 Ministero dell'Istruzione e del Merito (MIM)",
       "period": {
         "start": 2024,
         "end": 2024
@@ -1255,7 +1255,7 @@
           "name": "fascia_eta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Fascia di età dell'alunno"
+          "description": "Fascia di et\u00e0 dell'alunno"
         },
         {
           "name": "alunni",
@@ -1461,8 +1461,8 @@
     {
       "slug": "popolazione_istat_comunale_2019_2025",
       "name": "Popolazione ISTAT Comunale",
-      "description": "Popolazione residente italiana per comune, sesso, classe di età — POSAS ISTAT 2019-2025",
-      "source": "ISTAT - demo.posas (Popolazione residente per sesso, età e comune)",
+      "description": "Popolazione residente italiana per comune, sesso, classe di et\u00e0 \u2014 POSAS ISTAT 2019-2025",
+      "source": "ISTAT - demo.posas (Popolazione residente per sesso, et\u00e0 e comune)",
       "period": {
         "start": 2019,
         "end": 2025
@@ -1484,7 +1484,7 @@
           "name": "eta",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Classe di età (0-100, 999 = totale comunale)"
+          "description": "Classe di et\u00e0 (0-100, 999 = totale comunale)"
         },
         {
           "name": "celibi",
@@ -1520,13 +1520,13 @@
           "name": "maschi_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex uniti civilmente — scioglimento (maschi)"
+          "description": "Ex uniti civilmente \u2014 scioglimento (maschi)"
         },
         {
           "name": "maschi_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex uniti civilmente — decesso coniuge (maschi)"
+          "description": "Ex uniti civilmente \u2014 decesso coniuge (maschi)"
         },
         {
           "name": "totale_maschi",
@@ -1568,13 +1568,13 @@
           "name": "femmine_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex unite civilmente — scioglimento (femmine)"
+          "description": "Ex unite civilmente \u2014 scioglimento (femmine)"
         },
         {
           "name": "femmine_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex unite civilmente — decesso coniuge (femmine)"
+          "description": "Ex unite civilmente \u2014 decesso coniuge (femmine)"
         },
         {
           "name": "totale_femmine",
