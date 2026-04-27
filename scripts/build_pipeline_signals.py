@@ -191,7 +191,11 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
     if status == "warn":
         action = "aggiungere mart SQL per completare il candidato"
     elif status == "error":
-        action = "correggere la struttura del candidato"
+        pattern = info.get("pattern", "")
+        if pattern == "ambiguous":
+            action = "scegliere un layout: sources/ (multi-source) oppure solo dataset.yml root (single-source) — mai entrambi"
+        else:
+            action = "correggere la struttura del candidato"
 
     return {
         "id": slug,
