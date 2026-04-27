@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-04-26",
+  "updated_at": "2026-04-27",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -1249,6 +1249,146 @@
       "visibility": "public",
       "registry_source": "push_archive_auto",
       "multi_file": false
+    },
+    {
+      "slug": "popolazione_istat_comunale_2019_2025",
+      "name": "Popolazione Istat Comunale 2019 2025",
+      "description": "",
+      "source": "",
+      "period": {
+        "start": 2019,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "codice_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "eta",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "celibi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "coniugati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "divorziati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "vedovi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "uniti_civilmente_maschi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "maschi_gia_unione_civile_scioglimento",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "maschi_gia_unione_civile_decesso",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "totale_maschi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "nubili",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "coniugate",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "divorziate",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "vedove",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "unite_civilmente_femmine",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "femmine_gia_unione_civile_scioglimento",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "femmine_gia_unione_civile_decesso",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "totale_femmine",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "popolazione_residente",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
     }
   ]
 }
