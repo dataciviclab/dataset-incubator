@@ -2,9 +2,131 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-04-26",
+  "updated_at": "2026-04-27",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
+    {
+      "slug": "aifa_spesa_consumo",
+      "name": "AIFA Spesa Farmaceutica Convenzionata",
+      "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC — AIFA 2018-2024",
+      "source": "AIFA — Open Data Spesa e Consumo Farmaceutico",
+      "period": {
+        "start": 2018,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Mese di riferimento (1-12)"
+        },
+        {
+          "name": "codreg",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice regione"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione regione"
+        },
+        {
+          "name": "classe",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Classe farmaceutica"
+        },
+        {
+          "name": "atc1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ATC livello 1"
+        },
+        {
+          "name": "descrizione_atc1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione ATC livello 1"
+        },
+        {
+          "name": "atc2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ATC livello 2"
+        },
+        {
+          "name": "descrizione_atc2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione ATC livello 2"
+        },
+        {
+          "name": "atc3",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ATC livello 3"
+        },
+        {
+          "name": "descrizione_atc3",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione ATC livello 3"
+        },
+        {
+          "name": "atc4",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ATC livello 4"
+        },
+        {
+          "name": "descrizione_atc4",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione ATC livello 4"
+        },
+        {
+          "name": "numero_confezioni_traccia",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero confezioni tracciabilità"
+        },
+        {
+          "name": "spesa_flusso_tracciabilita",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Spesa flusso tracciabilità (euro)"
+        },
+        {
+          "name": "numero_confezioni_convenzionata",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero confezioni convenzionate"
+        },
+        {
+          "name": "spesa_convenzionata",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Spesa convenzionata SSN (euro)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/aifa_spesa_consumo/*/aifa_spesa_consumo_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
     {
       "slug": "bdap_entrate_stato",
       "name": "BDAP Entrate Stato - Serie Storica",
@@ -1249,6 +1371,146 @@
       "visibility": "public",
       "registry_source": "push_archive_auto",
       "multi_file": false
+    },
+    {
+      "slug": "popolazione_istat_comunale_2019_2025",
+      "name": "Popolazione ISTAT Comunale",
+      "description": "Popolazione residente italiana per comune, sesso, classe di età — POSAS ISTAT 2019-2025",
+      "source": "ISTAT - demo.posas (Popolazione residente per sesso, età e comune)",
+      "period": {
+        "start": 2019,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "codice_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice comune ISTAT (codice numerico)"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del comune"
+        },
+        {
+          "name": "eta",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Classe di età (0-100, 999 = totale comunale)"
+        },
+        {
+          "name": "celibi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Celibi (maschi nubili mai sposati)"
+        },
+        {
+          "name": "coniugati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Coniugati (maschi sposati)"
+        },
+        {
+          "name": "divorziati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Divorziati (maschi separati legalmente)"
+        },
+        {
+          "name": "vedovi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Vedovi (maschi con coniuge deceduto)"
+        },
+        {
+          "name": "uniti_civilmente_maschi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Uniti civilmente (maschi)"
+        },
+        {
+          "name": "maschi_gia_unione_civile_scioglimento",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Ex uniti civilmente — scioglimento (maschi)"
+        },
+        {
+          "name": "maschi_gia_unione_civile_decesso",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Ex uniti civilmente — decesso coniuge (maschi)"
+        },
+        {
+          "name": "totale_maschi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Totale popolazione maschile"
+        },
+        {
+          "name": "nubili",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Nubili (femmine nubili mai sposate)"
+        },
+        {
+          "name": "coniugate",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Coniugate (femmine sposate)"
+        },
+        {
+          "name": "divorziate",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Divorziate (femmine separate legalmente)"
+        },
+        {
+          "name": "vedove",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Vedove (femmine con coniuge deceduto)"
+        },
+        {
+          "name": "unite_civilmente_femmine",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Unite civilmente (femmine)"
+        },
+        {
+          "name": "femmine_gia_unione_civile_scioglimento",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Ex unite civilmente — scioglimento (femmine)"
+        },
+        {
+          "name": "femmine_gia_unione_civile_decesso",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Ex unite civilmente — decesso coniuge (femmine)"
+        },
+        {
+          "name": "totale_femmine",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Totale popolazione femminile"
+        },
+        {
+          "name": "popolazione_residente",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Popolazione residente totale"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
     }
   ]
 }
