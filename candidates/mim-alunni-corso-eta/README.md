@@ -3,38 +3,41 @@
 ## Domanda
 
 - Quali territori mostrano il calo più forte di iscritti nelle scuole primarie statali?
+- Qual è la pressione demografica scolastica per ordine e regione?
 
 ## Dataset
 
 - fonte principale: MIM `Alunni per corso ed età`
-- support dataset: `SCUANAGRAFESTAT`
-- file v0 intake: `ALUCORSOETASTA20242520250831.csv`
-- URL verificato: `https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOETASTA20242520250831.csv`
+- support dataset: `SCUANAGRAFESTAT` (anagrafica scuole statali)
+- download: automatizzato via `url_suffix_by_year` in `dataset.yml`
+- anni disponibili: **2016-2025** (10 anni scolastici)
+- URL list page: `https://dati.istruzione.it/opendata/opendata/catalogo/elements1/leaf/?area=Studenti&datasetId=DS0010ALUCORSOETASTA`
 - licenza dichiarata: `IODL 2.0`
 
 ## Perché vale la pena incubarlo
 
-- granularità a livello `CODICESCUOLA`
+- granularità a livello `CODICESCUOLA` + join con anagrafica
+- 10 anni di serie storica — trend demografico solido
 - forte leggibilità civica sul calo iscrizioni
-- il nuovo blocco `support:` del toolkit rende dichiarativo il join con l'anagrafica scuole
+- il blocco `support:` del toolkit rende dichiarativo il join con l'anagrafica scuole
 
 ## Output minimo atteso
 
-- raw: download CSV diretto del file alunni 2024/25
-- clean: tabella normalizzata con `CODICESCUOLA`, ordine, anno di corso, fascia età e numero alunni
-- mart: aggregato territoriale sulle scuole primarie statali tramite join con anagrafica
-- notebook v0 minimo per sanity check del mart
+- raw: CSV per anno scolastico (2016-2025)
+- clean: tabella normalizzata con `CODICESCUOLA`, ordine, anno di corso, fascia età e numero alunni — raw-faithful
+- mart: 4 aggregati per comune (primaria, sec_I, sec_II, all) — filtri ordine nel mart SQL
+- notebook v0 per sanity check mart
 
 ## Stato
 
-- intake
-- perimetro v0 ristretto a `2024/25`
-- focus iniziale sulle sole primarie
+`runnable` — 2016-2025 run completo, raw-faithful, 4 mart verificate
 
-Issue collegata:
-- `dataset-incubator#106`
+## QC
 
-## Prossimo passo
+- Clean = Raw su tutti gli anni (0% drop) ✅
+- Mart sum = Clean totali (nessun filtro nel GROUP BY) ✅
 
-- verificare run reale candidate + support dataset
-- estendere poi il candidate a una finestra multi-anno se il naming MIM regge bene nel contratto
+## Criterio di promotion
+
+- mart comunale stabile come base di join con anagrafica
+- notebook v0 verificato sul mart reale

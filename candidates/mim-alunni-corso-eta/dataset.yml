@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "mim_alunni_corso_eta"
-  years: [2024]
+  years: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 
 support:
   - name: "scu_anagrafica_statali"
@@ -15,8 +15,19 @@ raw:
     - name: "mim_alunni_corso_eta_csv"
       type: "http_file"
       args:
-        url: "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOETASTA20242520250831.csv"
-        filename: "ALUCORSOETASTA20242520250831.csv"
+        url: "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/ALUCORSOETASTA"
+        filename: "ALUCORSOETASTA{year}.csv"
+        url_suffix_by_year:
+          2016: "20151620160831.csv"
+          2017: "20161720170831.csv"
+          2018: "20171820180831.csv"
+          2019: "20181920190831.csv"
+          2020: "20192020200831.csv"
+          2021: "20202120210831.csv"
+          2022: "20212220220831.csv"
+          2023: "20222320230831.csv"
+          2024: "20232420240831.csv"
+          2025: "20242520250831.csv"
       primary: true
 
 clean:
