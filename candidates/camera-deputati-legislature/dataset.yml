@@ -1,0 +1,57 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "camera_deputati_legislature"
+  years: [2024]
+
+raw:
+  sources:
+    - name: "camera_deputati_sparql"
+      type: "sparql"
+      primary: true
+      args:
+        endpoint: "https://dati.camera.it/sparql"
+        query: |
+          PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+          PREFIX ocd: <http://dati.camera.it/ocd/>
+          SELECT DISTINCT ?deputato ?cogn ?nome ?legislatura ?gender
+          WHERE {
+            ?deputato a ocd:deputato .
+            OPTIONAL { ?deputato foaf:surname ?cogn . }
+            OPTIONAL { ?deputato foaf:firstName ?nome . }
+            OPTIONAL { ?deputato ocd:rif_leg ?leg .
+                       BIND(REPLACE(STR(?leg), 'http://dati.camera.it/ocd/legislatura.rdf/repubblica_', '') AS ?legislatura) . }
+            OPTIONAL { ?deputato foaf:gender ?gender . }
+          }
+          LIMIT 50000
+        accept_format: "csv"
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate: {}
+
+mart:
+  tables:
+    - name: "mart_deputati"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_deputati"
+  validate:
+    table_rules:
+      mart_deputati:
+        min_rows: 1000
+
+validation:
+  fail_on_error: false
+
+output:
+  artifacts: "minimal"
