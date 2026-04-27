@@ -2,86 +2,59 @@
 
 ## Tecnico
 
-- 9 file annuali: 2016-2024, ~31 MB/anno, ~174k righe/anno (dato 2023)
-- formato: CSV pipe-separated (`|`), encoding UTF-8-BOM
-- granularita: anno x mese x 21 regioni/PA x classe x ATC4
-- due flussi distinti nello stesso file con null strutturali:
-  - `convenzionata`: prescrizioni SSN dispensate in farmacia
-  - `tracciabilita`: acquisti diretti / ospedaliero / DPC / prontuario H
-- perimetro iniziale: solo `convenzionata` (colonne `spesa_convenzionata`, `numero_confezioni_convenzionata`)
-- i file vanno scaricati manualmente dalla pagina AIFA e rinominati:
-  `aifa_spesa_consumo_{year}.csv` in `out/data/raw/aifa_spesa_consumo/{year}/`
+**Download**: automatizzato via `url_suffix_by_year` in `dataset.yml`. Gli URL AIFA hanno suffisso data per-anno irregolare (`dati{year}_DD.MM.YYYY.csv`).
 
-**URL di download per anno (da pagina AIFA ufficiale):**
+| Anno | URL suffix | Note |
+|------|-----------|------|
+| 2018 | `_23.09.2020.csv` | |
+| 2019 | `_23.09.2020.csv` | |
+| 2020 | `_22.10.2021.csv` | |
+| 2021 | `_24.10.2022.csv` | |
+| 2022 | `_07.02.2024.csv` | |
+| 2023 | `_15.01.2025.csv` | |
+| 2024 | `_04.12.2025.csv` | |
 
-- 2016: `https://www.aifa.gov.it/documents/20142/847578/dati2016_100519.csv/c6e2e4d7-2663-92ad-6554-c3668e581b2d`
-- 2017: `https://www.aifa.gov.it/documents/20142/847578/dati2017_100519.csv/f4db1267-05c1-b65c-7a04-11633ff0a215`
-- 2018: `https://www.aifa.gov.it/documents/20142/847578/dati2018_23.09.2020.csv`
-- 2019: `https://www.aifa.gov.it/documents/20142/847578/dati2019_23.09.2020.csv`
-- 2020: `https://www.aifa.gov.it/documents/20142/847578/dati2020_22.10.2021.csv`
-- 2021: `https://www.aifa.gov.it/documents/20142/847578/dati2021_24.10.2022.csv`
-- 2022: `https://www.aifa.gov.it/documents/20142/847578/dati2022_07.02.2024.csv`
-- 2023: `https://www.aifa.gov.it/documents/20142/847578/dati2023_15.01.2025.csv`
-- 2024: `https://www.aifa.gov.it/documents/20142/847578/dati2024_04.12.2025.csv`
+**Formato**: CSV pipe-separated (`|`), encoding UTF-8 (2018 ha byte non-UTF-8 → `ignore_errors: true` in clean read).
 
-**Nota URL**: gli URL contengono token non parametrici — non automatizzabili con `{year}`.
-Scaricare manualmente. Se gli URL cambiano a un nuovo aggiornamento, riprendere dalla pagina ufficiale.
-
-**Nomi colonna approssimati (da verificare sul primo run):**
+**Schema** (17 colonne, verificato su 2023 e 2024):
 - identificativi: `anno`, `mese`, `codreg`, `regione`
-- gerarchia terapeutica: `classe`, `atc1`, `desc_atc1`, `atc2`, `desc_atc2`, `atc3`, `desc_atc3`, `atc4`, `desc_atc4`
-- flusso convenzionata: `numero_confezioni_convenzionata`, `spesa_convenzionata`
+- gerarchia terapeutica: `classe`, `atc1`, `descrizione_atc1`, `atc2`, `descrizione_atc2`, `atc3`, `descrizione_atc3`, `atc4`, `descrizione_atc4`
 - flusso tracciabilita: `numero_confezioni_traccia`, `spesa_flusso_tracciabilita`
+- flusso convenzionata: `numero_confezioni_convenzionata`, `spesa_convenzionata`
 
-**Manuale AIFA irraggiungibile.** Il link "Manuale Operativo" sulla pagina AIFA punta a
-`Cover-Letter-Europass-20181126-Porcaro-IT.pdf` (link rotto, non e il documento tecnico).
-I nomi colonna sono stati verificati direttamente sul file 2023 e risultano stabili su 2022-2024.
-Schema da riverificare quando si aggiungono gli anni 2016-2021.
+**Clean**: raw-faithful (17 colonne, TRIM su stringhe, nessun filtro). Tutte le righe hanno `spesa_convenzionata` valorizzata — verificato su 2018-2024.
 
-## Risultati primo run (2022-2024)
+**Mart**: aggregato per `anno x mese x regione x atc4`, include `quota_spesa_regione_pct` (spesa atc4 / totale regionale mensile).
 
-Run completato su 3 anni. Tutti i layer clean + mart hanno passato la validazione.
+**Granularita**: anno x mese x 21 regioni/PA x classe x ATC4.
 
-| anno | righe clean | righe mart |
-|------|-------------|------------|
-| 2022 | 91.850 | ~78k |
-| 2023 | 92.654 | 78.802 |
-| 2024 | 92.129 | ~78k |
+## Risultati run (2018-2024)
 
-Totale convenzionata 2023 (nazionale): 9,87 mld EUR
+| Anno | Righe raw | Righe clean | Righe mart |
+|------|-----------|-------------|------------|
+| 2018 | ~174k | 174.222 | 121.936 |
+| 2019 | ~92k | 92.711 | 81.244 |
+| 2020 | ~91k | 91.341 | 80.422 |
+| 2021 | ~169k | 169.304 | 121.656 |
+| 2022 | ~92k | 91.850 | 78.998 |
+| 2023 | ~93k | 92.654 | 78.802 |
+| 2024 | ~92k | 92.129 | 78.280 |
 
-Top 5 ATC4 per spesa 2023 (nazionale):
-- A02BC Inibitori pompa protonica: 652,7 mln EUR
-- C10AA Statine (HMG CoA reduttasi): 476,1 mln EUR
-- R03AK Adrenergici + corticosteroidi (asma/BPCO): 390,8 mln EUR
-- C07AB Betabloccanti selettivi: 300,3 mln EUR
-- C09CA ARBs anti-ipertensivi: 294,6 mln EUR
+Nota: 2018 e 2021 hanno ~170k righe clean perche' includono ATC4 aggiuntivi (L4-L5 fluoroanalogici) non presenti negli altri anni.
 
-Top 5 regioni spesa convenzionata 2023:
-Lombardia 1,86 mld - Campania 1,04 mld - Lazio 1,03 mld - Sicilia 0,83 mld - Puglia 0,72 mld
+Totale convenzionata 2023 (nazionale): ~9,87 mld EUR.
 
-Gate 1 parzialmente risolto: nomi colonna verificati sul file reale.
-Il manuale AIFA resta irraggiungibile (link rotto), ma il tracciato e interpretabile.
+## Gate e caveat
+
+- Gate 1 (schema): risolto — 17 colonne verificate direttamente sul file 2023
+- `codreg` non allineato a codici ISTAT standard senza lookup
+- Convenzionata e tracciabilita sono canali diversi: non sommare in analisi iniziali
+- Dati AIFA aggiornati retroattivamente (file hanno timestamp nel nome, non copertura)
+- Nessun dettaglio sub-regionale (ASL, distretto, comune)
 
 ## Analitico
 
-- domanda principale: come cambia la spesa convenzionata per ATC4 tra regioni e nel tempo?
-- taglio iniziale: flusso `convenzionata` aggregato per `anno x mese x regione x atc4`
-- metriche minime: `spesa_convenzionata`, `numero_confezioni_convenzionata`, quota % sul totale regionale
-- domande complementari:
-  - quali regioni spendono di piu pro capite per cardiovascolari?
-  - dove crescono di piu gli antidiabetici tra 2016 e 2024?
-  - ci sono classi in calo strutturale (biosimilari, genericazione)?
-- attenzione: i totali regionali assoluti non sono comparabili senza normalizzazione per popolazione
-- non sommare convenzionata + tracciabilita nella prima analisi: sono canali diversi
-
-## Cautele
-
-- la spesa assoluta non e comparabile tra regioni senza dati di popolazione
-- i null nelle colonne dei due flussi sono strutturali, non errori di parsing
-- `codreg` potrebbe non allinearsi direttamente ai codici ISTAT standard senza lookup
-- eventuali aggiornamenti retroattivi dei file AIFA non sono segnalati esplicitamente:
-  i file hanno timestamp nel nome (es. `dati2022_07.02.2024.csv`) che indica la data di rilascio,
-  non la copertura — tenere traccia della versione scaricata
-- ATC4 e il livello massimo disponibile in questo dataset (niente AIC o ATC5)
-- nessun dettaglio sub-regionale (ASL, distretto, comune)
+- Domanda principale: come cambia la spesa convenzionata per ATC4 tra regioni e nel tempo?
+- Metriche: `spesa_convenzionata`, `numero_confezioni_convenzionata`, `quota_spesa_regione_pct`
+- Comparabilita' tra regioni: richiede normalizzazione per popolazione
+- Non sommare convenzionata + tracciabilita: sono flussi diversi

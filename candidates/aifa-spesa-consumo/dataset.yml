@@ -1,33 +1,38 @@
-root: "../../../../out"
+root: "../../out"
 schema_version: 1
 
 dataset:
   name: "aifa_spesa_consumo"
-  years: [2022, 2023, 2024]
-  # anni raw disponibili localmente: 2022-2024
-  # estendere a [2016..2024] dopo download manuale degli anni mancanti
+  years: [ 2018, 2019, 2020, 2021, 2022, 2023, 2024 ]
 
 raw:
   sources:
     - name: "aifa_spesa_consumo_csv"
-      type: "local_file"
+      type: "http_file"
       args:
-        path: "../../../../out/data/raw/aifa_spesa_consumo/{year}/aifa_spesa_consumo_{year}.csv"
-        filename: "aifa_spesa_consumo_{year}.csv"
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati{year}"
+        url_suffix_by_year:
+          2018: "_23.09.2020.csv"
+          2019: "_23.09.2020.csv"
+          2020: "_22.10.2021.csv"
+          2021: "_24.10.2022.csv"
+          2022: "_07.02.2024.csv"
+          2023: "_15.01.2025.csv"
+          2024: "_04.12.2025.csv"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
   read:
-    source: auto
+    source: config_only
     mode: latest
     header: true
     delim: "|"
     encoding: "utf-8"
+    ignore_errors: true
     trim_whitespace: true
   validate:
     min_rows: 80000
-    # 2022: 91.850 righe convenzionata; 2023: ~92.654. Soglia conservativa.
 
 mart:
   tables:
