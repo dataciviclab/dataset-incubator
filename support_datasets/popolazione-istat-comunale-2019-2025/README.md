@@ -32,6 +32,8 @@ Chiave di join: `codice_comune`
 | 2024 | 7.900 | 58.971.230 |
 | 2025 | 7.896 | 58.943.464 |
 
+*La variazione 7.954 → 7.896 riflette fusioni comunali nel periodo — non un errore. Vedi notes.md §Cautele.*
+
 ## QC
 
 - Clean = Raw per tutti i 7 anni (nessun filtro) ✅

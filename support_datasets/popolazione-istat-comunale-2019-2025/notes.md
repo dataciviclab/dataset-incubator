@@ -32,3 +32,5 @@ Tutti e 7 gli anni: raw ✅ clean ✅ mart ✅
 ## IRPEF join test
 
 Con IRPEF 2023: ~7892 match su ~7897 comuni (99,9%). I pochi non-match confermano il dataset come detector di anomalie territoriali.
+
+
