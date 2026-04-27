@@ -1252,9 +1252,9 @@
     },
     {
       "slug": "popolazione_istat_comunale_2019_2025",
-      "name": "Popolazione Istat Comunale 2019 2025",
-      "description": "",
-      "source": "",
+      "name": "Popolazione ISTAT Comunale",
+      "description": "Popolazione residente italiana per comune, sesso, classe di età — POSAS ISTAT 2019-2025",
+      "source": "ISTAT - demo.posas (Popolazione residente per sesso, età e comune)",
       "period": {
         "start": 2019,
         "end": 2025
@@ -1264,121 +1264,121 @@
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice comune ISTAT (codice numerico)"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune"
         },
         {
           "name": "eta",
           "type": "INTEGER",
           "role": "dimension",
-          "description": ""
+          "description": "Classe di età (0-100, 999 = totale comunale)"
         },
         {
           "name": "celibi",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Celibi (maschi nubili mai sposati)"
         },
         {
           "name": "coniugati",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Coniugati (maschi sposati)"
         },
         {
           "name": "divorziati",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Divorziati (maschi separati legalmente)"
         },
         {
           "name": "vedovi",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Vedovi (maschi con coniuge deceduto)"
         },
         {
           "name": "uniti_civilmente_maschi",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Uniti civilmente (maschi)"
         },
         {
           "name": "maschi_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Ex uniti civilmente — scioglimento (maschi)"
         },
         {
           "name": "maschi_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Ex uniti civilmente — decesso coniuge (maschi)"
         },
         {
           "name": "totale_maschi",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Totale popolazione maschile"
         },
         {
           "name": "nubili",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Nubili (femmine nubili mai sposate)"
         },
         {
           "name": "coniugate",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Coniugate (femmine sposate)"
         },
         {
           "name": "divorziate",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Divorziate (femmine separate legalmente)"
         },
         {
           "name": "vedove",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Vedove (femmine con coniuge deceduto)"
         },
         {
           "name": "unite_civilmente_femmine",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Unite civilmente (femmine)"
         },
         {
           "name": "femmine_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Ex unite civilmente — scioglimento (femmine)"
         },
         {
           "name": "femmine_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Ex unite civilmente — decesso coniuge (femmine)"
         },
         {
           "name": "totale_femmine",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Totale popolazione femminile"
         },
         {
           "name": "popolazione_residente",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione residente totale"
         }
       ],
       "location": {
