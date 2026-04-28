@@ -1441,6 +1441,193 @@
       "visibility": "public"
     },
     {
+      "slug": "istat_housing_crowding",
+      "name": "Istat Housing Crowding",
+      "description": "Indice di densita abitativa (componenti per 100 mq) per titolo di godimento. Serie storica 2004-2025, ISTAT SDMX 33_179",
+      "source": "ISTAT — Dataflow 33_179 (Housing conditions), SDMX-CSV",
+      "period": {
+        "start": 2004,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "ref_area_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del territorio (IT = Italia)"
+        },
+        {
+          "name": "ref_area",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del territorio"
+        },
+        {
+          "name": "indicatore_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice dell'indicatore SDMX (ABITAZ_AFFOLL_MED)"
+        },
+        {
+          "name": "indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome dell'indicatore"
+        },
+        {
+          "name": "misura_codice",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice della misura (10 = per hundred values)"
+        },
+        {
+          "name": "misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione della misura"
+        },
+        {
+          "name": "titolo_godimento_codice",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice titolo di godimento: 1=owner-occupied, 2=rent"
+        },
+        {
+          "name": "titolo_godimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo di godimento: proprieta o affitto"
+        },
+        {
+          "name": "numero_componenti_nucleo",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Numero di componenti del nucleo familiare"
+        },
+        {
+          "name": "numero_componenti_nucleo_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Label numero componenti nucleo"
+        },
+        {
+          "name": "tipologia_nucleo_codice",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice tipologia nucleo"
+        },
+        {
+          "name": "tipologia_nucleo_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Label tipologia nucleo"
+        },
+        {
+          "name": "numero_figli",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Numero di figli"
+        },
+        {
+          "name": "numero_figli_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Label numero figli"
+        },
+        {
+          "name": "numero_anziani",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Numero di anziani nel nucleo"
+        },
+        {
+          "name": "numero_anziani_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Label numero anziani"
+        },
+        {
+          "name": "quintile_reddito_codice",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice quintile di reddito"
+        },
+        {
+          "name": "quintile_reddito_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Label quintile di reddito"
+        },
+        {
+          "name": "sesso_percettore_principale_codice",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice sesso percettore principale"
+        },
+        {
+          "name": "sesso_percettore_principale_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Label sesso percettore principale"
+        },
+        {
+          "name": "eta_percettore_principale_codice",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice eta percettore principale"
+        },
+        {
+          "name": "eta_percettore_principale_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Label eta percettore principale"
+        },
+        {
+          "name": "titolo_studio_percettore_codice",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice titolo di studio"
+        },
+        {
+          "name": "titolo_studio_percettore_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Label titolo di studio"
+        },
+        {
+          "name": "condizione_professionale_percettore_codice",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice condizione professionale"
+        },
+        {
+          "name": "condizione_professionale_percettore_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Label condizione professionale"
+        },
+        {
+          "name": "componenti_per_100mq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Indice di densita abitativa (componenti per 100 mq)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_housing_crowding/2024/istat_housing_crowding_2024_clean.parquet",
+        "multi_file": false
+      },
+      "status": "candidate",
+      "visibility": "public"
+    },
+    {
       "slug": "mim_alunni_corso_eta",
       "name": "Alunni per corso ed età — MIM",
       "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
