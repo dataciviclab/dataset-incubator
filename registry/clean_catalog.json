@@ -439,30 +439,6 @@
           "type": "DOUBLE",
           "role": "metric",
           "description": "Numero dipendenti uomini cessati"
-        },
-        {
-          "name": "donne_totali",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Totale dipendenti donne"
-        },
-        {
-          "name": "uomini_totali",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Totale dipendenti uomini"
-        },
-        {
-          "name": "assunti_totali",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Totale assunti"
-        },
-        {
-          "name": "cessati_totali",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Totale cessati"
         }
       ],
       "location": {
@@ -470,9 +446,8 @@
         "path": "gs://dataciviclab-clean/dipendenti_pubblici/*/dipendenti_pubblici_*_clean.parquet",
         "multi_file": true
       },
-      "status": "clean_ready",
-      "visibility": "public",
-      "registry_source": "initial_clean_query_catalog"
+      "status": "candidate",
+      "visibility": "public"
     },
     {
       "slug": "inps_pensioni_2017_2024",
