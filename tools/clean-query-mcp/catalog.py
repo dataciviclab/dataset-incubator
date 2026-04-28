@@ -78,6 +78,27 @@ def list_datasets() -> list[dict[str, Any]]:
     ]
 
 
+def search_datasets(query: str) -> list[dict[str, Any]]:
+    """Cerca nei dataset per nome, descrizione e fonte."""
+    q = query.lower()
+    catalog = _load_catalog()
+    matches = []
+    for ds in catalog:
+        name = ds.get("name", "").lower()
+        desc = ds.get("description", "").lower()
+        source = ds.get("source", "").lower()
+        if q in name or q in desc or q in source:
+            matches.append({
+                "slug": ds["slug"],
+                "name": ds["name"],
+                "description": ds["description"],
+                "source": ds.get("source"),
+                "period_start": ds["period"]["start"],
+                "period_end": ds["period"]["end"],
+            })
+    return matches
+
+
 def describe_dataset(slug: str) -> dict[str, Any]:
     catalog = _load_catalog()
     ds = next((d for d in catalog if d["slug"] == slug), None)
@@ -96,6 +117,25 @@ def describe_dataset(slug: str) -> dict[str, Any]:
         "location_type": ds["location"]["type"],
         "location_path": ds["location"]["path"],
     }
+
+
+_ANNUAL_COLUMNS = {"anno", "anno_di_imposta", "anno_estrazione", "year", "annual_year"}
+
+
+def get_year_column(slug: str) -> str | None:
+    """Restituisce il nome della colonna anno per un dataset, se presente."""
+    catalog = _load_catalog()
+    ds = next((d for d in catalog if d["slug"] == slug), None)
+    if ds is None:
+        return None
+    columns = ds.get("columns", [])
+    for col in columns:
+        if col.get("type") not in ("INTEGER", "BIGINT"):
+            continue
+        name_lower = col["name"].lower()
+        if name_lower in _ANNUAL_COLUMNS or name_lower.startswith("anno"):
+            return col["name"]
+    return None
 
 
 def resolve_parquet_path(slug: str, year: int | None = None) -> list[str]:
