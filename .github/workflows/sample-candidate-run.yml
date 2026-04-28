@@ -1,0 +1,165 @@
+name: Sample Candidate Run
+
+# Issue #154 — Sample run GitHub per candidate usando il toolkit.
+#
+# Scope iniziale:
+#   - trigger manuale (workflow_dispatch)
+#   - un candidate/config alla volta
+#   - sample year = ultimo anno in dataset.years (override opzionale via input)
+#   - niente publish GCS/BQ
+#   - niente logica duplicata di pipeline
+#
+# Output:
+#   - artifact con run record, metadata, validation JSON
+#   - nessuna modifica al repo
+
+on:
+  workflow_dispatch:
+    inputs:
+      config_path:
+        description: >
+          Path al dataset.yml del candidate.
+          Esempio: candidates/istat-housing-crowding/dataset.yml
+          Per nested: candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml
+        required: true
+        type: string
+      sample_year:
+        description: >
+          Anno di sample run (default: ultimo anno in dataset.years).
+          Passa questo per forzare un anno specifico.
+        required: false
+        type: string
+      strict_config:
+        description: "Tratta forme config deprecate come errori"
+        required: false
+        type: boolean
+        default: false
+
+jobs:
+  sample-run:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
+    # Non usa contents:write perché non modifica il repo
+    env:
+      CONFIG_PATH: ${{ inputs.config_path }}
+      STRICT_FLAG: ${{ inputs.strict_config && '--strict-config' || '' }}
+
+    steps:
+      - name: Checkout dataset-incubator
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: pip install pyyaml
+
+      # ------------------------------------------------------------------
+      # Step 1 — Resolve sample year
+      # ------------------------------------------------------------------
+      - name: Resolve sample run parameters
+        id: resolve
+        env:
+          INPUT_SAMPLE_YEAR: ${{ inputs.sample_year }}
+        run: |
+          RESULT=$(python scripts/resolve_sample_run.py "$CONFIG_PATH" 2>&1)
+          echo "resolve_raw=$RESULT"
+          echo "$RESULT" > ${{ github.run_id }}_params.json
+
+          # Check for error from resolve
+          ERROR=$(echo "$RESULT" | python -c "import sys,json; d=json.load(sys.stdin); print(d.get('error',''))" 2>/dev/null)
+          if [ -n "$ERROR" ]; then
+            echo "resolve_error=$ERROR"
+            exit 1
+          fi
+
+          # Extract resolved values
+          SLUG=$(echo "$RESULT" | python -c "import sys,json; d=json.load(sys.stdin); print(d['slug'])")
+          RESOLVED_YEAR=$(echo "$RESULT" | python -c "import sys,json; d=json.load(sys.stdin); print(d['sample_year'])")
+          ALL_YEARS=$(echo "$RESULT" | python -c "import sys,json; d=json.load(sys.stdin); print(','.join(str(y) for y in d['all_years']))")
+          IS_NESTED=$(echo "$RESULT" | python -c "import sys,json; d=json.load(sys.stdin); print(str(d['is_nested']).lower())")
+
+          # Override with user input if provided, otherwise use resolved
+          FINAL_YEAR="$INPUT_SAMPLE_YEAR"
+          if [ -z "$FINAL_YEAR" ]; then
+            FINAL_YEAR="$RESOLVED_YEAR"
+          fi
+
+          echo "slug=$SLUG" >> $GITHUB_OUTPUT
+          echo "resolved_year=$RESOLVED_YEAR" >> $GITHUB_OUTPUT
+          echo "final_year=$FINAL_YEAR" >> $GITHUB_OUTPUT
+          echo "all_years=$ALL_YEARS" >> $GITHUB_OUTPUT
+          echo "is_nested=$IS_NESTED" >> $GITHUB_OUTPUT
+
+      # ------------------------------------------------------------------
+      # Step 2 — Install toolkit
+      # ------------------------------------------------------------------
+      - name: Install toolkit
+        run: |
+          pip install git+https://github.com/dataciviclab/toolkit.git@main
+
+      # ------------------------------------------------------------------
+      # Step 3 — Inspect paths
+      # ------------------------------------------------------------------
+      - name: Toolkit inspect paths
+        run: |
+          toolkit inspect paths \
+            --config "$CONFIG_PATH" \
+            --json \
+            $STRICT_FLAG \
+            2>&1 | tee inspect_paths.json || true
+
+      # ------------------------------------------------------------------
+      # Step 4 — Run all layers
+      # ------------------------------------------------------------------
+      - name: Toolkit run all
+        run: |
+          toolkit run all \
+            --config "$CONFIG_PATH" \
+            --years "${{ steps.resolve.outputs.final_year }}" \
+            $STRICT_FLAG \
+            2>&1 | tee run_all.log
+
+      # ------------------------------------------------------------------
+      # Step 5 — Validate all layers
+      # ------------------------------------------------------------------
+      - name: Toolkit validate all
+        run: |
+          toolkit validate all \
+            --config "$CONFIG_PATH" \
+            --years "${{ steps.resolve.outputs.final_year }}" \
+            $STRICT_FLAG \
+            2>&1 | tee validate_all.json
+
+      # ------------------------------------------------------------------
+      # Step 6 — Status (latest run)
+      # ------------------------------------------------------------------
+      - name: Toolkit status latest
+        run: |
+          toolkit status \
+            --dataset "${{ steps.resolve.outputs.slug }}" \
+            --year "${{ steps.resolve.outputs.final_year }}" \
+            --latest \
+            --config "$CONFIG_PATH" \
+            $STRICT_FLAG \
+            2>&1 | tee status.log || true
+
+      # ------------------------------------------------------------------
+      # Step 7 — Upload artifacts
+      # ------------------------------------------------------------------
+      - name: Upload run artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sample-run-${{ github.run_id }}
+          path: |
+            ${{ github.run_id }}_params.json
+            inspect_paths.json
+            run_all.log
+            validate_all.json
+            status.log
+          retention-days: 14
