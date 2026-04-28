@@ -1392,6 +1392,55 @@
       "registry_source": "initial_clean_query_catalog"
     },
     {
+      "slug": "istat_gini_regionale",
+      "name": "ISTAT - Indice di Gini regionale",
+      "description": "Indice di Gini sul reddito netto regionale, con serie storica annuale 2003-2024",
+      "source": "ISTAT — Dataflow 32_221 (Omogeneita del reddito regionale), SDMX-CSV",
+      "period": {
+        "start": 2003,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento (2003-2024)"
+        },
+        {
+          "name": "regione_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT della regione (4 caratteri, NUTS2)"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della regione"
+        },
+        {
+          "name": "pres_aff_imp",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Serie: 1=con fitti imputati, 2=senza fitti imputati"
+        },
+        {
+          "name": "gini",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Indice di Gini sul reddito netto (0-1, piu alto = piu diseguale)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_gini_regionale/2023/istat_gini_regionale_2023_clean.parquet",
+        "multi_file": false
+      },
+      "status": "candidate",
+      "visibility": "public"
+    },
+    {
       "slug": "mim_alunni_corso_eta",
       "name": "Alunni per corso ed età — MIM",
       "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
