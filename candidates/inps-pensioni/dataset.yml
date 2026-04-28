@@ -25,6 +25,8 @@ clean:
     strict_mode: false
     ignore_errors: true
     trim_whitespace: true
+    quote: '"'
+    escape: '"'
   validate:
     min_rows: 100000
 
