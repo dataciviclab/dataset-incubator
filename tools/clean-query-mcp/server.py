@@ -73,6 +73,25 @@ def _validate_select_sql(sql: str) -> str:
     return text
 
 
+# Safe chars for GCS parquet paths: letters, digits, /, _, ., -, :
+_SAFE_PATH_RE = re.compile(r"^[a-zA-Z0-9/_.\-:]+$")
+
+
+def _validate_parquet_paths(paths: list[str]) -> None:
+    """Validate parquet paths before building read_parquet expression.
+
+    DuckDB read_parquet with a string path is sensitive to special characters.
+    This catches non-ASCII, backslash, and other unsafe chars early with a
+    readable error rather than a cryptic DuckDB failure.
+    """
+    for p in paths:
+        if not _SAFE_PATH_RE.match(p):
+            raise DuckdbClientError(
+                f"Path parquet contiene caratteri non sicuri: '{p}'. "
+                f"Caratteri ammessi: lettere, numeri, /, _, ., -, :"
+            )
+
+
 def guard(fn, handled_exceptions: tuple[type[BaseException], ...] = (Exception,)) -> dict[str, Any]:
     try:
         return fn()
@@ -250,6 +269,7 @@ def run_query(
         if year_col:
             sql = _inject_year_filter(sql, year_col, year)
 
+    _validate_parquet_paths(parquet_paths)
     escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
     if len(parquet_paths) == 1:
         source_expr = f"'{escaped_paths}'"
