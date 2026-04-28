@@ -26,7 +26,7 @@ ROOT = Path(__file__).resolve().parents[1]
 
 # Import helpers from the existing validation script — no duplication
 sys.path.insert(0, str(ROOT / "scripts"))
-from validate_candidate_structure import has_mart_sql  # noqa: E402
+from validate_candidate_structure import has_mart_sql, detect_candidate_layout  # noqa: E402
 
 
 # ---------------------------------------------------------------------------
@@ -138,10 +138,19 @@ def _inspect_multi_source(base_dir: Path) -> dict:
 
 def _build_signal(slug: str, base_dir: Path) -> dict:
     """Build a single signal entry for a candidate."""
-    has_root_dataset = (base_dir / "dataset.yml").exists()
-    has_sources = (base_dir / "sources").is_dir()
+    layout_info = detect_candidate_layout(base_dir)
+    layout = layout_info["layout"]
 
-    if has_root_dataset and has_sources:
+    if layout == "support-dataset":
+        # support_datasets follow single-source validation but are tracked separately
+        info = {
+            "pattern": "support-dataset",
+            "years": [],
+            "sources": [],
+            "mart_ok": (base_dir / "sql").is_dir() and has_mart_sql(base_dir / "sql"),
+            "failures": [],
+        }
+    elif layout == "ambiguous":
         info = {
             "pattern": "ambiguous",
             "years": [],
@@ -149,9 +158,9 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
             "mart_ok": False,
             "failures": ["ambiguous: root dataset.yml and sources/ cannot coexist"],
         }
-    elif has_root_dataset:
+    elif layout == "single-source":
         info = _inspect_single_source(base_dir)
-    elif has_sources:
+    elif layout == "multi-source":
         info = _inspect_multi_source(base_dir)
     else:
         info = {
@@ -191,7 +200,6 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
     if status == "warn":
         action = "aggiungere mart SQL per completare il candidato"
     elif status == "error":
-        pattern = info.get("pattern", "")
         if pattern == "ambiguous":
             action = "scegliere un layout: sources/ (multi-source) oppure solo dataset.yml root (single-source) — mai entrambi"
         else:
@@ -221,6 +229,13 @@ def build_signals(out_path: Path) -> int:
     for entry in sorted(p for p in candidates_dir.iterdir() if p.is_dir()):
         slug = entry.name
         signals.append(_build_signal(slug, entry))
+
+    # support_datasets also use detect_candidate_layout and need to appear in signals
+    support_dir = ROOT / "support_datasets"
+    if support_dir.exists():
+        for entry in sorted(p for p in support_dir.iterdir() if p.is_dir()):
+            slug = entry.name
+            signals.append(_build_signal(slug, entry))
 
     by_status: dict[str, int] = {"ok": 0, "warn": 0, "error": 0}
     for s in signals:

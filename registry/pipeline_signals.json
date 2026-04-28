@@ -1,14 +1,14 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-04-25",
+  "generated_at": "2026-04-28",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 17,
+    "total": 27,
     "by_status": {
-      "ok": 17,
+      "ok": 26,
       "warn": 0,
-      "error": 0
+      "error": 1
     }
   },
   "signals": [
@@ -16,7 +16,7 @@
       "id": "aifa-spesa-consumo",
       "status": "ok",
       "label": "aifa-spesa-consumo",
-      "detail": "anni 2022-2024 — multi-source (1 fonte) — mart: sì",
+      "detail": "anni 2018-2024 — fonte: aifa_spesa_consumo_csv — mart: sì",
       "action": ""
     },
     {
@@ -34,6 +34,27 @@
       "action": ""
     },
     {
+      "id": "camera-deputati-legislature",
+      "status": "ok",
+      "label": "camera-deputati-legislature",
+      "detail": "anno 2024 — fonte: camera_deputati_sparql — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "civile-flussi",
+      "status": "ok",
+      "label": "civile-flussi",
+      "detail": "anno 2025 — fonte: ministero_giustizia_xlsx — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "dipendenti-pubblici",
+      "status": "ok",
+      "label": "dipendenti-pubblici",
+      "detail": "anni 2010-2023 — fonte: bdap_csv — mart: sì",
+      "action": ""
+    },
+    {
       "id": "inps-pensioni",
       "status": "ok",
       "label": "inps-pensioni",
@@ -41,10 +62,17 @@
       "action": ""
     },
     {
+      "id": "irpef-comunale",
+      "status": "ok",
+      "label": "irpef-comunale",
+      "detail": "anni 2019-2023 — fonte: finanze_http_zip — mart: sì",
+      "action": ""
+    },
+    {
       "id": "ispra-consumo-suolo",
       "status": "ok",
       "label": "ispra-consumo-suolo",
-      "detail": "anno 2024 — multi-source (1 fonte) — mart: sì",
+      "detail": "anno 2024 — fonte: ispra_consumo_suolo_xlsx — mart: sì",
       "action": ""
     },
     {
@@ -53,6 +81,13 @@
       "label": "ispra-ru-costi-kg",
       "detail": "anni 2020-2024 — multi-source (3 fonti) — mart: sì",
       "action": ""
+    },
+    {
+      "id": "istat-ciclo-acqua-prelievo-distribuzione",
+      "status": "error",
+      "label": "istat-ciclo-acqua-prelievo-distribuzione",
+      "detail": "anni: ? — fonte: ? — mart: no — ⚠ no dataset.yml and no sources/ directory",
+      "action": "correggere la struttura del candidato"
     },
     {
       "id": "istat-gini-regionale",
@@ -76,10 +111,17 @@
       "action": ""
     },
     {
+      "id": "malasanita-struttura-mortalita",
+      "status": "ok",
+      "label": "malasanita-struttura-mortalita",
+      "detail": "anno 2022 — multi-source (4 fonti) — mart: sì",
+      "action": ""
+    },
+    {
       "id": "mim-alunni-corso-eta",
       "status": "ok",
       "label": "mim-alunni-corso-eta",
-      "detail": "anno 2024 — fonte: mim_alunni_corso_eta_csv — mart: sì",
+      "detail": "anni 2016-2025 — fonte: mim_alunni_corso_eta_csv — mart: sì",
       "action": ""
     },
     {
@@ -129,6 +171,34 @@
       "status": "ok",
       "label": "terna-capacita-rinnovabile",
       "detail": "anni 2023-2024 — fonte: terna_capacity_renewable_sources_xlsx — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "terna-electricity-by-source",
+      "status": "ok",
+      "label": "terna-electricity-by-source",
+      "detail": "anni 2023-2024 — fonte: terna_electricity_by_source_xlsx — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "bdap-anagrafe-enti",
+      "status": "ok",
+      "label": "bdap-anagrafe-enti",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "mim-anagrafica-scuole-statali",
+      "status": "ok",
+      "label": "mim-anagrafica-scuole-statali",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "popolazione-istat-comunale-2019-2025",
+      "status": "ok",
+      "label": "popolazione-istat-comunale-2019-2025",
+      "detail": "anni: ? — fonte: ? — mart: sì",
       "action": ""
     }
   ]
