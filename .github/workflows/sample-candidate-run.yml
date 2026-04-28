@@ -38,10 +38,13 @@ on:
 jobs:
   sample-run:
     runs-on: ubuntu-latest
+    defaults:
+      run:
+        shell: bash
     # Non usa contents:write perché non modifica il repo
     env:
       CONFIG_PATH: ${{ inputs.config_path }}
-      STRICT_FLAG: ${{ inputs.strict_config == 'true' && '--strict-config' || '' }}
+      STRICT_FLAG: ${{ inputs.strict_config && '--strict-config' || '' }}
 
     steps:
       - name: Checkout dataset-incubator
