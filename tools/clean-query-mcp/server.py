@@ -188,9 +188,6 @@ def _inject_year_filter(sql: str, year_col: str | None, year: int) -> str:
     s = sql.strip()
     low = s.lower()
 
-    if "where" in low:
-        return s
-
     from_match = list(re.finditer(r'\bfrom\s+clean_input\b', low))
     if not from_match:
         return s
@@ -337,8 +334,6 @@ def aggregate(
     filters: str | None = None,
     year: int | None = None,
 ) -> dict[str, Any]:
-    from catalog import get_year_column
-
     if not metric:
         return {"error": "metric non può essere vuota"}
     if not group_by:

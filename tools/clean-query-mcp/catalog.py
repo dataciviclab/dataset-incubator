@@ -119,7 +119,7 @@ def describe_dataset(slug: str) -> dict[str, Any]:
     }
 
 
-_ANNUAL_COLUMMS = {"anno", "anno_di_imposta", "anno_estrazione", "year", "annual_year"}
+_ANNUAL_COLUMNS = {"anno", "anno_di_imposta", "anno_estrazione", "year", "annual_year"}
 
 
 def get_year_column(slug: str) -> str | None:
@@ -133,7 +133,7 @@ def get_year_column(slug: str) -> str | None:
         if col.get("type") not in ("INTEGER", "BIGINT"):
             continue
         name_lower = col["name"].lower()
-        if name_lower in _ANNUAL_COLUMMS or name_lower.startswith("anno"):
+        if name_lower in _ANNUAL_COLUMNS or name_lower.startswith("anno"):
             return col["name"]
     return None
 
