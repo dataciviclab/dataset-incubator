@@ -1,9 +1,9 @@
-root: "../../../../out"
+root: "../../out"
 schema_version: 1
 
 dataset:
   name: "ispra_consumo_suolo"
-  years: [2024]
+  years: [ 2024 ]
   # Anno nominale: il file XLSX copre l'intera serie 2006-2024.
   # Non esistono file separati per anno: year=2024 e` il rilascio piu recente.
 
@@ -12,7 +12,9 @@ raw:
     - name: "ispra_consumo_suolo_xlsx"
       type: "http_file"
       args:
-        url: "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-consumo-di-suolo/consumo_di_suolo_estratto_dati_2025_anni_2006_2024.xlsx"
+        url: "https://www.isprambiente.gov.it/it/attivita/suolo-e-territorio/suolo/il-c\
+          onsumo-di-suolo/consumo_di_suolo_estratto_dati_2025_anni_2006_2024.xl\
+          sx"
         filename: "ispra_consumo_suolo_{year}.xlsx"
       primary: true
 
