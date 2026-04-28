@@ -28,11 +28,14 @@ toolkit/.venv/Scripts/python.exe -m toolkit.cli.app run all \
 | comune | Nome comune |
 | provincia | Nome provincia |
 | regione | Nome regione |
-| incremento_ha_2023_2024 | Incremento netto consumo suolo 2023-2024 [ha] |
+| incremento_ha_2023_2024 | Incremento netto consumo suolo 2023-2024 [ha] (alias backward-compatible) |
 | incremento_netto_ha_<periodo> | Serie degli incrementi netti per periodo ISPRA [ha] |
 | incremento_lordo_ha_<periodo> | Serie degli incrementi lordi per periodo ISPRA [ha] |
+| ripristino_ha_<periodo> | Serie delle aree ripristinate per periodo ISPRA [ha] |
 | stock_ha_2024 | Suolo consumato cumulato 2024 [ha] |
 | stock_pct_2024 | Suolo consumato 2024 [% superficie] |
+
+**Nota**: tutte le colonne sono preservate in clean (39 cols). Le 11 colonne `Ripristino` sono state aggiunte in clean.sql il 2026-04-28 — prima erano state erroneamente scartate per errore di omissione, non per scelta analitica.
 
 ### Periodi disponibili
 

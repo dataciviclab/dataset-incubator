@@ -22,7 +22,7 @@ toolkit/.venv/Scripts/python.exe -m toolkit.cli.app run all \
 
 ## Nota dati
 
-Il `clean` e il `mart` espongono ora tutti gli incrementi netti e lordi per periodo presenti nel foglio ISPRA `Comuni_2006_2024`.
+Il `clean` e il `mart` espongono ora tutti gli incrementi netti, lordi e di ripristino per periodo presenti nel foglio ISPRA `Comuni_2006_2024` (40 colonne totali).
 
 I periodi non sono uniformi:
 - `2006-2012`
@@ -30,3 +30,5 @@ I periodi non sono uniformi:
 - poi annuali fino a `2023-2024`
 
 Questi campi vanno quindi letti come sequenza di intervalli eterogenei, non come serie annuale gia normalizzata.
+
+**Fix applicato 2026-04-28:** le 11 colonne `Ripristino` sono state reintegrate in clean (prima scartate per errore di omissione). Ora raw-faithful: 39 raw cols -> 39 clean cols.
