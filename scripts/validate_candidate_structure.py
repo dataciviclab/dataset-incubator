@@ -2,9 +2,39 @@ from __future__ import annotations
 
 import sys
 from pathlib import Path
-
+from typing import Literal
 
 ROOT = Path(__file__).resolve().parents[1]
+
+LayoutType = Literal["single-source", "multi-source", "ambiguous", "unknown", "support-dataset"]
+
+
+def detect_candidate_layout(base_dir: Path) -> dict:
+    """Shared layout detection for candidate and support_dataset structures.
+
+    Returns a dict with:
+      layout: LayoutType — one of the five literal values
+      has_root_dataset: bool
+      has_sources: bool
+    """
+    if base_dir.parts[-2] == "support_datasets":
+        return {
+            "layout": "support-dataset",
+            "has_root_dataset": (base_dir / "dataset.yml").exists(),
+            "has_sources": False,
+        }
+
+    has_root_dataset = (base_dir / "dataset.yml").exists()
+    has_sources = (base_dir / "sources").is_dir()
+
+    if has_root_dataset and has_sources:
+        return {"layout": "ambiguous", "has_root_dataset": True, "has_sources": True}
+    elif has_root_dataset:
+        return {"layout": "single-source", "has_root_dataset": True, "has_sources": False}
+    elif has_sources:
+        return {"layout": "multi-source", "has_root_dataset": False, "has_sources": True}
+    else:
+        return {"layout": "unknown", "has_root_dataset": False, "has_sources": False}
 
 
 def has_mart_sql(sql_dir: Path) -> bool:
@@ -84,24 +114,24 @@ def validate_entry(base_dir: Path, failures: list[str]) -> None:
 
     validate_root_docs(base_dir, failures)
 
-    if base_dir.parts[-2] == "support_datasets":
+    info = detect_candidate_layout(base_dir)
+    layout = info["layout"]
+
+    if layout == "support-dataset":
         validate_single_source(base_dir, failures)
         return
 
-    has_root_dataset = (base_dir / "dataset.yml").exists()
-    has_sources = (base_dir / "sources").is_dir()
-
-    if has_root_dataset and has_sources:
+    if layout == "ambiguous":
         failures.append(
             f"{rel_str} has ambiguous structure: root dataset.yml and sources/ cannot coexist"
         )
         return
 
-    if has_root_dataset:
+    if layout == "single-source":
         validate_single_source(base_dir, failures)
         return
 
-    if has_sources:
+    if layout == "multi-source":
         validate_multi_source(base_dir, failures)
         return
 
