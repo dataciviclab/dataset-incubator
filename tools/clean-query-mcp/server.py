@@ -6,8 +6,10 @@ from typing import Any
 from mcp.server.fastmcp import FastMCP
 
 from catalog import describe_dataset as describe_impl  # noqa: E402
+from catalog import get_year_column  # noqa: E402
 from catalog import list_datasets as list_impl  # noqa: E402
 from catalog import resolve_parquet_path  # noqa: E402
+from catalog import search_datasets as search_impl  # noqa: E402
 
 ALLOWED_FROM = {"clean_input"}
 MAX_ROWS_HARD_CAP = 500
@@ -159,6 +161,17 @@ def list_datasets() -> list[dict[str, Any]]:
 
 
 @mcp.tool(
+    description="Cerca nei dataset per nome, descrizione o fonte.",
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def search_datasets(query: str) -> list[dict[str, Any]]:
+    if not (query or "").strip():
+        raise DuckdbClientError("query non può essere vuota")
+    return search_impl(query.strip())
+
+
+@mcp.tool(
     description="Descrive lo schema di un dataset: colonne, tipi, ruolo (dimension/metric), periodo.",
     structured_output=True,
 )
@@ -167,13 +180,52 @@ def describe_dataset(slug: str) -> dict[str, Any]:
     return describe_impl(slug)
 
 
+def _inject_year_filter(sql: str, year_col: str | None, year: int) -> str:
+    """Inietta WHERE {year_col}={year} subito dopo FROM clean_input, prima di GROUP BY/ORDER BY/LIMIT."""
+    if not year_col or year is None:
+        return sql
+    filter_sql = f"WHERE {year_col} = {year}"
+    s = sql.strip()
+    low = s.lower()
+
+    if "where" in low:
+        return s
+
+    from_match = list(re.finditer(r'\bfrom\s+clean_input\b', low))
+    if not from_match:
+        return s
+
+    last_from = from_match[-1].end()
+    tail = s[last_from:].strip()
+
+    if tail.lower().startswith("where"):
+        return s
+
+    tail_low = tail.lower()
+    for keyword in ["group by", "order by", "limit"]:
+        idx = tail_low.find(keyword)
+        if idx != -1:
+            before = tail[:idx].strip()
+            after = tail[idx:]
+            base = s[:last_from].rstrip()
+            if before:
+                return f"{base} {before} {filter_sql} {after}".strip()
+            return f"{base} {filter_sql} {after}".strip()
+
+    base = s[:last_from].rstrip()
+    tail_clean = tail.strip()
+    if tail_clean:
+        return f"{base} {tail_clean} {filter_sql}".strip()
+    return f"{base} {filter_sql}".strip()
+
+
 @mcp.tool(
     description=(
         "Esegue una query SQL read-only su un dataset clean tramite DuckDB. "
         "Solo SELECT/WITH. Il SQL deve riferire SOLO 'FROM clean_input' o CTE locali. "
         "I path ai parquet sono risolti automaticamente dal catalogo. "
         "Hard cap: max 500 righe, timeout 60s. "
-        "Per dataset multi-anno, usare year per filtrare (opzionale)."
+        "Se year è specificato e il dataset ha una colonna anno, la WHERE viene iniettata automaticamente."
     ),
     structured_output=True,
 )
@@ -186,20 +238,21 @@ def run_query(
     except (ValueError, FileNotFoundError) as exc:
         return {"error": str(exc)}
 
-    # Scope enforcement: only clean_input and local CTEs in FROM/JOIN clauses.
     try:
         _validate_scope(sql)
     except DuckdbClientError as exc:
         return {"error": str(exc)}
 
-    # Hygiene checks: no DDL/DML, blocked keywords.
     try:
         _validate_select_sql(sql)
     except DuckdbClientError as exc:
         return {"error": str(exc)}
 
-    # Build the SQL wrapping user query.
-    # For multi-file datasets, DuckDB reads a list of URLs directly.
+    if year is not None:
+        year_col = get_year_column(dataset)
+        if year_col:
+            sql = _inject_year_filter(sql, year_col, year)
+
     escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
     if len(parquet_paths) == 1:
         source_expr = f"'{escaped_paths}'"
@@ -263,6 +316,69 @@ def cache_stats() -> dict[str, Any]:
     from catalog import gcs_cache_stats
 
     return gcs_cache_stats()
+
+
+
+@mcp.tool(
+    description=(
+        "Helper per aggregazioni pre-scritte: somma una metrica raggruppando per una o più dimensioni. "
+        "Restituisce SQL che può essere passato a run_query(). "
+        "metric: colonna numerica da sommare (es. 'numero_pensioni'). "
+        "group_by: lista di dimensioni (es. ['anno','regione']). "
+        "filters:WHERE aggiuntivo opzionale (es. \"anno = 2023 AND regione = 'Lombardia'\")."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def aggregate(
+    dataset: str,
+    metric: str,
+    group_by: list[str],
+    filters: str | None = None,
+    year: int | None = None,
+) -> dict[str, Any]:
+    from catalog import get_year_column
+
+    if not metric:
+        return {"error": "metric non può essere vuota"}
+    if not group_by:
+        return {"error": "group_by deve avere almeno una dimensione"}
+
+    schema = describe_impl(dataset)
+    if "error" in schema:
+        return schema
+    col_names = {c["name"] for c in schema.get("columns", [])}
+    for col in group_by:
+        if col not in col_names:
+            return {"error": f"Colonna group_by '{col}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+    if metric not in col_names:
+        return {"error": f"Metrica '{metric}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+
+    year_col = get_year_column(dataset)
+    where_parts = []
+    if year is not None and year_col:
+        where_parts.append(f"{year_col} = {year}")
+    if filters:
+        where_parts.append(f"({filters})")
+    where_clause = ""
+    if where_parts:
+        where_clause = "WHERE " + " AND ".join(where_parts)
+
+    group_cols = ", ".join(group_by)
+    sql = (
+        f"SELECT {group_cols}, SUM({metric}) AS total "
+        f"FROM clean_input {where_clause} "
+        f"GROUP BY {group_cols} "
+        f"ORDER BY {group_by[0]}, total DESC"
+    )
+    return {
+        "sql": sql,
+        "dataset": dataset,
+        "metric": metric,
+        "group_by": group_by,
+        "year": year,
+        "note": "Passa questo sql a run_query(). Non include LIMIT; aggiungilo in run_query.",
+    }
 
 
 if __name__ == "__main__":
