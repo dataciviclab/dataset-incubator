@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Checkout merge commit
-        uses: actions/checkout@v6
+        uses: actions/checkout@v4
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: 0
@@ -74,17 +74,21 @@ jobs:
             const body = [
               `## Candidate mergiati: ${slugs.join(', ')}`,
               '',
-              'Eseguire localmente i seguenti passi per completare il post-merge:',
+              'Eseguire i seguenti passi per completare il post-merge:',
               '',
               list,
               '',
-              '**Step da eseguire** (vedi [`workflows/post-merge-candidate.md`](workflows/post-merge-candidate.md)):',
+              '**Step** (vedi [`workflows/post-merge-candidate.md`](workflows/post-merge-candidate.md)):',
               '',
               '```bash',
               ...cmds.flat(),
               '```',
               '',
-              'Chiudi questa issue dopo aver completato il push.',
+              '**3. Sample run in CI** — verifica che il candidate parta anche in CI:',
+              '   In GitHub Actions → "Sample Candidate Run" → Run workflow → dispatch con:',
+              '   - `config_path`: `candidates/{slug}/dataset.yml`',
+              '',
+              'Chiudi questa issue dopo aver completato il push e verificato il sample run.',
             ].join('\n');
 
             await github.rest.issues.create({
