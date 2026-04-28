@@ -269,7 +269,10 @@ def run_query(
         if year_col:
             sql = _inject_year_filter(sql, year_col, year)
 
-    _validate_parquet_paths(parquet_paths)
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
     escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
     if len(parquet_paths) == 1:
         source_expr = f"'{escaped_paths}'"
