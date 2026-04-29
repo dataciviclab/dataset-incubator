@@ -1628,387 +1628,6 @@
       "visibility": "public"
     },
     {
-      "slug": "mim_alunni_corso_eta",
-      "name": "Alunni per corso ed età — MIM",
-      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
-      "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
-      "period": {
-        "start": 2024,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "anno_scolastico",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Anno scolastico di riferimento (es. 2024/25)"
-        },
-        {
-          "name": "codice_scuola",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ministeriale della scuola"
-        },
-        {
-          "name": "ordine_scuola",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Ordine scolastico: Primaria, Secondaria di I grado, Secondaria di II grado"
-        },
-        {
-          "name": "anno_corso",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Anno di corso all'interno dell'ordine"
-        },
-        {
-          "name": "fascia_eta",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Fascia di età dell'alunno"
-        },
-        {
-          "name": "alunni",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di alunni"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/mim_alunni_corso_eta/*/mim_alunni_corso_eta_*_clean.parquet",
-        "multi_file": true
-      },
-      "status": "candidate",
-      "visibility": "public",
-      "registry_source": "push_archive_auto"
-    },
-    {
-      "slug": "mur_contribuzione_universitaria",
-      "name": "MUR - Gettito della contribuzione universitaria",
-      "description": "Gettito della contribuzione studentesca per ateneo e tipologia di entrata (2017-2024).",
-      "source": "MUR / USTAT CKAN",
-      "period": {
-        "start": 2017,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento del dato"
-        },
-        {
-          "name": "cod_ateneo",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice identificativo dell'ateneo"
-        },
-        {
-          "name": "nome_ateneo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione dell'ateneo"
-        },
-        {
-          "name": "codice_gettito",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice della tipologia di gettito"
-        },
-        {
-          "name": "descrizione_gettito",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione della tipologia di gettito"
-        },
-        {
-          "name": "euro_contributo",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo del gettito in euro"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/mur_contribuzione_universitaria/*/mur_contribuzione_universitaria_*_clean.parquet",
-        "multi_file": true
-      },
-      "status": "clean_ready",
-      "visibility": "public",
-      "registry_source": "push_archive_auto"
-    },
-    {
-      "slug": "pensioni_pa_dag",
-      "name": "Pensioni Pa Dag",
-      "description": "Pensioni PA: importi pensionistici per gestione, categoria e caratteristiche pensionato",
-      "source": "INPS - OpenData",
-      "period": {
-        "start": 2024,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento della pensione"
-        },
-        {
-          "name": "mese",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Mese di riferimento della pensione"
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Regione di residenza del pensionato"
-        },
-        {
-          "name": "sigla_provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sigla della provincia di residenza"
-        },
-        {
-          "name": "ufficio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Ufficio INPS competente"
-        },
-        {
-          "name": "tipo_pensione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia di pensione"
-        },
-        {
-          "name": "codice_tipo_pensione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice identificativo della tipologia di pensione"
-        },
-        {
-          "name": "descrizione_pensione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione testuale del tipo di pensione"
-        },
-        {
-          "name": "codice_pensione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice identificativo della pensione"
-        },
-        {
-          "name": "descrizione_microqualifica",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione della microqualifica professionale"
-        },
-        {
-          "name": "codice_microqualifica",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice della microqualifica professionale"
-        },
-        {
-          "name": "codice_titolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice del titolo di pensione"
-        },
-        {
-          "name": "titolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Titolo di pensione"
-        },
-        {
-          "name": "numero_partite",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero di partite pensionistiche"
-        },
-        {
-          "name": "importi_arretrati_eur",
-          "type": "DOUBLE",
-          "role": "dimension",
-          "description": "Importi arretrati in euro"
-        },
-        {
-          "name": "importi_ratei_eur",
-          "type": "DOUBLE",
-          "role": "dimension",
-          "description": "Importi ratei in euro"
-        },
-        {
-          "name": "importi_tredicesima_eur",
-          "type": "DOUBLE",
-          "role": "dimension",
-          "description": "Importi tredicesima mensilita in euro"
-        },
-        {
-          "name": "importi_mensili_pagati_eur",
-          "type": "DOUBLE",
-          "role": "dimension",
-          "description": "Importi mensili pagati in euro"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/pensioni_pa_dag/*/pensioni_pa_dag_*_clean.parquet",
-        "multi_file": true
-      },
-      "status": "candidate",
-      "visibility": "public",
-      "registry_source": "push_archive_auto",
-      "multi_file": false
-    },
-    {
-      "slug": "popolazione_istat_comunale_2019_2025",
-      "name": "Popolazione ISTAT Comunale",
-      "description": "Popolazione residente italiana per comune, sesso, classe di età — POSAS ISTAT 2019-2025",
-      "source": "ISTAT - demo.posas (Popolazione residente per sesso, età e comune)",
-      "period": {
-        "start": 2019,
-        "end": 2025
-      },
-      "columns": [
-        {
-          "name": "codice_comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice comune ISTAT (codice numerico)"
-        },
-        {
-          "name": "comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione del comune"
-        },
-        {
-          "name": "eta",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Classe di età (0-100, 999 = totale comunale)"
-        },
-        {
-          "name": "celibi",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Celibi (maschi nubili mai sposati)"
-        },
-        {
-          "name": "coniugati",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Coniugati (maschi sposati)"
-        },
-        {
-          "name": "divorziati",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Divorziati (maschi separati legalmente)"
-        },
-        {
-          "name": "vedovi",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Vedovi (maschi con coniuge deceduto)"
-        },
-        {
-          "name": "uniti_civilmente_maschi",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Uniti civilmente (maschi)"
-        },
-        {
-          "name": "maschi_gia_unione_civile_scioglimento",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Ex uniti civilmente — scioglimento (maschi)"
-        },
-        {
-          "name": "maschi_gia_unione_civile_decesso",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Ex uniti civilmente — decesso coniuge (maschi)"
-        },
-        {
-          "name": "totale_maschi",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Totale popolazione maschile"
-        },
-        {
-          "name": "nubili",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Nubili (femmine nubili mai sposate)"
-        },
-        {
-          "name": "coniugate",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Coniugate (femmine sposate)"
-        },
-        {
-          "name": "divorziate",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Divorziate (femmine separate legalmente)"
-        },
-        {
-          "name": "vedove",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Vedove (femmine con coniuge deceduto)"
-        },
-        {
-          "name": "unite_civilmente_femmine",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Unite civilmente (femmine)"
-        },
-        {
-          "name": "femmine_gia_unione_civile_scioglimento",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Ex unite civilmente — scioglimento (femmine)"
-        },
-        {
-          "name": "femmine_gia_unione_civile_decesso",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Ex unite civilmente — decesso coniuge (femmine)"
-        },
-        {
-          "name": "totale_femmine",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Totale popolazione femminile"
-        },
-        {
-          "name": "popolazione_residente",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Popolazione residente totale"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet",
-        "multi_file": true
-      },
-      "status": "candidate",
-      "visibility": "public",
-      "registry_source": "push_archive_auto"
-    },
-    {
       "slug": "mef_partecipazioni",
       "name": "MEF Partecipazioni Pubbliche",
       "description": "Partecipazioni pubbliche dichiarate dalle PA italiane: amministrazioni, partecipate, quote, servizi affidati per territorio e categoria — MEF 2020-2023",
@@ -2526,6 +2145,387 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/mef_partecipazioni/*/mef_partecipazioni_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
+    {
+      "slug": "mim_alunni_corso_eta",
+      "name": "Alunni per corso ed età — MIM",
+      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
+      "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno_scolastico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Anno scolastico di riferimento (es. 2024/25)"
+        },
+        {
+          "name": "codice_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ministeriale della scuola"
+        },
+        {
+          "name": "ordine_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ordine scolastico: Primaria, Secondaria di I grado, Secondaria di II grado"
+        },
+        {
+          "name": "anno_corso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Anno di corso all'interno dell'ordine"
+        },
+        {
+          "name": "fascia_eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Fascia di età dell'alunno"
+        },
+        {
+          "name": "alunni",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di alunni"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mim_alunni_corso_eta/*/mim_alunni_corso_eta_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
+    {
+      "slug": "mur_contribuzione_universitaria",
+      "name": "MUR - Gettito della contribuzione universitaria",
+      "description": "Gettito della contribuzione studentesca per ateneo e tipologia di entrata (2017-2024).",
+      "source": "MUR / USTAT CKAN",
+      "period": {
+        "start": 2017,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento del dato"
+        },
+        {
+          "name": "cod_ateneo",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice identificativo dell'ateneo"
+        },
+        {
+          "name": "nome_ateneo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione dell'ateneo"
+        },
+        {
+          "name": "codice_gettito",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice della tipologia di gettito"
+        },
+        {
+          "name": "descrizione_gettito",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione della tipologia di gettito"
+        },
+        {
+          "name": "euro_contributo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo del gettito in euro"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mur_contribuzione_universitaria/*/mur_contribuzione_universitaria_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
+    {
+      "slug": "pensioni_pa_dag",
+      "name": "Pensioni Pa Dag",
+      "description": "Pensioni PA: importi pensionistici per gestione, categoria e caratteristiche pensionato",
+      "source": "INPS - OpenData",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento della pensione"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Mese di riferimento della pensione"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione di residenza del pensionato"
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla della provincia di residenza"
+        },
+        {
+          "name": "ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ufficio INPS competente"
+        },
+        {
+          "name": "tipo_pensione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia di pensione"
+        },
+        {
+          "name": "codice_tipo_pensione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice identificativo della tipologia di pensione"
+        },
+        {
+          "name": "descrizione_pensione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione testuale del tipo di pensione"
+        },
+        {
+          "name": "codice_pensione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice identificativo della pensione"
+        },
+        {
+          "name": "descrizione_microqualifica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione della microqualifica professionale"
+        },
+        {
+          "name": "codice_microqualifica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice della microqualifica professionale"
+        },
+        {
+          "name": "codice_titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice del titolo di pensione"
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo di pensione"
+        },
+        {
+          "name": "numero_partite",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Numero di partite pensionistiche"
+        },
+        {
+          "name": "importi_arretrati_eur",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Importi arretrati in euro"
+        },
+        {
+          "name": "importi_ratei_eur",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Importi ratei in euro"
+        },
+        {
+          "name": "importi_tredicesima_eur",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Importi tredicesima mensilita in euro"
+        },
+        {
+          "name": "importi_mensili_pagati_eur",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Importi mensili pagati in euro"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/pensioni_pa_dag/*/pensioni_pa_dag_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto",
+      "multi_file": false
+    },
+    {
+      "slug": "popolazione_istat_comunale_2019_2025",
+      "name": "Popolazione ISTAT Comunale",
+      "description": "Popolazione residente italiana per comune, sesso, classe di età — POSAS ISTAT 2019-2025",
+      "source": "ISTAT - demo.posas (Popolazione residente per sesso, età e comune)",
+      "period": {
+        "start": 2019,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "codice_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice comune ISTAT (codice numerico)"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del comune"
+        },
+        {
+          "name": "eta",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Classe di età (0-100, 999 = totale comunale)"
+        },
+        {
+          "name": "celibi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Celibi (maschi nubili mai sposati)"
+        },
+        {
+          "name": "coniugati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Coniugati (maschi sposati)"
+        },
+        {
+          "name": "divorziati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Divorziati (maschi separati legalmente)"
+        },
+        {
+          "name": "vedovi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Vedovi (maschi con coniuge deceduto)"
+        },
+        {
+          "name": "uniti_civilmente_maschi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Uniti civilmente (maschi)"
+        },
+        {
+          "name": "maschi_gia_unione_civile_scioglimento",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Ex uniti civilmente — scioglimento (maschi)"
+        },
+        {
+          "name": "maschi_gia_unione_civile_decesso",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Ex uniti civilmente — decesso coniuge (maschi)"
+        },
+        {
+          "name": "totale_maschi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Totale popolazione maschile"
+        },
+        {
+          "name": "nubili",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Nubili (femmine nubili mai sposate)"
+        },
+        {
+          "name": "coniugate",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Coniugate (femmine sposate)"
+        },
+        {
+          "name": "divorziate",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Divorziate (femmine separate legalmente)"
+        },
+        {
+          "name": "vedove",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Vedove (femmine con coniuge deceduto)"
+        },
+        {
+          "name": "unite_civilmente_femmine",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Unite civilmente (femmine)"
+        },
+        {
+          "name": "femmine_gia_unione_civile_scioglimento",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Ex unite civilmente — scioglimento (femmine)"
+        },
+        {
+          "name": "femmine_gia_unione_civile_decesso",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Ex unite civilmente — decesso coniuge (femmine)"
+        },
+        {
+          "name": "totale_femmine",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Totale popolazione femminile"
+        },
+        {
+          "name": "popolazione_residente",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Popolazione residente totale"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet",
         "multi_file": true
       },
       "status": "candidate",
