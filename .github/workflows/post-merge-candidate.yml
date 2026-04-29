@@ -11,6 +11,9 @@ jobs:
   detect:
     if: github.event.pull_request.merged == true
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: read
     outputs:
       has_items: ${{ steps.changed.outputs.has_items }}
       has_configs: ${{ steps.changed.outputs.has_configs }}
@@ -27,8 +30,8 @@ jobs:
       - name: Detect changed candidate/support roots
         id: changed
         env:
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
           python - <<'PY'
           import json
@@ -36,10 +39,9 @@ jobs:
           import subprocess
           from pathlib import Path
 
-          base = os.environ["BASE_SHA"]
-          merge = os.environ["MERGE_SHA"]
+          pr_number = os.environ["PR_NUMBER"]
           files = subprocess.check_output(
-              ["git", "diff", "--name-only", base, merge],
+              ["gh", "pr", "view", pr_number, "--json", "files", "--jq", ".files[].path"],
               text=True,
           ).splitlines()
 
@@ -74,6 +76,7 @@ jobs:
                       configs.append({
                           **item,
                           "config_path": config_path.as_posix(),
+                          "config_exists": config_path.exists(),
                           "push_slug": f"{item['slug']}_{source_dir.name}",
                           "artifact_name": f"{item['slug']}-{source_dir.name}",
                       })
@@ -81,6 +84,7 @@ jobs:
                   configs.append({
                       **item,
                       "config_path": (root / "dataset.yml").as_posix(),
+                      "config_exists": (root / "dataset.yml").exists(),
                       "push_slug": item["slug"],
                       "artifact_name": item["slug"],
                   })
@@ -109,7 +113,6 @@ jobs:
         shell: bash
     env:
       CONFIG_PATH: ${{ matrix.config_path }}
-      STRICT_FLAG: ""
 
     steps:
       - name: Checkout merge commit
@@ -139,12 +142,10 @@ jobs:
 
           SLUG=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['slug'])")
           FINAL_YEAR=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['sample_year'])")
-          ALL_YEARS=$(python -c "import json; d=json.load(open('sample_params.json')); print(','.join(str(y) for y in d['all_years']))")
           IS_NESTED=$(python -c "import json; d=json.load(open('sample_params.json')); print(str(d['is_nested']).lower())")
 
           echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
           echo "final_year=$FINAL_YEAR" >> "$GITHUB_OUTPUT"
-          echo "all_years=$ALL_YEARS" >> "$GITHUB_OUTPUT"
           echo "is_nested=$IS_NESTED" >> "$GITHUB_OUTPUT"
 
       - name: Install toolkit
@@ -155,23 +156,22 @@ jobs:
           toolkit inspect paths \
             --config "$CONFIG_PATH" \
             --json \
-            $STRICT_FLAG \
             2>&1 | tee inspect_paths.json || true
 
       - name: Toolkit run all
+        id: run_all
         run: |
           toolkit run all \
             --config "$CONFIG_PATH" \
             --years "${{ steps.resolve.outputs.final_year }}" \
-            $STRICT_FLAG \
             2>&1 | tee run_all.log
 
       - name: Toolkit validate all
+        id: validate_all
         run: |
           toolkit validate all \
             --config "$CONFIG_PATH" \
             --years "${{ steps.resolve.outputs.final_year }}" \
-            $STRICT_FLAG \
             2>&1 | tee validate_all.json
 
       - name: Toolkit status latest
@@ -182,8 +182,46 @@ jobs:
             --year "${{ steps.resolve.outputs.final_year }}" \
             --latest \
             --config "$CONFIG_PATH" \
-            $STRICT_FLAG \
             2>&1 | tee status.log || true
+
+      - name: Write sample-run result
+        if: always()
+        env:
+          RESOLVE_OUTCOME: ${{ steps.resolve.outcome }}
+          RUN_OUTCOME: ${{ steps.run_all.outcome }}
+          VALIDATE_OUTCOME: ${{ steps.validate_all.outcome }}
+          SIGNAL_ID: ${{ matrix.slug }}
+          CONFIG_PATH: ${{ matrix.config_path }}
+          CONFIG_EXISTS: ${{ matrix.config_exists }}
+          FINAL_YEAR: ${{ steps.resolve.outputs.final_year }}
+          RUN_ID: ${{ github.run_id }}
+          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from datetime import datetime, timezone
+
+          critical_outcomes = [
+              os.environ.get("RESOLVE_OUTCOME"),
+              os.environ.get("RUN_OUTCOME"),
+              os.environ.get("VALIDATE_OUTCOME"),
+          ]
+          year = os.environ.get("FINAL_YEAR") or None
+          payload = {
+              "id": os.environ["SIGNAL_ID"],
+              "status": "passed" if all(outcome == "success" for outcome in critical_outcomes) else "failed",
+              "year": int(year) if year else None,
+              "config_path": os.environ["CONFIG_PATH"],
+              "config_exists": os.environ["CONFIG_EXISTS"] == "true",
+              "run_id": os.environ["RUN_ID"],
+              "run_url": os.environ["RUN_URL"],
+              "checked_at": datetime.now(timezone.utc).date().isoformat(),
+          }
+          with open("sample_run_result.json", "w", encoding="utf-8") as f:
+              json.dump(payload, f, ensure_ascii=False, indent=2)
+              f.write("\n")
+          PY
 
       - name: Upload sample-run artifacts
         uses: actions/upload-artifact@v4
@@ -196,6 +234,7 @@ jobs:
             run_all.log
             validate_all.json
             status.log
+            sample_run_result.json
           if-no-files-found: warn
           retention-days: 14
 
@@ -226,6 +265,17 @@ jobs:
 
       - name: Build pipeline_signals.json
         run: python scripts/build_pipeline_signals.py
+
+      - name: Download sample-run artifacts
+        if: needs.detect.outputs.has_configs == 'true'
+        uses: actions/download-artifact@v4
+        with:
+          pattern: sample-run-*
+          path: sample_run_artifacts
+
+      - name: Apply sample-run results to pipeline_signals.json
+        if: needs.detect.outputs.has_configs == 'true'
+        run: python scripts/update_pipeline_sample_runs.py --samples-dir sample_run_artifacts
 
       - name: Check registry diff
         id: diff

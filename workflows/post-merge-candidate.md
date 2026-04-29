@@ -16,8 +16,9 @@ Richiede accesso in scrittura a GCS (`dataciviclab-clean`).
 Il workflow GitHub `Post-Merge Candidate Registry` apre una draft PR di handoff
 quando viene mergiata una PR che modifica `candidates/**` o `support_datasets/**`.
 La draft PR aggiorna automaticamente `registry/pipeline_signals.json`, esegue un
-sample-run CI sui config path modificati e contiene la checklist per completare
-run, push GCS/BQ e aggiornamento del clean catalog.
+sample-run CI sui config path modificati, salva l'esito in `sample_run` dentro il
+signal corrispondente e contiene la checklist per completare run, push GCS/BQ e
+aggiornamento del clean catalog.
 Se la rigenerazione di `pipeline_signals.json` non produce differenze, il workflow
 apre comunque la draft PR con un commit vuoto di handoff.
 
@@ -36,7 +37,8 @@ Controlla la draft PR aperta dal workflow `Post-Merge Candidate Registry`.
 Quella PR sostituisce la vecchia follow-up issue e resta draft finché il push
 GCS/BQ e il catalog sono verificati.
 
-La PR riporta l'esito del sample-run CI e linka gli artifact `sample-run-*`.
+La PR riporta l'esito del sample-run CI, linka gli artifact `sample-run-*` e
+aggiorna il campo `sample_run` nel relativo signal di `pipeline_signals.json`.
 Se il sample-run fallisce, usa gli artifact per diagnosticare prima di procedere
 con il run completo.
 
@@ -122,5 +124,6 @@ for review.
 - Il `pipeline_signals.json` si aggiorna automaticamente nella draft PR post-merge.
 - Se `pipeline_signals.json` resta invariato, la draft PR viene comunque aperta come contenitore operativo.
 - Il sample-run CI è una verifica rapida: non sostituisce il run completo del maintainer e non pubblica nulla.
+- Il campo `sample_run` registra solo l'esito CI del sample-run; la pubblicazione GCS resta tracciata dal clean catalog.
 - `clean_catalog.json` va completato solo dopo il push GCS/BQ: prima del push non può dichiarare path pubblici affidabili.
 - `--update-catalog` nel `push_archive.py` esegue un upsert del catalog — usalo insieme a `build_clean_catalog.py --write` e `--check-gcs`.

@@ -219,6 +219,7 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
 # ---------------------------------------------------------------------------
 
 def build_signals(out_path: Path) -> int:
+    previous_sample_runs = load_previous_sample_runs(out_path)
     signals = []
 
     candidates_dir = ROOT / "candidates"
@@ -228,14 +229,20 @@ def build_signals(out_path: Path) -> int:
 
     for entry in sorted(p for p in candidates_dir.iterdir() if p.is_dir()):
         slug = entry.name
-        signals.append(_build_signal(slug, entry))
+        signal = _build_signal(slug, entry)
+        if slug in previous_sample_runs:
+            signal["sample_run"] = previous_sample_runs[slug]
+        signals.append(signal)
 
     # support_datasets also use detect_candidate_layout and need to appear in signals
     support_dir = ROOT / "support_datasets"
     if support_dir.exists():
         for entry in sorted(p for p in support_dir.iterdir() if p.is_dir()):
             slug = entry.name
-            signals.append(_build_signal(slug, entry))
+            signal = _build_signal(slug, entry)
+            if slug in previous_sample_runs:
+                signal["sample_run"] = previous_sample_runs[slug]
+            signals.append(signal)
 
     by_status: dict[str, int] = {"ok": 0, "warn": 0, "error": 0}
     for s in signals:
@@ -257,6 +264,24 @@ def build_signals(out_path: Path) -> int:
     out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
     print(f"pipeline_signals.json — {len(signals)} candidates ({by_status})")
     return 0
+
+
+def load_previous_sample_runs(path: Path) -> dict[str, dict]:
+    if not path.exists():
+        return {}
+    try:
+        payload = json.loads(path.read_text(encoding="utf-8"))
+    except json.JSONDecodeError:
+        return {}
+    sample_runs = {}
+    for signal in payload.get("signals", []):
+        if not isinstance(signal, dict):
+            continue
+        signal_id = signal.get("id")
+        sample_run = signal.get("sample_run")
+        if signal_id and isinstance(sample_run, dict):
+            sample_runs[signal_id] = sample_run
+    return sample_runs
 
 
 def main() -> int:
