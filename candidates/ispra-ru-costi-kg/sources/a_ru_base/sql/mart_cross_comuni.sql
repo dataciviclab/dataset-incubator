@@ -10,17 +10,13 @@ b AS (
     SELECT
         {year} AS anno,
         *
-    FROM read_parquet(
-        '{root_posix}/data/mart/ispra_ru_costi_kg/{year}/mart_comuni.parquet'
-    )
+    FROM read_parquet('{support.b.mart}')
 ),
 c AS (
     SELECT
         {year} AS anno,
         *
-    FROM read_parquet(
-        '{root_posix}/data/mart/ispra_ru_costi_procapite/{year}/mart_comuni.parquet'
-    )
+    FROM read_parquet('{support.c.mart}')
 )
 SELECT
     a.anno,
