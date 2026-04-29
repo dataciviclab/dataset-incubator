@@ -2021,505 +2021,505 @@
         {
           "name": "amministrazione_settore_istituzionale",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "amministrazione_macrocategoria",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "amministrazione_categoria",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "amministrazione_denominazione",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "amministrazione_codice_fiscale",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "appartenenza_perimetro_tusp",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "appartenenza_perimetro_revisione_periodica",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "amministrazione_regione_sede",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "amministrazione_provincia_sede",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "amministrazione_comune_sede",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_denominazione",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_codice_fiscale",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_anno_di_costituzione",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_forma_giuridica",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_stato_giuridico",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_anno_inizio_procedura",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_nazione",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_regione_sede",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_provincia_sede",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_comune_sede",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "emittente_azioni_quotate",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "emittente_strumenti_quotati",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "societa_controllata_da_una_quotata",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "gal",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_settore_attivita",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_divisione_ateco",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "servizi_affidati",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "servizio_affidato_1",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_1",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "ente_affidante_servizio_1",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "importo_impegnato_servizio_1",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "servizio_affidato_2",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_2",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "ente_affidante_servizio_2",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "importo_impegnato_servizio_2",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "servizio_affidato_3",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_3",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "ente_affidante_servizio_3",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "importo_impegnato_servizio_3",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "servizio_affidato_4",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_4",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "ente_affidante_servizio_4",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "importo_impegnato_servizio_4",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "servizio_affidato_5",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_5",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "ente_affidante_servizio_5",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "importo_impegnato_servizio_5",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "quota_partecipazione_diretta",
           "type": "DOUBLE",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipazione_indiretta",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "tipo_controllo",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "totale_oneri_importo_impegnato",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "totale_oneri_importo_pagato_c_residui",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "totale_oneri_importo_pagato_c_competenza",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_tipo_contabilita",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_tipo_bilancio",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_bilancio_di_esercizio_approvato",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "partecipata_numero_di_addetti",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_patrimonio_netto_co_e_p",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_risultato_d_esercizio_co_e_p",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_valore_della_produzione_co_e_p",
           "type": "DOUBLE",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_costo_della_produzione_co_e_p",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_costo_del_personale_co_e_p",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_patrimonio_netto_co_f",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_totale_entrate_co_f",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_totale_uscite_co_f",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_spese_per_personale_co_f",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "nr_amministratori",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "nr_componenti_organo_di_controllo",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_bilancio_di_esercizio_2020_approvato",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "risultato_d_esercizio_2020",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipata_bilancio_di_esercizio_2019_approvato",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "risultato_d_esercizio_2019",
           "type": "BIGINT",
-          "role": "",
+          "role": "metric",
           "description": ""
         },
         {
           "name": "partecipazione_ancora_detenuta_alla_data_di_adozione_del_provvedimento",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "societa_controllata_da_una_quotata_dichiarata",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "attivita_a_favore_amm",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "societa_all_a",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "attivita_svolta",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "quota_soggetto_privato",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "attivita_analoghe_art_20_c_2_lett_c",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "contenimento_dei_costi_art_20_c_2_lett_f",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "aggregazione_di_societa_art_20_c_2_lett_g",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "esito_della_ricognizione",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "modalita_razionalizzazione",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "termine_razionalizzazione",
           "type": "VARCHAR",
-          "role": "",
+          "role": "dimension",
           "description": ""
         }
       ],
