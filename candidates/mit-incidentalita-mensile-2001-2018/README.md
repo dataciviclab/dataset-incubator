@@ -6,9 +6,9 @@ Fonte: MIT (Ministero delle Infrastrutture e dei Trasporti), portale open data.
 
 ## Stato
 
-`incubating` - candidate strutturato, con verifica tecnica del `run all` riportata in issue e artefatti runtime non versionati nella repo.
+`runnable` — run completo eseguito, output verificati (216 righe mart), QC superato.
 
-Issue: dataciviclab/dataset-incubator#34
+**Nota su `years: [2001]`**: il campo `years` in `dataset.yml` è un placeholder tecnico — il file raw è unico e copre l'intero periodo `2001-2018`.
 
 ## Perimetro
 
@@ -30,9 +30,8 @@ python -m toolkit.cli.app run all \
 
 ## Stato runtime
 
-- verifica tecnica riportata in issue con `run all` completato
-- output atteso del mart minimo: `216` righe mensili (`2001-2018`)
-- gli artefatti `out/` non sono committati nella repo
+- `run all` completato, output verificati in `out/data/{raw,clean,mart}/mit_incidentalita_mensile/2001/`
+- mart `216` righe mensili (`2001-2018`) ✅
 
 ## Note tecniche
 
