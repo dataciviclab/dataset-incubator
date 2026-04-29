@@ -23,3 +23,4 @@
 
 - sec_II ha meno comuni (1391) — dati reali, non errore
 - `anno_scolastico` è una stringa `YYYYYY` (es. `202425`) — usare come stringa in join
+- mart = INNER JOIN con anagrafica (year=2024) — per anni <2025 alcune scuole chiuse/fuse non sono nell'anagrafica e sono escluse; 2025 perfettamente coincidente

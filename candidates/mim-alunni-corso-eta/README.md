@@ -35,9 +35,10 @@
 ## QC
 
 - Clean = Raw su tutti gli anni (0% drop) ✅
-- Mart sum = Clean totali (nessun filtro nel GROUP BY) ✅
+- Mart sum = Clean: perfetto per 2025 (delta=0, anagrafica 2024 copre tutte le scuole); delta crescente per anni precedenti (scuole chiuse/fuse assenti dall'anagrafica) — comportamento atteso, non errore ✅
+- 4 mart: tutte superano min_rows su tutti gli anni ✅
 
 ## Criterio di promotion
 
 - mart comunale stabile come base di join con anagrafica
-- notebook v0 verificato sul mart reale
+- notebook v0 eseguito con output reali (2024/25)
