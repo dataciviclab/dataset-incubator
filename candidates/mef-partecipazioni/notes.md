@@ -8,8 +8,8 @@
 ### Clean.sql — scelte
 - 84 colonne selezionate (di 93 totali per anno) — solo colonne comuni a tutti gli anni
 - 9 colonne anno-specifiche escluse: Fatturato N, Risultato d'esercizio N, Partecipata bilancio N approvato
-- Filtro base: amministrazione_codice_fiscale e amministrazione_denominazione non vuoti
-- Non aggrega — raw faithful con filtro validità minimo
+- Nessun filtro WHERE — raw faithful, nessuna riga esclusa
+- importo_impegnato_servizio_5 è castato VARCHAR (vs BIGINT per 1-4) per anomalia dati: il campo contiene stringhe non numeriche in alcuni anni
 
 ### Mart.sql — scelte
 - Aggregazione: count partecipazioni, distinct amministrazioni, distinct partecipate
