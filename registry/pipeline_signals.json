@@ -1,14 +1,14 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-04-28",
+  "generated_at": "2026-04-29",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
     "total": 27,
     "by_status": {
-      "ok": 26,
+      "ok": 27,
       "warn": 0,
-      "error": 1
+      "error": 0
     }
   },
   "signals": [
@@ -83,13 +83,6 @@
       "action": ""
     },
     {
-      "id": "istat-ciclo-acqua-prelievo-distribuzione",
-      "status": "error",
-      "label": "istat-ciclo-acqua-prelievo-distribuzione",
-      "detail": "anni: ? — fonte: ? — mart: no — ⚠ no dataset.yml and no sources/ directory",
-      "action": "correggere la struttura del candidato"
-    },
-    {
       "id": "istat-gini-regionale",
       "status": "ok",
       "label": "istat-gini-regionale",
@@ -115,6 +108,13 @@
       "status": "ok",
       "label": "malasanita-struttura-mortalita",
       "detail": "anno 2022 — multi-source (4 fonti) — mart: sì",
+      "action": ""
+    },
+    {
+      "id": "mef-partecipazioni",
+      "status": "ok",
+      "label": "mef-partecipazioni",
+      "detail": "anni 2020-2023 — fonti: mef_partecipazioni_2020, mef_partecipazioni_2021 — mart: sì",
       "action": ""
     },
     {
