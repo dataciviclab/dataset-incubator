@@ -25,4 +25,4 @@ Anni verificati: 2020, 2021, 2022, 2023. Tutti gli anni con URL dedicato.
 ## Caveat analitici
 
 - Dato dichiarativo: copertura dipende dall'adempimento
-- Serie storica: 4 anni (2020-2023, con gap strutturale)
+- Serie storica: 4 anni (2020-2023)

@@ -13,7 +13,7 @@ Quali amministrazioni locali dichiarano più partecipazioni, e il profilo delle 
 
 ## Perimetro
 
-- **Anni disponibili**: 2020, 2021, 2023 (anni con file pubblicati sul portale MEF)
+- **Anni disponibili**: 2020, 2021, 2022, 2023 (tutti con URL dedicato sul portale MEF)
 - Granularità: partecipazione dichiarata (una riga = una relazione amministrazione-partecipata)
 - Chiavi territoriali: regione, provincia, comune per amministrazione e per partecipata
 - Copertura: tutte le PA obbligate alla dichiarazione (comuni, regioni, ministeri, enti pubblici)
@@ -30,6 +30,7 @@ Quali amministrazioni locali dichiarano più partecipazioni, e il profilo delle 
 |---|---|---|
 | 2020 | 93 | 9 |
 | 2021 | 93 | 9 |
+| 2022 | 93 | 9 |
 | 2023 | 93 | 9 |
 
 Le colonne excluse contengono l'anno nel nome (es. `Fatturato 2023`) e cambiano per ogni anno di rilevazione. La clean.sql usa solo le 84 colonne comuni per garantire schema costante nel tempo.
@@ -37,5 +38,5 @@ Le colonne excluse contengono l'anno nel nome (es. `Fatturato 2023`) e cambiano 
 ## Rischi noti
 
 - **Copertura**: chi non ha dichiarato non compare; file di adempimento come riferimento per stimare il gap
-- **Serie storica**: 2020-2023 (gap 2022 assente), schema stabile su 84 colonne comuni
+- **Serie storica**: 2020-2023, schema stabile su 84 colonne comuni
 - **Encoding**: latin-1 con caratteri non standard residui
