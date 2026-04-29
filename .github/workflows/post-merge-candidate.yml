@@ -1,0 +1,342 @@
+name: Post-Merge Candidate Registry
+
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - "candidates/**"
+      - "support_datasets/**"
+
+jobs:
+  detect:
+    if: github.event.pull_request.merged == true
+    runs-on: ubuntu-latest
+    outputs:
+      has_items: ${{ steps.changed.outputs.has_items }}
+      has_configs: ${{ steps.changed.outputs.has_configs }}
+      items: ${{ steps.changed.outputs.items }}
+      configs: ${{ steps.changed.outputs.configs }}
+
+    steps:
+      - name: Checkout merge commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
+
+      - name: Detect changed candidate/support roots
+        id: changed
+        env:
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
+          MERGE_SHA: ${{ github.event.pull_request.merge_commit_sha }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          import subprocess
+          from pathlib import Path
+
+          base = os.environ["BASE_SHA"]
+          merge = os.environ["MERGE_SHA"]
+          files = subprocess.check_output(
+              ["git", "diff", "--name-only", base, merge],
+              text=True,
+          ).splitlines()
+
+          seen = {}
+          for file_name in files:
+              path = Path(file_name)
+              parts = path.parts
+              if len(parts) < 2:
+                  continue
+              if parts[0] == "candidates":
+                  seen[(parts[0], parts[1])] = {
+                      "kind": "candidate",
+                      "slug": parts[1],
+                      "root": f"candidates/{parts[1]}",
+                  }
+              elif parts[0] == "support_datasets":
+                  seen[(parts[0], parts[1])] = {
+                      "kind": "support_dataset",
+                      "slug": parts[1],
+                      "root": f"support_datasets/{parts[1]}",
+                  }
+
+          items = sorted(seen.values(), key=lambda item: (item["kind"], item["slug"]))
+          configs = []
+          for item in items:
+              root = Path(item["root"])
+              sources_root = root / "sources"
+              if sources_root.is_dir():
+                  source_dirs = sorted(path for path in sources_root.iterdir() if path.is_dir())
+                  for source_dir in source_dirs:
+                      config_path = source_dir / "dataset.yml"
+                      configs.append({
+                          **item,
+                          "config_path": config_path.as_posix(),
+                          "push_slug": f"{item['slug']}_{source_dir.name}",
+                          "artifact_name": f"{item['slug']}-{source_dir.name}",
+                      })
+              else:
+                  configs.append({
+                      **item,
+                      "config_path": (root / "dataset.yml").as_posix(),
+                      "push_slug": item["slug"],
+                      "artifact_name": item["slug"],
+                  })
+
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"has_items={'true' if items else 'false'}\n")
+              out.write(f"has_configs={'true' if configs else 'false'}\n")
+              out.write("items<<JSON\n")
+              out.write(json.dumps(items, ensure_ascii=False))
+              out.write("\nJSON\n")
+              out.write("configs<<JSON\n")
+              out.write(json.dumps(configs, ensure_ascii=False))
+              out.write("\nJSON\n")
+          PY
+
+  sample_run:
+    needs: detect
+    if: needs.detect.outputs.has_configs == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        include: ${{ fromJson(needs.detect.outputs.configs) }}
+    defaults:
+      run:
+        shell: bash
+    env:
+      CONFIG_PATH: ${{ matrix.config_path }}
+      STRICT_FLAG: ""
+
+    steps:
+      - name: Checkout merge commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install pyyaml
+
+      - name: Resolve sample run parameters
+        id: resolve
+        run: |
+          python scripts/resolve_sample_run.py "$CONFIG_PATH" 2>&1 | tee sample_params.json
+
+          ERROR=$(python -c "import json; d=json.load(open('sample_params.json')); print(d.get('error',''))" 2>/dev/null || true)
+          if [ -n "$ERROR" ]; then
+            echo "resolve_error=$ERROR"
+            exit 1
+          fi
+
+          SLUG=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['slug'])")
+          FINAL_YEAR=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['sample_year'])")
+          ALL_YEARS=$(python -c "import json; d=json.load(open('sample_params.json')); print(','.join(str(y) for y in d['all_years']))")
+          IS_NESTED=$(python -c "import json; d=json.load(open('sample_params.json')); print(str(d['is_nested']).lower())")
+
+          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
+          echo "final_year=$FINAL_YEAR" >> "$GITHUB_OUTPUT"
+          echo "all_years=$ALL_YEARS" >> "$GITHUB_OUTPUT"
+          echo "is_nested=$IS_NESTED" >> "$GITHUB_OUTPUT"
+
+      - name: Install toolkit
+        run: python -m pip install git+https://github.com/dataciviclab/toolkit.git@main
+
+      - name: Toolkit inspect paths
+        run: |
+          toolkit inspect paths \
+            --config "$CONFIG_PATH" \
+            --json \
+            $STRICT_FLAG \
+            2>&1 | tee inspect_paths.json || true
+
+      - name: Toolkit run all
+        run: |
+          toolkit run all \
+            --config "$CONFIG_PATH" \
+            --years "${{ steps.resolve.outputs.final_year }}" \
+            $STRICT_FLAG \
+            2>&1 | tee run_all.log
+
+      - name: Toolkit validate all
+        run: |
+          toolkit validate all \
+            --config "$CONFIG_PATH" \
+            --years "${{ steps.resolve.outputs.final_year }}" \
+            $STRICT_FLAG \
+            2>&1 | tee validate_all.json
+
+      - name: Toolkit status latest
+        if: always() && steps.resolve.outputs.slug != ''
+        run: |
+          toolkit status \
+            --dataset "${{ steps.resolve.outputs.slug }}" \
+            --year "${{ steps.resolve.outputs.final_year }}" \
+            --latest \
+            --config "$CONFIG_PATH" \
+            $STRICT_FLAG \
+            2>&1 | tee status.log || true
+
+      - name: Upload sample-run artifacts
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sample-run-${{ matrix.artifact_name }}
+          path: |
+            sample_params.json
+            inspect_paths.json
+            run_all.log
+            validate_all.json
+            status.log
+          if-no-files-found: warn
+          retention-days: 14
+
+  build-and-pr:
+    needs:
+      - detect
+      - sample_run
+    if: always() && needs.detect.outputs.has_items == 'true'
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+      pull-requests: write
+
+    steps:
+      - name: Checkout merge commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install dependencies
+        run: python -m pip install pyyaml
+
+      - name: Build pipeline_signals.json
+        run: python scripts/build_pipeline_signals.py
+
+      - name: Check registry diff
+        id: diff
+        run: |
+          if git diff --quiet -- registry/pipeline_signals.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Build draft PR body
+        env:
+          ITEMS_JSON: ${{ needs.detect.outputs.items }}
+          CONFIGS_JSON: ${{ needs.detect.outputs.configs }}
+          SAMPLE_RESULT: ${{ needs.sample_run.result }}
+          PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          node <<'NODE'
+          const fs = require('fs');
+          const items = JSON.parse(process.env.ITEMS_JSON || '[]');
+          const configs = JSON.parse(process.env.CONFIGS_JSON || '[]');
+          const sampleResult = process.env.SAMPLE_RESULT || 'skipped';
+          const samplePassed = sampleResult === 'success';
+          const pipelineSignalsChanged = process.env.PIPELINE_SIGNALS_CHANGED === 'true';
+
+          const list = items
+            .map((item) => `- \`${item.slug}\` (${item.kind}, \`${item.root}\`)`)
+            .join('\n');
+
+          const sampleList = configs
+            .map((item) => `- \`${item.config_path}\` -> artifact \`sample-run-${item.artifact_name}\``)
+            .join('\n');
+
+          const commands = [];
+          for (const item of configs) {
+            commands.push(`toolkit run all --config ${item.config_path}`);
+            commands.push(`toolkit validate all --config ${item.config_path}`);
+            commands.push(`python scripts/push_archive.py --layer clean --slug ${item.push_slug} --create-bq-table --update-catalog --status clean_ready`);
+          }
+          commands.push('python scripts/build_clean_catalog.py --write');
+          commands.push('python scripts/build_clean_catalog.py --check-gcs');
+
+          const body = [
+            `## Post-merge registry handoff`,
+            '',
+            `Source PR: #${process.env.PR_NUMBER} — ${process.env.PR_TITLE}`,
+            '',
+            'Changed candidate/support roots:',
+            '',
+            list,
+            '',
+            '## Automatic updates',
+            '',
+            `- [x] Rebuilt \`registry/pipeline_signals.json\`${pipelineSignalsChanged ? '' : ' (no diff)'}`,
+            `- [${samplePassed ? 'x' : ' '}] Sample-run CI completed (${sampleResult})`,
+            '- [ ] Full maintainer run completed',
+            '- [ ] Clean parquet pushed to GCS/BQ',
+            '- [ ] `registry/clean_catalog.json` updated after GCS push',
+            '- [ ] `python scripts/build_clean_catalog.py --check-gcs` passes',
+            '',
+            '## Sample-run artifacts',
+            '',
+            sampleList || '- No sample-run config detected',
+            '',
+            '## Maintainer commands',
+            '',
+            '```bash',
+            ...commands,
+            '```',
+            '',
+            'Keep this PR as draft until the GCS/BQ push and clean catalog validation are complete.',
+          ].join('\n');
+
+          fs.writeFileSync('post_merge_pr_body.md', body + '\n');
+          NODE
+
+      - name: Create draft registry PR
+        env:
+          GH_TOKEN: ${{ github.token }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
+        run: |
+          BRANCH="post-merge-candidate/pr-${PR_NUMBER}-registry"
+
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout -B "$BRANCH"
+
+          if [ "$PIPELINE_SIGNALS_CHANGED" = "true" ]; then
+            git add registry/pipeline_signals.json
+            git commit -m "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}"
+          else
+            git commit --allow-empty -m "chore(post-merge): handoff per PR #${PR_NUMBER}"
+          fi
+
+          git push --force-with-lease -u origin "$BRANCH"
+
+          EXISTING_PR=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number // empty')
+          if [ -n "$EXISTING_PR" ]; then
+            gh pr edit "$EXISTING_PR" \
+              --title "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}" \
+              --body-file post_merge_pr_body.md \
+              --add-label post-merge
+          else
+            gh pr create \
+              --base main \
+              --head "$BRANCH" \
+              --title "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}" \
+              --body-file post_merge_pr_body.md \
+              --label post-merge \
+              --draft
+          fi
