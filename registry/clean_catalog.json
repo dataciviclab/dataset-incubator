@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-04-28",
+  "updated_at": "2026-04-30",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -2204,6 +2204,116 @@
         "multi_file": true
       },
       "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
+    {
+      "slug": "mit_incidentalita_mensile",
+      "name": "MIT Incidentalità Stradale Mensile",
+      "description": "Serie mensile di incidenti stradali, morti, feriti e indicatori di mortalità/gravità/lesività — Italia 2001-2018, 216 mesi",
+      "source": "MIT — Ministero delle Infrastrutture e dei Trasporti, portale open data",
+      "period": {
+        "start": 2001,
+        "end": 2018
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "integer",
+          "role": "dimension",
+          "description": "Anno di riferimento (2001-2018)"
+        },
+        {
+          "name": "mese",
+          "type": "string",
+          "role": "dimension",
+          "description": "Nome del mese (Gennaio-Dicembre)"
+        },
+        {
+          "name": "incidenti",
+          "type": "integer",
+          "role": "metric",
+          "description": "Numero di incidenti stradali"
+        },
+        {
+          "name": "morti",
+          "type": "integer",
+          "role": "metric",
+          "description": "Numero di morti"
+        },
+        {
+          "name": "feriti",
+          "type": "integer",
+          "role": "metric",
+          "description": "Numero di feriti"
+        },
+        {
+          "name": "incidenti_mortali",
+          "type": "integer",
+          "role": "metric",
+          "description": "Numero di incidenti mortali"
+        },
+        {
+          "name": "perc_incidenti",
+          "type": "double",
+          "role": "metric",
+          "description": "Percentuale incidenti sul totale anno"
+        },
+        {
+          "name": "perc_incidenti_mortali",
+          "type": "double",
+          "role": "metric",
+          "description": "Percentuale incidenti mortali"
+        },
+        {
+          "name": "perc_morti",
+          "type": "double",
+          "role": "metric",
+          "description": "Percentuale morti"
+        },
+        {
+          "name": "perc_feriti",
+          "type": "double",
+          "role": "metric",
+          "description": "Percentuale feriti"
+        },
+        {
+          "name": "indice_mortalita",
+          "type": "double",
+          "role": "metric",
+          "description": "Indice di mortalità generico (morti/incidenti × 100)"
+        },
+        {
+          "name": "indice_gravita",
+          "type": "double",
+          "role": "metric",
+          "description": "Indice di gravità"
+        },
+        {
+          "name": "indice_lesivita",
+          "type": "double",
+          "role": "metric",
+          "description": "Indice di lesività (feriti/incidenti × 100)"
+        },
+        {
+          "name": "indice_mortalita_spec",
+          "type": "double",
+          "role": "metric",
+          "description": "Indice specifico di mortalità"
+        },
+        {
+          "name": "indice_incidentalita_spec",
+          "type": "double",
+          "role": "metric",
+          "description": "Indice specifico di incidentalità"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mit_incidentalita_mensile/2001/mit_incidentalita_mensile_2001_clean.parquet",
+        "multi_file": false
+      },
+      "status": "clean_ready",
       "visibility": "public",
       "registry_source": "push_archive_auto"
     },
