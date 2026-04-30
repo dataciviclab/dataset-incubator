@@ -2318,6 +2318,164 @@
       "registry_source": "push_archive_auto"
     },
     {
+      "slug": "mit_opere_incompiute_2020",
+      "name": "MIT Opere Pubbliche Incompiute",
+      "description": "Opere pubbliche incompiute al 31/12/2020 — Italia, 405 opere con CUP, stato, cause e importi",
+      "source": "MIT — Ministero delle Infrastrutture e dei Trasporti, portale open data",
+      "period": {
+        "start": 2020,
+        "end": 2020
+      },
+      "columns": [
+        {
+          "name": "codice_cup",
+          "type": "string",
+          "role": "dimension",
+          "description": "Codice CUP univoco dell'opera"
+        },
+        {
+          "name": "anno_di_riferimento",
+          "type": "integer",
+          "role": "dimension",
+          "description": "Anno di riferimento (2020)"
+        },
+        {
+          "name": "stato_opera",
+          "type": "string",
+          "role": "dimension",
+          "description": "Stato dell'opera secondo d.m. 42/2013"
+        },
+        {
+          "name": "ambito_soggettivo",
+          "type": "string",
+          "role": "dimension",
+          "description": "Ambito soggettivo dell'opera"
+        },
+        {
+          "name": "ambito_oggettivo",
+          "type": "string",
+          "role": "dimension",
+          "description": "Ambito oggettivo dell'opera"
+        },
+        {
+          "name": "stazione_appaltante",
+          "type": "string",
+          "role": "dimension",
+          "description": "Denominazione stazione appaltante"
+        },
+        {
+          "name": "localizzazione_codice_istat",
+          "type": "string",
+          "role": "dimension",
+          "description": "Codice ISTAT di localizzazione"
+        },
+        {
+          "name": "titolo_opera_incompiuta",
+          "type": "string",
+          "role": "dimension",
+          "description": "Titolo dell'opera incompiuta"
+        },
+        {
+          "name": "livello_sviluppo",
+          "type": "string",
+          "role": "dimension",
+          "description": "Livello di sviluppo (d.m. 42/2013, art. 4)"
+        },
+        {
+          "name": "importo_complessivo_qe",
+          "type": "double",
+          "role": "metric",
+          "description": "Importo complessivo ultimo quadro economico (€)"
+        },
+        {
+          "name": "importo_lavori_qe",
+          "type": "double",
+          "role": "metric",
+          "description": "Importo lavori ultimo q.e. approvato (€)"
+        },
+        {
+          "name": "importo_lavori_sal",
+          "type": "double",
+          "role": "metric",
+          "description": "Importo complessivo lavori ultimo SAL (€)"
+        },
+        {
+          "name": "importo_oneri_ultimazione",
+          "type": "double",
+          "role": "metric",
+          "description": "Importo oneri per ultimazione (€)"
+        },
+        {
+          "name": "perc_avanzamento_lavori",
+          "type": "double",
+          "role": "metric",
+          "description": "Percentuale avanzamento lavori"
+        },
+        {
+          "name": "flag_mancanza_fondi",
+          "type": "string",
+          "role": "dimension",
+          "description": "Flag: mancanza fondi"
+        },
+        {
+          "name": "flag_cause_tecniche",
+          "type": "string",
+          "role": "dimension",
+          "description": "Flag: cause tecniche"
+        },
+        {
+          "name": "flag_sopravvenienza_norme",
+          "type": "string",
+          "role": "dimension",
+          "description": "Flag: sopravvenienza norme"
+        },
+        {
+          "name": "flag_fallimento_liquidazione",
+          "type": "string",
+          "role": "dimension",
+          "description": "Flag: fallimento/liquidazione"
+        },
+        {
+          "name": "flag_mancato_interesse",
+          "type": "string",
+          "role": "dimension",
+          "description": "Flag: mancato interesse privato"
+        },
+        {
+          "name": "flag_opera_fruibile",
+          "type": "string",
+          "role": "dimension",
+          "description": "Flag: opera fruibile alla collettività"
+        },
+        {
+          "name": "flag_uso_ridimensionato",
+          "type": "string",
+          "role": "dimension",
+          "description": "Flag: uso ridimensionato opera"
+        },
+        {
+          "name": "flag_infrastruttura_rete",
+          "type": "string",
+          "role": "dimension",
+          "description": "Flag: infrastruttura di rete"
+        },
+        {
+          "name": "flag_discontinuita_rete",
+          "type": "string",
+          "role": "dimension",
+          "description": "Flag: discontinuità nella rete"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mit_opere_incompiute_2020/2020/mit_opere_incompiute_2020_2020_clean.parquet",
+        "multi_file": false
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
+    {
       "slug": "mur_contribuzione_universitaria",
       "name": "MUR - Gettito della contribuzione universitaria",
       "description": "Gettito della contribuzione studentesca per ateneo e tipologia di entrata (2017-2024).",
