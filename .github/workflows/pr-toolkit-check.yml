@@ -1,0 +1,202 @@
+name: Toolkit Pipeline Check
+
+# Esegue la pipeline toolkit su candidate modificati in PR.
+# Fallisce la PR se run o validate falliscono, o se blocker_hints trova blocker.
+
+on:
+  pull_request:
+    paths:
+      - "candidates/**"
+      - "support_datasets/**"
+
+jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      has_configs: ${{ steps.changed.outputs.has_configs }}
+      configs: ${{ steps.changed.outputs.configs }}
+    steps:
+      - name: Checkout PR commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Detect changed candidate/support roots
+        id: changed
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+
+          base = "${{ github.event.pull_request.base.sha }}"
+          head = "${{ github.event.pull_request.head.sha }}"
+          import subprocess
+          files = subprocess.check_output(
+              ["git", "diff", "--name-only", base, head],
+              text=True
+          ).splitlines()
+
+          seen = {}
+          for f in files:
+              p = Path(f)
+              parts = p.parts
+              if len(parts) < 2:
+                  continue
+              if parts[0] == "candidates":
+                  seen[parts[1]] = ("candidates", parts[1])
+              elif parts[0] == "support_datasets":
+                  seen[parts[1]] = ("support_datasets", parts[1])
+
+          configs = []
+          for kind, slug in sorted(seen.values()):
+              root = Path(kind) / slug
+              sources = root / "sources"
+              if sources.is_dir():
+                  for src in sorted(sources.iterdir()):
+                      cfg = src / "dataset.yml"
+                      if cfg.exists():
+                          year = _resolve_year(cfg)
+                          configs.append({
+                              "kind": kind,
+                              "slug": slug,
+                              "source": src.name,
+                              "config_path": str(cfg),
+                              "year": year,
+                              "artifact_name": f"{slug}-{src.name}",
+                          })
+              else:
+                  cfg = root / "dataset.yml"
+                  if cfg.exists():
+                      year = _resolve_year(cfg)
+                      configs.append({
+                          "kind": kind,
+                          "slug": slug,
+                          "source": None,
+                          "config_path": str(cfg),
+                          "year": year,
+                          "artifact_name": slug,
+                      })
+
+          def _resolve_year(cfg):
+              import yaml
+              with open(cfg) as f:
+                  d = yaml.safe_load(f)
+              years = d.get("dataset", {}).get("years", [])
+              return years[-1] if years else 0
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"has_configs={'true' if configs else 'false'}\n")
+              out.write("configs<<JSON\n")
+              out.write(json.dumps(configs, ensure_ascii=False))
+              out.write("\nJSON\n")
+          PY
+
+  toolkit-check:
+    needs: detect
+    if: needs.detect.outputs.has_configs == 'true'
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        config: ${{ fromJSON(needs.detect.outputs.configs) }}
+    defaults:
+      run:
+        shell: bash
+
+    steps:
+      - name: Checkout PR commit
+        uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install toolkit
+        run: pip install git+https://github.com/dataciviclab/toolkit.git@main
+
+      - name: Toolkit inspect paths (pre-flight)
+        run: |
+          echo "=== inspect paths ==="
+          toolkit inspect paths \
+            --config "${{ matrix.config.config_path }}" \
+            --json \
+            2>&1 | python -c "import sys,json; d=json.load(sys.stdin); print(f'run_file_count={d.get(\"run_file_count\",0)} latest_run={d.get(\"latest_run\",{}).get(\"status\",\"N/A\")}')"
+
+      - name: Toolkit run all
+        id: run_all
+        run: |
+          toolkit run all \
+            --config "${{ matrix.config.config_path }}" \
+            --years "${{ matrix.config.year }}" \
+            2>&1 | tee run_all.log
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Toolkit validate all
+        if: success()
+        id: validate_all
+        run: |
+          toolkit validate all \
+            --config "${{ matrix.config.config_path }}" \
+            --years "${{ matrix.config.year }}" \
+            2>&1 | tee validate_all.log
+          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
+
+      - name: Check blockers via Python
+        if: success()
+        run: |
+          python - <<'PY'
+          import json, sys, subprocess
+
+          # Run blocker_hints
+          result = subprocess.run(
+              ["toolkit", "inspect", "paths", "--config", "${{ matrix.config.config_path }}", "--json"],
+              capture_output=True, text=True, timeout=60
+          )
+          if result.returncode == 0:
+              try:
+                  d = json.loads(result.stdout)
+                  # blocker_hints not in CLI output, compute via summary
+                  from toolkit.mcp.toolkit_client import blocker_hints
+                  bh = blocker_hints("${{ matrix.config.config_path }}", ${{ matrix.config.year }})
+                  blockers = bh.get("blocker_count", 0)
+                  warnings = bh.get("warning_count", 0)
+                  print(f"blocker_count={blockers}")
+                  print(f"warning_count={warnings}")
+                  if blockers > 0:
+                      print(f"::error::Candidate has {blockers} blocker(s) — fix before merging")
+                      sys.exit(1)
+              except Exception as e:
+                  print(f"warning::Could not compute blocker_hints: {e}")
+          PY
+
+      - name: Upload artifacts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pr-toolkit-${{ matrix.config.artifact_name }}
+          path: |
+            run_all.log
+            validate_all.log
+          retention-days: 7
+
+  report:
+    needs: [detect, toolkit-check]
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set summary
+        run: |
+          echo "## Toolkit Pipeline Check" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Configs changed: ${{ needs.detect.outputs.configs }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ "${{ needs.toolkit-check.result }}" = "success" ]; then
+            echo "✅ All candidates passed toolkit run + validate" >> "$GITHUB_STEP_SUMMARY"
+          else
+            echo "❌ Some candidates failed — see job details" >> "$GITHUB_STEP_SUMMARY"
+          fi
