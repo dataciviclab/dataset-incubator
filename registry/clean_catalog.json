@@ -2310,7 +2310,7 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/mit_incidentalita_mensile/*/mit_incidentalita_mensile_*_clean.parquet",
+        "path": "gs://dataciviclab-clean/mit_incidentalita_mensile/2001/mit_incidentalita_mensile_2001_clean.parquet",
         "multi_file": false
       },
       "status": "clean_ready",
