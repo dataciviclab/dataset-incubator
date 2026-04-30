@@ -131,9 +131,20 @@ Prima di lanciare tutto, verifica almeno:
 
 Se il contract dei path non e' chiaro, fermati prima del run completo.
 
-Se il server MCP `toolkit` e' attivo nel runtime:
+Step pre-flight (equivalente al controllo manuale di cui sopra):
 
-- `toolkit_inspect_paths(config_path)` - alternativa al controllo manuale di path e contract
+```bash
+cd toolkit
+python -m toolkit.cli.app inspect paths --config ../dataset-incubator/candidates/{slug}/dataset.yml --json
+```
+
+Se il server MCP `toolkit` e' attivo nel runtime, puoi usare in alternativa:
+
+```
+toolkit_inspect_paths(config_path) → run_file_count, years_seen, latest_run, path contract verificato
+```
+
+Verifica che nell'output `run_file_count` sia >= 1 e `latest_run.status` sia coerente col run atteso.
 
 ### 4. Lancia il run minimo giusto
 
@@ -181,9 +192,21 @@ Segnale minimo di output leggibile:
 - le colonne principali sono coerenti con la domanda o col layer atteso
 - non ci sono rotture evidenti o valori palesemente fuori posto
 
+Step post-run (diagnostica compatta):
+
+```bash
+cd toolkit
+python -m toolkit.cli.app inspect paths --config ../dataset-incubator/candidates/{slug}/dataset.yml --json
+```
+
 Se il server MCP `toolkit` e' attivo nel runtime:
 
-- `toolkit_blocker_hints(config_path)` - evidenzia mismatch tra output risolti e run record
+```
+toolkit_inspect_paths(config_path)   → path contract + run metadata (run_file_count, years_seen, latest_run)
+toolkit_blocker_hints(config_path)  → mismatch tra output risolti e run record
+```
+
+Se `toolkit_blocker_hints` restituisce blocker, fermati e risolvili prima di procedere.
 
 ### 6. Se fallisce, isola il primo errore vero
 
@@ -205,6 +228,16 @@ Se utile, chiudi il blocker con una formula semplice:
 - `blocco parsing`
 - `blocco SQL`
 - `blocco validazione`
+
+Diagnostica failure con MCP (se il server toolkit e' attivo):
+
+```
+toolkit_list_runs(config_path, status="FAILED", limit=5)
+    → ultimi 5 run falliti: run_id, started_at, error dal record
+
+toolkit_run_summary(config_path)
+    → run_rate, failed_count, avg_duration; utile per capire se il fallimento e' isolato o ricorrente
+```
 
 Non usare questo workflow per:
 
