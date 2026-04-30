@@ -26,6 +26,16 @@
 - mart snapshot con campi chiave e flag causa
 - primo notebook `v0` su distribuzione territoriale e cause ricorrenti
 
+## Stato
+
+`runnable` — run completo eseguito, output verificati (405 righe mart), QC superato.
+
+**QC verificati:**
+- Clean = Raw: drop 4 righe (1.0%) — TOT + 3 duplicati codice_cup ✅
+- Mart sum = Clean: importo_complessivo_qe coincide esattamente ✅
+- 0 duplicati su codice_cup nel mart ✅
+- notebook v0 compilato con output reali (14 celle, tutte popolate) ✅
+
 ## Criterio di promozione
 
 - copertura del file nazionale chiarita in modo difendibile
@@ -42,4 +52,4 @@ Issue collegata:
 
 ## Prossimo passo
 
-- verificare se il candidate deve restare sul solo file nazionale `MIMS e regioni` o includere anche file regionali separati in un secondo step
+Post-merge: push clean a GCS, update clean_catalog, chiudere issue #35.
