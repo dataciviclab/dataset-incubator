@@ -144,7 +144,15 @@
       "status": "ok",
       "label": "mit-opere-incompiute-2020",
       "detail": "anno 2020 — fonte: mit_opere_incompiute_csv — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25171144965",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25171144965",
+        "checked_at": "2026-04-30",
+        "year": 2020,
+        "config_path": "candidates/mit-opere-incompiute-2020/dataset.yml"
+      }
     },
     {
       "id": "mur-contribuzione-universitaria",
