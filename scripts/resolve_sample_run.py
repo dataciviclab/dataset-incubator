@@ -79,6 +79,71 @@ def resolve(config_path: str) -> dict:
     # Compute slug from config path, NOT from YAML dataset.name
     # This avoids mismatch with pipeline_signals which uses directory names
     parts = path.parts
+<<<<<<< HEAD
+=======
+    is_nested = "sources" in parts or "compose" in parts
+
+    # Collect support[] entries from dataset config.
+    # These reference OTHER datasets (support_datasets/ or other candidates/)
+    # that must be prepared before this config can run.
+    # Example from ispra-ru-costi-kg:
+    #   support:
+    #     - name: b
+    #       config: ../b_kg_per_abitante/dataset.yml
+    #       years: [2020, 2021, 2022, 2023, 2024]
+    support_entries = []
+    for entry in dataset.get("support", []) or []:
+        cfg_path = entry.get("config", "")
+        # config is a relative path from the dataset.yml to the support dataset.yml
+        if cfg_path:
+            # Resolve relative to the current config's directory
+            support_cfg_path = str((path.parent / cfg_path).resolve())
+            # Compute relative to ROOT for canonical output
+            try:
+                support_rel = Path(support_cfg_path).relative_to(ROOT)
+            except ValueError:
+                support_rel = Path(support_cfg_path)
+            support_entries.append({
+                "name": entry.get("name", ""),
+                "config": str(support_rel),
+                "years": entry.get("years", []),
+            })
+
+    has_support = len(support_entries) > 0
+
+    # Compute slug from config path relative to ROOT
+>>>>>>> 15768df (enhance(resolve-sample-run): aggiunge support[] detection per workflow two-phase)
+    is_nested = "sources" in parts or "compose" in parts
+
+    # Collect support[] entries from dataset config.
+    # These reference OTHER datasets (support_datasets/ or other candidates/)
+    # that must be prepared before this config can run.
+    # Example from ispra-ru-costi-kg:
+    #   support:
+    #     - name: b
+    #       config: ../b_kg_per_abitante/dataset.yml
+    #       years: [2020, 2021, 2022, 2023, 2024]
+    support_entries = []
+    for entry in dataset.get("support", []) or []:
+        cfg_path = entry.get("config", "")
+        # config is a relative path from the dataset.yml to the support dataset.yml
+        if cfg_path:
+            # Resolve relative to the current config's directory
+            support_cfg_path = str((path.parent / cfg_path).resolve())
+            # Compute relative to ROOT for canonical output
+            try:
+                support_rel = Path(support_cfg_path).relative_to(ROOT)
+            except ValueError:
+                support_rel = Path(support_cfg_path)
+            support_entries.append({
+                "name": entry.get("name", ""),
+                "config": str(support_rel),
+                "years": entry.get("years", []),
+            })
+
+    has_support = len(support_entries) > 0
+
+    # Compute slug from config path relative to ROOT
     try:
         rel = path.relative_to(ROOT)
     except ValueError:
@@ -97,15 +162,14 @@ def resolve(config_path: str) -> dict:
     if slug is None:
         slug = path.parts[-2] if len(path.parts) >= 2 else None
 
-    # Nested config detection
-    is_nested = "sources" in parts or "compose" in parts
-
     return {
         "config_path": str(rel),
         "slug": slug,
         "sample_year": sample_year,
         "all_years": years_int,
         "is_nested": is_nested,
+        "has_support": has_support,
+        "support": support_entries,
         "note": (
             "nested config — run via source layer"
             if is_nested
