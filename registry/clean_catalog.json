@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-04-30",
+  "updated_at": "2026-05-01",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -2797,6 +2797,62 @@
         "multi_file": true
       },
       "status": "candidate",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
+    },
+    {
+      "slug": "terna_capacita_rinnovabile",
+      "name": "Terna Capacita Rinnovabile",
+      "description": "Capacita rinnovabile installata per regione, fonte e anno (MW). Fonti: Fotovoltaico, Eolico, Idroelettrico, Geotermico, Biomasse. Dati Terna.",
+      "source": "Terna S.p.A. — dati pubblicati su terna.com",
+      "period": {
+        "start": 2023,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "int32",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_capacita",
+          "type": "string",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "string",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "provincia",
+          "type": "string",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "fonti",
+          "type": "string",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "potenza_mw",
+          "type": "double",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/terna_capacita_rinnovabile/*/terna_capacita_rinnovabile_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
       "visibility": "public",
       "registry_source": "push_archive_auto"
     }
