@@ -107,19 +107,28 @@ jobs:
           YEAR: ${{ matrix.config.year }}
           DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
         run: |
-          RESULT=$(toolkit blocker-hints --config "$CONFIG_PATH" --year "$YEAR" --json 2>&1)
-          echo "blocker_hints_output=$RESULT" >> "$GITHUB_OUTPUT"
+          RESULT=$(toolkit blocker-hints --config "$CONFIG_PATH" --year "$YEAR" --json 2>/dev/null)
 
-          # Parse blocker_count from JSON
-          BLOCKERS=$(echo "$RESULT" | python -c "import json,sys; d=json.load(sys.stdin); print(d.get('blocker_count',0))")
-          WARNINGS=$(echo "$RESULT" | python -c "import json,sys; d=json.load(sys.stdin); print(d.get('warning_count',0))")
-          echo "blocker_count=$BLOCKERS" >> "$GITHUB_OUTPUT"
-          echo "warning_count=$WARNINGS" >> "$GITHUB_OUTPUT"
-
-          if [ "$BLOCKERS" -gt 0 ]; then
-            echo "::error::Candidate has $BLOCKERS blocker(s) — fix before merging"
+          if [ -z "$RESULT" ]; then
+            echo "::error::blocker-hints failed or returned empty output"
             exit 1
           fi
+
+          echo "$RESULT" > /tmp/blocker_hints.json
+
+          python - <<'PY'
+          import json
+          try:
+              with open('/tmp/blocker_hints.json') as f:
+                  d = json.load(f)
+              blockers = d.get('blocker_count', 0)
+              warnings = d.get('warning_count', 0)
+              print('blocker_count=' + str(blockers))
+              print('warning_count=' + str(warnings))
+          except json.JSONDecodeError:
+              print('ERROR: failed to parse blocker-hints JSON')
+              exit(1)
+          PY
 
       - name: Upload artifacts
         if: always()
