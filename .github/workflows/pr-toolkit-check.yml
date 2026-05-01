@@ -22,6 +22,15 @@ jobs:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: python -m pip install pyyaml
+
       - name: Detect changed candidate/support roots
         id: detect
         run: |
@@ -69,8 +78,79 @@ jobs:
           python-version: "3.11"
           cache: 'pip'
 
+      - name: Install dependencies
+        run: python -m pip install pyyaml
+
       - name: Install toolkit
         run: pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
+
+      - name: Resolve support dependencies
+        id: resolve_support
+        env:
+          CONFIG_PATH: ${{ matrix.config.config_path }}
+        run: |
+          python - <<'PY'
+          import json
+          import os
+          from pathlib import Path
+
+          import yaml
+
+          root = Path(os.environ["GITHUB_WORKSPACE"])
+          cfg_path = root / os.environ["CONFIG_PATH"]
+          support_map = {}
+
+          if cfg_path.exists():
+              with open(cfg_path, encoding="utf-8") as f:
+                  cfg = yaml.safe_load(f) or {}
+
+              raw_support = cfg.get("support", []) or []
+              dataset_support = cfg.get("dataset", {}).get("support", []) or []
+              for entry in raw_support + dataset_support:
+                  rel_config = entry.get("config", "")
+                  if not rel_config:
+                      continue
+                  support_path = (cfg_path.parent / rel_config).resolve()
+                  try:
+                      support_rel = support_path.relative_to(root)
+                  except ValueError:
+                      support_rel = support_path
+                  key = str(support_rel)
+                  support_map.setdefault(key, {
+                      "name": entry.get("name", ""),
+                      "config": key,
+                      "years": entry.get("years", []),
+                  })
+
+          support_list = list(support_map.values())
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"has_support={str(bool(support_list)).lower()}\n")
+              out.write("support_configs<<JSON\n")
+              out.write(json.dumps(support_list, ensure_ascii=False))
+              out.write("\nJSON\n")
+          PY
+
+      - name: Run support datasets first
+        if: steps.resolve_support.outputs.has_support == 'true'
+        env:
+          SUPPORT_JSON: ${{ steps.resolve_support.outputs.support_configs }}
+        run: |
+          echo "::notice::This candidate has support dependencies. Running support datasets in the same runner."
+          echo "support_configs=$SUPPORT_JSON"
+
+          while IFS='|' read -r SUPPORT YEARS; do
+            echo "::notice::Running support dataset: $SUPPORT"
+            if [ -z "$YEARS" ]; then
+              echo "::error::No years declared for support $SUPPORT"
+              exit 1
+            fi
+            echo "::notice::Support years: $YEARS"
+            for SUPPORT_YEAR in $(echo "$YEARS" | tr ',' ' '); do
+              echo "::notice::Running support $SUPPORT for year $SUPPORT_YEAR"
+              toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
+              toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
+            done
+          done < <(echo "$SUPPORT_JSON" | python -c "import json,sys; support=json.load(sys.stdin); [print(s['config']+'|'+','.join(str(y) for y in s['years'])) for s in support]")
 
       - name: Toolkit inspect paths (pre-flight)
         run: |
@@ -140,6 +220,7 @@ jobs:
         with:
           name: pr-toolkit-${{ matrix.config.artifact_name }}
           path: |
+            support_*.log
             run_all.log
             validate_all.log
           retention-days: 7
