@@ -97,10 +97,29 @@ jobs:
           SLUG=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['slug'])")
           FINAL_YEAR=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['sample_year'])")
           IS_NESTED=$(python -c "import json; d=json.load(open('sample_params.json')); print(str(d['is_nested']).lower())")
+          HAS_SUPPORT=$(python -c "import json; d=json.load(open('sample_params.json')); print(str(d.get('has_support', False)).lower())")
+          SUPPORT_JSON=$(python -c "import json; d=json.load(open('sample_params.json')); print(json.dumps(d.get('support', [])))")
 
           echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
           echo "final_year=$FINAL_YEAR" >> "$GITHUB_OUTPUT"
           echo "is_nested=$IS_NESTED" >> "$GITHUB_OUTPUT"
+          echo "has_support=$HAS_SUPPORT" >> "$GITHUB_OUTPUT"
+          echo "support_configs=$SUPPORT_JSON" >> "$GITHUB_OUTPUT"
+
+      - name: Run support datasets first (if has_support)
+        if: steps.resolve.outputs.has_support == 'true'
+        run: |
+          echo "::notice::This candidate has support dependencies. Running support datasets first."
+          echo "support_configs=${{ steps.resolve.outputs.support_configs }}"
+
+          SUPPORT_JSON='${{ steps.resolve.outputs.support_configs }}'
+          for SUPPORT in $(echo "$SUPPORT_JSON" | python -c "import json,sys; support=json.load(sys.stdin); [print(s['config']) for s in support]"); do
+            echo "::notice::Running support dataset: $SUPPORT"
+            SUPPORT_YEAR=$(python scripts/resolve_sample_run.py "$SUPPORT" 2>/dev/null | python -c "import json,sys; d=json.load(sys.stdin); print(d.get('sample_year',''))")
+            echo "::notice::Support year: $SUPPORT_YEAR"
+            toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}.log"
+            toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}.log"
+          done
 
       - name: Install toolkit
         run: python -m pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
