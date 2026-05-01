@@ -38,7 +38,7 @@ jobs:
             python scripts/detect_candidates.py --files --json > detect_output.json
 
           python - <<'PY'
-          import json
+          import json, os
           d = json.load(open("detect_output.json"))
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
               out.write(f"has_items={str(d['has_items']).lower()}\n")

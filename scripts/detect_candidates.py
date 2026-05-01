@@ -75,7 +75,6 @@ def _git_diff_files(base_sha: str | None, head_sha: str) -> list[str]:
 
 def _read_stdin_files() -> list[str]:
     """Read newline-separated file paths from stdin."""
-    import sys
     return [line.strip() for line in sys.stdin if line.strip()]
 
 
