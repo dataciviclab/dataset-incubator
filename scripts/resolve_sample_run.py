@@ -84,22 +84,13 @@ def resolve(config_path: str) -> dict:
     is_nested = "sources" in parts or "compose" in parts
 
     # Collect support[] entries from dataset config.
-    # These reference OTHER datasets (support_datasets/ or other candidates/)
-    # that must be prepared before this config can run.
-    # Example from ispra-ru-costi-kg:
-    #   support:
-    #     - name: b
-    #       config: ../b_kg_per_abitante/dataset.yml
-    #       years: [2020, 2021, 2022, 2023, 2024]
-    # Note: support[] can be at root level OR inside dataset (both patterns in use)
+    # Currently only root-level support[] is in use (es. mim-alunni-corso-eta).
+    # The support structure is at root level: {name, config, years}
     support_entries = []
     for entry in cfg.get("support", []) or []:
         cfg_path = entry.get("config", "")
-        # config is a relative path from the dataset.yml to the support dataset.yml
         if cfg_path:
-            # Resolve relative to the current config's directory
             support_cfg_path = str((path.parent / cfg_path).resolve())
-            # Compute relative to ROOT for canonical output
             try:
                 support_rel = Path(support_cfg_path).relative_to(ROOT)
             except ValueError:
