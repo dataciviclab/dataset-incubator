@@ -52,7 +52,9 @@ def _source_names(sources: list[dict]) -> list[str]:
 
 
 # ---------------------------------------------------------------------------
-# Candidate introspection
+# Candidate introspection — reuses has_mart_sql and detect_candidate_layout
+# from validate_candidate_structure, but does its own structure walk
+# to avoid coupling with validate_entry() which is designed for CLI output.
 # ---------------------------------------------------------------------------
 
 def _inspect_single_source(base_dir: Path) -> dict:

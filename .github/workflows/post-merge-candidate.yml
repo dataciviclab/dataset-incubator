@@ -378,6 +378,12 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
         run: |
+          # Skip if nothing changed — avoid empty PR noise
+          if [ "$PIPELINE_SIGNALS_CHANGED" = "false" ]; then
+            echo "No changes to pipeline_signals.json — skipping registry PR"
+            exit 0
+          fi
+
           BRANCH="post-merge-candidate/pr-${PR_NUMBER}-registry"
 
           git config user.name "github-actions[bot]"
@@ -387,8 +393,6 @@ jobs:
           if [ "$PIPELINE_SIGNALS_CHANGED" = "true" ]; then
             git add registry/pipeline_signals.json
             git commit -m "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}"
-          else
-            git commit --allow-empty -m "chore(post-merge): handoff per PR #${PR_NUMBER}"
           fi
 
           git push --force-with-lease -u origin "$BRANCH"
