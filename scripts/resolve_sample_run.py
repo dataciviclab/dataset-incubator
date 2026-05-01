@@ -84,10 +84,14 @@ def resolve(config_path: str) -> dict:
     is_nested = "sources" in parts or "compose" in parts
 
     # Collect support[] entries from dataset config.
-    # Currently only root-level support[] is in use (es. mim-alunni-corso-eta).
-    # The support structure is at root level: {name, config, years}
+    # Two patterns in use:
+    #   - root level: support: [{name, config, years}]  (es. mim-alunni-corso-eta)
+    #   - inside dataset: dataset.support: [{name, config, years}]  (es. ispra-ru-costi-kg, malasanita, opencivitas)
+    # Try root level first, then dataset.support
     support_entries = []
-    for entry in cfg.get("support", []) or []:
+    raw_support = cfg.get("support", []) or []
+    dataset_support = cfg.get("dataset", {}).get("support", []) or []
+    for entry in raw_support + dataset_support:
         cfg_path = entry.get("config", "")
         if cfg_path:
             support_cfg_path = str((path.parent / cfg_path).resolve())
