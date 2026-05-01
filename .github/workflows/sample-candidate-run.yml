@@ -125,17 +125,20 @@ jobs:
           echo "support_configs=${{ steps.resolve.outputs.support_configs }}"
 
           SUPPORT_JSON='${{ steps.resolve.outputs.support_configs }}'
-          while IFS= read -r SUPPORT; do
+          # Emit "config|year1,year2,..." for each support, then process in while (main shell)
+          while IFS='|' read -r SUPPORT YEARS; do
             echo "::notice::Running support dataset: $SUPPORT"
-            SUPPORT_YEAR=$(python scripts/resolve_sample_run.py "$SUPPORT" 2>/dev/null | python -c "import json,sys; d=json.load(sys.stdin); print(d.get('sample_year',''))")
-            if [ -z "$SUPPORT_YEAR" ]; then
-              echo "::error::Failed to resolve support year for $SUPPORT"
+            if [ -z "$YEARS" ]; then
+              echo "::error::No years declared for support $SUPPORT"
               exit 1
             fi
-            echo "::notice::Support year: $SUPPORT_YEAR"
-            toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}.log"
-            toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}.log"
-          done < <(echo "$SUPPORT_JSON" | python -c "import json,sys; support=json.load(sys.stdin); [print(s['config']) for s in support]")
+            echo "::notice::Support years: $YEARS"
+            for SUPPORT_YEAR in $(echo "$YEARS" | tr ',' ' '); do
+              echo "::notice::Running support $SUPPORT for year $SUPPORT_YEAR"
+              toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
+              toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
+            done
+          done < <(echo "$SUPPORT_JSON" | python -c "import json,sys; support=json.load(sys.stdin); [print(s['config']+'|'+','.join(str(y) for y in s['years'])) for s in support]")
 
       # ------------------------------------------------------------------
       # Step 3 — Inspect paths + pre-flight check
