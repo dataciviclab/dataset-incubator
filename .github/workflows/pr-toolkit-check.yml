@@ -70,7 +70,7 @@ jobs:
           cache: 'pip'
 
       - name: Install toolkit
-        run: pip install git+https://github.com/dataciviclab/toolkit.git@main
+        run: pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
 
       - name: Toolkit inspect paths (pre-flight)
         run: |

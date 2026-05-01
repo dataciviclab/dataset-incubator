@@ -101,7 +101,7 @@ jobs:
           echo "is_nested=$IS_NESTED" >> "$GITHUB_OUTPUT"
 
       - name: Install toolkit
-        run: python -m pip install git+https://github.com/dataciviclab/toolkit.git@main
+        run: python -m pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
 
       - name: Toolkit inspect paths
         run: |

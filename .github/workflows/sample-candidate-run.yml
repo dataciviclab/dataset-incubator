@@ -109,7 +109,7 @@ jobs:
       # ------------------------------------------------------------------
       - name: Install toolkit
         run: |
-          pip install git+https://github.com/dataciviclab/toolkit.git@main
+          pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
 
       # ------------------------------------------------------------------
       # Step 3 — Inspect paths + pre-flight check
