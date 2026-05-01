@@ -33,6 +33,8 @@ jobs:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
+          set -o pipefail
+
           # Get PR file list and pipe to detect_candidates.py
           gh pr view "$PR_NUMBER" --json files --jq ".files[].path" | \
             python scripts/detect_candidates.py --files --json > detect_output.json

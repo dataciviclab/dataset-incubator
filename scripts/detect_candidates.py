@@ -70,6 +70,10 @@ def _git_diff_files(base_sha: str | None, head_sha: str) -> list[str]:
             ["git", "diff", "--name-only", "HEAD"],
             capture_output=True, text=True, cwd=ROOT,
         )
+    if result.returncode != 0:
+        raise subprocess.CalledProcessError(
+            result.returncode, result.args, result.stdout, result.stderr
+        )
     return [f.strip() for f in result.stdout.splitlines() if f.strip()]
 
 
