@@ -1,6 +1,6 @@
 """Resolve sample run parameters from a dataset.yml.
 
-Responsabilità (per issue #154):
+Responsabilita (per issue #154):
   - leggere dataset.yml
   - determinare sample_year (ultimo anno in dataset.years)
   - validare gli input minimi
@@ -63,7 +63,7 @@ def resolve(config_path: str) -> dict:
     years = dataset.get("years", [])
     if not years:
         return {
-            "error": f"No 'dataset.years' in {config_path} — cannot determine sample year",
+            "error": f"No 'dataset.years' in {config_path} -- cannot determine sample year",
             "config_path": str(path),
             "slug": None,
         }
@@ -79,8 +79,8 @@ def resolve(config_path: str) -> dict:
     # Compute slug from config path, NOT from YAML dataset.name
     # This avoids mismatch with pipeline_signals which uses directory names
     parts = path.parts
-<<<<<<< HEAD
-=======
+
+    # Nested config detection
     is_nested = "sources" in parts or "compose" in parts
 
     # Collect support[] entries from dataset config.
@@ -91,40 +91,9 @@ def resolve(config_path: str) -> dict:
     #     - name: b
     #       config: ../b_kg_per_abitante/dataset.yml
     #       years: [2020, 2021, 2022, 2023, 2024]
+    # Note: support[] can be at root level OR inside dataset (both patterns in use)
     support_entries = []
-    for entry in dataset.get("support", []) or []:
-        cfg_path = entry.get("config", "")
-        # config is a relative path from the dataset.yml to the support dataset.yml
-        if cfg_path:
-            # Resolve relative to the current config's directory
-            support_cfg_path = str((path.parent / cfg_path).resolve())
-            # Compute relative to ROOT for canonical output
-            try:
-                support_rel = Path(support_cfg_path).relative_to(ROOT)
-            except ValueError:
-                support_rel = Path(support_cfg_path)
-            support_entries.append({
-                "name": entry.get("name", ""),
-                "config": str(support_rel),
-                "years": entry.get("years", []),
-            })
-
-    has_support = len(support_entries) > 0
-
-    # Compute slug from config path relative to ROOT
->>>>>>> 15768df (enhance(resolve-sample-run): aggiunge support[] detection per workflow two-phase)
-    is_nested = "sources" in parts or "compose" in parts
-
-    # Collect support[] entries from dataset config.
-    # These reference OTHER datasets (support_datasets/ or other candidates/)
-    # that must be prepared before this config can run.
-    # Example from ispra-ru-costi-kg:
-    #   support:
-    #     - name: b
-    #       config: ../b_kg_per_abitante/dataset.yml
-    #       years: [2020, 2021, 2022, 2023, 2024]
-    support_entries = []
-    for entry in dataset.get("support", []) or []:
+    for entry in cfg.get("support", []) or []:
         cfg_path = entry.get("config", "")
         # config is a relative path from the dataset.yml to the support dataset.yml
         if cfg_path:
@@ -171,7 +140,7 @@ def resolve(config_path: str) -> dict:
         "has_support": has_support,
         "support": support_entries,
         "note": (
-            "nested config — run via source layer"
+            "nested config -- run via source layer"
             if is_nested
             else ""
         ),
