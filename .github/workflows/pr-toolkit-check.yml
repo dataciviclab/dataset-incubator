@@ -107,22 +107,19 @@ jobs:
           YEAR: ${{ matrix.config.year }}
           DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
         run: |
-          python - <<'PY'
-          import json, sys, subprocess, os
+          RESULT=$(toolkit blocker-hints --config "$CONFIG_PATH" --year "$YEAR" --json 2>&1)
+          echo "blocker_hints_output=$RESULT" >> "$GITHUB_OUTPUT"
 
-          cfg_path = os.environ["CONFIG_PATH"]
-          year = int(os.environ["YEAR"])
+          # Parse blocker_count from JSON
+          BLOCKERS=$(echo "$RESULT" | python -c "import json,sys; d=json.load(sys.stdin); print(d.get('blocker_count',0))")
+          WARNINGS=$(echo "$RESULT" | python -c "import json,sys; d=json.load(sys.stdin); print(d.get('warning_count',0))")
+          echo "blocker_count=$BLOCKERS" >> "$GITHUB_OUTPUT"
+          echo "warning_count=$WARNINGS" >> "$GITHUB_OUTPUT"
 
-          from toolkit.mcp.toolkit_client import blocker_hints
-          bh = blocker_hints(cfg_path, year)
-          blockers = bh.get("blocker_count", 0)
-          warnings = bh.get("warning_count", 0)
-          print(f"blocker_count={blockers}")
-          print(f"warning_count={warnings}")
-          if blockers > 0:
-              print(f"::error::Candidate has {blockers} blocker(s) — fix before merging")
-              sys.exit(1)
-          PY
+          if [ "$BLOCKERS" -gt 0 ]; then
+            echo "::error::Candidate has $BLOCKERS blocker(s) — fix before merging"
+            exit 1
+          fi
 
       - name: Upload artifacts
         if: always()
