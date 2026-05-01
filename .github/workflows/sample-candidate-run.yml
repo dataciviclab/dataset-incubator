@@ -118,6 +118,7 @@ jobs:
         run: |
           toolkit inspect paths \
             --config "$CONFIG_PATH" \
+            --year "${{ steps.resolve.outputs.final_year }}" \
             --json \
             $STRICT_FLAG \
             2>&1 | tee inspect_paths.json || true
