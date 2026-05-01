@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-04-30",
+  "generated_at": "2026-05-01",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -187,7 +187,15 @@
       "status": "ok",
       "label": "terna-capacita-rinnovabile",
       "detail": "anni 2023-2024 — fonte: terna_capacity_renewable_sources_xlsx — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25218876358",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25218876358",
+        "checked_at": "2026-05-01",
+        "year": 2024,
+        "config_path": "candidates/terna-capacita-rinnovabile/dataset.yml"
+      }
     },
     {
       "id": "terna-electricity-by-source",
