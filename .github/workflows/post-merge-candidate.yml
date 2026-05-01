@@ -15,10 +15,10 @@ jobs:
       contents: read
       pull-requests: read
     outputs:
-      has_items: ${{ steps.changed.outputs.has_items }}
-      has_configs: ${{ steps.changed.outputs.has_configs }}
-      items: ${{ steps.changed.outputs.items }}
-      configs: ${{ steps.changed.outputs.configs }}
+      has_items: ${{ steps.detect.outputs.has_items }}
+      has_configs: ${{ steps.detect.outputs.has_configs }}
+      items: ${{ steps.detect.outputs.items }}
+      configs: ${{ steps.detect.outputs.configs }}
 
     steps:
       - name: Checkout merge commit
@@ -28,75 +28,26 @@ jobs:
           fetch-depth: 0
 
       - name: Detect changed candidate/support roots
-        id: changed
+        id: detect
         env:
           GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
         run: |
+          # Get PR file list and pipe to detect_candidates.py
+          gh pr view "$PR_NUMBER" --json files --jq ".files[].path" | \
+            python scripts/detect_candidates.py --files --json > detect_output.json
+
           python - <<'PY'
           import json
-          import os
-          import subprocess
-          from pathlib import Path
-
-          pr_number = os.environ["PR_NUMBER"]
-          files = subprocess.check_output(
-              ["gh", "pr", "view", pr_number, "--json", "files", "--jq", ".files[].path"],
-              text=True,
-          ).splitlines()
-
-          seen = {}
-          for file_name in files:
-              path = Path(file_name)
-              parts = path.parts
-              if len(parts) < 2:
-                  continue
-              if parts[0] == "candidates":
-                  seen[(parts[0], parts[1])] = {
-                      "kind": "candidate",
-                      "slug": parts[1],
-                      "root": f"candidates/{parts[1]}",
-                  }
-              elif parts[0] == "support_datasets":
-                  seen[(parts[0], parts[1])] = {
-                      "kind": "support_dataset",
-                      "slug": parts[1],
-                      "root": f"support_datasets/{parts[1]}",
-                  }
-
-          items = sorted(seen.values(), key=lambda item: (item["kind"], item["slug"]))
-          configs = []
-          for item in items:
-              root = Path(item["root"])
-              sources_root = root / "sources"
-              if sources_root.is_dir():
-                  source_dirs = sorted(path for path in sources_root.iterdir() if path.is_dir())
-                  for source_dir in source_dirs:
-                      config_path = source_dir / "dataset.yml"
-                      configs.append({
-                          **item,
-                          "config_path": config_path.as_posix(),
-                          "config_exists": config_path.exists(),
-                          "push_slug": f"{item['slug']}_{source_dir.name}",
-                          "artifact_name": f"{item['slug']}-{source_dir.name}",
-                      })
-              else:
-                  configs.append({
-                      **item,
-                      "config_path": (root / "dataset.yml").as_posix(),
-                      "config_exists": (root / "dataset.yml").exists(),
-                      "push_slug": item["slug"],
-                      "artifact_name": item["slug"],
-                  })
-
+          d = json.load(open("detect_output.json"))
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
-              out.write(f"has_items={'true' if items else 'false'}\n")
-              out.write(f"has_configs={'true' if configs else 'false'}\n")
+              out.write(f"has_items={str(d['has_items']).lower()}\n")
+              out.write(f"has_configs={str(d['has_configs']).lower()}\n")
               out.write("items<<JSON\n")
-              out.write(json.dumps(items, ensure_ascii=False))
+              out.write(json.dumps(d["items"], ensure_ascii=False))
               out.write("\nJSON\n")
               out.write("configs<<JSON\n")
-              out.write(json.dumps(configs, ensure_ascii=False))
+              out.write(json.dumps(d["configs"], ensure_ascii=False))
               out.write("\nJSON\n")
           PY
 
