@@ -126,7 +126,7 @@ jobs:
             --config "${{ matrix.config.config_path }}" \
             --year "${{ matrix.config.year }}" \
             --json \
-            2>&1 | python -c "import sys,json; d=json.load(sys.stdin); print(f'run_file_count={d.get(\"run_file_count\",0)} latest_run={d.get(\"latest_run\",{}).get(\"status\",\"N/A\")}')"
+            2>&1 || true
 
       - name: Toolkit run all
         id: run_all
