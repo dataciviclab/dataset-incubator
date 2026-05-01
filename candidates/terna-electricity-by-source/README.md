@@ -37,7 +37,18 @@ Promuovere il filone solo se:
 
 ## Stato
 
-- intake
+- **runnable** ✅ — fresh run 2026-05-01: 900 clean / 95 mart rows, 0 errors
+
+## QC — run 20260501T091902Z (2024)
+
+| Layer | Righe | Cols | Status |
+|---|---|---|---|
+| raw | — | — | SUCCESS |
+| clean | 900 | 6 | ✅ |
+| mart | 95 | 6 | ✅ |
+
+- Lorda = Netta (stesso GWh totale, 450 righe ciascuna) — mart usa solo `Netta` come da notes
+- Warning in mart validation: atteso (drop province per aggregazione regionale)
 
 ## Domande complementari
 
