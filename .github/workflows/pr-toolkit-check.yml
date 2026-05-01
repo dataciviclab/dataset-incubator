@@ -13,8 +13,8 @@ jobs:
   detect:
     runs-on: ubuntu-latest
     outputs:
-      has_configs: ${{ steps.changed.outputs.has_configs }}
-      configs: ${{ steps.changed.outputs.configs }}
+      has_configs: ${{ steps.detect.outputs.has_configs }}
+      configs: ${{ steps.detect.outputs.configs }}
     steps:
       - name: Checkout PR commit
         uses: actions/checkout@v4
@@ -23,72 +23,24 @@ jobs:
           fetch-depth: 0
 
       - name: Detect changed candidate/support roots
-        id: changed
+        id: detect
         run: |
+          python scripts/detect_candidates.py \
+            --base-sha "${{ github.event.pull_request.base.sha }}" \
+            --head-sha "${{ github.event.pull_request.head.sha }}" \
+            --json > detect_output.json
+
           python - <<'PY'
           import json, os
-          from pathlib import Path
-
-          base = "${{ github.event.pull_request.base.sha }}"
-          head = "${{ github.event.pull_request.head.sha }}"
-          import subprocess
-          files = subprocess.check_output(
-              ["git", "diff", "--name-only", base, head],
-              text=True
-          ).splitlines()
-
-          seen = {}
-          for f in files:
-              p = Path(f)
-              parts = p.parts
-              if len(parts) < 2:
-                  continue
-              if parts[0] == "candidates":
-                  seen[parts[1]] = ("candidates", parts[1])
-              elif parts[0] == "support_datasets":
-                  seen[parts[1]] = ("support_datasets", parts[1])
-
-          def _resolve_year(cfg):
-              import yaml
-              with open(cfg) as f:
-                  d = yaml.safe_load(f)
-              years = d.get("dataset", {}).get("years", [])
-              return years[-1] if years else 0
-
-          configs = []
-          for kind, slug in sorted(seen.values()):
-              root = Path(kind) / slug
-              sources = root / "sources"
-              if sources.is_dir():
-                  for src in sorted(sources.iterdir()):
-                      cfg = src / "dataset.yml"
-                      if cfg.exists():
-                          year = _resolve_year(cfg)
-                          configs.append({
-                              "kind": kind,
-                              "slug": slug,
-                              "source": src.name,
-                              "config_path": str(cfg),
-                              "year": year,
-                              "artifact_name": f"{slug}-{src.name}",
-                          })
-              else:
-                  cfg = root / "dataset.yml"
-                  if cfg.exists():
-                      year = _resolve_year(cfg)
-                      configs.append({
-                          "kind": kind,
-                          "slug": slug,
-                          "source": None,
-                          "config_path": str(cfg),
-                          "year": year,
-                          "artifact_name": slug,
-                      })
-
-          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
-              out.write(f"has_configs={'true' if configs else 'false'}\n")
+          d = json.load(open("detect_output.json"))
+          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
+              out.write(f"has_items={str(d['has_items']).lower()}\n")
+              out.write(f"has_configs={str(d['has_configs']).lower()}\n")
+              out.write("items<<JSON\n")
+              out.write(json.dumps(d["items"], ensure_ascii=False))
+              out.write("\nJSON\n")
               out.write("configs<<JSON\n")
-              out.write(json.dumps(configs, ensure_ascii=False))
+              out.write(json.dumps(d["configs"], ensure_ascii=False))
               out.write("\nJSON\n")
           PY
 
@@ -118,7 +70,7 @@ jobs:
           cache: 'pip'
 
       - name: Install toolkit
-        run: pip install git+https://github.com/dataciviclab/toolkit.git@main
+        run: pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
 
       - name: Toolkit inspect paths (pre-flight)
         run: |
@@ -155,21 +107,31 @@ jobs:
           YEAR: ${{ matrix.config.year }}
           DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
         run: |
+          set -o pipefail
+          RESULT=$(toolkit blocker-hints --config "$CONFIG_PATH" --year "$YEAR" --json 2>/dev/null)
+
+          if [ -z "$RESULT" ]; then
+            echo "::error::blocker-hints failed or returned empty output"
+            exit 1
+          fi
+
+          echo "$RESULT" > /tmp/blocker_hints.json
+
           python - <<'PY'
-          import json, sys, subprocess, os
-
-          cfg_path = os.environ["CONFIG_PATH"]
-          year = int(os.environ["YEAR"])
-
-          from toolkit.mcp.toolkit_client import blocker_hints
-          bh = blocker_hints(cfg_path, year)
-          blockers = bh.get("blocker_count", 0)
-          warnings = bh.get("warning_count", 0)
-          print(f"blocker_count={blockers}")
-          print(f"warning_count={warnings}")
-          if blockers > 0:
-              print(f"::error::Candidate has {blockers} blocker(s) — fix before merging")
-              sys.exit(1)
+          import json
+          try:
+              with open('/tmp/blocker_hints.json') as f:
+                  d = json.load(f)
+              blockers = d.get('blocker_count', 0)
+              warnings = d.get('warning_count', 0)
+              print('blocker_count=' + str(blockers))
+              print('warning_count=' + str(warnings))
+              if blockers > 0:
+                  print('::error::Candidate has ' + str(blockers) + ' blocker(s) — fix before merging')
+                  exit(1)
+          except json.JSONDecodeError:
+              print('ERROR: failed to parse blocker-hints JSON')
+              exit(1)
           PY
 
       - name: Upload artifacts
