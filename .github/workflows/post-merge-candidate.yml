@@ -158,6 +158,32 @@ jobs:
             --json \
             2>&1 | tee inspect_paths.json || true
 
+      - name: Pre-flight check
+        run: |
+          python - <<'PY'
+          import json, sys
+
+          try:
+              d = json.load(open("inspect_paths.json"))
+          except Exception:
+              print("::warning::Could not parse inspect_paths.json — skipping pre-flight checks")
+              sys.exit(0)
+
+          run_count = d.get("run_file_count", 0)
+          latest = d.get("latest_run") or {}
+          latest_status = latest.get("status", "N/A")
+          latest_run_id = latest.get("run_id", "N/A")
+
+          print(f"::notice::run_file_count={run_count}, latest_run={latest_run_id} ({latest_status})")
+
+          if run_count == 0:
+              print("::warning::No previous runs found for this candidate — this will be a first run")
+          elif latest_status == "FAILED":
+              print(f"::warning::Latest run was FAILED ({latest_run_id})")
+          elif latest_status == "SUCCESS":
+              print(f"::notice::Latest run was SUCCESS ({latest_run_id})")
+          PY
+
       - name: Toolkit run all
         id: run_all
         run: |
@@ -167,22 +193,13 @@ jobs:
             2>&1 | tee run_all.log
 
       - name: Toolkit validate all
+        if: success()
         id: validate_all
         run: |
           toolkit validate all \
             --config "$CONFIG_PATH" \
             --years "${{ steps.resolve.outputs.final_year }}" \
             2>&1 | tee validate_all.json
-
-      - name: Toolkit status latest
-        if: always() && steps.resolve.outputs.slug != ''
-        run: |
-          toolkit status \
-            --dataset "${{ steps.resolve.outputs.slug }}" \
-            --year "${{ steps.resolve.outputs.final_year }}" \
-            --latest \
-            --config "$CONFIG_PATH" \
-            2>&1 | tee status.log || true
 
       - name: Write sample-run result
         if: always()
@@ -233,7 +250,6 @@ jobs:
             inspect_paths.json
             run_all.log
             validate_all.json
-            status.log
             sample_run_result.json
           if-no-files-found: warn
           retention-days: 14
