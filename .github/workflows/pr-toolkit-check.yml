@@ -152,6 +152,7 @@ jobs:
         env:
           CONFIG_PATH: ${{ matrix.config.config_path }}
           YEAR: ${{ matrix.config.year }}
+          DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
         run: |
           python - <<'PY'
           import json, sys, subprocess, os
