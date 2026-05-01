@@ -29,6 +29,6 @@
 
 ## QC 2026-05-01
 
-**Confermato**: Lorda = Netta esattamente (270963 GWh totali, 450 righe ciascuna). Il mart usa `Netta` → nessuna perdita di informazione. Questo scaglie il dubbio metodologico sollevato in notes originarie.
+**Confermato**: Lorda = Netta esattamente (270963 GWh totali, 450 righe ciascuna). Il mart usa `Netta` → nessuna perdita di informazione. Questo scioglie il dubbio metodologico sollevato in notes originarie.
 
 **Output atteso**: mart ha 95 righe = 21 regioni × ~4-6 fonti (aggregazione anno/regione/fonte). Output coerente.
