@@ -30,10 +30,26 @@ Dove si concentra la capacita rinnovabile installata in Italia e quali territori
 - documentazione coerente con il perimetro reale
 - notebook v0 eseguibile senza trasformarlo in analisi pubblica
 
+## QC — 2026-05-01
+
+| Layer | 2023 | 2024 | Status |
+|---|---|---|---|
+| raw | 1161 | 1071 | SUCCESS |
+| clean | 1160 | 1070 | ✅ |
+| mart | 100 | 100 | ✅ |
+
+**Colonne raw → clean (6/6):** `Anno→anno`, `Tipo capacità→tipo_capacita`, `Regione→regione`, `Provincia→provincia`, `Fonti→fonti`, `Potenza efficiente (MW)→potenza_mw`
+
+**Note:**
+- 1 riga filtrata in clean (entrambi gli anni): footer `Applied filters...` senza anno numerico
+- `potenza_mw` null in clean: atteso — Terna riporta null per combinazioni regione/fonte senza capacita installata (non zero implicito)
+- I null propagano al `SUM` in mart: 21 null in mart 2023, 2 in mart 2024
+- **Lorda = Netta**: delta 0.0000% su entrambi gli anni — stesso pattern di `terna-electricity-by-source`
+
 ## Stato
 
-- intake
+- **runnable**
 
 ## Prossimo passo
 
-- verificare il run completo 2023-2024 e lasciare il candidate pronto per review DI
+- PR post-merge: push clean → GCS/BQ, aggiorna registry
