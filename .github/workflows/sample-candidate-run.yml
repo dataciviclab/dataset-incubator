@@ -125,7 +125,7 @@ jobs:
           echo "support_configs=${{ steps.resolve.outputs.support_configs }}"
 
           SUPPORT_JSON='${{ steps.resolve.outputs.support_configs }}'
-          echo "$SUPPORT_JSON" | python -c "import json,sys; support=json.load(sys.stdin); [print(s['config']) for s in support]" | while IFS= read -r SUPPORT; do
+          while IFS= read -r SUPPORT; do
             echo "::notice::Running support dataset: $SUPPORT"
             SUPPORT_YEAR=$(python scripts/resolve_sample_run.py "$SUPPORT" 2>/dev/null | python -c "import json,sys; d=json.load(sys.stdin); print(d.get('sample_year',''))")
             if [ -z "$SUPPORT_YEAR" ]; then
@@ -135,7 +135,7 @@ jobs:
             echo "::notice::Support year: $SUPPORT_YEAR"
             toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}.log"
             toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}.log"
-          done
+          done < <(echo "$SUPPORT_JSON" | python -c "import json,sys; support=json.load(sys.stdin); [print(s['config']) for s in support]")
 
       # ------------------------------------------------------------------
       # Step 3 — Inspect paths + pre-flight check
