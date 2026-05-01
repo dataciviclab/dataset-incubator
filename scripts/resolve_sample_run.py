@@ -1,6 +1,6 @@
 """Resolve sample run parameters from a dataset.yml.
 
-Responsabilità (per issue #154):
+Responsabilita (per issue #154):
   - leggere dataset.yml
   - determinare sample_year (ultimo anno in dataset.years)
   - validare gli input minimi
@@ -63,7 +63,7 @@ def resolve(config_path: str) -> dict:
     years = dataset.get("years", [])
     if not years:
         return {
-            "error": f"No 'dataset.years' in {config_path} — cannot determine sample year",
+            "error": f"No 'dataset.years' in {config_path} -- cannot determine sample year",
             "config_path": str(path),
             "slug": None,
         }
@@ -79,6 +79,35 @@ def resolve(config_path: str) -> dict:
     # Compute slug from config path, NOT from YAML dataset.name
     # This avoids mismatch with pipeline_signals which uses directory names
     parts = path.parts
+
+    # Nested config detection
+    is_nested = "sources" in parts or "compose" in parts
+
+    # Collect support[] entries from dataset config.
+    # Two patterns in use:
+    #   - root level: support: [{name, config, years}]  (es. mim-alunni-corso-eta)
+    #   - inside dataset: dataset.support: [{name, config, years}]  (es. ispra-ru-costi-kg, malasanita, opencivitas)
+    # Try root level first, then dataset.support
+    support_entries = []
+    raw_support = cfg.get("support", []) or []
+    dataset_support = cfg.get("dataset", {}).get("support", []) or []
+    for entry in raw_support + dataset_support:
+        cfg_path = entry.get("config", "")
+        if cfg_path:
+            support_cfg_path = str((path.parent / cfg_path).resolve())
+            try:
+                support_rel = Path(support_cfg_path).relative_to(ROOT)
+            except ValueError:
+                support_rel = Path(support_cfg_path)
+            support_entries.append({
+                "name": entry.get("name", ""),
+                "config": str(support_rel),
+                "years": entry.get("years", []),
+            })
+
+    has_support = len(support_entries) > 0
+
+    # Compute slug from config path relative to ROOT
     try:
         rel = path.relative_to(ROOT)
     except ValueError:
@@ -97,17 +126,16 @@ def resolve(config_path: str) -> dict:
     if slug is None:
         slug = path.parts[-2] if len(path.parts) >= 2 else None
 
-    # Nested config detection
-    is_nested = "sources" in parts or "compose" in parts
-
     return {
         "config_path": str(rel),
         "slug": slug,
         "sample_year": sample_year,
         "all_years": years_int,
         "is_nested": is_nested,
+        "has_support": has_support,
+        "support": support_entries,
         "note": (
-            "nested config — run via source layer"
+            "nested config -- run via source layer"
             if is_nested
             else ""
         ),
