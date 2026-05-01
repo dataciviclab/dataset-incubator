@@ -51,7 +51,8 @@ MART_ROOT = DI_ROOT / "out" / "data" / "mart"
 RUNS_ROOT = DI_ROOT / "out" / "data" / "_runs"
 
 SKIP_DIRS = {"_validate", "_run"}
-SKIP_SLUGS = {"malasanita_struttura_mortalita_source_d_test"}  # slug da escludere dal push
+# NOTE: if specific slugs need to be skipped, pass --slug via CLI instead of hardcoding here.
+SKIP_SLUGS: set[str] = set()
 
 
 def load_google_credentials():

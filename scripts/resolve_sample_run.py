@@ -65,7 +65,7 @@ def resolve(config_path: str) -> dict:
         return {
             "error": f"No 'dataset.years' in {config_path} — cannot determine sample year",
             "config_path": str(path),
-            "slug": name,
+            "slug": None,
         }
 
     # Sample year = last year in the list (most recent)
@@ -76,20 +76,33 @@ def resolve(config_path: str) -> dict:
 
     sample_year = years_int[-1]
 
-    # Determine if nested (config is inside a sources/ or compose/ directory)
+    # Compute slug from config path, NOT from YAML dataset.name
+    # This avoids mismatch with pipeline_signals which uses directory names
     parts = path.parts
-    is_nested = "sources" in parts or "compose" in parts
-
-    # Compute slug from config path relative to ROOT
     try:
         rel = path.relative_to(ROOT)
     except ValueError:
-        # path is absolute or outside ROOT — use as-is
         rel = path
+
+    # Find slug: first segment after 'candidates/' or 'support_datasets/'
+    slug = None
+    for i, part in enumerate(rel.parts):
+        if part in ("candidates", "support_datasets"):
+            if i + 1 < len(rel.parts):
+                slug = rel.parts[i + 1]
+                break
+
+    # Fallback: derive from directory if slug not found (should not happen
+    # for valid candidates, but guards against malformed paths)
+    if slug is None:
+        slug = path.parts[-2] if len(path.parts) >= 2 else None
+
+    # Nested config detection
+    is_nested = "sources" in parts or "compose" in parts
 
     return {
         "config_path": str(rel),
-        "slug": name,
+        "slug": slug,
         "sample_year": sample_year,
         "all_years": years_int,
         "is_nested": is_nested,
