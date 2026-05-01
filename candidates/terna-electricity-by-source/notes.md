@@ -26,3 +26,9 @@
 - l'URL Terna contiene parametri applicativi (`pageSize`, `filterMonth`) da non dare per stabili a lungo
 - finche non leggiamo il workbook non fissiamo ancora foglio, schema o metrica principale
 - `Tipo produzione` ha due valori (`Lorda`, `Netta`) con totale nazionale uguale nei due anni osservati: per il primo mart usiamo `Netta`, ma la ridondanza va ricontrollata prima di trarre conclusioni metodologiche
+
+## QC 2026-05-01
+
+**Confermato**: Lorda = Netta esattamente (270963 GWh totali, 450 righe ciascuna). Il mart usa `Netta` → nessuna perdita di informazione. Questo scioglie il dubbio metodologico sollevato in notes originarie.
+
+**Output atteso**: mart ha 95 righe = 21 regioni × ~4-6 fonti (aggregazione anno/regione/fonte). Output coerente.
