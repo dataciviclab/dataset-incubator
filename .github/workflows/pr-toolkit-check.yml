@@ -125,6 +125,9 @@ jobs:
               warnings = d.get('warning_count', 0)
               print('blocker_count=' + str(blockers))
               print('warning_count=' + str(warnings))
+              if blockers > 0:
+                  print('::error::Candidate has ' + str(blockers) + ' blocker(s) — fix before merging')
+                  exit(1)
           except json.JSONDecodeError:
               print('ERROR: failed to parse blocker-hints JSON')
               exit(1)
