@@ -109,6 +109,13 @@ jobs:
           echo "support_configs=$SUPPORT_JSON" >> $GITHUB_OUTPUT
 
       # ------------------------------------------------------------------
+      # Step 2 — Install toolkit
+      # ------------------------------------------------------------------
+      - name: Install toolkit
+        run: |
+          pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
+
+      # ------------------------------------------------------------------
       # Step 1b — Run support datasets first (if has_support)
       # ------------------------------------------------------------------
       - name: Run support datasets first (if has_support)
@@ -125,13 +132,6 @@ jobs:
             toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}.log"
             toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}.log"
           done
-
-      # ------------------------------------------------------------------
-      # Step 2 — Install toolkit
-      # ------------------------------------------------------------------
-      - name: Install toolkit
-        run: |
-          pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
 
       # ------------------------------------------------------------------
       # Step 3 — Inspect paths + pre-flight check

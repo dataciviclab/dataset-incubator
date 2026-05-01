@@ -106,6 +106,9 @@ jobs:
           echo "has_support=$HAS_SUPPORT" >> "$GITHUB_OUTPUT"
           echo "support_configs=$SUPPORT_JSON" >> "$GITHUB_OUTPUT"
 
+      - name: Install toolkit
+        run: python -m pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
+
       - name: Run support datasets first (if has_support)
         if: steps.resolve.outputs.has_support == 'true'
         run: |
@@ -120,9 +123,6 @@ jobs:
             toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}.log"
             toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}.log"
           done
-
-      - name: Install toolkit
-        run: python -m pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
 
       - name: Toolkit inspect paths
         run: |
