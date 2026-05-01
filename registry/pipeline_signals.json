@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-04-30",
+  "generated_at": "2026-05-01",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -194,7 +194,15 @@
       "status": "ok",
       "label": "terna-electricity-by-source",
       "detail": "anni 2023-2024 — fonte: terna_electricity_by_source_xlsx — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "failed",
+        "run_id": "25211125442",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25211125442",
+        "checked_at": "2026-05-01",
+        "year": 2024,
+        "config_path": "candidates/terna-electricity-by-source/dataset.yml"
+      }
     },
     {
       "id": "bdap-anagrafe-enti",
