@@ -2814,37 +2814,37 @@
           "name": "anno",
           "type": "int32",
           "role": "dimension",
-          "description": ""
+          "description": "Anno di riferimento della misura"
         },
         {
           "name": "tipo_capacita",
           "type": "string",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia di capacita (Lorda o Netta). Lorda: potenza nominale installed; Netta: potenza effettivamente disponibile al netto degli ausiliari"
         },
         {
           "name": "regione",
           "type": "string",
           "role": "dimension",
-          "description": ""
+          "description": "Regione italiana"
         },
         {
           "name": "provincia",
           "type": "string",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia italiana"
         },
         {
           "name": "fonti",
           "type": "string",
           "role": "dimension",
-          "description": ""
+          "description": "Fonte energetica rinnovabile (Fotovoltaico, Eolico, Idroelettrico, Geotermico, Biomasse)"
         },
         {
           "name": "potenza_mw",
           "type": "double",
           "role": "metric",
-          "description": ""
+          "description": "Potenza efficiente installata in MW"
         }
       ],
       "location": {
