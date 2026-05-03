@@ -5,11 +5,12 @@ Questa guida vale per la repo `dataset-incubator`.
 Per le regole GitHub condivise dell'organizzazione, parti prima da
 [`.github`](https://github.com/dataciviclab/.github).
 
-Workflow pubblici del repo:
+Skill pubblici del repo:
 
-- [workflows/README.md](workflows/README.md)
-- [workflows/intake-candidate.md](workflows/intake-candidate.md)
-- [workflows/run-candidate.md](workflows/run-candidate.md)
+- [skills/README.md](skills/README.md)
+- [skills/intake-candidate.md](skills/intake-candidate.md)
+- [skills/run-candidate.md](skills/run-candidate.md)
+- [skills/post-merge-candidate.md](skills/post-merge-candidate.md)
 
 ## A cosa serve questa repo
 
@@ -229,6 +230,16 @@ La promotion serve a fissare:
 - quali artefatti esistono gia'
 - quali rischi restano aperti
 - quale passo concreto viene dopo
+
+## Post-merge: GCS push e clean catalog
+
+Dopo il merge di un candidate, il workflow `Post-Merge Candidate Registry` (GitHub Actions) apre una draft PR di handoff con la checklist dei passi manuali:
+
+1. Run completo `toolkit run all --config candidates/{slug}/dataset.yml`
+2. `python scripts/push_archive.py --layer clean --slug {slug} --create-bq-table --update-catalog --status clean_ready`
+3. `python scripts/build_clean_catalog.py --write` + `--check-gcs`
+
+Vedi [skills/post-merge-candidate.md](skills/post-merge-candidate.md) per il dettaglio completo.
 
 ## Prima di aprire una PR
 

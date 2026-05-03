@@ -67,7 +67,7 @@ dataset-incubator/
     clean-query-mcp/          # MCP per interrogare i clean pubblici
   templates/
     candidate/                 # template di partenza per filone
-  workflows/                   # workflow markdown (riferimento umano)
+  skills/                      # skill markdown (riferimento umano per agenti e operatori)
   scripts/                     # build, validazione, push artifact
   tests/                       # test per script e validazione
   out/                         # output runtime — mai versionato
@@ -119,9 +119,9 @@ I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia
 | `validate-clean-catalog.yml` | Merge su `registry/` | Verifica schema del clean catalog |
 | `sample-candidate-run.yml` | Dispatch (workflow dispatch) | Run di esempio su un candidate specifico |
 
-### Workflow markdown
+### Skill markdown
 
-| Workflow | Quando usarli |
+| Skill | Quando usarli |
 |---|---|
 | `intake-candidate.md` | Valutare se un caso è maturo per entrare in DI |
 | `run-candidate.md` | Esecuzione manuale end-to-end o recovery |
@@ -156,4 +156,4 @@ python scripts/build_clean_catalog.py --check-gcs
 ## Per contribuire
 
 - [CONTRIBUTING.md](CONTRIBUTING.md) — regole per issue, PR e struttura candidate
-- [workflows/README.md](workflows/README.md) — indice dei workflow e quando usarli
+- [skills/README.md](skills/README.md) — indice degli skill e quando usarli
