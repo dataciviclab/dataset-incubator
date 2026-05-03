@@ -1,6 +1,6 @@
 ---
 name: intake-candidate
-description: Workflow canonico di dataset-incubator per decidere se una fonte o discussion abbastanza matura puo' entrare come candidate tecnico credibile.
+description: Workflow canonico di dataset-incubator per decidere se una fonte o discussion abbastanza matura può entrare come candidate tecnico credibile.
 license: MIT
 metadata:
   version: "0.2"
@@ -15,15 +15,15 @@ Versione: 0.2 - 2026-04-07
 
 ## Obiettivo di fase
 
-Decidere se una fonte o una discussion gia' abbastanza matura puo' entrare in
+Decidere se una fonte o una discussion già abbastanza matura può entrare in
 `dataset-incubator` come candidate tecnico credibile.
 
 Questo workflow serve a rispondere a:
 
-- il caso e' abbastanza stretto per entrare in DI?
+- il caso è abbastanza stretto per entrare in DI?
 - esiste una fonte reale e un perimetro iniziale difendibile?
-- l'output minimo atteso e' abbastanza chiaro?
-- il candidate puo' stare in DI senza sconfinare gia' in analisi?
+- l'output minimo atteso è abbastanza chiaro?
+- il candidate può stare in DI senza sconfinare già in analisi?
 
 Non serve a:
 
@@ -34,7 +34,7 @@ Non serve a:
 
 ## Quando usarlo
 
-Usalo quando hai gia':
+Usalo quando hai già:
 
 - una fonte ufficiale o una discussion abbastanza matura
 - una domanda guida o un uso previsto chiaro
@@ -44,11 +44,11 @@ Usalo quando hai gia':
 
 Non usarlo quando:
 
-- la fonte e' ancora troppo larga o troppo opaca
+- la fonte è ancora troppo larga o troppo opaca
 - non sai ancora se il caso regge da solo o solo come support dataset
 - manca ancora un output minimo leggibile
-- il caso e' gia' troppo analisi per stare in DI
-- il layer `clean` sarebbe gia' il taglio finale del mart
+- il caso è già troppo analisi per stare in DI
+- il layer `clean` sarebbe già il taglio finale del mart
 
 ## Preconditions minime
 
@@ -65,24 +65,24 @@ Prima di aprire o consolidare un intake in DI dovrebbero esserci almeno:
 Per `equivalente stretto` intendiamo almeno:
 
 - fonte reale verificata
-- perimetro iniziale gia' formulato
+- perimetro iniziale già formulato
 - domanda o uso previsto leggibile
-- rischio tecnico principale gia' esplicitato
+- rischio tecnico principale già esplicitato
 
 Nel dubbio:
 
-- se il caso e' ancora troppo esplorativo, resta prima in Discussion o source-check
-- se il caso e' molto pulito e gia' ben definito, apri la issue di intake
+- se il caso è ancora troppo esplorativo, resta prima in Discussion o source-check
+- se il caso è molto pulito e già ben definito, apri la issue di intake
 
 ## Stop rules
 
 Fermati e non forzare intake quando:
 
 - il source-check non regge ancora il passaggio in DI
-- il candidate e' gia' troppo analisi
-- il `clean` e' gia' un mart travestito
+- il candidate è già troppo analisi
+- il `clean` è già un mart travestito
 - il perimetro cambia durante l'intake senza riallineamento completo di issue, README, notes, notebook e SQL
-- il caso appartiene in realta' a un altro repo o a una fase successiva
+- il caso appartiene in realtà a un altro repo o a una fase successiva
 
 ## Passi canonici
 
@@ -107,22 +107,22 @@ Compila in modo stretto:
 - domanda guida o uso previsto
 - fonte principale
 - perimetro iniziale
-- perche' vale la pena incubarlo
+- perchè vale la pena incubarlo
 - output minimo atteso
 - prossimo passo operativo
 - rischi noti
 
-Se il candidate esiste gia', riallinea la issue al perimetro reale prima di andare avanti.
+Se il candidate esiste già, riallinea la issue al perimetro reale prima di andare avanti.
 
-Se esiste gia' una PR o un candidate aperto sullo stesso caso:
+Se esiste già una PR o un candidate aperto sullo stesso caso:
 
 - non aprire un doppione
 - riallinea prima il perimetro reale
-- chiarisci cosa stai aggiungendo o correggendo rispetto al lavoro gia' vivo
+- chiarisci cosa stai aggiungendo o correggendo rispetto al lavoro già vivo
 
 ### 3. Crea la struttura minima del candidate
 
-Nel caso single-source, la struttura tipica e':
+Nel caso single-source, la struttura tipica è:
 
 ```text
 candidates/caso/
@@ -161,10 +161,10 @@ Regola pratica:
 Durante l'intake:
 
 - `clean.sql` deve restare layer tecnico
-- `mart.sql` puo' portare il taglio della domanda
-- il notebook v0 deve verificare il mart reale, non anticipare gia' una mini-analisi
+- `mart.sql` può portare il taglio della domanda
+- il notebook v0 deve verificare il mart reale, non anticipare già una mini-analisi
 
-Se il `clean` sta gia' facendo il lavoro del mart, fermati e correggi il boundary.
+Se il `clean` sta già facendo il lavoro del mart, fermati e correggi il boundary.
 
 ### 5. Esegui il minimo tecnico necessario
 
@@ -193,9 +193,9 @@ python -m toolkit.cli.app run clean --config ../dataset-incubator/candidates/{sl
 python -m toolkit.cli.app run mart --config ../dataset-incubator/candidates/{slug}/dataset.yml
 ```
 
-Se il candidate e' nested, usa il `dataset.yml` del source layer giusto.
+Se il candidate è nested, usa il `dataset.yml` del source layer giusto.
 
-Se il server MCP `toolkit` e' attivo nel runtime, puoi usare in alternativa alla CLI:
+Se il server MCP `toolkit` è attivo nel runtime, puoi usare in alternativa alla CLI:
 
 - `toolkit_inspect_paths(config_path)` - verifica path e contract del config
 - `toolkit_blocker_hints(config_path)` - evidenzia mismatch pratici tra output risolti e stato run
@@ -206,7 +206,7 @@ Per il dettaglio del run e dei blocker, il riferimento resta:
 
 ### 6. Aggiungi sempre un notebook v0 reale
 
-Il notebook v0 non e' opzionale.
+Il notebook v0 non è opzionale.
 
 Deve:
 
@@ -240,7 +240,7 @@ Non lasciare un candidate tecnico e un framing pubblico che raccontano due cose 
 
 ### 8. Chiudi l'intake con uno stato chiaro
 
-Lo stato iniziale tipico e':
+Lo stato iniziale tipico è:
 
 - label `intake`
 
@@ -258,7 +258,7 @@ Non forzare `runnable` se il primo run non regge davvero.
 
 ## Errori tipici
 
-- aprire intake quando il caso e' ancora troppo esplorativo
+- aprire intake quando il caso è ancora troppo esplorativo
 - usare un source-check troppo debole e chiamarlo comunque pronto per DI
 - lasciare mismatch tra issue, `dataset.yml`, README, notes e notebook
 - far fare a `clean` il lavoro che dovrebbe stare in `mart`
@@ -278,10 +278,10 @@ Un intake buono lascia:
 
 ## Definition of done
 
-Il workflow e' considerato chiuso bene quando:
+Il workflow è considerato chiuso bene quando:
 
 - il candidate resta nel boundary tecnico di `dataset-incubator`
-- non c'e' salto di fase nascosto in `clean`, `mart` o notebook
+- non c'è salto di fase nascosto in `clean`, `mart` o notebook
 - esiste almeno un run verificato oppure un blocker tecnico specifico
 - README, notes, notebook e mart sono coerenti sullo stesso perimetro
 - non ci sono file temporanei o macchina-specifici nel candidate
@@ -298,7 +298,7 @@ Prima di considerare l'intake abbastanza sano da aprire una PR o chiedere review
   - `runnable`
   - `scaffolded_with_blocker`
   - `wait`
-- se il server MCP `toolkit` e' disponibile, `toolkit_review_readiness(config_path)` anticipa i check minimi di readiness: config valida, layer presenti, output leggibili, coerenza run record
+- se il server MCP `toolkit` è disponibile, `toolkit_review_readiness(config_path)` anticipa i check minimi di readiness: config valida, layer presenti, output leggibili, coerenza run record
 
 ## Dove orientarsi
 

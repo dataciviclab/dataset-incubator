@@ -13,7 +13,7 @@ Workflow pubblici del repo:
 
 ## A cosa serve questa repo
 
-`dataset-incubator` e' il luogo di intake e incubazione tecnica leggera dei
+`dataset-incubator` è il luogo di intake e incubazione tecnica leggera dei
 filoni dati del Lab.
 
 Qui stanno soprattutto:
@@ -79,7 +79,7 @@ Nel dubbio, l'intake deve avere almeno:
 - output minimo atteso
 - prossimo passo concreto
 
-Lo stato iniziale tipico e':
+Lo stato iniziale tipico è:
 
 - label `intake`
 
@@ -98,7 +98,7 @@ Stati pratici:
 Regola pratica:
 
 - una volta preso in carico un intake serio, il filone passa di solito da `intake` a `incubating`
-- quando il passaggio fuori da DI e' maturo, si apre o usa l'issue di promotion
+- quando il passaggio fuori da DI è maturo, si apre o usa l'issue di promotion
 
 ## Struttura minima di un candidate
 
@@ -124,7 +124,7 @@ Template di partenza:
 
 Nota pratica:
 
-- `notebooks/` non e' obbligatoria per ogni intake, ma un notebook `v0` minimale e' consigliato quando aiuta a validare il mart con check base prima della promozione
+- `notebooks/` non è obbligatoria per ogni intake, ma un notebook `v0` minimale è consigliato quando aiuta a validare il mart con check base prima della promozione
 
 ### Multi-source
 
@@ -186,13 +186,13 @@ Esempi tipici di area grigia:
 
 Quando succede, la scelta va spiegata in `notes.md` con una riga chiara:
 
-- che cosa viene escluso o trasformato
-- perche' non basta lasciarlo al `mart`
+ - che cosa viene escluso o trasformato
+- perché non basta lasciarlo al `mart`
 - quale rischio si evita
 
 ## Setup minimo per contribuire
 
-La configurazione locale minima del Lab e' documentata in:
+La configurazione locale minima del Lab è documentata in:
 
 - `dataciviclab/docs/local-setup.md`
 
@@ -225,7 +225,7 @@ Usa il template `promotion.yml` quando il filone sembra pronto per:
 
 La promotion serve a fissare:
 
-- perche' il filone e' pronto a uscire
+- perché il filone è pronto a uscire
 - quali artefatti esistono gia'
 - quali rischi restano aperti
 - quale passo concreto viene dopo

@@ -12,4 +12,4 @@ Nel repo:
 - `intake-candidate.md` spiega come entra un nuovo filone o support dataset in DI
 - `run-candidate.md` spiega come eseguire un candidate end-to-end e leggere gli output
 
-I workflow cross-repo piu' completi del Lab restano in `lab-ops`.
+I workflow cross-repo più completi del Lab restano in `lab-ops`.

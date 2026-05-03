@@ -21,7 +21,7 @@ disciplinato, se:
 - il candidate gira davvero
 - i layer `raw`, `clean` e `mart` vengono prodotti
 - gli output risultano leggibili
-- il problema, se c'e', e' un blocker tecnico chiaro oppure solo rumore
+- il problema, se c'è, è un blocker tecnico chiaro oppure solo rumore
 
 Questo workflow serve a:
 
@@ -39,7 +39,7 @@ Non serve a:
 
 ## Quando usarlo
 
-Usalo quando hai gia':
+Usalo quando hai già:
 
 - un candidate con struttura minima reale
 - un `dataset.yml` chiaro da usare come entrypoint
@@ -50,10 +50,10 @@ Usalo quando hai gia':
 
 Non usarlo quando:
 
-- il candidate e' ancora nella fase di intake immaturo
+- il candidate è ancora nella fase di intake immaturo
 - manca ancora il boundary tra `clean` e `mart`
-- la fonte non e' ancora abbastanza verificata
-- il lavoro vero e' ormai debugging complesso di pipeline e richiede un workflow piu' stretto
+- la fonte non è ancora abbastanza verificata
+- il lavoro vero è ormai debugging complesso di pipeline e richiede un workflow piu' stretto
 
 ## Preconditions minime
 
@@ -66,7 +66,7 @@ Prima del run dovrebbero esserci almeno:
 - candidate esistente in `candidates/{slug}/`
 - `dataset.yml` presente e coerente col layer che vuoi eseguire
 - `sql/` presenti se il candidate prevede `clean` e `mart`
-- un `README.md` o `notes.md` che dica almeno qual e' il perimetro
+- un `README.md` o `notes.md` che dica almeno qual è il perimetro
 
 Nel dubbio:
 
@@ -77,13 +77,13 @@ Nel dubbio:
 Fermati e non forzare il run quando:
 
 - il candidate non ha ancora una struttura minima
-- non e' chiaro quale config sia l'entrypoint reale
-- il problema e' ancora di fase precedente:
+- non è chiaro quale config sia l'entrypoint reale
+- il problema è ancora di fase precedente:
   - scouting
   - source-check
   - boundary del candidate
-- il `clean` e' gia' un mart travestito e il run starebbe solo nascondendo il problema
-- dopo un primo errore reale stai gia' cambiando troppe cose insieme senza aver isolato il blocker
+- il `clean` è già un mart travestito e il run starebbe solo nascondendo il problema
+- dopo un primo errore reale stai già cambiando troppe cose insieme senza aver isolato il blocker
 
 ## Passi canonici
 
@@ -129,7 +129,7 @@ Prima di lanciare tutto, verifica almeno:
 - che `root` e cartelle di output siano coerenti
 - che il candidate non stia leggendo o scrivendo in percorsi inattesi
 
-Se il contract dei path non e' chiaro, fermati prima del run completo.
+Se il contract dei path non è chiaro, fermati prima del run completo.
 
 Step pre-flight (equivalente al controllo manuale di cui sopra):
 
@@ -138,7 +138,7 @@ cd toolkit
 python -m toolkit.cli.app inspect paths --config ../dataset-incubator/candidates/{slug}/dataset.yml --json
 ```
 
-Se il server MCP `toolkit` e' attivo nel runtime, puoi usare in alternativa:
+Se il server MCP `toolkit` è attivo nel runtime, puoi usare in alternativa:
 
 ```
 toolkit_inspect_paths(config_path) → run_file_count, years_seen, latest_run, path contract verificato
@@ -167,15 +167,15 @@ python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug
 Regola:
 
 - partire dal minimo run che risponde alla domanda tecnica del momento
-- non fare subito piu' run diversi se il primo non e' ancora chiaro
+- non fare subito piu' run diversi se il primo non è ancora chiaro
 
 ### 5. Controlla gli output
 
 Dopo il run, controlla almeno:
 
-- se il comando e' completato senza errori
+- se il comando è completato senza errori
 - se `raw`, `clean` e `mart` sono stati prodotti dove atteso
-- qual e' il primo file utile da aprire
+- qual è il primo file utile da aprire
 
 I percorsi tipici sono dentro:
 
@@ -183,12 +183,12 @@ I percorsi tipici sono dentro:
 - `out/data/clean/...`
 - `out/data/mart/...`
 
-Se esiste, il primo file piu' utile da guardare e' spesso il `mart`.
+Se esiste, il primo file piu' utile da guardare è spesso il `mart`.
 
 Segnale minimo di output leggibile:
 
 - il file si apre
-- non e' vuoto
+- non è vuoto
 - le colonne principali sono coerenti con la domanda o col layer atteso
 - non ci sono rotture evidenti o valori palesemente fuori posto
 
@@ -199,7 +199,7 @@ cd toolkit
 python -m toolkit.cli.app inspect paths --config ../dataset-incubator/candidates/{slug}/dataset.yml --json
 ```
 
-Se il server MCP `toolkit` e' attivo nel runtime:
+Se il server MCP `toolkit` è attivo nel runtime:
 
 ```
 toolkit_inspect_paths(config_path)   → path contract + run metadata (run_file_count, years_seen, latest_run)
@@ -229,14 +229,14 @@ Se utile, chiudi il blocker con una formula semplice:
 - `blocco SQL`
 - `blocco validazione`
 
-Diagnostica failure con MCP (se il server toolkit e' attivo):
+Diagnostica failure con MCP (se il server toolkit è attivo):
 
 ```
 toolkit_list_runs(config_path, status="FAILED", limit=5)
     → ultimi 5 run falliti: run_id, started_at, error dal record
 
 toolkit_run_summary(config_path)
-    → run_rate, failed_count, avg_duration; utile per capire se il fallimento e' isolato o ricorrente
+    → run_rate, failed_count, avg_duration; utile per capire se il fallimento è isolato o ricorrente
 ```
 
 Non usare questo workflow per:
@@ -253,7 +253,7 @@ Il workflow dovrebbe uscire in uno di questi stati:
 - `scaffolded_with_blocker`
 - `wait`
 
-Se il server MCP `toolkit` e' attivo, `toolkit_review_readiness(config_path)` esegue i check di readiness prima di passare alla review: config valida, layer presenti, output leggibili, coerenza run record.
+Se il server MCP `toolkit` è attivo, `toolkit_review_readiness(config_path)` esegue i check di readiness prima di passare alla review: config valida, layer presenti, output leggibili, coerenza run record.
 
 `runnable`:
 
@@ -288,13 +288,13 @@ Un run utile lascia:
 
 ## Definition of done
 
-Il workflow e' chiuso bene quando:
+Il workflow è chiuso bene quando:
 
-- l'entrypoint usato e' chiaro
-- l'esito e' classificato in modo netto
+- l'entrypoint usato è chiaro
+- l'esito è classificato in modo netto
 - esiste almeno un output verificato oppure un blocker tecnico preciso
 - non sono stati nascosti problemi di boundary del candidate dietro il run
-- il prossimo passo e' esplicito e piccolo
+- il prossimo passo è esplicito e piccolo
 
 ## Stati finali ammessi
 
