@@ -16,9 +16,9 @@ source-observatory  →  dataset-incubator  →  toolkit  →  GCS  →  data-ex
 
 Un filone entra in DI in due modi:
 
-1. **Da Source Observatory** — dopo un `source-check` con verdetto `go Discussion`, si apre una Discussion in `dataciviclab`. Quando viene applicata la label `intake`, la GitHub Action `discussion-to-intake.yml` crea automaticamente una issue qui con il template `new-candidate.yml`.
+1. **Da Source Observatory** — dopo un `source-check` con verdetto `go Discussion`, la GitHub Action `discussion-to-intake.yml` in `dataciviclab` crea automaticamente una issue in `dataset-incubator` (label `intake`) usando il template `new-candidate.yml`.
 
-2. **Proposta diretta** — chiunque può aprire una Discussion in `dataciviclab`; se è abbastanza matura, riceve la label `intake` e il flusso prosegue come sopra.
+2. **Proposta diretta** — chiunque può aprire una issue con lo stesso template; se è abbastanza matura, riceve la label `intake` e il flusso prosegue.
 
 ### Processamento
 
@@ -55,15 +55,21 @@ Ogni filone attivo è tracciato in una issue con label:
 
 ```text
 dataset-incubator/
-  registry/
-    clean_catalog.json          # catalogo dei clean pubblici
-    pipeline_signals.json       # stato dei run per filone
-  tools/
-    clean-query-mcp/           # MCP per interrogare i clean pubblici
-  templates/
-    candidate/                 # template di partenza
+  .github/
+    workflows/                  # GitHub Actions automatizzate
+    ISSUE_TEMPLATE/            # template per issue candidate e promotion
   candidates/                  # filoni attivi e passati
-  support_datasets/             # basi trasversali
+  support_datasets/            # basi trasversali riusabili
+  registry/
+    clean_catalog.json         # catalogo dei clean pubblici
+    pipeline_signals.json      # stato dei run per filone
+  tools/
+    clean-query-mcp/          # MCP per interrogare i clean pubblici
+  templates/
+    candidate/                 # template di partenza per filone
+  workflows/                   # workflow markdown (riferimento umano)
+  scripts/                     # build, validazione, push artifact
+  tests/                       # test per script e validazione
   out/                         # output runtime — mai versionato
 ```
 
@@ -102,13 +108,30 @@ candidates/<slug>/
 
 I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia come GitHub Actions (per l'esecuzione automatica):
 
-| Workflow / Action | Dove | Quando |
+### GitHub Actions
+
+| Action | Trigger | Cosa fa |
 |---|---|---|
-| `discussion-to-intake.yml` | `.github/workflows/` | Automatico: label `intake` su Discussion |
-| `intake-candidate.md` | `workflows/` | Quando valutare se il caso è maturo |
-| `post-merge-candidate.yml` | `.github/workflows/` | Automatico: dopo ogni merge su `candidates/` |
-| `run-candidate.md` | `workflows/` | Esecuzione manuale o recovery |
-| `promote-analisi` | `lab-ops/skills/` | Quando un filone è pronto per `analisi/` |
+| `validate-candidate-structure.yml` | PR su `candidates/` | Verifica che ogni candidate abbia `dataset.yml` valido |
+| `pr-toolkit-check.yml` | PR su `candidates/` | Controlla consistenza schema, path e file obbligatori |
+| `post-merge-candidate.yml` | Merge su `candidates/` | Esegue il candidate via toolkit (raw → clean → mart) |
+| `build-pipeline-signals.yml` | Merge su `candidates/` | Aggiorna `registry/pipeline_signals.json` |
+| `validate-clean-catalog.yml` | Merge su `registry/` | Verifica schema del clean catalog |
+| `sample-candidate-run.yml` | Dispatch (workflow dispatch) | Run di esempio su un candidate specifico |
+
+### Workflow markdown
+
+| Workflow | Quando usarli |
+|---|---|
+| `intake-candidate.md` | Valutare se un caso è maturo per entrare in DI |
+| `run-candidate.md` | Esecuzione manuale end-to-end o recovery |
+| `post-merge-candidate.md` | Checklist del maintainer dopo il merge (run, GCS push, clean catalog) |
+
+### Cross-repo
+
+| Risorsa | Dove | Quando |
+|---|---|---|
+| `promote-analisi` | `lab-ops/skills/` | Quando un filone è pronto per `dataciviclab/analisi/` |
 
 ## Regole operative
 
