@@ -53,7 +53,7 @@ Non usarlo quando:
 - il candidate è ancora nella fase di intake immaturo
 - manca ancora il boundary tra `clean` e `mart`
 - la fonte non è ancora abbastanza verificata
-- il lavoro vero è ormai debugging complesso di pipeline e richiede un workflow piu' stretto
+- il lavoro vero è ormai debugging complesso di pipeline e richiede un workflow più stretto
 
 ## Preconditions minime
 
@@ -167,7 +167,7 @@ python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug
 Regola:
 
 - partire dal minimo run che risponde alla domanda tecnica del momento
-- non fare subito piu' run diversi se il primo non è ancora chiaro
+- non fare subito più run diversi se il primo non è ancora chiaro
 
 ### 5. Controlla gli output
 
@@ -183,7 +183,7 @@ I percorsi tipici sono dentro:
 - `out/data/clean/...`
 - `out/data/mart/...`
 
-Se esiste, il primo file piu' utile da guardare è spesso il `mart`.
+Se esiste, il primo file più utile da guardare è spesso il `mart`.
 
 Segnale minimo di output leggibile:
 
