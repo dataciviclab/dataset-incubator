@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-01",
+  "generated_at": "2026-05-03",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 27,
+    "total": 28,
     "by_status": {
-      "ok": 27,
+      "ok": 28,
       "warn": 0,
       "error": 0
     }
@@ -53,6 +53,21 @@
       "label": "dipendenti-pubblici",
       "detail": "anni 2010-2023 — fonte: bdap_csv — mart: sì",
       "action": ""
+    },
+    {
+      "id": "inps-cig",
+      "status": "ok",
+      "label": "inps-cig",
+      "detail": "anno 2024 — fonte: inps_cig_annuale — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25276463099",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25276463099",
+        "checked_at": "2026-05-03",
+        "year": 2024,
+        "config_path": "candidates/inps-cig/dataset.yml"
+      }
     },
     {
       "id": "inps-pensioni",
