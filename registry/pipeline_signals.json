@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-03",
+  "generated_at": "2026-05-04",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -95,7 +95,33 @@
       "status": "ok",
       "label": "ispra-ru-costi-kg",
       "detail": "anni 2020-2024 — multi-source (3 fonti) — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25315407298",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25315407298",
+        "checked_at": "2026-05-04",
+        "years": [
+          2024
+        ],
+        "configs": [
+          {
+            "status": "passed",
+            "year": 2024,
+            "config_path": "candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml"
+          },
+          {
+            "status": "passed",
+            "year": 2024,
+            "config_path": "candidates/ispra-ru-costi-kg/sources/b_kg_per_abitante/dataset.yml"
+          },
+          {
+            "status": "passed",
+            "year": 2024,
+            "config_path": "candidates/ispra-ru-costi-kg/sources/c_costo_per_abitante/dataset.yml"
+          }
+        ]
+      }
     },
     {
       "id": "istat-gini-regionale",
