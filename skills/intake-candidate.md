@@ -60,7 +60,7 @@ Verifica che siano necessari e non sostituibili con un join a mart esistente.
 Check rapido pre-flight:
 
 ```bash
-python -m toolkit.cli.app inspect paths --config ../dataset-incubator/candidates/{slug}/dataset.yml --json
+toolkit inspect paths --config candidates/{slug}/dataset.yml --json
 ```
 
 Oppure MCP: `toolkit_inspect_paths(config_path)` → path contract verificato.
@@ -68,9 +68,14 @@ Oppure MCP: `toolkit_inspect_paths(config_path)` → path contract verificato.
 Run + valida:
 
 ```bash
-cd toolkit
-python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/dataset.yml --years 2024
-python -m toolkit.cli.app validate all --config ../dataset-incubator/candidates/{slug}/dataset.yml --years 2024
+toolkit run all --config candidates/{slug}/dataset.yml --years 2024
+toolkit validate all --config candidates/{slug}/dataset.yml --years 2024
+```
+
+Usa `--strict-config` per intercettare campi legacy o deprecati:
+
+```bash
+toolkit run all --config candidates/{slug}/dataset.yml --years 2024 --strict-config
 ```
 
 Se fallisce → MCP `toolkit_blocker_hints(config_path)` per isolare il primo errore. Blocker specifico documentato, non formulaico.

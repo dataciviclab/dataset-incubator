@@ -38,8 +38,7 @@ git pull origin main
 ### 2. Run completo
 
 ```bash
-cd toolkit
-python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/dataset.yml
+toolkit run all --config candidates/{slug}/dataset.yml
 ```
 
 Copre tutti gli anni dichiarati nel config.
@@ -47,7 +46,7 @@ Copre tutti gli anni dichiarati nel config.
 ### 3. Valida
 
 ```bash
-python -m toolkit.cli.app validate all --config ../dataset-incubator/candidates/{slug}/dataset.yml
+toolkit validate all --config candidates/{slug}/dataset.yml
 ```
 
 ### 4. Push GCS + BQ
@@ -72,18 +71,18 @@ python scripts/build_clean_catalog.py --write
 python scripts/build_clean_catalog.py --check-gcs
 ```
 
-Aggiorna `clean_catalog.json` nella draft PR:
+Aggiorna `clean_catalog.json` nella draft PR (`post-merge-candidate/pr-<N>-registry`):
 
 - **sempre** — per compilare i campi mancanti: `name`, `description`, `source`, `columns[].role`, `columns[].description`
 - **se slug nuovo** — crea l'entry completa
 - **se `multi_file` flag cambiato** o **GCS path cambiato** — aggiorna struttura e path
 
-Se serve:
-
 ```bash
+# Il branch della draft PR e' gia' checkout dal workflow
+# Aggiungi le modifiche al catalog e pusha sul branch della PR
 git add registry/clean_catalog.json
 git commit -m "chore({slug}): aggiorna clean_catalog post-push GCS"
-git push
+git push origin post-merge-candidate/pr-<N>-registry
 ```
 
 ### 6. Chiudi draft PR

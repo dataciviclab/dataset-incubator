@@ -30,8 +30,7 @@ Stop: candidate immaturo, boundary clean/mart assente, problema di fase preceden
 ### 1. Pre-flight
 
 ```bash
-cd toolkit
-python -m toolkit.cli.app inspect paths --config ../dataset-incubator/candidates/{slug}/dataset.yml --json
+toolkit inspect paths --config candidates/{slug}/dataset.yml --json
 ```
 
 Oppure MCP: `toolkit_inspect_paths(config_path)` → `run_file_count >= 1`, `latest_run.status` verificato.
@@ -39,7 +38,7 @@ Oppure MCP: `toolkit_inspect_paths(config_path)` → `run_file_count >= 1`, `lat
 ### 2. Run
 
 ```bash
-python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/dataset.yml --years 2024
+toolkit run all --config candidates/{slug}/dataset.yml --years 2024
 ```
 
 **Two-phase**: se `dataset.yml` ha `support`, i support girano prima del main — in locale e in CI.
@@ -49,7 +48,7 @@ python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug
 ### 3. Valida
 
 ```bash
-python -m toolkit.cli.app validate all --config ../dataset-incubator/candidates/{slug}/dataset.yml --years 2024
+toolkit validate all --config candidates/{slug}/dataset.yml --years 2024
 ```
 
 Oppure MCP: `toolkit_review_readiness(config_path)` → `ready | needs-review | incomplete`.
