@@ -23,12 +23,19 @@ jobs:
         uses: actions/setup-python@v6
         with:
           python-version: "3.11"
+          cache: 'pip'
 
       - name: Validate candidate structure
         run: python scripts/validate_candidate_structure.py
 
+      - name: Install test deps
+        run: pip install ruff mypy types-pyyaml types-requests pytest
+
       - name: Ruff
-        run: pip install ruff && ruff check scripts/ tools/
+        run: ruff check scripts/ tools/
 
       - name: Mypy
-        run: pip install mypy types-pyyaml types-requests && mypy scripts/ tools/
+        run: mypy scripts/ tools/
+
+      - name: Pytest
+        run: python -m pytest tests/ -q --tb=line

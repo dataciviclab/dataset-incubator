@@ -379,7 +379,7 @@ def push_mart(gcs_client, bq_client, slug_filter=None, year_filter=None, dry_run
                 gcs_path = f"{slug}/{year}/{parq.name}"
                 push_gcs(gcs_client, parq, GCS_MART_BUCKET, gcs_path, dry_run)
                 if bq_client:
-                    push_bq(bq_client, pq, slug, year, dry_run)
+                    push_bq(bq_client, parq, slug, year, dry_run)
         print()
 
 
