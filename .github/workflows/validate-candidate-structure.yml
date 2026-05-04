@@ -31,4 +31,4 @@ jobs:
         run: pip install ruff && ruff check scripts/ tools/
 
       - name: Mypy
-        run: pip install mypy && mypy scripts/ tools/
+        run: pip install mypy types-pyyaml types-requests && mypy scripts/ tools/

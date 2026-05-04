@@ -56,10 +56,10 @@ jobs:
 
     steps:
       - name: Checkout dataset-incubator
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: 'pip'
@@ -120,25 +120,39 @@ jobs:
       # ------------------------------------------------------------------
       - name: Run support datasets first (if has_support)
         if: steps.resolve.outputs.has_support == 'true'
+        env:
+          SUPPORT_JSON: ${{ steps.resolve.outputs.support_configs }}
         run: |
           echo "::notice::This candidate has support dependencies. Running support datasets first."
-          echo "support_configs=${{ steps.resolve.outputs.support_configs }}"
+          echo "$SUPPORT_JSON" > /tmp/support_configs.json
 
-          SUPPORT_JSON='${{ steps.resolve.outputs.support_configs }}'
-          # Emit "config|year1,year2,..." for each support, then process in while (main shell)
-          while IFS='|' read -r SUPPORT YEARS; do
-            echo "::notice::Running support dataset: $SUPPORT"
-            if [ -z "$YEARS" ]; then
-              echo "::error::No years declared for support $SUPPORT"
-              exit 1
-            fi
-            echo "::notice::Support years: $YEARS"
-            for SUPPORT_YEAR in $(echo "$YEARS" | tr ',' ' '); do
-              echo "::notice::Running support $SUPPORT for year $SUPPORT_YEAR"
-              toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
-              toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
-            done
-          done < <(echo "$SUPPORT_JSON" | python -c "import json,sys; support=json.load(sys.stdin); [print(s['config']+'|'+','.join(str(y) for y in s['years'])) for s in support]")
+          python - <<'PY'
+          import json, os, subprocess
+
+          with open("/tmp/support_configs.json") as f:
+              support_list = json.load(f)
+
+          for entry in support_list:
+              config = entry["config"]
+              years = entry.get("years", [])
+              name = entry.get("name", config)
+              print(f"::notice::Running support dataset: {name} ({config})")
+              for year in years:
+                  log_tag = config.replace("/", "_").replace(".", "_")
+                  print(f"::notice::Running support {config} for year {year}")
+                  for cmd, log_name in [
+                      (["toolkit", "run", "all", "--config", config, "--years", str(year)], f"support_run_{log_tag}_{year}"),
+                      (["toolkit", "validate", "all", "--config", config, "--years", str(year)], f"support_validate_{log_tag}_{year}"),
+                  ]:
+                      with open(log_name, "w") as lf:
+                          result = subprocess.run(cmd, capture_output=True, text=True)
+                          lf.write(result.stdout)
+                          if result.stderr:
+                              lf.write("\nSTDERR:\n" + result.stderr)
+                          if result.returncode != 0:
+                              print(f"::error::{cmd[0]} {cmd[1]} fallito per {config} anno {year} (exit={result.returncode})")
+                              exit(1)
+          PY
 
       # ------------------------------------------------------------------
       # Step 3 — Inspect paths + pre-flight check
@@ -186,6 +200,7 @@ jobs:
       - name: Toolkit run all
         id: run_all
         run: |
+          set -o pipefail
           toolkit run all \
             --config "$CONFIG_PATH" \
             --years "${{ steps.resolve.outputs.final_year }}" \
@@ -198,6 +213,7 @@ jobs:
       - name: Toolkit validate all
         if: success()
         run: |
+          set -o pipefail
           toolkit validate all \
             --config "$CONFIG_PATH" \
             --years "${{ steps.resolve.outputs.final_year }}" \
