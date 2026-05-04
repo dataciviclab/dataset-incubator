@@ -1,13 +1,23 @@
--- NOTE OPERATIVA:
--- Questo mart usa intenzionalmente il 2024 come lookup fisso per:
--- 1. calcolare le mediane del quadrante_costo;
--- 2. derivare il cluster_demografico dal mart_cross_comuni 2024.
+-- mart_compose_v2.sql — ISPRA RU costi kg
 --
--- Conseguenza: su un clone fresco va materializzato prima il 2024 e solo dopo
--- gli altri anni. Il lookup 2024 segue l'effective_root del dataset tramite
--- il placeholder {root_posix}, quindi non dipende piu' dal current working
--- directory.
-
+-- PREREQUISITO: questo SQL richiede un toolkit che espone {root_posix}
+-- nel template runtime. I read_parquet seguono l'effective_root del dataset
+-- invece di dipendere dal current working directory.
+--
+-- ORDINE OBBLIGATORIO:
+--   1. Materializzare l'anno 2024 prima di qualsiasi altro anno
+--   2. Solo dopo eseguire gli altri anni (es. 2020, 2021, 2022, 2023)
+--   Motivo: sample_2024 e cluster_lookup_2024 leggono sempre
+--   {root_posix}/data/mart/ispra_ru_base/2024/mart_cross_comuni.parquet
+--   che deve esistere prima che gli altri anni vengano processati.
+--
+-- SCELTA ANALITICA: le soglie (soglia_rd_2024, soglia_costo_euro_ab_2024)
+-- e il cluster demografico sono calcolati sui dati 2024 e usati come
+-- riferimento fisso per tutti gli anni. Questo è intenzionale: vogliamo
+-- classificare la serie storica rispetto al contesto attuale (2024),
+-- non rispetto alle mediane di ogni singolo anno.
+-- quadrante_costo è valorizzato solo per anno = 2024.
+--
 WITH base AS (
     SELECT *
     FROM read_parquet(

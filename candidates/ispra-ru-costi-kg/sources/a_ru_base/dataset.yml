@@ -5,6 +5,14 @@ dataset:
   name: "ispra_ru_base"
   years: [2020, 2021, 2022, 2023, 2024]
 
+support:
+  - name: b
+    config: ../b_kg_per_abitante/dataset.yml
+    years: [2020, 2021, 2022, 2023, 2024]
+  - name: c
+    config: ../c_costo_per_abitante/dataset.yml
+    years: [2020, 2021, 2022, 2023, 2024]
+
 raw:
   sources:
     - name: "ispra_ru_base_http_csv"
