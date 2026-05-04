@@ -29,7 +29,9 @@ jobs:
         run: python scripts/validate_candidate_structure.py
 
       - name: Install test deps
-        run: pip install ruff mypy types-pyyaml types-requests pytest
+        run: |
+          pip install ruff mypy types-pyyaml types-requests pytest
+          pip install -r tools/clean-query-mcp/requirements.txt 2>/dev/null || true
 
       - name: Ruff
         run: ruff check scripts/ tools/
