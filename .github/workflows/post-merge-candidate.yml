@@ -132,8 +132,8 @@ jobs:
                   log_tag = config.replace("/", "_").replace(".", "_")
                   print(f"::notice::Running support {config} for year {year}")
                   for cmd, log_name in [
-                      (["toolkit", "run", "all", "--config", config, "--years", str(year)], f"support_run_{log_tag}_{year}"),
-                      (["toolkit", "validate", "all", "--config", config, "--years", str(year)], f"support_validate_{log_tag}_{year}"),
+                      (["toolkit", "run", "all", "--config", config, "--years", str(year)], f"support_run_{log_tag}_{year}.log"),
+                      (["toolkit", "validate", "all", "--config", config, "--years", str(year)], f"support_validate_{log_tag}_{year}.log"),
                   ]:
                       with open(log_name, "w") as lf:
                           result = subprocess.run(cmd, capture_output=True, text=True)
@@ -248,6 +248,7 @@ jobs:
             run_all.log
             validate_all.json
             sample_run_result.json
+            support_*.log
           if-no-files-found: warn
           retention-days: 14
 

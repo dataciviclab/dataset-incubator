@@ -153,8 +153,8 @@ jobs:
                   log_tag = config.replace("/", "_").replace(".", "_")
                   print(f"::notice::Running support {config} for year {year}")
                   for cmd, log in [
-                      (["toolkit", "run", "all", "--config", config, "--years", str(year)], f"support_run_{log_tag}_{year}"),
-                      (["toolkit", "validate", "all", "--config", config, "--years", str(year)], f"support_validate_{log_tag}_{year}"),
+                      (["toolkit", "run", "all", "--config", config, "--years", str(year)], f"support_run_{log_tag}_{year}.log"),
+                      (["toolkit", "validate", "all", "--config", config, "--years", str(year)], f"support_validate_{log_tag}_{year}.log"),
                   ]:
                       with open(log, "w") as lf:
                           result = subprocess.run(cmd, capture_output=True, text=True)
