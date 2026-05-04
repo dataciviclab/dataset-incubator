@@ -78,7 +78,10 @@ Aggiorna `clean_catalog.json` nella draft PR (`post-merge-candidate/pr-<N>-regis
 - **se `multi_file` flag cambiato** o **GCS path cambiato** — aggiorna struttura e path
 
 ```bash
-# Il branch della draft PR e' gia' checkout dal workflow
+# Checkout del branch della draft PR (creato dal workflow post-merge)
+git fetch origin post-merge-candidate/pr-<N>-registry
+git checkout post-merge-candidate/pr-<N>-registry
+
 # Aggiungi le modifiche al catalog e pusha sul branch della PR
 git add registry/clean_catalog.json
 git commit -m "chore({slug}): aggiorna clean_catalog post-push GCS"
