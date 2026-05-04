@@ -24,3 +24,9 @@ jobs:
 
       - name: Validate candidate structure
         run: python scripts/validate_candidate_structure.py
+
+      - name: Ruff
+        run: pip install ruff && ruff check scripts/ tools/
+
+      - name: Mypy
+        run: pip install mypy && mypy scripts/ tools/
