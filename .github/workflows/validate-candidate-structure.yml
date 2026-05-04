@@ -5,7 +5,9 @@ on:
     paths:
       - "candidates/**"
       - "support_datasets/**"
-      - "scripts/validate_candidate_structure.py"
+      - "scripts/**"
+      - "tools/**"
+      - "pyproject.toml"
       - "README.md"
       - "CONTRIBUTING.md"
 
