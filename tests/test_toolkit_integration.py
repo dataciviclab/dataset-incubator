@@ -1,14 +1,15 @@
 """Integration test: lancia toolkit su un candidate minimo e verifica output.
 
-Richiede `toolkit` installato nel PATH e un candidato template valido.
+Richiede `toolkit` installato nel PATH.
 
-Non fa parte del fast-test suite perche' chiama un eseguibile esterno.
+Skip automatico se toolkit non e' disponibile (es. in validate-candidate-structure CI).
 """
 
 from __future__ import annotations
 
 import csv
 import json
+import shutil
 import subprocess
 import tempfile
 from pathlib import Path
@@ -17,6 +18,11 @@ import pytest
 
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE_DIR = ROOT / "templates" / "candidate"
+
+pytestmark = pytest.mark.skipif(
+    shutil.which("toolkit") is None,
+    reason="toolkit non installato nel PATH (test di integrazione)",
+)
 
 
 def _write_csv(path: Path, rows: list[list[str]]) -> None:
