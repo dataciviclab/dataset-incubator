@@ -17,13 +17,13 @@ jobs:
       configs: ${{ steps.detect.outputs.configs }}
     steps:
       - name: Checkout PR commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: 'pip'
@@ -67,13 +67,13 @@ jobs:
 
     steps:
       - name: Checkout PR commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.head.sha }}
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: 'pip'
@@ -82,7 +82,7 @@ jobs:
         run: python -m pip install pyyaml
 
       - name: Install toolkit
-        run: pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
+        run: pip install git+https://github.com/dataciviclab/toolkit.git@v1.4.0
 
       - name: Resolve support dependencies
         id: resolve_support
@@ -136,21 +136,35 @@ jobs:
           SUPPORT_JSON: ${{ steps.resolve_support.outputs.support_configs }}
         run: |
           echo "::notice::This candidate has support dependencies. Running support datasets in the same runner."
-          echo "support_configs=$SUPPORT_JSON"
+          echo "$SUPPORT_JSON" > /tmp/support_configs.json
 
-          while IFS='|' read -r SUPPORT YEARS; do
-            echo "::notice::Running support dataset: $SUPPORT"
-            if [ -z "$YEARS" ]; then
-              echo "::error::No years declared for support $SUPPORT"
-              exit 1
-            fi
-            echo "::notice::Support years: $YEARS"
-            for SUPPORT_YEAR in $(echo "$YEARS" | tr ',' ' '); do
-              echo "::notice::Running support $SUPPORT for year $SUPPORT_YEAR"
-              toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
-              toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
-            done
-          done < <(echo "$SUPPORT_JSON" | python -c "import json,sys; support=json.load(sys.stdin); [print(s['config']+'|'+','.join(str(y) for y in s['years'])) for s in support]")
+          python - <<'PY'
+          import json, os, subprocess
+
+          with open("/tmp/support_configs.json") as f:
+              support_list = json.load(f)
+
+          for entry in support_list:
+              config = entry["config"]
+              years = entry.get("years", [])
+              name = entry.get("name", config)
+              print(f"::notice::Running support dataset: {name} ({config})")
+              for year in years:
+                  log_tag = config.replace("/", "_").replace(".", "_")
+                  print(f"::notice::Running support {config} for year {year}")
+                  for cmd, log in [
+                      (["toolkit", "run", "all", "--config", config, "--years", str(year)], f"support_run_{log_tag}_{year}.log"),
+                      (["toolkit", "validate", "all", "--config", config, "--years", str(year)], f"support_validate_{log_tag}_{year}.log"),
+                  ]:
+                      with open(log, "w") as lf:
+                          result = subprocess.run(cmd, capture_output=True, text=True)
+                          lf.write(result.stdout)
+                          if result.stderr:
+                              lf.write("\nSTDERR:\n" + result.stderr)
+                          if result.returncode != 0:
+                              print(f"::error::{cmd[0]} {cmd[1]} fallito per {config} anno {year} (exit={result.returncode})")
+                              exit(1)
+          PY
 
       - name: Toolkit inspect paths (pre-flight)
         run: |
@@ -164,6 +178,7 @@ jobs:
       - name: Toolkit run all
         id: run_all
         run: |
+          set -o pipefail
           toolkit run all \
             --config "${{ matrix.config.config_path }}" \
             --years "${{ matrix.config.year }}" \
@@ -174,6 +189,7 @@ jobs:
         if: success()
         id: validate_all
         run: |
+          set -o pipefail
           toolkit validate all \
             --config "${{ matrix.config.config_path }}" \
             --years "${{ matrix.config.year }}" \

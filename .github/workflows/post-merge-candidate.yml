@@ -22,7 +22,7 @@ jobs:
 
     steps:
       - name: Checkout merge commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: 0
@@ -69,13 +69,13 @@ jobs:
 
     steps:
       - name: Checkout merge commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
           cache: 'pip'
@@ -107,29 +107,43 @@ jobs:
           echo "support_configs=$SUPPORT_JSON" >> "$GITHUB_OUTPUT"
 
       - name: Install toolkit
-        run: python -m pip install git+https://github.com/dataciviclab/toolkit.git@v1.3.0
+        run: python -m pip install git+https://github.com/dataciviclab/toolkit.git@v1.4.0
 
       - name: Run support datasets first (if has_support)
         if: steps.resolve.outputs.has_support == 'true'
+        env:
+          SUPPORT_JSON: ${{ steps.resolve.outputs.support_configs }}
         run: |
           echo "::notice::This candidate has support dependencies. Running support datasets first."
-          echo "support_configs=${{ steps.resolve.outputs.support_configs }}"
+          echo "$SUPPORT_JSON" > /tmp/support_configs.json
 
-          SUPPORT_JSON='${{ steps.resolve.outputs.support_configs }}'
-          # Emit "config|year1,year2,..." for each support, then process in while (main shell)
-          while IFS='|' read -r SUPPORT YEARS; do
-            echo "::notice::Running support dataset: $SUPPORT"
-            if [ -z "$YEARS" ]; then
-              echo "::error::No years declared for support $SUPPORT"
-              exit 1
-            fi
-            echo "::notice::Support years: $YEARS"
-            for SUPPORT_YEAR in $(echo "$YEARS" | tr ',' ' '); do
-              echo "::notice::Running support $SUPPORT for year $SUPPORT_YEAR"
-              toolkit run all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_run_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
-              toolkit validate all --config "$SUPPORT" --years "$SUPPORT_YEAR" 2>&1 | tee "support_validate_${SUPPORT//\//_}_${SUPPORT_YEAR}.log"
-            done
-          done < <(echo "$SUPPORT_JSON" | python -c "import json,sys; support=json.load(sys.stdin); [print(s['config']+'|'+','.join(str(y) for y in s['years'])) for s in support]")
+          python - <<'PY'
+          import json, os, subprocess
+
+          with open("/tmp/support_configs.json") as f:
+              support_list = json.load(f)
+
+          for entry in support_list:
+              config = entry["config"]
+              years = entry.get("years", [])
+              name = entry.get("name", config)
+              print(f"::notice::Running support dataset: {name} ({config})")
+              for year in years:
+                  log_tag = config.replace("/", "_").replace(".", "_")
+                  print(f"::notice::Running support {config} for year {year}")
+                  for cmd, log_name in [
+                      (["toolkit", "run", "all", "--config", config, "--years", str(year)], f"support_run_{log_tag}_{year}.log"),
+                      (["toolkit", "validate", "all", "--config", config, "--years", str(year)], f"support_validate_{log_tag}_{year}.log"),
+                  ]:
+                      with open(log_name, "w") as lf:
+                          result = subprocess.run(cmd, capture_output=True, text=True)
+                          lf.write(result.stdout)
+                          if result.stderr:
+                              lf.write("\nSTDERR:\n" + result.stderr)
+                          if result.returncode != 0:
+                              print(f"::error::{cmd[0]} {cmd[1]} fallito per {config} anno {year} (exit={result.returncode})")
+                              exit(1)
+          PY
 
       - name: Toolkit inspect paths
         run: |
@@ -168,6 +182,7 @@ jobs:
       - name: Toolkit run all
         id: run_all
         run: |
+          set -o pipefail
           toolkit run all \
             --config "$CONFIG_PATH" \
             --years "${{ steps.resolve.outputs.final_year }}" \
@@ -177,6 +192,7 @@ jobs:
         if: success()
         id: validate_all
         run: |
+          set -o pipefail
           toolkit validate all \
             --config "$CONFIG_PATH" \
             --years "${{ steps.resolve.outputs.final_year }}" \
@@ -232,6 +248,7 @@ jobs:
             run_all.log
             validate_all.json
             sample_run_result.json
+            support_*.log
           if-no-files-found: warn
           retention-days: 14
 
@@ -247,13 +264,13 @@ jobs:
 
     steps:
       - name: Checkout merge commit
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha }}
           fetch-depth: 0
 
       - name: Set up Python
-        uses: actions/setup-python@v5
+        uses: actions/setup-python@v6
         with:
           python-version: "3.11"
 
@@ -292,64 +309,68 @@ jobs:
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
         run: |
-          node <<'NODE'
-          const fs = require('fs');
-          const items = JSON.parse(process.env.ITEMS_JSON || '[]');
-          const configs = JSON.parse(process.env.CONFIGS_JSON || '[]');
-          const sampleResult = process.env.SAMPLE_RESULT || 'skipped';
-          const samplePassed = sampleResult === 'success';
-          const pipelineSignalsChanged = process.env.PIPELINE_SIGNALS_CHANGED === 'true';
+          python - <<'PY'
+          import json, os
 
-          const list = items
-            .map((item) => `- \`${item.slug}\` (${item.kind}, \`${item.root}\`)`)
-            .join('\n');
+          items = json.loads(os.environ.get("ITEMS_JSON", "[]"))
+          configs = json.loads(os.environ.get("CONFIGS_JSON", "[]"))
+          sample_result = os.environ.get("SAMPLE_RESULT", "skipped")
+          sample_passed = sample_result == "success"
+          signals_changed = os.environ.get("PIPELINE_SIGNALS_CHANGED", "false") == "true"
+          pr_number = os.environ.get("PR_NUMBER", "?")
+          pr_title = os.environ.get("PR_TITLE", "?")
 
-          const sampleList = configs
-            .map((item) => `- \`${item.config_path}\` -> artifact \`sample-run-${item.artifact_name}\``)
-            .join('\n');
+          item_list = "\n".join(f'- `{i["slug"]}` ({i["kind"]}, `{i["root"]}`)' for i in items)
+          sample_list = "\n".join(
+              f'- `{c["config_path"]}` -> artifact `sample-run-{c["artifact_name"]}`'
+              for c in configs
+          ) or "- No sample-run config detected"
 
-          const commands = [];
-          for (const item of configs) {
-            commands.push(`toolkit run all --config ${item.config_path}`);
-            commands.push(`toolkit validate all --config ${item.config_path}`);
-            commands.push(`python scripts/push_archive.py --layer clean --slug ${item.push_slug} --create-bq-table --update-catalog --status clean_ready`);
-          }
-          commands.push('python scripts/build_clean_catalog.py --write');
-          commands.push('python scripts/build_clean_catalog.py --check-gcs');
+          commands = []
+          for c in configs:
+              commands.append(f"toolkit run all --config {c['config_path']}")
+              commands.append(f"toolkit validate all --config {c['config_path']}")
+              commands.append(
+                  f"python scripts/push_archive.py --layer clean --slug {c['push_slug']} "
+                  f"--create-bq-table --update-catalog --status clean_ready"
+              )
+          commands.append("python scripts/build_clean_catalog.py --write")
+          commands.append("python scripts/build_clean_catalog.py --check-gcs")
 
-          const body = [
-            `## Post-merge registry handoff`,
-            '',
-            `Source PR: #${process.env.PR_NUMBER} — ${process.env.PR_TITLE}`,
-            '',
-            'Changed candidate/support roots:',
-            '',
-            list,
-            '',
-            '## Automatic updates',
-            '',
-            `- [x] Rebuilt \`registry/pipeline_signals.json\`${pipelineSignalsChanged ? '' : ' (no diff)'}`,
-            `- [${samplePassed ? 'x' : ' '}] Sample-run CI completed (${sampleResult})`,
-            '- [ ] Full maintainer run completed',
-            '- [ ] Clean parquet pushed to GCS/BQ',
-            '- [ ] `registry/clean_catalog.json` updated after GCS push',
-            '- [ ] `python scripts/build_clean_catalog.py --check-gcs` passes',
-            '',
-            '## Sample-run artifacts',
-            '',
-            sampleList || '- No sample-run config detected',
-            '',
-            '## Maintainer commands',
-            '',
-            '```bash',
-            ...commands,
-            '```',
-            '',
-            'Keep this PR as draft until the GCS/BQ push and clean catalog validation are complete.',
-          ].join('\n');
+          body = "\n".join([
+              "## Post-merge registry handoff",
+              "",
+              f"Source PR: #{pr_number} — {pr_title}",
+              "",
+              "Changed candidate/support roots:",
+              "",
+              item_list,
+              "",
+              "## Automatic updates",
+              "",
+              f"- [x] Rebuilt `registry/pipeline_signals.json`{' (no diff)' if not signals_changed else ''}",
+              f"- [{'x' if sample_passed else ' '}] Sample-run CI completed ({sample_result})",
+              "- [ ] Full maintainer run completed",
+              "- [ ] Clean parquet pushed to GCS/BQ",
+              "- [ ] `registry/clean_catalog.json` updated after GCS push",
+              "- [ ] `python scripts/build_clean_catalog.py --check-gcs` passes",
+              "",
+              "## Sample-run artifacts",
+              "",
+              sample_list,
+              "",
+              "## Maintainer commands",
+              "",
+              "```bash",
+              "\n".join(commands),
+              "```",
+              "",
+              "Keep this PR as draft until the GCS/BQ push and clean catalog validation are complete.",
+          ])
 
-          fs.writeFileSync('post_merge_pr_body.md', body + '\n');
-          NODE
+          with open("post_merge_pr_body.md", "w", encoding="utf-8") as f:
+              f.write(body + "\n")
+          PY
 
       - name: Create draft registry PR
         env:

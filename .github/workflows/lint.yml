@@ -1,0 +1,43 @@
+name: Lint
+
+on:
+  pull_request:
+    paths:
+      - "scripts/**"
+      - "tools/**"
+      - "pyproject.toml"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "tools/**"
+      - "pyproject.toml"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout dataset-incubator
+        uses: actions/checkout@v6
+
+      - name: Set up Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: |
+          pip install ruff mypy types-pyyaml types-requests pytest
+          pip install git+https://github.com/dataciviclab/toolkit.git@v1.4.0
+          pip install -r tools/clean-query-mcp/requirements.txt 2>/dev/null || true
+
+      - name: Ruff
+        run: ruff check scripts/ tools/
+
+      - name: Mypy
+        run: mypy scripts/ tools/
+
+      - name: Pytest
+        run: python -m pytest tests/ -q --tb=line

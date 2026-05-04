@@ -24,7 +24,18 @@ jobs:
       - name: Build pipeline_signals.json
         run: python scripts/build_pipeline_signals.py
 
+      - name: Check registry diff
+        id: diff
+        run: |
+          if git diff --quiet -- registry/pipeline_signals.json; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            echo "Nessuna modifica a pipeline_signals.json — skip PR"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Create update PR
+        if: steps.diff.outputs.changed == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
         run: |

@@ -13,7 +13,7 @@ from urllib.request import urlopen
 DI_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
 CATALOG_PATH = Path(os.environ.get("CLEAN_QUERY_CATALOG_PATH", DEFAULT_CATALOG_PATH))
-_cache: dict[str, Any] | None = None
+_cache: list[dict[str, Any]] | None = None
 _cache_lock = threading.Lock()
 
 # GCS resolution cache: { (slug, year): (timestamp, [urls]) }

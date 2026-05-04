@@ -5,15 +5,16 @@ Questa guida vale per la repo `dataset-incubator`.
 Per le regole GitHub condivise dell'organizzazione, parti prima da
 [`.github`](https://github.com/dataciviclab/.github).
 
-Workflow pubblici del repo:
+Skill pubblici del repo:
 
-- [workflows/README.md](workflows/README.md)
-- [workflows/intake-candidate.md](workflows/intake-candidate.md)
-- [workflows/run-candidate.md](workflows/run-candidate.md)
+- [skills/README.md](skills/README.md)
+- [skills/intake-candidate.md](skills/intake-candidate.md)
+- [skills/run-candidate.md](skills/run-candidate.md)
+- [skills/post-merge-candidate.md](skills/post-merge-candidate.md)
 
 ## A cosa serve questa repo
 
-`dataset-incubator` e' il luogo di intake e incubazione tecnica leggera dei
+`dataset-incubator` è il luogo di intake e incubazione tecnica leggera dei
 filoni dati del Lab.
 
 Qui stanno soprattutto:
@@ -79,7 +80,7 @@ Nel dubbio, l'intake deve avere almeno:
 - output minimo atteso
 - prossimo passo concreto
 
-Lo stato iniziale tipico e':
+Lo stato iniziale tipico è:
 
 - label `intake`
 
@@ -98,7 +99,7 @@ Stati pratici:
 Regola pratica:
 
 - una volta preso in carico un intake serio, il filone passa di solito da `intake` a `incubating`
-- quando il passaggio fuori da DI e' maturo, si apre o usa l'issue di promotion
+- quando il passaggio fuori da DI è maturo, si apre o usa l'issue di promotion
 
 ## Struttura minima di un candidate
 
@@ -124,7 +125,7 @@ Template di partenza:
 
 Nota pratica:
 
-- `notebooks/` non e' obbligatoria per ogni intake, ma un notebook `v0` minimale e' consigliato quando aiuta a validare il mart con check base prima della promozione
+- `notebooks/` non è obbligatoria per ogni intake, ma un notebook `v0` minimale è consigliato quando aiuta a validare il mart con check base prima della promozione
 
 ### Multi-source
 
@@ -186,13 +187,13 @@ Esempi tipici di area grigia:
 
 Quando succede, la scelta va spiegata in `notes.md` con una riga chiara:
 
-- che cosa viene escluso o trasformato
-- perche' non basta lasciarlo al `mart`
+ - che cosa viene escluso o trasformato
+- perché non basta lasciarlo al `mart`
 - quale rischio si evita
 
 ## Setup minimo per contribuire
 
-La configurazione locale minima del Lab e' documentata in:
+La configurazione locale minima del Lab è documentata in:
 
 - `dataciviclab/docs/local-setup.md`
 
@@ -225,10 +226,20 @@ Usa il template `promotion.yml` quando il filone sembra pronto per:
 
 La promotion serve a fissare:
 
-- perche' il filone e' pronto a uscire
+- perché il filone è pronto a uscire
 - quali artefatti esistono gia'
 - quali rischi restano aperti
 - quale passo concreto viene dopo
+
+## Post-merge: GCS push e clean catalog
+
+Dopo il merge di un candidate, il workflow `Post-Merge Candidate Registry` (GitHub Actions) apre una draft PR di handoff con la checklist dei passi manuali:
+
+1. Run completo `toolkit run all --config candidates/{slug}/dataset.yml`
+2. `python scripts/push_archive.py --layer clean --slug {slug} --create-bq-table --update-catalog --status clean_ready`
+3. `python scripts/build_clean_catalog.py --write` + `--check-gcs`
+
+Vedi [skills/post-merge-candidate.md](skills/post-merge-candidate.md) per il dettaglio completo.
 
 ## Prima di aprire una PR
 

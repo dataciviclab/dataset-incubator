@@ -140,9 +140,12 @@ def _inspect_multi_source(base_dir: Path) -> dict:
 
 def _build_signal(slug: str, base_dir: Path) -> dict:
     """Build a single signal entry for a candidate."""
+    from typing import Any
+
     layout_info = detect_candidate_layout(base_dir)
     layout = layout_info["layout"]
 
+    info: dict[str, Any]
     if layout == "support-dataset":
         # support_datasets follow single-source validation but are tracked separately
         info = {

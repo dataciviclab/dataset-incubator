@@ -2,215 +2,158 @@
 
 Repo di incubazione tecnica per i dataset candidati e le basi trasversali del Lab.
 
-Questa repo e' la casa permanente del contratto tecnico di ogni filone: `dataset.yml`, SQL, pipeline.
-Il lavoro qui serve a validare la fonte, restringere la domanda e stabilizzare l'output minimo.
+Qui si valida la fonte, si restringe la domanda e si stabilizza l'output minimo.
 
-Se vuoi contribuire operativamente in questa repo:
+Un **filone** è un percorso di lavoro che parte da una domanda civica e arriva a un dataset o un'analisi pubblica. Il contratto tecnico di ogni filone (`dataset.yml`, SQL, pipeline) vive qui in modo permanente — anche quando il lavoro pubblico finisce altrove.
 
-- leggi [CONTRIBUTING.md](CONTRIBUTING.md)
-- vedi anche [workflows/README.md](workflows/README.md)
-
-Non serve per:
-
-- backlog indefinito
-- test puramente engine del `toolkit`
-- contenuti editoriali o community ops
-
-## Ruolo nell'ecosistema
+## Come funziona il flusso
 
 ```
 source-observatory  →  dataset-incubator  →  toolkit  →  GCS  →  data-explorer
 ```
 
-I candidati arrivano principalmente da due percorsi:
-- **source-observatory**: portali PA scoperti e classificati da portal-scout, promossi manualmente a intake dopo verifica
-- **Discussions**: domanda civica aperta in `dataciviclab`, che identifica una fonte e avvia il ciclo di intake
+### Entrata
 
-Una volta qui, il contratto tecnico (`dataset.yml`, SQL, pipeline) rimane permanente — anche quando i dati vengono pubblicati altrove.
+Un filone entra in DI in due modi:
 
-## Relazione con analisi/ e le repo progetto
+1. **Da Source Observatory** — dopo un `source-check` con verdetto `go Discussion`, la GitHub Action `discussion-to-intake.yml` in `dataciviclab` crea automaticamente una issue in `dataset-incubator` (label `intake`) usando il template `new-candidate.yml`.
 
-Il contratto tecnico (dataset.yml, sql/, pipeline) vive qui — anche dopo che il filone
-e' entrato in `dataciviclab/analisi/` o in una repo dedicata.
+2. **Proposta diretta** — chiunque può aprire una issue con lo stesso template; se è abbastanza matura, riceve la label `intake` e il flusso prosegue.
 
-- `dataciviclab/analisi/`: layer pubblico del filone (README civico, notebook, Discussion collegata)
-- repo progetto dedicata: per filoni che richiedono sviluppo continuativo e governance propria
+### Processamento
 
-`dataset-incubator` non e' un passo intermedio: e' il riferimento tecnico permanente.
+1. **Valutazione intake** — si verifica che il caso sia abbastanza stretto con `intake-candidate.md`
+2. **Creazione candidate** — si crea la struttura in `candidates/<slug>/` (`dataset.yml`, `sql/`, `notebooks/`, `notes.md`)
+3. **PR e run automatico** — dopo ogni merge, `post-merge-candidate.yml` esegue il candidate via `toolkit` e valida raw → clean → mart
+4. **Run successivi** — si usano `run-candidate.md` per esecuzioni manuali o verifiche
 
-## Regole operative
+### Uscita
 
-- tenere vivi al massimo 2-3 filoni davvero attivi
-- ogni filone deve avere domanda, dataset, output minimo e criterio di uscita
-- se un filone e' pronto per il layer pubblico, entra in `dataciviclab/analisi/`
-- i dataset trasversali non entrano in `analisi/` per default
+Un filone esce da DI in tre modi:
+
+- **`dataciviclab/analisi/`** — quando è pronto per un primo layer pubblico (via skill `promote-analisi`)
+- **repo progetto dedicata** — quando il filone merita una casa autonoma
+- **archiviazione** — quando il caso non regge o non è prioritario
+
+Il contratto tecnico resta sempre qui, non viene rimosso.
 
 ## Stato dei filoni
 
-Ogni filone attivo ha una issue con label di stato:
+Ogni filone attivo è tracciato in una issue con label:
 
-- `intake` — entrato, source-check non ancora completato
-- `incubating` — lavoro attivo in corso
-- `ready-for-promotion` — pronto per il layer pubblico in `dataciviclab/analisi/`
-- `promoted` — layer pubblico attivo
-- `support-dataset` — base trasversale riusabile, non candidato di filone
+| Label | Significato |
+|---|---|
+| `intake` | Entrato, in valutazione |
+| `incubating` | Lavoro attivo |
+| `ready-for-promotion` | Pronto per il layer pubblico |
+| `promoted` | Uscito verso `analisi/` |
+| `support-dataset` | Base trasversale riusabile — non è un filone |
 
-Regola pratica:
-
-- le **issues** sono il tracker vivo di ingresso, stato e uscita dei filoni
-- l'intake entra con issue dedicata
-- il passaggio a `analisi/` si registra con issue o label di promozione coerente
+**Support dataset**: è un dataset di supporto (es. anagrafica comuni, dizionario codici) usato per join o arricchimenti. Non entra mai in `analisi/` — serve solo a chi lavora su altri filoni.
 
 ## Struttura
 
 ```text
 dataset-incubator/
+  .github/
+    workflows/                  # GitHub Actions automatizzate
+    ISSUE_TEMPLATE/            # template per issue candidate e promotion
+  candidates/                  # filoni attivi e passati
+  support_datasets/            # basi trasversali riusabili
   registry/
-    clean_catalog.json
-    clean_catalog.schema.json
+    clean_catalog.json         # catalogo dei clean pubblici
+    pipeline_signals.json      # stato dei run per filone
   tools/
-    clean-query-mcp/
+    clean-query-mcp/          # MCP per interrogare i clean pubblici
   templates/
-    dataset-notes.md
-    candidate/
-  candidates/
-  support_datasets/
-  out/
-    data/
-    logs/
+    candidate/                 # template di partenza per filone
+  skills/                      # skill markdown (riferimento umano per agenti e operatori)
+  scripts/                     # build, validazione, push artifact
+  tests/                       # test per script e validazione
+  out/                         # output runtime — mai versionato
 ```
 
 ## Pattern di struttura
 
-I candidati seguono due pattern a seconda del numero di fonti.
-
-**Single-source** - fonte unica, `dataset.yml` in root del candidato:
+**Single-source** — una fonte sola:
 
 ```text
-candidates/caso/
+candidates/<slug>/
   dataset.yml
   notes.md
-  README.md
   notebooks/
-    caso_v0.ipynb
+    v0.ipynb
   sql/
     clean.sql
     mart.sql
 ```
 
-**Multi-source** - piu' fonti indipendenti + compose finale:
+**Multi-source** — più fonti indipendenti + compose:
 
 ```text
-candidates/caso/
+candidates/<slug>/
   notes.md
-  README.md
   sources/
-    a_fonte/
+    <fonte-a>/
       dataset.yml
       sql/clean.sql, mart.sql
-    b_fonte/
+    <fonte-b>/
       ...
   compose/
     dataset.yml
     sql/mart_compose.sql
 ```
 
-Il template base e' in `templates/candidate/` e segue il pattern single-source.
-Il notebook `v0` e' opzionale ma consigliato come sanity check del mart prima della promozione.
+## Workflow e azioni
 
-## Uscita da `dataset-incubator`
+I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia come GitHub Actions (per l'esecuzione automatica):
 
-Quando un filone matura, puo' uscire in tre modi:
+### GitHub Actions
 
-- **`dataciviclab/analisi/`**
-  quando e' pronto per un primo layer pubblico: README civico, notebook leggibile, Discussion collegata
-- **repo progetto dedicata**
-  quando il filone diventa abbastanza ricco e autonomo da meritare una casa propria
-- **archiviazione**
-  quando il candidate non regge o non e' prioritario
+| Action | Trigger | Cosa fa |
+|---|---|---|
+| `validate-candidate-structure.yml` | PR su `candidates/` | Verifica che ogni candidate abbia `dataset.yml` valido |
+| `pr-toolkit-check.yml` | PR su `candidates/` | Controlla consistenza schema, path e file obbligatori |
+| `post-merge-candidate.yml` | Merge su `candidates/` | Esegue il candidate via toolkit (raw → clean → mart) |
+| `build-pipeline-signals.yml` | Merge su `candidates/` | Aggiorna `registry/pipeline_signals.json` |
+| `validate-clean-catalog.yml` | Merge su `registry/` | Verifica schema del clean catalog |
+| `sample-candidate-run.yml` | Dispatch (workflow dispatch) | Run di esempio su un candidate specifico |
 
-In tutti i casi il contratto tecnico (dataset.yml, sql/) resta qui — non viene rimosso.
+### Skill markdown
 
-Checklist operativa breve:
+| Skill | Quando usarli |
+|---|---|
+| `intake-candidate.md` | Valutare se un caso è maturo per entrare in DI |
+| `run-candidate.md` | Esecuzione manuale end-to-end o recovery |
+| `post-merge-candidate.md` | Checklist del maintainer dopo il merge (run, GCS push, clean catalog) |
 
-- vedi [PROMOTION_CHECKLIST.md](PROMOTION_CHECKLIST.md)
+### Cross-repo
 
-## Regola di archiviazione
+| Risorsa | Dove | Quando |
+|---|---|---|
+| `promote-analisi` | `lab-ops/skills/` | Quando un filone è pronto per `dataciviclab/analisi/` |
 
-Quando un candidato viene promosso o chiuso:
+## Regole operative
 
-- ridurre il README del candidato a traccia minima (stato, motivo, puntatore)
-- i file tecnici (dataset.yml, sql/, notebook) restano come riferimento permanente
-
-## Significato delle cartelle
-
-- `registry/`: catalogo clean pubblico (`clean_catalog.json`)
-- `tools/clean-query-mcp/`: MCP read-only per interrogare i clean pubblici dal Lab Clean Registry
-- `templates/`: note di supporto e template operativo (`candidate/`)
-- `candidates/`: filoni con domanda e potenziale di promozione
-- `support_datasets/`: basi trasversali riusabili per join o controlli
-- `out/`: runtime locale del toolkit, mai contenuto di progetto
-
-## Contenuto attuale
-
-La repo parte volutamente stretta e contiene un mix minimo di:
-
-- `candidates/`
-- `support_datasets/`
-
-Filoni gia' con layer pubblico in `dataciviclab/analisi/`:
-
-- `irpef-comunale` — capacita' fiscale IRPEF per comuni e regioni
-- `civile-flussi` — flussi della giustizia civile nei territori
-- `dipendenti-pubblici` — dinamica del pubblico impiego per comparto
-- `malasanita-struttura-mortalita` — mortalita' evitabile e dotazione sanitaria
-- `terna-electricity-by-source` — mix elettrico italiano per fonte
-
-Fuori dal perimetro attuale:
-
-- `SIOPE`, gia' repo progetto dedicata
-
-## Relazione con le altre repo
-
-- `dataciviclab`: hub pubblico, Discussions, issue, `analisi/`
-- `dataset-incubator`: contratto tecnico permanente dei filoni
-- repo progetto: lavoro su filoni con sviluppo continuativo
+- Massimo 2-3 filoni attivi alla volta
+- Ogni filone ha: domanda, dataset, output minimo, criterio di uscita
+- I filoni escono verso `dataciviclab/analisi/` quando il dato è stabile e la domanda è pubblica
+- I support dataset non entrano mai in `analisi/`
 
 ## Runtime locale
 
-Gli output del toolkit vivono sotto `out/` e non devono essere versionati.
-
-Regola pratica:
-
-- usa `out/data/...` per il runtime reale
-- usa `registry/` e le cartelle `candidates/`, `support_datasets/` per il contenuto della repo
+Gli output del toolkit vivono sotto `out/` — non vanno mai versionati. Il contenuto della repo è in `candidates/`, `support_datasets/` e `registry/`.
 
 ## Lab Clean Registry
 
-Il catalogo dei clean pubblici vive in:
-
-- `registry/clean_catalog.json`
-- `registry/clean_catalog.schema.json`
-
-Per normalizzare il catalogo:
+I clean pubblici del Lab sono tracciati in `registry/clean_catalog.json`. Per aggiornarlo:
 
 ```bash
 python scripts/build_clean_catalog.py --write
-```
-
-Per verificare anche i path GCS pubblici:
-
-```bash
 python scripts/build_clean_catalog.py --check-gcs
 ```
 
-## Workflow pubblici del repo
+## Per contribuire
 
-I workflow ricorrenti e propri di `dataset-incubator` stanno in:
-
-- [workflows/README.md](workflows/README.md)
-
-Per ora:
-
-- [intake-candidate.md](workflows/intake-candidate.md)
-- [run-candidate.md](workflows/run-candidate.md)
+- [CONTRIBUTING.md](CONTRIBUTING.md) — regole per issue, PR e struttura candidate
+- [skills/README.md](skills/README.md) — indice degli skill e quando usarli

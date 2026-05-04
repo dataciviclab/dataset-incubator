@@ -322,9 +322,9 @@ def push_clean(gcs_client, slug_filter=None, year_filter=None, dry_run=False):
 
         print(f"[{slug}] anni: {years}")
         for year in years:
-            for pq in get_parquets(slug_dir / year):
-                gcs_path = f"{slug}/{year}/{pq.name}"
-                push_gcs(gcs_client, pq, GCS_CLEAN_BUCKET, gcs_path, dry_run)
+            for parq in get_parquets(slug_dir / year):
+                gcs_path = f"{slug}/{year}/{parq.name}"
+                push_gcs(gcs_client, parq, GCS_CLEAN_BUCKET, gcs_path, dry_run)
                 if dry_run:
                     rows = None
                 else:
@@ -375,11 +375,11 @@ def push_mart(gcs_client, bq_client, slug_filter=None, year_filter=None, dry_run
             ensure_bq_dataset(bq_client, slug, dry_run)
 
         for year in years:
-            for pq in get_parquets(slug_dir / year):
-                gcs_path = f"{slug}/{year}/{pq.name}"
-                push_gcs(gcs_client, pq, GCS_MART_BUCKET, gcs_path, dry_run)
+            for parq in get_parquets(slug_dir / year):
+                gcs_path = f"{slug}/{year}/{parq.name}"
+                push_gcs(gcs_client, parq, GCS_MART_BUCKET, gcs_path, dry_run)
                 if bq_client:
-                    push_bq(bq_client, pq, slug, year, dry_run)
+                    push_bq(bq_client, parq, slug, year, dry_run)
         print()
 
 
