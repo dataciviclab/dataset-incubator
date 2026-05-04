@@ -31,7 +31,7 @@ from pathlib import Path
 
 import pandas as pd
 import pyarrow.parquet as pq
-from google.cloud import bigquery, storage  # type: ignore[attr-defined]
+from google.cloud import bigquery, storage
 from google.api_core.exceptions import Conflict
 from google.oauth2 import credentials as google_oauth2_credentials
 

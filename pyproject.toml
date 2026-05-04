@@ -9,6 +9,9 @@ no_implicit_optional = true
 ignore_missing_imports = true
 disallow_untyped_defs = false
 
+# push_archive.py richiede google-cloud-storage (non in dev)
+exclude = ["scripts/push_archive.py"]
+
 [tool.ruff]
 line-length = 100
 target-version = "py310"
