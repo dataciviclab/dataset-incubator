@@ -78,6 +78,11 @@ jobs:
           python-version: "3.11"
           cache: 'pip'
 
+      - name: Install CA certificates for Italian government sites
+        run: |
+          apt-get update && apt-get install -y ca-certificates
+          update-ca-certificates 2>/dev/null || true
+
       - name: Install dependencies
         run: python -m pip install pyyaml
 
