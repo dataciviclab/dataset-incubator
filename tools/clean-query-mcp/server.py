@@ -530,6 +530,10 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
         try:
             future = pool.submit(_run)
             total = future.result(timeout=60)
+        except concurrent.futures.TimeoutError:
+            conn.close()
+            pool.shutdown(wait=False)
+            return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
         finally:
             conn.close()
             pool.shutdown(wait=False)
@@ -620,6 +624,10 @@ def time_series(
         try:
             future = pool.submit(_run)
             columns, rows = future.result(timeout=60)
+        except concurrent.futures.TimeoutError:
+            conn.close()
+            pool.shutdown(wait=False)
+            return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
         finally:
             conn.close()
             pool.shutdown(wait=False)
@@ -694,6 +702,10 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
         try:
             future = pool.submit(_run)
             columns, rows = future.result(timeout=60)
+        except concurrent.futures.TimeoutError:
+            conn.close()
+            pool.shutdown(wait=False)
+            return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
         finally:
             conn.close()
             pool.shutdown(wait=False)
@@ -818,9 +830,9 @@ def column_search(query: str, limit: int = 15) -> dict[str, Any]:
 
 @mcp.tool(
     description=(
-        "Spiega cosa farebbe una query SQL senza eseguirla. "
-        "Valida sintassi e risolve i riferimenti a clean_input. "
-        "Non stima il numero di righe — usa preview() per un campione reale."
+        "Pre-check di una query SQL: valida scope, sintassi e riferimenti a clean_input. "
+        "Non esegue la query — usa EXPLAIN di DuckDB per validazione semantica base. "
+        "Usa preview() per un campione reale dei dati."
     ),
     structured_output=True,
 )
@@ -834,21 +846,54 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
     try:
         _validate_scope(sql)
     except DuckdbClientError as exc:
-        return {"validation_error": str(exc)}
+        return {"validation_error": str(exc), "valid": False}
 
     try:
         _validate_select_sql(sql)
     except DuckdbClientError as exc:
-        return {"validation_error": str(exc)}
+        return {"validation_error": str(exc), "valid": False}
 
-    return {
-        "valid": True,
-        "dataset": dataset,
-        "sql": sql,
-        "source_parquets": parquet_paths,
-        "note": "Query sintatticamente valida. L'esecuzione effettiva potrebbe fallire per timeout, memoria o dati mancanti.",
-        "tip": "Usa preview() per verificare i dati prima di run_query().",
-    }
+    # Validate with actual DuckDB EXPLAIN on the wrapped query
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+    wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
+
+    try:
+        import duckdb
+        import concurrent.futures
+
+        conn = duckdb.connect(database=":memory:")
+        conn.execute("PRAGMA disable_progress_bar")
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            future = pool.submit(lambda: conn.execute(f"EXPLAIN {wrapped_sql}"))
+            explain_result = future.result(timeout=30)
+            # EXPLAIN returns a single row with "plan" column
+            plan_text = explain_result.fetchone()[0] if explain_result else None
+        finally:
+            conn.close()
+            pool.shutdown(wait=False)
+
+        return {
+            "valid": True,
+            "dataset": dataset,
+            "sql": sql,
+            "source_parquets": parquet_paths,
+            "plan_excerpt": plan_text[:200] if plan_text else None,
+            "note": "EXPLAIN eseguito con successo — query sintatticamente e semanticamente valida.",
+            "tip": "Usa preview() per verificare i dati reali prima di run_query().",
+        }
+    except Exception as exc:
+        return {
+            "valid": False,
+            "validation_error": f"EXPLAIN fallito: {exc}",
+            "dataset": dataset,
+            "sql": sql,
+            "tip": "Correggi la query oppure usa preview() per verificare lo schema.",
+        }
 
 
 if __name__ == "__main__":
