@@ -100,6 +100,66 @@ def guard(fn, handled_exceptions: tuple[type[BaseException], ...] = (Exception,)
         return {"error": str(exc)}
 
 
+def _duckdb_read(
+    dataset: str,
+    year: int | None,
+    wrapped_sql: str,
+    timeout: int = 60,
+) -> dict[str, Any]:
+    """Helper per esecuzione DuckDB read-only su parquet GCS.
+
+    Estrae e condivide il pattern comune a preview/count/time_series/distinct_values:
+    - risoluzione path parquet
+    - costruzione source_expr
+    - connessione DuckDB in-memory
+    - esecuzione con timeout
+    - ritorno {columns, rows} o errore
+    """
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=year)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    # Replace the placeholder in wrapped_sql if present
+    sql = wrapped_sql.replace("{SOURCE_EXPR}", source_expr)
+
+    import duckdb
+    import concurrent.futures
+
+    conn = duckdb.connect(database=":memory:")
+    conn.execute("PRAGMA disable_progress_bar")
+    conn.execute("SET memory_limit='2GB'")
+
+    def _run():
+        result = conn.execute(sql)
+        return [item[0] for item in (result.description or [])], result.fetchall()
+
+    pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    try:
+        future = pool.submit(_run)
+        columns, rows = future.result(timeout=timeout)
+    except concurrent.futures.TimeoutError:
+        conn.close()
+        pool.shutdown(wait=False)
+        return {"error": f"Query timeout ({timeout}s). Riduci la complessita o aggiungi filtri."}
+    finally:
+        conn.close()
+        pool.shutdown(wait=False)
+
+    return {"columns": columns, "rows": rows}
+
+
 def mcp_telemetry(_server: str):
     def decorator(fn):
         return fn
@@ -410,53 +470,21 @@ def aggregate(
 )
 @mcp_telemetry("clean-query")
 def preview(dataset: str, limit: int = 10, year: int | None = None) -> dict[str, Any]:
-    try:
-        parquet_paths = resolve_parquet_path(dataset, year=year)
-    except (ValueError, FileNotFoundError) as exc:
-        return {"error": str(exc)}
-
-    try:
-        _validate_parquet_paths(parquet_paths)
-    except DuckdbClientError as exc:
-        return {"error": str(exc)}
-
-    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
-    if len(parquet_paths) == 1:
-        source_expr = f"'{escaped_paths}'"
-    else:
-        source_expr = f"['{escaped_paths}']"
-
-    wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) SELECT * FROM clean_input LIMIT {limit}"
-
-    def _exec() -> dict[str, Any]:
-        import duckdb
-        import concurrent.futures
-
-        _guard_max_rows(limit)
-        conn = duckdb.connect(database=":memory:")
-        conn.execute("PRAGMA disable_progress_bar")
-        conn.execute("SET memory_limit='2GB'")
-
-        def _run():
-            result = conn.execute(wrapped_sql)
-            return [item[0] for item in (result.description or [])], result.fetchall()
-
-        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        try:
-            columns, rows = _run()
-        finally:
-            conn.close()
-            pool.shutdown(wait=False)
-
-        return {
-            "columns": columns,
-            "rows": [list(row) for row in rows],
-            "row_count": len(rows),
-            "dataset": dataset,
-            "limit_applied": limit,
-        }
-
-    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+    _guard_max_rows(limit)
+    wrapped_sql = (
+        f"WITH clean_input AS (SELECT * FROM read_parquet({{SOURCE_EXPR}})) "
+        f"SELECT * FROM clean_input LIMIT {limit}"
+    )
+    result = _duckdb_read(dataset, year, wrapped_sql)
+    if "error" in result:
+        return result
+    return {
+        "columns": result["columns"],
+        "rows": [list(row) for row in result["rows"]],
+        "row_count": len(result["rows"]),
+        "dataset": dataset,
+        "limit_applied": limit,
+    }
 
 
 @mcp.tool(
@@ -500,7 +528,8 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
 
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         try:
-            total = _run()
+            future = pool.submit(_run)
+            total = future.result(timeout=60)
         finally:
             conn.close()
             pool.shutdown(wait=False)
@@ -531,6 +560,7 @@ def time_series(
     year: int | None = None,
     limit: int = 200,
 ) -> dict[str, Any]:
+    _guard_max_rows(limit)
     schema = describe_impl(dataset)
     if "error" in schema:
         return schema
@@ -588,7 +618,8 @@ def time_series(
 
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         try:
-            columns, rows = _run()
+            future = pool.submit(_run)
+            columns, rows = future.result(timeout=60)
         finally:
             conn.close()
             pool.shutdown(wait=False)
@@ -617,6 +648,7 @@ def time_series(
 )
 @mcp_telemetry("clean-query")
 def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, Any]:
+    _guard_max_rows(limit)
     schema = describe_impl(dataset)
     if "error" in schema:
         return schema
@@ -660,7 +692,8 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
 
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
         try:
-            columns, rows = _run()
+            future = pool.submit(_run)
+            columns, rows = future.result(timeout=60)
         finally:
             conn.close()
             pool.shutdown(wait=False)
@@ -686,48 +719,51 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
 )
 @mcp_telemetry("clean-query")
 def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20) -> dict[str, Any]:
-    catalog = _load_catalog()
-    results = []
-    for ds in catalog:
-        cols = ds.get("columns", [])
-        metric_cols = [
-            {"name": c["name"], "type": c.get("type"), "description": c.get("description")}
-            for c in cols
-            if c.get("role") == "metric"
-        ]
-        if not metric_cols:
-            continue
-
-        # Filter by query (search in name/description/source)
-        q_lower = query.lower()
-        if q_lower and q_lower not in ds.get("name", "").lower() and q_lower not in ds.get("description", "").lower() and q_lower not in ds.get("source", "").lower():
-            continue
-
-        # Filter by metric name
-        if metric_name:
-            mn_lower = metric_name.lower()
-            if not any(mn_lower in mc["name"].lower() for mc in metric_cols):
+    def _exec() -> dict[str, Any]:
+        catalog = _load_catalog()
+        results = []
+        for ds in catalog:
+            cols = ds.get("columns", [])
+            metric_cols = [
+                {"name": c["name"], "type": c.get("type"), "description": c.get("description")}
+                for c in cols
+                if c.get("role") == "metric"
+            ]
+            if not metric_cols:
                 continue
 
-        results.append({
-            "slug": ds["slug"],
-            "name": ds["name"],
-            "source": ds.get("source"),
-            "period": ds.get("period"),
-            "metric_columns": metric_cols,
-            "match_hint": metric_name or query,
-        })
+            # Filter by query (search in name/description/source)
+            q_lower = query.lower()
+            if q_lower and q_lower not in ds.get("name", "").lower() and q_lower not in ds.get("description", "").lower() and q_lower not in ds.get("source", "").lower():
+                continue
 
-        if len(results) >= limit:
-            break
+            # Filter by metric name
+            if metric_name:
+                mn_lower = metric_name.lower()
+                if not any(mn_lower in mc["name"].lower() for mc in metric_cols):
+                    continue
 
-    return {
-        "datasets": results,
-        "count": len(results),
-        "query": query,
-        "metric_name": metric_name,
-        "note": "Ritorna dataset che hanno colonne role=metric. Usa describe_dataset per lo schema completo.",
-    }
+            results.append({
+                "slug": ds["slug"],
+                "name": ds["name"],
+                "source": ds.get("source"),
+                "period": ds.get("period"),
+                "metric_columns": metric_cols,
+                "match_hint": metric_name or query,
+            })
+
+            if len(results) >= limit:
+                break
+
+        return {
+            "datasets": results,
+            "count": len(results),
+            "query": query,
+            "metric_name": metric_name,
+            "note": "Ritorna dataset che hanno colonne role=metric. Usa describe_dataset per lo schema completo.",
+        }
+
+    return guard(_exec, handled_exceptions=(Exception,))
 
 
 @mcp.tool(
@@ -739,48 +775,52 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
 )
 @mcp_telemetry("clean-query")
 def column_search(query: str, limit: int = 15) -> dict[str, Any]:
-    catalog = _load_catalog()
-    q = query.lower()
-    results = []
-    for ds in catalog:
-        matched_cols = []
-        for col in ds.get("columns", []):
-            if q in col.get("name", "").lower() or q in col.get("description", "").lower():
-                matched_cols.append({
-                    "name": col["name"],
-                    "type": col.get("type"),
-                    "role": col.get("role"),
-                    "description": col.get("description"),
+    def _exec() -> dict[str, Any]:
+        catalog = _load_catalog()
+        q = query.lower()
+        results = []
+        for ds in catalog:
+            matched_cols = []
+            for col in ds.get("columns", []):
+                if q in col.get("name", "").lower() or q in col.get("description", "").lower():
+                    matched_cols.append({
+                        "name": col["name"],
+                        "type": col.get("type"),
+                        "role": col.get("role"),
+                        "description": col.get("description"),
+                    })
+
+            # Match in dataset metadata or in column names/descriptions
+            meta_match = q in ds.get("name", "").lower() or q in ds.get("description", "").lower()
+
+            if matched_cols or meta_match:
+                results.append({
+                    "slug": ds["slug"],
+                    "name": ds["name"],
+                    "source": ds.get("source"),
+                    "period": ds.get("period"),
+                    "matched_columns": matched_cols,
+                    "meta_match": meta_match,
                 })
 
-        # Match in dataset metadata or in column names/descriptions
-        meta_match = q in ds.get("name", "").lower() or q in ds.get("description", "").lower()
+            if len(results) >= limit:
+                break
 
-        if matched_cols or meta_match:
-            results.append({
-                "slug": ds["slug"],
-                "name": ds["name"],
-                "source": ds.get("source"),
-                "period": ds.get("period"),
-                "matched_columns": matched_cols,
-                "meta_match": meta_match,
-            })
+        return {
+            "datasets": results,
+            "count": len(results),
+            "query": query,
+            "note": "Meta_match=True indica match su nome/descrizione dataset; matched_columns indica match su colonna.",
+        }
 
-        if len(results) >= limit:
-            break
-
-    return {
-        "datasets": results,
-        "count": len(results),
-        "query": query,
-        "note": "Meta_match=True indica match su nome/descrizione dataset; matched_columns indica match su colonna.",
-    }
+    return guard(_exec, handled_exceptions=(Exception,))
 
 
 @mcp.tool(
     description=(
         "Spiega cosa farebbe una query SQL senza eseguirla. "
-        "Valida sintassi, risolve i riferimenti a clean_input, stima il numero di righe previste (se stimabile)."
+        "Valida sintassi e risolve i riferimenti a clean_input. "
+        "Non stima il numero di righe — usa preview() per un campione reale."
     ),
     structured_output=True,
 )
@@ -809,3 +849,7 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
         "note": "Query sintatticamente valida. L'esecuzione effettiva potrebbe fallire per timeout, memoria o dati mancanti.",
         "tip": "Usa preview() per verificare i dati prima di run_query().",
     }
+
+
+if __name__ == "__main__":
+    mcp.run()
