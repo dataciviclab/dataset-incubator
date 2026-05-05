@@ -10,7 +10,7 @@ from catalog import get_year_column  # noqa: E402
 from catalog import list_datasets as list_impl  # noqa: E402
 from catalog import resolve_parquet_path  # noqa: E402
 from catalog import search_datasets as search_impl  # noqa: E402
-from catalog import _load_catalog  # noqa: E402
+from catalog import load_catalog  # noqa: E402
 
 ALLOWED_FROM = {"clean_input"}
 MAX_ROWS_HARD_CAP = 500
@@ -470,7 +470,8 @@ def aggregate(
 )
 @mcp_telemetry("clean-query")
 def preview(dataset: str, limit: int = 10, year: int | None = None) -> dict[str, Any]:
-    _guard_max_rows(limit)
+    if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
+        return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
     wrapped_sql = (
         f"WITH clean_input AS (SELECT * FROM read_parquet({{SOURCE_EXPR}})) "
         f"SELECT * FROM clean_input LIMIT {limit}"
@@ -564,7 +565,8 @@ def time_series(
     year: int | None = None,
     limit: int = 200,
 ) -> dict[str, Any]:
-    _guard_max_rows(limit)
+    if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
+        return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
     schema = describe_impl(dataset)
     if "error" in schema:
         return schema
@@ -656,7 +658,8 @@ def time_series(
 )
 @mcp_telemetry("clean-query")
 def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, Any]:
-    _guard_max_rows(limit)
+    if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
+        return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
     schema = describe_impl(dataset)
     if "error" in schema:
         return schema
@@ -732,7 +735,7 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
 @mcp_telemetry("clean-query")
 def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20) -> dict[str, Any]:
     def _exec() -> dict[str, Any]:
-        catalog = _load_catalog()
+        catalog = load_catalog()
         results = []
         for ds in catalog:
             cols = ds.get("columns", [])
@@ -788,7 +791,7 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
 @mcp_telemetry("clean-query")
 def column_search(query: str, limit: int = 15) -> dict[str, Any]:
     def _exec() -> dict[str, Any]:
-        catalog = _load_catalog()
+        catalog = load_catalog()
         q = query.lower()
         results = []
         for ds in catalog:
@@ -871,8 +874,10 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
         try:
             future = pool.submit(lambda: conn.execute(f"EXPLAIN {wrapped_sql}"))
             explain_result = future.result(timeout=30)
-            # EXPLAIN returns a single row with "plan" column
-            plan_text = explain_result.fetchone()[0] if explain_result else None
+            # EXPLAIN returns rows: each row is (key, value) like ("physical_plan", "...")
+            # Take the value from the first row (physical_plan summary)
+            row = explain_result.fetchone() if explain_result else None
+            plan_text = row[1] if row and len(row) > 1 else (row[0] if row else None)
         finally:
             conn.close()
             pool.shutdown(wait=False)
