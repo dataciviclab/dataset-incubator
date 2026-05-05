@@ -10,6 +10,7 @@ from catalog import get_year_column  # noqa: E402
 from catalog import list_datasets as list_impl  # noqa: E402
 from catalog import resolve_parquet_path  # noqa: E402
 from catalog import search_datasets as search_impl  # noqa: E402
+from catalog import _load_catalog  # noqa: E402
 
 ALLOWED_FROM = {"clean_input"}
 MAX_ROWS_HARD_CAP = 500
@@ -607,5 +608,204 @@ def time_series(
     return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
 
 
-if __name__ == "__main__":
-    mcp.run()
+@mcp.tool(
+    description=(
+        "Valori distinti di una colonna. "
+        "Utile per popolare dropdown/filter nelle UI, o per verificare i valori disponibili prima di query."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, Any]:
+    schema = describe_impl(dataset)
+    if "error" in schema:
+        return schema
+
+    col_names = {c["name"] for c in schema.get("columns", [])}
+    if column not in col_names:
+        return {"error": f"Colonna '{column}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=None)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    wrapped_sql = (
+        f"WITH clean_input AS (SELECT {column} FROM read_parquet({source_expr})) "
+        f"SELECT DISTINCT {column} FROM clean_input WHERE {column} IS NOT NULL LIMIT {limit + 1}"
+    )
+
+    def _exec() -> dict[str, Any]:
+        import duckdb
+        import concurrent.futures
+
+        conn = duckdb.connect(database=":memory:")
+        conn.execute("PRAGMA disable_progress_bar")
+        conn.execute("SET memory_limit='2GB'")
+
+        def _run():
+            result = conn.execute(wrapped_sql)
+            return [item[0] for item in (result.description or [])], result.fetchall()
+
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            columns, rows = _run()
+        finally:
+            conn.close()
+            pool.shutdown(wait=False)
+
+        truncated = len(rows) > limit
+        return {
+            "column": column,
+            "values": [row[0] for row in rows[:limit]],
+            "count": len(rows),
+            "truncated": truncated,
+            "dataset": dataset,
+        }
+
+    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+
+
+@mcp.tool(
+    description=(
+        "Cerca dataset che abbiano una colonna di tipo 'metric' (numerica). "
+        "Filtra per nome colonna o pattern, e ritorna il catalogo dei match con schema resumí."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20) -> dict[str, Any]:
+    catalog = _load_catalog()
+    results = []
+    for ds in catalog:
+        cols = ds.get("columns", [])
+        metric_cols = [
+            {"name": c["name"], "type": c.get("type"), "description": c.get("description")}
+            for c in cols
+            if c.get("role") == "metric"
+        ]
+        if not metric_cols:
+            continue
+
+        # Filter by query (search in name/description/source)
+        q_lower = query.lower()
+        if q_lower and q_lower not in ds.get("name", "").lower() and q_lower not in ds.get("description", "").lower() and q_lower not in ds.get("source", "").lower():
+            continue
+
+        # Filter by metric name
+        if metric_name:
+            mn_lower = metric_name.lower()
+            if not any(mn_lower in mc["name"].lower() for mc in metric_cols):
+                continue
+
+        results.append({
+            "slug": ds["slug"],
+            "name": ds["name"],
+            "source": ds.get("source"),
+            "period": ds.get("period"),
+            "metric_columns": metric_cols,
+            "match_hint": metric_name or query,
+        })
+
+        if len(results) >= limit:
+            break
+
+    return {
+        "datasets": results,
+        "count": len(results),
+        "query": query,
+        "metric_name": metric_name,
+        "note": "Ritorna dataset che hanno colonne role=metric. Usa describe_dataset per lo schema completo.",
+    }
+
+
+@mcp.tool(
+    description=(
+        "Cerca dataset per nome o descrizione di colonna. "
+        "Cerca sia nelle meta dataset (nome, descrizione, source) che nei nomi colonna."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def column_search(query: str, limit: int = 15) -> dict[str, Any]:
+    catalog = _load_catalog()
+    q = query.lower()
+    results = []
+    for ds in catalog:
+        matched_cols = []
+        for col in ds.get("columns", []):
+            if q in col.get("name", "").lower() or q in col.get("description", "").lower():
+                matched_cols.append({
+                    "name": col["name"],
+                    "type": col.get("type"),
+                    "role": col.get("role"),
+                    "description": col.get("description"),
+                })
+
+        # Match in dataset metadata or in column names/descriptions
+        meta_match = q in ds.get("name", "").lower() or q in ds.get("description", "").lower()
+
+        if matched_cols or meta_match:
+            results.append({
+                "slug": ds["slug"],
+                "name": ds["name"],
+                "source": ds.get("source"),
+                "period": ds.get("period"),
+                "matched_columns": matched_cols,
+                "meta_match": meta_match,
+            })
+
+        if len(results) >= limit:
+            break
+
+    return {
+        "datasets": results,
+        "count": len(results),
+        "query": query,
+        "note": "Meta_match=True indica match su nome/descrizione dataset; matched_columns indica match su colonna.",
+    }
+
+
+@mcp.tool(
+    description=(
+        "Spiega cosa farebbe una query SQL senza eseguirla. "
+        "Valida sintassi, risolve i riferimenti a clean_input, stima il numero di righe previste (se stimabile)."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def explain_query(sql: str, dataset: str) -> dict[str, Any]:
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=None)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_scope(sql)
+    except DuckdbClientError as exc:
+        return {"validation_error": str(exc)}
+
+    try:
+        _validate_select_sql(sql)
+    except DuckdbClientError as exc:
+        return {"validation_error": str(exc)}
+
+    return {
+        "valid": True,
+        "dataset": dataset,
+        "sql": sql,
+        "source_parquets": parquet_paths,
+        "note": "Query sintatticamente valida. L'esecuzione effettiva potrebbe fallire per timeout, memoria o dati mancanti.",
+        "tip": "Usa preview() per verificare i dati prima di run_query().",
+    }
