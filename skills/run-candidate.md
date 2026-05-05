@@ -75,7 +75,13 @@ toolkit_show_schema(config_path, layer="clean") → schema parquet prima di scri
 toolkit_raw_profile(config_path)      → encoding/delimiter dopo raw fallito
 toolkit_list_runs(config_path, status="FAILED", limit=5) → pattern di fallimento
 toolkit_run_summary(config_path)      → isolato o ricorrente?
+toolkit_schema_diff(config_path)      → confronto schema raw cross-year (colonne, encoding)
 ```
+
+**Quando usare `schema_diff`**:
+- Dopo fallimento raw parsing — per vedere se encoding o colonne sono cambiate tra anni
+- Prima di lanciare run su tutti gli anni — verifica consistenza schema source
+- Durante review di candidate — segnala drift strutturale tra annualità
 
 ### 6. Chiudi con stato
 
