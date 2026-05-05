@@ -11,6 +11,7 @@ raw:
       type: "http_file"
       args:
         url: "https://www.aifa.gov.it/documents/20142/847578/dati{year}"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
         url_suffix_by_year:
           2018: "_23.09.2020.csv"
           2019: "_23.09.2020.csv"
