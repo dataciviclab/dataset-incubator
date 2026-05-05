@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-04",
+  "generated_at": "2026-05-05",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -17,7 +17,15 @@
       "status": "ok",
       "label": "aifa-spesa-consumo",
       "detail": "anni 2018-2024 — fonte: aifa_spesa_consumo_csv — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25384102122",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25384102122",
+        "checked_at": "2026-05-05",
+        "year": 2024,
+        "config_path": "candidates/aifa-spesa-consumo/dataset.yml"
+      }
     },
     {
       "id": "bdap-entrate-stato",
