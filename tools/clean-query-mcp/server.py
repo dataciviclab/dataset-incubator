@@ -399,5 +399,213 @@ def aggregate(
     }
 
 
+@mcp.tool(
+    description=(
+        "Anteprima: prime N righe di un dataset senza SQL. "
+        "Utile per esplorare la struttura prima di scrivere una query. "
+        "Non usa SQL, ritorna righe raw dal parquet."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def preview(dataset: str, limit: int = 10, year: int | None = None) -> dict[str, Any]:
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=year)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) SELECT * FROM clean_input LIMIT {limit}"
+
+    def _exec() -> dict[str, Any]:
+        import duckdb
+        import concurrent.futures
+
+        _guard_max_rows(limit)
+        conn = duckdb.connect(database=":memory:")
+        conn.execute("PRAGMA disable_progress_bar")
+        conn.execute("SET memory_limit='2GB'")
+
+        def _run():
+            result = conn.execute(wrapped_sql)
+            return [item[0] for item in (result.description or [])], result.fetchall()
+
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            columns, rows = _run()
+        finally:
+            conn.close()
+            pool.shutdown(wait=False)
+
+        return {
+            "columns": columns,
+            "rows": [list(row) for row in rows],
+            "row_count": len(rows),
+            "dataset": dataset,
+            "limit_applied": limit,
+        }
+
+    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+
+
+@mcp.tool(
+    description=(
+        "Conteggio righe: numero totale di record in un dataset, opzionalmente filtrato per anno. "
+        "Utile per verificare copertura e dimensionalità prima di query complesse."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def count(dataset: str, year: int | None = None) -> dict[str, Any]:
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=year)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) SELECT COUNT(*) AS total FROM clean_input"
+
+    def _exec() -> dict[str, Any]:
+        import duckdb
+        import concurrent.futures
+
+        conn = duckdb.connect(database=":memory:")
+        conn.execute("PRAGMA disable_progress_bar")
+        conn.execute("SET memory_limit='2GB'")
+
+        def _run():
+            result = conn.execute(wrapped_sql)
+            return result.fetchone()[0]
+
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            total = _run()
+        finally:
+            conn.close()
+            pool.shutdown(wait=False)
+
+        return {
+            "dataset": dataset,
+            "total_rows": total,
+            "year_filter": year,
+            "files_count": len(parquet_paths),
+        }
+
+    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+
+
+@mcp.tool(
+    description=(
+        "Serie storica: valori di una metrica nel tempo, raggruppati per una dimensione (es. regione). "
+        "Se year è specificato, ritorna una singola annualità. "
+        "Se year è None, ritorna tutti gli anni disponibili con la metrica aggregata per la dimensione scelta."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def time_series(
+    dataset: str,
+    metric: str,
+    group_by: str,
+    year: int | None = None,
+    limit: int = 200,
+) -> dict[str, Any]:
+    schema = describe_impl(dataset)
+    if "error" in schema:
+        return schema
+
+    col_names = {c["name"] for c in schema.get("columns", [])}
+    if metric not in col_names:
+        return {"error": f"Metrica '{metric}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+    if group_by not in col_names:
+        return {"error": f"Dimensione group_by '{group_by}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=year)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    year_col = get_year_column(dataset)
+    if year_col is None:
+        return {"error": f"Dataset '{dataset}' non ha una colonna anno riconosciuta. Impossibile costruire serie storica."}
+
+    select_cols = f"{year_col}, {group_by}"
+    group_cols = f"{year_col}, {group_by}"
+    order_clause = f"{year_col}, {group_by}"
+
+    wrapped_sql = (
+        f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) "
+        f"SELECT {select_cols}, SUM({metric}) AS value "
+        f"FROM clean_input "
+        f"GROUP BY {group_cols} "
+        f"ORDER BY {order_clause} "
+        f"LIMIT {limit + 1}"
+    )
+
+    def _exec() -> dict[str, Any]:
+        import duckdb
+        import concurrent.futures
+
+        conn = duckdb.connect(database=":memory:")
+        conn.execute("PRAGMA disable_progress_bar")
+        conn.execute("SET memory_limit='2GB'")
+
+        def _run():
+            result = conn.execute(wrapped_sql)
+            return [item[0] for item in (result.description or [])], result.fetchall()
+
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            columns, rows = _run()
+        finally:
+            conn.close()
+            pool.shutdown(wait=False)
+
+        truncated = len(rows) > limit
+        return {
+            "columns": columns,
+            "rows": [list(row) for row in rows[:limit]],
+            "row_count": len(rows),
+            "truncated": truncated,
+            "dataset": dataset,
+            "metric": metric,
+            "group_by": group_by,
+            "year_filter": year,
+        }
+
+    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+
+
 if __name__ == "__main__":
     mcp.run()
