@@ -82,6 +82,9 @@ jobs:
         run: |
           apt-get update && apt-get install -y ca-certificates
           update-ca-certificates 2>/dev/null || true
+        env:
+          SSL_CERT_FILE: /etc/ssl/certs/ca-certificates.crt
+          REQUESTS_CA_BUNDLE: /etc/ssl/certs/ca-certificates.crt
 
       - name: Install dependencies
         run: python -m pip install pyyaml
