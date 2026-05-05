@@ -339,7 +339,7 @@ jobs:
 
       - name: Download sample-run artifacts
         if: needs.detect.outputs.has_configs == 'true'
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v8
         with:
           pattern: sample-run-*
           path: sample_run_artifacts
