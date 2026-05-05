@@ -63,6 +63,11 @@ def _load_catalog() -> list[dict[str, Any]]:
         return _cache
 
 
+def load_catalog() -> list[dict[str, Any]]:
+    """Public wrapper around _load_catalog — exposes the cached catalog read."""
+    return _load_catalog()
+
+
 def list_datasets() -> list[dict[str, Any]]:
     catalog = _load_catalog()
     return [

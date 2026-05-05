@@ -329,17 +329,17 @@ def push_clean(gcs_client, slug_filter=None, year_filter=None, dry_run=False):
                     rows = None
                 else:
                     try:
-                        rows = len(pd.read_parquet(pq))
+                        rows = len(pd.read_parquet(parq))
                     except Exception:
                         rows = None
                 manifest["items"].append(
                     {
                         "slug": slug,
                         "year": int(year),
-                        "file": pq.name,
+                        "file": parq.name,
                         "gcs_path": gcs_path,
                         "gcs_url": f"gs://{GCS_CLEAN_BUCKET}/{gcs_path}",
-                        "updated_at": pd.Timestamp(pq.stat().st_mtime, unit="s").isoformat(),
+                        "updated_at": pd.Timestamp(parq.stat().st_mtime, unit="s").isoformat(),
                         "rows": rows,
                     }
                 )

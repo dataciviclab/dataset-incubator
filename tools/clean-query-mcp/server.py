@@ -10,6 +10,7 @@ from catalog import get_year_column  # noqa: E402
 from catalog import list_datasets as list_impl  # noqa: E402
 from catalog import resolve_parquet_path  # noqa: E402
 from catalog import search_datasets as search_impl  # noqa: E402
+from catalog import load_catalog  # noqa: E402
 
 ALLOWED_FROM = {"clean_input"}
 MAX_ROWS_HARD_CAP = 500
@@ -97,6 +98,66 @@ def guard(fn, handled_exceptions: tuple[type[BaseException], ...] = (Exception,)
         return fn()
     except handled_exceptions as exc:
         return {"error": str(exc)}
+
+
+def _duckdb_read(
+    dataset: str,
+    year: int | None,
+    wrapped_sql: str,
+    timeout: int = 60,
+) -> dict[str, Any]:
+    """Helper per esecuzione DuckDB read-only su parquet GCS.
+
+    Estrae e condivide il pattern comune a preview/count/time_series/distinct_values:
+    - risoluzione path parquet
+    - costruzione source_expr
+    - connessione DuckDB in-memory
+    - esecuzione con timeout
+    - ritorno {columns, rows} o errore
+    """
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=year)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    # Replace the placeholder in wrapped_sql if present
+    sql = wrapped_sql.replace("{SOURCE_EXPR}", source_expr)
+
+    import duckdb
+    import concurrent.futures
+
+    conn = duckdb.connect(database=":memory:")
+    conn.execute("PRAGMA disable_progress_bar")
+    conn.execute("SET memory_limit='2GB'")
+
+    def _run():
+        result = conn.execute(sql)
+        return [item[0] for item in (result.description or [])], result.fetchall()
+
+    pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+    try:
+        future = pool.submit(_run)
+        columns, rows = future.result(timeout=timeout)
+    except concurrent.futures.TimeoutError:
+        conn.close()
+        pool.shutdown(wait=False)
+        return {"error": f"Query timeout ({timeout}s). Riduci la complessita o aggiungi filtri."}
+    finally:
+        conn.close()
+        pool.shutdown(wait=False)
+
+    return {"columns": columns, "rows": rows}
 
 
 def mcp_telemetry(_server: str):
@@ -397,6 +458,447 @@ def aggregate(
         "year": year,
         "note": "Passa questo sql a run_query(). Non include LIMIT; aggiungilo in run_query.",
     }
+
+
+@mcp.tool(
+    description=(
+        "Anteprima: prime N righe di un dataset senza SQL. "
+        "Utile per esplorare la struttura prima di scrivere una query. "
+        "Non usa SQL, ritorna righe raw dal parquet."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def preview(dataset: str, limit: int = 10, year: int | None = None) -> dict[str, Any]:
+    if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
+        return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
+    wrapped_sql = (
+        f"WITH clean_input AS (SELECT * FROM read_parquet({{SOURCE_EXPR}})) "
+        f"SELECT * FROM clean_input LIMIT {limit}"
+    )
+    result = _duckdb_read(dataset, year, wrapped_sql)
+    if "error" in result:
+        return result
+    return {
+        "columns": result["columns"],
+        "rows": [list(row) for row in result["rows"]],
+        "row_count": len(result["rows"]),
+        "dataset": dataset,
+        "limit_applied": limit,
+    }
+
+
+@mcp.tool(
+    description=(
+        "Conteggio righe: numero totale di record in un dataset, opzionalmente filtrato per anno. "
+        "Utile per verificare copertura e dimensionalità prima di query complesse."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def count(dataset: str, year: int | None = None) -> dict[str, Any]:
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=year)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) SELECT COUNT(*) AS total FROM clean_input"
+
+    def _exec() -> dict[str, Any]:
+        import duckdb
+        import concurrent.futures
+
+        conn = duckdb.connect(database=":memory:")
+        conn.execute("PRAGMA disable_progress_bar")
+        conn.execute("SET memory_limit='2GB'")
+
+        def _run():
+            result = conn.execute(wrapped_sql)
+            return result.fetchone()[0]
+
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            future = pool.submit(_run)
+            total = future.result(timeout=60)
+        except concurrent.futures.TimeoutError:
+            conn.close()
+            pool.shutdown(wait=False)
+            return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
+        finally:
+            conn.close()
+            pool.shutdown(wait=False)
+
+        return {
+            "dataset": dataset,
+            "total_rows": total,
+            "year_filter": year,
+            "files_count": len(parquet_paths),
+        }
+
+    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+
+
+@mcp.tool(
+    description=(
+        "Serie storica: valori di una metrica nel tempo, raggruppati per una dimensione (es. regione). "
+        "Se year è specificato, ritorna una singola annualità. "
+        "Se year è None, ritorna tutti gli anni disponibili con la metrica aggregata per la dimensione scelta."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def time_series(
+    dataset: str,
+    metric: str,
+    group_by: str,
+    year: int | None = None,
+    limit: int = 200,
+) -> dict[str, Any]:
+    if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
+        return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
+    schema = describe_impl(dataset)
+    if "error" in schema:
+        return schema
+
+    col_names = {c["name"] for c in schema.get("columns", [])}
+    if metric not in col_names:
+        return {"error": f"Metrica '{metric}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+    if group_by not in col_names:
+        return {"error": f"Dimensione group_by '{group_by}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=year)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    year_col = get_year_column(dataset)
+    if year_col is None:
+        return {"error": f"Dataset '{dataset}' non ha una colonna anno riconosciuta. Impossibile costruire serie storica."}
+
+    select_cols = f"{year_col}, {group_by}"
+    group_cols = f"{year_col}, {group_by}"
+    order_clause = f"{year_col}, {group_by}"
+
+    wrapped_sql = (
+        f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) "
+        f"SELECT {select_cols}, SUM({metric}) AS value "
+        f"FROM clean_input "
+        f"GROUP BY {group_cols} "
+        f"ORDER BY {order_clause} "
+        f"LIMIT {limit + 1}"
+    )
+
+    def _exec() -> dict[str, Any]:
+        import duckdb
+        import concurrent.futures
+
+        conn = duckdb.connect(database=":memory:")
+        conn.execute("PRAGMA disable_progress_bar")
+        conn.execute("SET memory_limit='2GB'")
+
+        def _run():
+            result = conn.execute(wrapped_sql)
+            return [item[0] for item in (result.description or [])], result.fetchall()
+
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            future = pool.submit(_run)
+            columns, rows = future.result(timeout=60)
+        except concurrent.futures.TimeoutError:
+            conn.close()
+            pool.shutdown(wait=False)
+            return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
+        finally:
+            conn.close()
+            pool.shutdown(wait=False)
+
+        truncated = len(rows) > limit
+        return {
+            "columns": columns,
+            "rows": [list(row) for row in rows[:limit]],
+            "row_count": len(rows),
+            "truncated": truncated,
+            "dataset": dataset,
+            "metric": metric,
+            "group_by": group_by,
+            "year_filter": year,
+        }
+
+    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+
+
+@mcp.tool(
+    description=(
+        "Valori distinti di una colonna. "
+        "Utile per popolare dropdown/filter nelle UI, o per verificare i valori disponibili prima di query."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, Any]:
+    if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
+        return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
+    schema = describe_impl(dataset)
+    if "error" in schema:
+        return schema
+
+    col_names = {c["name"] for c in schema.get("columns", [])}
+    if column not in col_names:
+        return {"error": f"Colonna '{column}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=None)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return {"error": str(exc)}
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    wrapped_sql = (
+        f"WITH clean_input AS (SELECT {column} FROM read_parquet({source_expr})) "
+        f"SELECT DISTINCT {column} FROM clean_input WHERE {column} IS NOT NULL LIMIT {limit + 1}"
+    )
+
+    def _exec() -> dict[str, Any]:
+        import duckdb
+        import concurrent.futures
+
+        conn = duckdb.connect(database=":memory:")
+        conn.execute("PRAGMA disable_progress_bar")
+        conn.execute("SET memory_limit='2GB'")
+
+        def _run():
+            result = conn.execute(wrapped_sql)
+            return [item[0] for item in (result.description or [])], result.fetchall()
+
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            future = pool.submit(_run)
+            columns, rows = future.result(timeout=60)
+        except concurrent.futures.TimeoutError:
+            conn.close()
+            pool.shutdown(wait=False)
+            return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
+        finally:
+            conn.close()
+            pool.shutdown(wait=False)
+
+        truncated = len(rows) > limit
+        return {
+            "column": column,
+            "values": [row[0] for row in rows[:limit]],
+            "count": len(rows),
+            "truncated": truncated,
+            "dataset": dataset,
+        }
+
+    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+
+
+@mcp.tool(
+    description=(
+        "Cerca dataset che abbiano una colonna di tipo 'metric' (numerica). "
+        "Filtra per nome colonna o pattern, e ritorna il catalogo dei match con schema resumí."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20) -> dict[str, Any]:
+    def _exec() -> dict[str, Any]:
+        catalog = load_catalog()
+        results = []
+        for ds in catalog:
+            cols = ds.get("columns", [])
+            metric_cols = [
+                {"name": c["name"], "type": c.get("type"), "description": c.get("description")}
+                for c in cols
+                if c.get("role") == "metric"
+            ]
+            if not metric_cols:
+                continue
+
+            # Filter by query (search in name/description/source)
+            q_lower = query.lower()
+            if q_lower and q_lower not in ds.get("name", "").lower() and q_lower not in ds.get("description", "").lower() and q_lower not in ds.get("source", "").lower():
+                continue
+
+            # Filter by metric name
+            if metric_name:
+                mn_lower = metric_name.lower()
+                if not any(mn_lower in mc["name"].lower() for mc in metric_cols):
+                    continue
+
+            results.append({
+                "slug": ds["slug"],
+                "name": ds["name"],
+                "source": ds.get("source"),
+                "period": ds.get("period"),
+                "metric_columns": metric_cols,
+                "match_hint": metric_name or query,
+            })
+
+            if len(results) >= limit:
+                break
+
+        return {
+            "datasets": results,
+            "count": len(results),
+            "query": query,
+            "metric_name": metric_name,
+            "note": "Ritorna dataset che hanno colonne role=metric. Usa describe_dataset per lo schema completo.",
+        }
+
+    return guard(_exec, handled_exceptions=(Exception,))
+
+
+@mcp.tool(
+    description=(
+        "Cerca dataset per nome o descrizione di colonna. "
+        "Cerca sia nelle meta dataset (nome, descrizione, source) che nei nomi colonna."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def column_search(query: str, limit: int = 15) -> dict[str, Any]:
+    def _exec() -> dict[str, Any]:
+        catalog = load_catalog()
+        q = query.lower()
+        results = []
+        for ds in catalog:
+            matched_cols = []
+            for col in ds.get("columns", []):
+                if q in col.get("name", "").lower() or q in col.get("description", "").lower():
+                    matched_cols.append({
+                        "name": col["name"],
+                        "type": col.get("type"),
+                        "role": col.get("role"),
+                        "description": col.get("description"),
+                    })
+
+            # Match in dataset metadata or in column names/descriptions
+            meta_match = q in ds.get("name", "").lower() or q in ds.get("description", "").lower()
+
+            if matched_cols or meta_match:
+                results.append({
+                    "slug": ds["slug"],
+                    "name": ds["name"],
+                    "source": ds.get("source"),
+                    "period": ds.get("period"),
+                    "matched_columns": matched_cols,
+                    "meta_match": meta_match,
+                })
+
+            if len(results) >= limit:
+                break
+
+        return {
+            "datasets": results,
+            "count": len(results),
+            "query": query,
+            "note": "Meta_match=True indica match su nome/descrizione dataset; matched_columns indica match su colonna.",
+        }
+
+    return guard(_exec, handled_exceptions=(Exception,))
+
+
+@mcp.tool(
+    description=(
+        "Pre-check di una query SQL: valida scope, sintassi e riferimenti a clean_input. "
+        "Non esegue la query — usa EXPLAIN di DuckDB per validazione semantica base. "
+        "Usa preview() per un campione reale dei dati."
+    ),
+    structured_output=True,
+)
+@mcp_telemetry("clean-query")
+def explain_query(sql: str, dataset: str) -> dict[str, Any]:
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=None)
+    except (ValueError, FileNotFoundError) as exc:
+        return {"error": str(exc)}
+
+    try:
+        _validate_scope(sql)
+    except DuckdbClientError as exc:
+        return {"validation_error": str(exc), "valid": False}
+
+    try:
+        _validate_select_sql(sql)
+    except DuckdbClientError as exc:
+        return {"validation_error": str(exc), "valid": False}
+
+    # Validate with actual DuckDB EXPLAIN on the wrapped query
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+    wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
+
+    try:
+        import duckdb
+        import concurrent.futures
+
+        conn = duckdb.connect(database=":memory:")
+        conn.execute("PRAGMA disable_progress_bar")
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            future = pool.submit(lambda: conn.execute(f"EXPLAIN {wrapped_sql}"))
+            explain_result = future.result(timeout=30)
+            # EXPLAIN returns rows: each row is (key, value) like ("physical_plan", "...")
+            # Take the value from the first row (physical_plan summary)
+            row = explain_result.fetchone() if explain_result else None
+            plan_text = row[1] if row and len(row) > 1 else (row[0] if row else None)
+        finally:
+            conn.close()
+            pool.shutdown(wait=False)
+
+        return {
+            "valid": True,
+            "dataset": dataset,
+            "sql": sql,
+            "source_parquets": parquet_paths,
+            "plan_excerpt": plan_text[:200] if plan_text else None,
+            "note": "EXPLAIN eseguito con successo — query sintatticamente e semanticamente valida.",
+            "tip": "Usa preview() per verificare i dati reali prima di run_query().",
+        }
+    except Exception as exc:
+        return {
+            "valid": False,
+            "validation_error": f"EXPLAIN fallito: {exc}",
+            "dataset": dataset,
+            "sql": sql,
+            "tip": "Correggi la query oppure usa preview() per verificare lo schema.",
+        }
 
 
 if __name__ == "__main__":
