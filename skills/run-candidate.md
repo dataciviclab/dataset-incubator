@@ -3,7 +3,7 @@ name: run-candidate
 description: Skill canonico di dataset-incubator per eseguire un candidate, verificare gli output e chiudere con uno stato tecnico chiaro.
 license: MIT
 metadata:
-  version: "0.3"
+  version: "0.4"
   owner: "DataCivicLab"
   tags: [dataset-incubator, run, candidate, validation]
 ---
@@ -11,7 +11,7 @@ metadata:
 # Skill: run-candidate
 
 Skill canonico di `dataset-incubator`.
-Versione: 0.3 - 2026-05-03
+Versione: 0.4 - 2026-05-06
 
 ## Obiettivo
 
@@ -37,9 +37,27 @@ Oppure MCP: `toolkit_inspect_paths(config_path)` → `run_file_count >= 1`, `lat
 
 ### 2. Run
 
+Se il candidate è nuovo, manca `sql/clean.sql`, oppure lo scaffold non è ancora stato revisionato, non partire da `run all`.
+
+Bootstrap:
+
+```bash
+toolkit run init --config candidates/{slug}/dataset.yml --years 2024
+```
+
+Poi revisiona prima di proseguire:
+
+- `sql/clean.sql` deve leggere da `raw_input`, non da `read_csv(...)`
+- `clean.read` deve descrivere il parsing RAW quando serve
+- eventuale proposta `clean.read`/profiling va incorporata nel `dataset.yml` solo dopo verifica
+
+Run completo, quando `clean.sql` e mart SQL sono presenti e revisionati:
+
 ```bash
 toolkit run all --config candidates/{slug}/dataset.yml --years 2024
 ```
+
+`run all` è una verifica finale della pipeline completa, non il comando di bootstrap da zero.
 
 **Two-phase**: se `dataset.yml` ha `support`, i support girano prima del main — in locale e in CI.
 

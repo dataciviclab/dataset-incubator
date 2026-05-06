@@ -3,7 +3,7 @@ name: intake-candidate
 description: Skill canonico di dataset-incubator per portare un caso da issue intake a PR pronta per merge.
 license: MIT
 metadata:
-  version: "0.3"
+  version: "0.4"
   owner: "DataCivicLab"
   tags: [dataset-incubator, intake, candidate, support-dataset]
 ---
@@ -11,7 +11,7 @@ metadata:
 # Skill: intake-candidate
 
 Skill canonico di `dataset-incubator`.
-Versione: 0.3 - 2026-05-03
+Versione: 0.4 - 2026-05-06
 
 ## Obiettivo
 
@@ -47,6 +47,12 @@ candidates/<slug>/
   sql/clean.sql, mart.sql
 ```
 
+Nota scaffold toolkit:
+
+- `sql/clean.sql` può partire dal placeholder del template (`SELECT * FROM raw_input`) oppure essere generato da `toolkit run init`.
+- Non scrivere parsing CSV dentro `clean.sql`: il parsing sta in `clean.read`, mentre `clean.sql` legge sempre da `raw_input`.
+- Dopo il bootstrap, revisiona sempre `clean.sql` e la proposta `clean.read` prima di considerare runnable il candidate.
+
 Copia il notebook da `templates/candidate/notebooks/` e imposta `METRICA` / `METRICA_CLEAN` in cima alla cella setup.
 
 ### 3. Two-phase se c'è support
@@ -55,7 +61,7 @@ Se `dataset.yml` dichiara `support`, i support girano prima del main.
 
 Verifica che siano necessari e non sostituibili con un join a mart esistente.
 
-### 4. Run e valida
+### 4. Bootstrap, run e valida
 
 Check rapido pre-flight:
 
@@ -65,7 +71,19 @@ toolkit inspect paths --config candidates/{slug}/dataset.yml --json
 
 Oppure MCP: `toolkit_inspect_paths(config_path)` → path contract verificato.
 
-Run + valida:
+Primo bootstrap su candidate nuovo o su source appena aggiunta:
+
+```bash
+toolkit run init --config candidates/{slug}/dataset.yml --years 2024
+```
+
+`run init` esegue RAW, profiling e scaffold assistito. Se genera o aggiorna indicazioni per `clean.read`, incorpora nel `dataset.yml` solo la parte verificata. Poi revisiona:
+
+- `sql/clean.sql` generato/placeholder: deve leggere da `raw_input`
+- `clean.read`: deve contenere parsing RAW esplicito quando serve
+- boundary clean/mart: clean raw-faithful, mart analitico
+
+Run completo solo dopo revisione dello scaffold:
 
 ```bash
 toolkit run all --config candidates/{slug}/dataset.yml --years 2024
@@ -77,6 +95,8 @@ Usa `--strict-config` per intercettare campi legacy o deprecati:
 ```bash
 toolkit run all --config candidates/{slug}/dataset.yml --years 2024 --strict-config
 ```
+
+Non usare `run all` come bootstrap da zero: se manca `clean.sql`, il comando deve fallire prima di RAW. Usa `run init`.
 
 Se fallisce → MCP `toolkit_blocker_hints(config_path)` per isolare il primo errore. Blocker specifico documentato, non formulaico.
 
