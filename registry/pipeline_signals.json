@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-05",
+  "generated_at": "2026-05-07",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -20,9 +20,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25384102122",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25384102122",
-        "checked_at": "2026-05-05",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
         "year": 2024,
         "config_path": "candidates/aifa-spesa-consumo/dataset.yml"
       }
@@ -32,21 +32,45 @@
       "status": "ok",
       "label": "bdap-entrate-stato",
       "detail": "anno 2024 — fonte: openbdap_entrate_csv — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/bdap-entrate-stato/dataset.yml"
+      }
     },
     {
       "id": "bdap-lea",
       "status": "ok",
       "label": "bdap-lea",
       "detail": "anno 2024 — fonte: bdap_lea_csv — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/bdap-lea/dataset.yml"
+      }
     },
     {
       "id": "camera-deputati-legislature",
       "status": "ok",
       "label": "camera-deputati-legislature",
       "detail": "anno 2024 — fonte: camera_deputati_sparql — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "failed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/camera-deputati-legislature/dataset.yml"
+      }
     },
     {
       "id": "civile-flussi",
@@ -60,7 +84,15 @@
       "status": "ok",
       "label": "dipendenti-pubblici",
       "detail": "anni 2010-2023 — fonte: bdap_csv — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2023,
+        "config_path": "candidates/dipendenti-pubblici/dataset.yml"
+      }
     },
     {
       "id": "inps-cig",
@@ -70,9 +102,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25276463099",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25276463099",
-        "checked_at": "2026-05-03",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
         "year": 2024,
         "config_path": "candidates/inps-cig/dataset.yml"
       }
@@ -82,7 +114,15 @@
       "status": "ok",
       "label": "inps-pensioni",
       "detail": "anno 2024 — fonte: inps_pensioni_csv — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/inps-pensioni/dataset.yml"
+      }
     },
     {
       "id": "irpef-comunale",
@@ -96,7 +136,15 @@
       "status": "ok",
       "label": "ispra-consumo-suolo",
       "detail": "anno 2024 — fonte: ispra_consumo_suolo_xlsx — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/ispra-consumo-suolo/dataset.yml"
+      }
     },
     {
       "id": "ispra-ru-costi-kg",
@@ -106,9 +154,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25315407298",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25315407298",
-        "checked_at": "2026-05-04",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
         "years": [
           2024
         ],
@@ -136,21 +184,45 @@
       "status": "ok",
       "label": "istat-gini-regionale",
       "detail": "anno 2023 — fonte: istat_sdmx_gini — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2023,
+        "config_path": "candidates/istat-gini-regionale/dataset.yml"
+      }
     },
     {
       "id": "istat-housing-crowding",
       "status": "ok",
       "label": "istat-housing-crowding",
       "detail": "anno 2024 — fonte: istat_sdmx_housing_crowding — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/istat-housing-crowding/dataset.yml"
+      }
     },
     {
       "id": "istat-ipab-aree",
       "status": "ok",
       "label": "istat-ipab-aree",
       "detail": "anno 2024 — fonte: istat_sdmx_ipab_aree — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/istat-ipab-aree/dataset.yml"
+      }
     },
     {
       "id": "malasanita-struttura-mortalita",
@@ -164,14 +236,30 @@
       "status": "ok",
       "label": "mef-partecipazioni",
       "detail": "anni 2020-2023 — fonti: mef_partecipazioni_2020, mef_partecipazioni_2021 — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2023,
+        "config_path": "candidates/mef-partecipazioni/dataset.yml"
+      }
     },
     {
       "id": "mim-alunni-corso-eta",
       "status": "ok",
       "label": "mim-alunni-corso-eta",
       "detail": "anni 2016-2025 — fonte: mim_alunni_corso_eta_csv — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2025,
+        "config_path": "candidates/mim-alunni-corso-eta/dataset.yml"
+      }
     },
     {
       "id": "mit-incidentalita-mensile-2001-2018",
@@ -180,10 +268,10 @@
       "detail": "anno 2001 — fonte: mit_incidentalita_mensile_csv — mart: sì",
       "action": "",
       "sample_run": {
-        "status": "failed",
-        "run_id": "25156933674",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25156933674",
-        "checked_at": "2026-04-30",
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
         "year": 2001,
         "config_path": "candidates/mit-incidentalita-mensile-2001-2018/dataset.yml"
       }
@@ -196,9 +284,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25171144965",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25171144965",
-        "checked_at": "2026-04-30",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
         "year": 2020,
         "config_path": "candidates/mit-opere-incompiute-2020/dataset.yml"
       }
@@ -208,14 +296,43 @@
       "status": "ok",
       "label": "mur-contribuzione-universitaria",
       "detail": "anni 2017-2024 — fonte: mur_gettito_ckan — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "failed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/mur-contribuzione-universitaria/dataset.yml"
+      }
     },
     {
       "id": "opencivitas-fsc-rso",
       "status": "ok",
       "label": "opencivitas-fsc-rso",
       "detail": "anno 2025 — multi-source (2 fonti) — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "failed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "years": [
+          2025
+        ],
+        "configs": [
+          {
+            "status": "failed",
+            "year": 2025,
+            "config_path": "candidates/opencivitas-fsc-rso/sources/a_fsc/dataset.yml"
+          },
+          {
+            "status": "failed",
+            "year": 2025,
+            "config_path": "candidates/opencivitas-fsc-rso/sources/b_enti/dataset.yml"
+          }
+        ]
+      }
     },
     {
       "id": "opencoesione-pagamenti-ue-2014-2020",
@@ -229,7 +346,15 @@
       "status": "ok",
       "label": "pensioni-pa-dag",
       "detail": "anno 2024 — fonte: dag_pensioni_totale_local — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "failed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/pensioni-pa-dag/dataset.yml"
+      }
     },
     {
       "id": "terna-capacita-rinnovabile",
@@ -239,9 +364,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25218876358",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25218876358",
-        "checked_at": "2026-05-01",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
         "year": 2024,
         "config_path": "candidates/terna-capacita-rinnovabile/dataset.yml"
       }
@@ -251,21 +376,45 @@
       "status": "ok",
       "label": "terna-electricity-by-source",
       "detail": "anni 2023-2024 — fonte: terna_electricity_by_source_xlsx — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "candidates/terna-electricity-by-source/dataset.yml"
+      }
     },
     {
       "id": "bdap-anagrafe-enti",
       "status": "ok",
       "label": "bdap-anagrafe-enti",
       "detail": "anni: ? — fonte: ? — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "support_datasets/bdap-anagrafe-enti/dataset.yml"
+      }
     },
     {
       "id": "mim-anagrafica-scuole-statali",
       "status": "ok",
       "label": "mim-anagrafica-scuole-statali",
       "detail": "anni: ? — fonte: ? — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25509412527",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
+        "checked_at": "2026-05-07",
+        "year": 2024,
+        "config_path": "support_datasets/mim-anagrafica-scuole-statali/dataset.yml"
+      }
     },
     {
       "id": "popolazione-istat-comunale-2019-2025",
