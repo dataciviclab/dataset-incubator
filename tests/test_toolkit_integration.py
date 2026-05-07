@@ -74,8 +74,6 @@ mart:
     - mart_intg
 validation:
   fail_on_error: true
-output:
-  artifacts: minimal
 """.strip(),
         )
 
