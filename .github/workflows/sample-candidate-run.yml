@@ -119,7 +119,7 @@ jobs:
       # Step 1b — Run support datasets first (if has_support)
       # ------------------------------------------------------------------
       - name: Run support datasets first (if has_support)
-        if: steps.resolve.outputs.has_support == "true"
+        if: steps.resolve.outputs.has_support == 'true'
         env:
           SUPPORT_JSON: ${{ steps.resolve.outputs.support_configs }}
         run: |
