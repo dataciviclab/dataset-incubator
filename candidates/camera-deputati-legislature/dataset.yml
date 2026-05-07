@@ -53,5 +53,3 @@ mart:
 validation:
   fail_on_error: false
 
-output:
-  artifacts: "minimal"

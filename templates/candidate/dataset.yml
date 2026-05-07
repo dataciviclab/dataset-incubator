@@ -6,62 +6,27 @@ dataset:
   years: [2024]
 
 # --- RAW LAYER ---
-# Configurazione delle fonti dati originali.
 raw:
-  # extractor: 
-  #   type: "unzip_first_csv" # Decommenta se la fonte è un ZIP
   sources:
-    # Esempio http_file (caso più comune):
     - name: "fonte_principale_http"
       type: "http_file"
       args:
         url: "https://example.com/data/dataset_{year}.csv"
         filename: "dataset_{year}.csv"
       primary: true
-    
-    # Esempio local_file (alternativo):
-    # - name: "template_local"
-    #   type: "local_file"
-    #   args:
-    #     path: "data/raw/template_{year}.csv"
-    #     filename: "template_{year}.csv"
 
 # --- CLEAN LAYER ---
-# Lettura dei dati RAW e prima trasformazione SQL.
-# Bootstrap consigliato:
-#   toolkit run init --config candidates/<slug>/dataset.yml --years 2024
+# Bootstrap: toolkit run init --config candidates/<slug>/dataset.yml --years 2024
 # Poi revisiona sql/clean.sql e clean.read prima del run completo.
 clean:
   sql: "sql/clean.sql"
-  # Il toolkit può proporre un blocco clean.read dal profiling RAW.
-  # Mantieni qui solo parametri verificati: delim, encoding, decimal, columns, header, skip, ecc.
-  read:
-    source: "auto" # 'auto' rileva formato da estensione filename
-    mode: "latest"
-    header: true
-  validate: 
-    # min_rows: 100 # Esempio check qualità
-    primary_key: []
+  # Parametri non-default: delim, encoding, decimal, columns, skip, ecc.
+  # read:
+  #   delim: ";"
+  #   encoding: "utf-8"
 
 # --- MART LAYER ---
-# Tabelle finali pronte per l'analisi o l'explorer.
 mart:
   tables:
     - name: "mart_template"
       sql: "sql/mart.sql"
-  # required_tables è implicito: se omesso, il toolkit richiede tutte le mart.tables dichiarate.
-  validate: {}
-
-# --- CROSS YEAR LAYER (Optional) ---
-# Operazioni che richiedono il join di più anni (es. trend storici).
-# cross_year:
-#   tables:
-#     - name: "trend_multi_anno"
-#       sql: "sql/mart_multi_anno.sql"
-#       source_layer: "clean"
-
-validation:
-  fail_on_error: true
-
-output:
-  artifacts: "minimal"
