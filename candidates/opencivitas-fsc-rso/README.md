@@ -62,3 +62,4 @@ Perimetro iniziale volutamente stretto:
 - [x] join minimo leggibile tra `A` e `B`
 - [ ] lettura v0 con almeno un output o notebook prudente
 - [ ] decisione se entra in `dataciviclab/analisi/`
+ 

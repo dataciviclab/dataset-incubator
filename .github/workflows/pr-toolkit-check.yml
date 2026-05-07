@@ -190,7 +190,7 @@ jobs:
           PY
 
       - name: Run support datasets first (if has_support)
-        if: steps.resolve_support.outputs.has_support == "true"
+        if: steps.resolve_support.outputs.has_support == 'true'
         env:
           SUPPORT_JSON: ${{ steps.resolve_support.outputs.support_configs }}
         run: |
