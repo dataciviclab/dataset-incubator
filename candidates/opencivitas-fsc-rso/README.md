@@ -16,14 +16,12 @@ in modo meno intuitivo del previsto?
 
 ## Dataset
 
-Nucleo multi-source OpenCivitas FSC 2025.
-
-Fonti previste nel v0:
+Struttura: source `A` (candidate principale) con `B` come support.
 
 | ID | Fonte | Ruolo | Stato |
 |---|---|---|---|
-| A | FSC 2025 variabile-valore | base principale con componenti di calcolo per comune | `run all` verde |
-| B | Metadati enti FSC 2025 | mapping `USERNAME -> comune/provincia/regione` | `run all` verde |
+| A | FSC 2025 variabile-valore | candidate: base principale | ✅ `run all` verde |
+| B | Metadati enti FSC 2025 | support: mapping `USERNAME -> comune/provincia/regione` | ✅ in `support_datasets/` |
 
 Perimetro iniziale volutamente stretto:
 

@@ -1,9 +1,14 @@
-root: "../../../../out"
+root: "../../out"
 schema_version: 1
 
 dataset:
   name: "opencivitas_fsc_2025_rso"
-  years: [2025]
+  years: [ 2025 ]
+
+support:
+  - name: "opencivitas_fsc_enti_rso"
+    config: "../../support_datasets/opencivitas-fsc-enti-rso/dataset.yml"
+    years: [ 2025 ]
 
 raw:
   extractor:
@@ -33,25 +38,19 @@ clean:
 
 mart:
   tables:
-    - name: "mart_fsc_comune"
-      sql: "sql/mart.sql"
     - name: "mart_compose_comuni"
       sql: "sql/mart_compose.sql"
   required_tables:
-    - "mart_fsc_comune"
     - "mart_compose_comuni"
   validate:
     table_rules:
-      mart_fsc_comune:
-        min_rows: 1000
       mart_compose_comuni:
         min_rows: 1000
         required_columns:
+          - "username"
+          - "comune"
           - "join_enti_ok"
-        # join_enti_ok e` una colonna booleana: required_columns garantisce
-        # che il join sia presente nell'output. Il tasso effettivo di join
-        # (percentuale di TRUE) va verificato manualmente nel notebook
-        # prima della pubblicazione.
+        # join_enti_ok: booleano — % di TRUE va verificata nel notebook prima di pubblicare
 
 validation:
   fail_on_error: true
