@@ -442,34 +442,4 @@ jobs:
               --draft
           fi
 
-      - name: Create handoff issue in dataciviclab
-        if: needs.detect.outputs.has_items == 'true'
-        env:
-          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
-          ITEMS_JSON: ${{ needs.detect.outputs.items }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          python - <<'PY'
-          import json, os, subprocess
 
-          items = json.loads(os.environ.get("ITEMS_JSON", "[]"))
-          pr_number = os.environ.get("PR_NUMBER", "?")
-
-          for item in items:
-              slug = item.get("slug", "?")
-              kind = item.get("kind", "candidate")
-
-              title = f"[intake] {slug}"
-
-              result = subprocess.run(
-                  ["gh", "issue", "create",
-                   "--repo", "dataciviclab/dataciviclab",
-                   "--title", title,
-                   "--body", f"Handoff: {slug} | Kind: {kind} | Source PR: #{pr_number} | Pipeline state: see pipeline_signals.json in dataset-incubator | Procedure: _local/operations/run-candidate.md | First reading: skills/first-reading/SKILL.md"],
-                  capture_output=True, text=True
-              )
-              if result.returncode == 0:
-                  print(f"::notice::Issue created for {slug}: {result.stdout.strip()}")
-              else:
-                  print(f"::warning::Failed to create issue for {slug}: {result.stderr.strip()}")
-          PY
