@@ -12,20 +12,17 @@
 ## Analitico
 
 - il v0 resta annuale: `2025`
-- il primo join deve concentrarsi su sei componenti chiave, senza allargarsi
-  subito all’intero schema FSC
+- il primo join si concentra su sei componenti chiave FSC, senza allargarsi
+  subito all'intero schema
 - `FONDO_PEREQUATIVO` è la metrica di partenza più leggibile per rispondere alla
   domanda guida
-- il mapping anagrafico non è più un support dataset separato: è il source `B`
-  del candidate
-
-- il compose minimo vive in `compose/` come layer documentato, ma viene
-  eseguito da `sources/a_fsc/sql/mart_compose.sql`
+- source `B` (opencivitas_fsc_enti_rso) vive in `support_datasets/` ed è dichiarato
+  come `support:` in `dataset.yml`
+- il compose FSC+enti arricchito di geografia vive in `sql/mart_compose.sql` ed è
+  l'unica mart table del candidate
 
 ## Cautele
 
-- il perimetro è solo RSO: non usare mai “tutti i comuni italiani”
-- prima del join il source `A` resta tecnicamente utile, ma non ancora
-  pubblicabile come output leggibile
-- l’estensione `2023-2025` va verificata con source-check separato, non va
+- il perimetro è solo RSO: non usare mai "tutti i comuni italiani"
+- l'estensione `2023-2025` va verificata con source-check separato, non va
   presupposta omogenea

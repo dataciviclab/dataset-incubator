@@ -1,9 +1,9 @@
-root: "../../../../out"
+root: "../../out"
 schema_version: 1
 
 dataset:
   name: "opencivitas_fsc_enti_rso"
-  years: [2025]
+  years: [ 2025 ]
 
 raw:
   extractor:
