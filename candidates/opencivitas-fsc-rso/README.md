@@ -1,12 +1,12 @@
 # opencivitas-fsc-rso
 
-Candidate multi-source - Fondo di Solidarità Comunale 2025 per i Comuni delle
-Regioni a Statuto Ordinario.
+Candidate single-source con support — Fondo di Solidarietà Comunale 2025 per i
+Comuni delle Regioni a Statuto Ordinario.
 
 ## Stato
 
-`incubating` - candidate aperto da [#85](https://github.com/dataciviclab/dataset-incubator/issues/85),
-nato dalla Discussion [#75](https://github.com/dataciviclab/dataset-incubator/discussions/75).
+`incubating` — candidate nato da [#85](https://github.com/dataciviclab/dataset-incubator/issues/85),
+derivato dalla Discussion [#75](https://github.com/dataciviclab/dataset-incubator/discussions/75).
 
 ## Domanda
 
@@ -16,50 +16,22 @@ in modo meno intuitivo del previsto?
 
 ## Dataset
 
-Struttura: source `A` (candidate principale) con `B` come support.
+Struttura: candidate principale con support per geografia.
 
 | ID | Fonte | Ruolo | Stato |
 |---|---|---|---|
-| A | FSC 2025 variabile-valore | candidate: base principale | ✅ `run all` verde |
-| B | Metadati enti FSC 2025 | support: mapping `USERNAME -> comune/provincia/regione` | ✅ in `support_datasets/` |
+| A | FSC 2025 variabile-valore | candidate: base principale | ✅ mart `mart_compose_comuni` |
+| B | Metadati enti FSC 2025 | support: mapping `USERNAME -> geografia comune` | ✅ in `support_datasets/opencivitas-fsc-enti-rso/` |
 
-Perimetro iniziale volutamente stretto:
+Perimetro iniziale:
 
 - solo `2025`
 - solo RSO
-- primo asse pulito nel source `A`
-- primo mapping anagrafico nel source `B`
-- primo compose minimo documentato in `compose/`, eseguito da source `A`
-- il join minimo leggibile resta su poche componenti chiave:
-  - `POPOLAZIONE`
-  - `CAPACITA_FISCALE`
-  - `FONDO_PEREQUATIVO`
-  - `DOTAZIONE_FINALE_FSC`
-  - `IMU_TASI_STANDARD`
-  - `TOTALE_RISORSE_STORICHE`
-
-## Perché vale la pena testarlo
-
-- si aggancia in modo naturale alle Discussion DCL `#91` e `#114`
-- aggiunge il meccanismo di calcolo del FSC alle letture già fatte sui
-  trasferimenti correnti
-- entrambe le fonti del v0 sono accessibili e leggibili senza scraping
-- la struttura multi-source evita di trattare i metadati come follow-up esterno
-  a un join che è già parte costitutiva del candidate
+- metriche FSC pivot per comune con join geografia da support
+- output: `mart_compose_comuni.parquet` (6573 comuni RSO, 15 colonne)
 
 ## Output minimo atteso
 
-- `sources/a_fsc` verde
-- `sources/b_enti` verde
-- `compose/` documentato
-- primo join leggibile per comune
-
-## Criterio di promozione
-
-- [x] source `A` eseguibile
-- [x] source `B` eseguibile
-- [x] layer `compose/` documentato
-- [x] join minimo leggibile tra `A` e `B`
-- [ ] lettura v0 con almeno un output o notebook prudente
-- [ ] decisione se entra in `dataciviclab/analisi/`
- 
+- [x] candidate eseguibile (RAW → CLEAN → MART)
+- [x] mart table `mart_compose_comuni` con join 100%
+- [X] notebook v0 verificato
