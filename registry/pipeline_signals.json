@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-07",
+  "generated_at": "2026-05-08",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 28,
+    "total": 29,
     "by_status": {
-      "ok": 28,
+      "ok": 29,
       "warn": 0,
       "error": 0
     }
@@ -310,28 +310,15 @@
       "id": "opencivitas-fsc-rso",
       "status": "ok",
       "label": "opencivitas-fsc-rso",
-      "detail": "anno 2025 — multi-source (2 fonti) — mart: sì",
+      "detail": "anno 2025 — fonte: opencivitas_fsc_2025_zip — mart: sì",
       "action": "",
       "sample_run": {
-        "status": "failed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "years": [
-          2025
-        ],
-        "configs": [
-          {
-            "status": "failed",
-            "year": 2025,
-            "config_path": "candidates/opencivitas-fsc-rso/sources/a_fsc/dataset.yml"
-          },
-          {
-            "status": "failed",
-            "year": 2025,
-            "config_path": "candidates/opencivitas-fsc-rso/sources/b_enti/dataset.yml"
-          }
-        ]
+        "status": "passed",
+        "run_id": "25544737252",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25544737252",
+        "checked_at": "2026-05-08",
+        "year": 2025,
+        "config_path": "candidates/opencivitas-fsc-rso/dataset.yml"
       }
     },
     {
@@ -414,6 +401,21 @@
         "checked_at": "2026-05-07",
         "year": 2024,
         "config_path": "support_datasets/mim-anagrafica-scuole-statali/dataset.yml"
+      }
+    },
+    {
+      "id": "opencivitas-fsc-enti-rso",
+      "status": "ok",
+      "label": "opencivitas-fsc-enti-rso",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25544737252",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25544737252",
+        "checked_at": "2026-05-08",
+        "year": 2025,
+        "config_path": "support_datasets/opencivitas-fsc-enti-rso/dataset.yml"
       }
     },
     {
