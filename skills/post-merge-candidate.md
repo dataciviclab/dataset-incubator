@@ -3,7 +3,7 @@ name: post-merge-candidate
 description: Skill per il maintainer dopo il merge di un candidate in dataset-incubator. Run completo, push GCS, clean catalog.
 license: MIT
 metadata:
-  version: "0.3"
+  version: "0.4"
   owner: "DataCivicLab"
   tags: [dataset-incubator, candidate, gcs, push, maintainer]
 ---
@@ -49,49 +49,66 @@ Copre tutti gli anni dichiarati nel config.
 toolkit validate all --config candidates/{slug}/dataset.yml
 ```
 
-### 4. Push GCS + BQ
+### 4. Push GCS
 
+**Trova lo slug GCS** (underscore, non trattino):
 ```bash
-cd ../dataset-incubator
-python scripts/push_archive.py --layer clean --slug {slug} --create-bq-table --update-catalog --status clean_ready --dry-run
+ls out/data/clean/          # per vedere lo slug corretto
 ```
 
-Se dry-run ok:
-
+**Dry run** (usa sempre il venv DI, non system python):
 ```bash
-python scripts/push_archive.py --layer clean --slug {slug} --create-bq-table --update-catalog --status clean_ready
+cd /path/to/dataset-incubator
+.venv/bin/python scripts/push_archive.py --layer clean --slug {gcs_slug} --no-bq --update-catalog --status clean_ready --dry-run
 ```
 
-Include: parquet per ogni anno + `pipeline_run.json` + BQ external table `dataciviclab.{slug}.clean`.
-
-### 5. Clean catalog
-
+Se dry-run ok, push reale senza BQ (BQ table creata separatamente dopo verifica):
 ```bash
-python scripts/build_clean_catalog.py --write
-python scripts/build_clean_catalog.py --check-gcs
+.venv/bin/python scripts/push_archive.py --layer clean --slug {gcs_slug} --no-bq --update-catalog --status clean_ready
 ```
 
-Aggiorna `clean_catalog.json` nella draft PR (`post-merge-candidate/pr-<N>-registry`):
+Parquet per ogni anno + `pipeline_run.json` → `gs://dataciviclab-clean/{gcs_slug}/{year}/`.
 
-- **sempre** — per compilare i campi mancanti: `name`, `description`, `source`, `columns[].role`, `columns[].description`
-- **se slug nuovo** — crea l'entry completa
-- **se `multi_file` flag cambiato** o **GCS path cambiato** — aggiorna struttura e path
+**BQ table — solo dopo verifica GCS ok:**
+```bash
+.venv/bin/python scripts/push_archive.py --layer clean --slug {gcs_slug} --create-bq-table --update-catalog --status clean_ready
+```
+
+### 5. Clean catalog — compila e normalizza
+
+**Prima riscrivi** il catalog con `--write` per normalizzare, poi arricchisci i campi mancanti:
 
 ```bash
-# Checkout del branch della draft PR (creato dal workflow post-merge)
-git fetch origin post-merge-candidate/pr-<N>-registry
-git checkout post-merge-candidate/pr-<N>-registry
+.venv/bin/python scripts/build_clean_catalog.py --write
+```
 
-# Aggiungi le modifiche al catalog e pusha sul branch della PR
+**Compila entry per lo slug** (campi sempre da riempire):
+- `name`: nome canonico, es. "MEF - Irpef Regionale"
+- `description`: una frase che dice cosa contiene e da dove viene
+- `source`: URL della fonte
+- `columns[].role`: `dimension` o `metric`
+- `columns[].description`: descrizione breve della colonna
+
+Regole per `role`:
+- colonne temporali, geografiche, categoriche → `dimension`
+- colonne numeriche (freq, eur, count) → `metric`
+
+**Verifica e push**:
+```bash
+.venv/bin/python scripts/build_clean_catalog.py --check-gcs   # deve tornare "ok"
 git add registry/clean_catalog.json
-git commit -m "chore({slug}): aggiorna clean_catalog post-push GCS"
+git commit -m "chore(post-merge): aggiorna registry per PR #<N>"
 git push origin post-merge-candidate/pr-<N>-registry
 ```
 
+Aggiorna `clean_catalog.json` nella draft PR (`post-merge-candidate/pr-<N>-registry`):
+- **sempre** — per compilare i campi mancanti
+- **se slug nuovo** — crea l'entry completa
+- **se `multi_file` flag cambiato** o **GCS path cambiato** — aggiorna struttura e path
+
 ### 6. Chiudi draft PR
 
-`validate-clean-catalog.yml` gira automaticamente sulla PR quando il catalog cambia.
-Verifica che passi, poi marca ready for review e fai merge.
+Verifica che `--check-gcs` sia green, poi marca la PR ready for review e fai merge.
 
 ## Stop rule
 
