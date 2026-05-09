@@ -3,7 +3,8 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from mcp.server.fastmcp import FastMCP
+from lab_connectors.mcp import create_mcp_server, guard as lc_guard
+from lab_connectors.mcp.errors import McpError, ErrorCode
 
 from catalog import describe_dataset as describe_impl  # noqa: E402
 from catalog import get_year_column  # noqa: E402
@@ -37,8 +38,16 @@ BLOCKED_KEYWORDS = {
 TOKEN_RE = re.compile(r"[a-z_][a-z0-9_]*")
 
 
-class DuckdbClientError(RuntimeError):
-    pass
+class DuckdbClientError(McpError):
+    """Ponte verso lab_connectors.mcp: eredita McpError.
+
+    Tutti i raise DuckdbClientError('msg') esistenti diventano
+    McpError(ErrorCode.UNEXPECTED, 'msg') e vengono catturati
+    correttamente da guard() delle librerie.
+    """
+
+    def __init__(self, message: str) -> None:
+        super().__init__(ErrorCode.QUERY_ERROR, message)
 
 
 def _guard_max_rows(max_rows: int) -> int:
@@ -91,13 +100,6 @@ def _validate_parquet_paths(paths: list[str]) -> None:
                 f"Path parquet contiene caratteri non sicuri: '{p}'. "
                 f"Caratteri ammessi: lettere, numeri, /, _, ., -, :"
             )
-
-
-def guard(fn, handled_exceptions: tuple[type[BaseException], ...] = (Exception,)) -> dict[str, Any]:
-    try:
-        return fn()
-    except handled_exceptions as exc:
-        return {"error": str(exc)}
 
 
 def _duckdb_read(
@@ -160,11 +162,6 @@ def _duckdb_read(
     return {"columns": columns, "rows": rows}
 
 
-def mcp_telemetry(_server: str):
-    def decorator(fn):
-        return fn
-
-    return decorator
 
 
 def _validate_scope(sql: str) -> None:
@@ -222,12 +219,12 @@ def _validate_scope(sql: str) -> None:
         )
 
 
-mcp = FastMCP(
+mcp = create_mcp_server(
     name="clean-query",
     instructions=(
         "MCP server per interrogare i dataset clean del DataCivicLab tramite DuckDB. "
         "Espone catalogo semantico (dataset, colonne, metriche) e esecuzione query read-only. "
-        "Il client AI (Claude/Qwen/etc.) genera il SQL a partire dallo schema."
+        "Il client AI genera il SQL a partire dallo schema."
     ),
 )
 
@@ -235,7 +232,6 @@ mcp = FastMCP(
 @mcp.tool(
     description="Lista dei dataset clean disponibili per query.", structured_output=True
 )
-@mcp_telemetry("clean-query")
 def list_datasets() -> list[dict[str, Any]]:
     return list_impl()
 
@@ -244,7 +240,6 @@ def list_datasets() -> list[dict[str, Any]]:
     description="Cerca nei dataset per nome, descrizione o fonte.",
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def search_datasets(query: str) -> list[dict[str, Any]]:
     if not (query or "").strip():
         raise DuckdbClientError("query non può essere vuota")
@@ -255,7 +250,6 @@ def search_datasets(query: str) -> list[dict[str, Any]]:
     description="Descrive lo schema di un dataset: colonne, tipi, ruolo (dimension/metric), periodo.",
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def describe_dataset(slug: str) -> dict[str, Any]:
     return describe_impl(slug)
 
@@ -306,7 +300,6 @@ def _inject_year_filter(sql: str, year_col: str | None, year: int) -> str:
     ),
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def run_query(
     sql: str, dataset: str, max_rows: int = 100, year: int | None = None
 ) -> dict[str, Any]:
@@ -385,14 +378,13 @@ def run_query(
             "dataset": dataset,
         }
 
-    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+    return lc_guard(_exec)
 
 
 @mcp.tool(
     description="Restituisce statistiche sulla cache GCS del catalogo (utile per debug).",
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def cache_stats() -> dict[str, Any]:
     from catalog import gcs_cache_stats
 
@@ -410,7 +402,6 @@ def cache_stats() -> dict[str, Any]:
     ),
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def aggregate(
     dataset: str,
     metric: str,
@@ -468,7 +459,6 @@ def aggregate(
     ),
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def preview(dataset: str, limit: int = 10, year: int | None = None) -> dict[str, Any]:
     if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
         return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
@@ -495,7 +485,6 @@ def preview(dataset: str, limit: int = 10, year: int | None = None) -> dict[str,
     ),
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def count(dataset: str, year: int | None = None) -> dict[str, Any]:
     try:
         parquet_paths = resolve_parquet_path(dataset, year=year)
@@ -546,7 +535,7 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
             "files_count": len(parquet_paths),
         }
 
-    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+    return lc_guard(_exec)
 
 
 @mcp.tool(
@@ -557,7 +546,6 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
     ),
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def time_series(
     dataset: str,
     metric: str,
@@ -646,7 +634,7 @@ def time_series(
             "year_filter": year,
         }
 
-    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+    return lc_guard(_exec)
 
 
 @mcp.tool(
@@ -656,7 +644,6 @@ def time_series(
     ),
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, Any]:
     if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
         return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
@@ -722,7 +709,7 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
             "dataset": dataset,
         }
 
-    return guard(_exec, handled_exceptions=(DuckdbClientError, Exception))
+    return lc_guard(_exec)
 
 
 @mcp.tool(
@@ -732,7 +719,6 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
     ),
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20) -> dict[str, Any]:
     def _exec() -> dict[str, Any]:
         catalog = load_catalog()
@@ -778,7 +764,7 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
             "note": "Ritorna dataset che hanno colonne role=metric. Usa describe_dataset per lo schema completo.",
         }
 
-    return guard(_exec, handled_exceptions=(Exception,))
+    return lc_guard(_exec)
 
 
 @mcp.tool(
@@ -788,7 +774,6 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
     ),
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def column_search(query: str, limit: int = 15) -> dict[str, Any]:
     def _exec() -> dict[str, Any]:
         catalog = load_catalog()
@@ -828,7 +813,7 @@ def column_search(query: str, limit: int = 15) -> dict[str, Any]:
             "note": "Meta_match=True indica match su nome/descrizione dataset; matched_columns indica match su colonna.",
         }
 
-    return guard(_exec, handled_exceptions=(Exception,))
+    return lc_guard(_exec)
 
 
 @mcp.tool(
@@ -839,7 +824,6 @@ def column_search(query: str, limit: int = 15) -> dict[str, Any]:
     ),
     structured_output=True,
 )
-@mcp_telemetry("clean-query")
 def explain_query(sql: str, dataset: str) -> dict[str, Any]:
     try:
         parquet_paths = resolve_parquet_path(dataset, year=None)
