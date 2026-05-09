@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-05-04",
+  "updated_at": "2026-05-09",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -1688,6 +1688,278 @@
       },
       "status": "candidate",
       "visibility": "public"
+    },
+    {
+      "slug": "mef_irpef_regionale",
+      "name": "MEF - Irpef Regionale",
+      "description": "Redditi dichiarati per regione e classe, contribuenti e ammontare per tipo di reddito. Anni 2017-2025. Fonte: Ministero dell'Economia e delle Finanze.",
+      "source": "https://www.mef.gov.it/",
+      "period": {
+        "start": 2017,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno_di_imposta",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di imposta"
+        },
+        {
+          "name": "classe_reddito",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Classe di reddito (minimo-medio-massimo in euro)"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione italiana"
+        },
+        {
+          "name": "numero_contribuenti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero di contribuenti"
+        },
+        {
+          "name": "reddito_dominicale_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito dominicale"
+        },
+        {
+          "name": "reddito_dominicale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito dominicale"
+        },
+        {
+          "name": "reddito_agrario_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito agrario"
+        },
+        {
+          "name": "reddito_agrario_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito agrario"
+        },
+        {
+          "name": "reddito_allevamento_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito allevamento"
+        },
+        {
+          "name": "reddito_allevamento_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito allevamento"
+        },
+        {
+          "name": "reddito_fabbricati_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito fabbricati"
+        },
+        {
+          "name": "reddito_fabbricati_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito fabbricati"
+        },
+        {
+          "name": "reddito_lavoro_dipendente_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito lavoro dipendente"
+        },
+        {
+          "name": "reddito_lavoro_dipendente_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito lavoro dipendente"
+        },
+        {
+          "name": "reddito_pensione_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito pensione"
+        },
+        {
+          "name": "reddito_pensione_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito pensione"
+        },
+        {
+          "name": "altri_assimilati_ld_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito altri assimilati ld"
+        },
+        {
+          "name": "altri_assimilati_ld_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro altri assimilati ld"
+        },
+        {
+          "name": "reddito_lavoro_autonomo_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito lavoro autonomo"
+        },
+        {
+          "name": "reddito_lavoro_autonomo_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito lavoro autonomo"
+        },
+        {
+          "name": "perdita_lavoro_autonomo_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito perdita lavoro autonomo"
+        },
+        {
+          "name": "perdita_lavoro_autonomo_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro perdita lavoro autonomo"
+        },
+        {
+          "name": "provvigioni_770_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito provvigioni 770"
+        },
+        {
+          "name": "provvigioni_770_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro provvigioni 770"
+        },
+        {
+          "name": "reddito_cont_ordinaria_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito cont ordinaria"
+        },
+        {
+          "name": "reddito_cont_ordinaria_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito cont ordinaria"
+        },
+        {
+          "name": "reddito_cont_semplificata_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito cont semplificata"
+        },
+        {
+          "name": "reddito_cont_semplificata_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito cont semplificata"
+        },
+        {
+          "name": "reddito_partecipazione_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito partecipazione"
+        },
+        {
+          "name": "reddito_partecipazione_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito partecipazione"
+        },
+        {
+          "name": "perdita_partecipazione_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito perdita partecipazione"
+        },
+        {
+          "name": "perdita_partecipazione_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro perdita partecipazione"
+        },
+        {
+          "name": "plusvalenze_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito plusvalenze"
+        },
+        {
+          "name": "plusvalenze_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro plusvalenze"
+        },
+        {
+          "name": "reddito_capitale_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito reddito capitale"
+        },
+        {
+          "name": "reddito_capitale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro reddito capitale"
+        },
+        {
+          "name": "redditi_diversi_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito redditi diversi"
+        },
+        {
+          "name": "redditi_diversi_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro redditi diversi"
+        },
+        {
+          "name": "altri_la_startup_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito altri la startup"
+        },
+        {
+          "name": "altri_la_startup_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro altri la startup"
+        },
+        {
+          "name": "tassazione_separata_freq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Contribuenti con reddito tassazione separata"
+        },
+        {
+          "name": "tassazione_separata_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ammontare euro tassazione separata"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mef_irpef_regionale/*/mef_irpef_regionale_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "mef_partecipazioni",
