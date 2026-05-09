@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-05-04",
+  "updated_at": "2026-05-09",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -1688,6 +1688,278 @@
       },
       "status": "candidate",
       "visibility": "public"
+    },
+    {
+      "slug": "mef_irpef_regionale",
+      "name": "Mef Irpef Regionale",
+      "description": "",
+      "source": "",
+      "period": {
+        "start": 2017,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno_di_imposta",
+          "type": "INTEGER",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "classe_reddito",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "numero_contribuenti",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_dominicale_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_dominicale_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_agrario_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_agrario_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_allevamento_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_allevamento_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_fabbricati_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_fabbricati_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_lavoro_dipendente_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_lavoro_dipendente_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_pensione_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_pensione_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "altri_assimilati_ld_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "altri_assimilati_ld_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_lavoro_autonomo_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_lavoro_autonomo_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "perdita_lavoro_autonomo_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "perdita_lavoro_autonomo_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "provvigioni_770_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "provvigioni_770_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_cont_ordinaria_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_cont_ordinaria_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_cont_semplificata_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_cont_semplificata_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_partecipazione_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_partecipazione_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "perdita_partecipazione_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "perdita_partecipazione_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "plusvalenze_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "plusvalenze_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_capitale_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "reddito_capitale_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "redditi_diversi_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "redditi_diversi_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "altri_la_startup_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "altri_la_startup_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "tassazione_separata_freq",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "tassazione_separata_eur",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mef_irpef_regionale/*/mef_irpef_regionale_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "mef_partecipazioni",
