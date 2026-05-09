@@ -16,18 +16,16 @@ URL base: `https://www1.finanze.gov.it/finanze/analisi_stat/public/v_4_0_0/conte
 
 CSV con `;` delimiter, encoding `utf-8`.
 - Header riga 1 (da skip)
-- Dati: 441 righe teoriche per anno = 21 regioni × 21 classi di reddito
+- Dati: 714 righe per anno = 21 regioni × 34 classi di reddito
 - Colonna 1: "Classi di reddito complessivo in euro"
 - Colonna 2: "Regione"
-- Colonne 3–64: coppie frequenza/ammontare per ogni tipologia di reddito
-
-## Schema clean (da definire post-run)
-
-52 colonne dichiarate per REG_tipo_reddito. Verificare con `toolkit_raw_profile`.
+- Colonne 3–43: coppie frequenza/ammontare per ogni tipologia di reddito (max 43 colonne dopo normalizzazione, 2017)
 
 ## Schema clean
 
-42 colonne dichiarate in dataset.yml, di cui 39 per tipologie di reddito (coppie freq+eur).
+Il raw MEF ha formato "report rigato" — ogni regione ha 34 righe impilate, una per classe di reddito.
+`normalize_rows_to_columns: true` converte ciascuna regione in una riga tabellare.
+43 colonne dopo normalizzazione (anno + classe + regione + 20 coppie freq/eur).
 
 ## Caveat
 
