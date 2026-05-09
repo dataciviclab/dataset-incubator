@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-08",
+  "generated_at": "2026-05-09",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 29,
+    "total": 30,
     "by_status": {
-      "ok": 29,
+      "ok": 30,
       "warn": 0,
       "error": 0
     }
@@ -230,6 +230,21 @@
       "label": "malasanita-struttura-mortalita",
       "detail": "anno 2022 — multi-source (4 fonti) — mart: sì",
       "action": ""
+    },
+    {
+      "id": "mef-irpef-regionale",
+      "status": "ok",
+      "label": "mef-irpef-regionale",
+      "detail": "anni 2017-2025 — fonte: reg_tipo_reddito — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25606109984",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25606109984",
+        "checked_at": "2026-05-09",
+        "year": 2025,
+        "config_path": "candidates/mef-irpef-regionale/dataset.yml"
+      }
     },
     {
       "id": "mef-partecipazioni",
