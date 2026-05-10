@@ -848,7 +848,7 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
         source_expr = f"['{escaped_paths}']"
     wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
 
-    try:
+    def _exec() -> dict[str, Any]:
         import duckdb
         import concurrent.futures
 
@@ -875,14 +875,8 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
             "note": "EXPLAIN eseguito con successo — query sintatticamente e semanticamente valida.",
             "tip": "Usa preview() per verificare i dati reali prima di run_query().",
         }
-    except Exception as exc:
-        return {
-            "valid": False,
-            "validation_error": f"EXPLAIN fallito: {exc}",
-            "dataset": dataset,
-            "sql": sql,
-            "tip": "Correggi la query oppure usa preview() per verificare lo schema.",
-        }
+
+    return lc_guard(_exec)
 
 
 if __name__ == "__main__":
