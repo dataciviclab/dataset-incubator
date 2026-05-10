@@ -9,7 +9,8 @@
 ## Decisioni prese
 
 - Partiamo dal sheet **Tribunali** (il più ricco, 4621 righe). Gli altri sheet (Corti d'Appello, Giudici di Pace, Tribunale per i Minorenni) hanno struttura simile e possono essere aggiunti in un secondo momento.
-- Anni: 2014-2023 (10 anni pieni disponibili).
+- Anni: 2014-2024 (11 anni pieni disponibili).
+- La dimensione `sezione` non è esposta nel mart v0 — è aggregata in `GROUP BY anno, distretto, tipo_ufficio`. Versioni future potrebbero esporla come dimensione separata se la granularità per sezione è analiticamente utile.
 
 ## Cosa monitorare dopo il run
 
