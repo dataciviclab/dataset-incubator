@@ -41,21 +41,22 @@ TOKEN_RE = re.compile(r"[a-z_][a-z0-9_]*")
 class DuckdbClientError(McpError):
     """Ponte verso lab_connectors.mcp: eredita McpError.
 
-    Tutti i raise DuckdbClientError('msg') esistenti diventano
-    McpError(ErrorCode.UNEXPECTED, 'msg') e vengono catturati
-    correttamente da guard() delle librerie.
+    - code default: QUERY_ERROR (query DuckDB fallite)
+    - INVALID_PARAMS: parametri in input invalidi
+    - QUERY_SCOPE_VIOLATION: SQL non valida o violate constraint
     """
 
-    def __init__(self, message: str) -> None:
-        super().__init__(ErrorCode.QUERY_ERROR, message)
+    def __init__(self, message: str, code: ErrorCode = ErrorCode.QUERY_ERROR) -> None:
+        super().__init__(code, message)
 
 
 def _guard_max_rows(max_rows: int) -> int:
     if max_rows <= 0:
-        raise DuckdbClientError("max_rows deve essere maggiore di 0")
+        raise DuckdbClientError("max_rows deve essere maggiore di 0", ErrorCode.INVALID_PARAMS)
     if max_rows > MAX_ROWS_HARD_CAP:
         raise DuckdbClientError(
-            f"max_rows oltre il limite hard cap di {MAX_ROWS_HARD_CAP}"
+            f"max_rows oltre il limite hard cap di {MAX_ROWS_HARD_CAP}",
+            ErrorCode.INVALID_PARAMS,
         )
     return max_rows
 
@@ -63,13 +64,13 @@ def _guard_max_rows(max_rows: int) -> int:
 def _validate_select_sql(sql: str) -> str:
     text = (sql or "").strip()
     if not text:
-        raise DuckdbClientError("sql vuoto")
+        raise DuckdbClientError("sql vuoto", ErrorCode.INVALID_PARAMS)
 
     lowered = text.lower()
     if ";" in text:
-        raise DuckdbClientError("Query multiple o statement terminati da ';' non consentiti")
+        raise DuckdbClientError("Query multiple o statement terminati da ';' non consentiti", ErrorCode.QUERY_SCOPE_VIOLATION)
     if not (lowered.startswith("select") or lowered.startswith("with")):
-        raise DuckdbClientError("Sono consentite solo query SELECT o WITH")
+        raise DuckdbClientError("Sono consentite solo query SELECT o WITH", ErrorCode.QUERY_SCOPE_VIOLATION)
 
     scrubbed = re.sub(r"--.*?$", " ", text, flags=re.MULTILINE)
     scrubbed = re.sub(r"/\*.*?\*/", " ", scrubbed, flags=re.DOTALL)
@@ -79,7 +80,7 @@ def _validate_select_sql(sql: str) -> str:
 
     for keyword in BLOCKED_KEYWORDS:
         if keyword in tokens:
-            raise DuckdbClientError(f"Keyword non consentita nella query: {keyword}")
+            raise DuckdbClientError(f"Keyword non consentita nella query: {keyword}", ErrorCode.QUERY_SCOPE_VIOLATION)
     return text
 
 
@@ -181,11 +182,13 @@ def _validate_scope(sql: str) -> None:
     if "read_parquet(" in scrubbed_lower:
         raise DuckdbClientError(
             "Accesso diretto a read_parquet() non consentito. "
-            "Usa 'FROM clean_input' invece di read_parquet()."
+            "Usa 'FROM clean_input' invece di read_parquet().",
+            ErrorCode.QUERY_SCOPE_VIOLATION,
         )
     if "read_csv(" in scrubbed_lower:
         raise DuckdbClientError(
-            "Accesso diretto a read_csv() non consentito. Usa 'FROM clean_input'."
+            "Accesso diretto a read_csv() non consentito. Usa 'FROM clean_input'.",
+            ErrorCode.QUERY_SCOPE_VIOLATION,
         )
 
     # Collect CTE names defined in the query.
@@ -203,7 +206,8 @@ def _validate_scope(sql: str) -> None:
         raise DuckdbClientError(
             f"Riferimento a tabella non consentito in FROM: '{table_ref}'. "
             f"Solo 'clean_input' e CTE locali sono permessi. "
-            f"Usa describe_dataset() per lo schema."
+            f"Usa describe_dataset() per lo schema.",
+            ErrorCode.QUERY_SCOPE_VIOLATION,
         )
 
     # Extract all JOIN <identifier> references.
@@ -215,7 +219,8 @@ def _validate_scope(sql: str) -> None:
         raise DuckdbClientError(
             f"Riferimento a tabella non consentito in JOIN: '{table_ref}'. "
             f"Solo 'clean_input' e CTE locali sono permessi. "
-            f"Usa describe_dataset() per lo schema."
+            f"Usa describe_dataset() per lo schema.",
+            ErrorCode.QUERY_SCOPE_VIOLATION,
         )
 
 
@@ -240,10 +245,13 @@ def list_datasets() -> list[dict[str, Any]]:
     description="Cerca nei dataset per nome, descrizione o fonte.",
     structured_output=True,
 )
-def search_datasets(query: str) -> list[dict[str, Any]]:
-    if not (query or "").strip():
-        raise DuckdbClientError("query non può essere vuota")
-    return search_impl(query.strip())
+def search_datasets(query: str) -> dict[str, Any]:
+    def _exec() -> dict[str, Any]:
+        if not (query or "").strip():
+            raise DuckdbClientError("query non può essere vuota", ErrorCode.EMPTY_PARAM)
+        return {"datasets": search_impl(query.strip()), "query": query.strip()}
+
+    return lc_guard(_exec)
 
 
 @mcp.tool(
