@@ -7,8 +7,9 @@ import time
 import json
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote, urlencode
-from urllib.request import urlopen
+from urllib.parse import quote
+
+from lab_connectors.gcs import list_objects
 
 DI_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
@@ -23,33 +24,14 @@ _gcs_res_cache_ttl = int(
 )  # 5 min default
 _gcs_res_lock = threading.Lock()
 
-# Lazy GCS client
-_gcs_instance = None
-
-
-def _get_gcs_client():
-    global _gcs_instance
-    if _gcs_instance is None:
-        use_auth = os.environ.get("CLEAN_QUERY_GCS_AUTH", "").lower() in {
-            "1",
-            "true",
-            "yes",
-        }
-        if use_auth:
-            try:
-                from google.cloud import storage
-
-                _gcs_instance = storage.Client(project="dataciviclab")
-            except Exception:
-                _gcs_instance = False
-        else:
-            try:
-                from google.cloud import storage
-
-                _gcs_instance = storage.Client.create_anonymous_client()
-            except Exception:
-                _gcs_instance = False
-    return _gcs_instance
+# GCS auth mode: auto = try SDK, fallback HTTP; true = force SDK; false = force HTTP
+def _gcs_auth_mode() -> bool | None:
+    val = os.environ.get("CLEAN_QUERY_GCS_AUTH", "").lower()
+    if val in ("1", "true", "yes"):
+        return True
+    if val in ("0", "false", "no"):
+        return False
+    return None
 
 
 def _load_catalog() -> list[dict[str, Any]]:
@@ -250,28 +232,13 @@ def gcs_cache_clear() -> None:
 
 
 def _list_gcs_blobs(bucket: str, prefix: str) -> list[str]:
-    """List blob names from GCS bucket with given prefix."""
-    client = _get_gcs_client()
-    if client:
-        blobs = client.list_blobs(bucket, prefix=prefix)
-        return [b.name for b in blobs]
+    """List blob names from GCS bucket with given prefix.
 
-    params = urlencode({"prefix": prefix, "fields": "items(name),nextPageToken"})
-    url = f"https://storage.googleapis.com/storage/v1/b/{quote(bucket)}/o?{params}"
-    names: list[str] = []
-    while url:
-        with urlopen(url, timeout=30) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-        names.extend(item["name"] for item in payload.get("items", []))
-        token = payload.get("nextPageToken")
-        if token:
-            url = (
-                f"https://storage.googleapis.com/storage/v1/b/{quote(bucket)}/o?"
-                f"{params}&pageToken={quote(token)}"
-            )
-        else:
-            url = ""
-    return names
+    Delega a lab_connectors.gcs.list_objects con auth mode da env.
+    """
+    auth = _gcs_auth_mode()
+    results = list_objects(bucket, prefix=prefix, auth=auth)
+    return [r["name"] for r in results]
 
 
 def _glob_to_regex(pattern: str) -> re.Pattern:

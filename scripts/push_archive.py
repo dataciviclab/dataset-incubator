@@ -26,7 +26,6 @@ import argparse
 import sys
 import json
 import datetime
-import os
 from pathlib import Path
 
 import pandas as pd
