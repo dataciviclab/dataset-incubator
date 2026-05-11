@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-05-09",
+  "updated_at": "2026-05-11",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -448,6 +448,68 @@
       },
       "status": "candidate",
       "visibility": "public"
+    },
+    {
+      "slug": "giustizia_penale_indicatori",
+      "name": "Giustizia Penale — Clearance Rate e Disposition Time",
+      "description": "Indicatori di efficienza della giustizia penale: clearance rate (casi definiti/casi sopravvenuti) e disposition time (durata media in giorni) per distretto e tipo ufficio. Sheet Tribunali, anni 2014-2024. Fonte: Ministero della Giustizia — DG Statistica.",
+      "source": "Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di ufficio giudiziario (es. Tribunale Ordinario, Tribunale per i Minorenni)"
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Distretto di Corte d'Appello"
+        },
+        {
+          "name": "sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sede dell'ufficio giudiziario"
+        },
+        {
+          "name": "sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sezione dell'ufficio (es. Penale, GIP, Esecuzioni)"
+        },
+        {
+          "name": "clearance_rate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Clearance rate: rapporto tra procedimenti definiti e sopravvenuti"
+        },
+        {
+          "name": "disposition_time_gg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Durata media dei procedimenti in giorni"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/*/giustizia_penale_indicatori_*_clean.parquet",
+        "multi_file": true
+      },
+      "status": "clean_ready",
+      "visibility": "public",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "inps_cig_serie_storiche_annuali",
