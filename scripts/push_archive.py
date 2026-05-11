@@ -26,14 +26,14 @@ import argparse
 import sys
 import json
 import datetime
-import os
 from pathlib import Path
 
 import pandas as pd
 import pyarrow.parquet as pq
-from google.cloud import bigquery, storage
+from google.cloud import bigquery
 from google.api_core.exceptions import Conflict
-from google.oauth2 import credentials as google_oauth2_credentials
+
+from lab_connectors.gcs import upload_file, upload_string
 
 # ---------------------------------------------------------------------------
 # Config
@@ -51,23 +51,7 @@ MART_ROOT = DI_ROOT / "out" / "data" / "mart"
 RUNS_ROOT = DI_ROOT / "out" / "data" / "_runs"
 
 SKIP_DIRS = {"_validate", "_run"}
-# NOTE: if specific slugs need to be skipped, pass --slug via CLI instead of hardcoding here.
 SKIP_SLUGS: set[str] = set()
-
-
-def load_google_credentials():
-    """Carica credenziali esplicite se GOOGLE_APPLICATION_CREDENTIALS punta a un ADC user file.
-
-    In alcuni ambienti WSL la discovery standard resta appesa sul `gcloud` Windows nel PATH.
-    """
-    adc_path = Path(
-        os.environ.get("GOOGLE_APPLICATION_CREDENTIALS", "")
-    ).expanduser()
-    if adc_path.is_file():
-        return google_oauth2_credentials.Credentials.from_authorized_user_file(
-            str(adc_path)
-        )
-    return None
 
 
 # ---------------------------------------------------------------------------
@@ -110,26 +94,24 @@ def get_latest_run(slug, year):
 
 
 # ---------------------------------------------------------------------------
-# GCS
+# GCS — delegato a lab_connectors.gcs
 # ---------------------------------------------------------------------------
-def push_gcs(gcs_client, local_path, bucket_name, gcs_path, dry_run=False):
+def push_gcs(local_path, bucket_name, gcs_path, dry_run=False):
     if dry_run:
         print(f"  [dry] GCS: gs://{bucket_name}/{gcs_path}")
         return
-    bucket = gcs_client.bucket(bucket_name)
-    blob = bucket.blob(gcs_path)
-    blob.upload_from_filename(str(local_path))
+    upload_file(str(local_path), bucket_name, gcs_path)
     print(f"  GCS: gs://{bucket_name}/{gcs_path}")
 
 
-def upload_manifest(gcs_client, manifest, dry_run=False):
+def upload_manifest(manifest, dry_run=False):
     if dry_run:
         print(f"  [dry] GCS: gs://{GCS_CLEAN_BUCKET}/{CATALOG_MANIFEST_PATH}")
         return
-    bucket = gcs_client.bucket(GCS_CLEAN_BUCKET)
-    blob = bucket.blob(CATALOG_MANIFEST_PATH)
-    blob.upload_from_string(
+    upload_string(
         json.dumps(manifest, ensure_ascii=False, indent=2),
+        GCS_CLEAN_BUCKET,
+        CATALOG_MANIFEST_PATH,
         content_type="application/json",
     )
     print(f"  GCS: gs://{GCS_CLEAN_BUCKET}/{CATALOG_MANIFEST_PATH}")
@@ -303,7 +285,7 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
 # ---------------------------------------------------------------------------
 # Layer: CLEAN
 # ---------------------------------------------------------------------------
-def push_clean(gcs_client, slug_filter=None, year_filter=None, dry_run=False):
+def push_clean(slug_filter=None, year_filter=None, dry_run=False):
     slugs = get_slugs(CLEAN_ROOT, slug_filter)
     print(f"[clean] slug: {slugs}\n")
 
@@ -324,7 +306,7 @@ def push_clean(gcs_client, slug_filter=None, year_filter=None, dry_run=False):
         for year in years:
             for parq in get_parquets(slug_dir / year):
                 gcs_path = f"{slug}/{year}/{parq.name}"
-                push_gcs(gcs_client, parq, GCS_CLEAN_BUCKET, gcs_path, dry_run)
+                push_gcs(parq, GCS_CLEAN_BUCKET, gcs_path, dry_run)
                 if dry_run:
                     rows = None
                 else:
@@ -347,19 +329,19 @@ def push_clean(gcs_client, slug_filter=None, year_filter=None, dry_run=False):
             run_record = get_latest_run(slug, year)
             if run_record is not None:
                 run_gcs_path = f"{slug}/{year}/pipeline_run.json"
-                push_gcs(gcs_client, run_record, GCS_CLEAN_BUCKET, run_gcs_path, dry_run)
+                push_gcs(run_record, GCS_CLEAN_BUCKET, run_gcs_path, dry_run)
             else:
                 print(f"  [{slug}/{year}] nessun run record trovato, pipeline_run.json non pushato.")
         print()
 
     if manifest["items"]:
-        upload_manifest(gcs_client, manifest, dry_run)
+        upload_manifest(manifest, dry_run)
 
 
 # ---------------------------------------------------------------------------
 # Layer: MART
 # ---------------------------------------------------------------------------
-def push_mart(gcs_client, bq_client, slug_filter=None, year_filter=None, dry_run=False):
+def push_mart(bq_client, slug_filter=None, year_filter=None, dry_run=False):
     slugs = get_slugs(MART_ROOT, slug_filter)
     print(f"[mart] slug: {slugs}\n")
 
@@ -377,7 +359,7 @@ def push_mart(gcs_client, bq_client, slug_filter=None, year_filter=None, dry_run
         for year in years:
             for parq in get_parquets(slug_dir / year):
                 gcs_path = f"{slug}/{year}/{parq.name}"
-                push_gcs(gcs_client, parq, GCS_MART_BUCKET, gcs_path, dry_run)
+                push_gcs(parq, GCS_MART_BUCKET, gcs_path, dry_run)
                 if bq_client:
                     push_bq(bq_client, parq, slug, year, dry_run)
         print()
@@ -403,16 +385,14 @@ def main():
                         help="Status da impostare nel catalog per i nuovi entry (default: candidate)")
     args = parser.parse_args()
 
-    google_credentials = load_google_credentials()
-    gcs_client = storage.Client(project=GCP_PROJECT, credentials=google_credentials)
     bq_client = (
-        bigquery.Client(project=GCP_PROJECT, credentials=google_credentials)
+        bigquery.Client(project=GCP_PROJECT)
         if (not args.no_bq or args.create_bq_table)
         else None
     )
 
     if args.layer in ("clean", "all"):
-        push_clean(gcs_client, args.slug, args.year, args.dry_run)
+        push_clean(args.slug, args.year, args.dry_run)
 
     if args.update_catalog or args.create_bq_table:
         slugs = get_slugs(CLEAN_ROOT, args.slug)
@@ -424,7 +404,7 @@ def main():
                 create_bq_external_table(bq_client, slug, args.dry_run)
 
     if args.layer in ("mart", "all"):
-        push_mart(gcs_client, bq_client, args.slug, args.year, args.dry_run)
+        push_mart(bq_client, args.slug, args.year, args.dry_run)
 
     print("Done.")
 
