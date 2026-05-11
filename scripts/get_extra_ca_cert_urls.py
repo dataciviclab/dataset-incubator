@@ -26,7 +26,7 @@ def get_urls(cfg_path: Path) -> list[str]:
 
     try:
         cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
-    except Exception:
+    except FileNotFoundError:
         return []
 
     seen: list[str] = []
