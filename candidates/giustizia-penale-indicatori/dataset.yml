@@ -1,0 +1,36 @@
+# Candidate: Giustizia penale - clearance rate e disposition time
+# Issue: https://github.com/dataciviclab/dataset-incubator/issues/266
+# Fonte: Ministero della Giustizia - Direzione Generale di Statistica e Analisi Organizzativa
+# URL: https://datiestatistiche.giustizia.it/page/it/clearance-rate-e-disposition-time-penale
+# File XLSX multi-sheet: Tribunali, Corti d'Appello, Giudici di Pace, Tribunale per i Minorenni
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "giustizia_penale_indicatori"
+  # File unico multi-anno (2014-2024); years indica l'anno del source file iterato da toolkit
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "tribunali_xlsx"
+      type: "http_file"
+      args:
+        url: "https://datiestatistiche.giustizia.it/cmsresources/cms/documents/Indicatori_Penali_1.xlsx"
+        filename: "Indicatori_Penali_1.xlsx"
+      primary: true
+
+clean:
+  read:
+    source: auto
+    mode: latest
+    header: true
+    sheet_name: "Tribunali"
+  sql: "sql/clean.sql"
+
+mart:
+  tables:
+    - name: "giustizia_penale_indicatori"
+      sql: "sql/mart.sql"
