@@ -38,6 +38,15 @@ import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Import shared helpers
+sys.path.insert(0, str(ROOT / "scripts"))
+from _candidate_helpers import (  # noqa: E402
+    candidate_slug_from_path,
+    is_nested_config,
+    resolve_support_entries,
+    resolve_years,
+)
+
 
 def resolve(config_path: str) -> dict:
     """Resolve sample run parameters for a dataset config."""
@@ -60,83 +69,44 @@ def resolve(config_path: str) -> dict:
     if not name:
         return {"error": f"No 'dataset.name' in {config_path}"}
 
-    years = dataset.get("years", [])
-    if not years:
+    # Resolve years via shared helper
+    years_int = resolve_years(path)
+    if not years_int:
         return {
             "error": f"No 'dataset.years' in {config_path} -- cannot determine sample year",
             "config_path": str(path),
             "slug": None,
         }
 
-    # Sample year = last year in the list (most recent)
-    try:
-        years_int = sorted(int(y) for y in years)
-    except (TypeError, ValueError):
-        return {"error": f"Invalid years value in {config_path}: {years}"}
-
     sample_year = years_int[-1]
 
-    # Compute slug from config path, NOT from YAML dataset.name
-    # This avoids mismatch with pipeline_signals which uses directory names
-    parts = path.parts
+    # Compute slug from config path (shared helper)
+    slug = candidate_slug_from_path(path, ROOT)
 
-    # Nested config detection
-    is_nested = "sources" in parts or "compose" in parts
+    # Nested config detection (shared helper)
+    nested = is_nested_config(path)
 
-    # Collect support[] entries from dataset config.
-    # Two patterns in use:
-    #   - root level: support: [{name, config, years}]  (es. mim-alunni-corso-eta)
-    #   - inside dataset: dataset.support: [{name, config, years}]  (es. ispra-ru-costi-kg, malasanita, opencivitas)
-    # Try root level first, then dataset.support
-    support_entries = []
-    raw_support = cfg.get("support", []) or []
-    dataset_support = cfg.get("dataset", {}).get("support", []) or []
-    for entry in raw_support + dataset_support:
-        cfg_path = entry.get("config", "")
-        if cfg_path:
-            support_cfg_path = str((path.parent / cfg_path).resolve())
-            try:
-                support_rel = Path(support_cfg_path).relative_to(ROOT)
-            except ValueError:
-                support_rel = Path(support_cfg_path)
-            support_entries.append({
-                "name": entry.get("name", ""),
-                "config": str(support_rel),
-                "years": entry.get("years", []),
-            })
+    # Resolve support entries (shared helper)
+    support_entries = resolve_support_entries(cfg, path.parent, ROOT)
+    has_support = bool(support_entries)
 
-    has_support = len(support_entries) > 0
-
-    # Compute slug from config path relative to ROOT
+    # Relative path for output
     try:
         rel = path.relative_to(ROOT)
     except ValueError:
         rel = path
-
-    # Find slug: first segment after 'candidates/' or 'support_datasets/'
-    slug = None
-    for i, part in enumerate(rel.parts):
-        if part in ("candidates", "support_datasets"):
-            if i + 1 < len(rel.parts):
-                slug = rel.parts[i + 1]
-                break
-
-    # Fallback: derive from directory if slug not found (should not happen
-    # for valid candidates, but guards against malformed paths)
-    if slug is None:
-        slug = path.parts[-2] if len(path.parts) >= 2 else None
 
     return {
         "config_path": str(rel),
         "slug": slug,
         "sample_year": sample_year,
         "all_years": years_int,
-        "is_nested": is_nested,
+        "is_nested": nested,
         "has_support": has_support,
         "support": support_entries,
         "note": (
             "nested config -- run via source layer"
-            if is_nested
+            if nested
             else ""
         ),
     }

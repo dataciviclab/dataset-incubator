@@ -45,17 +45,18 @@ from typing import Any
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Import shared helpers
+sys.path.insert(0, str(ROOT / "scripts"))
+from _candidate_helpers import resolve_sample_year  # noqa: E402
+
 
 def _resolve_year(cfg_path: Path) -> int:
-    """Resolve the sample year from a dataset.yml — last year in list."""
-    import yaml
-    try:
-        with open(cfg_path, encoding="utf-8") as f:
-            d = yaml.safe_load(f) or {}
-        years = d.get("dataset", {}).get("years", [])
-        return int(years[-1]) if years else 0
-    except Exception:
-        return 0
+    """Resolve the sample year from a dataset.yml — last year in list.
+
+    Delegates to shared helper _candidate_helpers.resolve_sample_year.
+    Kept as thin wrapper for backward compat (returns 0 on missing).
+    """
+    return resolve_sample_year(cfg_path)
 
 
 def _git_diff_files(base_sha: str | None, head_sha: str) -> list[str]:

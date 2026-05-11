@@ -151,37 +151,21 @@ jobs:
           python - <<'PY'
           import json
           import os
-          from pathlib import Path
+          import subprocess
 
-          import yaml
+          result = subprocess.run(
+              ["python", "scripts/resolve_sample_run.py", os.environ["CONFIG_PATH"]],
+              capture_output=True, text=True
+          )
 
-          root = Path(os.environ["GITHUB_WORKSPACE"])
-          cfg_path = root / os.environ["CONFIG_PATH"]
-          support_map = {}
+          support_list = []
+          if result.returncode == 0:
+              try:
+                  data = json.loads(result.stdout)
+                  support_list = data.get("support", [])
+              except json.JSONDecodeError:
+                  pass
 
-          if cfg_path.exists():
-              with open(cfg_path, encoding="utf-8") as f:
-                  cfg = yaml.safe_load(f) or {}
-
-              raw_support = cfg.get("support", []) or []
-              dataset_support = cfg.get("dataset", {}).get("support", []) or []
-              for entry in raw_support + dataset_support:
-                  rel_config = entry.get("config", "")
-                  if not rel_config:
-                      continue
-                  support_path = (cfg_path.parent / rel_config).resolve()
-                  try:
-                      support_rel = support_path.relative_to(root)
-                  except ValueError:
-                      support_rel = support_path
-                  key = str(support_rel)
-                  support_map.setdefault(key, {
-                      "name": entry.get("name", ""),
-                      "config": key,
-                      "years": entry.get("years", []),
-                  })
-
-          support_list = list(support_map.values())
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
               out.write(f"has_support={str(bool(support_list)).lower()}\n")
               out.write("support_configs<<JSON\n")
