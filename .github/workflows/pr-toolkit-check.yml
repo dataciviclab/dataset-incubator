@@ -152,19 +152,20 @@ jobs:
           import json
           import os
           import subprocess
+          import sys
 
           result = subprocess.run(
               ["python", "scripts/resolve_sample_run.py", os.environ["CONFIG_PATH"]],
               capture_output=True, text=True
           )
 
-          support_list = []
-          if result.returncode == 0:
-              try:
-                  data = json.loads(result.stdout)
-                  support_list = data.get("support", [])
-              except json.JSONDecodeError:
-                  pass
+          if result.returncode != 0:
+              print("::error::resolve_sample_run.py failed — stderr follows")
+              print(result.stderr)
+              sys.exit(1)
+
+          data = json.loads(result.stdout)
+          support_list = data.get("support", [])
 
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
               out.write(f"has_support={str(bool(support_list)).lower()}\n")
