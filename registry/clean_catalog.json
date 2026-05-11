@@ -455,7 +455,7 @@
       "description": "Indicatori di efficienza della giustizia penale: clearance rate (casi definiti/casi sopravvenuti) e disposition time (durata media in giorni) per distretto e tipo ufficio. Sheet Tribunali, anni 2014-2024. Fonte: Ministero della Giustizia — DG Statistica.",
       "source": "Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa",
       "period": {
-        "start": 2024,
+        "start": 2014,
         "end": 2024
       },
       "columns": [
@@ -504,8 +504,8 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/*/giustizia_penale_indicatori_*_clean.parquet",
-        "multi_file": true
+        "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/2024/giustizia_penale_indicatori_2024_clean.parquet",
+        "multi_file": false
       },
       "status": "clean_ready",
       "visibility": "public",
