@@ -88,32 +88,7 @@ jobs:
           set -euo pipefail
 
           urls_file="${RUNNER_TEMP:-/tmp}/extra-ca-cert-urls.txt"
-
-          python - <<'PY' > "$urls_file"
-          import os
-          from pathlib import Path
-
-          import yaml
-
-          root = Path(os.environ["GITHUB_WORKSPACE"])
-          cfg_path = root / os.environ["CONFIG_PATH"]
-          cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
-
-          urls = []
-          for source in (cfg.get("raw", {}).get("sources") or []):
-              args = source.get("args") or {}
-              for key in ("extra_ca_cert_url", "extra_ca_cert_urls"):
-                  value = args.get(key)
-                  if not value:
-                      continue
-                  if isinstance(value, str):
-                      urls.append(value)
-                  else:
-                      urls.extend(str(item) for item in value)
-
-          for url in dict.fromkeys(urls):
-              print(url)
-          PY
+          python scripts/get_extra_ca_cert_urls.py "$CONFIG_PATH" > "$urls_file"
 
           if [ ! -s "$urls_file" ]; then
             echo "::notice::No extra CA certificates configured for ${CONFIG_PATH}"
