@@ -67,6 +67,38 @@ jobs:
       - name: Install dependencies
         run: pip install pyyaml
 
+      - name: Configure extra source CA certificates
+        run: |
+          set -euo pipefail
+
+          urls_file="${RUNNER_TEMP:-/tmp}/extra-ca-cert-urls.txt"
+          python scripts/get_extra_ca_cert_urls.py "$CONFIG_PATH" > "$urls_file"
+
+          if [ ! -s "$urls_file" ]; then
+            echo "::notice::No extra CA certificates configured for ${CONFIG_PATH}"
+            exit 0
+          fi
+
+          command -v curl >/dev/null
+          command -v openssl >/dev/null
+
+          bundle="${RUNNER_TEMP:-/tmp}/ca-certificates-with-extra-source-cas.pem"
+          cp /etc/ssl/certs/ca-certificates.crt "$bundle"
+
+          i=0
+          while IFS= read -r url; do
+            i=$((i + 1))
+            cert_raw="${RUNNER_TEMP:-/tmp}/extra-source-ca-${i}.crt"
+            cert_pem="${RUNNER_TEMP:-/tmp}/extra-source-ca-${i}.pem"
+            curl -fsSL "$url" -o "$cert_raw"
+            openssl x509 -inform DER -in "$cert_raw" -out "$cert_pem" 2>/dev/null \
+              || openssl x509 -in "$cert_raw" -out "$cert_pem"
+            cat "$cert_pem" >> "$bundle"
+          done < "$urls_file"
+
+          echo "REQUESTS_CA_BUNDLE=$bundle" >> "$GITHUB_ENV"
+          echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
+
       # ------------------------------------------------------------------
       # Step 1 — Resolve sample year
       # ------------------------------------------------------------------
