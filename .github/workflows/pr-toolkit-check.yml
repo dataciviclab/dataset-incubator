@@ -157,15 +157,6 @@ jobs:
           echo "::notice::This candidate has support dependencies. Running support datasets first."
           echo "$SUPPORT_JSON" > /tmp/support_configs.json
           python scripts/run_support_datasets.py --support-json /tmp/support_configs.json
-      - name: Toolkit inspect paths (pre-flight)
-        run: |
-          echo "=== inspect paths ==="
-          toolkit inspect paths \
-            --config "${{ matrix.config.config_path }}" \
-            --year "${{ matrix.config.year }}" \
-            --json \
-            2>&1 || true
-
       - name: Toolkit run all
         id: run_all
         run: |
