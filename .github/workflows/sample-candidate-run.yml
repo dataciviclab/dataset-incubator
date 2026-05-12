@@ -16,10 +16,9 @@ name: Sample Candidate Run
 # Steps:
 #   1. Resolve sample year from config
 #   2. Install toolkit
-#   3. Inspect paths + pre-flight check (run_file_count, latest_run status)
-#   4. Run all layers
-#   5. Validate all layers (only if run succeeded)
-#   6. Upload artifacts
+#   3. Run all layers
+#   4. Validate all layers (only if run succeeded)
+#   5. Upload artifacts
 
 on:
   workflow_dispatch:
@@ -66,6 +65,38 @@ jobs:
 
       - name: Install dependencies
         run: pip install pyyaml
+
+      - name: Configure extra source CA certificates
+        run: |
+          set -euo pipefail
+
+          urls_file="${RUNNER_TEMP:-/tmp}/extra-ca-cert-urls.txt"
+          python scripts/get_extra_ca_cert_urls.py "$CONFIG_PATH" > "$urls_file"
+
+          if [ ! -s "$urls_file" ]; then
+            echo "::notice::No extra CA certificates configured for ${CONFIG_PATH}"
+            exit 0
+          fi
+
+          command -v curl >/dev/null
+          command -v openssl >/dev/null
+
+          bundle="${RUNNER_TEMP:-/tmp}/ca-certificates-with-extra-source-cas.pem"
+          cp /etc/ssl/certs/ca-certificates.crt "$bundle"
+
+          i=0
+          while IFS= read -r url; do
+            i=$((i + 1))
+            cert_raw="${RUNNER_TEMP:-/tmp}/extra-source-ca-${i}.crt"
+            cert_pem="${RUNNER_TEMP:-/tmp}/extra-source-ca-${i}.pem"
+            curl -fsSL "$url" -o "$cert_raw"
+            openssl x509 -inform DER -in "$cert_raw" -out "$cert_pem" 2>/dev/null \
+              || openssl x509 -in "$cert_raw" -out "$cert_pem"
+            cat "$cert_pem" >> "$bundle"
+          done < "$urls_file"
+
+          echo "REQUESTS_CA_BUNDLE=$bundle" >> "$GITHUB_ENV"
+          echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
 
       # ------------------------------------------------------------------
       # Step 1 — Resolve sample year
@@ -116,7 +147,7 @@ jobs:
           pip install git+https://github.com/dataciviclab/toolkit.git@v1.5.0
 
       # ------------------------------------------------------------------
-      # Step 1b — Run support datasets first (if has_support)
+      # Run support datasets first (if has_support)
       # ------------------------------------------------------------------
       - name: Run support datasets first (if has_support)
         if: steps.resolve.outputs.has_support == 'true'
@@ -127,47 +158,7 @@ jobs:
           echo "$SUPPORT_JSON" > /tmp/support_configs.json
           python scripts/run_support_datasets.py --support-json /tmp/support_configs.json
       # ------------------------------------------------------------------
-      # Step 3 — Inspect paths + pre-flight check
-      # ------------------------------------------------------------------
-      - name: Toolkit inspect paths
-        run: |
-          toolkit inspect paths \
-            --config "$CONFIG_PATH" \
-            --year "${{ steps.resolve.outputs.final_year }}" \
-            --json \
-            $STRICT_FLAG \
-            2>&1 | tee inspect_paths.json || true
-
-      - name: Pre-flight check
-        env:
-          GITHUB_RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
-        run: |
-          python - <<'PY'
-          import json, sys
-
-          try:
-              d = json.load(open("inspect_paths.json"))
-          except Exception:
-              print("::warning::Could not parse inspect_paths.json — skipping pre-flight checks")
-              sys.exit(0)
-
-          run_count = d.get("run_file_count", 0)
-          latest = d.get("latest_run") or {}
-          latest_status = latest.get("status", "N/A")
-          latest_run_id = latest.get("run_id", "N/A")
-
-          print(f"::notice::run_file_count={run_count}, latest_run={latest_run_id} ({latest_status})")
-
-          if run_count == 0:
-              print("::warning::No previous runs found for this candidate — this will be a first run")
-          elif latest_status == "FAILED":
-              print(f"::warning::Latest run was FAILED ({latest_run_id}) — check artifact from previous run before proceeding")
-          elif latest_status == "SUCCESS":
-              print(f"::notice::Latest run was SUCCESS ({latest_run_id}) — proceeding with sample run")
-          PY
-
-      # ------------------------------------------------------------------
-      # Step 4 — Run all layers
+      # Step 3 — Run all layers
       # ------------------------------------------------------------------
       - name: Toolkit run all
         id: run_all
@@ -180,7 +171,7 @@ jobs:
             2>&1 | tee run_all.log
 
       # ------------------------------------------------------------------
-      # Step 5 — Validate all layers (only if run succeeded)
+      # Step 4 — Validate all layers (only if run succeeded)
       # ------------------------------------------------------------------
       - name: Toolkit validate all
         if: success()
@@ -202,7 +193,6 @@ jobs:
           name: sample-run-${{ github.run_id }}
           path: |
             ${{ github.run_id }}_params.json
-            inspect_paths.json
             run_all.log
             validate_all.json
             support_*.log

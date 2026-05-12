@@ -8,8 +8,7 @@ from datetime import date
 from fnmatch import fnmatchcase
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote, urlencode
-from urllib.request import Request, urlopen
+from lab_connectors.gcs import list_objects, object_exists
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -255,11 +254,8 @@ def resolve_gcs_path(path: str) -> list[str]:
         raise ValueError(f"not a GCS path: {path}")
     bucket, key = path[5:].split("/", 1)
     if "*" not in key:
-        url = f"https://storage.googleapis.com/{bucket}/{quote(key, safe='/._-')}"
-        request = Request(url, method="HEAD")
-        with urlopen(request, timeout=30) as response:
-            if response.status >= 400:
-                return []
+        if not object_exists(bucket, key):
+            return []
         return [key]
 
     prefix = key.split("*", 1)[0]
@@ -268,22 +264,12 @@ def resolve_gcs_path(path: str) -> list[str]:
 
 
 def list_gcs_objects(bucket: str, prefix: str) -> list[str]:
-    params = urlencode({"prefix": prefix, "fields": "items(name),nextPageToken"})
-    url = f"https://storage.googleapis.com/storage/v1/b/{quote(bucket)}/o?{params}"
-    names: list[str] = []
-    while url:
-        with urlopen(url, timeout=30) as response:
-            payload = json.loads(response.read().decode("utf-8"))
-        names.extend(item["name"] for item in payload.get("items", []))
-        token = payload.get("nextPageToken")
-        if token:
-            url = (
-                f"https://storage.googleapis.com/storage/v1/b/{quote(bucket)}/o?"
-                f"{params}&pageToken={quote(token)}"
-            )
-        else:
-            url = ""
-    return names
+    """Lista oggetti GCS per un bucket/prefix.
+
+    Delega a lab_connectors.gcs.list_objects con auth=False (HTTP API pubblica).
+    """
+    results = list_objects(bucket, prefix=prefix, auth=False)
+    return [r["name"] for r in results]
 
 
 def missing_period_years(paths: list[str], period: dict[str, Any]) -> list[int]:

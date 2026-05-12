@@ -88,32 +88,7 @@ jobs:
           set -euo pipefail
 
           urls_file="${RUNNER_TEMP:-/tmp}/extra-ca-cert-urls.txt"
-
-          python - <<'PY' > "$urls_file"
-          import os
-          from pathlib import Path
-
-          import yaml
-
-          root = Path(os.environ["GITHUB_WORKSPACE"])
-          cfg_path = root / os.environ["CONFIG_PATH"]
-          cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
-
-          urls = []
-          for source in (cfg.get("raw", {}).get("sources") or []):
-              args = source.get("args") or {}
-              for key in ("extra_ca_cert_url", "extra_ca_cert_urls"):
-                  value = args.get(key)
-                  if not value:
-                      continue
-                  if isinstance(value, str):
-                      urls.append(value)
-                  else:
-                      urls.extend(str(item) for item in value)
-
-          for url in dict.fromkeys(urls):
-              print(url)
-          PY
+          python scripts/get_extra_ca_cert_urls.py "$CONFIG_PATH" > "$urls_file"
 
           if [ ! -s "$urls_file" ]; then
             echo "::notice::No extra CA certificates configured for ${CONFIG_PATH}"
@@ -151,37 +126,22 @@ jobs:
           python - <<'PY'
           import json
           import os
-          from pathlib import Path
+          import subprocess
+          import sys
 
-          import yaml
+          result = subprocess.run(
+              ["python", "scripts/resolve_sample_run.py", os.environ["CONFIG_PATH"]],
+              capture_output=True, text=True
+          )
 
-          root = Path(os.environ["GITHUB_WORKSPACE"])
-          cfg_path = root / os.environ["CONFIG_PATH"]
-          support_map = {}
+          if result.returncode != 0:
+              print("::error::resolve_sample_run.py failed — stderr follows")
+              print(result.stderr)
+              sys.exit(1)
 
-          if cfg_path.exists():
-              with open(cfg_path, encoding="utf-8") as f:
-                  cfg = yaml.safe_load(f) or {}
+          data = json.loads(result.stdout)
+          support_list = data.get("support", [])
 
-              raw_support = cfg.get("support", []) or []
-              dataset_support = cfg.get("dataset", {}).get("support", []) or []
-              for entry in raw_support + dataset_support:
-                  rel_config = entry.get("config", "")
-                  if not rel_config:
-                      continue
-                  support_path = (cfg_path.parent / rel_config).resolve()
-                  try:
-                      support_rel = support_path.relative_to(root)
-                  except ValueError:
-                      support_rel = support_path
-                  key = str(support_rel)
-                  support_map.setdefault(key, {
-                      "name": entry.get("name", ""),
-                      "config": key,
-                      "years": entry.get("years", []),
-                  })
-
-          support_list = list(support_map.values())
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
               out.write(f"has_support={str(bool(support_list)).lower()}\n")
               out.write("support_configs<<JSON\n")
@@ -197,15 +157,6 @@ jobs:
           echo "::notice::This candidate has support dependencies. Running support datasets first."
           echo "$SUPPORT_JSON" > /tmp/support_configs.json
           python scripts/run_support_datasets.py --support-json /tmp/support_configs.json
-      - name: Toolkit inspect paths (pre-flight)
-        run: |
-          echo "=== inspect paths ==="
-          toolkit inspect paths \
-            --config "${{ matrix.config.config_path }}" \
-            --year "${{ matrix.config.year }}" \
-            --json \
-            2>&1 || true
-
       - name: Toolkit run all
         id: run_all
         run: |
