@@ -1,4 +1,4 @@
 google-cloud-storage>=3.10.1
 google-cloud-bigquery>=3.41.0
-pandas>=3.0.2
+pandas>=3.0.3
 pyarrow>=24.0.0
