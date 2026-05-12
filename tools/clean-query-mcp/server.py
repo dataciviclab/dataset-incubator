@@ -137,28 +137,26 @@ def _duckdb_read(
     # Replace the placeholder in wrapped_sql if present
     sql = wrapped_sql.replace("{SOURCE_EXPR}", source_expr)
 
-    import duckdb
+    from lab_connectors.duckdb import safe_connect
     import concurrent.futures
 
-    conn = duckdb.connect(database=":memory:")
-    conn.execute("PRAGMA disable_progress_bar")
-    conn.execute("SET memory_limit='2GB'")
+    with safe_connect() as conn:
+        conn.execute("PRAGMA disable_progress_bar")
+        conn.execute("SET memory_limit='2GB'")
 
-    def _run():
-        result = conn.execute(sql)
-        return [item[0] for item in (result.description or [])], result.fetchall()
+        def _run():
+            result = conn.execute(sql)
+            return [item[0] for item in (result.description or [])], result.fetchall()
 
-    pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-    try:
-        future = pool.submit(_run)
-        columns, rows = future.result(timeout=timeout)
-    except concurrent.futures.TimeoutError:
-        conn.close()
-        pool.shutdown(wait=False)
-        return {"error": f"Query timeout ({timeout}s). Riduci la complessita o aggiungi filtri."}
-    finally:
-        conn.close()
-        pool.shutdown(wait=False)
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            future = pool.submit(_run)
+            columns, rows = future.result(timeout=timeout)
+        except concurrent.futures.TimeoutError:
+            pool.shutdown(wait=False)
+            return {"error": f"Query timeout ({timeout}s). Riduci la complessita o aggiungi filtri."}
+        finally:
+            pool.shutdown(wait=False)
 
     return {"columns": columns, "rows": rows}
 
@@ -348,33 +346,32 @@ def run_query(
     def _exec() -> dict[str, Any]:
         _guard_max_rows(max_rows)
 
-        import duckdb
+        from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        conn = duckdb.connect(database=":memory:")
-        conn.execute("PRAGMA disable_progress_bar")
-        conn.execute("SET memory_limit='2GB'")
+        with safe_connect() as conn:
+            conn.execute("PRAGMA disable_progress_bar")
+            conn.execute("SET memory_limit='2GB'")
 
-        def _run_query():
-            result = conn.execute(wrapped_sql)
-            columns = [item[0] for item in (result.description or [])]
-            rows_raw = result.fetchall()
-            return columns, rows_raw
+            def _run_query():
+                result = conn.execute(wrapped_sql)
+                columns = [item[0] for item in (result.description or [])]
+                rows_raw = result.fetchall()
+                return columns, rows_raw
 
-        # 60s hard timeout: ThreadPoolExecutor without 'with' so we don't
-        # wait for the worker to finish after timeout. The orphan thread will
-        # eventually finish and its connection is isolated (in-memory).
-        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        try:
-            future = pool.submit(_run_query)
-            columns, rows_raw = future.result(timeout=60)
-        except concurrent.futures.TimeoutError:
-            return {
-                "error": "Query timeout (60s). Ridurre la complessita o aggiungere filtri."
-            }
-        finally:
-            conn.close()
-            pool.shutdown(wait=False)
+            # 60s hard timeout: ThreadPoolExecutor without 'with' so we don't
+            # wait for the worker to finish after timeout. The orphan thread will
+            # eventually finish and its connection is isolated (in-memory).
+            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+            try:
+                future = pool.submit(_run_query)
+                columns, rows_raw = future.result(timeout=60)
+            except concurrent.futures.TimeoutError:
+                return {
+                    "error": "Query timeout (60s). Ridurre la complessita o aggiungere filtri."
+                }
+            finally:
+                pool.shutdown(wait=False)
 
         truncated = len(rows_raw) > max_rows
         rows = rows_raw[:max_rows]
@@ -513,28 +510,26 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
     wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) SELECT COUNT(*) AS total FROM clean_input"
 
     def _exec() -> dict[str, Any]:
-        import duckdb
+        from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        conn = duckdb.connect(database=":memory:")
-        conn.execute("PRAGMA disable_progress_bar")
-        conn.execute("SET memory_limit='2GB'")
+        with safe_connect() as conn:
+            conn.execute("PRAGMA disable_progress_bar")
+            conn.execute("SET memory_limit='2GB'")
 
-        def _run():
-            result = conn.execute(wrapped_sql)
-            return result.fetchone()[0]
+            def _run():
+                result = conn.execute(wrapped_sql)
+                return result.fetchone()[0]
 
-        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        try:
-            future = pool.submit(_run)
-            total = future.result(timeout=60)
-        except concurrent.futures.TimeoutError:
-            conn.close()
-            pool.shutdown(wait=False)
-            return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
-        finally:
-            conn.close()
-            pool.shutdown(wait=False)
+            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+            try:
+                future = pool.submit(_run)
+                total = future.result(timeout=60)
+            except concurrent.futures.TimeoutError:
+                pool.shutdown(wait=False)
+                return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
+            finally:
+                pool.shutdown(wait=False)
 
         return {
             "dataset": dataset,
@@ -607,28 +602,26 @@ def time_series(
     )
 
     def _exec() -> dict[str, Any]:
-        import duckdb
+        from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        conn = duckdb.connect(database=":memory:")
-        conn.execute("PRAGMA disable_progress_bar")
-        conn.execute("SET memory_limit='2GB'")
+        with safe_connect() as conn:
+            conn.execute("PRAGMA disable_progress_bar")
+            conn.execute("SET memory_limit='2GB'")
 
-        def _run():
-            result = conn.execute(wrapped_sql)
-            return [item[0] for item in (result.description or [])], result.fetchall()
+            def _run():
+                result = conn.execute(wrapped_sql)
+                return [item[0] for item in (result.description or [])], result.fetchall()
 
-        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        try:
-            future = pool.submit(_run)
-            columns, rows = future.result(timeout=60)
-        except concurrent.futures.TimeoutError:
-            conn.close()
-            pool.shutdown(wait=False)
-            return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
-        finally:
-            conn.close()
-            pool.shutdown(wait=False)
+            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+            try:
+                future = pool.submit(_run)
+                columns, rows = future.result(timeout=60)
+            except concurrent.futures.TimeoutError:
+                pool.shutdown(wait=False)
+                return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
+            finally:
+                pool.shutdown(wait=False)
 
         truncated = len(rows) > limit
         return {
@@ -685,28 +678,26 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
     )
 
     def _exec() -> dict[str, Any]:
-        import duckdb
+        from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        conn = duckdb.connect(database=":memory:")
-        conn.execute("PRAGMA disable_progress_bar")
-        conn.execute("SET memory_limit='2GB'")
+        with safe_connect() as conn:
+            conn.execute("PRAGMA disable_progress_bar")
+            conn.execute("SET memory_limit='2GB'")
 
-        def _run():
-            result = conn.execute(wrapped_sql)
-            return [item[0] for item in (result.description or [])], result.fetchall()
+            def _run():
+                result = conn.execute(wrapped_sql)
+                return [item[0] for item in (result.description or [])], result.fetchall()
 
-        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        try:
-            future = pool.submit(_run)
-            columns, rows = future.result(timeout=60)
-        except concurrent.futures.TimeoutError:
-            conn.close()
-            pool.shutdown(wait=False)
-            return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
-        finally:
-            conn.close()
-            pool.shutdown(wait=False)
+            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+            try:
+                future = pool.submit(_run)
+                columns, rows = future.result(timeout=60)
+            except concurrent.futures.TimeoutError:
+                pool.shutdown(wait=False)
+                return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
+            finally:
+                pool.shutdown(wait=False)
 
         truncated = len(rows) > limit
         return {
@@ -857,22 +848,19 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
     wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
 
     def _exec() -> dict[str, Any]:
-        import duckdb
+        from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        conn = duckdb.connect(database=":memory:")
-        conn.execute("PRAGMA disable_progress_bar")
-        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-        try:
-            future = pool.submit(lambda: conn.execute(f"EXPLAIN {wrapped_sql}"))
-            explain_result = future.result(timeout=30)
-            # EXPLAIN returns rows: each row is (key, value) like ("physical_plan", "...")
-            # Take the value from the first row (physical_plan summary)
-            row = explain_result.fetchone() if explain_result else None
-            plan_text = row[1] if row and len(row) > 1 else (row[0] if row else None)
-        finally:
-            conn.close()
-            pool.shutdown(wait=False)
+        with safe_connect() as conn:
+            conn.execute("PRAGMA disable_progress_bar")
+            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+            try:
+                future = pool.submit(lambda: conn.execute(f"EXPLAIN {wrapped_sql}"))
+                explain_result = future.result(timeout=30)
+                row = explain_result.fetchone() if explain_result else None
+                plan_text = row[1] if row and len(row) > 1 else (row[0] if row else None)
+            finally:
+                pool.shutdown(wait=False)
 
         return {
             "valid": True,
