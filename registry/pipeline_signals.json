@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-11",
+  "generated_at": "2026-05-12",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -16,7 +16,7 @@
       "id": "aifa-spesa-consumo",
       "status": "ok",
       "label": "aifa-spesa-consumo",
-      "detail": "anni 2018-2024 — fonte: aifa_spesa_consumo_csv — mart: sì",
+      "detail": "anni 2018-2024 — fonte: aifa_spesa_consumo_csv — mart: sì — DE: published",
       "action": "",
       "sample_run": {
         "status": "passed",
