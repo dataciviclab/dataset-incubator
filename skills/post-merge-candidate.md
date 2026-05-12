@@ -69,7 +69,10 @@ Se dry-run ok, push reale senza BQ (BQ table creata separatamente dopo verifica)
 
 Parquet per ogni anno + `pipeline_run.json` → `gs://dataciviclab-clean/{gcs_slug}/{year}/`.
 
-**BQ table — solo dopo verifica GCS ok:**
+**BQ external table — solo dopo verifica GCS ok:**
+
+Il comando usa `--layer clean` con `--create-bq-table`, che esegue un re-run idempotente: ripusha parquet GCS (sovrascrittura innocua) + crea/aggiorna external table BQ. Non esiste un flag BQ-only — il re-run è sicuro perché i file GCS sono già presenti.
+
 ```bash
 .venv/bin/python scripts/push_archive.py --layer clean --slug {gcs_slug} --create-bq-table --update-catalog --status clean_ready
 ```

@@ -39,10 +39,23 @@ Se il candidate esiste già → riallinea l'issue al perimetro reale. Mai aprire
 Due modalità secondo il punto di partenza:
 
 **Source nuova, hai un URL diretto al file:**
+
+`toolkit init --url` genera i file nella directory corrente (`./{slug}/`). Il candidate deve stare in `candidates/{slug}/`, quindi esegui il comando da dentro `candidates/`:
+
+```bash
+cd candidates
+toolkit init --url https://example.com/data.csv --years 2024
+cd ..
+```
+
+Oppure, se preferisci inizializzare dalla root e poi spostare:
+
 ```bash
 toolkit init --url https://example.com/data.csv --years 2024
+mv ./{slug} candidates/{slug}
 ```
-Scarica, profile (encoding, delimiter, colonne), genera `dataset.yml`, `sql/clean.sql`, `sql/mart.sql`, `README.md`, `notes.md`, `notebooks/`.
+
+`init` scarica, profile (encoding, delimiter, colonne), genera `dataset.yml`, `sql/clean.sql`, `sql/mart.sql`, `README.md`, `notes.md`, `notebooks/`.
 
 **Candidate strutturato già esistente, vuoi rigenerare lo scaffold:**
 ```bash
