@@ -416,4 +416,47 @@ jobs:
             https://api.github.com/repos/dataciviclab/data-explorer/dispatches \
             -d '{"event_type":"catalog_updated"}'
 
+      - name: Open follow-up issue in data-explorer
+        if: success()
+        env:
+          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+          ITEMS_JSON: ${{ needs.detect.outputs.items }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_TITLE: ${{ github.event.pull_request.title }}
+        run: |
+          # Estrai slug degli items cambiati
+          ITEMS=$(echo "$ITEMS_JSON" | python3 -c "
+import json, sys
+items = json.load(sys.stdin)
+for i in items:
+    print(f\"- [ ] {i['slug']}: aggiungere a themes.json e creare pagina dataset\")
+")
+          if [ -z "$ITEMS" ]; then
+            echo "No items to create issues for"
+            exit 0
+          fi
+
+          # Crea issue in data-explorer
+          gh issue create \
+            --repo dataciviclab/data-explorer \
+            --title "follow-up: pagina e tema per $(echo "$ITEMS" | head -1 | sed 's/- \[ \] //')" \
+            --label "curation" \
+            --body "## Nuovo/i dataset pubblicato/i
+
+Il seguente/i dataset sono stati pubblicati automaticamente da PR #${PR_NUMBER} — ${PR_TITLE}.
+Sono disponibili nel catalogo tecnico ma **mancano di pagina curata e tema**.
+
+### Da fare
+
+${ITEMS}
+
+### Workflow
+
+1. Aggiungere a \`catalog/themes.json\` (decisione editoriale)
+2. Creare \`pages/dataset/{slug}.md\` con query curate
+
+### Riferimenti
+
+- PR dataset-incubator #${PR_NUMBER}"
+
 
