@@ -7,6 +7,10 @@ on:
       - "candidates/**"
       - "support_datasets/**"
 
+env:
+  GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+  GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
 jobs:
   detect:
     if: github.event.pull_request.merged == true
@@ -128,12 +132,14 @@ jobs:
 
           SLUG=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['slug'])")
           FINAL_YEAR=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['sample_year'])")
+          ALL_YEARS=$(python -c "import json; d=json.load(open('sample_params.json')); print(','.join(str(y) for y in d['all_years']))")
           IS_NESTED=$(python -c "import json; d=json.load(open('sample_params.json')); print(str(d['is_nested']).lower())")
           HAS_SUPPORT=$(python -c "import json; d=json.load(open('sample_params.json')); print(str(d.get('has_support', False)).lower())")
           SUPPORT_JSON=$(python -c "import json; d=json.load(open('sample_params.json')); print(json.dumps(d.get('support', [])))")
 
           echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
           echo "final_year=$FINAL_YEAR" >> "$GITHUB_OUTPUT"
+          echo "all_years_csv=$ALL_YEARS" >> "$GITHUB_OUTPUT"
           echo "is_nested=$IS_NESTED" >> "$GITHUB_OUTPUT"
           echo "has_support=$HAS_SUPPORT" >> "$GITHUB_OUTPUT"
           echo "support_configs=$SUPPORT_JSON" >> "$GITHUB_OUTPUT"
@@ -155,7 +161,7 @@ jobs:
           set -o pipefail
           toolkit run all \
             --config "$CONFIG_PATH" \
-            --years "${{ steps.resolve.outputs.final_year }}" \
+            --years "${{ steps.resolve.outputs.all_years_csv }}" \
             2>&1 | tee run_all.log
 
       - name: Toolkit validate all
@@ -165,7 +171,7 @@ jobs:
           set -o pipefail
           toolkit validate all \
             --config "$CONFIG_PATH" \
-            --years "${{ steps.resolve.outputs.final_year }}" \
+            --years "${{ steps.resolve.outputs.all_years_csv }}" \
             2>&1 | tee validate_all.json
 
       - name: Write sample-run result
@@ -220,6 +226,28 @@ jobs:
             support_*.log
           if-no-files-found: warn
           retention-days: 14
+
+      - name: GCP Auth (for GCS push)
+        if: success() && env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+
+      - name: Push clean parquet to GCS
+        if: success() && steps.auth.outcome == 'success'
+        run: |
+          python -m pip install google-cloud-storage
+          python scripts/push_archive.py --layer clean \
+            --slug ${{ steps.resolve.outputs.slug }} \
+            --update-catalog
+
+      - name: Build clean catalog
+        if: success() && steps.auth.outcome == 'success'
+        run: |
+          python scripts/build_clean_catalog.py --write
+          python scripts/build_clean_catalog.py --check-gcs
 
   build-and-pr:
     needs:
@@ -295,16 +323,14 @@ jobs:
               for c in configs
           ) or "- No sample-run config detected"
 
+          # CI ora esegue: toolkit run/validate (tutti gli anni), push_archive --layer clean, build_clean_catalog
+          # Il maintainer deve solo mart + BQ se serve
           commands = []
           for c in configs:
-              commands.append(f"toolkit run all --config {c['config_path']}")
-              commands.append(f"toolkit validate all --config {c['config_path']}")
               commands.append(
-                  f"python scripts/push_archive.py --layer clean --slug {c['push_slug']} "
-                  f"--create-bq-table --update-catalog --status clean_ready"
+                  f"python scripts/push_archive.py --mart --slug {c['push_slug']} "
+                  f"--create-bq-table --update-catalog"
               )
-          commands.append("python scripts/build_clean_catalog.py --write")
-          commands.append("python scripts/build_clean_catalog.py --check-gcs")
 
           body = "\n".join([
               "## Post-merge registry handoff",
@@ -318,11 +344,10 @@ jobs:
               "## Automatic updates",
               "",
               f"- [x] Rebuilt `registry/pipeline_signals.json`{' (no diff)' if not signals_changed else ''}",
-              f"- [{'x' if sample_passed else ' '}] Sample-run CI completed ({sample_result})",
-              "- [ ] Full maintainer run completed",
-              "- [ ] Clean parquet pushed to GCS/BQ",
-              "- [ ] `registry/clean_catalog.json` updated after GCS push",
-              "- [ ] `python scripts/build_clean_catalog.py --check-gcs` passes",
+              f"- [{'x' if sample_passed else ' '}] CI: full run completato (tutti gli anni)",
+              "- [x] CI: clean parquet pushato su GCS",
+              "- [x] CI: `registry/clean_catalog.json` aggiornato",
+              "- [ ] Maintainer: push mart + BQ (se serve)",
               "",
               "## Sample-run artifacts",
               "",
@@ -334,7 +359,7 @@ jobs:
               "\n".join(commands),
               "```",
               "",
-              "Keep this PR as draft until the GCS/BQ push and clean catalog validation are complete.",
+              "CI ha eseguito: full run (tutti gli anni), push clean su GCS, aggiornamento catalog. Il maintainer deve solo mart + BQ se serve.",
           ])
 
           with open("post_merge_pr_body.md", "w", encoding="utf-8") as f:
@@ -381,5 +406,14 @@ jobs:
               --label post-merge \
               --draft
           fi
+
+      - name: Notify data-explorer
+        if: success() && env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.LAB_OPS_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/dataciviclab/data-explorer/dispatches \
+            -d '{"event_type":"catalog_updated"}'
 
 
