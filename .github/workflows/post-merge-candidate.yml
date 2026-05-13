@@ -204,7 +204,7 @@ jobs:
               # --- GCS push (solo se GCP Auth ha settato le credenziali) ---
               if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
                   print(f"  GCS push per {slug}...")
-                  subprocess.run(["python", "-m", "pip", "install", "google-cloud-storage", "-q"],
+                  subprocess.run(["python", "-m", "pip", "install", "google-cloud-storage", "google-cloud-bigquery", "-q"],
                       capture_output=True)
                   subprocess.run(["python", "scripts/push_archive.py", "--layer", "clean",
                       "--slug", slug, "--update-catalog"], cwd=root)
