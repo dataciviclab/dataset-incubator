@@ -27,8 +27,6 @@ jobs:
     outputs:
       has_items: ${{ steps.detect.outputs.has_items }}
       has_configs: ${{ steps.detect.outputs.has_configs }}
-      items: ${{ steps.detect.outputs.items }}
-      configs: ${{ steps.detect.outputs.configs }}
 
     steps:
       - name: Checkout merge commit
@@ -255,6 +253,13 @@ jobs:
       - name: Install dependencies
         run: python -m pip install pyyaml
 
+      - name: Download detect output
+        if: needs.detect.outputs.has_items == 'true'
+        uses: actions/download-artifact@v8
+        with:
+          name: detect-output
+          path: .
+
       - name: Build pipeline_signals.json
         run: python scripts/build_pipeline_signals.py
 
@@ -286,8 +291,6 @@ jobs:
 
       - name: Build draft PR body
         env:
-          ITEMS_JSON: ${{ needs.detect.outputs.items }}
-          CONFIGS_JSON: ${{ needs.detect.outputs.configs }}
           SAMPLE_RESULT: ${{ needs.sample_run.result }}
           PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
@@ -296,8 +299,10 @@ jobs:
           python - <<'PY'
           import json, os
 
-          items = json.loads(os.environ.get("ITEMS_JSON", "[]"))
-          configs = json.loads(os.environ.get("CONFIGS_JSON", "[]"))
+          with open("detect_output.json") as f:
+              detect = json.load(f)
+          items = detect.get("items", [])
+          configs = detect.get("configs", [])
           sample_result = os.environ.get("SAMPLE_RESULT", "skipped")
           sample_passed = sample_result == "success"
           signals_changed = os.environ.get("PIPELINE_SIGNALS_CHANGED", "false") == "true"
@@ -406,9 +411,10 @@ jobs:
         if: success()
         env:
           GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
-          ITEMS_JSON: ${{ needs.detect.outputs.items }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
-        run: python scripts/create_de_followup_issue.py
+        run: |
+          ITEMS_JSON=$(python -c "import json; print(json.dumps(json.load(open('detect_output.json'))['items']))") \
+            python scripts/create_de_followup_issue.py
 
 
