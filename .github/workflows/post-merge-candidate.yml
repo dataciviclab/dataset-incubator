@@ -12,6 +12,10 @@ on:
         description: "Slug del candidate da processare (es. inps-cig)"
         required: false
         type: string
+      pr_run_id:
+        description: "Run ID di Toolkit Pipeline Check da cui scaricare artifact (obbligatorio in dispatch)"
+        required: false
+        type: string
 
 env:
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -71,7 +75,8 @@ jobs:
 
   sample_run:
     needs: detect
-    if: needs.detect.outputs.has_configs == 'true'
+    # Post-merge consumer: non riesegue toolkit, consuma artifact del PR check.
+    if: false
     runs-on: ubuntu-latest
     permissions:
       contents: read
@@ -286,16 +291,49 @@ jobs:
       - name: Build pipeline_signals.json
         run: python scripts/build_pipeline_signals.py
 
-      - name: Download sample-run artifacts
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
-        uses: actions/download-artifact@v8
-        continue-on-error: true
-        with:
-          name: sample-run-results
-          path: sample_run_artifacts
+      - name: Download PR toolkit artifacts (consumer mode)
+        if: needs.detect.outputs.has_configs == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          PR_RUN_ID_INPUT: ${{ inputs.pr_run_id }}
+        run: |
+          set -euo pipefail
+          mkdir -p sample_run_artifacts
+
+          PR_RUN_ID=""
+          if [ -n "${PR_RUN_ID_INPUT:-}" ]; then
+            PR_RUN_ID="$PR_RUN_ID_INPUT"
+          elif [ "${{ github.event_name }}" = "pull_request" ]; then
+            PR_RUN_ID=$(gh run list \
+              --workflow "Toolkit Pipeline Check" \
+              --event pull_request \
+              --json databaseId,headSha,conclusion \
+              --jq ".[] | select(.headSha == \"${{ github.event.pull_request.head.sha }}\") | .databaseId" \
+              | head -n1)
+          fi
+
+          if [ -z "${PR_RUN_ID:-}" ]; then
+            echo "::error::Run ID non disponibile. In workflow_dispatch passa inputs.pr_run_id."
+            exit 1
+          fi
+
+          echo "Using PR toolkit run id: ${PR_RUN_ID}"
+          ART_NAMES=$(gh api "repos/${{ github.repository }}/actions/runs/${PR_RUN_ID}/artifacts" --jq '.artifacts[].name')
+          MATCHED=$(echo "$ART_NAMES" | grep '^sample-run-' || true)
+
+          if [ -z "${MATCHED:-}" ]; then
+            echo "::error::Nessun artifact sample-run-* trovato nel run ${PR_RUN_ID}"
+            exit 1
+          fi
+
+          while IFS= read -r name; do
+            [ -z "$name" ] && continue
+            gh run download "$PR_RUN_ID" -n "$name" -D sample_run_artifacts
+          done <<< "$MATCHED"
 
       - name: Apply sample-run results to pipeline_signals.json
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
+        if: needs.detect.outputs.has_configs == 'true'
         run: |
           # Se non ci sono artifact (sample_run senza risultati), skip senza errore
           if [ ! -d sample_run_artifacts ] || [ -z "$(ls -A sample_run_artifacts)" ]; then
@@ -359,9 +397,8 @@ jobs:
               "## Automatic updates",
               "",
               f"- [x] Rebuilt `registry/pipeline_signals.json`{' (no diff)' if not signals_changed else ''}",
-              f"- [{'x' if sample_passed else ' '}] CI: full run completato (tutti gli anni)",
-              f"- [{'x' if gcp_available else ' '}] CI: clean parquet pushato su GCS",
-              f"- [{'x' if gcp_available else ' '}] CI: `registry/clean_catalog.json` aggiornato",
+              f"- [{'x' if sample_passed else ' '}] PR check consumato (run da artifact)",
+              "- [ ] Maintainer: publish clean su GCS (se richiesto)",
               "- [ ] Maintainer: push mart + BQ (se serve)",
               "",
               "## Sample-run artifacts",
@@ -374,7 +411,7 @@ jobs:
               "\n".join(commands),
               "```",
               "",
-              "CI ha eseguito: full run (tutti gli anni), push clean su GCS, aggiornamento catalog. Il maintainer deve solo mart + BQ se serve.",
+              "Post-merge ha consumato gli artifact del PR check e aggiornato i segnali. Publish clean/mart resta in mano maintainer.",
           ])
 
           with open("post_merge_pr_body.md", "w", encoding="utf-8") as f:
