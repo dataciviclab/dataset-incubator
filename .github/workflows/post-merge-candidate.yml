@@ -113,7 +113,7 @@ jobs:
       - name: Process each detected config
         run: |
           python - <<'PY'
-          import json, os, subprocess, sys, glob
+          import json, os, subprocess, sys, glob, time
 
           with open("detect_output.json") as f:
               detect = json.load(f)
@@ -174,17 +174,28 @@ jobs:
                   subprocess.run(["python", "scripts/run_support_datasets.py",
                       "--support-json", "/tmp/support_configs.json"], cwd=root)
 
+              def run_with_retry(cmd, attempts=3):
+                  for i in range(1, attempts + 1):
+                      r = subprocess.run(cmd, cwd=root)
+                      if r.returncode == 0:
+                          return True
+                      if i < attempts:
+                          wait = 20 * i
+                          print(f"    attempt {i}/{attempts} failed, retry in {wait}s...")
+                          time.sleep(wait)
+                  return False
+
               # --- Toolkit run ---
               print(f"  toolkit run all --years {all_years}")
-              r = subprocess.run(["toolkit", "run", "all", "--config", config_path, "--years", all_years],
-                  cwd=root)
-              run_ok = r.returncode == 0
+              run_ok = run_with_retry(
+                  ["toolkit", "run", "all", "--config", config_path, "--years", all_years]
+              )
 
               # --- Toolkit validate ---
               print(f"  toolkit validate all --years {all_years}")
-              r = subprocess.run(["toolkit", "validate", "all", "--config", config_path, "--years", all_years],
-                  cwd=root)
-              validate_ok = r.returncode == 0
+              validate_ok = run_with_retry(
+                  ["toolkit", "validate", "all", "--config", config_path, "--years", all_years]
+              )
 
               status = "passed" if (run_ok and validate_ok) else "failed"
               if status == "failed":
@@ -307,7 +318,7 @@ jobs:
       - name: Check registry diff
         id: diff
         run: |
-          if git diff --quiet -- registry/pipeline_signals.json; then
+          if git diff --quiet -- registry/pipeline_signals.json registry/clean_catalog.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -400,7 +411,7 @@ jobs:
           git checkout -B "$BRANCH"
 
           if [ "$PIPELINE_SIGNALS_CHANGED" = "true" ]; then
-            git add registry/pipeline_signals.json
+            git add registry/pipeline_signals.json registry/clean_catalog.json
             git commit -m "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}"
           fi
 
