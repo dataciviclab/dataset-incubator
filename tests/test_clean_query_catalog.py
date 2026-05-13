@@ -35,10 +35,10 @@ class CleanCatalogValidationTest(unittest.TestCase):
 
         self.assertTrue(any("does not match" in error for error in errors), errors)
 
-    def test_schema_rejects_invalid_status(self) -> None:
+    def test_schema_rejects_invalid_stage(self) -> None:
         catalog = dict(self.catalog)
         dataset = dict(catalog["datasets"][0])
-        dataset["status"] = "ready-ish"
+        dataset["stage"] = "ready-ish"
         catalog["datasets"] = [dataset]
 
         errors = validate_catalog(catalog, self.schema)
