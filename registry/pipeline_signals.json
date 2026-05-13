@@ -150,11 +150,26 @@
     },
     {
       "id": "irpef-comunale",
-      "source_id": "",
+      "source_id": "mef_irpef",
       "status": "ok",
       "label": "irpef-comunale",
       "detail": "anni 2019-2023 — fonte: finanze_http_zip — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25802384251",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25802384251",
+        "checked_at": "2026-05-13",
+        "year": 2023,
+        "years": [
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "config_path": "candidates/irpef-comunale/dataset.yml"
+      }
     },
     {
       "id": "ispra-consumo-suolo",
