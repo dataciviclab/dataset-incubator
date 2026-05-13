@@ -63,6 +63,10 @@ def get_slugs(root, slug_filter=None):
     if slug_filter:
         slugs = [s for s in slugs if s == slug_filter]
         if not slugs:
+            # toolkit usa dataset.name (underscore), slugs hanno hyphens
+            alt = slug_filter.replace("-", "_")
+            slugs = [s for s in slugs if s == alt]
+        if not slugs:
             print(f"Slug non trovato: {slug_filter}", file=sys.stderr)
             sys.exit(1)
     return slugs
@@ -181,6 +185,8 @@ def ensure_bq_dataset(bq_client, dataset_id, dry_run=False):
 
 
 def push_bq(bq_client, local_path, slug, year, dry_run=False):
+    from google.cloud import bigquery
+
     df = pd.read_parquet(local_path)
     table_name = local_path.stem
     table_id = f"{GCP_PROJECT}.{slug}.{table_name}"
