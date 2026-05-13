@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "aifa_spesa_consumo"
+  source_id: "aifa"
   years: [ 2018, 2019, 2020, 2021, 2022, 2023, 2024 ]
 
 raw:
