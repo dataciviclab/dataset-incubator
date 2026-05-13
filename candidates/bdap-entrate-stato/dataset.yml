@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "bdap_entrate_stato"
+  source_id: "openbdap"
   years: [2024]
 
 raw:
@@ -54,4 +55,3 @@ mart:
 
 validation:
   fail_on_error: true
-
