@@ -81,8 +81,9 @@ def normalize_catalog(catalog: dict[str, Any], *, refresh_date: bool = False) ->
     datasets = []
     for dataset in normalized.get("datasets", []):
         item = dict(dataset)
-        item.setdefault("status", "clean_ready")
-        item.setdefault("visibility", "public")
+        item.pop("status", None)       # vecchio nome, rimosso
+        item.pop("visibility", None)   # sempre public, rimosso
+        item.setdefault("stage", "incubating")
         datasets.append(item)
     normalized["datasets"] = sorted(datasets, key=lambda item: item["slug"])
     return normalized

@@ -47,13 +47,14 @@
         "source": {
           "type": "string"
         },
-        "status": {
+        "source_id": {
           "type": "string",
-          "enum": ["candidate", "clean_ready", "public_catalog_ready", "deprecated"]
+          "description": "source_id corrispondente in source-observatory/sources_registry.yaml"
         },
-        "visibility": {
+        "stage": {
           "type": "string",
-          "enum": ["public", "private"]
+          "enum": ["incubating", "published", "deprecated"],
+          "description": "incubating = parquet su GCS ma non in DE; published = ha pagina su data-explorer; deprecated = non piu' mantenuto"
         },
         "registry_source": {
           "type": "string"
