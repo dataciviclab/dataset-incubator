@@ -62,23 +62,22 @@ jobs:
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
                out.write(f"has_items={str(d['has_items']).lower()}\n")
                out.write(f"has_configs={str(d['has_configs']).lower()}\n")
-               out.write(f"items={json.dumps(d['items'], ensure_ascii=False)}\n")
-               out.write(f"configs={json.dumps(d['configs'], ensure_ascii=False)}\n")
           PY
+
+      - name: Upload detect output (per sample_run)
+        uses: actions/upload-artifact@v7
+        with:
+          name: detect-output
+          path: detect_output.json
+          retention-days: 1
 
   sample_run:
     needs: detect
     if: needs.detect.outputs.has_configs == 'true'
     runs-on: ubuntu-latest
-    strategy:
-      fail-fast: false
-      matrix:
-        include: ${{ fromJson(needs.detect.outputs.configs) }}
     defaults:
       run:
         shell: bash
-    env:
-      CONFIG_PATH: ${{ matrix.config_path }}
 
     steps:
       - name: Checkout merge commit
@@ -87,6 +86,12 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
           fetch-depth: 0
 
+      - name: Download detect output
+        uses: actions/download-artifact@v8
+        with:
+          name: detect-output
+          path: .
+
       - name: Set up Python
         uses: actions/setup-python@v6
         with:
@@ -94,169 +99,132 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: python -m pip install pyyaml
+        run: python -m pip install pyyaml git+https://github.com/dataciviclab/toolkit.git@v1.5.1
 
-      - name: Configure extra source CA certificates
-        run: |
-          set -euo pipefail
+      - name: GCP Auth (for GCS push)
+        if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
-          urls_file="${RUNNER_TEMP:-/tmp}/extra-ca-cert-urls.txt"
-          python scripts/get_extra_ca_cert_urls.py "$CONFIG_PATH" > "$urls_file"
-
-          if [ ! -s "$urls_file" ]; then
-            echo "::notice::No extra CA certificates configured for ${CONFIG_PATH}"
-            exit 0
-          fi
-
-          command -v curl >/dev/null
-          command -v openssl >/dev/null
-
-          bundle="${RUNNER_TEMP:-/tmp}/ca-certificates-with-extra-source-cas.pem"
-          cp /etc/ssl/certs/ca-certificates.crt "$bundle"
-
-          i=0
-          while IFS= read -r url; do
-            i=$((i + 1))
-            cert_raw="${RUNNER_TEMP:-/tmp}/extra-source-ca-${i}.crt"
-            cert_pem="${RUNNER_TEMP:-/tmp}/extra-source-ca-${i}.pem"
-            curl -fsSL "$url" -o "$cert_raw"
-            openssl x509 -inform DER -in "$cert_raw" -out "$cert_pem" 2>/dev/null \
-              || openssl x509 -in "$cert_raw" -out "$cert_pem"
-            cat "$cert_pem" >> "$bundle"
-          done < "$urls_file"
-
-          echo "REQUESTS_CA_BUNDLE=$bundle" >> "$GITHUB_ENV"
-          echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
-
-      - name: Resolve sample run parameters
-        id: resolve
-        run: |
-          python scripts/resolve_sample_run.py "$CONFIG_PATH" 2>&1 | tee sample_params.json
-
-          ERROR=$(python -c "import json; d=json.load(open('sample_params.json')); print(d.get('error',''))" 2>/dev/null || true)
-          if [ -n "$ERROR" ]; then
-            echo "resolve_error=$ERROR"
-            exit 1
-          fi
-
-          SLUG=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['slug'])")
-          FINAL_YEAR=$(python -c "import json; d=json.load(open('sample_params.json')); print(d['sample_year'])")
-          ALL_YEARS=$(python -c "import json; d=json.load(open('sample_params.json')); print(','.join(str(y) for y in d['all_years']))")
-          IS_NESTED=$(python -c "import json; d=json.load(open('sample_params.json')); print(str(d['is_nested']).lower())")
-          HAS_SUPPORT=$(python -c "import json; d=json.load(open('sample_params.json')); print(str(d.get('has_support', False)).lower())")
-          SUPPORT_JSON=$(python -c "import json; d=json.load(open('sample_params.json')); print(json.dumps(d.get('support', [])))")
-
-          echo "slug=$SLUG" >> "$GITHUB_OUTPUT"
-          echo "final_year=$FINAL_YEAR" >> "$GITHUB_OUTPUT"
-          echo "all_years_csv=$ALL_YEARS" >> "$GITHUB_OUTPUT"
-          echo "is_nested=$IS_NESTED" >> "$GITHUB_OUTPUT"
-          echo "has_support=$HAS_SUPPORT" >> "$GITHUB_OUTPUT"
-          echo "support_configs=$SUPPORT_JSON" >> "$GITHUB_OUTPUT"
-
-      - name: Install toolkit
-        run: python -m pip install git+https://github.com/dataciviclab/toolkit.git@v1.5.1
-
-      - name: Run support datasets first (if has_support)
-        if: steps.resolve.outputs.has_support == 'true'
+      - name: Process each detected config
         env:
-          SUPPORT_JSON: ${{ steps.resolve.outputs.support_configs }}
-        run: |
-          echo "::notice::This candidate has support dependencies. Running support datasets first."
-          echo "$SUPPORT_JSON" > /tmp/support_configs.json
-          python scripts/run_support_datasets.py --support-json /tmp/support_configs.json
-      - name: Toolkit run all
-        id: run_all
-        run: |
-          set -o pipefail
-          toolkit run all \
-            --config "$CONFIG_PATH" \
-            --years "${{ steps.resolve.outputs.all_years_csv }}" \
-            2>&1 | tee run_all.log
-
-      - name: Toolkit validate all
-        if: success()
-        id: validate_all
-        run: |
-          set -o pipefail
-          toolkit validate all \
-            --config "$CONFIG_PATH" \
-            --years "${{ steps.resolve.outputs.all_years_csv }}" \
-            2>&1 | tee validate_all.json
-
-      - name: Write sample-run result
-        if: always()
-        env:
-          RESOLVE_OUTCOME: ${{ steps.resolve.outcome }}
-          RUN_OUTCOME: ${{ steps.run_all.outcome }}
-          VALIDATE_OUTCOME: ${{ steps.validate_all.outcome }}
-          SIGNAL_ID: ${{ matrix.slug }}
-          CONFIG_PATH: ${{ matrix.config_path }}
-          CONFIG_EXISTS: ${{ matrix.config_exists }}
-          FINAL_YEAR: ${{ steps.resolve.outputs.final_year }}
-          RUN_ID: ${{ github.run_id }}
-          RUN_URL: ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
+          GCP_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          GCP_SA: ${{ secrets.GCP_SERVICE_ACCOUNT }}
         run: |
           python - <<'PY'
-          import json
-          import os
-          from datetime import datetime, timezone
+          import json, os, subprocess, sys, glob
 
-          critical_outcomes = [
-              os.environ.get("RESOLVE_OUTCOME"),
-              os.environ.get("RUN_OUTCOME"),
-              os.environ.get("VALIDATE_OUTCOME"),
-          ]
-          year = os.environ.get("FINAL_YEAR") or None
-          payload = {
-              "id": os.environ["SIGNAL_ID"],
-              "status": "passed" if all(outcome == "success" for outcome in critical_outcomes) else "failed",
-              "year": int(year) if year else None,
-              "config_path": os.environ["CONFIG_PATH"],
-              "config_exists": os.environ["CONFIG_EXISTS"] == "true",
-              "run_id": os.environ["RUN_ID"],
-              "run_url": os.environ["RUN_URL"],
-              "checked_at": datetime.now(timezone.utc).date().isoformat(),
-          }
-          with open("sample_run_result.json", "w", encoding="utf-8") as f:
-              json.dump(payload, f, ensure_ascii=False, indent=2)
-              f.write("\n")
+          with open("detect_output.json") as f:
+              detect = json.load(f)
+
+          configs = detect.get("configs", [])
+          if not configs:
+              print("Nessun config da processare")
+              sys.exit(0)
+
+          root = os.environ.get("GITHUB_WORKSPACE", ".")
+
+          for cfg in configs:
+              config_path = cfg.get("config_path", "")
+              slug = cfg.get("slug", "unknown")
+              artifact_name = cfg.get("artifact_name", slug)
+              config_exists = cfg.get("config_exists", False)
+
+              print(f"\n=== Processing {slug} ({config_path}) ===")
+
+              if not config_exists:
+                  print(f"  SKIP: config_path non esiste")
+                  continue
+
+              # --- CA certs ---
+              r = subprocess.run(["python", "scripts/get_extra_ca_cert_urls.py", config_path],
+                  capture_output=True, text=True, cwd=root)
+              urls = [u.strip() for u in r.stdout.strip().split('\n') if u.strip()]
+              if urls:
+                  bundle = f"/tmp/extra-ca-{artifact_name}.pem"
+                  with open("/etc/ssl/certs/ca-certificates.crt") as src, open(bundle, "w") as dst:
+                      dst.write(src.read())
+                  for url in urls:
+                      try:
+                          import urllib.request
+                          data = urllib.request.urlopen(url).read()
+                          with open(bundle, "a") as dst:
+                              dst.write(data.decode() if isinstance(data, bytes) else data)
+                      except Exception as e:
+                          print(f"  WARN CA cert {url}: {e}")
+                  os.environ["REQUESTS_CA_BUNDLE"] = bundle
+                  os.environ["SSL_CERT_FILE"] = bundle
+
+              # --- Resolve ---
+              r = subprocess.run(["python", "scripts/resolve_sample_run.py", config_path],
+                  capture_output=True, text=True, cwd=root)
+              if r.returncode != 0:
+                  print(f"  FAIL: resolve ({r.stderr.strip()})")
+                  continue
+              params = json.loads(r.stdout)
+              all_years = ",".join(str(y) for y in params.get("all_years", []))
+
+              # --- Support datasets ---
+              if params.get("has_support"):
+                  print(f"  Running support datasets...")
+                  with open("/tmp/support_configs.json", "w") as sf:
+                      json.dump(params.get("support", []), sf)
+                  subprocess.run(["python", "scripts/run_support_datasets.py",
+                      "--support-json", "/tmp/support_configs.json"], cwd=root)
+
+              # --- Toolkit run ---
+              print(f"  toolkit run all --years {all_years}")
+              r = subprocess.run(["toolkit", "run", "all", "--config", config_path, "--years", all_years],
+                  cwd=root)
+              run_ok = r.returncode == 0
+
+              # --- Toolkit validate ---
+              print(f"  toolkit validate all --years {all_years}")
+              r = subprocess.run(["toolkit", "validate", "all", "--config", config_path, "--years", all_years],
+                  cwd=root)
+              validate_ok = r.returncode == 0
+
+              status = "passed" if (run_ok and validate_ok) else "failed"
+              run_id = os.environ.get("GITHUB_RUN_ID", "0")
+              repo = os.environ.get("GITHUB_REPOSITORY", "")
+              payload = {
+                  "id": slug, "status": status, "year": params.get("sample_year"),
+                  "config_path": config_path, "config_exists": config_exists,
+                  "run_id": run_id,
+                  "run_url": f"https://github.com/{repo}/actions/runs/{run_id}",
+                  "checked_at": __import__("datetime").datetime.now().astimezone().date().isoformat(),
+              }
+              out_dir = f"sample_run_artifacts/{artifact_name}"
+              os.makedirs(out_dir, exist_ok=True)
+              with open(f"{out_dir}/sample_run_result.json", "w") as pf:
+                  json.dump(payload, pf, indent=2)
+              print(f"  {status}")
+
+              # --- GCS push (se config riuscito e GCP configurato) ---
+              if status == "passed" and os.environ.get("GCP_PROVIDER") and os.environ.get("GCP_SA"):
+                  print(f"  GCS push per {slug}...")
+                  subprocess.run(["python", "-m", "pip", "install", "google-cloud-storage", "-q"],
+                      capture_output=True)
+                  subprocess.run(["python", "scripts/push_archive.py", "--layer", "clean",
+                      "--slug", slug, "--update-catalog"], cwd=root)
+
+          # --- Build clean catalog (dopo tutti i push) ---
+          if os.environ.get("GCP_PROVIDER") and os.environ.get("GCP_SA"):
+              print(f"\n  Rebuilding clean catalog...")
+              subprocess.run(["python", "scripts/build_clean_catalog.py", "--write"], cwd=root)
+              subprocess.run(["python", "scripts/build_clean_catalog.py", "--check-gcs"], cwd=root)
           PY
 
       - name: Upload sample-run artifacts
         uses: actions/upload-artifact@v7
         if: always()
         with:
-          name: sample-run-${{ matrix.artifact_name }}
-          path: |
-            sample_params.json
-            run_all.log
-            validate_all.json
-            sample_run_result.json
-            support_*.log
+          name: sample-run-results
+          path: sample_run_artifacts/
           if-no-files-found: warn
           retention-days: 14
-
-      - name: GCP Auth (for GCS push)
-        if: success() && env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
-        id: auth
-        uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-
-      - name: Push clean parquet to GCS
-        if: success() && steps.auth.outcome == 'success'
-        run: |
-          python -m pip install google-cloud-storage
-          python scripts/push_archive.py --layer clean \
-            --slug ${{ steps.resolve.outputs.slug }} \
-            --update-catalog
-
-      - name: Build clean catalog
-        if: success() && steps.auth.outcome == 'success'
-        run: |
-          python scripts/build_clean_catalog.py --write
-          python scripts/build_clean_catalog.py --check-gcs
 
   build-and-pr:
     needs:
@@ -287,10 +255,10 @@ jobs:
         run: python scripts/build_pipeline_signals.py
 
       - name: Download sample-run artifacts
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result == 'success'
+        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
         uses: actions/download-artifact@v8
         with:
-          pattern: sample-run-*
+          name: sample-run-results
           path: sample_run_artifacts
 
       - name: Apply sample-run results to pipeline_signals.json
