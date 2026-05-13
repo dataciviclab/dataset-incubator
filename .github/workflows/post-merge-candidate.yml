@@ -6,7 +6,12 @@ on:
     paths:
       - "candidates/**"
       - "support_datasets/**"
-  workflow_dispatch:  # trigger manuale per test o retry
+  workflow_dispatch:
+    inputs:
+      slug:
+        description: "Slug del candidate da processare (es. inps-cig)"
+        required: false
+        type: string
 
 env:
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -29,7 +34,7 @@ jobs:
       - name: Checkout merge commit
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
           fetch-depth: 0
 
       - name: Detect changed candidate/support roots
@@ -37,12 +42,19 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
+          SLUG_INPUT: ${{ inputs.slug }}
         run: |
           set -o pipefail
 
-          # Get PR file list and pipe to detect_candidates.py
-          gh pr view "$PR_NUMBER" --json files --jq ".files[].path" | \
-            python scripts/detect_candidates.py --files --json > detect_output.json
+          if [ -n "$SLUG_INPUT" ]; then
+            # Trigger manuale: processa direttamente lo slug richiesto
+            echo "candidates/${SLUG_INPUT}/dataset.yml" | \
+              python scripts/detect_candidates.py --files --json > detect_output.json
+          else
+            # Trigger da PR mergiata: rileva i file cambiati
+            gh pr view "$PR_NUMBER" --json files --jq ".files[].path" | \
+              python scripts/detect_candidates.py --files --json > detect_output.json
+          fi
 
           python - <<'PY'
           import json, os

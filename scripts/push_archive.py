@@ -261,11 +261,11 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
             "name": slug.replace("_", " ").title(),
             "description": "",
             "source": "",
+            "source_id": "",
             "period": {"start": int_years[0], "end": int_years[-1]},
             "columns": cols,
             "location": {"type": "gcs", "path": gcs_path, "multi_file": True},
-            "status": status,
-            "visibility": "public",
+            "stage": "published",
             "registry_source": "push_archive_auto",
         }
         datasets.append(new_entry)
