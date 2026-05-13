@@ -111,9 +111,6 @@ jobs:
           service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
       - name: Process each detected config
-        env:
-          GCP_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          GCP_SA: ${{ secrets.GCP_SERVICE_ACCOUNT }}
         run: |
           python - <<'PY'
           import json, os, subprocess, sys, glob
@@ -204,16 +201,16 @@ jobs:
                   json.dump(payload, pf, indent=2)
               print(f"  {status}")
 
-              # --- GCS push (se config riuscito e GCP configurato) ---
-              if status == "passed" and os.environ.get("GCP_PROVIDER") and os.environ.get("GCP_SA"):
+              # --- GCS push (solo se GCP Auth ha settato le credenziali) ---
+              if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
                   print(f"  GCS push per {slug}...")
                   subprocess.run(["python", "-m", "pip", "install", "google-cloud-storage", "-q"],
                       capture_output=True)
                   subprocess.run(["python", "scripts/push_archive.py", "--layer", "clean",
                       "--slug", slug, "--update-catalog"], cwd=root)
 
-          # --- Build clean catalog (dopo tutti i push) ---
-          if os.environ.get("GCP_PROVIDER") and os.environ.get("GCP_SA"):
+          # --- Build clean catalog (solo se GCP Auth riuscito) ---
+          if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
               print(f"\n  Rebuilding clean catalog...")
               subprocess.run(["python", "scripts/build_clean_catalog.py", "--write"], cwd=root)
               subprocess.run(["python", "scripts/build_clean_catalog.py", "--check-gcs"], cwd=root)
