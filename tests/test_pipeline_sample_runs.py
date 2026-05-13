@@ -28,7 +28,7 @@ class PipelineSampleRunTest(unittest.TestCase):
         )
 
         self.assertEqual(summary["status"], "passed")
-        self.assertEqual(summary["year"], 2024)
+        self.assertEqual(summary["years"], [2024])
         self.assertEqual(
             summary["config_path"],
             "candidates/istat-housing-crowding/dataset.yml",
