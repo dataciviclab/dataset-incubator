@@ -88,7 +88,7 @@ jobs:
       - name: Checkout merge commit
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -276,7 +276,7 @@ jobs:
       - name: Checkout merge commit
         uses: actions/checkout@v6
         with:
-          ref: ${{ github.event.pull_request.merge_commit_sha }}
+          ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
           fetch-depth: 0
 
       - name: Set up Python
@@ -299,7 +299,13 @@ jobs:
 
       - name: Apply sample-run results to pipeline_signals.json
         if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
-        run: python scripts/update_pipeline_sample_runs.py --samples-dir sample_run_artifacts
+        run: |
+          # Se non ci sono artifact (sample_run senza risultati), skip senza errore
+          if [ ! -d sample_run_artifacts ] || [ -z "$(ls -A sample_run_artifacts)" ]; then
+            echo "Nessun artifact sample_run — skip apply"
+            exit 0
+          fi
+          python scripts/update_pipeline_sample_runs.py --samples-dir sample_run_artifacts
 
       - name: Check registry diff
         id: diff
