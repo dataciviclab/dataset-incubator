@@ -30,8 +30,6 @@ from pathlib import Path
 
 import pandas as pd
 import pyarrow.parquet as pq
-from google.cloud import bigquery
-from google.api_core.exceptions import Conflict
 
 from lab_connectors.gcs import upload_file, upload_string
 
@@ -145,6 +143,9 @@ def create_bq_external_table(bq_client, slug, dry_run=False):
         else [f"gs://{GCS_CLEAN_BUCKET}/{slug}/2*/*.parquet"]  # fallback
     )
 
+    from google.cloud import bigquery
+    from google.api_core.exceptions import Conflict
+
     external_config = bigquery.ExternalConfig("PARQUET")
     external_config.source_uris = source_uris
     external_config.autodetect = True
@@ -163,6 +164,9 @@ def create_bq_external_table(bq_client, slug, dry_run=False):
 
 
 def ensure_bq_dataset(bq_client, dataset_id, dry_run=False):
+    from google.cloud import bigquery
+    from google.api_core.exceptions import Conflict
+
     full_id = f"{GCP_PROJECT}.{dataset_id}"
     if dry_run:
         print(f"  [dry] BQ dataset: {full_id}")
@@ -385,11 +389,11 @@ def main():
                         help="Status da impostare nel catalog per i nuovi entry (default: candidate)")
     args = parser.parse_args()
 
-    bq_client = (
-        bigquery.Client(project=GCP_PROJECT)
-        if (not args.no_bq or args.create_bq_table)
-        else None
-    )
+    if not args.no_bq or args.create_bq_table:
+        from google.cloud import bigquery
+        bq_client = bigquery.Client(project=GCP_PROJECT)
+    else:
+        bq_client = None
 
     if args.layer in ("clean", "all"):
         push_clean(args.slug, args.year, args.dry_run)
