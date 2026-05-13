@@ -6,6 +6,7 @@ on:
     paths:
       - "candidates/**"
       - "support_datasets/**"
+  workflow_dispatch:  # trigger manuale per test o retry
 
 env:
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
@@ -278,14 +279,14 @@ jobs:
         run: python scripts/build_pipeline_signals.py
 
       - name: Download sample-run artifacts
-        if: needs.detect.outputs.has_configs == 'true'
+        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
         uses: actions/download-artifact@v8
         with:
           pattern: sample-run-*
           path: sample_run_artifacts
 
       - name: Apply sample-run results to pipeline_signals.json
-        if: needs.detect.outputs.has_configs == 'true'
+        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
         run: python scripts/update_pipeline_sample_runs.py --samples-dir sample_run_artifacts
 
       - name: Check registry diff
