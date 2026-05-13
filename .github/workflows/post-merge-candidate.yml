@@ -90,6 +90,38 @@ jobs:
       - name: Install dependencies
         run: python -m pip install pyyaml git+https://github.com/dataciviclab/toolkit.git@v1.5.1
 
+      - name: Configure extra source CA certificates
+        if: needs.detect.outputs.has_configs == 'true'
+        env:
+          CONFIGS_JSON: ${{ needs.detect.outputs.configs }}
+        run: |
+          python - <<'PY'
+          import json, os, subprocess, sys
+          configs = json.loads(os.environ.get("CONFIGS_JSON", "[]"))
+          root = os.environ.get("GITHUB_WORKSPACE", ".")
+          for cfg in configs:
+              cp = cfg.get("config_path", "")
+              if not cp:
+                  continue
+              r = subprocess.run(["python", "scripts/get_extra_ca_cert_urls.py", cp], capture_output=True, text=True, cwd=root)
+              urls = [u.strip() for u in r.stdout.strip().split('\n') if u.strip()]
+              if not urls:
+                  continue
+              import urllib.request, ssl
+              bundle = f"/tmp/extra-ca-bundle-{cfg.get('artifact_name', 'default')}.pem"
+              with open("/etc/ssl/certs/ca-certificates.crt") as src, open(bundle, "w") as dst:
+                  dst.write(src.read())
+              for url in urls:
+                  try:
+                      data = urllib.request.urlopen(url).read()
+                      with open(bundle, "a") as dst:
+                          dst.write(data.decode() if isinstance(data, bytes) else data)
+                  except Exception as e:
+                      print(f"  WARN CA cert {url}: {e}")
+              os.environ["REQUESTS_CA_BUNDLE"] = bundle
+              os.environ["SSL_CERT_FILE"] = bundle
+          PY
+
       - name: Run toolkit for each detected config
         env:
           CONFIGS_JSON: ${{ needs.detect.outputs.configs }}
@@ -122,16 +154,28 @@ jobs:
                   capture_output=True, text=True, cwd=root
               )
               if result.returncode != 0:
-                  print(f"  FAIL: resolve_sample_run: {result.stderr}")
+                  print(f"  FAIL: resolve: {result.stderr}")
                   continue
               params = json.loads(result.stdout)
               all_years = ",".join(str(y) for y in params.get("all_years", []))
+              has_support = params.get("has_support", False)
+              support_json = json.dumps(params.get("support", []))
 
-              # Toolkit run
+              # Run support datasets (se has_support)
+              if has_support:
+                  print(f"  Eseguo support datasets...")
+                  with open("/tmp/support_configs.json", "w") as f:
+                      f.write(support_json)
+                  subprocess.run(
+                      ["python", "scripts/run_support_datasets.py", "--support-json", "/tmp/support_configs.json"],
+                      cwd=root
+                  )
+
+              # Toolkit run (stdout in tempo reale)
               print(f"  toolkit run all --years {all_years}")
               r = subprocess.run(
                   ["toolkit", "run", "all", "--config", config_path, "--years", all_years],
-                  capture_output=True, text=True, cwd=root
+                  capture_output=False, text=True, cwd=root
               )
               run_ok = r.returncode == 0
 
@@ -139,7 +183,7 @@ jobs:
               print(f"  toolkit validate all --years {all_years}")
               r = subprocess.run(
                   ["toolkit", "validate", "all", "--config", config_path, "--years", all_years],
-                  capture_output=True, text=True, cwd=root
+                  capture_output=False, text=True, cwd=root
               )
               validate_ok = r.returncode == 0
 
