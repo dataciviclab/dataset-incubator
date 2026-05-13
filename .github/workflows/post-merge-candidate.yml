@@ -316,6 +316,7 @@ jobs:
           signals_changed = os.environ.get("PIPELINE_SIGNALS_CHANGED", "false") == "true"
           pr_number = os.environ.get("PR_NUMBER", "?")
           pr_title = os.environ.get("PR_TITLE", "?")
+          gcp_available = os.environ.get("GCP_WORKLOAD_IDENTITY_PROVIDER", "") != "" and os.environ.get("GCP_SERVICE_ACCOUNT", "") != ""
 
           item_list = "\n".join(f'- `{i["slug"]}` ({i["kind"]}, `{i["root"]}`)' for i in items)
           sample_list = "\n".join(
@@ -323,8 +324,6 @@ jobs:
               for c in configs
           ) or "- No sample-run config detected"
 
-          # CI ora esegue: toolkit run/validate (tutti gli anni), push_archive --layer clean, build_clean_catalog
-          # Il maintainer deve solo mart + BQ se serve
           commands = []
           for c in configs:
               commands.append(
@@ -345,8 +344,8 @@ jobs:
               "",
               f"- [x] Rebuilt `registry/pipeline_signals.json`{' (no diff)' if not signals_changed else ''}",
               f"- [{'x' if sample_passed else ' '}] CI: full run completato (tutti gli anni)",
-              "- [x] CI: clean parquet pushato su GCS",
-              "- [x] CI: `registry/clean_catalog.json` aggiornato",
+              f"- [{'x' if gcp_available else ' '}] CI: clean parquet pushato su GCS",
+              f"- [{'x' if gcp_available else ' '}] CI: `registry/clean_catalog.json` aggiornato",
               "- [ ] Maintainer: push mart + BQ (se serve)",
               "",
               "## Sample-run artifacts",
@@ -408,13 +407,13 @@ jobs:
           fi
 
       - name: Notify data-explorer
-        if: success() && env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
+        if: success()
         run: |
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.LAB_OPS_TOKEN }}" \
             -H "Accept: application/vnd.github+json" \
             https://api.github.com/repos/dataciviclab/data-explorer/dispatches \
-            -d '{"event_type":"catalog_updated"}'
+            -d '{"event_type":"catalog_updated"}' || echo "WARN: dispatch non configurato (LAB_OPS_TOKEN mancante?)"
 
       - name: Open follow-up issue in data-explorer
         if: success()
@@ -437,9 +436,15 @@ for i in items:
           fi
 
           # Crea issue in data-explorer
+          ITEM_COUNT=$(echo "$ITEMS" | wc -l)
+          if [ "$ITEM_COUNT" -eq 1 ]; then
+            TITLE="follow-up: pagina e tema per $(echo "$ITEMS" | head -1 | sed 's/- \[ \] //')"
+          else
+            TITLE="follow-up: pagina e tema per ${ITEM_COUNT} nuovi dataset"
+          fi
           gh issue create \
             --repo dataciviclab/data-explorer \
-            --title "follow-up: pagina e tema per $(echo "$ITEMS" | head -1 | sed 's/- \[ \] //')" \
+            --title "$TITLE" \
             --label "curation" \
             --body "## Nuovo/i dataset pubblicato/i
 
