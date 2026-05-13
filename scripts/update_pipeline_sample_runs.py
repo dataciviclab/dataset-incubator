@@ -94,8 +94,7 @@ def summarize_sample_results(results: list[dict[str, Any]]) -> dict[str, Any]:
 
     if len(ordered) == 1:
         only = ordered[0]
-        summary["year"] = only.get("year")
-        summary["years"] = only.get("years", [only.get("year")] if only.get("year") else [])
+        summary["years"] = only.get("years", [])
         summary["config_path"] = only.get("config_path", "")
         if only.get("config_exists") is False:
             summary["config_exists"] = False

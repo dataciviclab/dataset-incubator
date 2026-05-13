@@ -189,7 +189,7 @@ jobs:
               run_id = os.environ.get("GITHUB_RUN_ID", "0")
               repo = os.environ.get("GITHUB_REPOSITORY", "")
               payload = {
-                  "id": slug, "status": status, "year": params.get("sample_year"),
+                  "id": slug, "status": status,
                   "years": params.get("all_years", []),
                   "config_path": config_path, "config_exists": config_exists,
                   "run_id": run_id,
