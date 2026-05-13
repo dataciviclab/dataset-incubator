@@ -113,8 +113,8 @@ I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia
 | Action | Trigger | Cosa fa |
 |---|---|---|
 | `validate-candidate-structure.yml` | PR su `candidates/` | Verifica che ogni candidate abbia `dataset.yml` valido |
-| `pr-toolkit-check.yml` | PR su `candidates/` | Esegue run+validate candidate e pubblica artifact `sample-run-*` per ogni config |
-| `post-merge-candidate.yml` | Merge su `candidates/` | Consuma artifact del PR check, aggiorna `pipeline_signals.json`, apre draft PR handoff |
+| `pr-toolkit-check.yml` | PR su `candidates/` | Esegue run+validate candidate su tutti gli anni e pubblica artifact diagnostici |
+| `post-merge-candidate.yml` | Merge su `candidates/` | Esegue full run + push clean GCS, aggiorna `pipeline_signals.json`, apre draft PR handoff |
 | `build-pipeline-signals.yml` | Merge su `candidates/` | Aggiorna `registry/pipeline_signals.json` |
 | `validate-clean-catalog.yml` | Merge su `registry/` | Verifica schema del clean catalog |
 

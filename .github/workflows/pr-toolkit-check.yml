@@ -141,9 +141,11 @@ jobs:
 
           data = json.loads(result.stdout)
           support_list = data.get("support", [])
+          all_years = ",".join(str(y) for y in data.get("all_years", []))
 
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
               out.write(f"has_support={str(bool(support_list)).lower()}\n")
+              out.write(f"all_years={all_years}\n")
               out.write("support_configs<<JSON\n")
               out.write(json.dumps(support_list, ensure_ascii=False))
               out.write("\nJSON\n")
@@ -163,7 +165,7 @@ jobs:
           set -o pipefail
           toolkit run all \
             --config "${{ matrix.config.config_path }}" \
-            --years "${{ matrix.config.year }}" \
+            --years "${{ steps.resolve_support.outputs.all_years }}" \
             2>&1 | tee run_all.log
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
 
@@ -174,7 +176,7 @@ jobs:
           set -o pipefail
           toolkit validate all \
             --config "${{ matrix.config.config_path }}" \
-            --years "${{ matrix.config.year }}" \
+            --years "${{ steps.resolve_support.outputs.all_years }}" \
             2>&1 | tee validate_all.log
           echo "exit_code=$?" >> "$GITHUB_OUTPUT"
 
@@ -182,34 +184,47 @@ jobs:
         if: success()
         env:
           CONFIG_PATH: ${{ matrix.config.config_path }}
-          YEAR: ${{ matrix.config.year }}
+          ALL_YEARS: ${{ steps.resolve_support.outputs.all_years }}
           DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
         run: |
           set -o pipefail
-          RESULT=$(toolkit blocker-hints --config "$CONFIG_PATH" --year "$YEAR" --json 2>/dev/null)
-
-          if [ -z "$RESULT" ]; then
-            echo "::error::blocker-hints failed or returned empty output"
-            exit 1
-          fi
-
-          echo "$RESULT" > /tmp/blocker_hints.json
-
           python - <<'PY'
           import json
-          try:
-              with open('/tmp/blocker_hints.json') as f:
-                  d = json.load(f)
-              blockers = d.get('blocker_count', 0)
-              warnings = d.get('warning_count', 0)
-              print('blocker_count=' + str(blockers))
-              print('warning_count=' + str(warnings))
-              if blockers > 0:
-                  print('::error::Candidate has ' + str(blockers) + ' blocker(s) — fix before merging')
-                  exit(1)
-          except json.JSONDecodeError:
-              print('ERROR: failed to parse blocker-hints JSON')
-              exit(1)
+          import os
+          import subprocess
+          import sys
+
+          years_raw = os.environ.get("ALL_YEARS", "")
+          years = [y.strip() for y in years_raw.split(",") if y.strip()]
+          if not years:
+              print("::error::ALL_YEARS is empty")
+              sys.exit(1)
+
+          total_blockers = 0
+          for year in years:
+              r = subprocess.run(
+                  ["toolkit", "blocker-hints", "--config", os.environ["CONFIG_PATH"], "--year", year, "--json"],
+                  capture_output=True,
+                  text=True,
+              )
+              if r.returncode != 0 or not r.stdout.strip():
+                  print(f"::error::blocker-hints failed for year {year}")
+                  if r.stderr:
+                      print(r.stderr)
+                  sys.exit(1)
+              try:
+                  data = json.loads(r.stdout)
+              except json.JSONDecodeError:
+                  print(f"::error::invalid blocker-hints JSON for year {year}")
+                  sys.exit(1)
+              blockers = int(data.get("blocker_count", 0))
+              warnings = int(data.get("warning_count", 0))
+              total_blockers += blockers
+              print(f"year={year} blocker_count={blockers} warning_count={warnings}")
+
+          if total_blockers > 0:
+              print(f"::error::Candidate has {total_blockers} blocker(s) across all years")
+              sys.exit(1)
           PY
 
       - name: Upload artifacts
