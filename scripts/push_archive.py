@@ -63,6 +63,10 @@ def get_slugs(root, slug_filter=None):
     if slug_filter:
         slugs = [s for s in slugs if s == slug_filter]
         if not slugs:
+            # toolkit usa dataset.name (underscore), slugs hanno hyphens
+            alt = slug_filter.replace("-", "_")
+            slugs = [s for s in slugs if s == alt]
+        if not slugs:
             print(f"Slug non trovato: {slug_filter}", file=sys.stderr)
             sys.exit(1)
     return slugs
