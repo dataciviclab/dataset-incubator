@@ -144,7 +144,7 @@ jobs:
       # ------------------------------------------------------------------
       - name: Install toolkit
         run: |
-          pip install git+https://github.com/dataciviclab/toolkit.git@v1.5.0
+          pip install git+https://github.com/dataciviclab/toolkit.git@v1.5.1
 
       # ------------------------------------------------------------------
       # Run support datasets first (if has_support)
