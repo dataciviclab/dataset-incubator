@@ -289,6 +289,7 @@ jobs:
       - name: Download sample-run artifacts
         if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
         uses: actions/download-artifact@v8
+        continue-on-error: true
         with:
           name: sample-run-results
           path: sample_run_artifacts
