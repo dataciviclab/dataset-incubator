@@ -8,6 +8,8 @@ from datetime import date
 from fnmatch import fnmatchcase
 from pathlib import Path
 from typing import Any
+
+import yaml
 from lab_connectors.gcs import list_objects, object_exists
 
 
@@ -81,11 +83,58 @@ def normalize_catalog(catalog: dict[str, Any], *, refresh_date: bool = False) ->
     datasets = []
     for dataset in normalized.get("datasets", []):
         item = dict(dataset)
-        item.setdefault("status", "clean_ready")
-        item.setdefault("visibility", "public")
+        item.pop("status", None)       # vecchio nome, rimosso
+        item.pop("visibility", None)   # sempre public, rimosso
+        item.setdefault("stage", "incubating")
         datasets.append(item)
     normalized["datasets"] = sorted(datasets, key=lambda item: item["slug"])
+
+    # Arricchisci source_id dai dataset.yml dei candidati
+    _enrich_source_ids(normalized, ROOT)
+
     return normalized
+
+
+def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
+    """Legge source_id dai dataset.yml dei candidati e li fonde nel catalogo.
+
+    Per ogni dataset nel catalogo, se esiste un candidate dataset.yml con source_id,
+    lo aggiunge al catalogo (non sovrascrive se già presente).
+    """
+    candidates_dir = root / "candidates"
+    if not candidates_dir.is_dir():
+        return
+
+    slug_to_source: dict[str, str] = {}
+    for cand_dir in sorted(candidates_dir.iterdir()):
+        yml_path = cand_dir / "dataset.yml"
+        if not yml_path.is_file():
+            continue
+        try:
+            with open(yml_path) as f:
+                cfg = yaml.safe_load(f) or {}
+        except Exception:
+            continue
+        sid = cfg.get("source_id")
+        slug = cfg.get("slug")
+        if sid and slug:
+            # Conversione underscore slug (es. "aifa-spesa-consumo" → "aifa_spesa_consumo")
+            di_slug = slug.replace("-", "_")
+            slug_to_source[di_slug] = sid
+
+    if not slug_to_source:
+        return
+
+    updated = 0
+    for ds in catalog.get("datasets", []):
+        slug = ds.get("slug", "")
+        sid = slug_to_source.get(slug)
+        if sid and "source_id" not in ds:
+            ds["source_id"] = sid
+            updated += 1
+
+    if updated:
+        print(f"[enrich] source_id aggiunto a {updated} dataset da dataset.yml")
 
 
 def validate_catalog(catalog: dict[str, Any], schema: dict[str, Any]) -> list[str]:
