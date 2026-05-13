@@ -125,6 +125,7 @@ jobs:
 
           root = os.environ.get("GITHUB_WORKSPACE", ".")
 
+          failed_configs = []
           for cfg in configs:
               config_path = cfg.get("config_path", "")
               slug = cfg.get("slug", "unknown")
@@ -186,6 +187,8 @@ jobs:
               validate_ok = r.returncode == 0
 
               status = "passed" if (run_ok and validate_ok) else "failed"
+              if status == "failed":
+                  failed_configs.append(slug)
               run_id = os.environ.get("GITHUB_RUN_ID", "0")
               repo = os.environ.get("GITHUB_REPOSITORY", "")
               payload = {
@@ -205,16 +208,38 @@ jobs:
               # --- GCS push (solo se GCP Auth ha settato le credenziali) ---
               if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
                   print(f"  GCS push per {slug}...")
-                  subprocess.run(["python", "-m", "pip", "install", "google-cloud-storage", "-q"],
-                      capture_output=True)
-                  subprocess.run(["python", "scripts/push_archive.py", "--layer", "clean",
-                      "--slug", slug, "--update-catalog", "--no-bq"], cwd=root)
+                  subprocess.run(
+                      ["python", "-m", "pip", "install", "google-cloud-storage", "-q"],
+                      capture_output=True,
+                      check=True,
+                  )
+                  subprocess.run(
+                      [
+                          "python",
+                          "scripts/push_archive.py",
+                          "--layer",
+                          "clean",
+                          "--slug",
+                          slug,
+                          "--update-catalog",
+                          "--no-bq",
+                      ],
+                      cwd=root,
+                      check=True,
+                  )
+                  print(f"  GCS push completato per {slug}")
 
           # --- Build clean catalog (solo se GCP Auth riuscito) ---
           if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
               print(f"\n  Rebuilding clean catalog...")
               subprocess.run(["python", "scripts/build_clean_catalog.py", "--write"], cwd=root)
               subprocess.run(["python", "scripts/build_clean_catalog.py", "--check-gcs"], cwd=root)
+
+          if failed_configs:
+              print("\nFAIL: one or more configs failed in post-merge full run:")
+              for slug in failed_configs:
+                  print(f" - {slug}")
+              sys.exit(1)
           PY
 
       - name: Upload sample-run artifacts
@@ -264,12 +289,13 @@ jobs:
       - name: Download sample-run artifacts
         if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
         uses: actions/download-artifact@v8
+        continue-on-error: true
         with:
           name: sample-run-results
           path: sample_run_artifacts
 
       - name: Apply sample-run results to pipeline_signals.json
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result == 'success'
+        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
         run: |
           # Se non ci sono artifact (sample_run senza risultati), skip senza errore
           if [ ! -d sample_run_artifacts ] || [ -z "$(ls -A sample_run_artifacts)" ]; then
@@ -414,5 +440,3 @@ jobs:
         run: |
           ITEMS_JSON=$(python -c "import json; print(json.dumps(json.load(open('detect_output.json'))['items']))") \
             python scripts/create_de_followup_issue.py
-
-
