@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "terna_capacita_rinnovabile"
+  source_id: "terna"
   years: [2023, 2024]
 
 raw:

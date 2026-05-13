@@ -118,10 +118,10 @@ def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
                 cfg = yaml.safe_load(f) or {}
         except Exception:
             continue
-        sid = cfg.get("source_id")
-        slug = cfg.get("slug")
+        ds_cfg = cfg.get("dataset") or {}
+        sid = ds_cfg.get("source_id")
+        slug = ds_cfg.get("name") or cfg.get("slug") or ""
         if sid and slug:
-            # Conversione underscore slug (es. "aifa-spesa-consumo" → "aifa_spesa_consumo")
             di_slug = slug.replace("-", "_")
             slug_to_source[di_slug] = sid
 
