@@ -400,7 +400,7 @@ jobs:
         run: |
           # Skip if nothing changed — avoid empty PR noise
           if [ "$PIPELINE_SIGNALS_CHANGED" = "false" ]; then
-            echo "No changes to pipeline_signals.json — skipping registry PR"
+            echo "No changes to registry/pipeline_signals.json or registry/clean_catalog.json — skipping registry PR"
             exit 0
           fi
 
