@@ -3,12 +3,14 @@ name: Lint
 on:
   pull_request:
     paths:
+      - ".github/workflows/**"
       - "scripts/**"
       - "tools/**"
       - "pyproject.toml"
   push:
     branches: [main]
     paths:
+      - ".github/workflows/**"
       - "scripts/**"
       - "tools/**"
       - "pyproject.toml"
