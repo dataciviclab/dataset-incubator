@@ -75,6 +75,9 @@ jobs:
     needs: detect
     if: needs.detect.outputs.has_configs == 'true'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
     defaults:
       run:
         shell: bash
@@ -103,6 +106,7 @@ jobs:
 
       - name: GCP Auth (for GCS push)
         if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
+        continue-on-error: true
         uses: google-github-actions/auth@v3
         with:
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
