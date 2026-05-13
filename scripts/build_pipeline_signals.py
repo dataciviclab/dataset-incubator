@@ -142,6 +142,17 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
     """Build a single signal entry for a candidate."""
     from typing import Any
 
+    # Leggi source_id dal dataset.yml se presente
+    source_id = ""
+    yml_path = base_dir / "dataset.yml"
+    if yml_path.is_file():
+        try:
+            cfg = _read_yaml(yml_path)
+            dataset_cfg = cfg.get("dataset") or {}
+            source_id = dataset_cfg.get("source_id", "") or ""
+        except Exception:
+            pass
+
     layout_info = detect_candidate_layout(base_dir)
     layout = layout_info["layout"]
 
@@ -212,6 +223,7 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
 
     return {
         "id": slug,
+        "source_id": source_id,
         "status": status,
         "label": slug,
         "detail": detail,
