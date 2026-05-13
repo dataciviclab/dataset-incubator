@@ -60,14 +60,10 @@ jobs:
           import json, os
           d = json.load(open("detect_output.json"))
           with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
-              out.write(f"has_items={str(d['has_items']).lower()}\n")
-              out.write(f"has_configs={str(d['has_configs']).lower()}\n")
-              out.write("items<<JSON\n")
-              out.write(json.dumps(d["items"], ensure_ascii=False))
-              out.write("\nJSON\n")
-              out.write("configs<<JSON\n")
-              out.write(json.dumps(d["configs"], ensure_ascii=False))
-              out.write("\nJSON\n")
+               out.write(f"has_items={str(d['has_items']).lower()}\n")
+               out.write(f"has_configs={str(d['has_configs']).lower()}\n")
+               out.write(f"items={json.dumps(d['items'], ensure_ascii=False)}\n")
+               out.write(f"configs={json.dumps(d['configs'], ensure_ascii=False)}\n")
           PY
 
   sample_run:
@@ -291,14 +287,14 @@ jobs:
         run: python scripts/build_pipeline_signals.py
 
       - name: Download sample-run artifacts
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
+        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result == 'success'
         uses: actions/download-artifact@v8
         with:
           pattern: sample-run-*
           path: sample_run_artifacts
 
       - name: Apply sample-run results to pipeline_signals.json
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
+        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result == 'success'
         run: |
           # Se non ci sono artifact (sample_run senza risultati), skip senza errore
           if [ ! -d sample_run_artifacts ] || [ -z "$(ls -A sample_run_artifacts)" ]; then
