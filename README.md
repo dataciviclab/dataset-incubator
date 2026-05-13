@@ -117,7 +117,6 @@ I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia
 | `post-merge-candidate.yml` | Merge su `candidates/` | Esegue il candidate via toolkit (raw → clean → mart) |
 | `build-pipeline-signals.yml` | Merge su `candidates/` | Aggiorna `registry/pipeline_signals.json` |
 | `validate-clean-catalog.yml` | Merge su `registry/` | Verifica schema del clean catalog |
-| `sample-candidate-run.yml` | Dispatch (workflow dispatch) | Run di esempio su un candidate specifico |
 
 ### Skill markdown
 
