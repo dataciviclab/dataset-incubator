@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-12",
+  "generated_at": "2026-05-13",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -14,9 +14,10 @@
   "signals": [
     {
       "id": "aifa-spesa-consumo",
+      "source_id": "aifa",
       "status": "ok",
       "label": "aifa-spesa-consumo",
-      "detail": "anni 2018-2024 — fonte: aifa_spesa_consumo_csv — mart: sì — DE: published",
+      "detail": "anni 2018-2024 — fonte: aifa_spesa_consumo_csv — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
@@ -29,6 +30,7 @@
     },
     {
       "id": "bdap-entrate-stato",
+      "source_id": "",
       "status": "ok",
       "label": "bdap-entrate-stato",
       "detail": "anno 2024 — fonte: openbdap_entrate_csv — mart: sì",
@@ -44,6 +46,7 @@
     },
     {
       "id": "bdap-lea",
+      "source_id": "",
       "status": "ok",
       "label": "bdap-lea",
       "detail": "anno 2024 — fonte: bdap_lea_csv — mart: sì",
@@ -59,6 +62,7 @@
     },
     {
       "id": "camera-deputati-legislature",
+      "source_id": "",
       "status": "ok",
       "label": "camera-deputati-legislature",
       "detail": "anno 2024 — fonte: camera_deputati_sparql — mart: sì",
@@ -74,6 +78,7 @@
     },
     {
       "id": "civile-flussi",
+      "source_id": "",
       "status": "ok",
       "label": "civile-flussi",
       "detail": "anno 2025 — fonte: ministero_giustizia_xlsx — mart: sì",
@@ -81,6 +86,7 @@
     },
     {
       "id": "dipendenti-pubblici",
+      "source_id": "",
       "status": "ok",
       "label": "dipendenti-pubblici",
       "detail": "anni 2010-2023 — fonte: bdap_csv — mart: sì",
@@ -96,6 +102,7 @@
     },
     {
       "id": "giustizia-penale-indicatori",
+      "source_id": "",
       "status": "ok",
       "label": "giustizia-penale-indicatori",
       "detail": "anno 2024 — fonte: tribunali_xlsx — mart: sì",
@@ -111,21 +118,23 @@
     },
     {
       "id": "inps-cig",
+      "source_id": "inps",
       "status": "ok",
       "label": "inps-cig",
       "detail": "anno 2024 — fonte: inps_cig_annuale — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
+        "run_id": "25800199744",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25800199744",
+        "checked_at": "2026-05-13",
         "year": 2024,
         "config_path": "candidates/inps-cig/dataset.yml"
       }
     },
     {
       "id": "inps-pensioni",
+      "source_id": "",
       "status": "ok",
       "label": "inps-pensioni",
       "detail": "anno 2024 — fonte: inps_pensioni_csv — mart: sì",
@@ -141,6 +150,7 @@
     },
     {
       "id": "irpef-comunale",
+      "source_id": "",
       "status": "ok",
       "label": "irpef-comunale",
       "detail": "anni 2019-2023 — fonte: finanze_http_zip — mart: sì",
@@ -148,6 +158,7 @@
     },
     {
       "id": "ispra-consumo-suolo",
+      "source_id": "",
       "status": "ok",
       "label": "ispra-consumo-suolo",
       "detail": "anno 2024 — fonte: ispra_consumo_suolo_xlsx — mart: sì",
@@ -163,6 +174,7 @@
     },
     {
       "id": "ispra-ru-costi-kg",
+      "source_id": "",
       "status": "ok",
       "label": "ispra-ru-costi-kg",
       "detail": "anni 2020-2024 — multi-source (3 fonti) — mart: sì",
@@ -196,6 +208,7 @@
     },
     {
       "id": "istat-gini-regionale",
+      "source_id": "",
       "status": "ok",
       "label": "istat-gini-regionale",
       "detail": "anno 2023 — fonte: istat_sdmx_gini — mart: sì",
@@ -211,6 +224,7 @@
     },
     {
       "id": "istat-housing-crowding",
+      "source_id": "",
       "status": "ok",
       "label": "istat-housing-crowding",
       "detail": "anno 2024 — fonte: istat_sdmx_housing_crowding — mart: sì",
@@ -226,6 +240,7 @@
     },
     {
       "id": "istat-ipab-aree",
+      "source_id": "",
       "status": "ok",
       "label": "istat-ipab-aree",
       "detail": "anno 2024 — fonte: istat_sdmx_ipab_aree — mart: sì",
@@ -241,6 +256,7 @@
     },
     {
       "id": "malasanita-struttura-mortalita",
+      "source_id": "",
       "status": "ok",
       "label": "malasanita-struttura-mortalita",
       "detail": "anno 2022 — multi-source (4 fonti) — mart: sì",
@@ -248,6 +264,7 @@
     },
     {
       "id": "mef-irpef-regionale",
+      "source_id": "",
       "status": "ok",
       "label": "mef-irpef-regionale",
       "detail": "anni 2017-2025 — fonte: reg_tipo_reddito — mart: sì",
@@ -263,6 +280,7 @@
     },
     {
       "id": "mef-partecipazioni",
+      "source_id": "",
       "status": "ok",
       "label": "mef-partecipazioni",
       "detail": "anni 2020-2023 — fonti: mef_partecipazioni_2020, mef_partecipazioni_2021 — mart: sì",
@@ -278,6 +296,7 @@
     },
     {
       "id": "mim-alunni-corso-eta",
+      "source_id": "",
       "status": "ok",
       "label": "mim-alunni-corso-eta",
       "detail": "anni 2016-2025 — fonte: mim_alunni_corso_eta_csv — mart: sì",
@@ -293,6 +312,7 @@
     },
     {
       "id": "mit-incidentalita-mensile-2001-2018",
+      "source_id": "",
       "status": "ok",
       "label": "mit-incidentalita-mensile-2001-2018",
       "detail": "anno 2001 — fonte: mit_incidentalita_mensile_csv — mart: sì",
@@ -308,6 +328,7 @@
     },
     {
       "id": "mit-opere-incompiute-2020",
+      "source_id": "",
       "status": "ok",
       "label": "mit-opere-incompiute-2020",
       "detail": "anno 2020 — fonte: mit_opere_incompiute_csv — mart: sì",
@@ -323,6 +344,7 @@
     },
     {
       "id": "mur-contribuzione-universitaria",
+      "source_id": "",
       "status": "ok",
       "label": "mur-contribuzione-universitaria",
       "detail": "anni 2017-2024 — fonte: mur_gettito_ckan — mart: sì",
@@ -338,6 +360,7 @@
     },
     {
       "id": "opencivitas-fsc-rso",
+      "source_id": "",
       "status": "ok",
       "label": "opencivitas-fsc-rso",
       "detail": "anno 2025 — fonte: opencivitas_fsc_2025_zip — mart: sì",
@@ -353,6 +376,7 @@
     },
     {
       "id": "opencoesione-pagamenti-ue-2014-2020",
+      "source_id": "",
       "status": "ok",
       "label": "opencoesione-pagamenti-ue-2014-2020",
       "detail": "anno 2020 — fonte: opencoesione_progetti_esteso_zip — mart: sì",
@@ -360,6 +384,7 @@
     },
     {
       "id": "pensioni-pa-dag",
+      "source_id": "",
       "status": "ok",
       "label": "pensioni-pa-dag",
       "detail": "anno 2024 — fonte: dag_pensioni_totale_local — mart: sì",
@@ -375,6 +400,7 @@
     },
     {
       "id": "terna-capacita-rinnovabile",
+      "source_id": "terna",
       "status": "ok",
       "label": "terna-capacita-rinnovabile",
       "detail": "anni 2023-2024 — fonte: terna_capacity_renewable_sources_xlsx — mart: sì",
@@ -390,6 +416,7 @@
     },
     {
       "id": "terna-electricity-by-source",
+      "source_id": "",
       "status": "ok",
       "label": "terna-electricity-by-source",
       "detail": "anni 2023-2024 — fonte: terna_electricity_by_source_xlsx — mart: sì",
@@ -405,6 +432,7 @@
     },
     {
       "id": "bdap-anagrafe-enti",
+      "source_id": "",
       "status": "ok",
       "label": "bdap-anagrafe-enti",
       "detail": "anni: ? — fonte: ? — mart: sì",
@@ -420,6 +448,7 @@
     },
     {
       "id": "mim-anagrafica-scuole-statali",
+      "source_id": "",
       "status": "ok",
       "label": "mim-anagrafica-scuole-statali",
       "detail": "anni: ? — fonte: ? — mart: sì",
@@ -435,6 +464,7 @@
     },
     {
       "id": "opencivitas-fsc-enti-rso",
+      "source_id": "",
       "status": "ok",
       "label": "opencivitas-fsc-enti-rso",
       "detail": "anni: ? — fonte: ? — mart: sì",
@@ -450,6 +480,7 @@
     },
     {
       "id": "popolazione-istat-comunale-2019-2025",
+      "source_id": "",
       "status": "ok",
       "label": "popolazione-istat-comunale-2019-2025",
       "detail": "anni: ? — fonte: ? — mart: sì",
