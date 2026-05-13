@@ -9,7 +9,6 @@ from fnmatch import fnmatchcase
 from pathlib import Path
 from typing import Any
 
-import yaml
 from lab_connectors.gcs import list_objects, object_exists
 
 
@@ -101,6 +100,10 @@ def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
     Per ogni dataset nel catalogo, se esiste un candidate dataset.yml con source_id,
     lo aggiunge al catalogo (non sovrascrive se già presente).
     """
+    try:
+        import yaml
+    except ImportError:
+        return  # PyYAML non installato — salta arricchimento
     candidates_dir = root / "candidates"
     if not candidates_dir.is_dir():
         return
