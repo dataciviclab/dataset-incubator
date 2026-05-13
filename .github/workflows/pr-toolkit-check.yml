@@ -223,6 +223,64 @@ jobs:
             validate_all.log
           retention-days: 7
 
+      - name: Write sample-run result payload
+        if: always()
+        env:
+          CONFIG_PATH: ${{ matrix.config.config_path }}
+          ARTIFACT_NAME: ${{ matrix.config.artifact_name }}
+          RUN_STATUS: ${{ job.status }}
+          REPO: ${{ github.repository }}
+          RUN_ID: ${{ github.run_id }}
+        run: |
+          mkdir -p "sample_run_artifacts/${ARTIFACT_NAME}"
+          python - <<'PY'
+          import datetime
+          import json
+          import os
+          import subprocess
+          import sys
+
+          config_path = os.environ["CONFIG_PATH"]
+          artifact_name = os.environ["ARTIFACT_NAME"]
+          status = "passed" if os.environ.get("RUN_STATUS") == "success" else "failed"
+
+          r = subprocess.run(
+              ["python", "scripts/resolve_sample_run.py", config_path],
+              capture_output=True,
+              text=True,
+          )
+          years = []
+          if r.returncode == 0:
+              try:
+                  years = json.loads(r.stdout).get("all_years", [])
+              except json.JSONDecodeError:
+                  years = []
+
+          payload = {
+              "id": artifact_name,
+              "status": status,
+              "years": years,
+              "config_path": config_path,
+              "config_exists": True,
+              "run_id": os.environ["RUN_ID"],
+              "run_url": f"https://github.com/{os.environ['REPO']}/actions/runs/{os.environ['RUN_ID']}",
+              "checked_at": datetime.datetime.now(datetime.timezone.utc).date().isoformat(),
+          }
+          out = f"sample_run_artifacts/{artifact_name}/sample_run_result.json"
+          with open(out, "w", encoding="utf-8") as f:
+              json.dump(payload, f, indent=2, ensure_ascii=False)
+          print(f"wrote {out}")
+          PY
+
+      - name: Upload sample-run result artifact
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: sample-run-${{ matrix.config.artifact_name }}
+          path: sample_run_artifacts/${{ matrix.config.artifact_name }}/sample_run_result.json
+          if-no-files-found: error
+          retention-days: 7
+
   report:
     needs: [detect, toolkit-check]
     if: always()
