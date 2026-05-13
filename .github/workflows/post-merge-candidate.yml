@@ -295,7 +295,7 @@ jobs:
           path: sample_run_artifacts
 
       - name: Apply sample-run results to pipeline_signals.json
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result == 'success'
+        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
         run: |
           # Se non ci sono artifact (sample_run senza risultati), skip senza errore
           if [ ! -d sample_run_artifacts ] || [ -z "$(ls -A sample_run_artifacts)" ]; then
