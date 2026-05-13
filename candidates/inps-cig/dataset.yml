@@ -2,6 +2,7 @@ root: "../../out"
 schema_version: 1
 
 dataset:
+  source_id: "inps"
   name: "inps_cig_serie_storiche_annuali"
   years: [2024]
 
