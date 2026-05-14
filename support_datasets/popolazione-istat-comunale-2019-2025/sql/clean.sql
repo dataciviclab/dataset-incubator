@@ -1,4 +1,5 @@
 select
+  {year}::INTEGER                                            as anno,
   trim(cast("Codice comune" as varchar)) as codice_comune,
   trim(cast("Comune" as varchar)) as comune,
   try_cast("Età" as integer) as eta,
