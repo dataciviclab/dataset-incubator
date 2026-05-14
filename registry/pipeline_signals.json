@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-13",
+  "generated_at": "2026-05-14",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 31,
+    "total": 30,
     "by_status": {
-      "ok": 31,
+      "ok": 30,
       "warn": 0,
       "error": 0
     }
@@ -30,7 +30,7 @@
     },
     {
       "id": "bdap-entrate-stato",
-      "source_id": "",
+      "source_id": "openbdap",
       "status": "ok",
       "label": "bdap-entrate-stato",
       "detail": "anno 2024 — fonte: openbdap_entrate_csv — mart: sì",
@@ -118,23 +118,25 @@
     },
     {
       "id": "inps-pensioni",
-      "source_id": "",
+      "source_id": "inps",
       "status": "ok",
       "label": "inps-pensioni",
       "detail": "anno 2024 — fonte: inps_pensioni_csv — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2024,
+        "run_id": "25862718345",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25862718345",
+        "checked_at": "2026-05-14",
+        "years": [
+          2024
+        ],
         "config_path": "candidates/inps-pensioni/dataset.yml"
       }
     },
     {
       "id": "irpef-comunale",
-      "source_id": "",
+      "source_id": "mef_irpef",
       "status": "ok",
       "label": "irpef-comunale",
       "detail": "anni 2019-2023 — fonte: finanze_http_zip — mart: sì",
