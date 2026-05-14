@@ -32,7 +32,7 @@ select
     regione,
     numero_pensioni
 from base
-where anno between 2017 and 2024
+where anno between 2020 and 2024
   and trimestre between 1 and 4
   and regione is not null
   and regione <> ''

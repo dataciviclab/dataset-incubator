@@ -2,8 +2,9 @@ root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "inps_pensioni_2017_2024"
-  years: [2024]
+  name: "inps_pensioni_trimestrale"
+  source_id: inps
+  years: [2024] # serie 2020-2024
 
 raw:
   output_policy: overwrite

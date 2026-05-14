@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-05-12",
+  "updated_at": "2026-05-14",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -11,7 +11,7 @@
       "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC — AIFA 2018-2024",
       "source": "AIFA — Open Data Spesa e Consumo Farmaceutico",
       "period": {
-        "start": 2018,
+        "start": 2020,
         "end": 2024
       },
       "columns": [
@@ -124,7 +124,8 @@
         "multi_file": true
       },
       "registry_source": "push_archive_auto",
-      "stage": "published"
+      "stage": "published",
+      "source_id": "aifa"
     },
     {
       "slug": "bdap_entrate_stato",
@@ -509,12 +510,12 @@
       "stage": "incubating"
     },
     {
-      "slug": "inps_pensioni_2017_2024",
-      "name": "INPS Pensioni",
-      "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2017-2024)",
+      "slug": "inps_pensioni_trimestrale",
+      "name": "INPS Pensioni — trimestrale",
+      "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2020-2024)",
       "source": "https://www.inps.it/gestione-previdenziale",
       "period": {
-        "start": 2017,
+        "start": 2020,
         "end": 2024
       },
       "columns": [
@@ -587,7 +588,7 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/inps_pensioni_2017_2024/2024/inps_pensioni_2017_2024_2024_clean.parquet",
+        "path": "gs://dataciviclab-clean/inps_pensioni_trimestrale/2024/inps_pensioni_trimestrale_2024_clean.parquet",
         "multi_file": false
       },
       "registry_source": "push_archive_auto",
@@ -3180,7 +3181,8 @@
         "multi_file": true
       },
       "registry_source": "push_archive_auto",
-      "stage": "published"
+      "stage": "published",
+      "source_id": "terna"
     }
   ]
 }
