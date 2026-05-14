@@ -1,4 +1,5 @@
 select
+  {year}::INTEGER                                            as anno,
   trim("Amministrazione Settore Istituzionale") as amministrazione_settore_istituzionale,
   trim("Amministrazione Macrocategoria") as amministrazione_macrocategoria,
   trim("Amministrazione Categoria") as amministrazione_categoria,

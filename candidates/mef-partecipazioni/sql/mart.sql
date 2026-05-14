@@ -1,4 +1,5 @@
 select
+  anno,
   amministrazione_regione_sede as amministrazione_regione,
   amministrazione_provincia_sede as amministrazione_provincia,
   amministrazione_comune_sede as amministrazione_comune,
@@ -9,5 +10,5 @@ select
   round(100.0 * count(*) filter (where appartenenza_perimetro_tusp = 'SI') / count(*), 1) as pct_perimetro_tusp,
   round(100.0 * count(*) filter (where appartenenza_perimetro_revisione_periodica = 'SI') / count(*), 1) as pct_perimetro_revisione
 from clean_input
-group by amministrazione_regione_sede, amministrazione_provincia_sede, amministrazione_comune_sede, amministrazione_categoria
-order by amministrazione_regione_sede, amministrazione_provincia_sede, amministrazione_comune_sede, amministrazione_categoria
+group by anno, amministrazione_regione_sede, amministrazione_provincia_sede, amministrazione_comune_sede, amministrazione_categoria
+order by anno, amministrazione_regione_sede, amministrazione_provincia_sede, amministrazione_comune_sede, amministrazione_categoria
