@@ -475,7 +475,23 @@
       "status": "ok",
       "label": "popolazione-istat-comunale-2019-2025",
       "detail": "anni: ? — fonte: ? — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "25870731832",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25870731832",
+        "checked_at": "2026-05-14",
+        "years": [
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
+        "config_path": "support_datasets/popolazione-istat-comunale-2019-2025/dataset.yml"
+      }
     }
   ]
 }
