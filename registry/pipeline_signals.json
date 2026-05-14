@@ -117,10 +117,10 @@
       }
     },
     {
-      "id": "inps_pensioni_trimestrale",
+      "id": "inps-pensioni",
       "source_id": "inps",
       "status": "ok",
-      "label": "inps_pensioni_trimestrale",
+      "label": "inps-pensioni",
       "detail": "anno 2024 — fonte: inps_pensioni_csv — mart: sì",
       "action": "",
       "sample_run": {
