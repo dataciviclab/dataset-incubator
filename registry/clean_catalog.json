@@ -265,6 +265,12 @@
           "description": "Materia specifica della controversia"
         },
         {
+          "name": "dettaglio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Dettaglio aggiuntivo della materia"
+        },
+        {
           "name": "sopravvenuti",
           "type": "DOUBLE",
           "role": "metric",
@@ -275,6 +281,12 @@
           "type": "DOUBLE",
           "role": "metric",
           "description": "Numero di cause definite (totale, tutte le fasi)"
+        },
+        {
+          "name": "definiti_con_sentenza",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero di cause definite con sentenza"
         },
         {
           "name": "pendenti_finali",
@@ -608,314 +620,314 @@
         {
           "name": "anno_di_imposta",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno d'imposta"
         },
         {
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice catastale del comune"
         },
         {
           "name": "codice_istat_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune"
         },
         {
           "name": "denominazione_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla della provincia"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione di appartenenza"
         },
         {
           "name": "codice_istat_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT della regione"
         },
         {
           "name": "numero_contribuenti",
           "type": "INTEGER",
           "role": "dimension",
-          "description": ""
+          "description": "Numero di contribuenti"
         },
         {
           "name": "reddito_da_fabbricati_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Da Fabbricati"
         },
         {
           "name": "reddito_da_fabbricati_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Da Fabbricati"
         },
         {
           "name": "reddito_da_lavoro_dipendente_e_assimilati_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Da Lavoro Dipendente E Assimilati"
         },
         {
           "name": "reddito_da_lavoro_dipendente_e_assimilati_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Da Lavoro Dipendente E Assimilati"
         },
         {
           "name": "reddito_da_pensione_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Da Pensione"
         },
         {
           "name": "reddito_da_pensione_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Da Pensione"
         },
         {
           "name": "reddito_da_lavoro_autonomo_comprensivo_valori_nulli_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Da Lavoro Autonomo Comprensivo Valori Nulli"
         },
         {
           "name": "reddito_da_lavoro_autonomo_comprensivo_valori_nulli_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Da Lavoro Autonomo Comprensivo Valori Nulli"
         },
         {
           "name": "reddito_di_spettanza_imprenditore_contabilita_ordinaria_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Di Spettanza Imprenditore Contabilita Ordinaria"
         },
         {
           "name": "reddito_di_spettanza_imprenditore_contabilita_ordinaria_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Di Spettanza Imprenditore Contabilita Ordinaria"
         },
         {
           "name": "reddito_di_spettanza_imprenditore_contabilita_semplificata_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Di Spettanza Imprenditore Contabilita Semplificata"
         },
         {
           "name": "reddito_di_spettanza_imprenditore_contabilita_semplificata_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Di Spettanza Imprenditore Contabilita Semplificata"
         },
         {
           "name": "reddito_da_partecipazione_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Da Partecipazione"
         },
         {
           "name": "reddito_da_partecipazione_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Da Partecipazione"
         },
         {
           "name": "reddito_imponibile_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Imponibile"
         },
         {
           "name": "reddito_imponibile_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Imponibile"
         },
         {
           "name": "imposta_netta_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Imposta Netta"
         },
         {
           "name": "imposta_netta_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Imposta Netta"
         },
         {
           "name": "trattamento_spettante_freq",
           "type": "INTEGER",
           "role": "dimension",
-          "description": ""
+          "description": "Numero contribuenti per Trattamento Spettante"
         },
         {
           "name": "trattamento_spettante_eur",
           "type": "DOUBLE",
           "role": "dimension",
-          "description": ""
+          "description": "Ammontare in euro per Trattamento Spettante"
         },
         {
           "name": "reddito_imponibile_addizionale_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Imponibile Addizionale"
         },
         {
           "name": "reddito_imponibile_addizionale_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Imponibile Addizionale"
         },
         {
           "name": "addizionale_regionale_dovuta_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Addizionale Regionale Dovuta"
         },
         {
           "name": "addizionale_regionale_dovuta_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Addizionale Regionale Dovuta"
         },
         {
           "name": "addizionale_comunale_dovuta_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Addizionale Comunale Dovuta"
         },
         {
           "name": "addizionale_comunale_dovuta_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Addizionale Comunale Dovuta"
         },
         {
           "name": "reddito_complessivo_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Complessivo"
         },
         {
           "name": "reddito_complessivo_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Complessivo"
         },
         {
           "name": "reddito_complessivo_minore_o_uguale_a_zero_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Complessivo Minore O Uguale A Zero Euro"
         },
         {
           "name": "reddito_complessivo_minore_o_uguale_a_zero_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Complessivo Minore O Uguale A Zero Euro"
         },
         {
           "name": "reddito_complessivo_da_0_a_10000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Complessivo Da 0 A 10000 Euro"
         },
         {
           "name": "reddito_complessivo_da_0_a_10000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Complessivo Da 0 A 10000 Euro"
         },
         {
           "name": "reddito_complessivo_da_10000_a_15000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Complessivo Da 10000 A 15000 Euro"
         },
         {
           "name": "reddito_complessivo_da_10000_a_15000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Complessivo Da 10000 A 15000 Euro"
         },
         {
           "name": "reddito_complessivo_da_15000_a_26000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Complessivo Da 15000 A 26000 Euro"
         },
         {
           "name": "reddito_complessivo_da_15000_a_26000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Complessivo Da 15000 A 26000 Euro"
         },
         {
           "name": "reddito_complessivo_da_26000_a_55000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Complessivo Da 26000 A 55000 Euro"
         },
         {
           "name": "reddito_complessivo_da_26000_a_55000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Complessivo Da 26000 A 55000 Euro"
         },
         {
           "name": "reddito_complessivo_da_55000_a_75000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Complessivo Da 55000 A 75000 Euro"
         },
         {
           "name": "reddito_complessivo_da_55000_a_75000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Complessivo Da 55000 A 75000 Euro"
         },
         {
           "name": "reddito_complessivo_da_75000_a_120000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Complessivo Da 75000 A 120000 Euro"
         },
         {
           "name": "reddito_complessivo_da_75000_a_120000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Complessivo Da 75000 A 120000 Euro"
         },
         {
           "name": "reddito_complessivo_oltre_120000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero contribuenti per Reddito Complessivo Oltre 120000 Euro"
         },
         {
           "name": "reddito_complessivo_oltre_120000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Ammontare in euro per Reddito Complessivo Oltre 120000 Euro"
         }
       ],
       "location": {
@@ -2951,31 +2963,31 @@
         {
           "name": "numero_partite",
           "type": "INTEGER",
-          "role": "dimension",
+          "role": "metric",
           "description": "Numero di partite pensionistiche"
         },
         {
           "name": "importi_arretrati_eur",
           "type": "DOUBLE",
-          "role": "dimension",
+          "role": "metric",
           "description": "Importi arretrati in euro"
         },
         {
           "name": "importi_ratei_eur",
           "type": "DOUBLE",
-          "role": "dimension",
+          "role": "metric",
           "description": "Importi ratei in euro"
         },
         {
           "name": "importi_tredicesima_eur",
           "type": "DOUBLE",
-          "role": "dimension",
+          "role": "metric",
           "description": "Importi tredicesima mensilita in euro"
         },
         {
           "name": "importi_mensili_pagati_eur",
           "type": "DOUBLE",
-          "role": "dimension",
+          "role": "metric",
           "description": "Importi mensili pagati in euro"
         }
       ],
