@@ -1,4 +1,5 @@
 select
+  {year}::INTEGER                                            as anno,
   trim(replace(cast("IstatComune" as varchar), chr(9), '')) as codice_comune_istat,
   trim(cast("Comune o Aggregazione" as varchar)) as comune_o_aggregazione,
   trim(cast("Provincia" as varchar)) as provincia,

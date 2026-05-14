@@ -1,4 +1,5 @@
 select
+  anno,
   codice_comune_istat,
   comune_o_aggregazione as comune,
   provincia,
@@ -11,4 +12,4 @@ select
   ctot_cent_kg
 from clean_input
 where popolazione > 0
-order by provincia, comune
+order by anno, provincia, comune
