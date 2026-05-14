@@ -3,7 +3,8 @@
 ## Tecnico
 
 - il candidate usa `http_file` diretto sul CSV pubblico INPS `dataset_6002.csv`
-- `years: [2024]` è usato come chiave di snapshot del run; il file contiene già la serie 2017-2024
+- `years: [2024]` è usato come chiave di snapshot del run; il file contiene la serie 2020-2024 (non 2017 come da nome storico)
+- il dataset è stato rinominato da `inps_pensioni_2017_2024` a `inps_pensioni_trimestrale` per riflettere la copertura effettiva 2020-2024
 - il formato CSV evita il parsing del JSON annidato e consente un intake più semplice
 - dimensioni incluse nel v0: anno, trimestre, sesso, classe età, classe importo, regione, area geografica
 

@@ -11,7 +11,7 @@
       "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC — AIFA 2018-2024",
       "source": "AIFA — Open Data Spesa e Consumo Farmaceutico",
       "period": {
-        "start": 2018,
+        "start": 2020,
         "end": 2024
       },
       "columns": [
@@ -509,9 +509,9 @@
       "stage": "incubating"
     },
     {
-      "slug": "inps_pensioni_2017_2024",
-      "name": "INPS Pensioni",
-      "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2017-2024)",
+      "slug": "inps_pensioni_trimestrale",
+      "name": "INPS Pensioni — trimestrale",
+      "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2020-2024)",
       "source": "https://www.inps.it/gestione-previdenziale",
       "period": {
         "start": 2017,
@@ -587,7 +587,7 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/inps_pensioni_2017_2024/2024/inps_pensioni_2017_2024_2024_clean.parquet",
+        "path": "gs://dataciviclab-clean/inps_pensioni_trimestrale/2024/inps_pensioni_trimestrale_2024_clean.parquet",
         "multi_file": false
       },
       "registry_source": "push_archive_auto",
