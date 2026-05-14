@@ -41,13 +41,15 @@ mensili as (
         'Settembre', 'Ottobre', 'Novembre', 'Dicembre'
     )
 )
-select *
+select
+    *,
+    case mese
+        when 'Gennaio'   then 1  when 'Febbraio'  then 2
+        when 'Marzo'     then 3  when 'Aprile'    then 4
+        when 'Maggio'    then 5  when 'Giugno'    then 6
+        when 'Luglio'    then 7  when 'Agosto'    then 8
+        when 'Settembre' then 9  when 'Ottobre'   then 10
+        when 'Novembre'  then 11 when 'Dicembre'  then 12
+    end as mese_numero
 from mensili
-order by anno, case mese
-    when 'Gennaio'   then 1  when 'Febbraio'  then 2
-    when 'Marzo'     then 3  when 'Aprile'    then 4
-    when 'Maggio'    then 5  when 'Giugno'    then 6
-    when 'Luglio'    then 7  when 'Agosto'    then 8
-    when 'Settembre' then 9  when 'Ottobre'   then 10
-    when 'Novembre'  then 11 when 'Dicembre'  then 12
-end
+order by anno, mese_numero

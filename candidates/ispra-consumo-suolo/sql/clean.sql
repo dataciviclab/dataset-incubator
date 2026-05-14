@@ -173,11 +173,6 @@ SELECT
         REPLACE(
             TRIM(CAST("Incremento netto 2023-2024 [ettari]" AS VARCHAR)), ',', '.'
         ) AS DOUBLE
-    )                                                    AS incremento_ha_2023_2024,
-    TRY_CAST(
-        REPLACE(
-            TRIM(CAST("Incremento netto 2023-2024 [ettari]" AS VARCHAR)), ',', '.'
-        ) AS DOUBLE
     )                                                    AS incremento_netto_ha_2023_2024,
     TRY_CAST(
         REPLACE(

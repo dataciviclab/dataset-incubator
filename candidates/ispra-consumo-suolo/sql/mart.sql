@@ -36,7 +36,6 @@ SELECT
     ROUND(clean.incremento_netto_ha_2022_2023, 4) AS incremento_netto_ha_2022_2023,
     ROUND(clean.incremento_lordo_ha_2022_2023, 4) AS incremento_lordo_ha_2022_2023,
     ROUND(clean.ripristino_ha_2022_2023, 4)       AS ripristino_ha_2022_2023,
-    ROUND(clean.incremento_ha_2023_2024, 4)       AS incremento_ha_2023_2024,
     ROUND(clean.incremento_netto_ha_2023_2024, 4) AS incremento_netto_ha_2023_2024,
     ROUND(clean.incremento_lordo_ha_2023_2024, 4) AS incremento_lordo_ha_2023_2024,
     ROUND(clean.ripristino_ha_2023_2024, 4)       AS ripristino_ha_2023_2024,
