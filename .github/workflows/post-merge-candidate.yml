@@ -224,6 +224,7 @@ jobs:
                       capture_output=True,
                       check=True,
                   )
+                  push_slug = cfg.get("push_slug", slug)
                   subprocess.run(
                       [
                           "python",
@@ -231,14 +232,14 @@ jobs:
                           "--layer",
                           "clean",
                           "--slug",
-                          slug,
+                          push_slug,
                           "--update-catalog",
                           "--no-bq",
                       ],
                       cwd=root,
                       check=True,
                   )
-                  print(f"  GCS push completato per {slug}")
+                  print(f"  GCS push completato per {slug} (push_slug={push_slug})")
 
           # --- Build clean catalog (solo se GCP Auth riuscito) ---
           if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):

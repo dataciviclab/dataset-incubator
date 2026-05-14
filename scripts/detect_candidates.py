@@ -58,6 +58,17 @@ def _resolve_year(cfg_path: Path) -> int:
         return 0
 
 
+def _dataset_name(cfg_path: Path) -> str | None:
+    """Read dataset.name from a dataset.yml — None if missing/unreadable."""
+    import yaml
+    try:
+        with open(cfg_path, encoding="utf-8") as f:
+            d = yaml.safe_load(f) or {}
+        return d.get("dataset", {}).get("name")
+    except Exception:
+        return None
+
+
 def _git_diff_files(base_sha: str | None, head_sha: str) -> list[str]:
     """Return list of file paths changed between base and head."""
     if base_sha:
@@ -125,13 +136,15 @@ def _detect_from_files(files: list[str]) -> tuple[list[dict], list[dict]]:
                 })
         else:
             config_path = root / "dataset.yml"
+            cfg_exists = config_path.exists()
+            ds_name = _dataset_name(config_path) if cfg_exists else None
             configs.append({
                 **item,
                 "config_path": config_path.as_posix(),
-                "config_exists": config_path.exists(),
-                "push_slug": item["slug"],
+                "config_exists": cfg_exists,
+                "push_slug": ds_name or item["slug"],
                 "artifact_name": item["slug"],
-                "year": _resolve_year(config_path) if config_path.exists() else 0,
+                "year": _resolve_year(config_path) if cfg_exists else 0,
                 "is_nested": False,
             })
 
@@ -181,11 +194,14 @@ def detect_candidates(
                     })
             else:
                 cfg = root_candidates / "dataset.yml"
+                cfg_exists = cfg.exists()
+                ds_name = _dataset_name(cfg) if cfg_exists else None
                 configs.append({
                     "kind": kind, "slug": slug, "config_path": cfg.as_posix(),
-                    "config_exists": cfg.exists(),
-                    "push_slug": slug, "artifact_name": slug,
-                    "year": _resolve_year(cfg) if cfg.exists() else 0,
+                    "config_exists": cfg_exists,
+                    "push_slug": ds_name or slug,
+                    "artifact_name": slug,
+                    "year": _resolve_year(cfg) if cfg_exists else 0,
                     "is_nested": False,
                 })
         elif root_support.exists():
