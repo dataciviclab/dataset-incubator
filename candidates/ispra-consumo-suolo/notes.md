@@ -28,7 +28,7 @@ toolkit/.venv/Scripts/python.exe -m toolkit.cli.app run all \
 | comune | Nome comune |
 | provincia | Nome provincia |
 | regione | Nome regione |
-| incremento_ha_2023_2024 | Incremento netto consumo suolo 2023-2024 [ha] (alias backward-compatible) |
+| incremento_netto_ha_2023_2024 | Incremento netto consumo suolo 2023-2024 [ha] |
 | incremento_netto_ha_<periodo> | Serie degli incrementi netti per periodo ISPRA [ha] |
 | incremento_lordo_ha_<periodo> | Serie degli incrementi lordi per periodo ISPRA [ha] |
 | ripristino_ha_<periodo> | Serie delle aree ripristinate per periodo ISPRA [ha] |

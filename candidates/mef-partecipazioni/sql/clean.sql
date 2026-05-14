@@ -46,7 +46,7 @@ select
   trim("Servizio affidato 5") as servizio_affidato_5,
   trim("Modalità affidamento servizio 5") as modalita_affidamento_servizio_5,
   trim("Ente affidante servizio 5") as ente_affidante_servizio_5,
-  try_cast("Importo impegnato servizio 5" as varchar) as importo_impegnato_servizio_5,
+  try_cast("Importo impegnato servizio 5" as bigint) as importo_impegnato_servizio_5,
   try_cast("Quota partecipazione diretta (%)" as double) as quota_partecipazione_diretta,
   trim("Partecipazione indiretta") as partecipazione_indiretta,
   trim("Tipo controllo") as tipo_controllo,
