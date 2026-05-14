@@ -117,22 +117,6 @@
       }
     },
     {
-      "id": "inps-cig",
-      "source_id": "inps",
-      "status": "ok",
-      "label": "inps-cig",
-      "detail": "anno 2024 — fonte: inps_cig_annuale — mart: sì",
-      "action": "",
-      "sample_run": {
-        "status": "passed",
-        "run_id": "25800199744",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25800199744",
-        "checked_at": "2026-05-13",
-        "year": 2024,
-        "config_path": "candidates/inps-cig/dataset.yml"
-      }
-    },
-    {
       "id": "inps-pensioni",
       "source_id": "",
       "status": "ok",

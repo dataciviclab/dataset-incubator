@@ -509,68 +509,6 @@
       "stage": "incubating"
     },
     {
-      "slug": "inps_cig_serie_storiche_annuali",
-      "name": "INPS Cassa Integrazione Guadagni — Serie storiche annuali",
-      "description": "Ore autorizzate di Cassa Integrazione Guadagni per anno, prestazione e settore economico — INPS 2005-2024",
-      "source": "INPS Open Data, CC BY 4.0, dati.gov.it (bef11a2c-300b-4578-8143-c1ce08f46fff)",
-      "period": {
-        "start": 2005,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento"
-        },
-        {
-          "name": "prestazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo prestazione CIG (Ordinaria, Straordinaria, CIGS, CIGD)"
-        },
-        {
-          "name": "settore",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Settore economico (Industria, Edilizia, Servizi, Totale)"
-        },
-        {
-          "name": "settore_specifiche",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sotto-settore specifico o raggruppamento"
-        },
-        {
-          "name": "ore_operai",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Ore autorizzate per lavoratori operai"
-        },
-        {
-          "name": "ore_impiegati",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Ore autorizzate per lavoratori impiegati"
-        },
-        {
-          "name": "totale_ore",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Totale ore autorizzate CIG"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/inps_cig_serie_storiche_annuali/2024/inps_cig_serie_storiche_annuali_2024_clean.parquet",
-        "multi_file": false
-      },
-      "registry_source": "push_archive_auto",
-      "source_id": "inps",
-      "stage": "incubating"
-    },
-    {
       "slug": "inps_pensioni_2017_2024",
       "name": "INPS Pensioni",
       "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2017-2024)",
