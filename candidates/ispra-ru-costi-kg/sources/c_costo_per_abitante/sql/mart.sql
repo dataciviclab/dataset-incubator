@@ -1,4 +1,5 @@
 select
+  anno,
   codice_comune_istat,
   comune_o_aggregazione as comune,
   provincia,
