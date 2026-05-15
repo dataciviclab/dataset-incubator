@@ -1,3 +1,11 @@
+"""
+DEPRECATED — il toolkit ora supporta http_post_file (toolkit#242).
+
+Il candidate usa direttamente ``type: http_post_file`` in dataset.yml.
+Questo script resta come riferimento storico per il pattern cookie
+GET -> POST se l'endpoint dovesse richiederlo in futuro.
+"""
+
 from __future__ import annotations
 
 import argparse
