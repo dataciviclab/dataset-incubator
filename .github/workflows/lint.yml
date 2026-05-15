@@ -32,7 +32,7 @@ jobs:
       - name: Install dependencies
         run: |
           pip install ruff mypy types-pyyaml types-requests pytest
-          pip install git+https://github.com/dataciviclab/toolkit.git@v1.5.1
+          pip install git+https://github.com/dataciviclab/toolkit.git@v1.6.0
           pip install -r tools/clean-query-mcp/requirements.txt 2>/dev/null || true
 
       - name: Ruff

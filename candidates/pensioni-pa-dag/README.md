@@ -11,7 +11,7 @@
 - download riproducibile: `POST https://datipensioni.mef.gov.it/datipensioni/downloadFile`
 - file cumulativo usato nel v0: `Dati_Tipo_Pensione_totale.csv`
 - licenza dichiarata dalla fonte: `CC BY 4.0`
-- caveat chiave: il toolkit non ha ancora un source type `http_post_file`, quindi il candidate usa uno script locale di staging in `scripts/download_raw.py`
+- caveat: l'endpoint richiede POST con form-encoded body — gestito via source type `http_post_file` (toolkit#242)
 
 ## Perche vale la pena testarlo
 
@@ -22,7 +22,7 @@
 
 ## Output minimo atteso
 
-- raw staged via script dedicato e letto come `local_file`
+- raw scaricato via `http_post_file`
 - clean 2024 filtrato su `DIRETTA` e `INDIRETTA/REVERSIBILE`
 - mart regionale su snapshot di dicembre 2024
 - base pronta per notebook v0 o analisi successiva
@@ -42,4 +42,6 @@ Issue collegata:
 
 ## Prossimo passo
 
-- valutare se il pattern merita un source type `http_post_file` nel toolkit oppure resta staging via script locale
+- il source type `http_post_file` è ora disponibile (toolkit#242)
+- candidate allineato: usa `http_post_file` invece di script + `local_file`
+- `scripts/download_raw.py` mantenuto come riferimento storico per pattern cookie GET→POST

@@ -116,7 +116,7 @@ jobs:
           echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
 
       - name: Install toolkit
-        run: pip install git+https://github.com/dataciviclab/toolkit.git@v1.5.1
+        run: pip install git+https://github.com/dataciviclab/toolkit.git@v1.6.0
 
       - name: Resolve support dependencies
         id: resolve_support

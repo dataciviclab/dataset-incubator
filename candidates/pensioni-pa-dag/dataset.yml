@@ -8,10 +8,16 @@ dataset:
 raw:
   output_policy: overwrite
   sources:
-    - name: "dag_pensioni_totale_local"
-      type: "local_file"
+    - name: "dag_pensioni_totale"
+      type: "http_post_file"
+      client:
+        timeout: 120
+        retries: 2
       args:
-        path: "inputs/Dati_Tipo_Pensione_totale.csv"
+        url: "https://datipensioni.mef.gov.it/datipensioni/downloadFile"
+        post_data:
+          filename: "Dati_Tipo_Pensione_totale.csv"
+          categoria: "pensioni"
         filename: "Dati_Tipo_Pensione_totale.csv"
       primary: true
 

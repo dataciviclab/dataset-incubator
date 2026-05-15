@@ -3,8 +3,9 @@
 ## Tecnico
 
 - la fonte non espone un URL statico: il download avviene via `POST` su `/datipensioni/downloadFile`
-- per evitare un raw CSV committato, il candidate usa `scripts/download_raw.py` che salva il file in `inputs/`
-- `dataset.yml` usa quindi `local_file` su `inputs/Dati_Tipo_Pensione_totale.csv`
+- il source type `http_post_file` (toolkit#242) gestisce il download direttamente, senza script esterno
+- `dataset.yml` usa quindi `type: http_post_file` con `post_data` per i parametri del form
+- `scripts/download_raw.py` resta come riferimento storico (pattern cookie GET→POST se l'endpoint dovesse richiederlo)
 - il file cumulativo reale contiene almeno un caso di riga corrotta con frammento HTML del bridge WebLogic; per questo il `clean.read` usa `strict_mode: false` e `ignore_errors: true`
 - il v0 sceglie `2024` perche e l'ultimo anno completo nel cumulativo; `2025` parte solo da aprile
 - il mart tiene lo snapshot `mese = 12` per evitare letture distorte da medie mensili su uno stock
@@ -16,7 +17,7 @@
 
 ## Metodologia di ingestion
 
-- staging raw: `python scripts/download_raw.py`
+- staging raw: `toolkit run raw` (source type `http_post_file`, fetch via POST)
 - file scaricato: `Dati_Tipo_Pensione_totale.csv`
 - filtro analitico v0:
   - `Anno = 2024`
