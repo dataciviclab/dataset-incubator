@@ -1,8 +1,5 @@
 name: Post-Merge Candidate Registry
 
-env:
-  TOOLKIT_VERSION: v1.7.0
-
 on:
   pull_request:
     types: [closed]
@@ -17,6 +14,7 @@ on:
         type: string
 
 env:
+  TOOLKIT_VERSION: v1.7.0
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
