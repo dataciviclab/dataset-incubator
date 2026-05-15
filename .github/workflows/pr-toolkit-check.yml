@@ -1,7 +1,10 @@
 name: Toolkit Pipeline Check
 
+env:
+  TOOLKIT_VERSION: v1.7.0
+
 # Esegue la pipeline toolkit su candidate modificati in PR.
-# Fallisce la PR se run o validate falliscono, o se blocker_hints trova blocker.
+# Fallisce la PR se toolkit run full fallisce (run + validate + readiness).
 
 on:
   pull_request:
@@ -116,7 +119,7 @@ jobs:
           echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
 
       - name: Install toolkit
-        run: pip install git+https://github.com/dataciviclab/toolkit.git@v1.6.0
+        run: pip install git+https://github.com/dataciviclab/toolkit.git@${{ env.TOOLKIT_VERSION }}
 
       - name: Resolve support dependencies
         id: resolve_support
@@ -157,60 +160,16 @@ jobs:
           echo "::notice::This candidate has support dependencies. Running support datasets first."
           echo "$SUPPORT_JSON" > /tmp/support_configs.json
           python scripts/run_support_datasets.py --support-json /tmp/support_configs.json
-      - name: Toolkit run all
-        id: run_all
+      - name: Toolkit run full (run + validate + readiness)
+        id: run_full
         run: |
-          set -o pipefail
-          toolkit run all \
+          toolkit run full \
             --config "${{ matrix.config.config_path }}" \
             --years "${{ matrix.config.year }}" \
-            2>&1 | tee run_all.log
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
-
-      - name: Toolkit validate all
-        if: success()
-        id: validate_all
-        run: |
-          set -o pipefail
-          toolkit validate all \
-            --config "${{ matrix.config.config_path }}" \
-            --years "${{ matrix.config.year }}" \
-            2>&1 | tee validate_all.log
-          echo "exit_code=$?" >> "$GITHUB_OUTPUT"
-
-      - name: Check blockers via Python
-        if: success()
-        env:
-          CONFIG_PATH: ${{ matrix.config.config_path }}
-          YEAR: ${{ matrix.config.year }}
-          DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
-        run: |
-          set -o pipefail
-          RESULT=$(toolkit blocker-hints --config "$CONFIG_PATH" --year "$YEAR" --json 2>/dev/null)
-
-          if [ -z "$RESULT" ]; then
-            echo "::error::blocker-hints failed or returned empty output"
-            exit 1
-          fi
-
-          echo "$RESULT" > /tmp/blocker_hints.json
-
-          python - <<'PY'
-          import json
-          try:
-              with open('/tmp/blocker_hints.json') as f:
-                  d = json.load(f)
-              blockers = d.get('blocker_count', 0)
-              warnings = d.get('warning_count', 0)
-              print('blocker_count=' + str(blockers))
-              print('warning_count=' + str(warnings))
-              if blockers > 0:
-                  print('::error::Candidate has ' + str(blockers) + ' blocker(s) — fix before merging')
-                  exit(1)
-          except json.JSONDecodeError:
-              print('ERROR: failed to parse blocker-hints JSON')
-              exit(1)
-          PY
+            --json > run_full.json 2>&1; ec=$?
+          echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
+          cat run_full.json
+          exit $ec
 
       - name: Upload artifacts
         if: always()
@@ -219,8 +178,7 @@ jobs:
           name: pr-toolkit-${{ matrix.config.artifact_name }}
           path: |
             support_*.log
-            run_all.log
-            validate_all.log
+            run_full.log
           retention-days: 7
 
   report:
