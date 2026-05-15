@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-14",
+  "generated_at": "2026-05-15",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -378,14 +378,16 @@
       "source_id": "",
       "status": "ok",
       "label": "pensioni-pa-dag",
-      "detail": "anno 2024 — fonte: dag_pensioni_totale_local — mart: sì",
+      "detail": "anno 2024 — fonte: dag_pensioni_totale — mart: sì",
       "action": "",
       "sample_run": {
-        "status": "failed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2024,
+        "status": "passed",
+        "run_id": "25921989453",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25921989453",
+        "checked_at": "2026-05-15",
+        "years": [
+          2024
+        ],
         "config_path": "candidates/pensioni-pa-dag/dataset.yml"
       }
     },
