@@ -20,6 +20,7 @@ Uso:
   python push_archive.py --layer mart  --slug ispra_ru_base
   python push_archive.py --layer mart  --slug ispra_ru_base --year 2024
   python push_archive.py --layer all                                   # tutti
+  python push_archive.py --catalog-only --slug bdap_lea --update-catalog  # solo catalogo
 """
 
 import argparse
@@ -397,6 +398,8 @@ def main():
     parser.add_argument("--status", default="candidate",
                         choices=["candidate", "clean_ready", "public_catalog_ready"],
                         help="Status da impostare nel catalog per i nuovi entry (default: candidate)")
+    parser.add_argument("--catalog-only", action="store_true",
+                        help="Solo aggiornamento catalogo, senza push GCS")
     args = parser.parse_args()
 
     if not args.no_bq or args.create_bq_table:
@@ -405,7 +408,7 @@ def main():
     else:
         bq_client = None
 
-    if args.layer in ("clean", "all"):
+    if args.layer in ("clean", "all") and not args.catalog_only:
         push_clean(args.slug, args.year, args.dry_run)
 
     if args.update_catalog or args.create_bq_table:
