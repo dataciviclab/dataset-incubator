@@ -20,6 +20,7 @@ Uso:
   python push_archive.py --layer mart  --slug ispra_ru_base
   python push_archive.py --layer mart  --slug ispra_ru_base --year 2024
   python push_archive.py --layer all                                   # tutti
+  python push_archive.py --catalog-only --slug bdap_lea --update-catalog  # solo catalogo
 """
 
 import argparse
@@ -247,7 +248,11 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
     existing = next((d for d in datasets if d["slug"] == slug), None)
 
     int_years = sorted(int(y) for y in years)
-    gcs_path = f"gs://dataciviclab-clean/{slug}/*/{slug}_*_clean.parquet"
+    multi_file = len(int_years) > 1
+    if multi_file:
+        gcs_path = f"gs://dataciviclab-clean/{slug}/*/{slug}_*_clean.parquet"
+    else:
+        gcs_path = f"gs://dataciviclab-clean/{slug}/{int_years[0]}/{slug}_{int_years[0]}_clean.parquet"
 
     # Leggi schema dal parquet più recente disponibile
     latest_parquet = None
@@ -260,7 +265,7 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
     if existing:
         existing["period"]["start"] = min(int_years[0], existing["period"].get("start", int_years[0]))
         existing["period"]["end"] = max(int_years[-1], existing["period"].get("end", int_years[-1]))
-        existing["location"] = {"type": "gcs", "path": gcs_path, "multi_file": True}
+        existing["location"] = {"type": "gcs", "path": gcs_path, "multi_file": multi_file}
         if latest_parquet and not existing.get("columns"):
             existing["columns"] = _parquet_columns(latest_parquet)
         action = "aggiornato"
@@ -274,7 +279,7 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
             "source_id": "",
             "period": {"start": int_years[0], "end": int_years[-1]},
             "columns": cols,
-            "location": {"type": "gcs", "path": gcs_path, "multi_file": True},
+            "location": {"type": "gcs", "path": gcs_path, "multi_file": multi_file},
             "stage": "published",
             "registry_source": "push_archive_auto",
         }
@@ -393,7 +398,15 @@ def main():
     parser.add_argument("--status", default="candidate",
                         choices=["candidate", "clean_ready", "public_catalog_ready"],
                         help="Status da impostare nel catalog per i nuovi entry (default: candidate)")
+    parser.add_argument("--catalog-only", action="store_true",
+                        help="Solo aggiornamento catalogo, senza push GCS")
     args = parser.parse_args()
+
+    # --catalog-only disabilita tutto il push GCS/BQ, solo catalogo
+    if args.catalog_only:
+        args.layer = None
+        args.no_bq = True
+        args.create_bq_table = False
 
     if not args.no_bq or args.create_bq_table:
         from google.cloud import bigquery
@@ -401,7 +414,7 @@ def main():
     else:
         bq_client = None
 
-    if args.layer in ("clean", "all"):
+    if args.layer in ("clean", "all") and not args.catalog_only:
         push_clean(args.slug, args.year, args.dry_run)
 
     if args.update_catalog or args.create_bq_table:
