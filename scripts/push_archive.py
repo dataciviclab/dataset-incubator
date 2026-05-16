@@ -402,6 +402,11 @@ def main():
                         help="Solo aggiornamento catalogo, senza push GCS")
     args = parser.parse_args()
 
+    # --catalog-only disabilita tutto il push GCS/BQ, solo catalogo
+    if args.catalog_only:
+        args.layer = None
+        args.no_bq = True
+
     if not args.no_bq or args.create_bq_table:
         from google.cloud import bigquery
         bq_client = bigquery.Client(project=GCP_PROJECT)
