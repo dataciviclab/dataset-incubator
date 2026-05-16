@@ -215,9 +215,9 @@
     {
       "slug": "bdap_lea",
       "name": "Bdap Lea",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "description": "Spesa sanitaria enti SSN per regione — Modello LEA (BDAP RGS MEF). Consumi, personale, servizi e altre voci di costo delle ASL italiane.",
+      "source": "BDAP LEA — Ragioneria Generale dello Stato (MEF)",
+      "source_id": "openbdap",
       "period": {
         "start": 2024,
         "end": 2024
@@ -226,140 +226,140 @@
         {
           "name": "anno_riferimento",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento del dato"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT regione"
         },
         {
           "name": "descrizione_regione",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Denominazione regione"
         },
         {
           "name": "codice_ente_ssn",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice identificativo ente SSN"
         },
         {
           "name": "codice_ente_bdap",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice BDAP ente"
         },
         {
           "name": "descrizione_ente",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Denominazione ente SSN"
         },
         {
           "name": "codice_voce_contabile",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice voce contabile"
         },
         {
           "name": "descrizione_voce_contabile",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Descrizione voce contabile"
         },
         {
           "name": "oneri_finanziari",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Oneri finanziari"
         },
         {
           "name": "data_aggiornamento",
           "type": "DATE",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Data aggiornamento record"
         },
         {
           "name": "consumi_sanitari",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Consumi sanitari"
         },
         {
           "name": "consumi_non_sanitari",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Consumi non sanitari"
         },
         {
           "name": "prestazioni_sanitarie",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Prestazioni sanitarie"
         },
         {
           "name": "servizi_sanitari",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Servizi sanitari"
         },
         {
           "name": "servizi_non_sanitari",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Servizi non sanitari"
         },
         {
           "name": "personale_sanitario",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Spesa personale sanitario"
         },
         {
           "name": "personale_professionale",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Spesa personale professioni sanitarie"
         },
         {
           "name": "personale_tecnico",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Spesa personale tecnico"
         },
         {
           "name": "personale_amministrativo",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Spesa personale amministrativo"
         },
         {
           "name": "ammortamenti",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Ammortamenti"
         },
         {
           "name": "sopravvenienze_e_insussistenze",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Sopravvenienze e insussistenze"
         },
         {
           "name": "altri_costi",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Altri costi di gestione"
         },
         {
           "name": "importo_totale",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Importo totale della voce"
         }
       ],
       "location": {
