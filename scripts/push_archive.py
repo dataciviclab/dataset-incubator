@@ -247,7 +247,11 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
     existing = next((d for d in datasets if d["slug"] == slug), None)
 
     int_years = sorted(int(y) for y in years)
-    gcs_path = f"gs://dataciviclab-clean/{slug}/*/{slug}_*_clean.parquet"
+    multi_file = len(int_years) > 1
+    if multi_file:
+        gcs_path = f"gs://dataciviclab-clean/{slug}/*/{slug}_*_clean.parquet"
+    else:
+        gcs_path = f"gs://dataciviclab-clean/{slug}/{int_years[0]}/{slug}_{int_years[0]}_clean.parquet"
 
     # Leggi schema dal parquet più recente disponibile
     latest_parquet = None
@@ -260,7 +264,7 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
     if existing:
         existing["period"]["start"] = min(int_years[0], existing["period"].get("start", int_years[0]))
         existing["period"]["end"] = max(int_years[-1], existing["period"].get("end", int_years[-1]))
-        existing["location"] = {"type": "gcs", "path": gcs_path, "multi_file": True}
+        existing["location"] = {"type": "gcs", "path": gcs_path, "multi_file": multi_file}
         if latest_parquet and not existing.get("columns"):
             existing["columns"] = _parquet_columns(latest_parquet)
         action = "aggiornato"
@@ -274,7 +278,7 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
             "source_id": "",
             "period": {"start": int_years[0], "end": int_years[-1]},
             "columns": cols,
-            "location": {"type": "gcs", "path": gcs_path, "multi_file": True},
+            "location": {"type": "gcs", "path": gcs_path, "multi_file": multi_file},
             "stage": "published",
             "registry_source": "push_archive_auto",
         }
