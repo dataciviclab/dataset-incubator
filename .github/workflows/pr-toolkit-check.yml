@@ -60,6 +60,8 @@ jobs:
     needs: detect
     if: needs.detect.outputs.has_configs == 'true'
     runs-on: ubuntu-latest
+    env:
+      DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
     strategy:
       fail-fast: false
       matrix:
