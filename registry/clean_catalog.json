@@ -462,6 +462,98 @@
       "stage": "published"
     },
     {
+      "slug": "consip_consumi_convenzione",
+      "name": "Consip Consumi Convenzione",
+      "description": "Consumi generati tramite ordini diretti di acquisto in convenzione Consip. Spesa delle PA per regione, provincia, tipologia amministrazione e fornitore (2023-2025).",
+      "source": "Consip SpA / MEF — dati.consip.it (CKAN)",
+      "source_id": "consip",
+      "period": {
+        "start": 2023,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno_riferimento",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento del consumo"
+        },
+        {
+          "name": "tipologia_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia di amministrazione acquirente"
+        },
+        {
+          "name": "regione_pa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione della PA acquirente"
+        },
+        {
+          "name": "provincia_pa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia della PA acquirente"
+        },
+        {
+          "name": "sigla_provincia_pa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla della provincia della PA acquirente"
+        },
+        {
+          "name": "regione_fornitore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione del fornitore"
+        },
+        {
+          "name": "convenzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Convenzione Consip di riferimento"
+        },
+        {
+          "name": "lotto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Lotto della convenzione"
+        },
+        {
+          "name": "valore_economico_consumi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Valore economico dei consumi (€)"
+        },
+        {
+          "name": "numero_ordini_con_consumi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di ordini con consumi"
+        },
+        {
+          "name": "n_pa_con_consumi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di PA con consumi"
+        },
+        {
+          "name": "n_po_con_consumi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di PO (Punti Ordine) con consumi"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/consip_consumi_convenzione/*/consip_consumi_convenzione_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "push_archive_auto"
+    },
+    {
       "slug": "dipendenti_pubblici",
       "name": "Dipendenti Pubblici - Occupazione e Turnover",
       "description": "Dipendenti pubblici per ente, comparto, categoria, genere e tipo di orario (2010-2023)",
