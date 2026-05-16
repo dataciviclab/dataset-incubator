@@ -406,6 +406,7 @@ def main():
     if args.catalog_only:
         args.layer = None
         args.no_bq = True
+        args.create_bq_table = False
 
     if not args.no_bq or args.create_bq_table:
         from google.cloud import bigquery
