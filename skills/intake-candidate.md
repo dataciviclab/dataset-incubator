@@ -91,7 +91,7 @@ toolkit validate all --config candidates/{slug}/dataset.yml --years 2024
 
 Usa `--strict-config` per intercettare campi legacy o deprecati.
 
-Se fallisce → `toolkit_blocker_hints(config_path)` per isolare il primo errore. Blocker specifico documentato, non formulaico.
+Se fallisce → `toolkit_review_readiness(config_path)` per isolare il primo errore. Blocker specifico documentato, non formulaico.
 
 ### 6. PR
 

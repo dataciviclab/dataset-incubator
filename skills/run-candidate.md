@@ -80,7 +80,7 @@ In CI `blocker_count > 0` è gate hard — la PR fallisce.
 In locale:
 
 ```bash
-toolkit blocker-hints --config candidates/{slug}/dataset.yml --year 2024 --json
+toolkit review-readiness --config candidates/{slug}/dataset.yml --year 2024 --json
 ```
 
 Se il blocker è isolato → documenta e passa a stato `scaffolded_with_blocker`.
