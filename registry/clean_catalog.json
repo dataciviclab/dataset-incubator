@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-05-14",
+  "updated_at": "2026-05-16",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -211,6 +211,164 @@
       "registry_source": "initial_clean_query_catalog",
       "source_id": "openbdap",
       "stage": "incubating"
+    },
+    {
+      "slug": "bdap_lea",
+      "name": "Bdap Lea",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno_riferimento",
+          "type": "INTEGER",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "descrizione_regione",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "codice_ente_ssn",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "codice_ente_bdap",
+          "type": "INTEGER",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "descrizione_ente",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "codice_voce_contabile",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "descrizione_voce_contabile",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "oneri_finanziari",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "data_aggiornamento",
+          "type": "DATE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "consumi_sanitari",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "consumi_non_sanitari",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "prestazioni_sanitarie",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "servizi_sanitari",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "servizi_non_sanitari",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "personale_sanitario",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "personale_professionale",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "personale_tecnico",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "personale_amministrativo",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "ammortamenti",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "sopravvenienze_e_insussistenze",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "altri_costi",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "importo_totale",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/bdap_lea/*/bdap_lea_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "civile_flussi",
