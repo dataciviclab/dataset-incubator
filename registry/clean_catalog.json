@@ -511,38 +511,38 @@
         {
           "name": "convenzione",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Convenzione Consip di riferimento"
         },
         {
           "name": "lotto",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Lotto della convenzione"
         },
         {
           "name": "valore_economico_consumi",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Valore economico dei consumi (€)"
         },
         {
           "name": "numero_ordini_con_consumi",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Numero di ordini con consumi"
         },
         {
           "name": "n_pa_con_consumi",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Numero di PA con consumi"
         },
         {
           "name": "n_po_con_consumi",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Numero di PO (Punti Ordine) con consumi"
         }
       ],
       "location": {
