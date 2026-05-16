@@ -263,7 +263,9 @@ jobs:
         if: always()
         with:
           name: sample-run-results
-          path: sample_run_artifacts/
+          path: |
+            sample_run_artifacts/
+            registry/clean_catalog.json
           if-no-files-found: warn
           retention-days: 14
 
@@ -309,6 +311,16 @@ jobs:
         with:
           name: sample-run-results
           path: sample_run_artifacts
+
+      - name: Restore clean_catalog from sample_run
+        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
+        run: |
+          if [ -f sample_run_artifacts/registry/clean_catalog.json ]; then
+            cp sample_run_artifacts/registry/clean_catalog.json registry/clean_catalog.json
+            echo "clean_catalog.json ripristinato da sample_run"
+          else
+            echo "clean_catalog.json non presente negli artifact — skip"
+          fi
 
       - name: Apply sample-run results to pipeline_signals.json
         if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
