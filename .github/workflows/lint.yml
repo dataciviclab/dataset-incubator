@@ -1,7 +1,7 @@
 name: Lint
 
 env:
-  TOOLKIT_VERSION: v1.7.0
+  TOOLKIT_VERSION: v1.8.0
 
 on:
   pull_request:
