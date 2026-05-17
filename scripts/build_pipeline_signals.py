@@ -20,9 +20,26 @@ import sys
 from datetime import date
 from pathlib import Path
 
+import jsonschema
 import yaml
 
 ROOT = Path(__file__).resolve().parents[1]
+
+_SCHEMA_DIR = ROOT / "registry"
+
+
+def _validate_schema(instance: dict) -> None:
+    """Validate a dict against registry/pipeline_signals.schema.json."""
+    schema_path = _SCHEMA_DIR / "pipeline_signals.schema.json"
+    if not schema_path.exists():
+        print("⚠️  pipeline_signals.schema.json non trovato — skip validazione")
+        return
+    schema = json.loads(schema_path.read_text(encoding="utf-8"))
+    try:
+        jsonschema.validate(instance=instance, schema=schema)
+    except jsonschema.ValidationError as exc:
+        print(f"❌ Validazione fallita (pipeline_signals.schema.json): {exc.message}")
+        raise
 
 # Import helpers from the existing validation script — no duplication
 sys.path.insert(0, str(ROOT / "scripts"))
@@ -276,6 +293,8 @@ def build_signals(out_path: Path) -> int:
         },
         "signals": signals,
     }
+
+    _validate_schema(payload)
 
     out_path.parent.mkdir(parents=True, exist_ok=True)
     out_path.write_text(json.dumps(payload, indent=2, ensure_ascii=False), encoding="utf-8")
