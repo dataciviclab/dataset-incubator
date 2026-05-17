@@ -137,7 +137,12 @@ def validate_multi_source(base_dir: Path, failures: list[str]) -> None:
 def validate_entry(base_dir: Path, failures: list[str]) -> None:
     rel_str = base_dir.relative_to(ROOT).as_posix()
 
-    validate_root_docs(base_dir, failures)
+    info = detect_candidate_layout(base_dir)
+    layout = info["layout"]
+
+    # Compose non richiede README/notes (e' mart-only, non ha candidate lifecycle)
+    if layout != "compose":
+        validate_root_docs(base_dir, failures)
 
     info = detect_candidate_layout(base_dir)
     layout = info["layout"]
