@@ -42,7 +42,7 @@ Se il candidate è nuovo, manca `sql/clean.sql`, oppure lo scaffold non è ancor
 Bootstrap:
 
 ```bash
-toolkit run init --config candidates/{slug}/dataset.yml --years 2024
+toolkit init --config candidates/{slug}/dataset.yml --years 2024
 ```
 
 Poi revisiona prima di proseguire:

@@ -16,7 +16,7 @@ Ogni nuovo ingresso in `dataset-incubator` dovrebbe partire da questa cartella, 
 Per un candidate nuovo, usa il bootstrap prima del run completo:
 
 ```bash
-toolkit run init --config candidates/<slug>/dataset.yml --years 2024
+toolkit init --config candidates/<slug>/dataset.yml --years 2024
 ```
 
 Questo scarica RAW, produce profiling e può scaffoldare/aiutare `sql/clean.sql` e `clean.read`.

@@ -14,7 +14,7 @@ on:
         type: string
 
 env:
-  TOOLKIT_VERSION: v1.8.0
+  TOOLKIT_VERSION: main
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
@@ -170,13 +170,8 @@ jobs:
               params = json.loads(r.stdout)
               all_years = ",".join(str(y) for y in params.get("all_years", []))
 
-              # --- Support datasets ---
-              if params.get("has_support"):
-                  print(f"  Running support datasets...")
-                  with open("/tmp/support_configs.json", "w") as sf:
-                      json.dump(params.get("support", []), sf)
-                  subprocess.run(["python", "scripts/run_support_datasets.py",
-                      "--support-json", "/tmp/support_configs.json"], cwd=root)
+              # Support datasets are handled natively by toolkit run full.
+              # No need to run them separately here.
 
               def run_with_retry(cmd, attempts=3):
                   for i in range(1, attempts + 1):
