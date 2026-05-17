@@ -10,6 +10,7 @@ on:
   pull_request:
     paths:
       - "candidates/**"
+      - "compose/**"
       - "support_datasets/**"
 
 jobs:

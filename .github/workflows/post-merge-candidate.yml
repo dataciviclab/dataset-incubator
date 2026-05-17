@@ -5,6 +5,7 @@ on:
     types: [closed]
     paths:
       - "candidates/**"
+      - "compose/**"
       - "support_datasets/**"
   workflow_dispatch:
     inputs:
@@ -47,8 +48,17 @@ jobs:
 
           if [ -n "$SLUG_INPUT" ]; then
             # Trigger manuale: processa direttamente lo slug richiesto
-            echo "candidates/${SLUG_INPUT}/dataset.yml" | \
-              python scripts/detect_candidates.py --files --json > detect_output.json
+            # Prova candidates/, poi compose/
+            if [ -f "candidates/${SLUG_INPUT}/dataset.yml" ]; then
+              echo "candidates/${SLUG_INPUT}/dataset.yml" | \
+                python scripts/detect_candidates.py --files --json > detect_output.json
+            elif [ -f "compose/${SLUG_INPUT}/dataset.yml" ]; then
+              echo "compose/${SLUG_INPUT}/dataset.yml" | \
+                python scripts/detect_candidates.py --files --json > detect_output.json
+            else
+              echo "::error::Slug '${SLUG_INPUT}' non trovato ne in candidates/ ne in compose/"
+              exit 1
+            fi
           else
             # Trigger da PR mergiata: rileva i file cambiati
             gh pr view "$PR_NUMBER" --json files --jq ".files[].path" | \
