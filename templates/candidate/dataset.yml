@@ -16,7 +16,7 @@ raw:
       primary: true
 
 # --- CLEAN LAYER ---
-# Bootstrap: toolkit run init --config candidates/<slug>/dataset.yml --years 2024
+# Bootstrap: toolkit init --config candidates/<slug>/dataset.yml --years 2024
 # Poi revisiona sql/clean.sql e clean.read prima del run completo.
 clean:
   sql: "sql/clean.sql"

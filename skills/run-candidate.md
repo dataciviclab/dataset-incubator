@@ -42,7 +42,7 @@ Se il candidate è nuovo, manca `sql/clean.sql`, oppure lo scaffold non è ancor
 Bootstrap:
 
 ```bash
-toolkit run init --config candidates/{slug}/dataset.yml --years 2024
+toolkit init --config candidates/{slug}/dataset.yml --years 2024
 ```
 
 Poi revisiona prima di proseguire:
@@ -54,16 +54,16 @@ Poi revisiona prima di proseguire:
 Run completo, quando `clean.sql` e mart SQL sono presenti e revisionati:
 
 ```bash
-toolkit run all --config candidates/{slug}/dataset.yml --years 2024
+toolkit run full --config candidates/{slug}/dataset.yml --years 2024
 ```
 
-`run all` è una verifica finale della pipeline completa, non il comando di bootstrap da zero.
-
-**Two-phase**: se `dataset.yml` ha `support`, i support girano prima del main — in locale e in CI.
+`run full` esegue run all + validate + readiness in un comando, e processa automaticamente i support dichiarati in `dataset.yml` prima del candidate.
 
 **`--years`**: specifica sempre l'anno. In CI viene rilevato automaticamente dalla matrice.
 
-### 3. Valida
+### 3. Verifica
+
+La validazione è già inclusa in `run full`. Per eseguirla separatamente:
 
 ```bash
 toolkit validate all --config candidates/{slug}/dataset.yml --years 2024
