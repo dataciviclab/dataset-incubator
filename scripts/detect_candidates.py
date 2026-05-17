@@ -113,6 +113,12 @@ def _detect_from_files(files: list[str]) -> tuple[list[dict], list[dict]]:
                 "slug": parts[1],
                 "root": f"support_datasets/{parts[1]}",
             }
+        elif parts[0] == "compose":
+            seen[("compose", parts[1])] = {
+                "kind": "compose",
+                "slug": parts[1],
+                "root": f"compose/{parts[1]}",
+            }
 
     items = sorted(seen.values(), key=lambda item: (item["kind"], item["slug"]))
     configs: list[dict[str, Any]] = []

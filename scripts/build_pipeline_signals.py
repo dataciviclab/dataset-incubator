@@ -87,6 +87,37 @@ def _inspect_single_source(base_dir: Path) -> dict:
     }
 
 
+def _inspect_compose(base_dir: Path) -> dict:
+    """Inspect a compose dataset (mart-only, no raw/clean)."""
+    yml_path = base_dir / "dataset.yml"
+    sql_dir = base_dir / "sql"
+
+    failures = []
+    if not yml_path.exists():
+        failures.append("missing dataset.yml")
+    if not sql_dir.is_dir():
+        failures.append("missing sql/")
+    elif not has_mart_sql(sql_dir):
+        failures.append("missing mart*.sql under sql/")
+
+    mart_ok = sql_dir.is_dir() and has_mart_sql(sql_dir)
+
+    cfg = _read_yaml(yml_path) if yml_path.exists() else {}
+    ds = cfg.get("dataset", {})
+    years = ds.get("years", [])
+    # Compose usa support: non raw.sources
+    support_list = cfg.get("support", []) or ds.get("support", [])
+    source_names = [s.get("name", "?") for s in support_list] if support_list else []
+
+    return {
+        "pattern": "compose",
+        "years": years,
+        "sources": source_names,
+        "mart_ok": mart_ok,
+        "failures": failures,
+    }
+
+
 def _inspect_multi_source(base_dir: Path) -> dict:
     """Inspect a multi-source candidate (sources/*/dataset.yml)."""
     sources_dir = base_dir / "sources"
@@ -176,6 +207,8 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
         }
     elif layout == "single-source":
         info = _inspect_single_source(base_dir)
+    elif layout == "compose":
+        info = _inspect_compose(base_dir)
     elif layout == "multi-source":
         info = _inspect_multi_source(base_dir)
     else:
@@ -255,6 +288,16 @@ def build_signals(out_path: Path) -> int:
     support_dir = ROOT / "support_datasets"
     if support_dir.exists():
         for entry in sorted(p for p in support_dir.iterdir() if p.is_dir()):
+            slug = entry.name
+            signal = _build_signal(slug, entry)
+            if slug in previous_sample_runs:
+                signal["sample_run"] = previous_sample_runs[slug]
+            signals.append(signal)
+
+    # Compose datasets: mart-only, leggono output gia pubblicati via support:
+    compose_dir = ROOT / "compose"
+    if compose_dir.exists():
+        for entry in sorted(p for p in compose_dir.iterdir() if p.is_dir()):
             slug = entry.name
             signal = _build_signal(slug, entry)
             if slug in previous_sample_runs:

@@ -80,8 +80,9 @@ def resolve(config_path: str) -> dict:
     # This avoids mismatch with pipeline_signals which uses directory names
     parts = path.parts
 
-    # Nested config detection
-    is_nested = "sources" in parts or "compose" in parts
+    # Nested config detection: solo sources/ (multi-source interni) e' nested.
+    # compose/ e' un root standalone, non nested.
+    is_nested = "sources" in parts
 
     # Collect support[] entries from dataset config.
     # Two patterns in use:
