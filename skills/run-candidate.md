@@ -54,16 +54,16 @@ Poi revisiona prima di proseguire:
 Run completo, quando `clean.sql` e mart SQL sono presenti e revisionati:
 
 ```bash
-toolkit run full --config candidates/{slug}/dataset.yml --years 2024
+toolkit run all --config candidates/{slug}/dataset.yml --years 2024
 ```
 
-`run full` esegue run all + validate + readiness in un comando, e processa automaticamente i support dichiarati in `dataset.yml` prima del candidate.
+`run all` è una verifica finale della pipeline completa, non il comando di bootstrap da zero.
+
+**Two-phase**: se `dataset.yml` ha `support`, i support girano prima del main — in locale e in CI.
 
 **`--years`**: specifica sempre l'anno. In CI viene rilevato automaticamente dalla matrice.
 
-### 3. Verifica
-
-La validazione è già inclusa in `run full`. Per eseguirla separatamente:
+### 3. Valida
 
 ```bash
 toolkit validate all --config candidates/{slug}/dataset.yml --years 2024
