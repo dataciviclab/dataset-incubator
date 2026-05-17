@@ -282,7 +282,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: python -m pip install pyyaml
+        run: python -m pip install pyyaml jsonschema
 
       - name: Download detect output
         if: needs.detect.outputs.has_items == 'true'

@@ -1,0 +1,176 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://dataciviclab.org/schemas/pipeline_signals.schema.json",
+  "title": "PipelineSignals",
+  "description": "Schema per pipeline_signals.json — stato dei candidati dataset-incubator per ACB. Segue lo standard repo-signals (agent-context-builder/schemas/repo-signals.md).",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "generated_at",
+    "repo",
+    "topic",
+    "signals"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "enum": ["1"],
+      "description": "Versione dello schema (stringa)."
+    },
+    "generated_at": {
+      "type": "string",
+      "pattern": "^\\d{4}-\\d{2}-\\d{2}$",
+      "description": "Data di generazione in formato YYYY-MM-DD."
+    },
+    "repo": {
+      "type": "string",
+      "description": "Nome del repo GitHub (es. 'dataset-incubator')."
+    },
+    "topic": {
+      "type": "string",
+      "description": "Dominio del segnale (es. 'pipeline_state')."
+    },
+    "summary": {
+      "type": "object",
+      "required": ["total", "by_status"],
+      "properties": {
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "by_status": {
+          "type": "object",
+          "required": ["ok", "warn", "error"],
+          "properties": {
+            "ok": { "type": "integer", "minimum": 0 },
+            "warn": { "type": "integer", "minimum": 0 },
+            "error": { "type": "integer", "minimum": 0 }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false,
+      "description": "Conteggi aggregati per stato."
+    },
+    "signals": {
+      "type": "array",
+      "items": { "$ref": "#/definitions/Signal" },
+      "description": "Lista dei segnali, uno per candidate."
+    }
+  },
+  "additionalProperties": false,
+  "definitions": {
+    "Signal": {
+      "type": "object",
+      "required": ["id", "status", "label", "detail", "action"],
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Identificativo unico del candidate (slug)."
+        },
+        "source_id": {
+          "type": "string",
+          "description": "Identificativo della fonte dati (opzionale, puo' essere stringa vuota)."
+        },
+        "status": {
+          "type": "string",
+          "enum": ["ok", "warn", "error"],
+          "description": "Stato del candidate: ok=valido, warn=anomalia, error=bloccante."
+        },
+        "label": {
+          "type": "string",
+          "description": "Etichetta leggibile del candidate."
+        },
+        "detail": {
+          "type": "string",
+          "description": "Descrizione estesa del candidate (anni, fonte, layer)."
+        },
+        "action": {
+          "type": "string",
+          "description": "Azione suggerita. Stringa vuota se nessuna."
+        },
+        "sample_run": {
+          "$ref": "#/definitions/SampleRun",
+          "description": "Risultato dell'ultimo sample run (opzionale, presente solo se eseguito)."
+        }
+      },
+      "additionalProperties": false
+    },
+    "SampleRun": {
+      "type": "object",
+      "required": ["status", "run_id", "run_url", "checked_at"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["passed", "failed"],
+          "description": "Esito del sample run."
+        },
+        "run_id": {
+          "type": "string",
+          "description": "ID del workflow run GitHub Actions."
+        },
+        "run_url": {
+          "type": "string",
+          "format": "uri",
+          "description": "URL del workflow run GitHub Actions."
+        },
+        "checked_at": {
+          "type": "string",
+          "pattern": "^\\d{4}-\\d{2}-\\d{2}",
+          "description": "Data del check in formato YYYY-MM-DD."
+        },
+        "year": {
+          "type": "integer",
+          "description": "Anno singolo testato (alternativo a years per single-year)."
+        },
+        "years": {
+          "type": "array",
+          "items": { "type": "integer" },
+          "description": "Anni testati (alternativo a year per multi-year)."
+        },
+        "config_path": {
+          "type": "string",
+          "description": "Path del dataset.yml testato (singolo config)."
+        },
+        "config_exists": {
+          "type": "boolean",
+          "description": "False se il dataset.yml non esiste piu' nel branch target."
+        },
+        "configs": {
+          "type": "array",
+          "items": { "$ref": "#/definitions/ConfigEntry" },
+          "description": "Lista dei config testati (post-merge con multi-anno)."
+        }
+      },
+      "additionalProperties": false,
+      "anyOf": [
+        { "required": ["year"] },
+        { "required": ["years"] }
+      ]
+    },
+    "ConfigEntry": {
+      "type": "object",
+      "required": ["status", "year", "config_path"],
+      "properties": {
+        "status": {
+          "type": "string",
+          "enum": ["passed", "failed"],
+          "description": "Esito del run per questo config."
+        },
+        "year": {
+          "type": "integer",
+          "description": "Anno testato."
+        },
+        "config_path": {
+          "type": "string",
+          "description": "Path del dataset.yml."
+        },
+        "config_exists": {
+          "type": "boolean",
+          "description": "False se il dataset.yml non esiste piu'."
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

@@ -6,9 +6,24 @@ import sys
 from pathlib import Path
 from typing import Any
 
+import jsonschema
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CATALOG = ROOT / "registry" / "pipeline_signals.json"
+_SCHEMA_PATH = ROOT / "registry" / "pipeline_signals.schema.json"
+
+
+def _validate_schema(instance: dict) -> None:
+    """Validate a dict against registry/pipeline_signals.schema.json."""
+    if not _SCHEMA_PATH.exists():
+        print("⚠️  pipeline_signals.schema.json non trovato — skip validazione")
+        return
+    schema = json.loads(_SCHEMA_PATH.read_text(encoding="utf-8"))
+    try:
+        jsonschema.validate(instance=instance, schema=schema)
+    except jsonschema.ValidationError as exc:
+        print(f"❌ Validazione fallita (pipeline_signals.schema.json): {exc.message}")
+        raise
 
 
 def main() -> int:
@@ -35,6 +50,8 @@ def main() -> int:
         for error in errors:
             print(f"ERROR: {error}", file=sys.stderr)
         return 1
+
+    _validate_schema(catalog)
 
     args.catalog.write_text(
         json.dumps(catalog, indent=2, ensure_ascii=False) + "\n",
