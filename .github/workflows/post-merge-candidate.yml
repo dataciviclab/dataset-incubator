@@ -170,8 +170,8 @@ jobs:
               params = json.loads(r.stdout)
               all_years = ",".join(str(y) for y in params.get("all_years", []))
 
-              # Support datasets are handled natively by toolkit run full.
-              # No need to run them separately here.
+              # Support datasets gestiti nativamente da toolkit run full.
+              # Non serve eseguirli separatamente.
 
               def run_with_retry(cmd, attempts=3):
                   for i in range(1, attempts + 1):
@@ -184,17 +184,12 @@ jobs:
                           time.sleep(wait)
                   return False
 
-              # --- Toolkit run ---
-              print(f"  toolkit run all --years {all_years}")
+              # --- Toolkit run full (run + validate + readiness + support) ---
+              print(f"  toolkit run full --years {all_years}")
               run_ok = run_with_retry(
-                  ["toolkit", "run", "all", "--config", config_path, "--years", all_years]
+                  ["toolkit", "run", "full", "--config", config_path, "--years", all_years, "--json"]
               )
-
-              # --- Toolkit validate ---
-              print(f"  toolkit validate all --years {all_years}")
-              validate_ok = run_with_retry(
-                  ["toolkit", "validate", "all", "--config", config_path, "--years", all_years]
-              )
+              validate_ok = run_ok  # run full include gia validate
 
               status = "passed" if (run_ok and validate_ok) else "failed"
               if status == "failed":
