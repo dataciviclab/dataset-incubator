@@ -30,9 +30,10 @@ Prima di lanciare `run all`, revisiona:
 Poi verifica la pipeline completa:
 
 ```bash
-toolkit run all --config candidates/<slug>/dataset.yml --years 2024
-toolkit validate all --config candidates/<slug>/dataset.yml --years 2024
+toolkit run full --config candidates/<slug>/dataset.yml --years 2024
 ```
+
+`run full` esegue run + validate + readiness in un comando, e processa automaticamente eventuali support dataset dichiarati.
 
 ## Domanda
 

@@ -85,8 +85,7 @@ Prima di lanciare il run, revisiona:
 Vedi [run-candidate.md](./run-candidate.md) per procedura completa.
 
 ```bash
-toolkit run all --config candidates/{slug}/dataset.yml --years 2024
-toolkit validate all --config candidates/{slug}/dataset.yml --years 2024
+toolkit run full --config candidates/{slug}/dataset.yml --years 2024
 ```
 
 Usa `--strict-config` per intercettare campi legacy o deprecati.
