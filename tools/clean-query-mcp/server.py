@@ -3,7 +3,7 @@ from __future__ import annotations
 import re
 from typing import Any
 
-from lab_connectors.mcp import create_mcp_server, guard as lc_guard
+from lab_connectors.mcp import create_mcp_server, guard_timed
 from lab_connectors.mcp.errors import McpError, ErrorCode
 
 from catalog import describe_dataset as describe_impl  # noqa: E402
@@ -249,7 +249,7 @@ def search_datasets(query: str) -> dict[str, Any]:
             raise DuckdbClientError("query non può essere vuota", ErrorCode.EMPTY_PARAM)
         return {"datasets": search_impl(query.strip()), "query": query.strip()}
 
-    return lc_guard(_exec)
+    return guard_timed(_exec, "search_datasets")
 
 
 @mcp.tool(
@@ -383,7 +383,7 @@ def run_query(
             "dataset": dataset,
         }
 
-    return lc_guard(_exec)
+    return guard_timed(_exec, "run_query")
 
 
 @mcp.tool(
@@ -538,7 +538,7 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
             "files_count": len(parquet_paths),
         }
 
-    return lc_guard(_exec)
+    return guard_timed(_exec, "count")
 
 
 @mcp.tool(
@@ -635,7 +635,7 @@ def time_series(
             "year_filter": year,
         }
 
-    return lc_guard(_exec)
+    return guard_timed(_exec, "time_series")
 
 
 @mcp.tool(
@@ -708,7 +708,7 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
             "dataset": dataset,
         }
 
-    return lc_guard(_exec)
+    return guard_timed(_exec, "distinct_values")
 
 
 @mcp.tool(
@@ -763,7 +763,7 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
             "note": "Ritorna dataset che hanno colonne role=metric. Usa describe_dataset per lo schema completo.",
         }
 
-    return lc_guard(_exec)
+    return guard_timed(_exec, "find_metric_datasets")
 
 
 @mcp.tool(
@@ -812,7 +812,7 @@ def column_search(query: str, limit: int = 15) -> dict[str, Any]:
             "note": "Meta_match=True indica match su nome/descrizione dataset; matched_columns indica match su colonna.",
         }
 
-    return lc_guard(_exec)
+    return guard_timed(_exec, "column_search")
 
 
 @mcp.tool(
@@ -872,7 +872,7 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
             "tip": "Usa preview() per verificare i dati reali prima di run_query().",
         }
 
-    return lc_guard(_exec)
+    return guard_timed(_exec, "explain_query")
 
 
 if __name__ == "__main__":
