@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-05-16",
+  "updated_at": "2026-05-18",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -459,7 +459,8 @@
         "multi_file": false
       },
       "registry_source": "push_archive_auto",
-      "stage": "published"
+      "stage": "published",
+      "source_id": "giustizia_statistiche"
     },
     {
       "slug": "consip_consumi_convenzione",
@@ -769,7 +770,8 @@
         "multi_file": false
       },
       "registry_source": "push_archive_auto",
-      "stage": "incubating"
+      "stage": "incubating",
+      "source_id": "giustizia_statistiche"
     },
     {
       "slug": "inps_pensioni_trimestrale",
