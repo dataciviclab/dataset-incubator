@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-16",
+  "generated_at": "2026-05-18",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -46,16 +46,16 @@
     },
     {
       "id": "bdap-lea",
-      "source_id": "",
+      "source_id": "openbdap",
       "status": "ok",
       "label": "bdap-lea",
       "detail": "anno 2024 — fonte: bdap_lea_csv — mart: sì",
       "action": "",
       "sample_run": {
-        "status": "passed",
-        "run_id": "25958889635",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25958889635",
-        "checked_at": "2026-05-16",
+        "status": "failed",
+        "run_id": "26032519569",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26032519569",
+        "checked_at": "2026-05-18",
         "years": [
           2024
         ],
@@ -108,17 +108,32 @@
     },
     {
       "id": "dipendenti-pubblici",
-      "source_id": "",
+      "source_id": "openbdap",
       "status": "ok",
       "label": "dipendenti-pubblici",
       "detail": "anni 2010-2023 — fonte: bdap_csv — mart: sì",
       "action": "",
       "sample_run": {
-        "status": "passed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2023,
+        "status": "failed",
+        "run_id": "26032519569",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26032519569",
+        "checked_at": "2026-05-18",
+        "years": [
+          2010,
+          2011,
+          2012,
+          2013,
+          2014,
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
         "config_path": "candidates/dipendenti-pubblici/dataset.yml"
       }
     },
@@ -447,17 +462,19 @@
     },
     {
       "id": "bdap-anagrafe-enti",
-      "source_id": "",
+      "source_id": "openbdap",
       "status": "ok",
       "label": "bdap-anagrafe-enti",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
       "sample_run": {
-        "status": "passed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2024,
+        "status": "failed",
+        "run_id": "26032519569",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26032519569",
+        "checked_at": "2026-05-18",
+        "years": [
+          2024
+        ],
         "config_path": "support_datasets/bdap-anagrafe-enti/dataset.yml"
       }
     },
