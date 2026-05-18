@@ -16,6 +16,7 @@ on:
 
 env:
   TOOLKIT_VERSION: v1.9.1
+  DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
@@ -292,7 +293,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: python -m pip install pyyaml
+        run: python -m pip install pyyaml jsonschema
 
       - name: Download detect output
         if: needs.detect.outputs.has_items == 'true'
@@ -465,6 +466,7 @@ jobs:
           GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           ITEMS_JSON=$(python -c "import json; print(json.dumps(json.load(open('detect_output.json'))['items']))") \
             python scripts/create_de_followup_issue.py
