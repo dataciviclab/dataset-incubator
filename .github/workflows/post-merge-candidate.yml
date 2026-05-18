@@ -455,6 +455,7 @@ jobs:
           GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
+          BASE_SHA: ${{ github.event.pull_request.base.sha }}
         run: |
           ITEMS_JSON=$(python -c "import json; print(json.dumps(json.load(open('detect_output.json'))['items']))") \
             python scripts/create_de_followup_issue.py
