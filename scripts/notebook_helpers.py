@@ -93,7 +93,11 @@ class NotebookHelper:
         if result.returncode:
             print(result.stderr, file=sys.stderr)
             return {"columns": 0, "schema": []}
-        return json.loads(result.stdout) if result.stdout.strip() else {}
+        data = json.loads(result.stdout) if result.stdout.strip() else {}
+        if isinstance(data, dict) and "column_count" in data and "columns" in data:
+            # Normalizza: toolkit torna column_count/columns → columns/schema
+            return {"columns": data["column_count"], "schema": data["columns"]}
+        return data
 
     # ── ricerca dataset.yml ───────────────────────────────────────────────
 
