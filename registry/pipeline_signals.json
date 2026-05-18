@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-16",
+  "generated_at": "2026-05-18",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -46,7 +46,7 @@
     },
     {
       "id": "bdap-lea",
-      "source_id": "",
+      "source_id": "openbdap",
       "status": "ok",
       "label": "bdap-lea",
       "detail": "anno 2024 — fonte: bdap_lea_csv — mart: sì",
@@ -80,11 +80,21 @@
     },
     {
       "id": "civile-flussi",
-      "source_id": "",
+      "source_id": "giustizia_statistiche",
       "status": "ok",
       "label": "civile-flussi",
       "detail": "anno 2025 — fonte: ministero_giustizia_xlsx — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "26036106012",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26036106012",
+        "checked_at": "2026-05-18",
+        "years": [
+          2025
+        ],
+        "config_path": "candidates/civile-flussi/dataset.yml"
+      }
     },
     {
       "id": "consip-consumi-convenzione",
@@ -108,7 +118,7 @@
     },
     {
       "id": "dipendenti-pubblici",
-      "source_id": "",
+      "source_id": "openbdap",
       "status": "ok",
       "label": "dipendenti-pubblici",
       "detail": "anni 2010-2023 — fonte: bdap_csv — mart: sì",
@@ -124,17 +134,19 @@
     },
     {
       "id": "giustizia-penale-indicatori",
-      "source_id": "",
+      "source_id": "giustizia_statistiche",
       "status": "ok",
       "label": "giustizia-penale-indicatori",
       "detail": "anno 2024 — fonte: tribunali_xlsx — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25691344640",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25691344640",
-        "checked_at": "2026-05-11",
-        "year": 2024,
+        "run_id": "26036106012",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26036106012",
+        "checked_at": "2026-05-18",
+        "years": [
+          2024
+        ],
         "config_path": "candidates/giustizia-penale-indicatori/dataset.yml"
       }
     },
@@ -447,7 +459,7 @@
     },
     {
       "id": "bdap-anagrafe-enti",
-      "source_id": "",
+      "source_id": "openbdap",
       "status": "ok",
       "label": "bdap-anagrafe-enti",
       "detail": "anni: ? — fonte: ? — mart: sì",
