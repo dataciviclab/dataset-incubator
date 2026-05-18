@@ -5,14 +5,6 @@ dataset:
   name: "ispra_ru_base"
   years: [2020, 2021, 2022, 2023, 2024]
 
-support:
-  - name: b
-    config: ../b_kg_per_abitante/dataset.yml
-    years: [2020, 2021, 2022, 2023, 2024]
-  - name: c
-    config: ../c_costo_per_abitante/dataset.yml
-    years: [2020, 2021, 2022, 2023, 2024]
-
 raw:
   sources:
     - name: "ispra_ru_base_http_csv"
@@ -65,21 +57,9 @@ mart:
   tables:
     - name: "mart_comuni"
       sql: "sql/mart.sql"
-    - name: "mart_cross_comuni"
-      sql: "sql/mart_cross_comuni.sql"
-    - name: "mart_compose_v2"
-      sql: "sql/mart_compose_v2.sql"
-  required_tables:
-    - "mart_comuni"
-    - "mart_cross_comuni"
-    - "mart_compose_v2"
   validate:
     table_rules:
       mart_comuni:
-        min_rows: 7000
-      mart_cross_comuni:
-        min_rows: 4000
-      mart_compose_v2:
         min_rows: 7000
 
 validation:

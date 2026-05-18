@@ -6,20 +6,30 @@ from typing import Literal
 
 ROOT = Path(__file__).resolve().parents[1]
 
-LayoutType = Literal["single-source", "multi-source", "ambiguous", "unknown", "support-dataset"]
+LayoutType = Literal[
+    "single-source", "multi-source", "ambiguous", "unknown",
+    "support-dataset", "compose",
+]
 
 
 def detect_candidate_layout(base_dir: Path) -> dict:
-    """Shared layout detection for candidate and support_dataset structures.
+    """Shared layout detection for candidate, support_dataset, and compose structures.
 
     Returns a dict with:
-      layout: LayoutType — one of the five literal values
+      layout: LayoutType — one of the six literal values
       has_root_dataset: bool
       has_sources: bool
     """
     if base_dir.parts[-2] == "support_datasets":
         return {
             "layout": "support-dataset",
+            "has_root_dataset": (base_dir / "dataset.yml").exists(),
+            "has_sources": False,
+        }
+
+    if base_dir.parts[-2] == "compose":
+        return {
+            "layout": "compose",
             "has_root_dataset": (base_dir / "dataset.yml").exists(),
             "has_sources": False,
         }
@@ -68,6 +78,21 @@ def validate_single_source(base_dir: Path, failures: list[str]) -> None:
         failures.append(f"missing mart*.sql under {sql_dir.relative_to(ROOT)}")
 
 
+def validate_compose_root(base_dir: Path, failures: list[str]) -> None:
+    """Validate a standalone compose dataset (mart-only, no raw/clean)."""
+    dataset_yml = base_dir / "dataset.yml"
+    sql_dir = base_dir / "sql"
+
+    if not dataset_yml.exists():
+        failures.append(f"missing {dataset_yml.relative_to(ROOT)}")
+    if not sql_dir.is_dir():
+        failures.append(f"missing {sql_dir.relative_to(ROOT)}")
+        return
+    if not has_mart_sql(sql_dir):
+        failures.append(f"missing mart*.sql under {sql_dir.relative_to(ROOT)}")
+    # Compose non ha raw/clean — e' mart-only.
+
+
 def validate_compose(base_dir: Path, failures: list[str]) -> None:
     compose_dir = base_dir / "compose"
     if not compose_dir.exists():
@@ -112,7 +137,12 @@ def validate_multi_source(base_dir: Path, failures: list[str]) -> None:
 def validate_entry(base_dir: Path, failures: list[str]) -> None:
     rel_str = base_dir.relative_to(ROOT).as_posix()
 
-    validate_root_docs(base_dir, failures)
+    info = detect_candidate_layout(base_dir)
+    layout = info["layout"]
+
+    # Compose non richiede README/notes (e' mart-only, non ha candidate lifecycle)
+    if layout != "compose":
+        validate_root_docs(base_dir, failures)
 
     info = detect_candidate_layout(base_dir)
     layout = info["layout"]
@@ -131,6 +161,10 @@ def validate_entry(base_dir: Path, failures: list[str]) -> None:
         validate_single_source(base_dir, failures)
         return
 
+    if layout == "compose":
+        validate_compose_root(base_dir, failures)
+        return
+
     if layout == "multi-source":
         validate_multi_source(base_dir, failures)
         return
@@ -143,7 +177,7 @@ def validate_entry(base_dir: Path, failures: list[str]) -> None:
 def main() -> int:
     failures: list[str] = []
 
-    for section in ("candidates", "support_datasets"):
+    for section in ("compose", "candidates", "support_datasets"):
         base = ROOT / section
         if not base.exists():
             continue

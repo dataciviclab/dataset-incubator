@@ -1,0 +1,33 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ispra_ru_costi_kg_compose"
+  years: [2020, 2021, 2022, 2023, 2024]
+
+support:
+  - name: a
+    config: "../../candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml"
+    years: [2020, 2021, 2022, 2023, 2024]
+  - name: b
+    config: "../../candidates/ispra-ru-costi-kg/sources/b_kg_per_abitante/dataset.yml"
+    years: [2020, 2021, 2022, 2023, 2024]
+  - name: c
+    config: "../../candidates/ispra-ru-costi-kg/sources/c_costo_per_abitante/dataset.yml"
+    years: [2020, 2021, 2022, 2023, 2024]
+
+mart:
+  tables:
+    - name: "mart_cross_comuni"
+      sql: "sql/mart_cross_comuni.sql"
+    - name: "mart_compose_v2"
+      sql: "sql/mart_compose_v2.sql"
+  validate:
+    table_rules:
+      mart_cross_comuni:
+        min_rows: 4000
+      mart_compose_v2:
+        min_rows: 7000
+
+validation:
+  fail_on_error: true

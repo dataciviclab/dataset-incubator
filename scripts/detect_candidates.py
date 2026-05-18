@@ -113,6 +113,12 @@ def _detect_from_files(files: list[str]) -> tuple[list[dict], list[dict]]:
                 "slug": parts[1],
                 "root": f"support_datasets/{parts[1]}",
             }
+        elif parts[0] == "compose":
+            seen[("compose", parts[1])] = {
+                "kind": "compose",
+                "slug": parts[1],
+                "root": f"compose/{parts[1]}",
+            }
 
     items = sorted(seen.values(), key=lambda item: (item["kind"], item["slug"]))
     configs: list[dict[str, Any]] = []
@@ -204,6 +210,19 @@ def detect_candidates(
                     "year": _resolve_year(cfg) if cfg_exists else 0,
                     "is_nested": False,
                 })
+        root_compose = ROOT / "compose" / slug
+        if root_compose.exists():
+            kind = "compose"
+            root = f"compose/{slug}"
+            items.append({"kind": kind, "slug": slug, "root": root})
+            cfg = root_compose / "dataset.yml"
+            configs.append({
+                "kind": kind, "slug": slug, "config_path": cfg.as_posix(),
+                "config_exists": cfg.exists(),
+                "push_slug": slug, "artifact_name": slug,
+                "year": _resolve_year(cfg) if cfg.exists() else 0,
+                "is_nested": False,
+            })
         elif root_support.exists():
             kind = "support_dataset"
             root = f"support_datasets/{slug}"
