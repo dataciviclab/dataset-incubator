@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "civile_flussi"
+  source_id: "giustizia_statistiche"
   # Chiave di snapshot per il run: il file contiene gia l'intera serie 2014-2025.
   years: [2025]
 
