@@ -2971,7 +2971,8 @@
         "multi_file": false
       },
       "registry_source": "push_archive_auto",
-      "stage": "incubating"
+      "stage": "incubating",
+      "source_id": "mit_opendata"
     },
     {
       "slug": "mit_opere_incompiute_2020",
@@ -3128,7 +3129,8 @@
         "multi_file": false
       },
       "registry_source": "push_archive_auto",
-      "stage": "incubating"
+      "stage": "incubating",
+      "source_id": "mit_opendata"
     },
     {
       "slug": "mur_contribuzione_universitaria",
@@ -3513,9 +3515,9 @@
     {
       "slug": "terna_electricity_by_source",
       "name": "Terna Electricity By Source",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "description": "Terna - Produzione di energia elettrica per fonte, regione e provincia (GWh): dati mensili per tipo di produzione (termoelettrico, idroelettrico, fotovoltaico, eolico, geotermico) anni 2023-2024.",
+      "source": "Terna S.p.A. - dati.terna.it",
+      "source_id": "terna_opendata",
       "period": {
         "start": 2023,
         "end": 2024
@@ -3524,38 +3526,38 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "tipo_produzione",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Macrotipo di produzione (Termoelettrico, Idroelettrico, Fotovoltaico, Eolico, Geotermico)"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Regione"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Provincia"
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Fonte energetica specifica"
         },
         {
           "name": "produzione_gwh",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Produzione di energia elettrica in GWh"
         }
       ],
       "location": {
