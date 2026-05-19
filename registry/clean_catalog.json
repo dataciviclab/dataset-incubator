@@ -2814,8 +2814,8 @@
       "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
       "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
       "period": {
-        "start": 2024,
-        "end": 2024
+        "start": 2016,
+        "end": 2025
       },
       "columns": [
         {
@@ -2863,6 +2863,110 @@
       "registry_source": "push_archive_auto",
       "source_id": "mim_opendata",
       "stage": "incubating"
+    },
+    {
+      "slug": "mim_anagrafica_scuole_statali",
+      "name": "Mim Anagrafica Scuole Statali",
+      "description": "MIM - Anagrafica scuole statali: codici scuola, denominazione, indirizzo, comune, provincia, regione, grado istruzione e caratteristica, anno scolastico 2024/2025.",
+      "source": "MIM - dati.istruzione.it",
+      "source_id": "mim_opendata",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno_scolastico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Anno scolastico di riferimento"
+        },
+        {
+          "name": "codice_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice unico meccanografico della scuola"
+        },
+        {
+          "name": "codice_istituto_riferimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice istituto di riferimento (dirigenza scolastica)"
+        },
+        {
+          "name": "denominazione_istituto_riferimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione istituto di riferimento"
+        },
+        {
+          "name": "denominazione_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della scuola"
+        },
+        {
+          "name": "area_geografica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Area geografica (Nord, Centro, Sud, Isole)"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia (sigla)"
+        },
+        {
+          "name": "codice_comune_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune"
+        },
+        {
+          "name": "cap_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CAP della scuola"
+        },
+        {
+          "name": "indirizzo_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo della scuola"
+        },
+        {
+          "name": "caratteristica_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Caratteristica della scuola (campagna, montana, ecc.)"
+        },
+        {
+          "name": "grado_istruzione_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Grado istruzione (primaria, secondaria I grado, secondaria II grado, ecc.)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mim_anagrafica_scuole_statali/2024/mim_anagrafica_scuole_statali_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "mit_incidentalita_mensile",
