@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "consip_consumi_convenzione"
+  source_id: "consip_open_data"
   years: [2023, 2024, 2025]
 
 raw:
