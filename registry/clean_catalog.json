@@ -2867,9 +2867,9 @@
     {
       "slug": "mim_anagrafica_scuole_statali",
       "name": "Mim Anagrafica Scuole Statali",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "description": "MIM - Anagrafica scuole statali: codici scuola, denominazione, indirizzo, comune, provincia, regione, grado istruzione e caratteristica, anno scolastico 2024/2025.",
+      "source": "MIM - dati.istruzione.it",
+      "source_id": "mim_opendata",
       "period": {
         "start": 2024,
         "end": 2024
@@ -2878,86 +2878,86 @@
         {
           "name": "anno_scolastico",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno scolastico di riferimento"
         },
         {
           "name": "codice_scuola",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice unico meccanografico della scuola"
         },
         {
           "name": "codice_istituto_riferimento",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice istituto di riferimento (dirigenza scolastica)"
         },
         {
           "name": "denominazione_istituto_riferimento",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Denominazione istituto di riferimento"
         },
         {
           "name": "denominazione_scuola",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Denominazione della scuola"
         },
         {
           "name": "area_geografica",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Area geografica (Nord, Centro, Sud, Isole)"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Regione"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Provincia (sigla)"
         },
         {
           "name": "codice_comune_scuola",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT del comune"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Comune"
         },
         {
           "name": "cap_scuola",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "CAP della scuola"
         },
         {
           "name": "indirizzo_scuola",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Indirizzo della scuola"
         },
         {
           "name": "caratteristica_scuola",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Caratteristica della scuola (campagna, montana, ecc.)"
         },
         {
           "name": "grado_istruzione_scuola",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Grado istruzione (primaria, secondaria I grado, secondaria II grado, ecc.)"
         }
       ],
       "location": {
