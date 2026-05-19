@@ -317,17 +317,28 @@
     },
     {
       "id": "mim-alunni-corso-eta",
-      "source_id": "",
+      "source_id": "mim_opendata",
       "status": "ok",
       "label": "mim-alunni-corso-eta",
       "detail": "anni 2016-2025 — fonte: mim_alunni_corso_eta_csv — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2025,
+        "run_id": "26106467223",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26106467223",
+        "checked_at": "2026-05-19",
+        "years": [
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025
+        ],
         "config_path": "candidates/mim-alunni-corso-eta/dataset.yml"
       }
     },
@@ -369,17 +380,26 @@
     },
     {
       "id": "mur-contribuzione-universitaria",
-      "source_id": "",
+      "source_id": "mur_ustat",
       "status": "ok",
       "label": "mur-contribuzione-universitaria",
       "detail": "anni 2017-2024 — fonte: mur_gettito_ckan — mart: sì",
       "action": "",
       "sample_run": {
         "status": "failed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2024,
+        "run_id": "26106467223",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26106467223",
+        "checked_at": "2026-05-19",
+        "years": [
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
         "config_path": "candidates/mur-contribuzione-universitaria/dataset.yml"
       }
     },
@@ -481,17 +501,19 @@
     },
     {
       "id": "mim-anagrafica-scuole-statali",
-      "source_id": "",
+      "source_id": "mim_opendata",
       "status": "ok",
       "label": "mim-anagrafica-scuole-statali",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2024,
+        "run_id": "26106467223",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26106467223",
+        "checked_at": "2026-05-19",
+        "years": [
+          2024
+        ],
         "config_path": "support_datasets/mim-anagrafica-scuole-statali/dataset.yml"
       }
     },

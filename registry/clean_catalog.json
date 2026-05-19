@@ -2814,8 +2814,8 @@
       "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
       "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
       "period": {
-        "start": 2024,
-        "end": 2024
+        "start": 2016,
+        "end": 2025
       },
       "columns": [
         {
@@ -2863,6 +2863,110 @@
       "registry_source": "push_archive_auto",
       "source_id": "mim_opendata",
       "stage": "incubating"
+    },
+    {
+      "slug": "mim_anagrafica_scuole_statali",
+      "name": "Mim Anagrafica Scuole Statali",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno_scolastico",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "codice_scuola",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "codice_istituto_riferimento",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "denominazione_istituto_riferimento",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "denominazione_scuola",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "area_geografica",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "codice_comune_scuola",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "cap_scuola",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "indirizzo_scuola",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "caratteristica_scuola",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "grado_istruzione_scuola",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mim_anagrafica_scuole_statali/2024/mim_anagrafica_scuole_statali_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "mit_incidentalita_mensile",
