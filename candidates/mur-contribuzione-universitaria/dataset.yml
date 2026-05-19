@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "mur_contribuzione_universitaria"
+  source_id: "mur_ustat"
   years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
 
 raw:

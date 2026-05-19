@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "mim_anagrafica_scuole_statali"
+  source_id: "mim_opendata"
   years: [2024]
 
 raw:
