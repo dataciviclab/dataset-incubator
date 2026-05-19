@@ -1955,11 +1955,11 @@
       "slug": "istat_ipab_aree",
       "name": "Istat Ipab Aree",
       "description": "ISTAT — Indice dei prezzi delle abitazioni (IPAB) trimestrale: prezzi per tipo di abitazione (nuove costruzioni, esistenti) e area geografica, base 2015=100, serie 2015-2025.",
-      "source": "ISTAT \u2014 Dataflow 33_292 (IPAB trimestrale), SDMX-CSV",
+      "source": "ISTAT — Dataflow 33_292 (IPAB trimestrale), SDMX-CSV",
       "source_id": "istat_sdmx",
       "period": {
-        "start": 2024,
-        "end": 2024
+        "start": 2010,
+        "end": 2025
       },
       "columns": [
         {
