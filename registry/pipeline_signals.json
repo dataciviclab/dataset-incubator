@@ -98,16 +98,16 @@
     },
     {
       "id": "consip-consumi-convenzione",
-      "source_id": "",
+      "source_id": "consip_open_data",
       "status": "ok",
       "label": "consip-consumi-convenzione",
       "detail": "anni 2023-2025 — fonti: consip_consumi_convenzione_2023, consip_consumi_convenzione_2024 — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25962931378",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25962931378",
-        "checked_at": "2026-05-16",
+        "run_id": "26107821546",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26107821546",
+        "checked_at": "2026-05-19",
         "years": [
           2023,
           2024,
@@ -429,16 +429,16 @@
     },
     {
       "id": "pensioni-pa-dag",
-      "source_id": "",
+      "source_id": "inps",
       "status": "ok",
       "label": "pensioni-pa-dag",
       "detail": "anno 2024 — fonte: dag_pensioni_totale — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25921989453",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25921989453",
-        "checked_at": "2026-05-15",
+        "run_id": "26107821546",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26107821546",
+        "checked_at": "2026-05-19",
         "years": [
           2024
         ],
