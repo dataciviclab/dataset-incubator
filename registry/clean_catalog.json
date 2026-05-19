@@ -2,7 +2,7 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-05-18",
+  "updated_at": "2026-05-19",
   "source_repo": "dataciviclab/dataset-incubator",
   "datasets": [
     {
@@ -1950,6 +1950,68 @@
       },
       "source_id": "istat_sdmx",
       "stage": "incubating"
+    },
+    {
+      "slug": "istat_ipab_aree",
+      "name": "Istat Ipab Aree",
+      "description": "ISTAT — Indice dei prezzi delle abitazioni (IPAB) trimestrale: prezzi per tipo di abitazione (nuove costruzioni, esistenti) e area geografica, base 2015=100, serie 2010-2025.",
+      "source": "ISTAT — Dataflow 33_292 (IPAB trimestrale), SDMX-CSV",
+      "source_id": "istat_sdmx",
+      "period": {
+        "start": 2010,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "area_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice area geografica (IT=nazionale, ITC=Nord-ovest, ITD=Sud, ecc.)"
+        },
+        {
+          "name": "area",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione area geografica"
+        },
+        {
+          "name": "livello_geografico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Livello geografico (Nazionale, Ripartizione geografica)"
+        },
+        {
+          "name": "tipo_abitazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice tipo abitazione (NEW_DW=nuove costruzioni, EXST_DW=esistenti)"
+        },
+        {
+          "name": "tipo_abitazione_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Etichetta tipo abitazione"
+        },
+        {
+          "name": "trimestre",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Trimestre di riferimento (YYYY-QQ)"
+        },
+        {
+          "name": "indice_prezzi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Indice dei prezzi delle abitazioni (base 2015=100)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_ipab_aree/2024/istat_ipab_aree_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "push_archive_auto"
     },
     {
       "slug": "mef_irpef_regionale",
