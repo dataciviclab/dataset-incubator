@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "popolazione_istat_comunale_2019_2025"
+  source_id: "istat_sdmx"
   years: [2019, 2020, 2021, 2022, 2023, 2024, 2025]
 
 raw:

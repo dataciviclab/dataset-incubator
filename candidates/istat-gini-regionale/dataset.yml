@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_gini_regionale"
+  source_id: "istat_sdmx"
   years: [2023]
 
 raw:

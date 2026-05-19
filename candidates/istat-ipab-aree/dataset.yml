@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_ipab_aree"
+  source_id: "istat_sdmx"
   years: [2024]
 
 raw:
