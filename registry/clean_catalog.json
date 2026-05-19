@@ -1954,9 +1954,9 @@
     {
       "slug": "istat_ipab_aree",
       "name": "Istat Ipab Aree",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "description": "ISTAT — Indice dei prezzi delle abitazioni (IPAB) trimestrale: prezzi per tipo di abitazione (nuove costruzioni, esistenti) e area geografica, base 2015=100, serie 2015-2025.",
+      "source": "ISTAT \u2014 Dataflow 33_292 (IPAB trimestrale), SDMX-CSV",
+      "source_id": "istat_sdmx",
       "period": {
         "start": 2024,
         "end": 2024
@@ -1965,44 +1965,44 @@
         {
           "name": "area_codice",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice area geografica (IT=nazionale, ITC=Nord-ovest, ITD=Sud, ecc.)"
         },
         {
           "name": "area",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Denominazione area geografica"
         },
         {
           "name": "livello_geografico",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Livello geografico (Nazionale, Ripartizione geografica)"
         },
         {
           "name": "tipo_abitazione",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice tipo abitazione (NEW_DW=nuove costruzioni, EXST_DW=esistenti)"
         },
         {
           "name": "tipo_abitazione_label",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Etichetta tipo abitazione"
         },
         {
           "name": "trimestre",
           "type": "VARCHAR",
-          "role": "",
-          "description": ""
+          "role": "dimension",
+          "description": "Trimestre di riferimento (YYYY-QQ)"
         },
         {
           "name": "indice_prezzi",
           "type": "DOUBLE",
-          "role": "",
-          "description": ""
+          "role": "metric",
+          "description": "Indice dei prezzi delle abitazioni (base 2015=100)"
         }
       ],
       "location": {
