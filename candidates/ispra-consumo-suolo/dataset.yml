@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "ispra_consumo_suolo"
+  source_id: "ispra_linked_data"
   years: [ 2024 ]
   # Anno nominale: il file XLSX copre l'intera serie 2006-2024.
   # Non esistono file separati per anno: year=2024 e` il rilascio piu recente.

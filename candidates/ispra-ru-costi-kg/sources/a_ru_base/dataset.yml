@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "ispra_ru_base"
+  source_id: "ispra_linked_data"
   years: [2020, 2021, 2022, 2023, 2024]
 
 raw:
