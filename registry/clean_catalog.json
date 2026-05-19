@@ -3509,6 +3509,62 @@
       "registry_source": "push_archive_auto",
       "stage": "published",
       "source_id": "terna"
+    },
+    {
+      "slug": "terna_electricity_by_source",
+      "name": "Terna Electricity By Source",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2023,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "tipo_produzione",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "fonte",
+          "type": "VARCHAR",
+          "role": "",
+          "description": ""
+        },
+        {
+          "name": "produzione_gwh",
+          "type": "DOUBLE",
+          "role": "",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/terna_electricity_by_source/*/terna_electricity_by_source_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "push_archive_auto"
     }
   ]
 }
