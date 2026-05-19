@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "terna_electricity_by_source"
+  source_id: "terna_opendata"
   years: [2023, 2024]
 
 raw:
