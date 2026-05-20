@@ -34,14 +34,20 @@ import pyarrow.parquet as pq
 
 from lab_connectors.gcs import upload_file, upload_string
 
+# Path contract canonico — vedere lab_connectors.gcs.paths per la documentazione
+from lab_connectors.gcs.paths import (
+    CLEAN_BUCKET,
+    MART_BUCKET,
+    catalog_manifest,
+    gs_url,
+    pipeline_run,
+)
+
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
 GCP_PROJECT = "dataciviclab"
-GCS_CLEAN_BUCKET = "dataciviclab-clean"
-GCS_MART_BUCKET = "dataciviclab-mart"
 BQ_LOCATION = "EU"
-CATALOG_MANIFEST_PATH = "catalog/manifest.json"
 
 DI_ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
@@ -108,16 +114,18 @@ def push_gcs(local_path, bucket_name, gcs_path, dry_run=False):
 
 
 def upload_manifest(manifest, dry_run=False):
+    manifest_path = catalog_manifest()
+    manifest_gs = gs_url("clean", "catalog_manifest")
     if dry_run:
-        print(f"  [dry] GCS: gs://{GCS_CLEAN_BUCKET}/{CATALOG_MANIFEST_PATH}")
+        print(f"  [dry] GCS: {manifest_gs}")
         return
     upload_string(
         json.dumps(manifest, ensure_ascii=False, indent=2),
-        GCS_CLEAN_BUCKET,
-        CATALOG_MANIFEST_PATH,
+        CLEAN_BUCKET,
+        manifest_path,
         content_type="application/json",
     )
-    print(f"  GCS: gs://{GCS_CLEAN_BUCKET}/{CATALOG_MANIFEST_PATH}")
+    print(f"  GCS: {manifest_gs}")
 
 
 # ---------------------------------------------------------------------------
@@ -132,7 +140,7 @@ def create_bq_external_table(bq_client, slug, dry_run=False):
     """
     dataset_id = slug
     table_id = f"{GCP_PROJECT}.{dataset_id}.clean"
-    gcs_uri = f"gs://{GCS_CLEAN_BUCKET}/{slug}/*/*.parquet"
+    gcs_uri = f"gs://{CLEAN_BUCKET}/{slug}/*/*.parquet"
 
     if dry_run:
         print(f"  [dry] BQ external table: {table_id} <- {gcs_uri}")
@@ -143,9 +151,9 @@ def create_bq_external_table(bq_client, slug, dry_run=False):
     slug_dir = CLEAN_ROOT / slug
     years = get_years(slug_dir) if slug_dir.exists() else []
     source_uris = (
-        [f"gs://{GCS_CLEAN_BUCKET}/{slug}/{year}/*.parquet" for year in years]
+        [f"gs://{CLEAN_BUCKET}/{slug}/{year}/*.parquet" for year in years]
         if years
-        else [f"gs://{GCS_CLEAN_BUCKET}/{slug}/2*/*.parquet"]  # fallback
+        else [f"gs://{CLEAN_BUCKET}/{slug}/2*/*.parquet"]  # fallback
     )
 
     from google.cloud import bigquery
@@ -250,9 +258,9 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
     int_years = sorted(int(y) for y in years)
     multi_file = len(int_years) > 1
     if multi_file:
-        gcs_path = f"gs://dataciviclab-clean/{slug}/*/{slug}_*_clean.parquet"
+        gcs_path = gs_url("clean", "clean_parquet", slug=slug, year="*")
     else:
-        gcs_path = f"gs://dataciviclab-clean/{slug}/{int_years[0]}/{slug}_{int_years[0]}_clean.parquet"
+        gcs_path = gs_url("clean", "clean_parquet", slug=slug, year=int_years[0])
 
     # Leggi schema dal parquet più recente disponibile
     latest_parquet = None
@@ -306,7 +314,7 @@ def push_clean(slug_filter=None, year_filter=None, dry_run=False):
 
     manifest = {
         "generated_at": pd.Timestamp.now("UTC").isoformat(),
-        "bucket": GCS_CLEAN_BUCKET,
+        "bucket": CLEAN_BUCKET,
         "items": [],
     }
 
@@ -321,7 +329,7 @@ def push_clean(slug_filter=None, year_filter=None, dry_run=False):
         for year in years:
             for parq in get_parquets(slug_dir / year):
                 gcs_path = f"{slug}/{year}/{parq.name}"
-                push_gcs(parq, GCS_CLEAN_BUCKET, gcs_path, dry_run)
+                push_gcs(parq, CLEAN_BUCKET, gcs_path, dry_run)
                 if dry_run:
                     rows = None
                 else:
@@ -335,7 +343,7 @@ def push_clean(slug_filter=None, year_filter=None, dry_run=False):
                         "year": int(year),
                         "file": parq.name,
                         "gcs_path": gcs_path,
-                        "gcs_url": f"gs://{GCS_CLEAN_BUCKET}/{gcs_path}",
+                        "gcs_url": f"gs://{CLEAN_BUCKET}/{gcs_path}",
                         "updated_at": pd.Timestamp(parq.stat().st_mtime, unit="s").isoformat(),
                         "rows": rows,
                     }
@@ -343,8 +351,8 @@ def push_clean(slug_filter=None, year_filter=None, dry_run=False):
 
             run_record = get_latest_run(slug, year)
             if run_record is not None:
-                run_gcs_path = f"{slug}/{year}/pipeline_run.json"
-                push_gcs(run_record, GCS_CLEAN_BUCKET, run_gcs_path, dry_run)
+                run_gcs_path = pipeline_run(slug, year)
+                push_gcs(run_record, CLEAN_BUCKET, run_gcs_path, dry_run)
             else:
                 print(f"  [{slug}/{year}] nessun run record trovato, pipeline_run.json non pushato.")
         print()
@@ -374,7 +382,7 @@ def push_mart(bq_client, slug_filter=None, year_filter=None, dry_run=False):
         for year in years:
             for parq in get_parquets(slug_dir / year):
                 gcs_path = f"{slug}/{year}/{parq.name}"
-                push_gcs(parq, GCS_MART_BUCKET, gcs_path, dry_run)
+                push_gcs(parq, MART_BUCKET, gcs_path, dry_run)
                 if bq_client:
                     push_bq(bq_client, parq, slug, year, dry_run)
         print()
