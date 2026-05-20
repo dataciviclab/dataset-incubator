@@ -136,6 +136,11 @@ def _duckdb_read(
 
     # Replace the placeholder in wrapped_sql if present
     sql = wrapped_sql.replace("{SOURCE_EXPR}", source_expr)
+    # Inject year filter for single-file multi-year datasets (e.g. giustizia_penale_indicatori)
+    if year is not None:
+        year_col = get_year_column(dataset)
+        if year_col:
+            sql = _inject_year_filter(sql, year_col, year)
 
     from lab_connectors.duckdb import safe_connect
     import concurrent.futures
@@ -508,6 +513,10 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
         source_expr = f"['{escaped_paths}']"
 
     wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) SELECT COUNT(*) AS total FROM clean_input"
+    if year is not None:
+        year_col = get_year_column(dataset)
+        if year_col:
+            wrapped_sql = _inject_year_filter(wrapped_sql, year_col, year)
 
     def _exec() -> dict[str, Any]:
         from lab_connectors.duckdb import safe_connect
@@ -600,6 +609,8 @@ def time_series(
         f"ORDER BY {order_clause} "
         f"LIMIT {limit + 1}"
     )
+    if year is not None:
+        wrapped_sql = _inject_year_filter(wrapped_sql, year_col, year)
 
     def _exec() -> dict[str, Any]:
         from lab_connectors.duckdb import safe_connect
