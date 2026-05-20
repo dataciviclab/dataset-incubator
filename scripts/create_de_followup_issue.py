@@ -124,7 +124,7 @@ def main() -> int:
 
     # Costruisci lista items
     item_lines = "\n".join(
-        f"- [ ] {i['slug']}: aggiungere a themes.json e creare pagina dataset"
+        f"- [ ] {i['slug']}: aggiungere tema in src/data/themes.json.py (data-explorer) e creare pagina dataset"
         for i in new_items
     )
 
@@ -142,7 +142,7 @@ def main() -> int:
         f"Sono disponibili nel catalogo tecnico ma **mancano di pagina curata e tema**.\n\n"
         f"### Da fare\n\n{item_lines}\n\n"
         f"### Workflow\n\n"
-        f"1. Aggiungere a `catalog/themes.json` (decisione editoriale)\n"
+        f"1. Aggiungere/modificare in `src/data/themes.json.py` in data-explorer (decisione editoriale)\n"
         f"2. Creare pagina dataset in data-explorer con query curate\n\n"
         f"### Riferimenti\n\n"
         f"- PR dataset-incubator #{pr_number}"
