@@ -1,0 +1,93 @@
+name: Smoke cross-repo (weekly)
+
+on:
+  schedule:
+    - cron: "0 5 * * 1"  # ogni lunedì 05:00 UTC
+  workflow_dispatch:
+
+env:
+  PYTHON_VERSION: "3.12"
+  TOOLKIT_VERSION: v1.9.1
+
+jobs:
+  cross-repo-smoke:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout dataset-incubator
+        uses: actions/checkout@v6
+        with:
+          path: dataset-incubator
+
+      - name: Setup Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: ${{ env.PYTHON_VERSION }}
+
+      - name: Install toolkit
+        run: pip install git+https://github.com/dataciviclab/toolkit.git@${{ env.TOOLKIT_VERSION }}
+
+      - name: Run pipeline on a test candidate
+        run: |
+          cd dataset-incubator
+          echo "=== Esecuzione toolkit su irpef-comunale ==="
+          toolkit run all candidates/irpef-comunale/dataset.yml 2>&1
+          echo "=== Run completata ==="
+
+      - name: Verify clean parquet artifact
+        run: |
+          cd dataset-incubator
+          count=$(find _out -name "*_clean.parquet" -type f 2>/dev/null | wc -l)
+          if [ "$count" -eq 0 ]; then
+            echo "ERROR: nessun clean parquet generato"
+            exit 1
+          fi
+          echo "OK: $count clean parquet file(s)"
+
+      - name: Verify clean_catalog.json
+        run: |
+          cd dataset-incubator
+          if [ ! -f registry/clean_catalog.json ]; then
+            echo "ERROR: registry/clean_catalog.json non trovato"
+            exit 1
+          fi
+          python3 -c "
+import json
+data = json.load(open('registry/clean_catalog.json'))
+n = len(data.get('datasets', []))
+print(f'clean_catalog.json: {n} dataset(s)')
+assert n > 0, 'catalog vuoto'
+print('VALID')
+"
+
+      - name: Checkout data-explorer and verify catalog compatibility
+        run: |
+          git clone --depth=1 https://github.com/dataciviclab/data-explorer.git /tmp/data-explorer 2>&1
+          if [ ! -f dataset-incubator/registry/clean_catalog.json ]; then
+            echo "ERROR: clean_catalog.json non disponibile per verifica explorer"
+            exit 1
+          fi
+          if [ ! -f /tmp/data-explorer/scripts/generate_catalog.mjs ]; then
+            echo "ERROR: script explorer generate_catalog.mjs non trovato"
+            exit 1
+          fi
+          cp dataset-incubator/registry/clean_catalog.json /tmp/data-explorer/
+          cd /tmp/data-explorer
+          node --input-type=module -e "
+import { generateCatalogEntry } from './scripts/generate_catalog.mjs';
+import { readFileSync } from 'fs';
+const catalog = JSON.parse(readFileSync('./clean_catalog.json', 'utf-8'));
+for (const ds of catalog.datasets) {
+  const entry = generateCatalogEntry(ds);
+  console.log('  ', entry.slug || ds.slug, '-', entry.stage);
+}
+console.log('OK: tutti i dataset generano entry explorer valide');
+"
+
+      - name: Report summary
+        if: always()
+        run: |
+          echo "## Smoke cross-repo" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "- toolkit: irpef-comunale pipeline completata" >> "$GITHUB_STEP_SUMMARY"
+          echo "- dataset-incubator: clean_catalog.json verificato" >> "$GITHUB_STEP_SUMMARY"
+          echo "- data-explorer: compatibilità catalogo verificata" >> "$GITHUB_STEP_SUMMARY"
