@@ -1,17 +1,15 @@
 from __future__ import annotations
 
 import json
-import sys
 import unittest
 from pathlib import Path
 
 import jsonschema
+import pytest
+
+from update_pipeline_sample_runs import apply_sample_results, summarize_sample_results
 
 ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
-
-from update_pipeline_sample_runs import apply_sample_results, summarize_sample_results  # noqa: E402
-
 _SCHEMA_PATH = ROOT / "registry" / "pipeline_signals.schema.json"
 
 
@@ -19,6 +17,7 @@ def _load_schema() -> dict:
     return json.loads(_SCHEMA_PATH.read_text(encoding="utf-8"))
 
 
+@pytest.mark.contract
 class PipelineSampleRunTest(unittest.TestCase):
     def test_single_sample_result_uses_flat_shape(self) -> None:
         summary = summarize_sample_results(
@@ -110,6 +109,7 @@ class PipelineSampleRunTest(unittest.TestCase):
         self.assertEqual(errors, ["missing: no matching signal in catalog"])
 
 
+@pytest.mark.contract
 class PipelineSignalsSchemaTest(unittest.TestCase):
     """Validate pipeline_signals.json against its JSON Schema."""
 

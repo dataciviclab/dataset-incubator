@@ -1,18 +1,20 @@
-"""Tests for get_extra_ca_cert_urls.py."""
+"""Tests for get_extra_ca_cert_urls.py.
 
+Contratto: get_urls() estrae URL extra_ca_cert_url/extra_ca_cert_urls da YAML.
+Usato in fase di fetch raw per certificati CA aggiuntivi.
+"""
 from __future__ import annotations
 
-import sys
 import tempfile
 import unittest
 from pathlib import Path
 
-ROOT = Path(__file__).resolve().parents[1]
-sys.path.insert(0, str(ROOT / "scripts"))
+import pytest
 
-from get_extra_ca_cert_urls import get_urls  # noqa: E402
+from get_extra_ca_cert_urls import get_urls
 
 
+@pytest.mark.contract
 class GetExtraCaCertUrlsTest(unittest.TestCase):
     """Fail-fast su YAML/config invalida, tollerante su file mancante."""
 

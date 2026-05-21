@@ -1,10 +1,11 @@
 """Test per scripts/create_de_followup_issue.py.
 
-Verifica il filtro slug:
-- slug già nel catalogo pre-merge -> non crea issue
-- slug nuovo (non in catalogo pre-merge) -> crea issue
-- misto: solo i nuovi passano
-- git_ref non raggiungibile -> fallback a catalogo corrente
+Contratto: _extract_slugs() e _read_catalog_json() determinano quali slug
+sono nuovi e meritano una issue su data-explorer.
+Usato in post-merge per aprire followup automatici.
+
+Prova del fuoco: se cancello questi test, un refactor del filtro slug puo'
+causare issue duplicate o mancanti.
 """
 
 from __future__ import annotations
@@ -12,14 +13,11 @@ from __future__ import annotations
 import json
 import os
 import subprocess
-import sys
 from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
 
-SCRIPTS_DIR = Path(__file__).resolve().parents[1] / "scripts"
-sys.path.insert(0, str(SCRIPTS_DIR))
 from create_de_followup_issue import _extract_slugs, _read_catalog_json
 
 FIXTURE_CATALOG = {
@@ -39,6 +37,7 @@ FIXTURE_ITEMS = [
 ]
 
 
+@pytest.mark.pure_unit
 class TestExtractSlugs:
     def test_extract_normalizes_underscore_to_hyphen(self):
         slugs = _extract_slugs(FIXTURE_CATALOG)
@@ -59,6 +58,7 @@ class TestExtractSlugs:
         assert slugs == {"ok"}
 
 
+@pytest.mark.contract
 class TestReadCatalogJson:
     def test_read_from_disk(self, tmp_path, monkeypatch):
         """Legge dal filesystem quando git_ref è None."""
@@ -94,6 +94,7 @@ class TestReadCatalogJson:
         assert catalog is None
 
 
+@pytest.mark.contract
 class TestFilterSlugs:
     """Testa la logica di filtro nel main, con mock di subprocess e gh."""
 
