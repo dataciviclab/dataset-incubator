@@ -1,7 +1,7 @@
 [tool.pytest.ini_options]
 testpaths = "tests"
 filterwarnings = ["ignore::DeprecationWarning"]
-addopts = "-q --tb=line"
+addopts = "-q --tb=line --timeout=30"
 markers = [
     "contract: interfaccia pubblica, artifact format, contratto API, path contract, output CI",
     "policy: regola Lab non ovvia o comportamento cross-component",
