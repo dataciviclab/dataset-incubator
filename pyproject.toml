@@ -2,6 +2,14 @@
 testpaths = "tests"
 filterwarnings = ["ignore::DeprecationWarning"]
 addopts = "-q --tb=line"
+markers = [
+    "contract: interfaccia pubblica, artifact format, contratto API, path contract, output CI",
+    "policy: regola Lab non ovvia o comportamento cross-component",
+    "regression: bug fix documentato in issue/PR",
+    "adapter: adapter a servizio esterno (GCS, BigQuery, HTTP)",
+    "pure_unit: logica pura non banale, zero side effect",
+    "smoke: test che fa chiamate reali (richiede connettivita')",
+]
 
 [tool.mypy]
 python_version = "3.10"

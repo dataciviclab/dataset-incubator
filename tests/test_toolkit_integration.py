@@ -1,10 +1,11 @@
 """Integration test: lancia toolkit su un candidate minimo e verifica output.
 
-Richiede `toolkit` installato nel PATH.
+Contratto: toolkit run full produce output CLEAN e MART su un candidate minimo.
+Skip automatico se toolkit non e' disponibile.
 
-Skip automatico se toolkit non e' disponibile (es. in validate-candidate-structure CI).
+Prova del fuoco: se cancello questi test, un refactor di toolkit o del formato
+output puo' rompere la pipeline CI senza preavviso.
 """
-
 from __future__ import annotations
 
 import csv
@@ -19,10 +20,13 @@ import pytest
 ROOT = Path(__file__).resolve().parents[1]
 TEMPLATE_DIR = ROOT / "templates" / "candidate"
 
-pytestmark = pytest.mark.skipif(
-    shutil.which("toolkit") is None,
-    reason="toolkit non installato nel PATH (test di integrazione)",
-)
+pytestmark = [
+    pytest.mark.skipif(
+        shutil.which("toolkit") is None,
+        reason="toolkit non installato nel PATH (test di integrazione)",
+    ),
+    pytest.mark.smoke,
+]
 
 
 def _write_csv(path: Path, rows: list[list[str]]) -> None:

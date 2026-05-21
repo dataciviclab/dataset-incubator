@@ -1,7 +1,10 @@
 """Tests per build_clean_catalog.py --derive.
 
-Mocka list_objects, object_exists e DuckDB per testare la
-logica di derivazione senza dipendere da GCS reale.
+Contratto: derive_catalog_from_gcs() produce un catalogo valido a partire
+dai parquet su GCS. Mocka list_objects, object_exists e DuckDB.
+
+Prova del fuoco: se cancello questi test, un refactor della logica di
+derivazione puo' produrre cataloghi con slug mancanti o colonne errate.
 """
 
 from __future__ import annotations
@@ -9,6 +12,8 @@ from __future__ import annotations
 import unittest
 from pathlib import Path
 from unittest.mock import patch, MagicMock
+
+import pytest
 
 # ---------------------------------------------------------------------------
 # Mock helpers
@@ -51,6 +56,7 @@ class FakeDuckDBConnection:
         pass
 
 
+@pytest.mark.contract
 class TestBuildCleanCatalogDerive(unittest.TestCase):
     maxDiff = None
 

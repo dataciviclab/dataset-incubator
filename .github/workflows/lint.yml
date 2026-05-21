@@ -28,7 +28,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install ruff mypy types-pyyaml types-requests pytest
+          pip install ruff mypy types-pyyaml types-requests pytest pytest-cov
           pip install git+https://github.com/dataciviclab/toolkit.git@${{ env.TOOLKIT_VERSION }}
           pip install -r tools/clean-query-mcp/requirements.txt 2>/dev/null || true
 
@@ -39,4 +39,4 @@ jobs:
         run: mypy scripts/ tools/
 
       - name: Pytest
-        run: python -m pytest tests/ -q --tb=line
+        run: python -m pytest tests/ -q --tb=line --cov=scripts --cov=tools/clean-query-mcp --cov-report=term --cov-fail-under=30
