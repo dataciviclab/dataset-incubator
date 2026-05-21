@@ -213,10 +213,10 @@ def derive_catalog_from_gcs(
 
     # 2. Filtra slug con pipeline_run.json (gate: solo da pipeline)
     piped_slug_years: dict[str, set[str]] = {}
-    for slug, years in slug_index.items():
-        for y in years:
+    for slug, slug_years in slug_index.items():
+        for y in slug_years:
             if object_exists(bucket, f"{slug}/{y}/pipeline_run.json"):
-                piped_slug_years[slug] = years
+                piped_slug_years[slug] = slug_years
                 break
     skipped = len(slug_index) - len(piped_slug_years)
     if skipped:
