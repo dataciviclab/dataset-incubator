@@ -57,23 +57,23 @@ def main() -> int:
     # Il catalogo di partenza: vuoto se --derive, altrimenti da file
     if args.derive:
         raw: dict[str, Any] = {"datasets": []}
-        # Carica editorial metadata dal catalogo esistente (se presente)
         if args.catalog.exists():
             try:
-                existing = json.loads(args.catalog.read_text(encoding="utf-8"))
-                raw = existing
+                raw = json.loads(args.catalog.read_text(encoding="utf-8"))
                 print(f"[derive] Caricati metadata editoriali da {args.catalog}", file=sys.stderr)
             except Exception:
                 print(f"[derive] WARN: cannot read {args.catalog}, starting fresh", file=sys.stderr)
-        catalog = derive_catalog_from_gcs(raw, args.refresh_date)
+        catalog, derive_errors = derive_catalog_from_gcs(raw, args.refresh_date)
     else:
         original_text = args.catalog.read_text(encoding="utf-8")
         catalog = json.loads(original_text)
+        derive_errors = []
 
     schema = json.loads(args.schema.read_text(encoding="utf-8"))
     normalized = normalize_catalog(catalog, refresh_date=args.refresh_date)
 
     errors = validate_catalog(normalized, schema)
+    errors.extend(derive_errors)
     if args.check_gcs:
         errors.extend(validate_gcs_locations(normalized))
 
@@ -86,6 +86,11 @@ def main() -> int:
     if args.write:
         args.catalog.write_text(output_text, encoding="utf-8")
         print(f"wrote {args.catalog}")
+        return 0
+
+    # Dry-run: --derive senza --write
+    if args.derive:
+        print(f"ok (dry-run, {len(normalized['datasets'])} datasets)")
         return 0
 
     if output_text != original_text:
@@ -172,14 +177,19 @@ def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
 
 def derive_catalog_from_gcs(
     existing: dict[str, Any], refresh_date: bool = False
-) -> dict[str, Any]:
+) -> tuple[dict[str, Any], list[str]]:
     """Deriva il catalogo scansionando GCS e leggendo schemi parquet.
 
     1. Scansiona ``gs://dataciviclab-clean/`` per scoprire slug + anni
     2. Per ogni slug, legge lo schema del parquet più recente
     3. Costruisce location usando il path contract
     4. Fonde con metadata editoriali dal catalogo esistente
-    5. Ritorna il catalogo completo
+    5. Ritorna (catalogo, errori)
+
+    Gli errori di lettura schema fanno fallire lo script: meglio catalogo
+    bloccante che parziale.
+    Returns:
+        Tuple (catalogo_dict, lista_errori).
     """
     import duckdb
 
@@ -196,7 +206,7 @@ def derive_catalog_from_gcs(
         objects = list_objects(bucket, auth=False)
     except Exception as exc:
         print(f"[derive] ERRORE: impossibile leggere GCS: {exc}", file=sys.stderr)
-        return existing
+        return existing, [f"GCS unreachable: {exc}"]
 
     for obj in objects:
         name: str = obj["name"]
@@ -207,7 +217,7 @@ def derive_catalog_from_gcs(
 
     if not slug_index:
         print(f"[derive] Nessun parquet pulito trovato in {bucket}", file=sys.stderr)
-        return existing
+        return existing, []
 
     print(f"[derive] Trovati {len(slug_index)} slug su GCS", file=sys.stderr)
 
@@ -224,7 +234,7 @@ def derive_catalog_from_gcs(
 
     if not piped_slug_years:
         print(f"[derive] Nessun slug con pipeline_run.json in {bucket}", file=sys.stderr)
-        return existing
+        return existing, []
 
     # 3. Costruisci indice editoriali per merge
     editorial = {}
@@ -300,10 +310,6 @@ def derive_catalog_from_gcs(
 
         datasets.append(entry)
 
-    if errors:
-        for err in errors:
-            print(f"[derive] ERROR: {err}", file=sys.stderr)
-
     # 4. Assembla catalogo
     catalog: dict[str, Any] = {
         "schema_version": 1,
@@ -317,8 +323,11 @@ def derive_catalog_from_gcs(
     nuovi = sum(1 for d in datasets if d["slug"] not in editorial)
     agg = sum(1 for d in datasets if d["slug"] in editorial)
     print(f"[derive] Catalogo: {len(datasets)} dataset ({nuovi} nuovi, {agg} aggiornati)", file=sys.stderr)
+    if errors:
+        for e in errors:
+            print(f"[derive] ERROR: {e}", file=sys.stderr)
 
-    return catalog
+    return catalog, errors
 
 
 def validate_catalog(catalog: dict[str, Any], schema: dict[str, Any]) -> list[str]:
