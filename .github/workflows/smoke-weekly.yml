@@ -46,8 +46,11 @@ jobs:
       - name: Verify clean_catalog.json
         run: |
           cd dataset-incubator
-          if [ -f registry/clean_catalog.json ]; then
-            python3 -c "
+          if [ ! -f registry/clean_catalog.json ]; then
+            echo "ERROR: registry/clean_catalog.json non trovato"
+            exit 1
+          fi
+          python3 -c "
 import json
 data = json.load(open('registry/clean_catalog.json'))
 n = len(data.get('datasets', []))
@@ -55,18 +58,21 @@ print(f'clean_catalog.json: {n} dataset(s)')
 assert n > 0, 'catalog vuoto'
 print('VALID')
 "
-          else
-            echo "WARN: registry/clean_catalog.json non trovato"
-          fi
 
       - name: Checkout data-explorer and verify catalog compatibility
         run: |
           git clone --depth=1 https://github.com/dataciviclab/data-explorer.git /tmp/data-explorer 2>&1
-          # Verifica che il catalogo sia parsabile dallo script explorer
-          if [ -f dataset-incubator/registry/clean_catalog.json ] && [ -f /tmp/data-explorer/scripts/generate_catalog.mjs ]; then
-            cp dataset-incubator/registry/clean_catalog.json /tmp/data-explorer/
-            cd /tmp/data-explorer
-            node --input-type=module -e "
+          if [ ! -f dataset-incubator/registry/clean_catalog.json ]; then
+            echo "ERROR: clean_catalog.json non disponibile per verifica explorer"
+            exit 1
+          fi
+          if [ ! -f /tmp/data-explorer/scripts/generate_catalog.mjs ]; then
+            echo "ERROR: script explorer generate_catalog.mjs non trovato"
+            exit 1
+          fi
+          cp dataset-incubator/registry/clean_catalog.json /tmp/data-explorer/
+          cd /tmp/data-explorer
+          node --input-type=module -e "
 import { generateCatalogEntry } from './scripts/generate_catalog.mjs';
 import { readFileSync } from 'fs';
 const catalog = JSON.parse(readFileSync('./clean_catalog.json', 'utf-8'));
@@ -76,7 +82,6 @@ for (const ds of catalog.datasets) {
 }
 console.log('OK: tutti i dataset generano entry explorer valide');
 "
-          fi
 
       - name: Report summary
         if: always()
