@@ -238,7 +238,6 @@ jobs:
                           "clean",
                           "--slug",
                           push_slug,
-                          "--update-catalog",
                           "--no-bq",
                       ],
                       cwd=root,
@@ -249,8 +248,8 @@ jobs:
           # --- Build clean catalog (solo se GCP Auth riuscito) ---
           if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
               print(f"\n  Rebuilding clean catalog...")
-              subprocess.run(["python", "scripts/build_clean_catalog.py", "--write"], cwd=root)
-              subprocess.run(["python", "scripts/build_clean_catalog.py", "--check-gcs"], cwd=root)
+              subprocess.run(["python", "scripts/build_clean_catalog.py", "--derive", "--write"], cwd=root, check=True)
+              subprocess.run(["python", "scripts/build_clean_catalog.py", "--check-gcs"], cwd=root, check=True)
 
           if failed_configs:
               print("\nFAIL: one or more configs failed in post-merge full run:")

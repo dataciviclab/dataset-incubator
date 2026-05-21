@@ -10,16 +10,26 @@ from pathlib import Path
 from typing import Any
 
 from lab_connectors.gcs import list_objects, object_exists
+from lab_connectors.gcs.paths import gs_url
 
 
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CATALOG = ROOT / "registry" / "clean_catalog.json"
 DEFAULT_SCHEMA = ROOT / "registry" / "clean_catalog.schema.json"
 
+_PARQUET_TYPE_MAP = {
+    "int8": "INTEGER", "int16": "INTEGER", "int32": "INTEGER", "int64": "INTEGER",
+    "uint8": "INTEGER", "uint16": "INTEGER", "uint32": "INTEGER", "uint64": "INTEGER",
+    "float": "DOUBLE", "double": "DOUBLE", "float32": "DOUBLE", "float64": "DOUBLE",
+    "bool": "BOOLEAN", "boolean": "BOOLEAN",
+    "date32[day]": "DATE", "date64[us]": "TIMESTAMP",
+    "timestamp[us]": "TIMESTAMP", "timestamp[ms]": "TIMESTAMP",
+}
+
 
 def main() -> int:
     parser = argparse.ArgumentParser(
-        description="Normalize and optionally verify the Lab Clean Registry."
+        description="Normalize, derive, and optionally verify the Lab Clean Registry."
     )
     parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
     parser.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
@@ -32,18 +42,38 @@ def main() -> int:
         help="Set updated_at to today's date when writing.",
     )
     parser.add_argument(
+        "--derive",
+        action="store_true",
+        help="Derive catalog from GCS: scan bucket, read parquet schemas, merge with editorial metadata. "
+        "Usa --write per salvare (--derive senza --write è dry-run).",
+    )
+    parser.add_argument(
         "--check-gcs",
         action="store_true",
         help="Verify that public GCS paths resolve to at least one parquet.",
     )
     args = parser.parse_args()
 
-    original_text = args.catalog.read_text(encoding="utf-8")
-    catalog = json.loads(original_text)
+    # Il catalogo di partenza: vuoto se --derive, altrimenti da file
+    if args.derive:
+        raw: dict[str, Any] = {"datasets": []}
+        if args.catalog.exists():
+            try:
+                raw = json.loads(args.catalog.read_text(encoding="utf-8"))
+                print(f"[derive] Caricati metadata editoriali da {args.catalog}", file=sys.stderr)
+            except Exception:
+                print(f"[derive] WARN: cannot read {args.catalog}, starting fresh", file=sys.stderr)
+        catalog, derive_errors = derive_catalog_from_gcs(raw, args.refresh_date)
+    else:
+        original_text = args.catalog.read_text(encoding="utf-8")
+        catalog = json.loads(original_text)
+        derive_errors = []
+
     schema = json.loads(args.schema.read_text(encoding="utf-8"))
     normalized = normalize_catalog(catalog, refresh_date=args.refresh_date)
 
     errors = validate_catalog(normalized, schema)
+    errors.extend(derive_errors)
     if args.check_gcs:
         errors.extend(validate_gcs_locations(normalized))
 
@@ -56,6 +86,11 @@ def main() -> int:
     if args.write:
         args.catalog.write_text(output_text, encoding="utf-8")
         print(f"wrote {args.catalog}")
+        return 0
+
+    # Dry-run: --derive senza --write
+    if args.derive:
+        print(f"ok (dry-run, {len(normalized['datasets'])} datasets)")
         return 0
 
     if output_text != original_text:
@@ -138,6 +173,161 @@ def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
 
     if updated:
         print(f"[enrich] source_id aggiunto a {updated} dataset da dataset.yml")
+
+
+def derive_catalog_from_gcs(
+    existing: dict[str, Any], refresh_date: bool = False
+) -> tuple[dict[str, Any], list[str]]:
+    """Deriva il catalogo scansionando GCS e leggendo schemi parquet.
+
+    1. Scansiona ``gs://dataciviclab-clean/`` per scoprire slug + anni
+    2. Per ogni slug, legge lo schema del parquet più recente
+    3. Costruisce location usando il path contract
+    4. Fonde con metadata editoriali dal catalogo esistente
+    5. Ritorna (catalogo, errori)
+
+    Gli errori di lettura schema fanno fallire lo script: meglio catalogo
+    bloccante che parziale.
+    Returns:
+        Tuple (catalogo_dict, lista_errori).
+    """
+    import duckdb
+
+    from lab_connectors.gcs.paths import https_url as _https
+
+    errors: list[str] = []
+    slug_index: dict[str, set[str]] = {}
+    bucket = "dataciviclab-clean"
+
+    print(f"[derive] Scansione GCS bucket {bucket}...", file=sys.stderr)
+
+    # 1. Scansiona bucket per scoprire slug + anni
+    try:
+        objects = list_objects(bucket, auth=False)
+    except Exception as exc:
+        print(f"[derive] ERRORE: impossibile leggere GCS: {exc}", file=sys.stderr)
+        return existing, [f"GCS unreachable: {exc}"]
+
+    for obj in objects:
+        name: str = obj["name"]
+        parts = name.split("/")
+        if len(parts) == 3 and parts[2].endswith("_clean.parquet"):
+            slug, year = parts[0], parts[1]
+            slug_index.setdefault(slug, set()).add(year)
+
+    if not slug_index:
+        print(f"[derive] Nessun parquet pulito trovato in {bucket}", file=sys.stderr)
+        return existing, []
+
+    print(f"[derive] Trovati {len(slug_index)} slug su GCS", file=sys.stderr)
+
+    # 2. Filtra slug con pipeline_run.json (gate: solo da pipeline)
+    piped_slug_years: dict[str, set[str]] = {}
+    for slug, slug_years in slug_index.items():
+        for y in slug_years:
+            if object_exists(bucket, f"{slug}/{y}/pipeline_run.json"):
+                piped_slug_years[slug] = slug_years
+                break
+    skipped = len(slug_index) - len(piped_slug_years)
+    if skipped:
+        print(f"[derive] Esclusi {skipped} slug senza pipeline_run.json", file=sys.stderr)
+
+    if not piped_slug_years:
+        print(f"[derive] Nessun slug con pipeline_run.json in {bucket}", file=sys.stderr)
+        return existing, []
+
+    # 3. Costruisci indice editoriali per merge
+    editorial = {}
+    for ds in existing.get("datasets", []):
+        editorial[ds["slug"]] = ds
+
+    # 4. Per ogni slug, deriva entry
+    datasets: list[dict[str, Any]] = []
+    for slug in sorted(piped_slug_years):
+        years = sorted(piped_slug_years[slug])
+        if not years:
+            continue
+
+        multi_file = len(years) > 1
+        gcs_path = (
+            gs_url("clean", "clean_parquet", slug=slug, year="*")
+            if multi_file
+            else gs_url("clean", "clean_parquet", slug=slug, year=years[0])
+        )
+
+        # Leggi schema dal parquet più recente su GCS (via DuckDB read_parquet)
+        columns: list[dict[str, str]] = []
+        latest_year = years[-1]
+        parquet_url = _https("clean", "clean_parquet", slug=slug, year=latest_year)
+        try:
+            with duckdb.connect() as con:
+                rows = con.sql(f"DESCRIBE SELECT * FROM read_parquet('{parquet_url}')").fetchall()
+            for row in rows:
+                col_name = row[0]
+                raw_type = str(row[1]).lower()
+                # Mappa tipo parquet generico
+                if "int" in raw_type:
+                    bq_type = "INTEGER"
+                elif "float" in raw_type or "double" in raw_type:
+                    bq_type = "DOUBLE"
+                elif "decimal" in raw_type:
+                    bq_type = "DOUBLE"
+                elif "date" in raw_type or "timestamp" in raw_type:
+                    bq_type = "DATE" if "date" in raw_type else "TIMESTAMP"
+                elif "bool" in raw_type:
+                    bq_type = "BOOLEAN"
+                else:
+                    bq_type = "VARCHAR"
+                role = "dimension" if bq_type == "VARCHAR" else "metric"
+                columns.append({"name": col_name, "type": bq_type, "role": role, "description": ""})
+        except Exception as exc:
+            errors.append(f"{slug}: cannot read schema from {parquet_url}: {exc}")
+            continue
+
+        # Entry derivata
+        entry: dict[str, Any] = {
+            "slug": slug,
+            "name": slug.replace("_", " ").title(),
+            "description": "",
+            "source": "",
+            "source_id": "",
+            "period": {"start": int(years[0]), "end": int(years[-1])},
+            "columns": columns,
+            "location": {"type": "gcs", "path": gcs_path, "multi_file": multi_file},
+            "stage": "published",
+            "registry_source": "derive_auto",
+        }
+
+        # Merge con editoriali: preserva campi umani
+        old = editorial.get(slug)
+        if old:
+            for field in ("name", "description", "source", "source_id", "stage"):
+                if old.get(field):
+                    entry[field] = old[field]
+            # Se lo slug esisteva già con source_id, preservalo
+            if old.get("source_id"):
+                entry["source_id"] = old["source_id"]
+
+        datasets.append(entry)
+
+    # 4. Assembla catalogo
+    catalog: dict[str, Any] = {
+        "schema_version": 1,
+        "name": "Lab Clean Registry",
+        "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
+        "source_repo": "dataciviclab/dataset-incubator",
+        "updated_at": str(date.today()),
+        "datasets": sorted(datasets, key=lambda d: d["slug"]),
+    }
+
+    nuovi = sum(1 for d in datasets if d["slug"] not in editorial)
+    agg = sum(1 for d in datasets if d["slug"] in editorial)
+    print(f"[derive] Catalogo: {len(datasets)} dataset ({nuovi} nuovi, {agg} aggiornati)", file=sys.stderr)
+    if errors:
+        for e in errors:
+            print(f"[derive] ERROR: {e}", file=sys.stderr)
+
+    return catalog, errors
 
 
 def validate_catalog(catalog: dict[str, Any], schema: dict[str, Any]) -> list[str]:
