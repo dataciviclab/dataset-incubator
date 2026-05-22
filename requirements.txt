@@ -1,4 +1,4 @@
 # lab-connectors — infrastruttura condivisa: HTTP client, DuckDB safe_connect,
 # GCS client/paths, MCP core. Usata da scripts/ e tools/clean-query-mcp/.
 # Extras duckdb + gcs per safe_connect() e upload su GCS.
-lab-connectors[duckdb,gcs] @ git+https://github.com/dataciviclab/lab-connectors.git@v0.10.0
+lab-connectors[duckdb,gcs] @ git+https://github.com/dataciviclab/lab-connectors.git@v0.10.1
