@@ -40,6 +40,7 @@ from lab_connectors.gcs.paths import (
     MART_BUCKET,
     catalog_manifest,
     gs_url,
+    mart_parquet,
     pipeline_run,
 )
 
@@ -381,7 +382,7 @@ def push_mart(bq_client, slug_filter=None, year_filter=None, dry_run=False):
 
         for year in years:
             for parq in get_parquets(slug_dir / year):
-                gcs_path = f"{slug}/{year}/{parq.name}"
+                gcs_path = mart_parquet(slug, year, parq.stem)
                 push_gcs(parq, MART_BUCKET, gcs_path, dry_run)
                 if bq_client:
                     push_bq(bq_client, parq, slug, year, dry_run)
