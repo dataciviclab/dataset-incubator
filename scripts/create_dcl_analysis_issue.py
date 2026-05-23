@@ -15,8 +15,9 @@ import sys
 
 def main() -> int:
     items_raw = os.environ.get("ITEMS_JSON", "[]")
-    pr_number = os.environ.get("PR_NUMBER", "?")
-    pr_title = os.environ.get("PR_TITLE", "?")
+    pr_number = os.environ.get("PR_NUMBER", "")
+    pr_title = os.environ.get("PR_TITLE", "")
+    pr_ref = f"#{pr_number}" if pr_number else pr_title if pr_title else "?"
 
     try:
         items = json.loads(items_raw)
@@ -37,7 +38,7 @@ def main() -> int:
         body = (
             f"## Nuovo dataset pronto per analisi\n\n"
 f"Il dataset `{slug}` è stato aggiunto al catalogo "
-f"(PR #{pr_number} — {pr_title}).\n\n"
+f"({pr_ref}).\n\n"
 f"### Dati disponibili\n\n"
 f"- **Contratto tecnico**: `{root}/{slug}/` in dataset-incubator\n"
 f"- **Parquet (se GCS OK)**: `gs://dataciviclab-clean/{slug}/`\n"

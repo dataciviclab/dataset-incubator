@@ -50,8 +50,8 @@ jobs:
 
       # Notifiche downstream — solo su push a main (dopo merge registry PR)
       - name: Detect new slugs
-        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         id: detect
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
         run: |
           python - <<'PY'
           import json, os, subprocess
@@ -80,8 +80,12 @@ jobs:
               print(f"Nuovi slug: {', '.join(sorted(added))}")
           PY
 
+      # Eventuali step downstream leggono new_slugs; se detect è stato saltato
+      # (es. workflow_dispatch), l'output è vuoto e fromJSON fallisce.
+      # Per sicurezza si usa always() + check esplicito.
+
       - name: Notify data-explorer
-        if: github.ref == 'refs/heads/main' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
+        if: always() && steps.detect.outputs.new_slugs != '' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
         run: |
           curl -X POST \
             -H "Authorization: Bearer ${{ secrets.LAB_OPS_TOKEN }}" \
@@ -90,15 +94,19 @@ jobs:
             -d '{"event_type":"catalog_updated"}'
 
       - name: Open follow-up issue in data-explorer
-        if: github.ref == 'refs/heads/main' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
+        if: always() && steps.detect.outputs.new_slugs != '' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
         env:
           GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+          PR_NUMBER: ""
+          PR_TITLE: "merge in main@${{ github.sha }}"
           ITEMS_JSON: ${{ steps.detect.outputs.new_slugs }}
         run: python scripts/create_de_followup_issue.py
 
       - name: Open analysis issue in dataciviclab
-        if: github.ref == 'refs/heads/main' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
+        if: always() && steps.detect.outputs.new_slugs != '' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
         env:
           GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+          PR_NUMBER: ""
+          PR_TITLE: "merge in main@${{ github.sha }}"
           ITEMS_JSON: ${{ steps.detect.outputs.new_slugs }}
         run: python scripts/create_dcl_analysis_issue.py
