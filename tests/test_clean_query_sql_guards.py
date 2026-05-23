@@ -7,8 +7,9 @@ import pytest
 
 import server
 
+pytestmark = pytest.mark.contract
 
-@pytest.mark.contract
+
 class CleanQuerySqlGuardTest(unittest.TestCase):
     def assert_allowed(self, sql: str) -> None:
         server._validate_scope(sql)
@@ -66,7 +67,6 @@ def _make_mock_conn() -> MagicMock:
 _SLUG = "giustizia_penale_indicatori"  # single-file, multi-year (2014-2024)
 
 
-@pytest.mark.contract
 class CleanQueryYearFilterContractTest(unittest.TestCase):
     """Verifica che year=... inietti WHERE <year_col> = <year> nella SQL.
 
@@ -148,10 +148,11 @@ class CleanQueryYearFilterContractTest(unittest.TestCase):
 # ─── Unit: _inject_year_filter (pure function) ──────────────────────────────
 
 
-@pytest.mark.pure_unit
 class InjectYearFilterUnitTest(unittest.TestCase):
     """Test per _inject_year_filter come funzione pura (nessun I/O)."""
 
+    @pytest.mark.pure_unit
+    @pytest.mark.pure_unit
     def test_injects_where_after_from_cte(self) -> None:
         sql = (
             "WITH clean_input AS (SELECT * FROM read_parquet('fake.parquet')) "
@@ -162,6 +163,7 @@ class InjectYearFilterUnitTest(unittest.TestCase):
         # WHERE deve stare tra FROM clean_input e nient'altro
         self.assertRegex(result, r"FROM clean_input WHERE anno = 2024\s*$")
 
+    @pytest.mark.pure_unit
     def test_injects_where_before_limit(self) -> None:
         sql = (
             "WITH clean_input AS (SELECT * FROM read_parquet('fake.parquet')) "
@@ -171,6 +173,7 @@ class InjectYearFilterUnitTest(unittest.TestCase):
         self.assertIn("WHERE anno = 2023", result)
         self.assertRegex(result, r"FROM clean_input WHERE anno = 2023\s+LIMIT")
 
+    @pytest.mark.pure_unit
     def test_injects_where_before_group_by(self) -> None:
         sql = (
             "WITH clean_input AS (SELECT * FROM read_parquet('fake.parquet')) "
@@ -181,6 +184,7 @@ class InjectYearFilterUnitTest(unittest.TestCase):
         self.assertIn("WHERE anno = 2022", result)
         self.assertRegex(result, r"FROM clean_input WHERE anno = 2022\s+GROUP BY")
 
+    @pytest.mark.pure_unit
     def test_ignores_cte_inner_from(self) -> None:
         """Il filtro DEVE andare nel FROM esterno, non in quello della CTE."""
         sql = (
@@ -192,16 +196,19 @@ class InjectYearFilterUnitTest(unittest.TestCase):
         count = result.count("WHERE anno = 2024")
         self.assertEqual(count, 1, f"WHERE deve comparire una sola volta, non {count}")
 
+    @pytest.mark.pure_unit
     def test_skips_when_year_col_none(self) -> None:
         sql = "SELECT COUNT(*) FROM clean_input"
         result = server._inject_year_filter(sql, None, 2024)
         self.assertEqual(result, sql)
 
+    @pytest.mark.pure_unit
     def test_skips_when_year_none(self) -> None:
         sql = "SELECT COUNT(*) FROM clean_input"
         result = server._inject_year_filter(sql, "anno", None)
         self.assertEqual(result, sql)
 
+    @pytest.mark.pure_unit
     def test_does_not_double_where(self) -> None:
         sql = (
             "WITH clean_input AS (SELECT * FROM read_parquet('fake.parquet')) "
