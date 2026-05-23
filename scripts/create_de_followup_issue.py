@@ -1,12 +1,9 @@
 """Crea una issue di follow-up in data-explorer per nuovi dataset pubblicati.
 
 Usage (env vars):
-  ITEMS_JSON  JSON array di items con slug
-  PR_NUMBER   numero della PR mergiata
-  PR_TITLE    titolo della PR mergiata
-  BASE_SHA    (opzionale) SHA del base branch prima del merge.
-              Se omesso (es. workflow_dispatch), confronta col catalogo
-              corrente su filesystem.
+  ITEMS_JSON  JSON array di items con slug (solo nuovi, filtro già applicato)
+  PR_NUMBER   numero della PR mergiata (opzionale)
+  PR_TITLE    titolo della PR mergiata (opzionale)
   GH_TOKEN    token GitHub con scope issues:write su data-explorer
 """
 
@@ -15,14 +12,11 @@ import os
 import subprocess
 import sys
 
-from _catalog_helpers import load_catalog_slugs
-
 
 def main() -> int:
     items_raw = os.environ.get("ITEMS_JSON", "[]")
     pr_number = os.environ.get("PR_NUMBER", "?")
     pr_title = os.environ.get("PR_TITLE", "?")
-    base_sha = os.environ.get("BASE_SHA", None)
 
     try:
         items = json.loads(items_raw)
@@ -34,34 +28,17 @@ def main() -> int:
         print("Nessun item — skip")
         return 0
 
-    # Filtra item già presenti nel catalogo **pre-merge** (base branch)
-    known_slugs = load_catalog_slugs(git_ref=base_sha)
-    # Se il catalogo non è stato leggibile, known_slugs sarà vuoto
-    # e nessun filtro verrà applicato (tutti gli item passano)
-    new_items = [i for i in items if i.get("slug") not in known_slugs] if known_slugs else items
-
-    if not new_items:
-        print(
-            f"Tutti gli item ({len(items)}) sono già presenti nel catalogo "
-            f"pre-merge — nessuna issue DE creata"
-        )
-        return 0
-
-    skipped = len(items) - len(new_items)
-    if skipped:
-        print(f"Saltati {skipped} item già in catalogo pre-merge")
-
     # Costruisci lista items
     item_lines = "\n".join(
         f"- [ ] {i['slug']}: aggiungere tema in src/data/themes.json.py (data-explorer) e creare pagina dataset"
-        for i in new_items
+        for i in items
     )
 
     # Titolo
-    if len(new_items) == 1:
-        title = f"follow-up: pagina e tema per {new_items[0]['slug']}"
+    if len(items) == 1:
+        title = f"follow-up: pagina e tema per {items[0]['slug']}"
     else:
-        title = f"follow-up: pagina e tema per {len(new_items)} nuovi dataset"
+        title = f"follow-up: pagina e tema per {len(items)} nuovi dataset"
 
     # Body
     body = (

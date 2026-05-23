@@ -12,7 +12,6 @@ from __future__ import annotations
 
 import json
 import os
-from pathlib import Path
 from unittest.mock import MagicMock, patch
 
 import pytest
@@ -83,10 +82,10 @@ class TestReadCatalogJson:
 
 
 @pytest.mark.contract
-class TestFilterSlugs:
-    """Testa la logica di filtro nel main, con mock di subprocess e gh."""
+class TestCreateIssues:
+    """Testa la creazione issue con mock di subprocess e gh."""
 
-    def _run_main(self, items, base_sha=None):
+    def _run_main(self, items):
         """Avvia main() con env vars controllate e mock di subprocess.run."""
         env = {
             "ITEMS_JSON": json.dumps(items),
@@ -94,21 +93,12 @@ class TestFilterSlugs:
             "PR_TITLE": "test PR",
             "GH_TOKEN": "fake-token",
         }
-        if base_sha:
-            env["BASE_SHA"] = base_sha
 
         with patch.dict(os.environ, env, clear=True):
             from create_de_followup_issue import main
 
-            # Mock git show per restituire il catalogo fixture
             def fake_subprocess_run(cmd, **kwargs):
-                if "git" in cmd and "show" in cmd and "nonexistent" not in " ".join(cmd):
-                    return MagicMock(
-                        returncode=0,
-                        stdout=json.dumps(FIXTURE_CATALOG),
-                        stderr="",
-                    )
-                elif "gh" in cmd and "issue" in cmd and "create" in cmd:
+                if "gh" in cmd and "issue" in cmd and "create" in cmd:
                     return MagicMock(
                         returncode=0,
                         stdout="https://github.com/dataciviclab/data-explorer/issues/999",
@@ -119,52 +109,24 @@ class TestFilterSlugs:
             with patch("subprocess.run", side_effect=fake_subprocess_run):
                 return main()
 
-    def test_all_existing_skips_issue(self):
-        """Tutti gli item già in catalogo pre-merge -> nessuna issue."""
+    def test_single_item_creates_issue(self):
+        """Un item -> crea issue."""
+        rc = self._run_main(
+            items=[{"slug": "mega-nuovo-dataset", "kind": "candidate"}],
+        )
+        assert rc == 0
+
+    def test_multiple_items_all_create_issues(self):
+        """Più item -> tutti generano issue (nessun filtro)."""
         rc = self._run_main(
             items=[
                 {"slug": "bdap-lea", "kind": "candidate"},
-            ],
-            base_sha="main",
-        )
-        assert rc == 0  # Successo: skip senza creare issue
-
-    def test_new_item_creates_issue(self):
-        """Item nuovo (non in catalogo pre-merge) -> crea issue."""
-        rc = self._run_main(
-            items=[
                 {"slug": "mega-nuovo-dataset", "kind": "candidate"},
             ],
-            base_sha="main",
-        )
-        assert rc == 0  # Issue creata
-
-    def test_mixed_only_new_passes(self):
-        """Misto: solo gli item nuovi generano issue."""
-        rc = self._run_main(
-            items=[
-                {"slug": "bdap-lea", "kind": "candidate"},            # già noto
-                {"slug": "mega-nuovo-dataset", "kind": "candidate"},  # nuovo
-            ],
-            base_sha="main",
         )
         assert rc == 0
 
     def test_empty_items_skips(self):
         """Lista vuota -> skip."""
-        rc = self._run_main(items=[], base_sha="main")
+        rc = self._run_main(items=[])
         assert rc == 0
-
-    def test_without_base_sha_falls_back_to_disk(self):
-        """Senza BASE_SHA (workflow_dispatch) usa catalogo da filesystem.
-
-        Se il catalogo su disco non esiste, nessun filtro -> item passa.
-        """
-        with patch.object(Path, "exists", return_value=False):
-            rc = self._run_main(
-                items=[
-                    {"slug": "bdap-lea", "kind": "candidate"},
-                ],
-                base_sha=None,
-            )
-        assert rc == 0  # Issue creata perché catalogo non trovato

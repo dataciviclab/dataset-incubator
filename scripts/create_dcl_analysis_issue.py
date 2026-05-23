@@ -1,15 +1,9 @@
 """Crea una issue in dataciviclab per avviare l'analisi di un nuovo dataset.
 
-Si attiva dopo il post-merge, solo per dataset appena pubblicati (non già
-presenti nel catalogo pre-merge).
-
 Usage (env vars):
-  ITEMS_JSON  JSON array di items con slug
-  PR_NUMBER   numero della PR mergiata
-  PR_TITLE    titolo della PR mergiata
-  BASE_SHA    (opzionale) SHA del base branch prima del merge.
-              Se omesso (es. workflow_dispatch), confronta col catalogo
-              corrente su filesystem.
+  ITEMS_JSON  JSON array di items con slug (solo nuovi, filtro già applicato)
+  PR_NUMBER   numero della PR mergiata (opzionale)
+  PR_TITLE    titolo della PR mergiata (opzionale)
   GH_TOKEN    token GitHub con scope issues:write su dataciviclab
 """
 
@@ -17,8 +11,6 @@ import json
 import os
 import subprocess
 import sys
-
-from _catalog_helpers import load_catalog_slugs
 
 
 def main() -> int:
@@ -36,16 +28,8 @@ def main() -> int:
         print("Nessun item — skip")
         return 0
 
-    # Filtra item già presenti nel catalogo pre-merge
-    known_slugs = load_catalog_slugs(git_ref=os.environ.get("BASE_SHA"))
-    new_items = [i for i in items if i.get("slug") not in known_slugs] if known_slugs else items
-
-    if not new_items:
-        print(f"Tutti gli item ({len(items)}) sono già presenti nel catalogo pre-merge — nessuna issue DCL creata")
-        return 0
-
     # Body
-    for item in new_items:
+    for item in items:
         slug = item.get("slug", "?")
         root = item.get("root", "candidates")
         title = f"analisi: {slug} — nuovo dataset pubblicato"
