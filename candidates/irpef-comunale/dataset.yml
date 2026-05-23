@@ -93,14 +93,12 @@ mart:
       sql: "sql/mart.sql"
     - name: "irpef_by_comune"
       sql: "sql/mart_comuni.sql"
-  required_tables: ["irpef_by_regione", "irpef_by_comune"]
-  validate: {}
-
-cross_year:
-  tables:
     - name: "irpef_capacita_fiscale_multi_anno"
       sql: "sql/mart_multi_anno.sql"
+      years: [2019, 2020, 2021, 2022, 2023]
       source_layer: "clean"
+  required_tables: ["irpef_by_regione", "irpef_by_comune"]
+  validate: {}
 
 validation:
   fail_on_error: true

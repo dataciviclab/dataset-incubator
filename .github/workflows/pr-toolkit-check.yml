@@ -129,8 +129,7 @@ jobs:
         run: |
           toolkit run full \
             --config "${{ matrix.config.config_path }}" \
-            --years "${{ matrix.config.year }}" \
-            --json --smoke > run_full.json 2>run_full_err.log; ec=$?
+            --json --sample-rows 1000 > run_full.json 2>run_full_err.log; ec=$?
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
           cat run_full.json 2>/dev/null || echo "JSON output non disponibile"
           exit $ec
