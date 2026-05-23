@@ -15,7 +15,7 @@ import os
 import subprocess
 import sys
 
-from _catalog_helpers import extract_slugs, load_catalog_slugs
+from _catalog_helpers import load_catalog_slugs
 
 
 def main() -> int:
