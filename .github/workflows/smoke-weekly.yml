@@ -51,13 +51,13 @@ jobs:
             exit 1
           fi
           python3 -c "
-import json
-data = json.load(open('registry/clean_catalog.json'))
-n = len(data.get('datasets', []))
-print(f'clean_catalog.json: {n} dataset(s)')
-assert n > 0, 'catalog vuoto'
-print('VALID')
-"
+          import json
+          data = json.load(open('registry/clean_catalog.json'))
+          n = len(data.get('datasets', []))
+          print(f'clean_catalog.json: {n} dataset(s)')
+          assert n > 0, 'catalog vuoto'
+          print('VALID')
+          "
 
       - name: Checkout data-explorer and verify catalog compatibility
         run: |
@@ -73,15 +73,15 @@ print('VALID')
           cp dataset-incubator/registry/clean_catalog.json /tmp/data-explorer/
           cd /tmp/data-explorer
           node --input-type=module -e "
-import { generateCatalogEntry } from './scripts/generate_catalog.mjs';
-import { readFileSync } from 'fs';
-const catalog = JSON.parse(readFileSync('./clean_catalog.json', 'utf-8'));
-for (const ds of catalog.datasets) {
-  const entry = generateCatalogEntry(ds);
-  console.log('  ', entry.slug || ds.slug, '-', entry.stage);
-}
-console.log('OK: tutti i dataset generano entry explorer valide');
-"
+          import { generateCatalogEntry } from './scripts/generate_catalog.mjs';
+          import { readFileSync } from 'fs';
+          const catalog = JSON.parse(readFileSync('./clean_catalog.json', 'utf-8'));
+          for (const ds of catalog.datasets) {
+            const entry = generateCatalogEntry(ds);
+            console.log('  ', entry.slug || ds.slug, '-', entry.stage);
+          }
+          console.log('OK: tutti i dataset generano entry explorer valide');
+          "
 
       - name: Report summary
         if: always()
