@@ -24,8 +24,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout dataset-incubator
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 2  # serve per git diff HEAD~1 nei passaggi notify
 
       - name: Set up Python
         uses: actions/setup-python@v6
@@ -36,7 +37,7 @@ jobs:
         run: |
           python -m pip install -r requirements.txt
           python -m pip install -r tools/clean-query-mcp/requirements.txt
-          python -m pip install pytest pytest-timeout  # marker test + timeout da pyproject.toml
+          python -m pip install pytest pytest-timeout
 
       - name: Validate catalog and public GCS paths
         run: python scripts/build_clean_catalog.py --check-gcs
@@ -46,3 +47,66 @@ jobs:
 
       - name: Run clean-query tests
         run: python -m pytest tests/test_clean_query_catalog.py tests/test_clean_query_sql_guards.py -q --tb=line
+
+      # Notifiche downstream — solo su push a main (dopo merge registry PR)
+      - name: Detect new slugs
+        id: detect
+        if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+        run: |
+          python - <<'PY'
+          import json, os, subprocess
+
+          r = subprocess.run(
+              ["git", "show", "HEAD~1:registry/clean_catalog.json"],
+              capture_output=True, text=True
+          )
+          old_slugs = set()
+          if r.returncode == 0:
+              old = json.loads(r.stdout)
+              old_slugs = {e["slug"] for e in old.get("datasets", []) if "slug" in e}
+
+          with open("registry/clean_catalog.json") as f:
+              new = json.load(f)
+          new_slugs = {e["slug"] for e in new.get("datasets", []) if "slug" in e}
+
+          added = new_slugs - old_slugs
+          items = [{"slug": s, "root": "candidates"} for s in added]
+          result = json.dumps(items)
+
+          with open(os.environ["GITHUB_OUTPUT"], "a") as out:
+              out.write(f"new_slugs={result}\n")
+
+          if added:
+              print(f"Nuovi slug: {', '.join(sorted(added))}")
+          PY
+
+      # Eventuali step downstream leggono new_slugs; se detect è stato saltato
+      # (es. workflow_dispatch), l'output è vuoto e fromJSON fallisce.
+      # Per sicurezza si usa always() + check esplicito.
+
+      - name: Notify data-explorer
+        if: always() && steps.detect.outputs.new_slugs != '' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
+        run: |
+          curl -X POST \
+            -H "Authorization: Bearer ${{ secrets.LAB_OPS_TOKEN }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/dataciviclab/data-explorer/dispatches \
+            -d '{"event_type":"catalog_updated"}'
+
+      - name: Open follow-up issue in data-explorer
+        if: always() && steps.detect.outputs.new_slugs != '' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
+        env:
+          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+          PR_NUMBER: ""
+          PR_TITLE: "merge in main@${{ github.sha }}"
+          ITEMS_JSON: ${{ steps.detect.outputs.new_slugs }}
+        run: python scripts/create_de_followup_issue.py
+
+      - name: Open analysis issue in dataciviclab
+        if: always() && steps.detect.outputs.new_slugs != '' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
+        env:
+          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+          PR_NUMBER: ""
+          PR_TITLE: "merge in main@${{ github.sha }}"
+          ITEMS_JSON: ${{ steps.detect.outputs.new_slugs }}
+        run: python scripts/create_dcl_analysis_issue.py

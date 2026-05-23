@@ -450,22 +450,4 @@ jobs:
               --draft
           fi
 
-      - name: Notify data-explorer
-        if: success()
-        run: |
-          curl -X POST \
-            -H "Authorization: Bearer ${{ secrets.LAB_OPS_TOKEN }}" \
-            -H "Accept: application/vnd.github+json" \
-            https://api.github.com/repos/dataciviclab/data-explorer/dispatches \
-            -d '{"event_type":"catalog_updated"}' || echo "WARN: dispatch non configurato (LAB_OPS_TOKEN mancante?)"
 
-      - name: Open follow-up issue in data-explorer
-        if: success()
-        env:
-          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_TITLE: ${{ github.event.pull_request.title }}
-          BASE_SHA: ${{ github.event.pull_request.base.sha }}
-        run: |
-          ITEMS_JSON=$(python -c "import json; print(json.dumps(json.load(open('detect_output.json'))['items']))") \
-            python scripts/create_de_followup_issue.py

@@ -19,12 +19,18 @@ Portare un caso da issue intake a PR mergiata — candidate strutturato, runnabl
 
 ## Entry point
 
-- Issue con label `intake` e template `new-candidate.yml`
-- URL di una fonte pubblica verificata
+- Issue con label `intake` e template `new-candidate.yml`, creata da un
+  [source-check](https://github.com/dataciviclab/source-observatory/blob/main/skills/source-check.md)
+  con verdetto `go intake`
+- **Discussion Domanda** di riferimento: la domanda civica che ha motivato
+  lo scouting, in `dataciviclab` categoria `Domanda`
+- URL di una fonte pubblica già verificata (source-check non necessario se
+  la fonte è già nota)
 
 ## Stop rule
 
-Non proseguire se: source-check debole, `clean` è già mart, caso troppo esplorativo, perimetro instabile.
+Non proseguire se: source-check non completato con `go intake`, perimetro
+instabile, `clean` è già mart, caso troppo esplorativo.
 
 ## Procedura
 
@@ -40,22 +46,18 @@ Due modalità secondo il punto di partenza:
 
 **Source nuova, hai un URL diretto al file:**
 
-`toolkit init --url` genera i file nella directory corrente (`./{slug}/`). Il candidate deve stare in `candidates/{slug}/`, quindi esegui il comando da dentro `candidates/`:
-
 ```bash
 cd candidates
-toolkit init --url https://example.com/data.csv --years 2024
+toolkit scout https://example.com/data.csv --scaffold
 cd ..
 ```
 
-Oppure, se preferisci inizializzare dalla root e poi spostare:
+`toolkit scout --scaffold` (alias `-s`) genera: `dataset.yml`, `sql/clean.sql`,
+`sql/mart.sql`, `README.md`, `notes.md`, `notebooks/`. Lo scaffold è creato in
+`./{slug}/` — esegui il comando da dentro `candidates/` per avere il candidate
+nella posizione giusta.
 
-```bash
-toolkit init --url https://example.com/data.csv --years 2024
-mv ./{slug} candidates/{slug}
-```
-
-`init` scarica, profile (encoding, delimiter, colonne), genera `dataset.yml`, `sql/clean.sql`, `sql/mart.sql`, `README.md`, `notes.md`, `notebooks/`.
+Se vuoi anche eseguire subito il run raw dopo lo scaffold, aggiungi `--run` (alias `-r`).
 
 **Candidate strutturato già esistente, vuoi rigenerare lo scaffold:**
 ```bash
@@ -64,7 +66,7 @@ toolkit init --config candidates/{slug}/dataset.yml --years 2024
 
 ### 3. Struttura
 
-Completa quello che `init --url` ha lasciato vuoto. Template in `templates/candidate/`:
+Completa quello che `toolkit scout --scaffold` ha lasciato vuoto. Template in `templates/candidate/`:
 - `README.md` — descrivi il candidate
 - `notes.md` — domanda guida, rischi, note operative
 - `notebooks/<slug>_v0.ipynb` — copia dal template, imposta `METRICA` / `METRICA_CLEAN` nella cella setup
