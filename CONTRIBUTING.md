@@ -57,7 +57,7 @@ Se stai ancora esplorando:
 - una domanda civica ancora troppo larga
 - un possible filone da stringere meglio
 
-usa prima una `Discussion` del repo, nella category `Datasets`.
+usa prima una `Discussion` del repo, nella category `Domanda`.
 
 Per un source-check leggero prima di aprire una Discussion o una issue di
 intake, vedi il flusso in `source-observatory`.

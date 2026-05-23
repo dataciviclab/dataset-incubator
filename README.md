@@ -16,7 +16,7 @@ source-observatory  →  dataset-incubator  →  toolkit  →  GCS  →  data-ex
 
 Un filone entra in DI in due modi:
 
-1. **Da Source Observatory** — dopo un `source-check` con verdetto `go Discussion`, la GitHub Action `discussion-to-intake.yml` in `dataciviclab` crea automaticamente una issue in `dataset-incubator` (label `intake`) usando il template `new-candidate.yml`.
+1. **Da Source Observatory** — dopo un `source-check` con verdetto `go intake`, il team apre una issue in `dataset-incubator` (label `intake`) usando il template `new-candidate.yml`. La issue è collegata alla Discussion `Domanda` che ha originato lo scouting.
 
 2. **Proposta diretta** — chiunque può aprire una issue con lo stesso template; se è abbastanza matura, riceve la label `intake` e il flusso prosegue.
 
@@ -31,7 +31,7 @@ Un filone entra in DI in due modi:
 
 Un filone esce da DI in tre modi:
 
-- **`dataciviclab/analisi/`** — quando è pronto per un primo layer pubblico (via skill `promote-analisi`)
+- **`dataciviclab/analisi/`** — quando è pronto per un primo layer pubblico (via skill `new-analysis` in `dataciviclab/skills/`)
 - **repo progetto dedicata** — quando il filone merita una casa autonoma
 - **archiviazione** — quando il caso non regge o non è prioritario
 
@@ -130,7 +130,7 @@ I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia
 
 | Risorsa | Dove | Quando |
 |---|---|---|
-| `promote-analisi` | `lab-ops/skills/` | Quando un filone è pronto per `dataciviclab/analisi/` |
+| `new-analysis` | `dataciviclab/skills/` | Quando un filone è pronto per `dataciviclab/analisi/` |
 
 ## Regole operative
 

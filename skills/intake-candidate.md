@@ -19,12 +19,18 @@ Portare un caso da issue intake a PR mergiata — candidate strutturato, runnabl
 
 ## Entry point
 
-- Issue con label `intake` e template `new-candidate.yml`
-- URL di una fonte pubblica verificata
+- Issue con label `intake` e template `new-candidate.yml`, creata da un
+  [source-check](https://github.com/dataciviclab/source-observatory/blob/main/skills/source-check.md)
+  con verdetto `go intake`
+- **Discussion Domanda** di riferimento: la domanda civica che ha motivato
+  lo scouting, in `dataciviclab` categoria `Domanda`
+- URL di una fonte pubblica già verificata (source-check non necessario se
+  la fonte è già nota)
 
 ## Stop rule
 
-Non proseguire se: source-check debole, `clean` è già mart, caso troppo esplorativo, perimetro instabile.
+Non proseguire se: source-check non completato con `go intake`, perimetro
+instabile, `clean` è già mart, caso troppo esplorativo.
 
 ## Procedura
 

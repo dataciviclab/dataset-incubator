@@ -27,7 +27,7 @@ Sono il riferimento umano per il comportamento della pipeline toolkit e delle Gi
 
 | Risorsa | Dove | Quando |
 |---|---|---|
-| `promote-analisi` | `lab-ops/skills/` | Quando un filone è pronto per `dataciviclab/analisi/` |
+| `new-analysis` | `dataciviclab/skills/` | Quando un filone è pronto per `dataciviclab/analisi/` |
 
 ## Struttura
 
