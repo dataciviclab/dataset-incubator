@@ -43,9 +43,9 @@ def main() -> int:
     # Body
     body = (
         f"## Nuovo/i dataset pubblicato/i\n\n"
-        f"Il seguente/i dataset sono stati pubblicati automaticamente da "
-        f"PR #{pr_number} — {pr_title}.\n"
-        f"Sono disponibili nel catalogo tecnico ma **mancano di pagina curata e tema**.\n\n"
+f"Il seguente/i dataset sono stati aggiunti al catalogo tecnico da "
+f"PR #{pr_number} — {pr_title}.\n"
+f"Sono in catalogo ma **mancano di pagina curata e tema**.\n\n"
         f"### Da fare\n\n{item_lines}\n\n"
         f"### Workflow\n\n"
         f"1. Aggiungere/modificare in `src/data/themes.json.py` in data-explorer (decisione editoriale)\n"

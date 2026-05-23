@@ -36,12 +36,12 @@ def main() -> int:
 
         body = (
             f"## Nuovo dataset pronto per analisi\n\n"
-            f"Il dataset `{slug}` è stato pubblicato automaticamente da "
-            f"PR #{pr_number} — {pr_title}.\n\n"
-            f"### Dati disponibili\n\n"
-            f"- **Contratto tecnico**: `{root}/{slug}/` in dataset-incubator\n"
-            f"- **Parquet pubblici**: `gs://dataciviclab-clean/{slug}/`\n"
-            f"- **Catalogo**: {slug} in registry/clean_catalog.json\n\n"
+f"Il dataset `{slug}` è stato aggiunto al catalogo "
+f"(PR #{pr_number} — {pr_title}).\n\n"
+f"### Dati disponibili\n\n"
+f"- **Contratto tecnico**: `{root}/{slug}/` in dataset-incubator\n"
+f"- **Parquet (se GCS OK)**: `gs://dataciviclab-clean/{slug}/`\n"
+f"- **Catalogo**: {slug} in registry/clean_catalog.json\n\n"
             f"### Prossimo passo\n\n"
             f"Usare [new-analysis](https://github.com/dataciviclab/dataciviclab/blob/main/skills/new-analysis.md) "
             f"per aprire un'analisi in `dataciviclab/analisi/{slug}/`:\n\n"
