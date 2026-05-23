@@ -471,7 +471,7 @@ jobs:
             python scripts/create_de_followup_issue.py
 
       - name: Open analysis issue in dataciviclab
-        if: success()
+        if: needs.sample_run.result == 'success'
         env:
           GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
