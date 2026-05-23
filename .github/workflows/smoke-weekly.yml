@@ -7,7 +7,7 @@ on:
 
 env:
   PYTHON_VERSION: "3.12"
-  TOOLKIT_VERSION: v1.9.1
+  TOOLKIT_VERSION: v1.11.0
 
 jobs:
   cross-repo-smoke:
@@ -30,13 +30,13 @@ jobs:
         run: |
           cd dataset-incubator
           echo "=== Esecuzione toolkit su irpef-comunale ==="
-          toolkit run all candidates/irpef-comunale/dataset.yml 2>&1
+          toolkit run all --config candidates/irpef-comunale/dataset.yml --smoke 2>&1
           echo "=== Run completata ==="
 
       - name: Verify clean parquet artifact
         run: |
           cd dataset-incubator
-          count=$(find _out -name "*_clean.parquet" -type f 2>/dev/null | wc -l)
+          count=$(find out -name "*_clean.parquet" -type f 2>/dev/null | wc -l)
           if [ "$count" -eq 0 ]; then
             echo "ERROR: nessun clean parquet generato"
             exit 1

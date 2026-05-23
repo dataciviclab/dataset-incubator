@@ -44,6 +44,8 @@ from lab_connectors.gcs.paths import (
     pipeline_run,
 )
 
+from toolkit.contracts import layer_dataset_dir, run_record_dir as _run_record_dir
+
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
@@ -52,9 +54,19 @@ BQ_LOCATION = "EU"
 
 DI_ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
-CLEAN_ROOT = DI_ROOT / "out" / "data" / "clean"
-MART_ROOT = DI_ROOT / "out" / "data" / "mart"
-RUNS_ROOT = DI_ROOT / "out" / "data" / "_runs"
+OUT_ROOT = DI_ROOT / "out"
+
+# Helper: directory radice di un layer (per scandire tutti gli slug).
+# toolkit.contracts lavora per slug specifico; qui serve il contenitore.
+def _layer_root(layer: str) -> Path:
+    return OUT_ROOT / "data" / layer
+
+# Helper per path canonici via toolkit.contracts
+def _clean_dir(slug: str) -> Path:
+    return layer_dataset_dir(OUT_ROOT, "clean", slug)
+
+def _mart_dir(slug: str) -> Path:
+    return layer_dataset_dir(OUT_ROOT, "mart", slug)
 
 SKIP_DIRS = {"_validate", "_run"}
 SKIP_SLUGS: set[str] = set()
@@ -96,7 +108,7 @@ def get_parquets(year_dir):
 
 def get_latest_run(slug, year):
     """Restituisce il JSON record dell'ultimo run, o None se non esiste."""
-    run_dir = RUNS_ROOT / slug / str(year)
+    run_dir = _run_record_dir(OUT_ROOT, slug, year)
     if not run_dir.exists():
         return None
     runs = sorted(run_dir.glob("*.json"))
@@ -149,12 +161,12 @@ def create_bq_external_table(bq_client, slug, dry_run=False):
 
     ensure_bq_dataset(bq_client, dataset_id)
 
-    slug_dir = CLEAN_ROOT / slug
+    slug_dir = _clean_dir(slug)
     years = get_years(slug_dir) if slug_dir.exists() else []
     source_uris = (
         [f"gs://{CLEAN_BUCKET}/{slug}/{year}/*.parquet" for year in years]
         if years
-        else [f"gs://{CLEAN_BUCKET}/{slug}/2*/*.parquet"]  # fallback
+        else [f"gs://{CLEAN_BUCKET}/{slug}/2*/*.parquet"]  # fallback per dataset nuovi
     )
 
     from google.cloud import bigquery
@@ -266,7 +278,7 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
     # Leggi schema dal parquet più recente disponibile
     latest_parquet = None
     for year in reversed(sorted(years)):
-        candidates = list((CLEAN_ROOT / slug / year).glob("*_clean.parquet"))
+        candidates = list(_clean_dir(slug).glob(f"{year}/*_clean.parquet"))
         if candidates:
             latest_parquet = candidates[0]
             break
@@ -310,7 +322,8 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
 # Layer: CLEAN
 # ---------------------------------------------------------------------------
 def push_clean(slug_filter=None, year_filter=None, dry_run=False):
-    slugs = get_slugs(CLEAN_ROOT, slug_filter)
+    clean_root = _layer_root("clean")
+    slugs = get_slugs(clean_root, slug_filter)
     print(f"[clean] slug: {slugs}\n")
 
     manifest = {
@@ -320,7 +333,7 @@ def push_clean(slug_filter=None, year_filter=None, dry_run=False):
     }
 
     for slug in slugs:
-        slug_dir = CLEAN_ROOT / slug
+        slug_dir = _clean_dir(slug)
         years = get_years(slug_dir, year_filter)
         if not years:
             print(f"  [{slug}] nessun anno, salto.")
@@ -366,11 +379,12 @@ def push_clean(slug_filter=None, year_filter=None, dry_run=False):
 # Layer: MART
 # ---------------------------------------------------------------------------
 def push_mart(bq_client, slug_filter=None, year_filter=None, dry_run=False):
-    slugs = get_slugs(MART_ROOT, slug_filter)
+    mart_root = _layer_root("mart")
+    slugs = get_slugs(mart_root, slug_filter)
     print(f"[mart] slug: {slugs}\n")
 
     for slug in slugs:
-        slug_dir = MART_ROOT / slug
+        slug_dir = _mart_dir(slug)
         years = get_years(slug_dir, year_filter)
         if not years:
             print(f"  [{slug}] nessun anno, salto.")
@@ -427,10 +441,11 @@ def main():
         push_clean(args.slug, args.year, args.dry_run)
 
     if args.update_catalog or args.create_bq_table:
-        slugs = get_slugs(CLEAN_ROOT, args.slug)
+        clean_root = _layer_root("clean")
+        slugs = get_slugs(clean_root, args.slug)
         for slug in slugs:
             if args.update_catalog:
-                years = get_years(CLEAN_ROOT / slug)
+                years = get_years(_clean_dir(slug))
                 update_catalog(slug, years, args.status, args.dry_run)
             if args.create_bq_table:
                 create_bq_external_table(bq_client, slug, args.dry_run)
