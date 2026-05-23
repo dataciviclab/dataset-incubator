@@ -18,6 +18,8 @@ import pytest
 
 from _catalog_helpers import extract_slugs as _extract_slugs, read_catalog_json as _read_catalog_json
 
+pytestmark = pytest.mark.contract
+
 FIXTURE_CATALOG = {
     "schema_version": 1,
     "datasets": [
@@ -35,8 +37,8 @@ FIXTURE_ITEMS = [
 ]
 
 
-@pytest.mark.pure_unit
 class TestExtractSlugs:
+    @pytest.mark.pure_unit
     def test_extract_normalizes_underscore_to_hyphen(self):
         slugs = _extract_slugs(FIXTURE_CATALOG)
         assert "aifa-spesa-consumo" in slugs
@@ -44,19 +46,21 @@ class TestExtractSlugs:
         assert "consip-consumi-convenzione" in slugs
         assert len(slugs) == 4
 
+    @pytest.mark.pure_unit
     def test_extract_empty_on_none(self):
         assert _extract_slugs(None) == set()
 
+    @pytest.mark.pure_unit
     def test_extract_empty_on_empty_dict(self):
         assert _extract_slugs({}) == set()
 
+    @pytest.mark.pure_unit
     def test_extract_skips_entries_without_slug(self):
         catalog = {"datasets": [{"name": "no-slug"}, {"slug": "ok", "name": "OK"}]}
         slugs = _extract_slugs(catalog)
         assert slugs == {"ok"}
 
 
-@pytest.mark.contract
 class TestReadCatalogJson:
     def test_read_from_git_head(self):
         """Legge il catalogo dal filesystem tramite Path locale."""
