@@ -1,7 +1,7 @@
 name: Toolkit Pipeline Check
 
 env:
-  TOOLKIT_VERSION: v1.9.1
+  TOOLKIT_VERSION: v1.11.0
 
 # Esegue la pipeline toolkit su candidate modificati in PR.
 # Fallisce la PR se toolkit run full fallisce (run + validate + readiness).
@@ -130,7 +130,7 @@ jobs:
           toolkit run full \
             --config "${{ matrix.config.config_path }}" \
             --years "${{ matrix.config.year }}" \
-            --json > run_full.json 2>run_full_err.log; ec=$?
+            --json --smoke > run_full.json 2>run_full_err.log; ec=$?
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
           cat run_full.json 2>/dev/null || echo "JSON output non disponibile"
           exit $ec
