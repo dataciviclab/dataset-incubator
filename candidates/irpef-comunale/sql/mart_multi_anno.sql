@@ -11,7 +11,7 @@ with comuni_base as (
     reddito_imponibile_eur as reddito_imponibile_totale_eur,
     imposta_netta_eur as imposta_netta_totale_eur,
     addizionale_comunale_dovuta_eur as addizionale_comunale_totale_eur
-  from clean_all_years
+  from clean_input
   where anno_di_imposta is not null
     and codice_istat_comune is not null
     and denominazione_comune is not null
@@ -32,7 +32,7 @@ regioni_base as (
     sum(reddito_imponibile_eur) as reddito_imponibile_totale_eur,
     sum(imposta_netta_eur) as imposta_netta_totale_eur,
     sum(addizionale_comunale_dovuta_eur) as addizionale_comunale_totale_eur
-  from clean_all_years
+  from clean_input
   group by 1, 2, 3, 4, 5, 6, 7
 ),
 territori as (
