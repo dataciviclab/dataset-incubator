@@ -127,16 +127,15 @@ jobs:
       - name: Toolkit run full (run + validate + readiness, con support nativi)
         id: run_full
         run: |
-          # Candidate notoriamente lenti: un anno solo in CI
-          YEAR_FLAG=""
-          case "${{ matrix.config.config_path }}" in
-            *mur-contribuzione-universitaria*)
-              YEAR_FLAG="--year 2017"
-              ;;
-          esac
+          # --sample-bytes rompe ZIP (file troncato non si estrae).
+          # Usiamo --smoke per tutti, ma senza sample_bytes per ZIP.
+          SMOKE="--smoke"
+          if grep -qE "unzip_|\.zip" "${{ matrix.config.config_path }}"; then
+            SMOKE="--sample-rows 1000"
+          fi
           toolkit run full \
             --config "${{ matrix.config.config_path }}" \
-            $YEAR_FLAG --json --sample-rows 1000 > run_full.json 2>run_full_err.log; ec=$?
+            $SMOKE --json > run_full.json 2>run_full_err.log; ec=$?
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
           cat run_full.json 2>/dev/null || echo "JSON output non disponibile"
           exit $ec
