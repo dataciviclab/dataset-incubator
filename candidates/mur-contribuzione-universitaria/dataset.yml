@@ -4,8 +4,7 @@ schema_version: 1
 dataset:
   name: "mur_contribuzione_universitaria"
   source_id: "mur_ustat"
-      # Per multi-year con tutti gli anni: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
-      years: [2017]
+  years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
 
 raw:
   sources:
@@ -35,7 +34,7 @@ mart:
       sql: "sql/mart.sql"
     - name: "mart_gettito_ateneo_tipo_multi_anno"
       sql: "sql/mart_multi_anno.sql"
-  years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+      years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
       source_layer: "mart"
       source_table: "mart_gettito_ateneo_tipo"
   required_tables:
@@ -88,4 +87,3 @@ mart:
 
 validation:
   fail_on_error: true
-
