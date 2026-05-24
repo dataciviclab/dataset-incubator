@@ -1,0 +1,37 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "openga_ricorsi_cds"
+  source_id: "openga"
+  years: [2023, 2024, 2025, 2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "cds_ricorsi_pendenti"
+      type: "http_file"
+      args:
+        url: "https://openga.giustizia-amministrativa.it/dataset/71a26e4b-ea80-4f7a-a80c-5351c3aec78c/resource/"
+        url_suffix_by_year:
+          2023: "79a330fc-fb16-4dcb-b73d-90cb8e456344/download/cds-ricorsi-pendenti-per-periodo-2023.csv"
+          2024: "4c1c4562-ece6-4941-9a5b-6c79923db1c8/download/cds-ricorsi-pendenti-per-periodo-2024.csv"
+          2025: "4cc338ae-845d-48dc-9d6a-ecfc7e15bd3d/download/cds-ricorsi-pendenti-per-periodo-2025.csv"
+          2026: "0e47d8de-cd6a-439c-92cc-f9477d4a2a87/download/cds-ricorsi-pendenti-per-periodo-2026.csv"
+        filename: "cds-ricorsi-pendenti-{year}.csv"
+      primary: true
+
+clean:
+  read:
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    mode: largest
+  sql: "sql/clean.sql"
+  validate:
+    not_null: ["codice_sede", "numero_ricorsi_pendenti"]
+
+mart:
+  tables:
+    - name: "ricorsi_annuali"
+      sql: "sql/mart_annuale.sql"
