@@ -22,7 +22,7 @@ clean:
   read:
     source: "auto"
     mode: "latest"
-    delim: ","
+    delim: ";"
     encoding: "utf-8"
     header: true
   validate:
