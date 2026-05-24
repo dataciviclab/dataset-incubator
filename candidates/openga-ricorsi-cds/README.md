@@ -19,12 +19,14 @@ Ogni riga rappresenta il numero di ricorsi pendenti in un dato mese per una sede
 
 ## Domanda civica
 
-*Quanto durano i ricorsi al Consiglio di Stato? La giustizia amministrativa è più veloce di quella ordinaria?*
+*Quanto cresce il backlog di ricorsi pendenti al Consiglio di Stato? Il carico di lavoro è stabile o in aumento?*
+
+**Nota**: il dataset contiene lo *stock* mensile di ricorsi pendenti (fotografia a fine mese), non i flussi di deposito/decisione. Per misure di durata o velocità servono i dataset sui flussi (cds-ricorsi-pervenuti, cds-ricorsi-definiti).
 
 ## Perché vale la pena
 
-- Join con `civile_flussi` (già pubblicato) per confronto giustizia ordinaria vs amministrativa
-- Serie mensile (2023-oggi) per analisi trend
+- Join con `civile_flussi` (già pubblicato) per confrontare volumi di pendenti tra giustizia ordinaria e amministrativa
+- Serie mensile (2023-oggi) per analisi trend del carico di lavoro
 - Copertura: tutte le sedi del Consiglio di Stato
 
 ## Output minimo atteso
@@ -40,8 +42,9 @@ Ogni riga rappresenta il numero di ricorsi pendenti in un dato mese per una sede
 
 ## Stato
 
-- intake
+- candidate: run completato RAW→CLEAN→MART su 2023-2026 (tutti passati ✅)
+- readiness: ready (5/5 checks)
+- notebook v0 verificato
+- issue: #379
 
-## Prossimo passo
 
-- run full su tutti gli anni
