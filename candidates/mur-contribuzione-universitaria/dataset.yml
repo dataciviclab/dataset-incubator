@@ -14,6 +14,7 @@ raw:
         portal_url: "https://dati-ustat.mur.gov.it/api/3/action"
         dataset_id: "{year}-contribuzione-e-interventi-atenei"
         resource_name: "{year} Gettito della contribuzione studentesca"
+        prefer_datastore: false
         filename: "gettito_{year}.csv"
       primary: true
 
@@ -22,7 +23,7 @@ clean:
   read:
     source: "auto"
     mode: "latest"
-    delim: ","
+    delim: ";"
     encoding: "utf-8"
     header: true
   validate:
