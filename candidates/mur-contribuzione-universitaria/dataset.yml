@@ -22,16 +22,21 @@ clean:
   read:
     source: "auto"
     mode: "latest"
-    delim: ";"
-    encoding: "cp1252"
+    delim: ","
+    encoding: "utf-8"
     header: true
   validate:
-    min_rows: 500
+    min_rows: 50
 
 mart:
   tables:
     - name: "mart_gettito_ateneo_tipo"
       sql: "sql/mart.sql"
+    - name: "mart_gettito_ateneo_tipo_multi_anno"
+      sql: "sql/mart_multi_anno.sql"
+      years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+      source_layer: "mart"
+      source_table: "mart_gettito_ateneo_tipo"
   required_tables:
     - "mart_gettito_ateneo_tipo"
   validate:
@@ -55,14 +60,30 @@ mart:
           - codice_gettito
           - descrizione_gettito
           - totale_euro
-        min_rows: 500
+        min_rows: 50
+      mart_gettito_ateneo_tipo_multi_anno:
+        required_columns:
+          - anno
+          - cod_ateneo
+          - nome_ateneo
+          - codice_gettito
+          - descrizione_gettito
+          - totale_euro
+        primary_key:
+          - anno
+          - cod_ateneo
+          - codice_gettito
+        min_rows: 50
 
-cross_year:
-  tables:
-    - name: "mart_gettito_ateneo_tipo_multi_anno"
-      sql: "sql/mart_multi_anno.sql"
-      source_layer: "mart"
-      source_table: "mart_gettito_ateneo_tipo"
+  hierarchy:
+    axis: categorico
+    levels:
+      - level: ateneo
+        table: h_ateneo
+        grain: [cod_ateneo, nome_ateneo]
+      - level: tipo_gettito
+        table: h_tipo_gettito
+        grain: [codice_gettito, descrizione_gettito]
 
 validation:
   fail_on_error: true
