@@ -1,13 +1,14 @@
 #!/usr/bin/env python3
-"""Detect sample mode per candidate: sample_bytes (CSV/JSON) vs sample_rows (ZIP/CKAN).
+"""Detect sample mode per candidate.
 
-Usato dal workflow pr-toolkit-check per scegliere il flag ottimale:
-  - sample_bytes: scarica solo i primi N bytes (HTTP Range header) — efficiente, ma
-    non funziona per ZIP (file troncato non decomprimibile) o CKAN (URL dinamici).
-  - sample_rows: applica LIMIT N dopo il clean — funziona sempre, ma richiede
-    lo scaricamento completo del raw.
+Attualmente ritorna sempre "sample_rows" perche' sample_bytes tronca il file
+a byte arbitrari, rompendo i CSV con campi quotati multilinea (comuni nei
+dati pubblici italiani). Con sample_mode che skippa min_rows, sample_rows
+e' safe per tutti i tipi di fonte.
 
-Output: stampa "sample_rows" o "sample_bytes" su stdout.
+Pronto per sample_bytes futuro: basta cambiare il return in fondo a
+detect_sample_mode() quando il toolkit supporta troncamento a linea intera,
+non a byte.
 """
 
 import sys
@@ -15,19 +16,11 @@ import yaml
 from pathlib import Path
 
 
-def _is_zip_source(src: dict) -> bool:
-    """True se la fonte e' ZIP (sample_bytes non funziona)."""
-    args = src.get("args") or {}
-    url = (args.get("url") or "").lower()
-    filename = (args.get("filename") or "").lower()
-    return url.endswith(".zip") or ".zip" in url or filename.endswith(".zip")
-
-
 def detect_sample_mode(config_path: str) -> str:
     cfg_path = Path(config_path)
     if not cfg_path.exists():
         print(f"Config non trovato: {config_path}", file=sys.stderr)
-        return "sample_rows"  # default conservativo
+        return "sample_rows"
 
     with open(cfg_path, encoding="utf-8") as f:
         cfg = yaml.safe_load(f)
@@ -35,22 +28,12 @@ def detect_sample_mode(config_path: str) -> str:
     sources = (cfg.get("raw") or {}).get("sources") or []
 
     for src in sources:
-        stype = src.get("type", "http_file")
+        _ = src  # placeholder per futura logica di ispezione fonte
 
-        # ZIP: sample_bytes tronca l'archivio, non decomprimibile
-        if _is_zip_source(src):
-            return "sample_rows"
-
-        # CKAN: usa URL dinamici/redirect, Range header non affidabile
-        if stype == "ckan":
-            return "sample_rows"
-
-        # http_post_file: potrebbe avere body complessi, meglio sample_rows
-        if stype == "http_post_file":
-            return "sample_rows"
-
-    # Default: fonti HTTP semplici (CSV, JSON, XLSX) — sample_bytes OK
-    return "sample_bytes"
+    # Sempre sample_rows: safe per CSV multilinea, ZIP, CKAN.
+    # sample_bytes resta disattivato perche' tronca a byte e i CSV con
+    # campi quotati multilinea rompono il parsing DuckDB strict mode.
+    return "sample_rows"
 
 
 if __name__ == "__main__":
