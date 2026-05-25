@@ -3404,8 +3404,8 @@
     {
       "slug": "openga_ricorsi_cds",
       "name": "Openga Ricorsi Cds",
-      "description": "",
-      "source": "",
+      "description": "Ricorsi pendenti presso il Consiglio di Stato — dati mensili per sede giudiziaria",
+      "source": "OpenGA — Giustizia Amministrativa",
       "source_id": "openga",
       "period": {
         "start": 2023,
@@ -3415,38 +3415,38 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "anno_mese_riferimento",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Periodo di riferimento in formato AAAAMM"
         },
         {
           "name": "mese",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Mese di riferimento (1-12)"
         },
         {
           "name": "codice_sede",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice identificativo della sede giudiziaria"
         },
         {
           "name": "nome_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della sede giudiziaria"
         },
         {
           "name": "numero_ricorsi_pendenti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di ricorsi pendenti"
         }
       ],
       "location": {
