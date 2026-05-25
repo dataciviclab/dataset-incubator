@@ -24,3 +24,4 @@ select
   try_cast("Importo Totale" as double) as importo_totale
 from raw_input
 where "Codice Voce Contabile" not in ('19999', '29999', '39999', '48888', '49999')
+  and "Codice Ente SSN" not in ('000', '999')
