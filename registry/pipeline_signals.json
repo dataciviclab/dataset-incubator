@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-19",
+  "generated_at": "2026-05-25",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -53,9 +53,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25958889635",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25958889635",
-        "checked_at": "2026-05-16",
+        "run_id": "26392665826",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26392665826",
+        "checked_at": "2026-05-25",
         "years": [
           2024
         ],
