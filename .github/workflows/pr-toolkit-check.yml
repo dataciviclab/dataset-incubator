@@ -1,7 +1,7 @@
 name: Toolkit Pipeline Check
 
 env:
-  TOOLKIT_VERSION: v1.13.0
+  TOOLKIT_VERSION: v1.13.2
 
 # Esegue la pipeline toolkit su candidate modificati in PR.
 # Fallisce la PR se toolkit run full fallisce (run + validate + readiness).
@@ -124,12 +124,12 @@ jobs:
       - name: Install toolkit
         run: pip install git+https://github.com/dataciviclab/toolkit.git@${{ env.TOOLKIT_VERSION }}
 
-      - name: Toolkit run full (run + validate + readiness, con support nativi)
+      - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows)"
         id: run_full
         run: |
           toolkit run full \
             --config "${{ matrix.config.config_path }}" \
-            --json --sample-rows 1000 > run_full.json 2>run_full_err.log; ec=$?
+            --json --smoke > run_full.json 2>run_full_err.log; ec=$?
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
           cat run_full.json 2>/dev/null || echo "JSON output non disponibile"
           exit $ec

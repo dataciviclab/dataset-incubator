@@ -32,8 +32,8 @@ Issue intake: `dataset-incubator` #113
 
 ## Layer
 
-- **Clean**: raw-faithful, nessun filtro (24.813 righe)
-- **Mart**: `mart_spesa_enti_2024` — filtro `codice_ente_ssn != '000'`, aggregato per ente/regione/modello (righe in fase di verifica)
+- **Clean**: 23.595 righe — filtra voci di totale contabile (codici 19999, 29999, 39999, 48888, 49999) che duplicavano gli importi di dettaglio. SUM importo_totale: 748 mld €
+- **Mart**: `mart_spesa_enti_2024` — 22.180 righe — filtro `codice_ente_ssn != '000'` + eredita filtro voci totali dal clean. SUM importo_totale: 738 mld €
 
 ## Output
 
