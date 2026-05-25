@@ -134,7 +134,7 @@
       "source": "MEF-BDAP",
       "source_id": "openbdap",
       "period": {
-        "start": 2024,
+        "start": 2008,
         "end": 2024
       },
       "columns": [
@@ -428,7 +428,7 @@
       "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
       "source_id": "giustizia_statistiche",
       "period": {
-        "start": 2025,
+        "start": 2014,
         "end": 2025
       },
       "columns": [
@@ -1786,8 +1786,8 @@
       "source": "ISTAT — Dataflow 32_221 (Omogeneita del reddito regionale), SDMX-CSV",
       "source_id": "istat_sdmx",
       "period": {
-        "start": 2023,
-        "end": 2023
+        "start": 2003,
+        "end": 2024
       },
       "columns": [
         {
@@ -1842,8 +1842,8 @@
       "source": "ISTAT — Dataflow 33_179 (Housing conditions), SDMX-CSV",
       "source_id": "istat_sdmx",
       "period": {
-        "start": 2024,
-        "end": 2024
+        "start": 2004,
+        "end": 2025
       },
       "columns": [
         {
@@ -2030,8 +2030,8 @@
       "source": "ISTAT — Dataflow 33_292 (IPAB trimestrale), SDMX-CSV",
       "source_id": "istat_sdmx",
       "period": {
-        "start": 2024,
-        "end": 2024
+        "start": 2010,
+        "end": 2025
       },
       "columns": [
         {
@@ -3055,7 +3055,7 @@
       "source_id": "mit_opendata",
       "period": {
         "start": 2001,
-        "end": 2001
+        "end": 2018
       },
       "columns": [
         {

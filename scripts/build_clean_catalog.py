@@ -294,7 +294,7 @@ def derive_catalog_from_gcs(
         # Merge con editoriali: preserva campi umani
         old = editorial.get(slug)
         if old:
-            for field in ("name", "description", "source", "source_id", "stage"):
+            for field in ("name", "description", "source", "source_id", "stage", "period"):
                 if old.get(field):
                     entry[field] = old[field]
             # Preserva descrizione e role delle colonne dall'editoriale
