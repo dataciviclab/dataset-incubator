@@ -250,7 +250,7 @@
         },
         {
           "name": "codice_ente_bdap",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice BDAP ente"
         },
@@ -376,6 +376,7 @@
       "name": "Camera Deputati Legislature",
       "description": "Deputati italiani per legislatura — Camera dei Deputati",
       "source": "Camera dei Deputati — OpenData SPARQL endpoint",
+      "source_id": "",
       "period": {
         "start": 2024,
         "end": 2024
@@ -579,19 +580,19 @@
         },
         {
           "name": "numero_ordini_con_consumi",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di ordini con consumi"
         },
         {
           "name": "n_pa_con_consumi",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di PA con consumi"
         },
         {
           "name": "n_po_con_consumi",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di PO (Punti Ordine) con consumi"
         }
@@ -629,13 +630,13 @@
         },
         {
           "name": "codice_istituzione",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice istituzione"
         },
         {
           "name": "codice_ente_bdap",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice ente BDAP"
         },
@@ -1539,7 +1540,7 @@
         },
         {
           "name": "popolazione",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Popolazione residente"
         },
@@ -1613,13 +1614,13 @@
         },
         {
           "name": "numero_comuni",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Numero di comuni nell'aggregazione"
         },
         {
           "name": "popolazione",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Popolazione"
         },
@@ -1705,13 +1706,13 @@
         },
         {
           "name": "numero_comuni",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Numero di comuni nell'aggregazione"
         },
         {
           "name": "popolazione",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Popolazione"
         },
@@ -1809,13 +1810,13 @@
         },
         {
           "name": "pres_aff_imp",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Serie: 1=con fitti imputati, 2=senza fitti imputati"
         },
         {
           "name": "anno",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Anno di riferimento (2003-2024)"
         },
@@ -1877,7 +1878,7 @@
         },
         {
           "name": "misura_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice della misura (10 = per hundred values)"
         },
@@ -1889,7 +1890,7 @@
         },
         {
           "name": "titolo_godimento_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice titolo di godimento: 1=owner-occupied, 2=rent"
         },
@@ -1913,7 +1914,7 @@
         },
         {
           "name": "tipologia_nucleo_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice tipologia nucleo"
         },
@@ -1949,7 +1950,7 @@
         },
         {
           "name": "quintile_reddito_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice quintile di reddito"
         },
@@ -1961,7 +1962,7 @@
         },
         {
           "name": "sesso_percettore_principale_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice sesso percettore principale"
         },
@@ -1973,7 +1974,7 @@
         },
         {
           "name": "eta_percettore_principale_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice eta percettore principale"
         },
@@ -1985,7 +1986,7 @@
         },
         {
           "name": "titolo_studio_percettore_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice titolo di studio"
         },
@@ -1997,7 +1998,7 @@
         },
         {
           "name": "condizione_professionale_percettore_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice condizione professionale"
         },
@@ -2361,6 +2362,7 @@
       "name": "MEF Partecipazioni Pubbliche",
       "description": "Partecipazioni pubbliche dichiarate dalle PA italiane: amministrazioni, partecipate, quote, servizi affidati per territorio e categoria — MEF 2020-2023",
       "source": "MEF — Dipartimento dell'Economia, Open Data Partecipazioni Pubbliche",
+      "source_id": "",
       "period": {
         "start": 2020,
         "end": 2023
@@ -2446,7 +2448,7 @@
         },
         {
           "name": "partecipata_anno_di_costituzione",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Anno di costituzione della partecipata"
         },
@@ -2464,7 +2466,7 @@
         },
         {
           "name": "partecipata_anno_inizio_procedura",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Anno di inizio della procedura di partecipazione"
         },
@@ -2554,7 +2556,7 @@
         },
         {
           "name": "importo_impegnato_servizio_1",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Importo impegnato per il servizio 1"
         },
@@ -2578,7 +2580,7 @@
         },
         {
           "name": "importo_impegnato_servizio_2",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Importo impegnato per il servizio 2"
         },
@@ -2602,7 +2604,7 @@
         },
         {
           "name": "importo_impegnato_servizio_3",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Importo impegnato per il servizio 3"
         },
@@ -2626,7 +2628,7 @@
         },
         {
           "name": "importo_impegnato_servizio_4",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Importo impegnato per il servizio 4"
         },
@@ -2650,7 +2652,7 @@
         },
         {
           "name": "importo_impegnato_servizio_5",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Importo impegnato per il servizio 5 (può contenere valori non numerici)"
         },
@@ -2674,19 +2676,19 @@
         },
         {
           "name": "totale_oneri_importo_impegnato",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Totale oneri - Importo impegnato"
         },
         {
           "name": "totale_oneri_importo_pagato_c_residui",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Totale oneri - Importo pagato con residui"
         },
         {
           "name": "totale_oneri_importo_pagato_c_competenza",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Totale oneri - Importo pagato con competenza"
         },
@@ -2710,19 +2712,19 @@
         },
         {
           "name": "partecipata_numero_di_addetti",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di addetti della partecipata"
         },
         {
           "name": "partecipata_patrimonio_netto_co_e_p",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Patrimonio netto (Schema CO.EP.)"
         },
         {
           "name": "partecipata_risultato_d_esercizio_co_e_p",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Risultato d'esercizio (Schema CO.E.P.)"
         },
@@ -2734,49 +2736,49 @@
         },
         {
           "name": "partecipata_costo_della_produzione_co_e_p",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Costo della produzione (Schema CO.E.P.)"
         },
         {
           "name": "partecipata_costo_del_personale_co_e_p",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Costo del personale (Schema CO.E.P.)"
         },
         {
           "name": "partecipata_patrimonio_netto_co_f",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Patrimonio netto (Schema CO.F.)"
         },
         {
           "name": "partecipata_totale_entrate_co_f",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Totale entrate (Schema CO.F.)"
         },
         {
           "name": "partecipata_totale_uscite_co_f",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Totale uscite (Schema CO.F.)"
         },
         {
           "name": "partecipata_spese_per_personale_co_f",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Spese per personale (Schema CO.F.)"
         },
         {
           "name": "nr_amministratori",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di amministratori della partecipata"
         },
         {
           "name": "nr_componenti_organo_di_controllo",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di componenti dell'organo di controllo"
         },
@@ -2788,7 +2790,7 @@
         },
         {
           "name": "risultato_d_esercizio_2020",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Risultato d'esercizio 2020"
         },
@@ -2800,7 +2802,7 @@
         },
         {
           "name": "risultato_d_esercizio_2019",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Risultato d'esercizio 2019"
         },
@@ -2928,7 +2930,7 @@
         },
         {
           "name": "alunni",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di alunni"
         }
