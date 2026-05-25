@@ -21,4 +21,4 @@ select
   altri_costi,
   importo_totale
 from clean_input
-where codice_ente_ssn <> '000'
+where codice_ente_ssn not in ('000', '999')
