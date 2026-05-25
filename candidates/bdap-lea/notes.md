@@ -26,4 +26,3 @@
 - gli enti `000` sono aggregazioni regionali e causano double-counting se sommati ai singoli enti
 - alcuni codici voce sono aggregati di sezione e vanno trattati con prudenza nelle letture successive
 - la serie storica 2012-2024 esiste, ma non entra nel primo ciclo tecnico
-- CI usa `toolkit run full --smoke` (toolkit v1.13.2+) — sample-bytes + sample-rows + skip min_rows
