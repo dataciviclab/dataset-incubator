@@ -2,120 +2,121 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-05-19",
   "source_repo": "dataciviclab/dataset-incubator",
+  "updated_at": "2026-05-25",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
       "name": "AIFA Spesa Farmaceutica Convenzionata",
       "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC — AIFA 2018-2024",
       "source": "AIFA — Open Data Spesa e Consumo Farmaceutico",
+      "source_id": "aifa",
       "period": {
-        "start": 2020,
+        "start": 2018,
         "end": 2024
       },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "mese",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Mese di riferimento (1-12)"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "codreg",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice regione"
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione regione"
+          "description": ""
         },
         {
           "name": "classe",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Classe farmaceutica"
+          "description": ""
         },
         {
           "name": "atc1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ATC livello 1"
+          "description": ""
         },
         {
           "name": "descrizione_atc1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione ATC livello 1"
+          "description": ""
         },
         {
           "name": "atc2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ATC livello 2"
+          "description": ""
         },
         {
           "name": "descrizione_atc2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione ATC livello 2"
+          "description": ""
         },
         {
           "name": "atc3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ATC livello 3"
+          "description": ""
         },
         {
           "name": "descrizione_atc3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione ATC livello 3"
+          "description": ""
         },
         {
           "name": "atc4",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ATC livello 4"
+          "description": ""
         },
         {
           "name": "descrizione_atc4",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione ATC livello 4"
+          "description": ""
         },
         {
           "name": "numero_confezioni_traccia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero confezioni tracciabilità"
+          "description": ""
         },
         {
           "name": "spesa_flusso_tracciabilita",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Spesa flusso tracciabilità (euro)"
+          "description": ""
         },
         {
           "name": "numero_confezioni_convenzionata",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero confezioni convenzionate"
+          "description": ""
         },
         {
           "name": "spesa_convenzionata",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Spesa convenzionata SSN (euro)"
+          "description": ""
         }
       ],
       "location": {
@@ -123,94 +124,94 @@
         "path": "gs://dataciviclab-clean/aifa_spesa_consumo/*/aifa_spesa_consumo_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
       "stage": "published",
-      "source_id": "aifa"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "bdap_entrate_stato",
       "name": "BDAP Entrate Stato - Serie Storica",
       "description": "Entrate statali da BDAP, aggregate per titolo, natura, tipologia, provento",
       "source": "MEF-BDAP",
+      "source_id": "openbdap",
       "period": {
-        "start": 2008,
+        "start": 2024,
         "end": 2024
       },
       "columns": [
         {
           "name": "esercizio_finanziario",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "codice_titolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice del titolo di entrata"
+          "description": ""
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione del titolo (es: TITOLO I - ENTRATE TRIBUTARIE)"
+          "description": ""
         },
         {
           "name": "codice_natura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice della natura"
+          "description": ""
         },
         {
           "name": "natura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione della natura (es: Entrate ricorrenti)"
+          "description": ""
         },
         {
           "name": "codice_tipologia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice della tipologia"
+          "description": ""
         },
         {
           "name": "tipologia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione della tipologia"
+          "description": ""
         },
         {
           "name": "codice_provento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice del provento"
+          "description": ""
         },
         {
           "name": "provento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione del provento"
+          "description": ""
         },
         {
           "name": "previsioni_definitive_cp",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Previsioni definitive competenze di cassa"
+          "description": ""
         },
         {
           "name": "previsioni_definitive_cs",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Previsioni definitive competenze di competenza"
+          "description": ""
         }
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_entrate_stato/2024/bdap_entrate_stato_2024_clean.parquet"
+        "path": "gs://dataciviclab-clean/bdap_entrate_stato/2024/bdap_entrate_stato_2024_clean.parquet",
+        "multi_file": false
       },
-      "registry_source": "initial_clean_query_catalog",
-      "source_id": "openbdap",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "bdap_lea",
@@ -226,231 +227,282 @@
         {
           "name": "anno_riferimento",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento del dato"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT regione"
+          "description": ""
         },
         {
           "name": "descrizione_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione regione"
+          "description": ""
         },
         {
           "name": "codice_ente_ssn",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice identificativo ente SSN"
+          "description": ""
         },
         {
           "name": "codice_ente_bdap",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice BDAP ente"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "descrizione_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione ente SSN"
+          "description": ""
         },
         {
           "name": "codice_voce_contabile",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice voce contabile"
+          "description": ""
         },
         {
           "name": "descrizione_voce_contabile",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione voce contabile"
+          "description": ""
         },
         {
           "name": "oneri_finanziari",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Oneri finanziari"
+          "description": ""
         },
         {
           "name": "data_aggiornamento",
           "type": "DATE",
-          "role": "dimension",
-          "description": "Data aggiornamento record"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "consumi_sanitari",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Consumi sanitari"
+          "description": ""
         },
         {
           "name": "consumi_non_sanitari",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Consumi non sanitari"
+          "description": ""
         },
         {
           "name": "prestazioni_sanitarie",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Prestazioni sanitarie"
+          "description": ""
         },
         {
           "name": "servizi_sanitari",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Servizi sanitari"
+          "description": ""
         },
         {
           "name": "servizi_non_sanitari",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Servizi non sanitari"
+          "description": ""
         },
         {
           "name": "personale_sanitario",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Spesa personale sanitario"
+          "description": ""
         },
         {
           "name": "personale_professionale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Spesa personale professioni sanitarie"
+          "description": ""
         },
         {
           "name": "personale_tecnico",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Spesa personale tecnico"
+          "description": ""
         },
         {
           "name": "personale_amministrativo",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Spesa personale amministrativo"
+          "description": ""
         },
         {
           "name": "ammortamenti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammortamenti"
+          "description": ""
         },
         {
           "name": "sopravvenienze_e_insussistenze",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Sopravvenienze e insussistenze"
+          "description": ""
         },
         {
           "name": "altri_costi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Altri costi di gestione"
+          "description": ""
         },
         {
           "name": "importo_totale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo totale della voce"
+          "description": ""
         }
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_lea/*/bdap_lea_*_clean.parquet",
-        "multi_file": true
+        "path": "gs://dataciviclab-clean/bdap_lea/2024/bdap_lea_2024_clean.parquet",
+        "multi_file": false
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "camera_deputati_legislature",
+      "name": "Camera Deputati Legislature",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "deputato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cogn",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "legislatura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/camera_deputati_legislature/2024/camera_deputati_legislature_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "civile_flussi",
       "name": "Flussi Civile — Giustizia civile italiana",
       "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 (file snapshot 2025).",
       "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
+      "source_id": "giustizia_statistiche",
       "period": {
-        "start": 2014,
+        "start": 2025,
         "end": 2025
       },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno giudiziario di riferimento"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Fonte del dato (DGM/ISTAT/altro)"
+          "description": ""
         },
         {
           "name": "tipo_ufficio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipologia di ufficio giudiziario (Tribunale, Procura, ecc.)"
+          "description": ""
         },
         {
           "name": "distretto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Distretto giudiziario di appartenenza"
+          "description": ""
         },
         {
           "name": "sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sede centrale o distaccata del tribunale"
+          "description": ""
         },
         {
           "name": "macromateria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Macro-categoria della materia controversa"
+          "description": ""
         },
         {
           "name": "materia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Materia specifica della controversia"
+          "description": ""
         },
         {
           "name": "dettaglio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Dettaglio aggiuntivo della materia"
+          "description": ""
         },
         {
           "name": "sopravvenuti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero di cause sopravvenute nel periodo"
+          "description": ""
         },
         {
           "name": "definiti_totale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero di cause definite (totale, tutte le fasi)"
+          "description": ""
         },
         {
           "name": "definiti_con_sentenza",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero di cause definite con sentenza"
+          "description": ""
         },
         {
           "name": "pendenti_finali",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero di cause pendenti a fine periodo"
+          "description": ""
         }
       ],
       "location": {
@@ -458,9 +510,8 @@
         "path": "gs://dataciviclab-clean/civile_flussi/2025/civile_flussi_2025_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
       "stage": "published",
-      "source_id": "giustizia_statistiche"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "consip_consumi_convenzione",
@@ -476,74 +527,74 @@
         {
           "name": "anno_riferimento",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento del consumo"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "tipologia_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipologia di amministrazione acquirente"
+          "description": ""
         },
         {
           "name": "regione_pa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione della PA acquirente"
+          "description": ""
         },
         {
           "name": "provincia_pa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia della PA acquirente"
+          "description": ""
         },
         {
           "name": "sigla_provincia_pa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia della PA acquirente"
+          "description": ""
         },
         {
           "name": "regione_fornitore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione del fornitore"
+          "description": ""
         },
         {
           "name": "convenzione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Convenzione Consip di riferimento"
+          "description": ""
         },
         {
           "name": "lotto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Lotto della convenzione"
+          "description": ""
         },
         {
           "name": "valore_economico_consumi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Valore economico dei consumi (€)"
+          "description": ""
         },
         {
           "name": "numero_ordini_con_consumi",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di ordini con consumi"
+          "description": ""
         },
         {
           "name": "n_pa_con_consumi",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di PA con consumi"
+          "description": ""
         },
         {
           "name": "n_po_con_consumi",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di PO (Punti Ordine) con consumi"
+          "description": ""
         }
       ],
       "location": {
@@ -552,13 +603,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "dipendenti_pubblici",
       "name": "Dipendenti Pubblici - Occupazione e Turnover",
       "description": "Dipendenti pubblici per ente, comparto, categoria, genere e tipo di orario (2010-2023)",
       "source": "MEF-BDAP",
+      "source_id": "openbdap",
       "period": {
         "start": 2010,
         "end": 2023
@@ -567,140 +619,140 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di rilevazione"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "tipo_istituzione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipo di istituzione"
+          "description": ""
         },
         {
           "name": "codice_istituzione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice istituzione"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "codice_ente_bdap",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice ente BDAP"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione ente"
+          "description": ""
         },
         {
           "name": "codice_comparto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice comparto"
+          "description": ""
         },
         {
           "name": "comparto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione comparto"
+          "description": ""
         },
         {
           "name": "codice_contratto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice contratto di lavoro"
+          "description": ""
         },
         {
           "name": "contratto_lavoro",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione contratto di lavoro"
+          "description": ""
         },
         {
           "name": "codice_macrocategoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice macrocategoria"
+          "description": ""
         },
         {
           "name": "macrocategoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione macrocategoria"
+          "description": ""
         },
         {
           "name": "codice_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice categoria"
+          "description": ""
         },
         {
           "name": "categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione categoria"
+          "description": ""
         },
         {
           "name": "donne_tempo_pieno",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti donne tempo pieno"
+          "description": ""
         },
         {
           "name": "uomini_tempo_pieno",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti uomini tempo pieno"
+          "description": ""
         },
         {
           "name": "donne_part_time_inf_50",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti donne part time <50%"
+          "description": ""
         },
         {
           "name": "uomini_part_time_inf_50",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti uomini part time <50%"
+          "description": ""
         },
         {
           "name": "donne_part_time_sup_50",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti donne part time >50%"
+          "description": ""
         },
         {
           "name": "uomini_part_time_sup_50",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti uomini part time >50%"
+          "description": ""
         },
         {
           "name": "donne_assunte",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti donne assunte"
+          "description": ""
         },
         {
           "name": "uomini_assunti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti uomini assunti"
+          "description": ""
         },
         {
           "name": "donne_cessate",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti donne cessate"
+          "description": ""
         },
         {
           "name": "uomini_cessati",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero dipendenti uomini cessati"
+          "description": ""
         }
       ],
       "location": {
@@ -708,60 +760,61 @@
         "path": "gs://dataciviclab-clean/dipendenti_pubblici/*/dipendenti_pubblici_*_clean.parquet",
         "multi_file": true
       },
-      "source_id": "openbdap",
-      "stage": "published"
+      "stage": "published",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "giustizia_penale_indicatori",
       "name": "Giustizia Penale — Clearance Rate e Disposition Time",
       "description": "Indicatori di efficienza della giustizia penale: clearance rate (casi definiti/casi sopravvenuti) e disposition time (durata media in giorni) per distretto e tipo ufficio. Sheet Tribunali, anni 2014-2024. Fonte: Ministero della Giustizia — DG Statistica.",
       "source": "Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa",
+      "source_id": "giustizia_statistiche",
       "period": {
-        "start": 2014,
+        "start": 2024,
         "end": 2024
       },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "tipo_ufficio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipo di ufficio giudiziario (es. Tribunale Ordinario, Tribunale per i Minorenni)"
+          "description": ""
         },
         {
           "name": "distretto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Distretto di Corte d'Appello"
+          "description": ""
         },
         {
           "name": "sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sede dell'ufficio giudiziario"
+          "description": ""
         },
         {
           "name": "sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sezione dell'ufficio (es. Penale, GIP, Esecuzioni)"
+          "description": ""
         },
         {
           "name": "clearance_rate",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Clearance rate: rapporto tra procedimenti definiti e sopravvenuti"
+          "description": ""
         },
         {
           "name": "disposition_time_gg",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Durata media dei procedimenti in giorni"
+          "description": ""
         }
       ],
       "location": {
@@ -769,85 +822,233 @@
         "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/2024/giustizia_penale_indicatori_2024_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
       "stage": "incubating",
-      "source_id": "giustizia_statistiche"
+      "registry_source": "derive_auto"
     },
     {
-      "slug": "inps_pensioni_trimestrale",
-      "name": "INPS Pensioni — trimestrale",
-      "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2020-2024)",
-      "source": "https://www.inps.it/gestione-previdenziale",
+      "slug": "inps_cig_serie_storiche_annuali",
+      "name": "Inps Cig Serie Storiche Annuali",
+      "description": "",
+      "source": "",
+      "source_id": "",
       "period": {
-        "start": 2020,
+        "start": 2024,
         "end": 2024
       },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "prestazione",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno di decorrenza della pensione"
+          "description": ""
+        },
+        {
+          "name": "settore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "settore_specifiche",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "ore_operai",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "ore_impiegati",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "totale_ore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/inps_cig_serie_storiche_annuali/2024/inps_cig_serie_storiche_annuali_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "inps_pensioni_2017_2024",
+      "name": "Inps Pensioni 2017 2024",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "trimestre",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Trimestre (1-4)"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "sesso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sesso del pensionato"
+          "description": ""
         },
         {
           "name": "classe_eta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Classe di eta"
+          "description": ""
         },
         {
           "name": "classe_importo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Classe di importo della pensione"
+          "description": ""
         },
         {
           "name": "area_geografica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Area geografica (Nord, Centro, Sud, Isole)"
+          "description": ""
         },
         {
           "name": "gestione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Gestione INPS (es. Dipendenti, Autonomi)"
+          "description": ""
         },
         {
           "name": "tipo_gestione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipologia di gestione"
+          "description": ""
         },
         {
           "name": "categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Categoria della pensione"
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione italiana"
+          "description": ""
         },
         {
           "name": "numero_pensioni",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero di pensioni"
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/inps_pensioni_2017_2024/2024/inps_pensioni_2017_2024_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "inps_pensioni_trimestrale",
+      "name": "INPS Pensioni — trimestrale",
+      "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2020-2024)",
+      "source": "https://www.inps.it/gestione-previdenziale",
+      "source_id": "inps",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "trimestre",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "classe_eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "classe_importo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "area_geografica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "gestione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_gestione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "numero_pensioni",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
         }
       ],
       "location": {
@@ -855,15 +1056,15 @@
         "path": "gs://dataciviclab-clean/inps_pensioni_trimestrale/2024/inps_pensioni_trimestrale_2024_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "inps",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "irpef_comunale",
       "name": "Irpef Comunale",
       "description": "IRPEF comunale: redditi e imponibile per comune italiano, anni d'imposta 2019-2023",
       "source": "Ministero dell'Economia e delle Finanze - OpenData",
+      "source_id": "mef_irpef",
       "period": {
         "start": 2019,
         "end": 2023
@@ -872,314 +1073,314 @@
         {
           "name": "anno_di_imposta",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno d'imposta"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale del comune"
+          "description": ""
         },
         {
           "name": "codice_istat_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune"
+          "description": ""
         },
         {
           "name": "denominazione_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune"
+          "description": ""
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia"
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione di appartenenza"
+          "description": ""
         },
         {
           "name": "codice_istat_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT della regione"
+          "description": ""
         },
         {
           "name": "numero_contribuenti",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero di contribuenti"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "reddito_da_fabbricati_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Da Fabbricati"
+          "description": ""
         },
         {
           "name": "reddito_da_fabbricati_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Da Fabbricati"
+          "description": ""
         },
         {
           "name": "reddito_da_lavoro_dipendente_e_assimilati_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Da Lavoro Dipendente E Assimilati"
+          "description": ""
         },
         {
           "name": "reddito_da_lavoro_dipendente_e_assimilati_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Da Lavoro Dipendente E Assimilati"
+          "description": ""
         },
         {
           "name": "reddito_da_pensione_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Da Pensione"
+          "description": ""
         },
         {
           "name": "reddito_da_pensione_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Da Pensione"
+          "description": ""
         },
         {
           "name": "reddito_da_lavoro_autonomo_comprensivo_valori_nulli_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Da Lavoro Autonomo Comprensivo Valori Nulli"
+          "description": ""
         },
         {
           "name": "reddito_da_lavoro_autonomo_comprensivo_valori_nulli_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Da Lavoro Autonomo Comprensivo Valori Nulli"
+          "description": ""
         },
         {
           "name": "reddito_di_spettanza_imprenditore_contabilita_ordinaria_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Di Spettanza Imprenditore Contabilita Ordinaria"
+          "description": ""
         },
         {
           "name": "reddito_di_spettanza_imprenditore_contabilita_ordinaria_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Di Spettanza Imprenditore Contabilita Ordinaria"
+          "description": ""
         },
         {
           "name": "reddito_di_spettanza_imprenditore_contabilita_semplificata_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Di Spettanza Imprenditore Contabilita Semplificata"
+          "description": ""
         },
         {
           "name": "reddito_di_spettanza_imprenditore_contabilita_semplificata_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Di Spettanza Imprenditore Contabilita Semplificata"
+          "description": ""
         },
         {
           "name": "reddito_da_partecipazione_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Da Partecipazione"
+          "description": ""
         },
         {
           "name": "reddito_da_partecipazione_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Da Partecipazione"
+          "description": ""
         },
         {
           "name": "reddito_imponibile_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Imponibile"
+          "description": ""
         },
         {
           "name": "reddito_imponibile_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Imponibile"
+          "description": ""
         },
         {
           "name": "imposta_netta_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Imposta Netta"
+          "description": ""
         },
         {
           "name": "imposta_netta_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Imposta Netta"
+          "description": ""
         },
         {
           "name": "trattamento_spettante_freq",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero contribuenti per Trattamento Spettante"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "trattamento_spettante_eur",
           "type": "DOUBLE",
-          "role": "dimension",
-          "description": "Ammontare in euro per Trattamento Spettante"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "reddito_imponibile_addizionale_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Imponibile Addizionale"
+          "description": ""
         },
         {
           "name": "reddito_imponibile_addizionale_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Imponibile Addizionale"
+          "description": ""
         },
         {
           "name": "addizionale_regionale_dovuta_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Addizionale Regionale Dovuta"
+          "description": ""
         },
         {
           "name": "addizionale_regionale_dovuta_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Addizionale Regionale Dovuta"
+          "description": ""
         },
         {
           "name": "addizionale_comunale_dovuta_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Addizionale Comunale Dovuta"
+          "description": ""
         },
         {
           "name": "addizionale_comunale_dovuta_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Addizionale Comunale Dovuta"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Complessivo"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Complessivo"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_minore_o_uguale_a_zero_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Complessivo Minore O Uguale A Zero Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_minore_o_uguale_a_zero_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Complessivo Minore O Uguale A Zero Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_0_a_10000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Complessivo Da 0 A 10000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_0_a_10000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Complessivo Da 0 A 10000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_10000_a_15000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Complessivo Da 10000 A 15000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_10000_a_15000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Complessivo Da 10000 A 15000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_15000_a_26000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Complessivo Da 15000 A 26000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_15000_a_26000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Complessivo Da 15000 A 26000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_26000_a_55000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Complessivo Da 26000 A 55000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_26000_a_55000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Complessivo Da 26000 A 55000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_55000_a_75000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Complessivo Da 55000 A 75000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_55000_a_75000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Complessivo Da 55000 A 75000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_75000_a_120000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Complessivo Da 75000 A 120000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_da_75000_a_120000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Complessivo Da 75000 A 120000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_oltre_120000_euro_freq",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero contribuenti per Reddito Complessivo Oltre 120000 Euro"
+          "description": ""
         },
         {
           "name": "reddito_complessivo_oltre_120000_euro_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare in euro per Reddito Complessivo Oltre 120000 Euro"
+          "description": ""
         }
       ],
       "location": {
@@ -1187,15 +1388,377 @@
         "path": "gs://dataciviclab-clean/irpef_comunale/*/irpef_comunale_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "mef_irpef",
-      "stage": "published"
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "irpef_comunale_2019_2023",
+      "name": "Irpef Comunale 2019 2023",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2019,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "anno_imposta",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_istat_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_istat_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "numero_contribuenti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_fabbricati_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_fabbricati_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_lavoro_dipendente_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_lavoro_dipendente_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_pensione_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_pensione_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_lavoro_autonomo_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_lavoro_autonomo_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_impresa_ordinaria_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_impresa_ordinaria_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_impresa_semplificata_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_impresa_semplificata_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_partecipazione_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_partecipazione_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_imponibile_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_imponibile_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "imposta_netta_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "imposta_netta_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "bonus_spettante_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "bonus_spettante_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "trattamento_spettante_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "trattamento_spettante_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "misura_spettante_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "misura_spettante_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_imponibile_addizionale_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_imponibile_addizionale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "addizionale_regionale_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "addizionale_regionale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "addizionale_comunale_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "addizionale_comunale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_le_zero_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_complessivo_le_zero_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_0_10000_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_0_10000_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_10000_15000_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_10000_15000_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_15000_26000_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_15000_26000_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_26000_55000_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_26000_55000_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_55000_75000_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_55000_75000_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_75000_120000_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_75000_120000_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_oltre_120000_freq",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "reddito_oltre_120000_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "popolazione_comune",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/irpef_comunale_2019_2023/*/irpef_comunale_2019_2023_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ispra_consumo_suolo",
       "name": "ISPRA - Consumo di Suolo 2024",
       "description": "Consumo di suolo per comune: incremento annuo e stock territoriale (7896 comuni)",
       "source": "ISPRA",
+      "source_id": "ispra_linked_data",
       "period": {
         "start": 2024,
         "end": 2024
@@ -1205,241 +1768,235 @@
           "name": "pro_com",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT comune"
+          "description": ""
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione comune"
+          "description": ""
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2006_2012",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2006-2012 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2006_2012",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2006-2012 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2006_2012",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2006-2012 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2012_2015",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2012-2015 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2012_2015",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2012-2015 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2012_2015",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2012-2015 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2015_2016",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2015-2016 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2015_2016",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2015-2016 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2015_2016",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2015-2016 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2016_2017",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2016-2017 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2016_2017",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2016-2017 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2016_2017",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2016-2017 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2017_2018",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2017-2018 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2017_2018",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2017-2018 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2017_2018",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2017-2018 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2018_2019",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2018-2019 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2018_2019",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2018-2019 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2018_2019",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2018-2019 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2019_2020",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2019-2020 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2019_2020",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2019-2020 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2019_2020",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2019-2020 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2020_2021",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2020-2021 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2020_2021",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2020-2021 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2020_2021",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2020-2021 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2021_2022",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2021-2022 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2021_2022",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2021-2022 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2021_2022",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2021-2022 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2022_2023",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2022-2023 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2022_2023",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2022-2023 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2022_2023",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2022-2023 [ha]"
-        },
-        {
-          "name": "incremento_ha_2023_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2023-2024 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_netto_ha_2023_2024",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2023-2024 [ha]"
+          "description": ""
         },
         {
           "name": "incremento_lordo_ha_2023_2024",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2023-2024 [ha]"
+          "description": ""
         },
         {
           "name": "ripristino_ha_2023_2024",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2023-2024 [ha]"
+          "description": ""
         },
         {
           "name": "stock_ha_2024",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Stock consumo suolo 2024 [ha]"
+          "description": ""
         },
         {
           "name": "stock_pct_2024",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Stock consumo suolo 2024 [% territorio comunale]"
+          "description": ""
         }
       ],
       "location": {
@@ -1447,73 +2004,79 @@
         "path": "gs://dataciviclab-clean/ispra_consumo_suolo/2024/ispra_consumo_suolo_2024_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_manual",
-      "source_id": "ispra_linked_data",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ispra_ru_base",
       "name": "ISPRA - Rifiuti Urbani (dati base)",
       "description": "Produzione e raccolta differenziata rifiuti urbani per comune (7671 comuni, 2020-2024)",
       "source": "ISPRA",
+      "source_id": "ispra_linked_data",
       "period": {
         "start": 2020,
         "end": 2024
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT comune"
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": ""
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": ""
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione comune"
+          "description": ""
         },
         {
           "name": "popolazione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Popolazione residente"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "dato_riferito_a",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno di riferimento del dato"
+          "description": ""
         },
         {
           "name": "totale_ru_tonnellate",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Totale rifiuti urbani prodotti (tonnellate)"
+          "description": ""
         },
         {
           "name": "totale_rd_tonnellate",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Totale raccolta differenziata (tonnellate)"
+          "description": ""
         },
         {
           "name": "percentuale_rd",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Percentuale raccolta differenziata"
+          "description": ""
         }
       ],
       "location": {
@@ -1521,85 +2084,91 @@
         "path": "gs://dataciviclab-clean/ispra_ru_base/*/ispra_ru_base_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "initial_clean_query_catalog",
-      "source_id": "ispra_linked_data",
-      "stage": "published"
+      "stage": "published",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ispra_ru_costi_kg",
       "name": "ISPRA - Costi gestione rifiuti (EUR/kg)",
       "description": "Costi di gestione rifiuti urbani per comune, per fase (raccolta, trasporto, smaltimento, recupero) in centesimi/kg",
       "source": "ISPRA",
+      "source_id": "ispra_linked_data",
       "period": {
         "start": 2020,
         "end": 2024
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT comune"
+          "description": ""
         },
         {
           "name": "comune_o_aggregazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune o aggregazione territoriale"
+          "description": ""
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": ""
         },
         {
           "name": "numero_comuni",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Numero di comuni nell'aggregazione"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "popolazione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Popolazione"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "crt_cent_kg",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo raccolta e trasporto (cent/kg)"
+          "description": ""
         },
         {
           "name": "crd_cent_kg",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo raccolta differenziata (cent/kg)"
+          "description": ""
         },
         {
           "name": "csl_cent_kg",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo smaltimento in discarica (cent/kg)"
+          "description": ""
         },
         {
           "name": "cc_cent_kg",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo compostaggio (cent/kg)"
+          "description": ""
         },
         {
           "name": "ck_cent_kg",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo incenerimento (cent/kg)"
+          "description": ""
         },
         {
           "name": "ctot_cent_kg",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo totale (cent/kg)"
+          "description": ""
         }
       ],
       "location": {
@@ -1607,103 +2176,109 @@
         "path": "gs://dataciviclab-clean/ispra_ru_costi_kg/*/ispra_ru_costi_kg_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "initial_clean_query_catalog",
-      "source_id": "ispra_linked_data",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ispra_ru_costi_procapite",
       "name": "ISPRA - Costi gestione rifiuti (EUR/abitante)",
       "description": "Costi di gestione rifiuti urbani per abitante, per fase (raccolta, trattamento, smaltimento)",
       "source": "ISPRA",
+      "source_id": "ispra_linked_data",
       "period": {
         "start": 2020,
         "end": 2024
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT comune"
+          "description": ""
         },
         {
           "name": "comune_o_aggregazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune o aggregazione territoriale"
+          "description": ""
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": ""
         },
         {
           "name": "numero_comuni",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Numero di comuni nell'aggregazione"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "popolazione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Popolazione"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "crt_euro_ab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo raccolta e trasporto (EUR/ab)"
+          "description": ""
         },
         {
           "name": "cts_euro_ab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo trattamento selezionato (EUR/ab)"
+          "description": ""
         },
         {
           "name": "crd_euro_ab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo raccolta differenziata (EUR/ab)"
+          "description": ""
         },
         {
           "name": "ctr_euro_ab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo trattamento recupero (EUR/ab)"
+          "description": ""
         },
         {
           "name": "csl_euro_ab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo smaltimento in discarica (EUR/ab)"
+          "description": ""
         },
         {
           "name": "cc_euro_ab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo compostaggio (EUR/ab)"
+          "description": ""
         },
         {
           "name": "ck_euro_ab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo incenerimento (EUR/ab)"
+          "description": ""
         },
         {
           "name": "altri_costi_euro_ab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Altri costi (EUR/ab)"
+          "description": ""
         },
         {
           "name": "ctot_euro_ab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Costo totale (EUR/ab)"
+          "description": ""
         }
       ],
       "location": {
@@ -1711,49 +2286,55 @@
         "path": "gs://dataciviclab-clean/ispra_ru_costi_procapite/*/ispra_ru_costi_procapite_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "initial_clean_query_catalog",
-      "source_id": "ispra_linked_data",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_gini_regionale",
       "name": "ISTAT - Indice di Gini regionale",
       "description": "Indice di Gini sul reddito netto regionale, con serie storica annuale 2003-2024",
       "source": "ISTAT — Dataflow 32_221 (Omogeneita del reddito regionale), SDMX-CSV",
+      "source_id": "istat_sdmx",
       "period": {
-        "start": 2003,
-        "end": 2024
+        "start": 2023,
+        "end": 2023
       },
       "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento (2003-2024)"
-        },
         {
           "name": "regione_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT della regione (4 caratteri, NUTS2)"
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione della regione"
+          "description": ""
+        },
+        {
+          "name": "tipo_dato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         },
         {
           "name": "pres_aff_imp",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Serie: 1=con fitti imputati, 2=senza fitti imputati"
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "gini",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice di Gini sul reddito netto (0-1, piu alto = piu diseguale)"
+          "description": ""
         }
       ],
       "location": {
@@ -1761,186 +2342,187 @@
         "path": "gs://dataciviclab-clean/istat_gini_regionale/2023/istat_gini_regionale_2023_clean.parquet",
         "multi_file": false
       },
-      "source_id": "istat_sdmx",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_housing_crowding",
       "name": "Istat Housing Crowding",
       "description": "Indice di densita abitativa (componenti per 100 mq) per titolo di godimento. Serie storica 2004-2025, ISTAT SDMX 33_179",
       "source": "ISTAT — Dataflow 33_179 (Housing conditions), SDMX-CSV",
+      "source_id": "istat_sdmx",
       "period": {
-        "start": 2004,
-        "end": 2025
+        "start": 2024,
+        "end": 2024
       },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "ref_area_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del territorio (IT = Italia)"
+          "description": ""
         },
         {
           "name": "ref_area",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del territorio"
+          "description": ""
         },
         {
           "name": "indicatore_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice dell'indicatore SDMX (ABITAZ_AFFOLL_MED)"
+          "description": ""
         },
         {
           "name": "indicatore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Nome dell'indicatore"
+          "description": ""
         },
         {
           "name": "misura_codice",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice della misura (10 = per hundred values)"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "misura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione della misura"
+          "description": ""
         },
         {
           "name": "titolo_godimento_codice",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice titolo di godimento: 1=owner-occupied, 2=rent"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "titolo_godimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Titolo di godimento: proprieta o affitto"
+          "description": ""
         },
         {
           "name": "numero_componenti_nucleo",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero di componenti del nucleo familiare"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "numero_componenti_nucleo_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Label numero componenti nucleo"
+          "description": ""
         },
         {
           "name": "tipologia_nucleo_codice",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice tipologia nucleo"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "tipologia_nucleo_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Label tipologia nucleo"
+          "description": ""
         },
         {
           "name": "numero_figli",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero di figli"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "numero_figli_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Label numero figli"
+          "description": ""
         },
         {
           "name": "numero_anziani",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero di anziani nel nucleo"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "numero_anziani_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Label numero anziani"
+          "description": ""
         },
         {
           "name": "quintile_reddito_codice",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice quintile di reddito"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "quintile_reddito_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Label quintile di reddito"
+          "description": ""
         },
         {
           "name": "sesso_percettore_principale_codice",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice sesso percettore principale"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "sesso_percettore_principale_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Label sesso percettore principale"
+          "description": ""
         },
         {
           "name": "eta_percettore_principale_codice",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice eta percettore principale"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "eta_percettore_principale_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Label eta percettore principale"
+          "description": ""
         },
         {
           "name": "titolo_studio_percettore_codice",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice titolo di studio"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "titolo_studio_percettore_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Label titolo di studio"
+          "description": ""
         },
         {
           "name": "condizione_professionale_percettore_codice",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice condizione professionale"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "condizione_professionale_percettore_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Label condizione professionale"
+          "description": ""
         },
         {
           "name": "componenti_per_100mq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice di densita abitativa (componenti per 100 mq)"
+          "description": ""
         }
       ],
       "location": {
@@ -1948,8 +2530,8 @@
         "path": "gs://dataciviclab-clean/istat_housing_crowding/2024/istat_housing_crowding_2024_clean.parquet",
         "multi_file": false
       },
-      "source_id": "istat_sdmx",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_ipab_aree",
@@ -1958,51 +2540,51 @@
       "source": "ISTAT — Dataflow 33_292 (IPAB trimestrale), SDMX-CSV",
       "source_id": "istat_sdmx",
       "period": {
-        "start": 2010,
-        "end": 2025
+        "start": 2024,
+        "end": 2024
       },
       "columns": [
         {
           "name": "area_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice area geografica (IT=nazionale, ITC=Nord-ovest, ITD=Sud, ecc.)"
+          "description": ""
         },
         {
           "name": "area",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione area geografica"
+          "description": ""
         },
         {
           "name": "livello_geografico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Livello geografico (Nazionale, Ripartizione geografica)"
+          "description": ""
         },
         {
           "name": "tipo_abitazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice tipo abitazione (NEW_DW=nuove costruzioni, EXST_DW=esistenti)"
+          "description": ""
         },
         {
           "name": "tipo_abitazione_label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Etichetta tipo abitazione"
+          "description": ""
         },
         {
           "name": "trimestre",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Trimestre di riferimento (YYYY-QQ)"
+          "description": ""
         },
         {
           "name": "indice_prezzi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice dei prezzi delle abitazioni (base 2015=100)"
+          "description": ""
         }
       ],
       "location": {
@@ -2011,13 +2593,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mef_irpef_regionale",
       "name": "MEF - Irpef Regionale",
       "description": "Redditi dichiarati per regione e classe, contribuenti e ammontare per tipo di reddito. Anni 2017-2025. Fonte: Ministero dell'Economia e delle Finanze.",
       "source": "https://www.mef.gov.it/",
+      "source_id": "mef_irpef",
       "period": {
         "start": 2017,
         "end": 2025
@@ -2026,254 +2609,254 @@
         {
           "name": "anno_di_imposta",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di imposta"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "classe_reddito",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Classe di reddito (minimo-medio-massimo in euro)"
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione italiana"
+          "description": ""
         },
         {
           "name": "numero_contribuenti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero di contribuenti"
+          "description": ""
         },
         {
           "name": "reddito_dominicale_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito dominicale"
+          "description": ""
         },
         {
           "name": "reddito_dominicale_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito dominicale"
+          "description": ""
         },
         {
           "name": "reddito_agrario_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito agrario"
+          "description": ""
         },
         {
           "name": "reddito_agrario_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito agrario"
+          "description": ""
         },
         {
           "name": "reddito_allevamento_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito allevamento"
+          "description": ""
         },
         {
           "name": "reddito_allevamento_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito allevamento"
+          "description": ""
         },
         {
           "name": "reddito_fabbricati_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito fabbricati"
+          "description": ""
         },
         {
           "name": "reddito_fabbricati_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito fabbricati"
+          "description": ""
         },
         {
           "name": "reddito_lavoro_dipendente_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito lavoro dipendente"
+          "description": ""
         },
         {
           "name": "reddito_lavoro_dipendente_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito lavoro dipendente"
+          "description": ""
         },
         {
           "name": "reddito_pensione_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito pensione"
+          "description": ""
         },
         {
           "name": "reddito_pensione_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito pensione"
+          "description": ""
         },
         {
           "name": "altri_assimilati_ld_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito altri assimilati ld"
+          "description": ""
         },
         {
           "name": "altri_assimilati_ld_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro altri assimilati ld"
+          "description": ""
         },
         {
           "name": "reddito_lavoro_autonomo_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito lavoro autonomo"
+          "description": ""
         },
         {
           "name": "reddito_lavoro_autonomo_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito lavoro autonomo"
+          "description": ""
         },
         {
           "name": "perdita_lavoro_autonomo_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito perdita lavoro autonomo"
+          "description": ""
         },
         {
           "name": "perdita_lavoro_autonomo_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro perdita lavoro autonomo"
+          "description": ""
         },
         {
           "name": "provvigioni_770_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito provvigioni 770"
+          "description": ""
         },
         {
           "name": "provvigioni_770_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro provvigioni 770"
+          "description": ""
         },
         {
           "name": "reddito_cont_ordinaria_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito cont ordinaria"
+          "description": ""
         },
         {
           "name": "reddito_cont_ordinaria_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito cont ordinaria"
+          "description": ""
         },
         {
           "name": "reddito_cont_semplificata_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito cont semplificata"
+          "description": ""
         },
         {
           "name": "reddito_cont_semplificata_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito cont semplificata"
+          "description": ""
         },
         {
           "name": "reddito_partecipazione_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito partecipazione"
+          "description": ""
         },
         {
           "name": "reddito_partecipazione_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito partecipazione"
+          "description": ""
         },
         {
           "name": "perdita_partecipazione_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito perdita partecipazione"
+          "description": ""
         },
         {
           "name": "perdita_partecipazione_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro perdita partecipazione"
+          "description": ""
         },
         {
           "name": "plusvalenze_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito plusvalenze"
+          "description": ""
         },
         {
           "name": "plusvalenze_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro plusvalenze"
+          "description": ""
         },
         {
           "name": "reddito_capitale_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito reddito capitale"
+          "description": ""
         },
         {
           "name": "reddito_capitale_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro reddito capitale"
+          "description": ""
         },
         {
           "name": "redditi_diversi_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito redditi diversi"
+          "description": ""
         },
         {
           "name": "redditi_diversi_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro redditi diversi"
+          "description": ""
         },
         {
           "name": "altri_la_startup_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito altri la startup"
+          "description": ""
         },
         {
           "name": "altri_la_startup_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro altri la startup"
+          "description": ""
         },
         {
           "name": "tassazione_separata_freq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Contribuenti con reddito tassazione separata"
+          "description": ""
         },
         {
           "name": "tassazione_separata_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Ammontare euro tassazione separata"
+          "description": ""
         }
       ],
       "location": {
@@ -2281,523 +2864,529 @@
         "path": "gs://dataciviclab-clean/mef_irpef_regionale/*/mef_irpef_regionale_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "mef_irpef",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mef_partecipazioni",
       "name": "MEF Partecipazioni Pubbliche",
       "description": "Partecipazioni pubbliche dichiarate dalle PA italiane: amministrazioni, partecipate, quote, servizi affidati per territorio e categoria — MEF 2020-2023",
       "source": "MEF — Dipartimento dell'Economia, Open Data Partecipazioni Pubbliche",
+      "source_id": "",
       "period": {
         "start": 2020,
         "end": 2023
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
           "name": "amministrazione_settore_istituzionale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Settore istituzionale di appartenenza dell'amministrazione (es. Regione, Comune, Stato)"
+          "description": ""
         },
         {
           "name": "amministrazione_macrocategoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Macrocategoria dell'amministrazione (es. Comuni, Province, Ministeri)"
+          "description": ""
         },
         {
           "name": "amministrazione_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Categoria dell'amministrazione (es. Comune, Provincia, Regione)"
+          "description": ""
         },
         {
           "name": "amministrazione_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione completa dell'amministrazione"
+          "description": ""
         },
         {
           "name": "amministrazione_codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'amministrazione"
+          "description": ""
         },
         {
           "name": "appartenenza_perimetro_tusp",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se l'amministrazione appartiene al perimetro TUSP (SI/NO)"
+          "description": ""
         },
         {
           "name": "appartenenza_perimetro_revisione_periodica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se l'amministrazione appartiene al perimetro Revisione Periodica (SI/NO)"
+          "description": ""
         },
         {
           "name": "amministrazione_regione_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione in cui ha sede l'amministrazione"
+          "description": ""
         },
         {
           "name": "amministrazione_provincia_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia in cui ha sede l'amministrazione"
+          "description": ""
         },
         {
           "name": "amministrazione_comune_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune in cui ha sede l'amministrazione"
+          "description": ""
         },
         {
           "name": "partecipata_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione della società partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_anno_di_costituzione",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Anno di costituzione della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_forma_giuridica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Forma giuridica della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_stato_giuridico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Stato giuridico della partecipata (es. attiva, liquidata)"
+          "description": ""
         },
         {
           "name": "partecipata_anno_inizio_procedura",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Anno di inizio della procedura di partecipazione"
+          "description": ""
         },
         {
           "name": "partecipata_nazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Nazione della sede della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_regione_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione della sede della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_provincia_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia della sede della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_comune_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune della sede della partecipata"
+          "description": ""
         },
         {
           "name": "emittente_azioni_quotate",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se la partecipata emette azioni quotate (SI/NO)"
+          "description": ""
         },
         {
           "name": "emittente_strumenti_quotati",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se la partecipata emette strumenti quotati (SI/NO)"
+          "description": ""
         },
         {
           "name": "societa_controllata_da_una_quotata",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se la società è controllata da una quotata (SI/NO)"
+          "description": ""
         },
         {
           "name": "gal",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se è un GAL (Gruppo di Azione Locale, SI/NO)"
+          "description": ""
         },
         {
           "name": "partecipata_settore_attivita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Settore di attività della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_divisione_ateco",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Divisione ATECO della partecipata"
+          "description": ""
         },
         {
           "name": "servizi_affidati",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se sono stati affidati servizi alla partecipata (SI/NO)"
+          "description": ""
         },
         {
           "name": "servizio_affidato_1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione del servizio 1 affidato"
+          "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalità di affidamento del servizio 1"
+          "description": ""
         },
         {
           "name": "ente_affidante_servizio_1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ente che ha affidato il servizio 1"
+          "description": ""
         },
         {
           "name": "importo_impegnato_servizio_1",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Importo impegnato per il servizio 1"
+          "description": ""
         },
         {
           "name": "servizio_affidato_2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione del servizio 2 affidato"
+          "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalità di affidamento del servizio 2"
+          "description": ""
         },
         {
           "name": "ente_affidante_servizio_2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ente che ha affidato il servizio 2"
+          "description": ""
         },
         {
           "name": "importo_impegnato_servizio_2",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Importo impegnato per il servizio 2"
+          "description": ""
         },
         {
           "name": "servizio_affidato_3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione del servizio 3 affidato"
+          "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalità di affidamento del servizio 3"
+          "description": ""
         },
         {
           "name": "ente_affidante_servizio_3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ente che ha affidato il servizio 3"
+          "description": ""
         },
         {
           "name": "importo_impegnato_servizio_3",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Importo impegnato per il servizio 3"
+          "description": ""
         },
         {
           "name": "servizio_affidato_4",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione del servizio 4 affidato"
+          "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_4",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalità di affidamento del servizio 4"
+          "description": ""
         },
         {
           "name": "ente_affidante_servizio_4",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ente che ha affidato il servizio 4"
+          "description": ""
         },
         {
           "name": "importo_impegnato_servizio_4",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Importo impegnato per il servizio 4"
+          "description": ""
         },
         {
           "name": "servizio_affidato_5",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione del servizio 5 affidato"
+          "description": ""
         },
         {
           "name": "modalita_affidamento_servizio_5",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalità di affidamento del servizio 5"
+          "description": ""
         },
         {
           "name": "ente_affidante_servizio_5",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ente che ha affidato il servizio 5"
+          "description": ""
         },
         {
           "name": "importo_impegnato_servizio_5",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Importo impegnato per il servizio 5 (può contenere valori non numerici)"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "quota_partecipazione_diretta",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Quota di partecipazione diretta in percentuale"
+          "description": ""
         },
         {
           "name": "partecipazione_indiretta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione sulla partecipazione indiretta (SI/NO)"
+          "description": ""
         },
         {
           "name": "tipo_controllo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipo di controllo esercitato sulla partecipata"
+          "description": ""
         },
         {
           "name": "totale_oneri_importo_impegnato",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Totale oneri - Importo impegnato"
+          "description": ""
         },
         {
           "name": "totale_oneri_importo_pagato_c_residui",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Totale oneri - Importo pagato con residui"
+          "description": ""
         },
         {
           "name": "totale_oneri_importo_pagato_c_competenza",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Totale oneri - Importo pagato con competenza"
+          "description": ""
         },
         {
           "name": "partecipata_tipo_contabilita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipo di contabilità della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_tipo_bilancio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipo di bilancio della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_bilancio_di_esercizio_approvato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se il bilancio di esercizio è approvato (SI/NO)"
+          "description": ""
         },
         {
           "name": "partecipata_numero_di_addetti",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di addetti della partecipata"
+          "description": ""
         },
         {
           "name": "partecipata_patrimonio_netto_co_e_p",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Patrimonio netto (Schema CO.EP.)"
+          "description": ""
         },
         {
           "name": "partecipata_risultato_d_esercizio_co_e_p",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Risultato d'esercizio (Schema CO.E.P.)"
+          "description": ""
         },
         {
           "name": "partecipata_valore_della_produzione_co_e_p",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Valore della produzione (Schema CO.E.P.)"
+          "description": ""
         },
         {
           "name": "partecipata_costo_della_produzione_co_e_p",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Costo della produzione (Schema CO.E.P.)"
+          "description": ""
         },
         {
           "name": "partecipata_costo_del_personale_co_e_p",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Costo del personale (Schema CO.E.P.)"
+          "description": ""
         },
         {
           "name": "partecipata_patrimonio_netto_co_f",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Patrimonio netto (Schema CO.F.)"
+          "description": ""
         },
         {
           "name": "partecipata_totale_entrate_co_f",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Totale entrate (Schema CO.F.)"
+          "description": ""
         },
         {
           "name": "partecipata_totale_uscite_co_f",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Totale uscite (Schema CO.F.)"
+          "description": ""
         },
         {
           "name": "partecipata_spese_per_personale_co_f",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Spese per personale (Schema CO.F.)"
+          "description": ""
         },
         {
           "name": "nr_amministratori",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di amministratori della partecipata"
+          "description": ""
         },
         {
           "name": "nr_componenti_organo_di_controllo",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di componenti dell'organo di controllo"
+          "description": ""
         },
         {
           "name": "partecipata_bilancio_di_esercizio_2020_approvato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Bilancio di esercizio 2020 approvato (SI/NO)"
+          "description": ""
         },
         {
           "name": "risultato_d_esercizio_2020",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Risultato d'esercizio 2020"
+          "description": ""
         },
         {
           "name": "partecipata_bilancio_di_esercizio_2019_approvato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Bilancio di esercizio 2019 approvato (SI/NO)"
+          "description": ""
         },
         {
           "name": "risultato_d_esercizio_2019",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Risultato d'esercizio 2019"
+          "description": ""
         },
         {
           "name": "partecipazione_ancora_detenuta_alla_data_di_adozione_del_provvedimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se la partecipazione è ancora detenuta alla data del provvedimento"
+          "description": ""
         },
         {
           "name": "societa_controllata_da_una_quotata_dichiarata",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se società è controllata da quotata dichiarata (SI/NO)"
+          "description": ""
         },
         {
           "name": "attivita_a_favore_amm",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Attività svolta a favore dell'amministrazione"
+          "description": ""
         },
         {
           "name": "societa_all_a",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se società è in classe A (SI/NO)"
+          "description": ""
         },
         {
           "name": "attivita_svolta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Attività effettivamente svolta dalla partecipata"
+          "description": ""
         },
         {
           "name": "quota_soggetto_privato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Quota di partecipazione di soggetto privato"
+          "description": ""
         },
         {
           "name": "attivita_analoghe_art_20_c_2_lett_c",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Attività analoghe art. 20 c.2 lett. c (SI/NO)"
+          "description": ""
         },
         {
           "name": "contenimento_dei_costi_art_20_c_2_lett_f",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Contenimento costi art. 20 c.2 lett. f (SI/NO)"
+          "description": ""
         },
         {
           "name": "aggregazione_di_societa_art_20_c_2_lett_g",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Aggregazione di società art. 20 c.2 lett. g (SI/NO)"
+          "description": ""
         },
         {
           "name": "esito_della_ricognizione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Esito della ricognizione straordinaria"
+          "description": ""
         },
         {
           "name": "modalita_razionalizzazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalità di razionalizzazione prevista"
+          "description": ""
         },
         {
           "name": "termine_razionalizzazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Termine per la razionalizzazione"
+          "description": ""
         }
       ],
       "location": {
@@ -2805,14 +3394,15 @@
         "path": "gs://dataciviclab-clean/mef_partecipazioni/*/mef_partecipazioni_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mim_alunni_corso_eta",
       "name": "Alunni per corso ed età — MIM",
       "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
       "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
+      "source_id": "mim_opendata",
       "period": {
         "start": 2016,
         "end": 2025
@@ -2822,37 +3412,37 @@
           "name": "anno_scolastico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno scolastico di riferimento (es. 2024/25)"
+          "description": ""
         },
         {
           "name": "codice_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ministeriale della scuola"
+          "description": ""
         },
         {
           "name": "ordine_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ordine scolastico: Primaria, Secondaria di I grado, Secondaria di II grado"
+          "description": ""
         },
         {
           "name": "anno_corso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno di corso all'interno dell'ordine"
+          "description": ""
         },
         {
           "name": "fascia_eta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Fascia di età dell'alunno"
+          "description": ""
         },
         {
           "name": "alunni",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di alunni"
+          "description": ""
         }
       ],
       "location": {
@@ -2860,9 +3450,8 @@
         "path": "gs://dataciviclab-clean/mim_alunni_corso_eta/*/mim_alunni_corso_eta_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "mim_opendata",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mim_anagrafica_scuole_statali",
@@ -2879,85 +3468,85 @@
           "name": "anno_scolastico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno scolastico di riferimento"
+          "description": ""
         },
         {
           "name": "codice_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice unico meccanografico della scuola"
+          "description": ""
         },
         {
           "name": "codice_istituto_riferimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice istituto di riferimento (dirigenza scolastica)"
+          "description": ""
         },
         {
           "name": "denominazione_istituto_riferimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione istituto di riferimento"
+          "description": ""
         },
         {
           "name": "denominazione_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione della scuola"
+          "description": ""
         },
         {
           "name": "area_geografica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Area geografica (Nord, Centro, Sud, Isole)"
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": ""
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia (sigla)"
+          "description": ""
         },
         {
           "name": "codice_comune_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune"
+          "description": ""
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune"
+          "description": ""
         },
         {
           "name": "cap_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CAP della scuola"
+          "description": ""
         },
         {
           "name": "indirizzo_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indirizzo della scuola"
+          "description": ""
         },
         {
           "name": "caratteristica_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Caratteristica della scuola (campagna, montana, ecc.)"
+          "description": ""
         },
         {
           "name": "grado_istruzione_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Grado istruzione (primaria, secondaria I grado, secondaria II grado, ecc.)"
+          "description": ""
         }
       ],
       "location": {
@@ -2966,107 +3555,114 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mit_incidentalita_mensile",
       "name": "MIT Incidentalità Stradale Mensile",
       "description": "Serie mensile di incidenti stradali, morti, feriti e indicatori di mortalità/gravità/lesività — Italia 2001-2018, 216 mesi",
       "source": "MIT — Ministero delle Infrastrutture e dei Trasporti, portale open data",
+      "source_id": "mit_opendata",
       "period": {
         "start": 2001,
-        "end": 2018
+        "end": 2001
       },
       "columns": [
         {
-          "name": "anno",
-          "type": "integer",
+          "name": "mese",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno di riferimento (2001-2018)"
+          "description": ""
         },
         {
-          "name": "mese",
-          "type": "string",
-          "role": "dimension",
-          "description": "Nome del mese (Gennaio-Dicembre)"
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "incidenti",
-          "type": "integer",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di incidenti stradali"
+          "description": ""
         },
         {
           "name": "morti",
-          "type": "integer",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di morti"
+          "description": ""
         },
         {
           "name": "feriti",
-          "type": "integer",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di feriti"
+          "description": ""
         },
         {
           "name": "incidenti_mortali",
-          "type": "integer",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di incidenti mortali"
+          "description": ""
         },
         {
           "name": "perc_incidenti",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Percentuale incidenti sul totale anno"
+          "description": ""
         },
         {
           "name": "perc_incidenti_mortali",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Percentuale incidenti mortali"
+          "description": ""
         },
         {
           "name": "perc_morti",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Percentuale morti"
+          "description": ""
         },
         {
           "name": "perc_feriti",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Percentuale feriti"
+          "description": ""
         },
         {
           "name": "indice_mortalita",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice di mortalità generico (morti/incidenti × 100)"
+          "description": ""
         },
         {
           "name": "indice_gravita",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice di gravità"
+          "description": ""
         },
         {
           "name": "indice_lesivita",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice di lesività (feriti/incidenti × 100)"
+          "description": ""
         },
         {
           "name": "indice_mortalita_spec",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice specifico di mortalità"
+          "description": ""
         },
         {
           "name": "indice_incidentalita_spec",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice specifico di incidentalità"
+          "description": ""
+        },
+        {
+          "name": "mese_numero",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         }
       ],
       "location": {
@@ -3074,157 +3670,181 @@
         "path": "gs://dataciviclab-clean/mit_incidentalita_mensile/2001/mit_incidentalita_mensile_2001_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
       "stage": "incubating",
-      "source_id": "mit_opendata"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mit_opere_incompiute_2020",
       "name": "MIT Opere Pubbliche Incompiute",
       "description": "Opere pubbliche incompiute al 31/12/2020 — Italia, 405 opere con CUP, stato, cause e importi",
       "source": "MIT — Ministero delle Infrastrutture e dei Trasporti, portale open data",
+      "source_id": "mit_opendata",
       "period": {
         "start": 2020,
         "end": 2020
       },
       "columns": [
         {
-          "name": "codice_cup",
-          "type": "string",
+          "name": "graduatoria_pubblicata_da",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice CUP univoco dell'opera"
+          "description": ""
         },
         {
           "name": "anno_di_riferimento",
-          "type": "integer",
-          "role": "dimension",
-          "description": "Anno di riferimento (2020)"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
-          "name": "stato_opera",
-          "type": "string",
+          "name": "codice_cup",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Stato dell'opera secondo d.m. 42/2013"
+          "description": ""
         },
         {
           "name": "ambito_soggettivo",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ambito soggettivo dell'opera"
-        },
-        {
-          "name": "ambito_oggettivo",
-          "type": "string",
-          "role": "dimension",
-          "description": "Ambito oggettivo dell'opera"
+          "description": ""
         },
         {
           "name": "stazione_appaltante",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione stazione appaltante"
+          "description": ""
+        },
+        {
+          "name": "codice_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "stato_opera",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         },
         {
           "name": "localizzazione_codice_istat",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT di localizzazione"
+          "description": ""
+        },
+        {
+          "name": "localizzazione_codice_nuts",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "ambito_oggettivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         },
         {
           "name": "titolo_opera_incompiuta",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Titolo dell'opera incompiuta"
+          "description": ""
         },
         {
-          "name": "livello_sviluppo",
-          "type": "string",
+          "name": "descrizione_intervento",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Livello di sviluppo (d.m. 42/2013, art. 4)"
+          "description": ""
         },
         {
           "name": "importo_complessivo_qe",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo complessivo ultimo quadro economico (€)"
+          "description": ""
         },
         {
           "name": "importo_lavori_qe",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo lavori ultimo q.e. approvato (€)"
+          "description": ""
         },
         {
           "name": "importo_lavori_sal",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo complessivo lavori ultimo SAL (€)"
+          "description": ""
         },
         {
           "name": "importo_oneri_ultimazione",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo oneri per ultimazione (€)"
+          "description": ""
         },
         {
           "name": "perc_avanzamento_lavori",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Percentuale avanzamento lavori"
+          "description": ""
         },
         {
-          "name": "flag_mancanza_fondi",
-          "type": "string",
+          "name": "mancanza_fondi",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: mancanza fondi"
+          "description": ""
         },
         {
-          "name": "flag_cause_tecniche",
-          "type": "string",
+          "name": "cause_tecniche",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: cause tecniche"
+          "description": ""
         },
         {
-          "name": "flag_sopravvenienza_norme",
-          "type": "string",
+          "name": "sopravvenienza_norme",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: sopravvenienza norme"
+          "description": ""
         },
         {
-          "name": "flag_fallimento_liquidazione",
-          "type": "string",
+          "name": "fallimento_liquidazione",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: fallimento/liquidazione"
+          "description": ""
         },
         {
-          "name": "flag_mancato_interesse",
-          "type": "string",
+          "name": "mancato_interesse",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: mancato interesse privato"
+          "description": ""
         },
         {
-          "name": "flag_opera_fruibile",
-          "type": "string",
+          "name": "opera_fruibile_collettivita",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: opera fruibile alla collettività"
+          "description": ""
         },
         {
-          "name": "flag_uso_ridimensionato",
-          "type": "string",
+          "name": "uso_ridimensionato_opera",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: uso ridimensionato opera"
+          "description": ""
         },
         {
-          "name": "flag_infrastruttura_rete",
-          "type": "string",
+          "name": "infrastruttura_rete",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: infrastruttura di rete"
+          "description": ""
         },
         {
-          "name": "flag_discontinuita_rete",
-          "type": "string",
+          "name": "discontinuita_rete",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: discontinuità nella rete"
+          "description": ""
+        },
+        {
+          "name": "livello_sviluppo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         }
       ],
       "location": {
@@ -3232,15 +3852,15 @@
         "path": "gs://dataciviclab-clean/mit_opere_incompiute_2020/2020/mit_opere_incompiute_2020_2020_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
       "stage": "incubating",
-      "source_id": "mit_opendata"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mur_contribuzione_universitaria",
       "name": "MUR - Gettito della contribuzione universitaria",
       "description": "Gettito della contribuzione studentesca per ateneo e tipologia di entrata (2017-2024).",
       "source": "MUR / USTAT CKAN",
+      "source_id": "mur_ustat",
       "period": {
         "start": 2017,
         "end": 2024
@@ -3249,38 +3869,38 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento del dato"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "cod_ateneo",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice identificativo dell'ateneo"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "nome_ateneo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione dell'ateneo"
+          "description": ""
         },
         {
           "name": "codice_gettito",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice della tipologia di gettito"
+          "description": ""
         },
         {
           "name": "descrizione_gettito",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione della tipologia di gettito"
+          "description": ""
         },
         {
           "name": "euro_contributo",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo del gettito in euro"
+          "description": ""
         }
       ],
       "location": {
@@ -3288,15 +3908,15 @@
         "path": "gs://dataciviclab-clean/mur_contribuzione_universitaria/*/mur_contribuzione_universitaria_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "mur_ustat",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "pensioni_pa_dag",
       "name": "Pensioni Pa Dag",
       "description": "Pensioni PA: importi pensionistici per gestione, categoria e caratteristiche pensionato",
       "source": "INPS - OpenData",
+      "source_id": "inps",
       "period": {
         "start": 2024,
         "end": 2024
@@ -3305,110 +3925,110 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento della pensione"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "mese",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Mese di riferimento della pensione"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione di residenza del pensionato"
+          "description": ""
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia di residenza"
+          "description": ""
         },
         {
           "name": "ufficio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ufficio INPS competente"
+          "description": ""
         },
         {
           "name": "tipo_pensione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipologia di pensione"
+          "description": ""
         },
         {
           "name": "codice_tipo_pensione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice identificativo della tipologia di pensione"
+          "description": ""
         },
         {
           "name": "descrizione_pensione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione testuale del tipo di pensione"
+          "description": ""
         },
         {
           "name": "codice_pensione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice identificativo della pensione"
+          "description": ""
         },
         {
           "name": "descrizione_microqualifica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione della microqualifica professionale"
+          "description": ""
         },
         {
           "name": "codice_microqualifica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice della microqualifica professionale"
+          "description": ""
         },
         {
           "name": "codice_titolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice del titolo di pensione"
+          "description": ""
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Titolo di pensione"
+          "description": ""
         },
         {
           "name": "numero_partite",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di partite pensionistiche"
+          "description": ""
         },
         {
           "name": "importi_arretrati_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importi arretrati in euro"
+          "description": ""
         },
         {
           "name": "importi_ratei_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importi ratei in euro"
+          "description": ""
         },
         {
           "name": "importi_tredicesima_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importi tredicesima mensilita in euro"
+          "description": ""
         },
         {
           "name": "importi_mensili_pagati_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importi mensili pagati in euro"
+          "description": ""
         }
       ],
       "location": {
@@ -3416,139 +4036,145 @@
         "path": "gs://dataciviclab-clean/pensioni_pa_dag/2024/pensioni_pa_dag_2024_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "inps",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "popolazione_istat_comunale_2019_2025",
       "name": "Popolazione ISTAT Comunale",
       "description": "Popolazione residente italiana per comune, sesso, classe di età — POSAS ISTAT 2019-2025",
       "source": "ISTAT - demo.posas (Popolazione residente per sesso, età e comune)",
+      "source_id": "istat_sdmx",
       "period": {
         "start": 2019,
         "end": 2025
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice comune ISTAT (codice numerico)"
+          "description": ""
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune"
+          "description": ""
         },
         {
           "name": "eta",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Classe di età (0-100, 999 = totale comunale)"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "celibi",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Celibi (maschi nubili mai sposati)"
+          "description": ""
         },
         {
           "name": "coniugati",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Coniugati (maschi sposati)"
+          "description": ""
         },
         {
           "name": "divorziati",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Divorziati (maschi separati legalmente)"
+          "description": ""
         },
         {
           "name": "vedovi",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Vedovi (maschi con coniuge deceduto)"
+          "description": ""
         },
         {
           "name": "uniti_civilmente_maschi",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Uniti civilmente (maschi)"
+          "description": ""
         },
         {
           "name": "maschi_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex uniti civilmente — scioglimento (maschi)"
+          "description": ""
         },
         {
           "name": "maschi_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex uniti civilmente — decesso coniuge (maschi)"
+          "description": ""
         },
         {
           "name": "totale_maschi",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Totale popolazione maschile"
+          "description": ""
         },
         {
           "name": "nubili",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Nubili (femmine nubili mai sposate)"
+          "description": ""
         },
         {
           "name": "coniugate",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Coniugate (femmine sposate)"
+          "description": ""
         },
         {
           "name": "divorziate",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Divorziate (femmine separate legalmente)"
+          "description": ""
         },
         {
           "name": "vedove",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Vedove (femmine con coniuge deceduto)"
+          "description": ""
         },
         {
           "name": "unite_civilmente_femmine",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Unite civilmente (femmine)"
+          "description": ""
         },
         {
           "name": "femmine_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex unite civilmente — scioglimento (femmine)"
+          "description": ""
         },
         {
           "name": "femmine_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex unite civilmente — decesso coniuge (femmine)"
+          "description": ""
         },
         {
           "name": "totale_femmine",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Totale popolazione femminile"
+          "description": ""
         },
         {
           "name": "popolazione_residente",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Popolazione residente totale"
+          "description": ""
         }
       ],
       "location": {
@@ -3556,15 +4182,15 @@
         "path": "gs://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "istat_sdmx",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "terna_capacita_rinnovabile",
       "name": "Terna Capacita Rinnovabile",
       "description": "Capacita rinnovabile installata per regione, fonte e anno (MW). Fonti: Fotovoltaico, Eolico, Idroelettrico, Geotermico, Biomasse. Dati Terna.",
       "source": "Terna S.p.A. — dati pubblicati su terna.com",
+      "source_id": "terna",
       "period": {
         "start": 2023,
         "end": 2024
@@ -3572,39 +4198,39 @@
       "columns": [
         {
           "name": "anno",
-          "type": "int32",
-          "role": "dimension",
-          "description": "Anno di riferimento della misura"
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "tipo_capacita",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipologia di capacita (Lorda o Netta). Lorda: potenza nominale installed; Netta: potenza effettivamente disponibile al netto degli ausiliari"
+          "description": ""
         },
         {
           "name": "regione",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione italiana"
+          "description": ""
         },
         {
           "name": "provincia",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia italiana"
+          "description": ""
         },
         {
           "name": "fonti",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Fonte energetica rinnovabile (Fotovoltaico, Eolico, Idroelettrico, Geotermico, Biomasse)"
+          "description": ""
         },
         {
           "name": "potenza_mw",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
-          "description": "Potenza efficiente installata in MW"
+          "description": ""
         }
       ],
       "location": {
@@ -3612,9 +4238,8 @@
         "path": "gs://dataciviclab-clean/terna_capacita_rinnovabile/*/terna_capacita_rinnovabile_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
       "stage": "published",
-      "source_id": "terna"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "terna_electricity_by_source",
@@ -3630,38 +4255,38 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento"
+          "role": "metric",
+          "description": ""
         },
         {
           "name": "tipo_produzione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Macrotipo di produzione (Termoelettrico, Idroelettrico, Fotovoltaico, Eolico, Geotermico)"
+          "description": ""
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": ""
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": ""
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Fonte energetica specifica"
+          "description": ""
         },
         {
           "name": "produzione_gwh",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Produzione di energia elettrica in GWh"
+          "description": ""
         }
       ],
       "location": {
@@ -3670,7 +4295,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
     }
   ]
 }
