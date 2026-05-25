@@ -17,15 +17,6 @@ ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CATALOG = ROOT / "registry" / "clean_catalog.json"
 DEFAULT_SCHEMA = ROOT / "registry" / "clean_catalog.schema.json"
 
-_PARQUET_TYPE_MAP = {
-    "int8": "INTEGER", "int16": "INTEGER", "int32": "INTEGER", "int64": "INTEGER",
-    "uint8": "INTEGER", "uint16": "INTEGER", "uint32": "INTEGER", "uint64": "INTEGER",
-    "float": "DOUBLE", "double": "DOUBLE", "float32": "DOUBLE", "float64": "DOUBLE",
-    "bool": "BOOLEAN", "boolean": "BOOLEAN",
-    "date32[day]": "DATE", "date64[us]": "TIMESTAMP",
-    "timestamp[us]": "TIMESTAMP", "timestamp[ms]": "TIMESTAMP",
-}
-
 
 def main() -> int:
     parser = argparse.ArgumentParser(
@@ -167,7 +158,7 @@ def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
     for ds in catalog.get("datasets", []):
         slug = ds.get("slug", "")
         sid = slug_to_source.get(slug)
-        if sid and "source_id" not in ds:
+        if sid and not ds.get("source_id"):
             ds["source_id"] = sid
             updated += 1
 
@@ -265,19 +256,21 @@ def derive_catalog_from_gcs(
             for row in rows:
                 col_name = row[0]
                 raw_type = str(row[1]).lower()
-                # Mappa tipo parquet generico
-                if "int" in raw_type:
-                    bq_type = "INTEGER"
-                elif "float" in raw_type or "double" in raw_type:
-                    bq_type = "DOUBLE"
-                elif "decimal" in raw_type:
-                    bq_type = "DOUBLE"
-                elif "date" in raw_type or "timestamp" in raw_type:
-                    bq_type = "DATE" if "date" in raw_type else "TIMESTAMP"
-                elif "bool" in raw_type:
-                    bq_type = "BOOLEAN"
-                else:
-                    bq_type = "VARCHAR"
+                # Mappa tipo DuckDB → catalogo (preserva BIGINT vs INTEGER)
+                duckdb_to_catalog = {
+                    "integer": "INTEGER", "int32": "INTEGER", "int": "INTEGER",
+                    "bigint": "BIGINT", "int64": "BIGINT",
+                    "smallint": "INTEGER", "tinyint": "INTEGER", "hugeint": "BIGINT",
+                    "float": "DOUBLE", "real": "DOUBLE", "double": "DOUBLE",
+                    "decimal": "DOUBLE", "numeric": "DOUBLE",
+                    "varchar": "VARCHAR", "text": "VARCHAR", "char": "VARCHAR",
+                    "date": "DATE",
+                    "timestamp": "TIMESTAMP", "timestamp_s": "TIMESTAMP",
+                    "timestamp_ms": "TIMESTAMP", "timestamp_ns": "TIMESTAMP",
+                    "time": "TIME",
+                    "boolean": "BOOLEAN", "bool": "BOOLEAN",
+                }
+                bq_type = duckdb_to_catalog.get(raw_type, "VARCHAR")
                 role = "dimension" if bq_type == "VARCHAR" else "metric"
                 columns.append({"name": col_name, "type": bq_type, "role": role, "description": ""})
         except Exception as exc:
