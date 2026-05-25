@@ -2,16 +2,17 @@
   "schema_version": 1,
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
-  "updated_at": "2026-05-19",
   "source_repo": "dataciviclab/dataset-incubator",
+  "updated_at": "2026-05-25",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
       "name": "AIFA Spesa Farmaceutica Convenzionata",
       "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC — AIFA 2018-2024",
       "source": "AIFA — Open Data Spesa e Consumo Farmaceutico",
+      "source_id": "aifa",
       "period": {
-        "start": 2020,
+        "start": 2018,
         "end": 2024
       },
       "columns": [
@@ -123,15 +124,15 @@
         "path": "gs://dataciviclab-clean/aifa_spesa_consumo/*/aifa_spesa_consumo_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
       "stage": "published",
-      "source_id": "aifa"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "bdap_entrate_stato",
       "name": "BDAP Entrate Stato - Serie Storica",
       "description": "Entrate statali da BDAP, aggregate per titolo, natura, tipologia, provento",
       "source": "MEF-BDAP",
+      "source_id": "openbdap",
       "period": {
         "start": 2008,
         "end": 2024
@@ -206,11 +207,11 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_entrate_stato/2024/bdap_entrate_stato_2024_clean.parquet"
+        "path": "gs://dataciviclab-clean/bdap_entrate_stato/2024/bdap_entrate_stato_2024_clean.parquet",
+        "multi_file": false
       },
-      "registry_source": "initial_clean_query_catalog",
-      "source_id": "openbdap",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "bdap_lea",
@@ -249,7 +250,7 @@
         },
         {
           "name": "codice_ente_bdap",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice BDAP ente"
         },
@@ -364,17 +365,68 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_lea/*/bdap_lea_*_clean.parquet",
-        "multi_file": true
+        "path": "gs://dataciviclab-clean/bdap_lea/2024/bdap_lea_2024_clean.parquet",
+        "multi_file": false
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "camera_deputati_legislature",
+      "name": "Camera Deputati Legislature",
+      "description": "Deputati italiani per legislatura — Camera dei Deputati",
+      "source": "Camera dei Deputati — OpenData SPARQL endpoint",
+      "source_id": "",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "deputato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI identificativo del deputato"
+        },
+        {
+          "name": "cogn",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome del deputato"
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del deputato"
+        },
+        {
+          "name": "legislatura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero della legislatura"
+        },
+        {
+          "name": "gender",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Genere del deputato"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/camera_deputati_legislature/2024/camera_deputati_legislature_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "civile_flussi",
       "name": "Flussi Civile — Giustizia civile italiana",
       "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 (file snapshot 2025).",
       "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
+      "source_id": "giustizia_statistiche",
       "period": {
         "start": 2014,
         "end": 2025
@@ -458,9 +510,8 @@
         "path": "gs://dataciviclab-clean/civile_flussi/2025/civile_flussi_2025_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
       "stage": "published",
-      "source_id": "giustizia_statistiche"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "consip_consumi_convenzione",
@@ -529,19 +580,19 @@
         },
         {
           "name": "numero_ordini_con_consumi",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di ordini con consumi"
         },
         {
           "name": "n_pa_con_consumi",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di PA con consumi"
         },
         {
           "name": "n_po_con_consumi",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di PO (Punti Ordine) con consumi"
         }
@@ -552,13 +603,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "dipendenti_pubblici",
       "name": "Dipendenti Pubblici - Occupazione e Turnover",
       "description": "Dipendenti pubblici per ente, comparto, categoria, genere e tipo di orario (2010-2023)",
       "source": "MEF-BDAP",
+      "source_id": "openbdap",
       "period": {
         "start": 2010,
         "end": 2023
@@ -708,16 +760,17 @@
         "path": "gs://dataciviclab-clean/dipendenti_pubblici/*/dipendenti_pubblici_*_clean.parquet",
         "multi_file": true
       },
-      "source_id": "openbdap",
-      "stage": "published"
+      "stage": "published",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "giustizia_penale_indicatori",
       "name": "Giustizia Penale — Clearance Rate e Disposition Time",
       "description": "Indicatori di efficienza della giustizia penale: clearance rate (casi definiti/casi sopravvenuti) e disposition time (durata media in giorni) per distretto e tipo ufficio. Sheet Tribunali, anni 2014-2024. Fonte: Ministero della Giustizia — DG Statistica.",
       "source": "Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa",
+      "source_id": "giustizia_statistiche",
       "period": {
-        "start": 2014,
+        "start": 2024,
         "end": 2024
       },
       "columns": [
@@ -769,17 +822,17 @@
         "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/2024/giustizia_penale_indicatori_2024_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
       "stage": "incubating",
-      "source_id": "giustizia_statistiche"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "inps_pensioni_trimestrale",
       "name": "INPS Pensioni — trimestrale",
       "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2020-2024)",
       "source": "https://www.inps.it/gestione-previdenziale",
+      "source_id": "inps",
       "period": {
-        "start": 2020,
+        "start": 2024,
         "end": 2024
       },
       "columns": [
@@ -855,15 +908,15 @@
         "path": "gs://dataciviclab-clean/inps_pensioni_trimestrale/2024/inps_pensioni_trimestrale_2024_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "inps",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "irpef_comunale",
       "name": "Irpef Comunale",
       "description": "IRPEF comunale: redditi e imponibile per comune italiano, anni d'imposta 2019-2023",
       "source": "Ministero dell'Economia e delle Finanze - OpenData",
+      "source_id": "mef_irpef",
       "period": {
         "start": 2019,
         "end": 2023
@@ -1187,15 +1240,15 @@
         "path": "gs://dataciviclab-clean/irpef_comunale/*/irpef_comunale_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "mef_irpef",
-      "stage": "published"
+      "stage": "published",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ispra_consumo_suolo",
       "name": "ISPRA - Consumo di Suolo 2024",
       "description": "Consumo di suolo per comune: incremento annuo e stock territoriale (7896 comuni)",
       "source": "ISPRA",
+      "source_id": "ispra_linked_data",
       "period": {
         "start": 2024,
         "end": 2024
@@ -1406,12 +1459,6 @@
           "description": "Aree ripristinate 2022-2023 [ha]"
         },
         {
-          "name": "incremento_ha_2023_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2023-2024 [ha]"
-        },
-        {
           "name": "incremento_netto_ha_2023_2024",
           "type": "DOUBLE",
           "role": "metric",
@@ -1447,20 +1494,26 @@
         "path": "gs://dataciviclab-clean/ispra_consumo_suolo/2024/ispra_consumo_suolo_2024_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_manual",
-      "source_id": "ispra_linked_data",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ispra_ru_base",
       "name": "ISPRA - Rifiuti Urbani (dati base)",
       "description": "Produzione e raccolta differenziata rifiuti urbani per comune (7671 comuni, 2020-2024)",
       "source": "ISPRA",
+      "source_id": "ispra_linked_data",
       "period": {
         "start": 2020,
         "end": 2024
       },
       "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Anno di riferimento"
+        },
         {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
@@ -1521,20 +1574,26 @@
         "path": "gs://dataciviclab-clean/ispra_ru_base/*/ispra_ru_base_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "initial_clean_query_catalog",
-      "source_id": "ispra_linked_data",
-      "stage": "published"
+      "stage": "published",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ispra_ru_costi_kg",
       "name": "ISPRA - Costi gestione rifiuti (EUR/kg)",
       "description": "Costi di gestione rifiuti urbani per comune, per fase (raccolta, trasporto, smaltimento, recupero) in centesimi/kg",
       "source": "ISPRA",
+      "source_id": "ispra_linked_data",
       "period": {
         "start": 2020,
         "end": 2024
       },
       "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Anno di riferimento"
+        },
         {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
@@ -1607,20 +1666,26 @@
         "path": "gs://dataciviclab-clean/ispra_ru_costi_kg/*/ispra_ru_costi_kg_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "initial_clean_query_catalog",
-      "source_id": "ispra_linked_data",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ispra_ru_costi_procapite",
       "name": "ISPRA - Costi gestione rifiuti (EUR/abitante)",
       "description": "Costi di gestione rifiuti urbani per abitante, per fase (raccolta, trattamento, smaltimento)",
       "source": "ISPRA",
+      "source_id": "ispra_linked_data",
       "period": {
         "start": 2020,
         "end": 2024
       },
       "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Anno di riferimento"
+        },
         {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
@@ -1711,26 +1776,20 @@
         "path": "gs://dataciviclab-clean/ispra_ru_costi_procapite/*/ispra_ru_costi_procapite_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "initial_clean_query_catalog",
-      "source_id": "ispra_linked_data",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_gini_regionale",
       "name": "ISTAT - Indice di Gini regionale",
       "description": "Indice di Gini sul reddito netto regionale, con serie storica annuale 2003-2024",
       "source": "ISTAT — Dataflow 32_221 (Omogeneita del reddito regionale), SDMX-CSV",
+      "source_id": "istat_sdmx",
       "period": {
         "start": 2003,
         "end": 2024
       },
       "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento (2003-2024)"
-        },
         {
           "name": "regione_codice",
           "type": "VARCHAR",
@@ -1744,10 +1803,22 @@
           "description": "Denominazione della regione"
         },
         {
+          "name": "tipo_dato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di dato (valore, errore standard, ecc.)"
+        },
+        {
           "name": "pres_aff_imp",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Serie: 1=con fitti imputati, 2=senza fitti imputati"
+        },
+        {
+          "name": "anno",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Anno di riferimento (2003-2024)"
         },
         {
           "name": "gini",
@@ -1761,14 +1832,15 @@
         "path": "gs://dataciviclab-clean/istat_gini_regionale/2023/istat_gini_regionale_2023_clean.parquet",
         "multi_file": false
       },
-      "source_id": "istat_sdmx",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_housing_crowding",
       "name": "Istat Housing Crowding",
       "description": "Indice di densita abitativa (componenti per 100 mq) per titolo di godimento. Serie storica 2004-2025, ISTAT SDMX 33_179",
       "source": "ISTAT — Dataflow 33_179 (Housing conditions), SDMX-CSV",
+      "source_id": "istat_sdmx",
       "period": {
         "start": 2004,
         "end": 2025
@@ -1806,7 +1878,7 @@
         },
         {
           "name": "misura_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice della misura (10 = per hundred values)"
         },
@@ -1818,7 +1890,7 @@
         },
         {
           "name": "titolo_godimento_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice titolo di godimento: 1=owner-occupied, 2=rent"
         },
@@ -1842,7 +1914,7 @@
         },
         {
           "name": "tipologia_nucleo_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice tipologia nucleo"
         },
@@ -1878,7 +1950,7 @@
         },
         {
           "name": "quintile_reddito_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice quintile di reddito"
         },
@@ -1890,7 +1962,7 @@
         },
         {
           "name": "sesso_percettore_principale_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice sesso percettore principale"
         },
@@ -1902,7 +1974,7 @@
         },
         {
           "name": "eta_percettore_principale_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice eta percettore principale"
         },
@@ -1914,7 +1986,7 @@
         },
         {
           "name": "titolo_studio_percettore_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice titolo di studio"
         },
@@ -1926,7 +1998,7 @@
         },
         {
           "name": "condizione_professionale_percettore_codice",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Codice condizione professionale"
         },
@@ -1948,8 +2020,8 @@
         "path": "gs://dataciviclab-clean/istat_housing_crowding/2024/istat_housing_crowding_2024_clean.parquet",
         "multi_file": false
       },
-      "source_id": "istat_sdmx",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_ipab_aree",
@@ -2011,13 +2083,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mef_irpef_regionale",
       "name": "MEF - Irpef Regionale",
       "description": "Redditi dichiarati per regione e classe, contribuenti e ammontare per tipo di reddito. Anni 2017-2025. Fonte: Ministero dell'Economia e delle Finanze.",
       "source": "https://www.mef.gov.it/",
+      "source_id": "mef_irpef",
       "period": {
         "start": 2017,
         "end": 2025
@@ -2281,20 +2354,26 @@
         "path": "gs://dataciviclab-clean/mef_irpef_regionale/*/mef_irpef_regionale_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "mef_irpef",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mef_partecipazioni",
       "name": "MEF Partecipazioni Pubbliche",
       "description": "Partecipazioni pubbliche dichiarate dalle PA italiane: amministrazioni, partecipate, quote, servizi affidati per territorio e categoria — MEF 2020-2023",
       "source": "MEF — Dipartimento dell'Economia, Open Data Partecipazioni Pubbliche",
+      "source_id": "",
       "period": {
         "start": 2020,
         "end": 2023
       },
       "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Anno di riferimento"
+        },
         {
           "name": "amministrazione_settore_istituzionale",
           "type": "VARCHAR",
@@ -2573,7 +2652,7 @@
         },
         {
           "name": "importo_impegnato_servizio_5",
-          "type": "VARCHAR",
+          "type": "BIGINT",
           "role": "dimension",
           "description": "Importo impegnato per il servizio 5 (può contenere valori non numerici)"
         },
@@ -2805,14 +2884,15 @@
         "path": "gs://dataciviclab-clean/mef_partecipazioni/*/mef_partecipazioni_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mim_alunni_corso_eta",
       "name": "Alunni per corso ed età — MIM",
       "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
       "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
+      "source_id": "mim_opendata",
       "period": {
         "start": 2016,
         "end": 2025
@@ -2850,7 +2930,7 @@
         },
         {
           "name": "alunni",
-          "type": "INTEGER",
+          "type": "BIGINT",
           "role": "metric",
           "description": "Numero di alunni"
         }
@@ -2860,9 +2940,8 @@
         "path": "gs://dataciviclab-clean/mim_alunni_corso_eta/*/mim_alunni_corso_eta_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "mim_opendata",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mim_anagrafica_scuole_statali",
@@ -2966,107 +3045,114 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mit_incidentalita_mensile",
       "name": "MIT Incidentalità Stradale Mensile",
       "description": "Serie mensile di incidenti stradali, morti, feriti e indicatori di mortalità/gravità/lesività — Italia 2001-2018, 216 mesi",
       "source": "MIT — Ministero delle Infrastrutture e dei Trasporti, portale open data",
+      "source_id": "mit_opendata",
       "period": {
         "start": 2001,
         "end": 2018
       },
       "columns": [
         {
-          "name": "anno",
-          "type": "integer",
-          "role": "dimension",
-          "description": "Anno di riferimento (2001-2018)"
-        },
-        {
           "name": "mese",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Nome del mese (Gennaio-Dicembre)"
         },
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento (2001-2018)"
+        },
+        {
           "name": "incidenti",
-          "type": "integer",
+          "type": "INTEGER",
           "role": "metric",
           "description": "Numero di incidenti stradali"
         },
         {
           "name": "morti",
-          "type": "integer",
+          "type": "INTEGER",
           "role": "metric",
           "description": "Numero di morti"
         },
         {
           "name": "feriti",
-          "type": "integer",
+          "type": "INTEGER",
           "role": "metric",
           "description": "Numero di feriti"
         },
         {
           "name": "incidenti_mortali",
-          "type": "integer",
+          "type": "INTEGER",
           "role": "metric",
           "description": "Numero di incidenti mortali"
         },
         {
           "name": "perc_incidenti",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Percentuale incidenti sul totale anno"
         },
         {
           "name": "perc_incidenti_mortali",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Percentuale incidenti mortali"
         },
         {
           "name": "perc_morti",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Percentuale morti"
         },
         {
           "name": "perc_feriti",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Percentuale feriti"
         },
         {
           "name": "indice_mortalita",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Indice di mortalità generico (morti/incidenti × 100)"
         },
         {
           "name": "indice_gravita",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Indice di gravità"
         },
         {
           "name": "indice_lesivita",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Indice di lesività (feriti/incidenti × 100)"
         },
         {
           "name": "indice_mortalita_spec",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Indice specifico di mortalità"
         },
         {
           "name": "indice_incidentalita_spec",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Indice specifico di incidentalità"
+        },
+        {
+          "name": "mese_numero",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero del mese (1-12)"
         }
       ],
       "location": {
@@ -3074,157 +3160,181 @@
         "path": "gs://dataciviclab-clean/mit_incidentalita_mensile/2001/mit_incidentalita_mensile_2001_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
       "stage": "incubating",
-      "source_id": "mit_opendata"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mit_opere_incompiute_2020",
       "name": "MIT Opere Pubbliche Incompiute",
       "description": "Opere pubbliche incompiute al 31/12/2020 — Italia, 405 opere con CUP, stato, cause e importi",
       "source": "MIT — Ministero delle Infrastrutture e dei Trasporti, portale open data",
+      "source_id": "mit_opendata",
       "period": {
         "start": 2020,
         "end": 2020
       },
       "columns": [
         {
-          "name": "codice_cup",
-          "type": "string",
+          "name": "graduatoria_pubblicata_da",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice CUP univoco dell'opera"
+          "description": "Ente che ha pubblicato la graduatoria"
         },
         {
           "name": "anno_di_riferimento",
-          "type": "integer",
+          "type": "INTEGER",
           "role": "dimension",
           "description": "Anno di riferimento (2020)"
         },
         {
-          "name": "stato_opera",
-          "type": "string",
+          "name": "codice_cup",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Stato dell'opera secondo d.m. 42/2013"
+          "description": "Codice CUP univoco dell'opera"
         },
         {
           "name": "ambito_soggettivo",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Ambito soggettivo dell'opera"
         },
         {
-          "name": "ambito_oggettivo",
-          "type": "string",
-          "role": "dimension",
-          "description": "Ambito oggettivo dell'opera"
-        },
-        {
           "name": "stazione_appaltante",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Denominazione stazione appaltante"
         },
         {
+          "name": "codice_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'ente responsabile"
+        },
+        {
+          "name": "stato_opera",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato dell'opera secondo d.m. 42/2013"
+        },
+        {
           "name": "localizzazione_codice_istat",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Codice ISTAT di localizzazione"
         },
         {
+          "name": "localizzazione_codice_nuts",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice NUTS della localizzazione dell'opera"
+        },
+        {
+          "name": "ambito_oggettivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ambito oggettivo dell'opera"
+        },
+        {
           "name": "titolo_opera_incompiuta",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Titolo dell'opera incompiuta"
         },
         {
-          "name": "livello_sviluppo",
-          "type": "string",
+          "name": "descrizione_intervento",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Livello di sviluppo (d.m. 42/2013, art. 4)"
+          "description": "Descrizione sintetica dell'intervento"
         },
         {
           "name": "importo_complessivo_qe",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Importo complessivo ultimo quadro economico (€)"
         },
         {
           "name": "importo_lavori_qe",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Importo lavori ultimo q.e. approvato (€)"
         },
         {
           "name": "importo_lavori_sal",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Importo complessivo lavori ultimo SAL (€)"
         },
         {
           "name": "importo_oneri_ultimazione",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Importo oneri per ultimazione (€)"
         },
         {
           "name": "perc_avanzamento_lavori",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Percentuale avanzamento lavori"
         },
         {
-          "name": "flag_mancanza_fondi",
-          "type": "string",
+          "name": "mancanza_fondi",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: mancanza fondi"
+          "description": "Indicatore: opera ferma per mancanza di fondi"
         },
         {
-          "name": "flag_cause_tecniche",
-          "type": "string",
+          "name": "cause_tecniche",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: cause tecniche"
+          "description": "Indicatore: opera ferma per cause tecniche"
         },
         {
-          "name": "flag_sopravvenienza_norme",
-          "type": "string",
+          "name": "sopravvenienza_norme",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: sopravvenienza norme"
+          "description": "Indicatore: opera ferma per sopravvenienza normativa"
         },
         {
-          "name": "flag_fallimento_liquidazione",
-          "type": "string",
+          "name": "fallimento_liquidazione",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: fallimento/liquidazione"
+          "description": "Indicatore: opera ferma per fallimento/liquidazione"
         },
         {
-          "name": "flag_mancato_interesse",
-          "type": "string",
+          "name": "mancato_interesse",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: mancato interesse privato"
+          "description": "Indicatore: opera ferma per mancato interesse"
         },
         {
-          "name": "flag_opera_fruibile",
-          "type": "string",
+          "name": "opera_fruibile_collettivita",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: opera fruibile alla collettività"
+          "description": "Indicatore: opera fruibile dalla collettivita'"
         },
         {
-          "name": "flag_uso_ridimensionato",
-          "type": "string",
+          "name": "uso_ridimensionato_opera",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: uso ridimensionato opera"
+          "description": "Indicatore: uso ridimensionato dell'opera"
         },
         {
-          "name": "flag_infrastruttura_rete",
-          "type": "string",
+          "name": "infrastruttura_rete",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: infrastruttura di rete"
+          "description": "Indicatore: infrastruttura di rete associata"
         },
         {
-          "name": "flag_discontinuita_rete",
-          "type": "string",
+          "name": "discontinuita_rete",
+          "type": "VARCHAR",
           "role": "dimension",
-          "description": "Flag: discontinuità nella rete"
+          "description": "Indicatore: discontinuita' di rete associata"
+        },
+        {
+          "name": "livello_sviluppo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Livello di sviluppo (d.m. 42/2013, art. 4)"
         }
       ],
       "location": {
@@ -3232,15 +3342,15 @@
         "path": "gs://dataciviclab-clean/mit_opere_incompiute_2020/2020/mit_opere_incompiute_2020_2020_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
       "stage": "incubating",
-      "source_id": "mit_opendata"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mur_contribuzione_universitaria",
       "name": "MUR - Gettito della contribuzione universitaria",
       "description": "Gettito della contribuzione studentesca per ateneo e tipologia di entrata (2017-2024).",
       "source": "MUR / USTAT CKAN",
+      "source_id": "mur_ustat",
       "period": {
         "start": 2017,
         "end": 2024
@@ -3288,15 +3398,15 @@
         "path": "gs://dataciviclab-clean/mur_contribuzione_universitaria/*/mur_contribuzione_universitaria_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "mur_ustat",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "pensioni_pa_dag",
       "name": "Pensioni Pa Dag",
       "description": "Pensioni PA: importi pensionistici per gestione, categoria e caratteristiche pensionato",
       "source": "INPS - OpenData",
+      "source_id": "inps",
       "period": {
         "start": 2024,
         "end": 2024
@@ -3416,20 +3526,26 @@
         "path": "gs://dataciviclab-clean/pensioni_pa_dag/2024/pensioni_pa_dag_2024_clean.parquet",
         "multi_file": false
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "inps",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "popolazione_istat_comunale_2019_2025",
       "name": "Popolazione ISTAT Comunale",
       "description": "Popolazione residente italiana per comune, sesso, classe di età — POSAS ISTAT 2019-2025",
       "source": "ISTAT - demo.posas (Popolazione residente per sesso, età e comune)",
+      "source_id": "istat_sdmx",
       "period": {
         "start": 2019,
         "end": 2025
       },
       "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Anno di riferimento"
+        },
         {
           "name": "codice_comune",
           "type": "VARCHAR",
@@ -3556,15 +3672,15 @@
         "path": "gs://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
-      "source_id": "istat_sdmx",
-      "stage": "incubating"
+      "stage": "incubating",
+      "registry_source": "derive_auto"
     },
     {
       "slug": "terna_capacita_rinnovabile",
       "name": "Terna Capacita Rinnovabile",
       "description": "Capacita rinnovabile installata per regione, fonte e anno (MW). Fonti: Fotovoltaico, Eolico, Idroelettrico, Geotermico, Biomasse. Dati Terna.",
       "source": "Terna S.p.A. — dati pubblicati su terna.com",
+      "source_id": "terna",
       "period": {
         "start": 2023,
         "end": 2024
@@ -3572,37 +3688,37 @@
       "columns": [
         {
           "name": "anno",
-          "type": "int32",
+          "type": "INTEGER",
           "role": "dimension",
           "description": "Anno di riferimento della misura"
         },
         {
           "name": "tipo_capacita",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Tipologia di capacita (Lorda o Netta). Lorda: potenza nominale installed; Netta: potenza effettivamente disponibile al netto degli ausiliari"
         },
         {
           "name": "regione",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Regione italiana"
         },
         {
           "name": "provincia",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Provincia italiana"
         },
         {
           "name": "fonti",
-          "type": "string",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Fonte energetica rinnovabile (Fotovoltaico, Eolico, Idroelettrico, Geotermico, Biomasse)"
         },
         {
           "name": "potenza_mw",
-          "type": "double",
+          "type": "DOUBLE",
           "role": "metric",
           "description": "Potenza efficiente installata in MW"
         }
@@ -3612,9 +3728,8 @@
         "path": "gs://dataciviclab-clean/terna_capacita_rinnovabile/*/terna_capacita_rinnovabile_*_clean.parquet",
         "multi_file": true
       },
-      "registry_source": "push_archive_auto",
       "stage": "published",
-      "source_id": "terna"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "terna_electricity_by_source",
@@ -3670,7 +3785,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "push_archive_auto"
+      "registry_source": "derive_auto"
     }
   ]
 }

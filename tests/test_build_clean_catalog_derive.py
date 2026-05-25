@@ -73,7 +73,7 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
                     "description": "Descrizione esistente",
                     "source": "Fonte Manuale",
                     "source_id": "manual-id",
-                    "period": {"start": 2023, "end": 2024},
+                    "period": {"start": 2020, "end": 2025},  # piu' ampio del GCS (2023-2024)
                     "columns": [
                         {"name": "anno", "type": "INTEGER", "role": "dimension", "description": "Anno di riferimento"},
                         {"name": "nome", "type": "VARCHAR", "role": "dimension", "description": "Nome del dataset"},
@@ -118,7 +118,7 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
     @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
     @pytest.mark.contract
     def test_derive_merges_editorial_metadata(self, mock_exists, mock_list, mock_connect):
-        """Name, description, source, stage devono venire dal catalogo esistente."""
+        """Name, description, source, stage, period devono venire dal catalogo esistente."""
         mock_connect.return_value = FakeDuckDBConnection()
 
         from scripts.build_clean_catalog import derive_catalog_from_gcs
@@ -126,13 +126,14 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
         catalog, _ = derive_catalog_from_gcs(self.existing_catalog, refresh_date=False)
         ds = {d["slug"]: d for d in catalog["datasets"]}
 
-        # test_slug_a esiste → preserva name, description, source, source_id, stage
+        # test_slug_a esiste → preserva name, description, source, source_id, stage, period
         a = ds["test_slug_a"]
         self.assertEqual(a["name"], "Nome Umano")
         self.assertEqual(a["description"], "Descrizione esistente")
         self.assertEqual(a["source"], "Fonte Manuale")
         self.assertEqual(a["source_id"], "manual-id")
         self.assertEqual(a["stage"], "published")
+        self.assertEqual(a["period"], {"start": 2020, "end": 2025})  # editoriale, non dal path GCS
 
         # test_slug_b è nuovo → defaults
         b = ds["test_slug_b"]
@@ -185,6 +186,42 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
         a = catalog["datasets"][0]
         col_names = [c["name"] for c in a["columns"]]
         self.assertEqual(col_names, ["anno", "nome", "valore"])
+
+    @patch("duckdb.connect")
+    @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
+    @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
+    @pytest.mark.contract
+    def test_derive_preserves_column_types(self, mock_exists, mock_list, mock_connect):
+        """BIGINT, INTEGER, DOUBLE, VARCHAR devono essere preservati dal parquet."""
+        mock_rows = [
+            ("id_big", "BIGINT", "YES", None, None, None),
+            ("id_int", "INTEGER", "YES", None, None, None),
+            ("valore", "DOUBLE", "YES", None, None, None),
+            ("nome", "VARCHAR", "YES", None, None, None),
+            ("data", "DATE", "YES", None, None, None),
+            ("attivo", "BOOLEAN", "YES", None, None, None),
+        ]
+
+        class FakeTypeConnection:
+            def sql(self, query): return self
+            def fetchall(self): return mock_rows
+            def close(self): pass
+            def __enter__(self): return self
+            def __exit__(self, *args): pass
+
+        mock_connect.return_value = FakeTypeConnection()
+
+        from scripts.build_clean_catalog import derive_catalog_from_gcs
+
+        catalog, _ = derive_catalog_from_gcs({"datasets": []}, refresh_date=False)
+        cols = {c["name"]: c for c in catalog["datasets"][0]["columns"]}
+
+        self.assertEqual(cols["id_big"]["type"], "BIGINT")
+        self.assertEqual(cols["id_int"]["type"], "INTEGER")
+        self.assertEqual(cols["valore"]["type"], "DOUBLE")
+        self.assertEqual(cols["nome"]["type"], "VARCHAR")
+        self.assertEqual(cols["data"]["type"], "DATE")
+        self.assertEqual(cols["attivo"]["type"], "BOOLEAN")
 
     @patch("duckdb.connect")
     @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
