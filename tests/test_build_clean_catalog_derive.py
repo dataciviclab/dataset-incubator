@@ -98,6 +98,7 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
     @patch("duckdb.connect")
     @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
     @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
+    @pytest.mark.contract
     def test_derive_filters_without_pipeline_run(self, mock_exists, mock_list, mock_connect):
         """Slug senza pipeline_run.json devono essere esclusi."""
         mock_connect.return_value = FakeDuckDBConnection()
@@ -115,6 +116,7 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
     @patch("duckdb.connect")
     @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
     @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
+    @pytest.mark.contract
     def test_derive_merges_editorial_metadata(self, mock_exists, mock_list, mock_connect):
         """Name, description, source, stage devono venire dal catalogo esistente."""
         mock_connect.return_value = FakeDuckDBConnection()
@@ -172,6 +174,7 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
     @patch("duckdb.connect")
     @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
     @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
+    @pytest.mark.contract
     def test_derive_preserves_columns(self, mock_exists, mock_list, mock_connect):
         """Le colonne devono essere derivate dal parquet."""
         mock_connect.return_value = FakeDuckDBConnection()
@@ -186,6 +189,7 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
     @patch("duckdb.connect")
     @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
     @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
+    @pytest.mark.contract
     def test_derive_multi_file_vs_single(self, mock_exists, mock_list, mock_connect):
         """Multi-file se ha più anni, single se un anno solo."""
         mock_connect.return_value = FakeDuckDBConnection()
@@ -200,6 +204,7 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
     @patch("duckdb.connect")
     @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
     @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
+    @pytest.mark.contract
     def test_derive_schema_error_returns_errors(self, mock_exists, mock_list, mock_connect):
         """Se DuckDB fallisce, l'errore deve essere ritornato."""
         mock_conn = MagicMock()
@@ -219,6 +224,7 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
     @patch("duckdb.connect")
     @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
     @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
+    @pytest.mark.contract
     def test_main_derive_dry_run_exits_zero(self, mock_exists, mock_list, mock_connect):
         """--derive senza --write non deve crashare."""
         mock_connect.return_value = FakeDuckDBConnection()
