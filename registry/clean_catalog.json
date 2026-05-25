@@ -374,9 +374,8 @@
     {
       "slug": "camera_deputati_legislature",
       "name": "Camera Deputati Legislature",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "description": "Deputati italiani per legislatura — Camera dei Deputati",
+      "source": "Camera dei Deputati — OpenData SPARQL endpoint",
       "period": {
         "start": 2024,
         "end": 2024
@@ -2362,7 +2361,6 @@
       "name": "MEF Partecipazioni Pubbliche",
       "description": "Partecipazioni pubbliche dichiarate dalle PA italiane: amministrazioni, partecipate, quote, servizi affidati per territorio e categoria — MEF 2020-2023",
       "source": "MEF — Dipartimento dell'Economia, Open Data Partecipazioni Pubbliche",
-      "source_id": "",
       "period": {
         "start": 2020,
         "end": 2023
