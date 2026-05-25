@@ -3402,6 +3402,62 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "openga_ricorsi_cds",
+      "name": "Openga Ricorsi Cds",
+      "description": "Ricorsi pendenti presso il Consiglio di Stato — dati mensili per sede giudiziaria",
+      "source": "OpenGA — Giustizia Amministrativa",
+      "source_id": "openga",
+      "period": {
+        "start": 2023,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "anno_mese_riferimento",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Periodo di riferimento in formato AAAAMM"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Mese di riferimento (1-12)"
+        },
+        {
+          "name": "codice_sede",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice identificativo della sede giudiziaria"
+        },
+        {
+          "name": "nome_sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della sede giudiziaria"
+        },
+        {
+          "name": "numero_ricorsi_pendenti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero di ricorsi pendenti"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/openga_ricorsi_cds/*/openga_ricorsi_cds_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "pensioni_pa_dag",
       "name": "Pensioni Pa Dag",
       "description": "Pensioni PA: importi pensionistici per gestione, categoria e caratteristiche pensionato",
