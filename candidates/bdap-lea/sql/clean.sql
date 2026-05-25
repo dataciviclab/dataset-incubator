@@ -23,3 +23,4 @@ select
   try_cast("Altri costi" as double) as altri_costi,
   try_cast("Importo Totale" as double) as importo_totale
 from raw_input
+where "Codice Voce Contabile" not in ('19999', '29999', '39999', '48888', '49999')

@@ -8,9 +8,11 @@
 - delimitatore `;`
 - encoding da gestire esplicitamente nel `clean.read`
 - `toolkit inspect paths` OK: `effective_root` risolve a `dataset-incubator/out`
-- run aggiornato 2026-04-26:
-  - clean: 24.813 righe (raw-faithful, nessun filtro)
-  - mart: 23.321 righe (filtro `codice_ente_ssn <> '000'` applicato in mart)
+- run aggiornato 2026-05-25:
+  - clean: 23.595 righe (filtro voci totali `codice_voce_contabile NOT IN ('19999','29999','39999','48888','49999')`)
+  - mart: 22.180 righe (filtro voci totali + `codice_ente_ssn <> '000'`)
+- fix double-counting 2026-05-25: le voci di totale (19999,29999,39999,48888,49999) duplicavano gli importi delle voci di dettaglio.
+  SUM importo_totale pulito da 1.410 mld € a 748 mld € (-47%).
 
 ## Analitico
 
