@@ -124,12 +124,24 @@ jobs:
       - name: Install toolkit
         run: pip install git+https://github.com/dataciviclab/toolkit.git@${{ env.TOOLKIT_VERSION }}
 
+      - name: Detect sample mode
+        id: sample_mode
+        run: |
+          MODE=$(python scripts/detect_sample_mode.py "${{ matrix.config.config_path }}")
+          echo "mode=$MODE" >> "$GITHUB_OUTPUT"
+          echo "Sample mode: $MODE"
+
       - name: Toolkit run full (run + validate + readiness, con support nativi)
         id: run_full
         run: |
+          if [ "${{ steps.sample_mode.outputs.mode }}" = "sample_rows" ]; then
+            SAMPLE_FLAG="--sample-rows 1000"
+          else
+            SAMPLE_FLAG="--sample-bytes 1048576"
+          fi
           toolkit run full \
             --config "${{ matrix.config.config_path }}" \
-            --json --sample-rows 1000 > run_full.json 2>run_full_err.log; ec=$?
+            --json $SAMPLE_FLAG > run_full.json 2>run_full_err.log; ec=$?
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
           cat run_full.json 2>/dev/null || echo "JSON output non disponibile"
           exit $ec

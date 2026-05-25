@@ -25,7 +25,7 @@ clean:
     delim: ";"
     encoding: "cp1252"
   validate:
-    min_rows: 100
+    min_rows: 1000
 
 mart:
   tables:
@@ -36,7 +36,7 @@ mart:
   validate:
     table_rules:
       mart_spesa_enti_2024:
-        min_rows: 100
+        min_rows: 1000
 
 validation:
   fail_on_error: true
