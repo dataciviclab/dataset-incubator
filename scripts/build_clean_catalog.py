@@ -304,9 +304,15 @@ def derive_catalog_from_gcs(
             for field in ("name", "description", "source", "source_id", "stage"):
                 if old.get(field):
                     entry[field] = old[field]
-            # Se lo slug esisteva già con source_id, preservalo
-            if old.get("source_id"):
-                entry["source_id"] = old["source_id"]
+            # Preserva descrizione e role delle colonne dall'editoriale
+            old_cols = {c["name"]: c for c in old.get("columns", [])}
+            for col in entry["columns"]:
+                oc = old_cols.get(col["name"])
+                if oc:
+                    if oc.get("description"):
+                        col["description"] = oc["description"]
+                    if oc.get("role"):
+                        col["role"] = oc["role"]
 
         datasets.append(entry)
 
