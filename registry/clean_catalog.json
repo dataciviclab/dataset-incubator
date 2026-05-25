@@ -3402,6 +3402,62 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "openga_ricorsi_cds",
+      "name": "Openga Ricorsi Cds",
+      "description": "",
+      "source": "",
+      "source_id": "openga",
+      "period": {
+        "start": 2023,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "anno_mese_riferimento",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_sede",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "nome_sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "numero_ricorsi_pendenti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/openga_ricorsi_cds/*/openga_ricorsi_cds_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "pensioni_pa_dag",
       "name": "Pensioni Pa Dag",
       "description": "Pensioni PA: importi pensionistici per gestione, categoria e caratteristiche pensionato",

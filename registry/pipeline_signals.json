@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 32,
+    "total": 33,
     "by_status": {
-      "ok": 32,
+      "ok": 33,
       "warn": 0,
       "error": 0
     }
@@ -426,6 +426,27 @@
       "label": "opencoesione-pagamenti-ue-2014-2020",
       "detail": "anno 2020 — fonte: opencoesione_progetti_esteso_zip — mart: sì",
       "action": ""
+    },
+    {
+      "id": "openga-ricorsi-cds",
+      "source_id": "openga",
+      "status": "ok",
+      "label": "openga-ricorsi-cds",
+      "detail": "anni 2023-2026 — fonte: cds_ricorsi_pendenti — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "26414714733",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26414714733",
+        "checked_at": "2026-05-25",
+        "years": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "config_path": "candidates/openga-ricorsi-cds/dataset.yml"
+      }
     },
     {
       "id": "pensioni-pa-dag",
