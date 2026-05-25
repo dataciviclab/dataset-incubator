@@ -74,7 +74,10 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
                     "source": "Fonte Manuale",
                     "source_id": "manual-id",
                     "period": {"start": 2023, "end": 2024},
-                    "columns": [],
+                    "columns": [
+                        {"name": "anno", "type": "INTEGER", "role": "dimension", "description": "Anno di riferimento"},
+                        {"name": "nome", "type": "VARCHAR", "role": "dimension", "description": "Nome del dataset"},
+                    ],
                     "location": {"type": "gcs", "path": "gs://bucket/test_slug_a/*/test_slug_a_*_clean.parquet", "multi_file": True},
                     "stage": "published",
                     "registry_source": "manual",
@@ -133,6 +136,37 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
         b = ds["test_slug_b"]
         self.assertEqual(b["name"], "Test Slug B")  # title()
         self.assertEqual(b["stage"], "published")
+
+    @patch("duckdb.connect")
+    @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
+    @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
+    def test_derive_preserves_column_metadata(self, mock_exists, mock_list, mock_connect):
+        """description e role delle colonne devono venire dall'editoriale, type dal parquet."""
+        mock_connect.return_value = FakeDuckDBConnection()
+
+        from scripts.build_clean_catalog import derive_catalog_from_gcs
+
+        catalog, _ = derive_catalog_from_gcs(self.existing_catalog, refresh_date=False)
+        ds = {d["slug"]: d for d in catalog["datasets"]}
+
+        # test_slug_a ha colonne editoriali → preserve description e role
+        a = ds["test_slug_a"]
+        cols = {c["name"]: c for c in a["columns"]}
+
+        # anno: role diverso tra editoriale (dimension) e derive (metric → INTEGER)
+        self.assertEqual(cols["anno"]["role"], "dimension")        # da editoriale
+        self.assertEqual(cols["anno"]["description"], "Anno di riferimento")  # da editoriale
+        self.assertEqual(cols["anno"]["type"], "INTEGER")          # dal parquet
+
+        # nome: uguale in editoriale e derive
+        self.assertEqual(cols["nome"]["role"], "dimension")
+        self.assertEqual(cols["nome"]["description"], "Nome del dataset")
+        self.assertEqual(cols["nome"]["type"], "VARCHAR")
+
+        # valore: colonna nuova (solo parquet) → defaults derive
+        self.assertEqual(cols["valore"]["role"], "metric")
+        self.assertEqual(cols["valore"]["description"], "")
+        self.assertEqual(cols["valore"]["type"], "DOUBLE")
 
     @patch("duckdb.connect")
     @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
