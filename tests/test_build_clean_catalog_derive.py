@@ -140,6 +140,7 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
     @patch("duckdb.connect")
     @patch("scripts.build_clean_catalog.list_objects", side_effect=fake_list_objects)
     @patch("scripts.build_clean_catalog.object_exists", side_effect=fake_object_exists)
+    @pytest.mark.regression
     def test_derive_preserves_column_metadata(self, mock_exists, mock_list, mock_connect):
         """description e role delle colonne devono venire dall'editoriale, type dal parquet."""
         mock_connect.return_value = FakeDuckDBConnection()
