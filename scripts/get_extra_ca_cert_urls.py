@@ -28,6 +28,8 @@ def get_urls(cfg_path: Path) -> list[str]:
         cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
     except FileNotFoundError:
         return []
+    except Exception:
+        return []
 
     seen: list[str] = []
     for source in cfg.get("raw", {}).get("sources") or []:
@@ -59,9 +61,24 @@ def main() -> int:
         print("Usage: get_extra_ca_cert_urls.py <dataset.yml path>", file=sys.stderr)
         return 1
 
-    for url in get_urls(config_path):
-        print(url)
-    return 0
+    try:
+        config_path = config_path.resolve()
+    except Exception as e:
+        print(f"Error resolving path {sys.argv[1] if len(sys.argv) > 1 else os.environ.get('CONFIG_PATH')}: {e}", file=sys.stderr)
+        return 1
+
+    if not config_path.exists():
+        print(f"Config file not found: {config_path}", file=sys.stderr)
+        return 1
+
+    try:
+        urls = get_urls(config_path)
+        for url in urls:
+            print(url)
+        return 0
+    except Exception as e:
+        print(f"Error processing config file: {e}", file=sys.stderr)
+        return 1
 
 
 if __name__ == "__main__":
