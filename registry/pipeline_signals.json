@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-25",
+  "generated_at": "2026-05-26",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -70,11 +70,13 @@
       "detail": "anno 2024 — fonte: camera_deputati_sparql — mart: sì",
       "action": "",
       "sample_run": {
-        "status": "failed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2024,
+        "status": "passed",
+        "run_id": "26456578571",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26456578571",
+        "checked_at": "2026-05-26",
+        "years": [
+          2024
+        ],
         "config_path": "candidates/camera-deputati-legislature/dataset.yml"
       }
     },
@@ -105,9 +107,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26107821546",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26107821546",
-        "checked_at": "2026-05-19",
+        "run_id": "26456578571",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26456578571",
+        "checked_at": "2026-05-26",
         "years": [
           2023,
           2024,
