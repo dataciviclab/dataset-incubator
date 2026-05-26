@@ -141,13 +141,7 @@ def main() -> int:
     else:
         for cfg, year in tasks:
             if year is None:
-                results.append({
-                    "slug": Path(cfg).parent.name, "config": cfg,
-                    "year": None, "status": "SKIPPED",
-                    "duration": 0, "output": "anno non risolto",
-                })
-                print(f"  ⏭️ {Path(cfg).parent.name:35s} — SKIPPED (no year)")
-                continue
+                continue  # already added before the branch
             r = run_one(cfg, year)
             results.append(r)
             icon = "✅" if r["status"] == "PASSED" else "❌"
@@ -163,7 +157,7 @@ def main() -> int:
     print("=" * 60)
     for r in results:
         if r["status"] != "PASSED":
-            print(f"  ❌ {r['slug']} ({r['status']}): {r.get('output','')[:120]}")
+            print(f"  ❌ {r['slug']} ({r['status']}): {str(r.get('output',''))[:120]}")
 
     report = {
         "batch_file": args.batch_file,
