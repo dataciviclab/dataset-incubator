@@ -4,7 +4,7 @@
 SELECT
     {year}::INTEGER AS anno,
     "ANNO_MESE_RIFERIMENTO"::BIGINT AS anno_mese_riferimento,
-    ("ANNO_MESE_RIFERIMENTO" % 100)::INTEGER AS mese,
+    (("ANNO_MESE_RIFERIMENTO"::BIGINT) % 100)::INTEGER AS mese,
     "CODICE_SEDE"::BIGINT AS codice_sede,
     "NOME_SEDE"::VARCHAR AS nome_sede,
     "NUMERO_RICORSI_PENDENTI"::BIGINT AS numero_ricorsi_pendenti
