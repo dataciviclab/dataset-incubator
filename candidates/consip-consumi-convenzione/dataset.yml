@@ -40,6 +40,7 @@ clean:
     header: true
     trim_whitespace: true
     quote: '"'
+    escape: '"'
 
 mart:
   tables:
