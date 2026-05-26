@@ -77,7 +77,7 @@ select
   trim("Attività a favore Amm.") as attivita_a_favore_amm,
   trim("Società all. A") as societa_all_a,
   trim("Attività svolta") as attivita_svolta,
-  trim("Quota soggetto privato") as quota_soggetto_privato,
+  trim(cast("Quota soggetto privato" as varchar)) as quota_soggetto_privato,
   trim("Attività analoghe (art.20, c.2 lett.c)") as attivita_analoghe_art_20_c_2_lett_c,
   trim("Contenimento dei costi (art.20, c.2 lett.f)") as contenimento_dei_costi_art_20_c_2_lett_f,
   trim("Aggregazione di società (art.20, c.2 lett.g)") as aggregazione_di_societa_art_20_c_2_lett_g,

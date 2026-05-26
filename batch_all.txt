@@ -1,0 +1,42 @@
+# Batch config list per dataset-incubator
+# toolkit batch --configs batch_all.txt --step all --smoke
+#
+# Path relativi a questo file
+
+candidates/aifa-spesa-consumo/dataset.yml
+candidates/bdap-entrate-stato/dataset.yml
+candidates/bdap-lea/dataset.yml
+candidates/camera-deputati-legislature/dataset.yml
+candidates/civile-flussi/dataset.yml
+candidates/consip-consumi-convenzione/dataset.yml
+candidates/dipendenti-pubblici/dataset.yml
+candidates/giustizia-penale-indicatori/dataset.yml
+candidates/inps-pensioni/dataset.yml
+candidates/irpef-comunale/dataset.yml
+candidates/ispra-consumo-suolo/dataset.yml
+candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml
+candidates/ispra-ru-costi-kg/sources/b_kg_per_abitante/dataset.yml
+candidates/ispra-ru-costi-kg/sources/c_costo_per_abitante/dataset.yml
+candidates/istat-gini-regionale/dataset.yml
+candidates/istat-housing-crowding/dataset.yml
+candidates/istat-ipab-aree/dataset.yml
+candidates/malasanita-struttura-mortalita/sources/a_strutture_asl/dataset.yml
+candidates/malasanita-struttura-mortalita/sources/b_reparti_ricovero/dataset.yml
+candidates/malasanita-struttura-mortalita/sources/c_strutture_ricovero_asl/dataset.yml
+candidates/malasanita-struttura-mortalita/sources/d_mortalita_istat/dataset.yml
+candidates/mef-irpef-regionale/dataset.yml
+candidates/mef-partecipazioni/dataset.yml
+candidates/mim-alunni-corso-eta/dataset.yml
+candidates/mit-incidentalita-mensile-2001-2018/dataset.yml
+candidates/mit-opere-incompiute-2020/dataset.yml
+candidates/mur-contribuzione-universitaria/dataset.yml
+candidates/opencivitas-fsc-rso/dataset.yml
+candidates/opencoesione-pagamenti-ue-2014-2020/dataset.yml
+candidates/openga-ricorsi-cds/dataset.yml
+candidates/pensioni-pa-dag/dataset.yml
+candidates/terna-capacita-rinnovabile/dataset.yml
+candidates/terna-electricity-by-source/dataset.yml
+support_datasets/bdap-anagrafe-enti/dataset.yml
+support_datasets/mim-anagrafica-scuole-statali/dataset.yml
+support_datasets/opencivitas-fsc-enti-rso/dataset.yml
+support_datasets/popolazione-istat-comunale-2019-2025/dataset.yml

@@ -20,8 +20,13 @@ raw:
             ?deputato a ocd:deputato .
             OPTIONAL { ?deputato foaf:surname ?cogn . }
             OPTIONAL { ?deputato foaf:firstName ?nome . }
-            OPTIONAL { ?deputato ocd:rif_leg ?leg .
-                       BIND(REPLACE(STR(?leg), 'http://dati.camera.it/ocd/legislatura.rdf/repubblica_', '') AS ?legislatura) . }
+             OPTIONAL { ?deputato ocd:rif_leg ?leg .
+                        BIND(
+                          REPLACE(
+                            REPLACE(STR(?leg), 'http://dati.camera.it/ocd/legislatura.rdf/', ''),
+                            'repubblica_', ''
+                          ) AS ?legislatura
+                        ) . }
             OPTIONAL { ?deputato foaf:gender ?gender . }
           }
           LIMIT 50000
