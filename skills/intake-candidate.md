@@ -61,7 +61,7 @@ Se vuoi anche eseguire subito il run raw dopo lo scaffold, aggiungi `--run` (ali
 
 **Candidate strutturato già esistente, vuoi rigenerare lo scaffold:**
 ```bash
-toolkit init --config candidates/{slug}/dataset.yml --years 2024
+toolkit run raw -c candidates/{slug}/dataset.yml -y 2024
 ```
 
 ### 3. Struttura
