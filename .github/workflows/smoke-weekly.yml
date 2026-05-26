@@ -52,7 +52,7 @@ jobs:
             print(f'{icon} {r[\"slug\"]:35s} year={r[\"year\"]}  {r[\"duration\"]:>5.1f}s  {r[\"status\"]}')
           " >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "Durata: ${DURATION}s" >> "$GITHUB_STEP_SUMMARY"
+          echo "Durata: $(python3 -c "import json;d=json.load(open('/tmp/batch_report.json'));print(d['duration_seconds'])")s" >> "$GITHUB_STEP_SUMMARY"
 
   verify-catalog:
     needs: smoke-http

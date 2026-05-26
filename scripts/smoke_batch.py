@@ -117,6 +117,16 @@ def main() -> int:
     results = []
     start_total = time.time()
 
+    # Add SKIPPED entries before parallel execution (year could not be resolved)
+    for cfg, year in tasks:
+        if year is None:
+            results.append({
+                "slug": Path(cfg).parent.name, "config": cfg,
+                "year": None, "status": "SKIPPED",
+                "duration": 0, "output": "anno non risolto",
+            })
+            print(f"  ⏭️ {Path(cfg).parent.name:35s} — SKIPPED (no year)")
+
     if args.parallel > 1:
         with ThreadPoolExecutor(max_workers=args.parallel) as ex:
             futures = {
