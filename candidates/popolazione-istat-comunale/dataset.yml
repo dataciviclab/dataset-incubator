@@ -1,14 +1,23 @@
-name: popolazione-istat-comunale
-description: Popolazione ISTAT per comuni (2019-2025)
-license: CC-BY-4.0
-source:
-  url: https://explorer.dataciviclab.org
-  description: Dati ISTAT sulla popolazione comunale
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "popolazione-istat-comunale"
   years: [2019, 2020, 2021, 2022, 2023, 2024, 2025]
+
+raw:
+  sources:
+    - name: "popolazione_data"
+      type: "http_file"
+      args:
+        url: "https://explorer.dataciviclab.org/data/popolazione/{year}.parquet"
+        filename: "popolazione_raw.parquet"
+      primary: true
+
 clean:
   read:
     format: parquet
-    path: "gs://dataciviclab-data/popolazione_istat_comunale/{year}.parquet"
+    path: "out/data/raw/popolazione-istat-comunale/{year}/popolazione_raw.parquet"
   sql: |
     SELECT
       comune_id,
@@ -16,3 +25,14 @@ clean:
       popolazione
     FROM clean_input
     WHERE anno = {{year}}
+  validate:
+    min_rows: 1
+
+mart:
+  tables:
+    - name: "mart_popolazione"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      mart_popolazione:
+        min_rows: 100
