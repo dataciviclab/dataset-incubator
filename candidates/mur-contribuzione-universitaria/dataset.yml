@@ -11,7 +11,7 @@ raw:
     - name: "mur_gettito_ckan"
       type: "ckan"
       args:
-        portal_url: "https://dati.gov.it/opendata"
+        portal_url: "https://dati-ustat.mur.gov.it/api/3/action"
         dataset_id: "{year}-contribuzione-e-interventi-atenei"
         resource_name: "{year} Gettito della contribuzione studentesca"
         filename: "gettito_{year}.csv"
@@ -20,9 +20,11 @@ raw:
 clean:
   sql: "sql/clean.sql"
   read:
+    source: "auto"
     mode: "latest"
-    header: true
+    delim: ";"
     encoding: "cp1252"
+    header: true
   validate:
     min_rows: 500
 
@@ -30,11 +32,6 @@ mart:
   tables:
     - name: "mart_gettito_ateneo_tipo"
       sql: "sql/mart.sql"
-    - name: "mart_gettito_ateneo_tipo_multi_anno"
-      sql: "sql/mart_multi_anno.sql"
-      years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
-      source_layer: "mart"
-      source_table: "mart_gettito_ateneo_tipo"
   required_tables:
     - "mart_gettito_ateneo_tipo"
   validate:
@@ -59,6 +56,13 @@ mart:
           - descrizione_gettito
           - totale_euro
         min_rows: 500
+
+cross_year:
+  tables:
+    - name: "mart_gettito_ateneo_tipo_multi_anno"
+      sql: "sql/mart_multi_anno.sql"
+      source_layer: "mart"
+      source_table: "mart_gettito_ateneo_tipo"
 
 validation:
   fail_on_error: true
