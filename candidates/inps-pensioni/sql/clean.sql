@@ -1,22 +1,22 @@
 with base as (
     select
-        try_cast(Anno_decorrenza as integer) as anno,
-        case Trimestrale
+        try_cast("Anno_decorrenza" as integer) as anno,
+        case "Trimestrale"
             when 'I trimestre' then 1
             when 'II trimestre' then 2
             when 'III trimestre' then 3
             when 'IV trimestre' then 4
             else null
         end as trimestre,
-        trim(SESSO) as sesso,
-        trim(classe_eta) as classe_eta,
-        trim(classe_importo) as classe_importo,
-        trim(area_geografica) as area_geografica,
-        trim(gestione) as gestione,
-        trim(tgestio) as tipo_gestione,
-        trim(Categoria) as categoria,
-        trim(Regione) as regione,
-        try_cast(Numero_pensioni as double) as numero_pensioni
+        trim("SESSO") as sesso,
+        trim("classe_eta") as classe_eta,
+        trim("classe_importo") as classe_importo,
+        trim("area_geografica") as area_geografica,
+        trim("gestione") as gestione,
+        trim("tgestio") as tipo_gestione,
+        trim("Categoria") as categoria,
+        trim("Regione") as regione,
+        try_cast("Numero_pensioni" as double) as numero_pensioni
     from raw_input
 )
 select
