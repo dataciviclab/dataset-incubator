@@ -34,3 +34,6 @@ mart:
     table_rules:
       mart_delitti:
         min_rows: 100
+
+resources:
+  - path: "../../support_datasets/popolazione-istat-comunale-2019-2025"
