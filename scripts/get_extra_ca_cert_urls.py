@@ -13,15 +13,27 @@ def get_urls(config_path: Path) -> list:
         
     seen = []
     if data and isinstance(data, dict):
-        # Cerca i certificati extra nella struttura del dataset
-        candidates = data.get("candidates", {})
-        for c_data in candidates.values():
-            urls = c_data.get("extra_ca_cert_urls", [])
-            if isinstance(urls, str):
-                urls = [urls]
-            for url in urls:
-                if url and url not in seen:
-                    seen.append(url)
+        raw = data.get("raw", {})
+        if isinstance(raw, dict):
+            sources = raw.get("sources", [])
+            if isinstance(sources, list):
+                for source in sources:
+                    if isinstance(source, dict):
+                        args = source.get("args", {})
+                        if isinstance(args, dict):
+                            # 1. Gestione chiave singola: extra_ca_cert_url
+                            url = args.get("extra_ca_cert_url")
+                            if url and isinstance(url, str) and url not in seen:
+                                seen.append(url)
+                            
+                            # 2. Gestione chiave lista: extra_ca_cert_urls
+                            urls = args.get("extra_ca_cert_urls", [])
+                            if isinstance(urls, str):
+                                urls = [urls]
+                            if isinstance(urls, list):
+                                for u in urls:
+                                    if u and isinstance(u, str) and u not in seen:
+                                        seen.append(u)
     return seen
 
 
@@ -41,7 +53,6 @@ def main() -> int:
         print("Usage: get_extra_ca_cert_urls.py <dataset.yml path>", file=sys.stderr)
         return 1
 
-    # Ritorna 1 se il file esplicitamente richiesto non esiste
     if not config_path.is_file():
         print(f"Error: File not found: {config_path}", file=sys.stderr)
         return 1
@@ -51,7 +62,7 @@ def main() -> int:
         for url in urls:
             print(url)
         return 0
-    except yaml.YAMLError as e:
+    except Exception as e:
         print(f"YAML parsing error: {e}", file=sys.stderr)
         return 2
 
