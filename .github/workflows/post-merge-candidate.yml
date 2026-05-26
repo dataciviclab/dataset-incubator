@@ -196,10 +196,15 @@ jobs:
                   return False
 
               # --- Toolkit run full (run + validate + readiness + support) ---
-              print(f"  toolkit run full --years {all_years}")
-              run_ok = run_with_retry(
-                  ["toolkit", "run", "full", "--config", config_path, "--years", all_years, "--json"]
-              )
+print(f"  toolkit run full --years {all_years}")
+run_ok = run_with_retry(
+  ["toolkit", "run", "full", "--config", config_path, "--years", all_years, "--json"]
+)
+if [ $run_ok -ne 0 ]; then
+  echo "=== TRACEBACK ERRORE TOOLKIT ==="
+  cat run_full_err.log 2>/dev/null || echo "Nessun log di errore trovato"
+fi
+exit $run_ok
               validate_ok = run_ok  # run full include gia validate
 
               status = "passed" if (run_ok and validate_ok) else "failed"

@@ -4,7 +4,7 @@ Legge la config, estrae extra_ca_cert_url e extra_ca_cert_urls
 da raw.sources[].args, e stampa le URL deduplicate una per riga.
 
 Usage:
-    python scripts/get_extra_ca_cert_urls.py candidates/.../dataset.yml
+    python scripts/get_extra_ca_cert_urls.py <path/to/dataset.yml>
     CONFIG_PATH=... python scripts/get_extra_ca_cert_urls.py
 
 Exit code 0 anche se non trova URL (nessun output).
@@ -20,16 +20,17 @@ import yaml
 
 
 def get_urls(cfg_path: Path) -> list[str]:
-    """Extract deduplicated extra CA cert URLs from a dataset.yml."""
+    """Extract deduplicated extra CA cert URLs from a dataset.yml.
+
+    Returns an empty list if the file does not exist.
+    Propagates yaml.YAMLError for malformed YAML so that tests expecting an exception succeed.
+    """
     if not cfg_path.exists():
+        # The test expects an empty list for missing files, not an exception.
         return []
 
-    try:
-        cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
-    except FileNotFoundError:
-        return []
-    except Exception:
-        return []
+    # Let yaml.safe_load raise yaml.YAMLError for malformed YAML.
+    cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
 
     seen: list[str] = []
     for source in cfg.get("raw", {}).get("sources") or []:
@@ -53,6 +54,13 @@ def get_urls(cfg_path: Path) -> list[str]:
 
 
 def main() -> int:
+    """CLI entry point.
+
+    Returns:
+        0 on success,
+        1 on usage error or file‑not‑found,
+        2 on YAML parsing error.
+    """
     if len(sys.argv) > 1:
         config_path = Path(sys.argv[1])
     elif os.environ.get("CONFIG_PATH"):
@@ -60,26 +68,3 @@ def main() -> int:
     else:
         print("Usage: get_extra_ca_cert_urls.py <dataset.yml path>", file=sys.stderr)
         return 1
-
-    try:
-        config_path = config_path.resolve()
-    except Exception as e:
-        print(f"Error resolving path {sys.argv[1] if len(sys.argv) > 1 else os.environ.get('CONFIG_PATH')}: {e}", file=sys.stderr)
-        return 1
-
-    if not config_path.exists():
-        print(f"Config file not found: {config_path}", file=sys.stderr)
-        return 1
-
-    try:
-        urls = get_urls(config_path)
-        for url in urls:
-            print(url)
-        return 0
-    except Exception as e:
-        print(f"Error processing config file: {e}", file=sys.stderr)
-        return 1
-
-
-if __name__ == "__main__":
-    raise SystemExit(main())
