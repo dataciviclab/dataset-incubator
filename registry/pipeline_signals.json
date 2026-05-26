@@ -21,10 +21,18 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2024,
+        "run_id": "26462812456",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
+        "checked_at": "2026-05-26",
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
         "config_path": "candidates/aifa-spesa-consumo/dataset.yml"
       }
     },
@@ -161,9 +169,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25862718345",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25862718345",
-        "checked_at": "2026-05-14",
+        "run_id": "26462812456",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
+        "checked_at": "2026-05-26",
         "years": [
           2024
         ],
@@ -245,9 +253,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26088201871",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26088201871",
-        "checked_at": "2026-05-19",
+        "run_id": "26462812456",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
+        "checked_at": "2026-05-26",
         "years": [
           2024
         ],
@@ -438,9 +446,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26414714733",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26414714733",
-        "checked_at": "2026-05-25",
+        "run_id": "26462812456",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
+        "checked_at": "2026-05-26",
         "years": [
           2023,
           2024,
