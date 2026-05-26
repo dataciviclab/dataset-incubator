@@ -11,7 +11,7 @@ raw:
     - name: "mur_gettito_ckan"
       type: "ckan"
       args:
-        portal_url: "https://dati-ustat.mur.gov.it/api/3/action"
+        portal_url: "https://dati.gov.it/opendata"
         dataset_id: "{year}-contribuzione-e-interventi-atenei"
         resource_name: "{year} Gettito della contribuzione studentesca"
         filename: "gettito_{year}.csv"
@@ -61,5 +61,5 @@ mart:
         min_rows: 500
 
 validation:
-  fail_on_error: false
+  fail_on_error: true
 

@@ -1,0 +1,108 @@
+[31m╭─[0m[31m────────────────────[0m[31m [0m[1;31mTraceback [0m[1;2;31m(most recent call last)[0m[31m [0m[31m─────────────────────[0m[31m─╮[0m
+[31m│[0m [2m/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/toolkit[0m [31m│[0m
+[31m│[0m [2m/cli/[0m[1mcmd_run.py[0m:655 in run_full                                              [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m   [2m652 [0m[2m│   │   [0m                                                               [31m│[0m
+[31m│[0m   [2m653 [0m[2m│   │   [0m[94mfor[0m year [95min[0m selected_years:                                    [31m│[0m
+[31m│[0m   [2m654 [0m[2m│   │   │   [0mlogger.info([33m"[0m[33mRun [0m[33m%s[0m[33m — year=[0m[33m%s[0m[33m"[0m, run_step, year)            [31m│[0m
+[31m│[0m [31m❱ [0m655 [2m│   │   │   [0m[1;4mrun_year(cfg, year, step=run_step, dry_run=dry_flag, [0m      [31m│[0m
+[31m│[0m       [1;4mlogger=logger,[0m                                                         [31m│[0m
+[31m│[0m   [2m656 [0m[2m│   │   │   │   │    [0m[1;4msample_rows=sample_rows_final, [0m                   [31m│[0m
+[31m│[0m       [1;4msample_bytes=sample_bytes_final)[0m                                       [31m│[0m
+[31m│[0m   [2m657 [0m[2m│   │   │   [0m                                                           [31m│[0m
+[31m│[0m   [2m658 [0m[2m│   │   │   [0m[94mif[0m [95mnot[0m dry_flag:                                           [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m [2m/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/toolkit[0m [31m│[0m
+[31m│[0m [2m/cli/[0m[1mcmd_run.py[0m:276 in run_year                                              [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m   [2m273 [0m[2m│   │   [0m_run_probe(cfg, year, base_logger)                             [31m│[0m
+[31m│[0m   [2m274 [0m[2m│   [0m                                                                   [31m│[0m
+[31m│[0m   [2m275 [0m[2m│   [0m[94mif[0m [33m"[0m[33mraw[0m[33m"[0m [95min[0m layers_to_run:                                         [31m│[0m
+[31m│[0m [31m❱ [0m276 [2m│   │   [0m[1;4m_execute_layer([0m                                                [31m│[0m
+[31m│[0m   [2m277 [0m[2m│   │   │   [0m[1;4;33m"[0m[1;4;33mraw[0m[1;4;33m"[0m[1;4m,[0m                                                     [31m│[0m
+[31m│[0m   [2m278 [0m[2m│   │   │   [0m[1;4mrun_raw,[0m                                                   [31m│[0m
+[31m│[0m   [2m279 [0m[2m│   │   │   [0m[1;4mcfg.dataset,[0m                                               [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m [2m/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/toolkit[0m [31m│[0m
+[31m│[0m [2m/cli/[0m[1mcmd_run.py[0m:250 in _execute_layer                                        [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m   [2m247 [0m[2m│   │   [0mlayer_logger = bind_logger(base_logger, layer=layer_name)      [31m│[0m
+[31m│[0m   [2m248 [0m[2m│   │   [0mcontext.start_layer(layer_name)                                [31m│[0m
+[31m│[0m   [2m249 [0m[2m│   │   [0m[94mtry[0m:                                                           [31m│[0m
+[31m│[0m [31m❱ [0m250 [2m│   │   │   [0mmetrics = target(*args, logger=layer_logger, **kwargs)     [31m│[0m
+[31m│[0m   [2m251 [0m[2m│   │   │   [0mcontext.complete_layer(layer_name)                         [31m│[0m
+[31m│[0m   [2m252 [0m[2m│   │   │   [0m[94mif[0m [96misinstance[0m(metrics, [96mdict[0m):                              [31m│[0m
+[31m│[0m   [2m253 [0m[2m│   │   │   │   [0mcontext.set_layer_metrics(layer_name, **metrics)       [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m [2m/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/toolkit[0m [31m│[0m
+[31m│[0m [2m/raw/[0m[1mrun.py[0m:92 in run_raw                                                    [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m   [2m 89 [0m[2m│   │   [0mformatted_args = _format_args(args, year)                      [31m│[0m
+[31m│[0m   [2m 90 [0m[2m│   │   [0m[94mif[0m sample_bytes [95mis[0m [95mnot[0m [94mNone[0m:                                   [31m│[0m
+[31m│[0m   [2m 91 [0m[2m│   │   │   [0mformatted_args[[33m"[0m[33msample_bytes[0m[33m"[0m] = sample_bytes              [31m│[0m
+[31m│[0m [31m❱ [0m 92 [2m│   │   [0mpayload, origin = [1;4m_fetch_payload(stype, client, [0m               [31m│[0m
+[31m│[0m       [1;4mformatted_args)[0m                                                        [31m│[0m
+[31m│[0m   [2m 93 [0m[2m│   │   [0minputs.append(                                                 [31m│[0m
+[31m│[0m   [2m 94 [0m[2m│   │   │   [0m{                                                          [31m│[0m
+[31m│[0m   [2m 95 [0m[2m│   │   │   │   [0m[33m"[0m[33mfile[0m[33m"[0m: formatted_args.get([33m"[0m[33mfilename[0m[33m"[0m) [95mor[0m name,        [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m [2m/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/toolkit[0m [31m│[0m
+[31m│[0m [2m/raw/[0m[1m_fetch_utils.py[0m:169 in _fetch_payload                                   [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m   [2m166 [0m[94mdef[0m[90m [0m[92m_fetch_payload[0m(stype: [96mstr[0m, client: [96mdict[0m, formatted_args: [96mdict[0m) ->  [31m│[0m
+[31m│[0m       [96mtuple[0m[[96mbytes[0m, [96mstr[0m]:                                                     [31m│[0m
+[31m│[0m   [2m167 [0m[2;90m│   [0m[33m"""Dispatch fetch to the appropriate source-type handler."""[0m       [31m│[0m
+[31m│[0m   [2m168 [0m[2m│   [0mhandler = _FETCH_DISPATCH.get(stype, _fetch_fallback)              [31m│[0m
+[31m│[0m [31m❱ [0m169 [2m│   [0m[94mreturn[0m [1;4mhandler(stype, client, formatted_args)[0m                      [31m│[0m
+[31m│[0m   [2m170 [0m                                                                       [31m│[0m
+[31m│[0m   [2m171 [0m                                                                       [31m│[0m
+[31m│[0m   [2m172 [0m[2m# [0m                                                                     [31m│[0m
+[31m│[0m       [2m----------------------------------------------------------------------[0m [31m│[0m
+[31m│[0m       [2m-----[0m                                                                  [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m [2m/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/toolkit[0m [31m│[0m
+[31m│[0m [2m/raw/[0m[1m_fetch_utils.py[0m:105 in _fetch_ckan                                      [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m   [2m102 [0m[94mdef[0m[90m [0m[92m_fetch_ckan[0m(stype: [96mstr[0m, client: [96mdict[0m, formatted_args: [96mdict[0m) ->     [31m│[0m
+[31m│[0m       [96mtuple[0m[[96mbytes[0m, [96mstr[0m]:                                                     [31m│[0m
+[31m│[0m   [2m103 [0m[2m│   [0msrc = registry.create(stype, **(client [95mor[0m {}))                     [31m│[0m
+[31m│[0m   [2m104 [0m[2m│   [0msample_bytes = formatted_args.get([33m"[0m[33msample_bytes[0m[33m"[0m)                  [31m│[0m
+[31m│[0m [31m❱ [0m105 [2m│   [0m[94mreturn[0m [1;4msrc.fetch([0m                                                  [31m│[0m
+[31m│[0m   [2m106 [0m[2m│   │   [0m[1;4mformatted_args[[0m[1;4;33m"[0m[1;4;33mportal_url[0m[1;4;33m"[0m[1;4m],[0m                                  [31m│[0m
+[31m│[0m   [2m107 [0m[2m│   │   [0m[1;4;96mstr[0m[1;4m(formatted_args[[0m[1;4;33m"[0m[1;4;33mresource_id[0m[1;4;33m"[0m[1;4m]) [0m[1;4;94mif[0m[1;4m [0m                         [31m│[0m
+[31m│[0m       [1;4mformatted_args.get([0m[1;4;33m"[0m[1;4;33mresource_id[0m[1;4;33m"[0m[1;4m) [0m[1;4;95mis[0m[1;4m [0m[1;4;95mnot[0m[1;4m [0m[1;4;94mNone[0m[1;4m [0m[1;4;94melse[0m[1;4m [0m[1;4;94mNone[0m[1;4m,[0m               [31m│[0m
+[31m│[0m   [2m108 [0m[2m│   │   [0m[1;4;96mstr[0m[1;4m(formatted_args[[0m[1;4;33m"[0m[1;4;33mdataset_id[0m[1;4;33m"[0m[1;4m]) [0m[1;4;94mif[0m[1;4m [0m                          [31m│[0m
+[31m│[0m       [1;4mformatted_args.get([0m[1;4;33m"[0m[1;4;33mdataset_id[0m[1;4;33m"[0m[1;4m) [0m[1;4;95mis[0m[1;4m [0m[1;4;95mnot[0m[1;4m [0m[1;4;94mNone[0m[1;4m [0m[1;4;94melse[0m[1;4m [0m[1;4;94mNone[0m[1;4m,[0m                [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m [2m/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/toolkit[0m [31m│[0m
+[31m│[0m [2m/plugins/[0m[1mckan.py[0m:229 in fetch                                                [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m   [2m226 [0m[2m│   │   [0m[94mif[0m package_identifier:                                         [31m│[0m
+[31m│[0m   [2m227 [0m[2m│   │   │   [0mapi_url = _normalize_package_show_url(portal_url)          [31m│[0m
+[31m│[0m   [2m228 [0m[2m│   │   │   [0m[94mtry[0m:                                                       [31m│[0m
+[31m│[0m [31m❱ [0m229 [2m│   │   │   │   [0mmetadata = [96mself[0m._get_json(api_url, {[33m"[0m[33mid[0m[33m"[0m:              [31m│[0m
+[31m│[0m       [96mstr[0m(package_identifier)})                                              [31m│[0m
+[31m│[0m   [2m230 [0m[2m│   │   │   │   [0mresult = metadata.get([33m"[0m[33mresult[0m[33m"[0m) [95mor[0m {}                  [31m│[0m
+[31m│[0m   [2m231 [0m[2m│   │   │   │   [0mranked_resources = [96mself[0m._select_resource_from_package( [31m│[0m
+[31m│[0m   [2m232 [0m[2m│   │   │   │   │   [0mresult, resource_id, resource_name                 [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m [2m/opt/hostedtoolcache/Python/3.12.13/x64/lib/python3.12/site-packages/toolkit[0m [31m│[0m
+[31m│[0m [2m/plugins/[0m[1mckan.py[0m:70 in _get_json                                             [31m│[0m
+[31m│[0m                                                                              [31m│[0m
+[31m│[0m   [2m 67 [0m[2m│   │   │   │   [0m[94mraise[0m DownloadError([33mf[0m[33m"[0m[33mCKAN API failed for [0m             [31m│[0m
+[31m│[0m       [33m{[0mresponse.url[33m}[0m[33m"[0m)                                                       [31m│[0m
+[31m│[0m   [2m 68 [0m[2m│   │   │   [0m[94mreturn[0m data                                                [31m│[0m
+[31m│[0m   [2m 69 [0m[2m│   │   [0merr = result.err                                               [31m│[0m
+[31m│[0m [31m❱ [0m 70 [2m│   │   [0m[1;4;94mraise[0m[1;4m DownloadError([0m[1;4;96mstr[0m[1;4m(err) [0m[1;4;94mif[0m[1;4m err [0m[1;4;94melse[0m[1;4m [0m[1;4;33mf[0m[1;4;33m"[0m[1;4;33mFailed to fetch [0m    [31m│[0m
+[31m│[0m       [1;4;33mCKAN metadata from [0m[1;4;33m{[0m[1;4murl[0m[1;4;33m}[0m[1;4;33m"[0m[1;4m)[0m                                             [31m│[0m
+[31m│[0m   [2m 71 [0m[2m│   [0m                                                                   [31m│[0m
+[31m│[0m   [2m 72 [0m[2m│   [0m[94mdef[0m[90m [0m[92m_download_bytes[0m([96mself[0m, url: [96mstr[0m, sample_bytes: [96mint[0m | [94mNone[0m =     [31m│[0m
+[31m│[0m       [94mNone[0m) -> [96mbytes[0m:                                                        [31m│[0m
+[31m│[0m   [2m 73 [0m[2m│   │   [0mheaders = [94mNone[0m                                                 [31m│[0m
+[31m╰──────────────────────────────────────────────────────────────────────────────╯[0m
+[1;91mDownloadError: [0m[1;35mHTTPSConnectionPool[0m[1m([0m[33mhost[0m=[32m'dati-ustat.mur.gov.it'[0m, [33mport[0m=[1;36m443[0m[1m)[0m: Max 
+retries exceeded with url: 
+[35m/api/3/action/[0m[95mpackage_show[0m?[33mid[0m=[1;36m2017[0m-contribuzione-e-interventi-atenei [1m([0mCaused by 
+[1;35mConnectTimeoutError[0m[1m([0m[1m<[0m[1;35mHTTPSConnection[0m[1;39m([0m[33mhost[0m[39m=[0m[32m'dati-ustat.mur.gov.it'[0m[39m, [0m[33mport[0m[39m=[0m[1;36m443[0m[1;39m)[0m[39m at [0m
+[1;36m0x7f77cf8a2180[0m[1m>[0m, [32m'Connection to dati-ustat.mur.gov.it timed out. [0m[32m([0m[32mconnect [0m
+[32mtimeout[0m[32m=[0m[32m60[0m[32m)[0m[32m'[0m[1m)[0m[1m)[0m
