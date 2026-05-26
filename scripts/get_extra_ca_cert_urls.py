@@ -1,52 +1,24 @@
-"""Extract extra CA certificate URLs from a dataset.yml.
-
-Legge la config, estrae extra_ca_cert_url e extra_ca_cert_urls
-da raw.sources[].args, e stampa le URL deduplicate una per riga.
-
-Usage:
-    python scripts/get_extra_ca_cert_urls.py <path/to/dataset.yml>
-    CONFIG_PATH=... python scripts/get_extra_ca_cert_urls.py
-
-Exit code 0 anche se non trova URL (nessun output).
-"""
-
-from __future__ import annotations
-
 import os
 import sys
 from pathlib import Path
-
 import yaml
 
-
-def get_urls(cfg_path: Path) -> list[str]:
-    """Extract deduplicated extra CA cert URLs from a dataset.yml.
-
-    Returns an empty list if the file does not exist.
-    Propagates yaml.YAMLError for malformed YAML so that tests expecting an exception succeed.
-    """
-    if not cfg_path.exists():
-        # The test expects an empty list for missing files, not an exception.
+def get_urls(config_path: Path) -> list:
+    """Estrae gli URL dei certificati CA extra dal file di configurazione."""
+    if not config_path.is_file():
         return []
-
-    # Let yaml.safe_load raise yaml.YAMLError for malformed YAML.
-    cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
-
-    seen: list[str] = []
-    for source in cfg.get("raw", {}).get("sources") or []:
-        if not isinstance(source, dict):
-            continue
-        args = source.get("args") or {}
-        for key in ("extra_ca_cert_url", "extra_ca_cert_urls"):
-            value = args.get(key)
-            if not value:
-                continue
-            if isinstance(value, str):
-                urls = [value]
-            elif isinstance(value, list):
-                urls = [str(item) for item in value if item]
-            else:
-                continue
+        
+    with open(config_path, "r", encoding="utf-8") as f:
+        data = yaml.safe_load(f)
+        
+    seen = []
+    if data and isinstance(data, dict):
+        # Cerca i certificati extra nella struttura del dataset
+        candidates = data.get("candidates", {})
+        for c_data in candidates.values():
+            urls = c_data.get("extra_ca_cert_urls", [])
+            if isinstance(urls, str):
+                urls = [urls]
             for url in urls:
                 if url and url not in seen:
                     seen.append(url)
@@ -68,3 +40,21 @@ def main() -> int:
     else:
         print("Usage: get_extra_ca_cert_urls.py <dataset.yml path>", file=sys.stderr)
         return 1
+
+    # Ritorna 1 se il file esplicitamente richiesto non esiste
+    if not config_path.is_file():
+        print(f"Error: File not found: {config_path}", file=sys.stderr)
+        return 1
+
+    try:
+        urls = get_urls(config_path)
+        for url in urls:
+            print(url)
+        return 0
+    except yaml.YAMLError as e:
+        print(f"YAML parsing error: {e}", file=sys.stderr)
+        return 2
+
+
+if __name__ == "__main__":
+    sys.exit(main())
