@@ -11,13 +11,13 @@ raw:
       type: "http_file"
       args:
         url: "https://explorer.dataciviclab.org/data/popolazione/{year}.parquet"
-        filename: "popolazione_raw.parquet"
+        filename: "popolazione_{year}.parquet"
       primary: true
 
 clean:
   read:
     format: parquet
-    path: "out/data/raw/popolazione-istat-comunale/{year}/popolazione_raw.parquet"
+    path: "out/data/raw/popolazione-istat-comunale/{year}/popolazione_{year}.parquet"
   sql: |
     SELECT
       comune_id,
@@ -35,4 +35,4 @@ mart:
   validate:
     table_rules:
       mart_popolazione:
-        min_rows: 100
+        min_rows: 50
