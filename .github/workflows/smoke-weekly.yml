@@ -2,7 +2,7 @@ name: Smoke cross-repo (weekly)
 
 on:
   schedule:
-    - cron: "0 5 * * 1"  # ogni lunedì 05:00 UTC
+    - cron: "0 5 * * 1"
   workflow_dispatch:
 
 env:
@@ -10,66 +10,71 @@ env:
   TOOLKIT_VERSION: v1.14.2
 
 jobs:
-  cross-repo-smoke:
+  smoke-http:
     runs-on: ubuntu-latest
+    outputs:
+      passed: ${{ steps.batch.outputs.passed }}
+      failed: ${{ steps.batch.outputs.failed }}
+      total: ${{ steps.batch.outputs.total }}
     steps:
-      - name: Checkout dataset-incubator
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           path: dataset-incubator
-
-      - name: Setup Python
-        uses: actions/setup-python@v6
+      - uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
-
       - name: Install toolkit
         run: pip install git+https://github.com/dataciviclab/toolkit.git@${{ env.TOOLKIT_VERSION }}
-
-      - name: Run pipeline on a test candidate
+      - name: Smoke batch — HTTP candidates
+        id: batch
         run: |
           cd dataset-incubator
-          echo "=== Esecuzione toolkit su irpef-comunale ==="
-          toolkit run all --config candidates/irpef-comunale/dataset.yml --smoke 2>&1
-          echo "=== Run completata ==="
-
-      - name: Verify clean parquet artifact
+          python scripts/smoke_batch.py batches/http.txt --json /tmp/batch_report.json 2>&1
+          echo "passed=$(python3 -c "import json;d=json.load(open('/tmp/batch_report.json'));print(d['passed'])")" >> "$GITHUB_OUTPUT"
+          echo "failed=$(python3 -c "import json;d=json.load(open('/tmp/batch_report.json'));print(d['failed'])")" >> "$GITHUB_OUTPUT"
+          echo "total=$(python3 -c "import json;d=json.load(open('/tmp/batch_report.json'));print(d['total'])")" >> "$GITHUB_OUTPUT"
+      - name: Upload batch report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: batch-report-http
+          path: /tmp/batch_report.json
+      - name: Report summary
+        if: always()
         run: |
-          cd dataset-incubator
-          count=$(find out -name "*_clean.parquet" -type f 2>/dev/null | wc -l)
-          if [ "$count" -eq 0 ]; then
-            echo "ERROR: nessun clean parquet generato"
-            exit 1
-          fi
-          echo "OK: $count clean parquet file(s)"
+          echo "## Smoke HTTP — ${{ steps.batch.outputs.passed }}/${{ steps.batch.outputs.total }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          python3 -c "
+          import json
+          d = json.load(open('/tmp/batch_report.json'))
+          for r in d['results']:
+            icon = '✅' if r['status'] == 'PASSED' else '❌'
+            print(f'{icon} {r[\"slug\"]:35s} year={r[\"year\"]}  {r[\"duration\"]:>5.1f}s  {r[\"status\"]}')
+          " >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          echo "Durata: ${DURATION}s" >> "$GITHUB_STEP_SUMMARY"
 
+  verify-catalog:
+    needs: smoke-http
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          path: dataset-incubator
       - name: Verify clean_catalog.json
         run: |
           cd dataset-incubator
-          if [ ! -f registry/clean_catalog.json ]; then
-            echo "ERROR: registry/clean_catalog.json non trovato"
-            exit 1
-          fi
           python3 -c "
           import json
           data = json.load(open('registry/clean_catalog.json'))
           n = len(data.get('datasets', []))
           print(f'clean_catalog.json: {n} dataset(s)')
-          assert n > 0, 'catalog vuoto'
+          assert n > 0
           print('VALID')
           "
-
       - name: Checkout data-explorer and verify catalog compatibility
         run: |
-          git clone --depth=1 https://github.com/dataciviclab/data-explorer.git /tmp/data-explorer 2>&1
-          if [ ! -f dataset-incubator/registry/clean_catalog.json ]; then
-            echo "ERROR: clean_catalog.json non disponibile per verifica explorer"
-            exit 1
-          fi
-          if [ ! -f /tmp/data-explorer/scripts/generate_catalog.mjs ]; then
-            echo "ERROR: script explorer generate_catalog.mjs non trovato"
-            exit 1
-          fi
+          git clone --depth=1 https://github.com/dataciviclab/data-explorer.git /tmp/data-explorer
           cp dataset-incubator/registry/clean_catalog.json /tmp/data-explorer/
           cd /tmp/data-explorer
           node --input-type=module -e "
@@ -82,12 +87,9 @@ jobs:
           }
           console.log('OK: tutti i dataset generano entry explorer valide');
           "
-
-      - name: Report summary
+      - name: Catalog summary
         if: always()
         run: |
-          echo "## Smoke cross-repo" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "- toolkit: irpef-comunale pipeline completata" >> "$GITHUB_STEP_SUMMARY"
-          echo "- dataset-incubator: clean_catalog.json verificato" >> "$GITHUB_STEP_SUMMARY"
-          echo "- data-explorer: compatibilità catalogo verificata" >> "$GITHUB_STEP_SUMMARY"
+          echo "### Catalogo" >> "$GITHUB_STEP_SUMMARY"
+          echo "- clean_catalog.json: verificato" >> "$GITHUB_STEP_SUMMARY"
+          echo "- data-explorer: compatibile" >> "$GITHUB_STEP_SUMMARY"

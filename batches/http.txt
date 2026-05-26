@@ -1,0 +1,24 @@
+# Batch: candidate HTTP/S (sample-bytes compatibili)
+# toolkit batch --configs batches/http.txt --step all --smoke
+#
+candidates/aifa-spesa-consumo/dataset.yml
+candidates/bdap-entrate-stato/dataset.yml
+candidates/bdap-lea/dataset.yml
+candidates/civile-flussi/dataset.yml
+candidates/consip-consumi-convenzione/dataset.yml
+candidates/dipendenti-pubblici/dataset.yml
+candidates/giustizia-penale-indicatori/dataset.yml
+candidates/inps-pensioni/dataset.yml
+candidates/irpef-comunale/dataset.yml
+candidates/ispra-consumo-suolo/dataset.yml
+candidates/mef-irpef-regionale/dataset.yml
+candidates/mef-partecipazioni/dataset.yml
+candidates/mim-alunni-corso-eta/dataset.yml
+candidates/mit-incidentalita-mensile-2001-2018/dataset.yml
+candidates/mit-opere-incompiute-2020/dataset.yml
+candidates/opencivitas-fsc-rso/dataset.yml
+candidates/opencoesione-pagamenti-ue-2014-2020/dataset.yml
+candidates/openga-ricorsi-cds/dataset.yml
+candidates/pensioni-pa-dag/dataset.yml
+candidates/terna-capacita-rinnovabile/dataset.yml
+candidates/terna-electricity-by-source/dataset.yml
