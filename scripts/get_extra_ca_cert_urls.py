@@ -59,6 +59,10 @@ def main() -> int:
         print("Usage: get_extra_ca_cert_urls.py <dataset.yml path>", file=sys.stderr)
         return 1
 
+    if not config_path.is_file():
+        print(f"ERROR: Configuration file does not exist or is not a file: {config_path}", file=sys.stderr)
+        return 1
+
     for url in get_urls(config_path):
         print(url)
     return 0

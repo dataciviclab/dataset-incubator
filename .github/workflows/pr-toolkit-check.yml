@@ -93,8 +93,19 @@ jobs:
         run: |
           set -euo pipefail
 
+          echo "DEBUG: CONFIG_PATH originale = $CONFIG_PATH"
+          ABS_CONFIG_PATH="$GITHUB_WORKSPACE/$CONFIG_PATH"
+          echo "DEBUG: ABS_CONFIG_PATH calcolato = $ABS_CONFIG_PATH"
+
+          ls -la "$ABS_CONFIG_PATH" || echo "AVVISO: CONFIG_PATH non trovato in locale"
+
           urls_file="${RUNNER_TEMP:-/tmp}/extra-ca-cert-urls.txt"
-          python scripts/get_extra_ca_cert_urls.py "$CONFIG_PATH" > "$urls_file"
+          
+          python scripts/get_extra_ca_cert_urls.py "$ABS_CONFIG_PATH" > "$urls_file" || {
+            ec=$?
+            echo "ERROR: Script get_extra_ca_cert_urls.py fallito con exit code $ec"
+            exit $ec
+          }
 
           if [ ! -s "$urls_file" ]; then
             echo "::notice::No extra CA certificates configured for ${CONFIG_PATH}"
