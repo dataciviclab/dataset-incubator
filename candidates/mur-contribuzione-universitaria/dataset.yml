@@ -20,11 +20,9 @@ raw:
 clean:
   sql: "sql/clean.sql"
   read:
-    source: "auto"
     mode: "latest"
-    delim: ";"
-    encoding: "cp1252"
     header: true
+    encoding: "cp1252"
   validate:
     min_rows: 500
 
