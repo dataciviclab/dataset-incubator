@@ -1,0 +1,18 @@
+name: popolazione-istat-comunale
+description: Popolazione ISTAT per comuni (2019-2025)
+license: CC-BY-4.0
+source:
+  url: https://explorer.dataciviclab.org
+  description: Dati ISTAT sulla popolazione comunale
+  years: [2019, 2020, 2021, 2022, 2023, 2024, 2025]
+clean:
+  read:
+    format: parquet
+    path: "gs://dataciviclab-data/popolazione_istat_comunale/{year}.parquet"
+  sql: |
+    SELECT
+      comune_id,
+      anno,
+      popolazione
+    FROM clean_input
+    WHERE anno = {{year}}
