@@ -56,6 +56,20 @@ class TestValidateSelectSql:
         with pytest.raises(server.DuckdbClientError, match="Keyword non consentita"):
             server._validate_select_sql("select * from clean_input install something")
 
+    def test_rejects_blocked_keyword_uppercase(self):
+        """Il regex TOKEN_RE ora usa re.IGNORECASE — INSTALL deve essere bloccato."""
+        with pytest.raises(server.DuckdbClientError, match="Keyword non consentita"):
+            server._validate_select_sql("select * from clean_input INSTALL something")
+
+    def test_rejects_blocked_keyword_mixed_case(self):
+        """Anche InStAlL misto deve essere bloccato."""
+        with pytest.raises(server.DuckdbClientError, match="Keyword non consentita"):
+            server._validate_select_sql("select * from clean_input InStAlL something")
+
+    def test_allows_keyword_in_string_literal(self):
+        """Keyword dentro stringa letterale non deve falsamente bloccare."""
+        server._validate_select_sql("select * from clean_input where note = 'INSTALL OK'")
+
 
 class TestValidateParquetPaths:
     def test_accepts_safe_path(self):
