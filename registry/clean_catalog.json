@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-05-26",
+  "updated_at": "2026-05-27",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
