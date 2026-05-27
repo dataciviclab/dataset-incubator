@@ -35,7 +35,7 @@ BLOCKED_KEYWORDS = {
     "update",
     "vacuum",
 }
-TOKEN_RE = re.compile(r"[a-z_][a-z0-9_]*")
+TOKEN_RE = re.compile(r"[a-z_][a-z0-9_]*", re.IGNORECASE)
 
 
 class DuckdbClientError(McpError):
