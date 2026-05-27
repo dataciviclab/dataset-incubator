@@ -34,7 +34,9 @@ clean:
     min_rows: 1000
     not_null:
       - "username"
-      - "componente"
+      - "comune"
+      - "popolazione"
+      - "join_enti_ok"
 
 mart:
   tables:
@@ -49,8 +51,18 @@ mart:
         required_columns:
           - "username"
           - "comune"
+          - "popolazione"
+          - "capacita_fiscale"
+          - "fondo_perequativo"
           - "join_enti_ok"
-        # join_enti_ok: booleano — % di TRUE va verificata nel notebook prima di pubblicare
+          - "capacita_fiscale_procapite"
+          - "fondo_perequativo_procapite"
+          - "dotazione_finale_fsc_procapite"
+        not_null:
+          - "username"
+          - "comune"
+          - "popolazione"
+          - "join_enti_ok"
 
 validation:
   fail_on_error: true
