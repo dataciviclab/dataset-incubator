@@ -14,6 +14,7 @@ raw:
       args:
         url: "https://docs.opencivitas.it/Metadati_Enti_FSC_2025_xlsx.zip"
         filename: "Metadati_Enti_FSC_2025_xlsx.zip"
+        extra_ca_cert_url: "http://crt.sectigo.com/SectigoPublicServerAuthenticationCAOVR36.crt"
       primary: true
 
 clean:

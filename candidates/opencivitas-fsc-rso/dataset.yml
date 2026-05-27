@@ -19,6 +19,7 @@ raw:
       args:
         url: "https://docs.opencivitas.it/2025_VAR_FSC_1_2025_csv.zip"
         filename: "2025_VAR_FSC_1_2025_csv.zip"
+        extra_ca_cert_url: "http://crt.sectigo.com/SectigoPublicServerAuthenticationCAOVR36.crt"
       primary: true
 
 clean:
