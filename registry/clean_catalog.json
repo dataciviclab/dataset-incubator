@@ -1832,7 +1832,7 @@
         "path": "gs://dataciviclab-clean/istat_gini_regionale/2023/istat_gini_regionale_2023_clean.parquet",
         "multi_file": false
       },
-      "stage": "incubating",
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
