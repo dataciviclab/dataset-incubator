@@ -3763,6 +3763,12 @@
           "description": "Classe di età (0-100, 999 = totale comunale)"
         },
         {
+          "name": "fascia_eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
           "name": "celibi",
           "type": "INTEGER",
           "role": "metric",
