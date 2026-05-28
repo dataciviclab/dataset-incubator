@@ -12,11 +12,13 @@ Formato: ZIP → CSV, `;` delim, `utf-8` con BOM. Skip 1 riga (header doppio).
 
 ## Schema
 
-**Clean**: 20 colonne — raw-faithful, rinomine a snake_case.
+**Clean**: 22 colonne — rinomine a snake_case, più colonna calcolata `fascia_eta`. Escluse le righe con ETA=999 (totali pre-aggregati — somma ridondante delle età 0-100).
 
-**Mart `popolazione_by_comune`**: `[anno_riferimento, codice_comune, comune, popolazione_residente, popolazione_maschile, popolazione_femminile]` — un record per comune, ETA=999.
+**Mart `popolazione_by_comune`**: `[anno_riferimento, codice_comune, comune, popolazione_residente, popolazione_maschile, popolazione_femminile]` — un record per comune (SUM GROUP BY, non più dipendente dalla riga ETA=999).
 
 **Mart `popolazione_by_eta`**: `[anno_riferimento, codice_comune, comune, eta, popolazione_residente, popolazione_maschile, popolazione_femminile]` — un record per comune per classe di età (0-100).
+
+**Hierarchy `h_fascia`**: `[codice_comune, comune, fascia_eta]` + 17 metriche demografiche — un record per comune per fascia d'età (0-14, 15-29, 30-44, 45-59, 60-74, 75+). Generato automaticamente dalla mart hierarchy del toolkit.
 
 Chiave di join: `codice_comune`
 
@@ -36,10 +38,11 @@ Chiave di join: `codice_comune`
 
 ## QC
 
-- Clean = Raw per tutti i 7 anni (nessun filtro) ✅
+- Clean filtra ETA=999 (totali pre-aggregati — somma ridondante) ✅
 - Maschi + Femmine = Popolazione su tutti gli anni ✅
 - Nessun comune senza nome o con pop=0 ✅
 - by_comune vs sum(by_eta): differenza = 0 ✅
+- hierarchy h_fascia vs mart by_comune: ratio 1.0000 su popolazione_residente ✅
 
 ## Uso
 

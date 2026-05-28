@@ -35,6 +35,13 @@ mart:
       sql: "sql/mart.sql"
     - name: "popolazione_by_eta"
       sql: "sql/mart_by_eta.sql"
+  hierarchy:
+    axis: categorico
+    levels:
+      - level: fascia_eta
+        table: h_fascia
+        grain: [codice_comune, comune, fascia_eta]
+        exclude_metrics: [anno, eta]
   required_tables: ["popolazione_by_comune", "popolazione_by_eta"]
   validate: {}
 

@@ -19,9 +19,10 @@ Tutti e 7 gli anni: raw ✅ clean ✅ mart ✅
 
 ## Schema
 
-- Clean: 20 colonne, raw-faithful
-- `popolazione_by_comune`: 1 riga per comune (ETA=999 totale)
+- Clean: 22 colonne, colonna calcolata `fascia_eta`, filtrato ETA=999 (totali ridondanti)
+- `popolazione_by_comune`: 1 riga per comune, SUM GROUP BY (non più ETA=999)
 - `popolazione_by_eta`: 1 riga per comune per classe di età (ETA 0-100)
+- `h_fascia` (hierarchy): 1 riga per comune per fascia d'età, 17 metriche — generato automaticamente dal toolkit
 
 ## Cautele
 
