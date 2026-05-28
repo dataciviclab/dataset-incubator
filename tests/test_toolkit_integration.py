@@ -108,8 +108,7 @@ validation:
         mart_parquet = dst / "out" / "data" / "mart" / "test_intg" / "2024" / "mart_intg.parquet"
         assert mart_parquet.exists(), f"Mart parquet non trovato: {mart_parquet}"
 
-        # Verifica manifest MART
-        manifest_path = mart_parquet.parent / "manifest.json"
-        assert manifest_path.exists()
-        manifest = json.loads(manifest_path.read_text(encoding="utf-8"))
-        assert manifest.get("summary", {}).get("ok") is True
+        # Verifica summary.ok in metadata.json
+        meta_dir = mart_parquet.parent
+        meta = json.loads((meta_dir / "metadata.json").read_text(encoding="utf-8"))
+        assert meta.get("summary", {}).get("ok") is True

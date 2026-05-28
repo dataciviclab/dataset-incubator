@@ -7,7 +7,7 @@ on:
 
 env:
   PYTHON_VERSION: "3.12"
-  TOOLKIT_VERSION: v1.15.0
+  TOOLKIT_VERSION: v1.16.0
 
 jobs:
   smoke-http:
