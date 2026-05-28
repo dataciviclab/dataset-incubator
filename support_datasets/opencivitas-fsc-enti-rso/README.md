@@ -23,7 +23,7 @@ Fonte principale:
 
 - OpenCivitas / Sogei, metadati enti FSC 2025
 - file:
-  `https://docs.opencivitas.it/Metadati_Enti_FSC_2025_xlsx.zip`
+   `http://docs.opencivitas.it/Metadati_Enti_FSC_2025_xlsx.zip` (HTTPS fallisce per certificato Sectigo senza catena intermedia)
 - workbook: `Metadati_Enti_FSC_2025.xlsx`
 - sheet: `anagrafica_enti2025`
 

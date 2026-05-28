@@ -27,8 +27,9 @@ Perimetro iniziale:
 
 - solo `2025`
 - solo RSO
-- metriche FSC pivot per comune con join geografia da support
-- output: `mart_compose_comuni.parquet` (6573 comuni RSO, 15 colonne)
+- pivot FSC (EAV→wide) + join geografia da support già nel CLEAN
+- output CLEAN: 12 colonne wide (6573 comuni RSO, analizzabile subito)
+- output MART: CLEAN + 3 metriche procapite (15 colonne)
 
 ## Output minimo atteso
 

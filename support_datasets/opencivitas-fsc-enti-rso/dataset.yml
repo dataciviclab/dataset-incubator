@@ -12,7 +12,7 @@ raw:
     - name: "opencivitas_fsc_enti_2025_zip"
       type: "http_file"
       args:
-        url: "https://docs.opencivitas.it/Metadati_Enti_FSC_2025_xlsx.zip"
+        url: "http://docs.opencivitas.it/Metadati_Enti_FSC_2025_xlsx.zip"
         filename: "Metadati_Enti_FSC_2025_xlsx.zip"
       primary: true
 
