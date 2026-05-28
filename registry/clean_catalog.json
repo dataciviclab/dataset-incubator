@@ -3404,9 +3404,9 @@
     {
       "slug": "opencivitas_fsc_2025_rso",
       "name": "Opencivitas Fsc 2025 Rso",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "description": "Fondo di Solidarietà Comunale 2025 — 6 componenti FSC per comune RSO con geografia",
+      "source": "OpenCivitas / Sogei",
+      "source_id": "opencivitas",
       "period": {
         "start": 2025,
         "end": 2025
@@ -3416,73 +3416,73 @@
           "name": "username",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ente Sogei"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione comune"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla provincia"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome regione"
         },
         {
           "name": "regione_istat_cod",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT regione"
         },
         {
           "name": "popolazione",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione residente"
         },
         {
           "name": "capacita_fiscale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Capacità fiscale (euro)"
         },
         {
           "name": "fondo_perequativo",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Fondo perequativo (euro) — negativo = contribuente netto"
         },
         {
           "name": "dotazione_finale_fsc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Dotazione finale FSC (euro)"
         },
         {
           "name": "imu_tasi_standard",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "IMU/TASI standard (euro)"
         },
         {
           "name": "totale_risorse_storiche",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Totale risorse storiche (euro)"
         },
         {
           "name": "join_enti_ok",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Join con anagrafica enti riuscito (sempre TRUE su RSO 2025)"
         }
       ],
       "location": {
