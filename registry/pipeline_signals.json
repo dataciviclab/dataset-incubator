@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-27",
+  "generated_at": "2026-05-28",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -422,10 +422,12 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25544737252",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25544737252",
-        "checked_at": "2026-05-08",
-        "year": 2025,
+        "run_id": "26562225396",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26562225396",
+        "checked_at": "2026-05-28",
+        "years": [
+          2025
+        ],
         "config_path": "candidates/opencivitas-fsc-rso/dataset.yml"
       }
     },
@@ -557,10 +559,12 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25544737252",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25544737252",
-        "checked_at": "2026-05-08",
-        "year": 2025,
+        "run_id": "26562225396",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26562225396",
+        "checked_at": "2026-05-28",
+        "years": [
+          2025
+        ],
         "config_path": "support_datasets/opencivitas-fsc-enti-rso/dataset.yml"
       }
     },
