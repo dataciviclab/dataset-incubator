@@ -577,9 +577,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26088201871",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26088201871",
-        "checked_at": "2026-05-19",
+        "run_id": "26564952522",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26564952522",
+        "checked_at": "2026-05-28",
         "years": [
           2019,
           2020,
