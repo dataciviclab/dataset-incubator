@@ -3741,7 +3741,7 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Anno di riferimento"
         },
         {
@@ -3766,7 +3766,7 @@
           "name": "fascia_eta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Fascia d'età aggregata (0-14, 15-29, 30-44, 45-59, 60-74, 75+)"
         },
         {
           "name": "celibi",
@@ -3802,25 +3802,25 @@
           "name": "maschi_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex uniti civilmente — scioglimento (maschi)"
+          "description": "Maschi già in unione civile — scioglimento"
         },
         {
           "name": "maschi_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex uniti civilmente — decesso coniuge (maschi)"
+          "description": "Maschi già in unione civile — decesso del coniuge"
         },
         {
           "name": "totale_maschi",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Totale popolazione maschile"
+          "description": "Totale maschi"
         },
         {
           "name": "nubili",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Nubili (femmine nubili mai sposate)"
+          "description": "Nubili (femmine mai sposate)"
         },
         {
           "name": "coniugate",
@@ -3850,19 +3850,19 @@
           "name": "femmine_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex unite civilmente — scioglimento (femmine)"
+          "description": "Femmine già in unione civile — scioglimento"
         },
         {
           "name": "femmine_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Ex unite civilmente — decesso coniuge (femmine)"
+          "description": "Femmine già in unione civile — decesso del coniuge"
         },
         {
           "name": "totale_femmine",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Totale popolazione femminile"
+          "description": "Totale femmine"
         },
         {
           "name": "popolazione_residente",
