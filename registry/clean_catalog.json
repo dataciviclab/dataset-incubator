@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-05-27",
+  "updated_at": "2026-05-28",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -3397,6 +3397,148 @@
         "type": "gcs",
         "path": "gs://dataciviclab-clean/mur_contribuzione_universitaria/*/mur_contribuzione_universitaria_*_clean.parquet",
         "multi_file": true
+      },
+      "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "opencivitas_fsc_2025_rso",
+      "name": "Opencivitas Fsc 2025 Rso",
+      "description": "Fondo di Solidarietà Comunale 2025 — 6 componenti FSC per comune RSO con geografia",
+      "source": "OpenCivitas / Sogei",
+      "source_id": "opencivitas",
+      "period": {
+        "start": 2025,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "username",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ente Sogei"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione comune"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla provincia"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome regione"
+        },
+        {
+          "name": "regione_istat_cod",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice ISTAT regione"
+        },
+        {
+          "name": "popolazione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Popolazione residente"
+        },
+        {
+          "name": "capacita_fiscale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Capacità fiscale (euro)"
+        },
+        {
+          "name": "fondo_perequativo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Fondo perequativo (euro) — negativo = contribuente netto"
+        },
+        {
+          "name": "dotazione_finale_fsc",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Dotazione finale FSC (euro)"
+        },
+        {
+          "name": "imu_tasi_standard",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "IMU/TASI standard (euro)"
+        },
+        {
+          "name": "totale_risorse_storiche",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale risorse storiche (euro)"
+        },
+        {
+          "name": "join_enti_ok",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Join con anagrafica enti riuscito (sempre TRUE su RSO 2025)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/opencivitas_fsc_2025_rso/2025/opencivitas_fsc_2025_rso_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "opencivitas_fsc_enti_rso",
+      "name": "Opencivitas Fsc Enti Rso",
+      "description": "Anagrafica enti FSC 2025 — mapping username → comune/provincia/regione (solo support, non pubblicato)",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2025,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "username",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione_istat_cod",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/opencivitas_fsc_enti_rso/2025/opencivitas_fsc_enti_rso_2025_clean.parquet",
+        "multi_file": false
       },
       "stage": "incubating",
       "registry_source": "derive_auto"
