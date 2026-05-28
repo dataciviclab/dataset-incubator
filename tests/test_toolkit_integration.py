@@ -108,11 +108,7 @@ validation:
         mart_parquet = dst / "out" / "data" / "mart" / "test_intg" / "2024" / "mart_intg.parquet"
         assert mart_parquet.exists(), f"Mart parquet non trovato: {mart_parquet}"
 
-        # Verifica summary.ok: prova metadata.json, fallback a manifest.json
+        # Verifica summary.ok in metadata.json
         meta_dir = mart_parquet.parent
         meta = json.loads((meta_dir / "metadata.json").read_text(encoding="utf-8"))
-        if meta.get("summary", {}).get("ok") is None:
-            fallback = meta_dir / "manifest.json"
-            if fallback.exists():
-                meta = json.loads(fallback.read_text(encoding="utf-8"))
         assert meta.get("summary", {}).get("ok") is True
