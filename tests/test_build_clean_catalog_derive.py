@@ -9,6 +9,8 @@ derivazione puo' produrre cataloghi con slug mancanti o colonne errate.
 
 from __future__ import annotations
 
+import shutil
+import tempfile
 import unittest
 from pathlib import Path
 from unittest.mock import patch, MagicMock
@@ -273,6 +275,107 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
         with patch.object(sys, "argv", ["build_clean_catalog.py"] + test_args):
             rc = main()
             self.assertEqual(rc, 0)
+
+
+# ---------------------------------------------------------------------------
+# Tests per _enrich_period_from_coverage
+# ---------------------------------------------------------------------------
+
+
+@pytest.mark.contract
+class TestEnrichPeriodFromCoverage(unittest.TestCase):
+    """time_coverage nei dataset.yml deve sovrascrivere period nel catalogo."""
+
+    def setUp(self):
+        self.tmpdir = Path(tempfile.mkdtemp())
+        self.candidates_dir = self.tmpdir / "candidates"
+        self.candidates_dir.mkdir()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmpdir, ignore_errors=True)
+
+    def _make_candidate(self, slug: str, start_year: int | None = None, end_year: int | None = None) -> Path:
+        cand_dir = self.candidates_dir / slug
+        cand_dir.mkdir(exist_ok=True)
+        yml = cand_dir / "dataset.yml"
+        lines = [f'dataset:', f'  name: "{slug}"', f'  years: [2024]']
+        if start_year is not None:
+            lines.append("  time_coverage:")
+            lines.append(f"    start_year: {start_year}")
+            lines.append(f"    end_year: {end_year}")
+        lines.append("")
+        yml.write_text("\n".join(lines))
+        return yml
+
+    def _make_catalog_entry(self, slug: str, period_start: int = 2024, period_end: int = 2024) -> dict:
+        return {
+            "slug": slug,
+            "name": slug.replace("_", " ").title(),
+            "description": "",
+            "source": "",
+            "period": {"start": period_start, "end": period_end},
+            "columns": [{"name": "x", "type": "INTEGER", "role": "metric", "description": ""}],
+            "location": {"type": "gcs", "path": f"gs://bucket/{slug}/2024/{slug}_2024_clean.parquet", "multi_file": False},
+        }
+
+    @pytest.mark.contract
+    def test_overrides_period_from_coverage(self):
+        """time_coverage.start_year/end_year deve sovrascrivere period."""
+        self._make_candidate("test_slug_x", start_year=2010, end_year=2024)
+        catalog = {"datasets": [self._make_catalog_entry("test_slug_x", period_start=2024, period_end=2024)]}
+
+        from scripts.build_clean_catalog import _enrich_period_from_coverage
+        _enrich_period_from_coverage(catalog, self.tmpdir)
+
+        ds = catalog["datasets"][0]
+        self.assertEqual(ds["period"]["start"], 2010)
+        self.assertEqual(ds["period"]["end"], 2024)
+
+    @pytest.mark.contract
+    def test_ignores_candidate_without_coverage(self):
+        """Candidato senza time_coverage non altera period."""
+        self._make_candidate("test_slug_x")  # no time_coverage
+        catalog = {"datasets": [self._make_catalog_entry("test_slug_x", period_start=2024, period_end=2024)]}
+
+        from scripts.build_clean_catalog import _enrich_period_from_coverage
+        _enrich_period_from_coverage(catalog, self.tmpdir)
+
+        ds = catalog["datasets"][0]
+        self.assertEqual(ds["period"]["start"], 2024)  # invariato
+        self.assertEqual(ds["period"]["end"], 2024)
+
+    @pytest.mark.contract
+    def test_ignores_unrelated_slug(self):
+        """Slug non presente nei candidati non viene alterato."""
+        self._make_candidate("test_slug_a", start_year=2010, end_year=2024)
+        catalog = {"datasets": [self._make_catalog_entry("test_slug_b", period_start=2020, period_end=2020)]}
+
+        from scripts.build_clean_catalog import _enrich_period_from_coverage
+        _enrich_period_from_coverage(catalog, self.tmpdir)
+
+        ds = catalog["datasets"][0]
+        self.assertEqual(ds["period"]["start"], 2020)  # invariato
+
+    @pytest.mark.contract
+    def test_multiple_candidates(self):
+        """Due candidati con time_coverage vengono entrambi aggiornati."""
+        self._make_candidate("alpha", start_year=2000, end_year=2010)
+        self._make_candidate("beta", start_year=2011, end_year=2020)
+        catalog = {
+            "datasets": [
+                self._make_catalog_entry("alpha", period_start=2000, period_end=2000),
+                self._make_catalog_entry("beta", period_start=2011, period_end=2011),
+                self._make_catalog_entry("gamma"),  # senza candidate dir
+            ]
+        }
+
+        from scripts.build_clean_catalog import _enrich_period_from_coverage
+        _enrich_period_from_coverage(catalog, self.tmpdir)
+
+        by_slug = {d["slug"]: d for d in catalog["datasets"]}
+        self.assertEqual(by_slug["alpha"]["period"], {"start": 2000, "end": 2010})
+        self.assertEqual(by_slug["beta"]["period"], {"start": 2011, "end": 2020})
+        self.assertEqual(by_slug["gamma"]["period"], {"start": 2024, "end": 2024})  # invariato
 
 
 if __name__ == "__main__":
