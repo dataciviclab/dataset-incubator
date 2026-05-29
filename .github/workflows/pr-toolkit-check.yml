@@ -1,7 +1,7 @@
 name: Toolkit Pipeline Check
 
 env:
-  TOOLKIT_VERSION: v1.16.0
+  TOOLKIT_VERSION: v1.17.0
 
 # Esegue la pipeline toolkit su candidate modificati in PR.
 # Fallisce la PR se toolkit run full fallisce (run + validate + readiness).
