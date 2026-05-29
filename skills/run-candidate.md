@@ -89,8 +89,8 @@ Se il blocker è isolato → documenta e passa a stato `scaffolded_with_blocker`
 
 ```
 toolkit_summary(config_path)         → tutti i layer a colpo d'occhio
-toolkit_show_schema(config_path, layer="clean") → schema parquet prima di scrivere SQL
-toolkit_raw_profile(config_path)      → encoding/delimiter dopo raw fallito
+toolkit_inspect_schema(config_path, layer="clean") → schema parquet prima di scrivere SQL
+toolkit_inspect_profile(config_path)      → encoding/delimiter dopo raw fallito
 toolkit_list_runs(config_path, status="FAILED", limit=5) → pattern di fallimento
 toolkit_run_summary(config_path)      → isolato o ricorrente?
 toolkit_schema_diff(config_path)      → confronto schema raw cross-year (colonne, encoding)
