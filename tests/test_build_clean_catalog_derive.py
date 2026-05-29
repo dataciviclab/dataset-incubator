@@ -318,6 +318,7 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
             "location": {"type": "gcs", "path": f"gs://bucket/{slug}/2024/{slug}_2024_clean.parquet", "multi_file": False},
         }
 
+    @pytest.mark.contract
     def test_overrides_period_from_coverage(self):
         """time_coverage.start_year/end_year deve sovrascrivere period."""
         self._make_candidate("test_slug_x", start_year=2010, end_year=2024)
@@ -330,6 +331,7 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
         self.assertEqual(ds["period"]["start"], 2010)
         self.assertEqual(ds["period"]["end"], 2024)
 
+    @pytest.mark.contract
     def test_ignores_candidate_without_coverage(self):
         """Candidato senza time_coverage non altera period."""
         self._make_candidate("test_slug_x")  # no time_coverage
@@ -342,6 +344,7 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
         self.assertEqual(ds["period"]["start"], 2024)  # invariato
         self.assertEqual(ds["period"]["end"], 2024)
 
+    @pytest.mark.contract
     def test_ignores_unrelated_slug(self):
         """Slug non presente nei candidati non viene alterato."""
         self._make_candidate("test_slug_a", start_year=2010, end_year=2024)
@@ -353,6 +356,7 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
         ds = catalog["datasets"][0]
         self.assertEqual(ds["period"]["start"], 2020)  # invariato
 
+    @pytest.mark.contract
     def test_multiple_candidates(self):
         """Due candidati con time_coverage vengono entrambi aggiornati."""
         self._make_candidate("alpha", start_year=2000, end_year=2010)
