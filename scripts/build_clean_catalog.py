@@ -116,6 +116,8 @@ def normalize_catalog(catalog: dict[str, Any], *, refresh_date: bool = False) ->
 
     # Arricchisci source_id dai dataset.yml dei candidati
     _enrich_source_ids(normalized, ROOT)
+    # Popola period da time_coverage nei dataset.yml
+    _enrich_period_from_coverage(normalized, ROOT)
 
     return normalized
 
@@ -164,6 +166,57 @@ def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
 
     if updated:
         print(f"[enrich] source_id aggiunto a {updated} dataset da dataset.yml")
+
+
+def _enrich_period_from_coverage(catalog: dict[str, Any], root: Path) -> None:
+    """Popola period.start/.end dal time_coverage nei dataset.yml dei candidati.
+
+    time_coverage.start_year / end_year nel dataset.yml dichiara la copertura
+    temporale reale della fonte. Questo override del period derivato da GCS
+    evita che period rifletta solo gli anni di cui abbiamo un parquet su GCS,
+    il che sarebbe fuorviante per dataset con file snapshot multi-anno.
+    """
+    try:
+        import yaml
+    except ImportError:
+        return  # PyYAML non installato — salta arricchimento
+    candidates_dir = root / "candidates"
+    if not candidates_dir.is_dir():
+        return
+
+    slug_to_period: dict[str, dict[str, int]] = {}
+    for cand_dir in sorted(candidates_dir.iterdir()):
+        yml_path = cand_dir / "dataset.yml"
+        if not yml_path.is_file():
+            continue
+        try:
+            with open(yml_path) as f:
+                cfg = yaml.safe_load(f) or {}
+        except Exception:
+            continue
+        ds_cfg = cfg.get("dataset") or {}
+        tc = ds_cfg.get("time_coverage")
+        slug = ds_cfg.get("name") or cfg.get("slug") or ""
+        if tc and slug and "start_year" in tc and "end_year" in tc:
+            di_slug = slug.replace("-", "_")
+            slug_to_period[di_slug] = {
+                "start": tc["start_year"],
+                "end": tc["end_year"],
+            }
+
+    if not slug_to_period:
+        return
+
+    updated = 0
+    for ds in catalog.get("datasets", []):
+        slug = ds.get("slug", "")
+        new_period = slug_to_period.get(slug)
+        if new_period:
+            ds["period"] = new_period
+            updated += 1
+
+    if updated:
+        print(f"[enrich] period aggiornato da time_coverage per {updated} dataset")
 
 
 def derive_catalog_from_gcs(

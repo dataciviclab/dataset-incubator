@@ -5,6 +5,9 @@ dataset:
   name: "bdap_entrate_stato"
   source_id: "openbdap"
   years: [2024]
+  time_coverage:
+    start_year: 2008
+    end_year: 2024
 
 raw:
   output_policy: overwrite

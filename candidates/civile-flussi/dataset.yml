@@ -6,6 +6,9 @@ dataset:
   source_id: "giustizia_statistiche"
   # Chiave di snapshot per il run: il file contiene gia l'intera serie 2014-2025.
   years: [2025]
+  time_coverage:
+    start_year: 2014
+    end_year: 2025
 
 raw:
   sources:
