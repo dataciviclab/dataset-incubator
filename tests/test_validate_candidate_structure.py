@@ -188,6 +188,75 @@ class TestValidateMultiSource:
         assert any("compose" in f for f in failures)
 
 
+class TestValidateDirName:
+    @pytest.mark.contract
+    @pytest.mark.parametrize("dir_name,valid", [
+        ("ok-ds", True),
+        ("ds-123", True),
+        ("a", True),
+        ("UPPER", False),
+        ("camelCase", False),
+        ("underscore_name", False),
+        ("spaces name", False),
+    ])
+    def test_convention(self, tmp_path, patch_root, dir_name, valid):
+        from validate_candidate_structure import validate_dir_name
+        base = patch_root / "candidates" / dir_name
+        base.mkdir(parents=True, exist_ok=True)
+        failures: list[str] = []
+        validate_dir_name(base, failures)
+        if valid:
+            assert failures == [], f"expected valid: {dir_name}"
+        else:
+            assert any("invalid directory name" in f for f in failures)
+
+
+class TestValidateDatasetNameYml:
+    @pytest.mark.contract
+    @pytest.mark.parametrize("yml_content,valid", [
+        ({"dataset": {"name": "ok_name"}}, True),
+        ({"dataset": {"name": "name_123"}}, True),
+        ({"dataset": {"name": "hyphen-name"}}, False),
+        ({"dataset": {"name": "MixedCase"}}, False),
+        ({"dataset": {"name": "has space"}}, False),
+        ({"dataset": {}}, True),  # no name = skip
+        ({}, True),  # no dataset = skip
+    ])
+    def test_name_format(self, tmp_path, patch_root, yml_content, valid):
+        from validate_candidate_structure import validate_dataset_name_yml
+        import yaml
+        base = patch_root / "candidates" / "test-ds"
+        base.mkdir(parents=True)
+        yml_path = base / "dataset.yml"
+        with open(yml_path, "w", encoding="utf-8") as f:
+            yaml.dump(yml_content, f)
+        failures: list[str] = []
+        validate_dataset_name_yml(yml_path, failures)
+        if valid:
+            assert failures == [], f"expected valid: {yml_content}"
+        else:
+            assert any("invalid dataset.name" in f for f in failures)
+
+    @pytest.mark.contract
+    def test_missing_file(self, tmp_path):
+        from validate_candidate_structure import validate_dataset_name_yml
+        yml_path = tmp_path / "nonexistent.yml"
+        failures: list[str] = []
+        validate_dataset_name_yml(yml_path, failures)
+        assert failures == []
+
+    @pytest.mark.contract
+    def test_broken_yaml(self, tmp_path):
+        from validate_candidate_structure import validate_dataset_name_yml
+        yml_path = tmp_path / "broken.yml"
+        yml_path.parent.mkdir(parents=True, exist_ok=True)
+        yml_path.write_text("{invalid: yaml: : }")
+        failures: list[str] = []
+        # Should not crash, just skip silently
+        validate_dataset_name_yml(yml_path, failures)
+        assert failures == []
+
+
 class TestValidateEntry:
     @pytest.mark.contract
     def test_single_source_ok(self, tmp_path, patch_root):
@@ -233,3 +302,30 @@ class TestValidateEntry:
         failures: list[str] = []
         validate_entry(base, failures)
         assert any("no valid structure" in f for f in failures)
+
+    @pytest.mark.contract
+    def test_rejects_bad_dir_name(self, tmp_path, patch_root):
+        from validate_candidate_structure import validate_entry
+        base = patch_root / "candidates" / "BadDir"
+        base.mkdir(parents=True)
+        failures: list[str] = []
+        validate_entry(base, failures)
+        assert any("invalid directory name" in f for f in failures)
+
+    @pytest.mark.contract
+    def test_rejects_bad_dataset_name(self, tmp_path, patch_root):
+        from validate_candidate_structure import validate_entry
+        import yaml
+        base = patch_root / "candidates" / "test-ds"
+        base.mkdir(parents=True)
+        yml_path = base / "dataset.yml"
+        with open(yml_path, "w", encoding="utf-8") as f:
+            yaml.dump({"dataset": {"name": "Bad-Name"}}, f)
+        _touch(base / "README.md")
+        _touch(base / "notes.md")
+        _mkdir(base / "sql")
+        _touch(base / "sql" / "clean.sql")
+        _touch(base / "sql" / "mart.sql")
+        failures: list[str] = []
+        validate_entry(base, failures)
+        assert any("invalid dataset.name" in f for f in failures)

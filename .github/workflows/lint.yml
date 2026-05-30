@@ -1,7 +1,7 @@
 name: Lint
 
 env:
-  TOOLKIT_VERSION: v1.19.0
+  # TOOLKIT_VERSION è centralizzato in requirements.txt
 
 on:
   pull_request:
@@ -30,10 +30,9 @@ jobs:
 
       - name: Install dependencies
         run: |
+          pip install -r requirements.txt
           pip install ruff mypy types-pyyaml types-requests pytest pytest-cov pytest-timeout
-          pip install git+https://github.com/dataciviclab/toolkit.git@${{ env.TOOLKIT_VERSION }}
           pip install -r tools/clean-query-mcp/requirements.txt 2>/dev/null || true
-          pip install -r requirements.txt 2>/dev/null || true
 
       - name: Ruff
         run: ruff check scripts/ tools/
