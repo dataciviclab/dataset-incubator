@@ -22,22 +22,22 @@ Tutti i deputati di tutte le legislature della Repubblica Italiana (fino alla XI
 | `legislatura` | string | Numero della legislature (es. "17", "18", "19") |
 | `gender` | string | Sesso |
 
-## Output atteso
+## Output
 
-- **Raw**: CSV da SPARQL con 10k+ righe
-- **Clean**: raw-faithful, nessun filtro
-- **Mart**: `mart_deputati.parquet` — un record per `(deputato, legislature)`, unico per deputato per legislature
+- **Raw**: CSV da SPARQL, paginazione automatica (3 pagine × 10k)
+- **Clean**: raw-faithful, 27.764 righe, 5 colonne
+- **Mart**: `mart_deputati.parquet` — un record per `(deputato, legislature)`
 
 ## Note tecniche
 
-- L'estrazione della legislature avviene dall'URI `?leg` (`repubblica_N`) tramite `REPLACE(STR(?leg), 'http://dati.camera.it/ocd/legislatura.rdf/repubblica_', '')`
-- `dct:title` non è disponibile su quel endpoint — la legislature è solo nell'URI
-- L'endpoint SPARQL Camera può restituire 503 in modo intermittente
+- L'estrazione della legislature avviene dall'URI `?leg` (`repubblica_N`) tramite `REPLACE`
+- Il WAF della Camera blocca risposte >10k righe — risolto con `pages: 3` nel dataset.yml
+- Endpoint SPARQL puo' restituire 503 in modo intermittente
 
 ## Run
 
 ```bash
-cd toolkit
+cd dataset-incubator
 python -m toolkit.cli.app run all \
-  --config ../dataset-incubator/candidates/camera-deputati-legislature/dataset.yml
+  --config candidates/camera-deputati-legislature/dataset.yml --years 2024
 ```

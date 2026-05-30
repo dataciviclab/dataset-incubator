@@ -1,30 +1,35 @@
 # Notes — camera-deputati-legislature
 
-## 2026-04-26 — Runnable
+## 2026-05-30 — 100% copertura con paginazione
 
 - Pipeline completata: raw ✅ clean ✅ mart ✅
-- Struttura flatten da nested a single-source
+- **27.764 deputati** (100%, endpoint) — prima 10.000 (36%)
+- Fix: paginazione SPARQL con `pages: 3, step: 10000`
+- Aggiunto supporto `pages`/`step` al plugin SPARPL del toolkit
+
+## 2026-04-26 — Runnable (prima versione, 10k righe)
+
+- Pipeline completata
 - Query SPARQL fixata: `dct:title` non esiste → `REPLACE` su URI
-- Raw rifatto con 10k righe (LIMIT 50000)
-- Tutti i layer validano OK
+- Raw con 10k righe (troncato WAF)
 
 ## Source
 
-- Endpoint: `https://dati.camera.it/sparql` — RD93 / OpenData Camera
-- Probe: ~55k deputati totali, 10k nel campione (LIMIT 50000)
-- Nota: endpoint può dare 503 intermittenti — raw scaricato via fetch diretto
+- Endpoint: `https://dati.camera.it/sparql` — Virtuoso / OpenData Camera
+- 27.764 deputati totali (tutte le legislature, dalla Costituente alla XIX)
+- Nota: endpoint può dare 503 intermittenti
 
 ## Blocker risolti
 
-1. **Bug `_format_args` toolkit**: `.format(year=year)` su ogni stringa → `KeyError` su SPARQL con `{`. Fix: `"{year}" in v` prima di formattare.
-2. **Query SPARQL**: `?leg dct:title ?legislatura` restituiva sempre null. Fix: estrazione da URI con `REPLACE(STR(?leg), ..., '')`.
-3. **Typo colonna**: `legislature` vs `legislatura` in mart.sql.
+1. **Paginazione WAF**: plugin SPARQL esteso con `pages`/`step` — esegue query multiple con OFFSET incrementale e concatena CSV
+2. **Bug `_format_args` toolkit**: `.format(year=year)` su ogni stringa → `KeyError` su SPARQL con `{` — fixato
+3. **Query SPARQL**: `?leg dct:title ?legislatura` restituiva sempre null — fix: `REPLACE` su URI
 
 ## Dato
 
 - Ogni deputato può apparire in più legislature → la chiave è `(deputato, legislature)`
-- Nessuna aggregazione numerica — è un dataset a livello persona
-- `legislatura` è un intero roman/arabico in stringa ("17", "18"...)
+- 27.764 righe, nessuna aggregazione
+- `legislatura` in formato stringa ("costituente", "regno_01", ..., "repubblica_19")
 
 ## Struttura
 

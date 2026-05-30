@@ -29,7 +29,9 @@ raw:
                         ) . }
             OPTIONAL { ?deputato foaf:gender ?gender . }
           }
-          LIMIT 50000
+          LIMIT 10000
+        pages: 3
+        step: 10000
         accept_format: "csv"
 
 clean:
