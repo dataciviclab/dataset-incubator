@@ -423,9 +423,9 @@
     },
     {
       "slug": "camera_votazioni_sparql",
-      "name": "Camera Votazioni Sparql",
-      "description": "",
-      "source": "",
+      "name": "Votazioni Camera dei Deputati",
+      "description": "Votazioni della Camera dei deputati: esito, conteggi favorevoli/contrari/astenuti, indicatori di partecipazione (presenti, votanti) e fiducia. Serie storica 2018-2025 da endpoint SPARQL dati.camera.it.",
+      "source": "https://dati.camera.it/sparql",
       "source_id": "dati_camera",
       "period": {
         "start": 2018,
@@ -436,97 +436,97 @@
           "name": "votazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI RDF univoco della votazione (join con linked data)"
         },
         {
           "name": "favorevoli",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Voti favorevoli"
         },
         {
           "name": "contrari",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Voti contrari"
         },
         {
           "name": "astenuti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Astenuti"
         },
         {
           "name": "votanti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Totale votanti"
         },
         {
           "name": "presenti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Totale presenti in Aula"
         },
         {
           "name": "approvato",
           "type": "BOOLEAN",
           "role": "metric",
-          "description": ""
+          "description": "Esito (true=approvato, false=respinto)"
         },
         {
           "name": "votazione_finale",
           "type": "BOOLEAN",
           "role": "metric",
-          "description": ""
+          "description": "Votazione finale su un atto"
         },
         {
           "name": "votazione_segreta",
           "type": "BOOLEAN",
           "role": "metric",
-          "description": ""
+          "description": "Votazione segreta"
         },
         {
           "name": "richiesta_fiducia",
           "type": "BOOLEAN",
           "role": "metric",
-          "description": ""
+          "description": "Questione di fiducia"
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Oggetto della votazione"
         },
         {
           "name": "maggioranza",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Quorum richiesto"
         },
         {
           "name": "data",
           "type": "DATE",
           "role": "metric",
-          "description": ""
+          "description": "Data della votazione"
         },
         {
           "name": "legislatura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI della legislatura"
         },
         {
           "name": "seduta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI della seduta"
         },
         {
           "name": "atto_camera",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI dell'atto collegato"
         }
       ],
       "location": {
