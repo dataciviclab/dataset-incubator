@@ -3006,7 +3006,7 @@
     {
       "slug": "mim_alunni_corso_eta",
       "name": "Alunni per corso ed età — MIM",
-      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
+      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia d'eta. Dato MIM a livello di singola scuola, arricchito con anagrafica scuole (regione, provincia, comune). Include gerarchia territoriale (nazionale → regione → provincia) per drill-down. Fonte: dati.istruzione.it.",
       "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
       "source_id": "mim_opendata",
       "period": {
@@ -3018,49 +3018,49 @@
           "name": "anno_scolastico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno scolastico di riferimento (es. 2024/25)"
+          "description": "Anno scolastico di riferimento (es. 202324 = 2023/24)"
         },
         {
           "name": "codice_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ministeriale della scuola"
+          "description": "Codice meccanografico ministeriale della scuola"
         },
         {
           "name": "denominazione_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della scuola"
         },
         {
           "name": "ordine_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ordine scolastico: Primaria, Secondaria di I grado, Secondaria di II grado"
+          "description": "Ordine scolastico: Primaria, Secondaria I grado, Secondaria II grado"
         },
         {
           "name": "grado_istruzione_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Classificazione ministeriale del grado di istruzione"
         },
         {
           "name": "caratteristica_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia della scuola (statale, paritaria, ecc.)"
         },
         {
           "name": "anno_corso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno di corso all'interno dell'ordine"
+          "description": "Anno di corso (1, 2, 3, ...)"
         },
         {
           "name": "fascia_eta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Fascia di età dell'alunno"
+          "description": "Fascia d'età degli alunni (es. 6 anni, 7 anni, ...)"
         },
         {
           "name": "alunni",
@@ -3072,43 +3072,43 @@
           "name": "area_geografica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Area geografica: Nord, Centro, Sud, Isole"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia (sigla)"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune"
         },
         {
           "name": "codice_comune_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune"
         },
         {
           "name": "cap_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CAP della scuola"
         },
         {
           "name": "denominazione_istituto_riferimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione istituto di riferimento"
         }
       ],
       "location": {
