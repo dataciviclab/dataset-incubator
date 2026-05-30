@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-05-29",
+  "updated_at": "2026-05-30",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -376,7 +376,7 @@
       "name": "Camera Deputati Legislature",
       "description": "Deputati italiani per legislatura — Camera dei Deputati",
       "source": "Camera dei Deputati — OpenData SPARQL endpoint",
-      "source_id": "",
+      "source_id": "dati_camera",
       "period": {
         "start": 2024,
         "end": 2024
@@ -389,10 +389,10 @@
           "description": "URI identificativo del deputato"
         },
         {
-          "name": "cogn",
+          "name": "cognome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Cognome del deputato"
+          "description": ""
         },
         {
           "name": "nome",
