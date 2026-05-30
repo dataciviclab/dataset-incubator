@@ -1,26 +1,35 @@
 # Notes — mim-alunni-corso-eta
 
+## 2026-05-30 — Clean arricchito + gerarchia automatica
+
+- Clean ora fa LEFT JOIN con anagrafica scuole via `{support.scu_anagrafica_statali.mart}`
+- Da 6 a 16 colonne: aggiunte regione, provincia, comune, denominazione, grado istruzione, ecc.
+- 93% copertura join (7% scuole non trovate in anagrafica — probabilmente chiuse o private)
+- **Gerarchia automatica**: dichiarata in dataset.yml via `mart.hierarchy`, il toolkit genera h_naz, h_reg, h_prv senza scrivere SQL
+- Rimossi 4 vecchi mart separati per ordine scuola
+
 ## Tecnico
 
-- download automatizzato via `url_suffix_by_year` — URL pattern: `ALUCORSOETASTA{ANNOSCOLASTICO}{DATA}.csv`
-- fonte CSV diretta su `catalogo/elements1/`
+- download automatizzato via `url_suffix_by_year`
 - `CODICESCUOLA` stabile per join con support dataset anagrafica
-- clean: raw-faithful, perdita zero su tutti i 10 anni
-- **4 mart**: primaria, sec_I, sec_II, all (tutti per comune) — filtri ordine nel mart SQL
+- clean: LEFT JOIN con anagrafica scuole (2024)
+- gerarchia: il toolkit genera `SELECT grain, SUM(metriche) FROM clean_input GROUP BY grain` per ogni livello
 - run completato: 2016-2025 (10 anni) ✅
 
 ## Schema
 
-- Clean: ~300-330k righe/anno, colonne: `CODICESCUOLA`, `ORDINE SCUOLA`, `ANNOCORSO`, `FASCIA ETA`, `ALUNNI` + metadata
-- Mart primaria: ~5.400-6.300 comuni/anno
+- Clean: ~300-330k righe/anno, 16 colonne (dati alunni + metadati scuola)
+- Mart: `mart_alunni` (305k righe/anno, dati per scuola) + h_naz (19) + h_reg (361) + h_prv (1976)
 
 ## Analitico
 
 - framing ammesso: trend/pressione demografica scolastica per ordine e territorio
 - framing escluso: sovraffollamento o alunni/classe
+- Con la gerarchia si puo' partire dal nazionale e drill-down fino al comune
 
 ## Cautele
 
 - sec_II ha meno comuni (1391) — dati reali, non errore
-- `anno_scolastico` è una stringa `YYYYYY` (es. `202425`) — usare come stringa in join
-- mart = INNER JOIN con anagrafica (year=2024) — per anni <2025 alcune scuole chiuse/fuse non sono nell'anagrafica e sono escluse; 2025 perfettamente coincidente
+- `anno_scolastico` è una stringa `YYYYYY` (es. `202425`)
+- 7% di scuole senza regione/provincia/comune — non presenti nell'anagrafica 2024 (scuole chiuse, private, o nuovi istituti)
+- Le tabelle gerarchiche includono SOLO le metriche numeriche (`alunni`) — `scuole` va contato con `COUNT(DISTINCT codice_scuola)`
