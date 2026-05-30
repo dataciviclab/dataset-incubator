@@ -3,7 +3,7 @@ root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "camera-votazioni-sparql"
+  name: "camera_votazioni_sparql"
   source_id: "dati_camera"
   years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 
