@@ -4,6 +4,7 @@ schema_version: 1
 
 dataset:
   name: "camera-votazioni-sparql"
+  source_id: "dati_camera"
   years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 
 raw:
