@@ -64,7 +64,7 @@ mart:
         exclude_metrics: [scuole]
       - level: com
         table: h_com
-        grain: [anno_scolastico, codice_comune_scuola, nome_comune, ordine_scuola, fascia_eta]
+        grain: [anno_scolastico, codice_comune_scuola, comune, ordine_scuola, fascia_eta]
         exclude_metrics: [scuole]
   required_tables:
     - "mart_alunni"

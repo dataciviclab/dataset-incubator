@@ -11,7 +11,7 @@ SELECT
   area_geografica,
   regione,
   provincia,
-  comune AS nome_comune,
+  comune,
   codice_comune_scuola,
   denominazione_istituto_riferimento
 FROM clean_input
