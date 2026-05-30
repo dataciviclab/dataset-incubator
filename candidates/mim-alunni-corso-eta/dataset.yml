@@ -45,29 +45,35 @@ clean:
 
 mart:
   tables:
-    - name: "mart_alunni_primaria_comune"
-      sql: "sql/mart_primaria.sql"
-    - name: "mart_alunni_secondaria_i_comune"
-      sql: "sql/mart_secondaria_i.sql"
-    - name: "mart_alunni_secondaria_ii_comune"
-      sql: "sql/mart_secondaria_ii.sql"
-    - name: "mart_alunni_all_comune"
-      sql: "sql/mart_all.sql"
+    - name: "mart_alunni"
+      sql: "sql/mart.sql"
+  hierarchy:
+    axis: territoriale
+    levels:
+      - level: naz
+        table: h_naz
+        grain: [anno_scolastico, ordine_scuola, fascia_eta]
+        exclude_metrics: [scuole]
+      - level: reg
+        table: h_reg
+        grain: [anno_scolastico, regione, ordine_scuola, fascia_eta]
+        exclude_metrics: [scuole]
+      - level: prv
+        table: h_prv
+        grain: [anno_scolastico, provincia, ordine_scuola, fascia_eta]
+        exclude_metrics: [scuole]
+      - level: com
+        table: h_com
+        grain: [anno_scolastico, codice_comune_scuola, comune, ordine_scuola, fascia_eta]
+        exclude_metrics: [scuole]
   required_tables:
-    - "mart_alunni_primaria_comune"
-    - "mart_alunni_secondaria_i_comune"
-    - "mart_alunni_secondaria_ii_comune"
-    - "mart_alunni_all_comune"
+    - "mart_alunni"
   validate:
     table_rules:
-      mart_alunni_primaria_comune:
+      mart_alunni:
         min_rows: 5000
-      mart_alunni_secondaria_i_comune:
-        min_rows: 3000
-      mart_alunni_secondaria_ii_comune:
-        min_rows: 1000
-      mart_alunni_all_comune:
-        min_rows: 5000
+      h_naz:
+        min_rows: 10
 
 validation:
   fail_on_error: true
