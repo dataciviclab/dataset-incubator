@@ -1,0 +1,59 @@
+# Votazioni Camera dei Deputati — da endpoint SPARQL
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "camera-votazioni-sparql"
+  source_id: "dati_camera"
+  years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "sparql"
+      type: "sparql"
+      args:
+        endpoint: "https://dati.camera.it/sparql"
+        query: >
+          PREFIX ocd: <http://dati.camera.it/ocd/>
+          PREFIX dc: <http://purl.org/dc/elements/1.1/>
+          SELECT ?votazione (MAX(?titolo) AS ?titolo) (MAX(?data) AS ?data)
+                 (MAX(?favorevoli) AS ?favorevoli) (MAX(?contrari) AS ?contrari)
+                 (MAX(?astenuti) AS ?astenuti) (MAX(?votanti) AS ?votanti)
+                 (MAX(?presenti) AS ?presenti) (MAX(?approvato) AS ?approvato)
+                 (MAX(?maggioranza) AS ?maggioranza)
+                 (MAX(?votazioneFinale) AS ?votazioneFinale)
+                 (MAX(?votazioneSegreta) AS ?votazioneSegreta)
+                 (MAX(?richiestaFiducia) AS ?richiestaFiducia)
+                 (MAX(?legislatura) AS ?legislatura) (MAX(?seduta) AS ?seduta)
+                 (MAX(?attoCamera) AS ?attoCamera)
+          WHERE {
+            ?votazione a ocd:votazione .
+            OPTIONAL { ?votazione dc:title ?titolo . }
+            OPTIONAL { ?votazione dc:date ?data . }
+            OPTIONAL { ?votazione ocd:favorevoli ?favorevoli . }
+            OPTIONAL { ?votazione ocd:contrari ?contrari . }
+            OPTIONAL { ?votazione ocd:astenuti ?astenuti . }
+            OPTIONAL { ?votazione ocd:votanti ?votanti . }
+            OPTIONAL { ?votazione ocd:presenti ?presenti . }
+            OPTIONAL { ?votazione ocd:approvato ?approvato . }
+            OPTIONAL { ?votazione ocd:maggioranza ?maggioranza . }
+            OPTIONAL { ?votazione ocd:votazioneFinale ?votazioneFinale . }
+            OPTIONAL { ?votazione ocd:votazioneSegreta ?votazioneSegreta . }
+            OPTIONAL { ?votazione ocd:richiestaFiducia ?richiestaFiducia . }
+            OPTIONAL { ?votazione ocd:rif_leg ?legislatura . }
+            OPTIONAL { ?votazione ocd:rif_seduta ?seduta . }
+            OPTIONAL { ?votazione ocd:rif_attoCamera ?attoCamera . }
+            FILTER (STRSTARTS(?data, "{year}"))
+          }
+          GROUP BY ?votazione
+          LIMIT 20000
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+
+mart:
+  tables:
+    - name: "camera_votazioni"
+      sql: "sql/mart.sql"

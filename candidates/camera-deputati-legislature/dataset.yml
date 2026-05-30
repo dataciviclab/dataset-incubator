@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "camera_deputati_legislature"
+  source_id: "dati_camera"
   years: [2024]
 
 raw:
@@ -15,12 +16,13 @@ raw:
         query: |
           PREFIX foaf: <http://xmlns.com/foaf/0.1/>
           PREFIX ocd: <http://dati.camera.it/ocd/>
-          SELECT DISTINCT ?deputato ?cogn ?nome ?legislatura ?gender
+          SELECT DISTINCT ?deputato ?cogn ?nome ?label ?legislatura ?gender
           WHERE {
             ?deputato a ocd:deputato .
             OPTIONAL { ?deputato foaf:surname ?cogn . }
             OPTIONAL { ?deputato foaf:firstName ?nome . }
-             OPTIONAL { ?deputato ocd:rif_leg ?leg .
+            OPTIONAL { ?deputato rdfs:label ?label . }
+            OPTIONAL { ?deputato ocd:rif_leg ?leg .
                         BIND(
                           REPLACE(
                             REPLACE(STR(?leg), 'http://dati.camera.it/ocd/legislatura.rdf/', ''),
@@ -29,7 +31,9 @@ raw:
                         ) . }
             OPTIONAL { ?deputato foaf:gender ?gender . }
           }
-          LIMIT 50000
+          LIMIT 10000
+        pages: 3
+        step: 10000
         accept_format: "csv"
 
 clean:

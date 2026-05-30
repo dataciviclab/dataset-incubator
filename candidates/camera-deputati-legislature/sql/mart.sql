@@ -3,11 +3,11 @@
 
 SELECT
   deputato,
-  cogn,
+  cognome,
   nome,
   legislatura,
   gender
 FROM clean_input
 WHERE deputato IS NOT NULL
-ORDER BY cogn, nome
+ORDER BY cognome, nome
 ;
