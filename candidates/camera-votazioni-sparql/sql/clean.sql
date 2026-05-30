@@ -1,5 +1,6 @@
 -- Votazioni Camera: pulizia tipi e parsing date
 SELECT
+  votazione,  -- URI univoco RDF: chiave primaria per dedup e join
   TRY_CAST(favorevoli AS INTEGER) AS favorevoli,
   TRY_CAST(contrari AS INTEGER) AS contrari,
   TRY_CAST(astenuti AS INTEGER) AS astenuti,

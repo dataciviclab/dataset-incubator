@@ -2,7 +2,7 @@
 
 ## Domanda
 
-Quante votazioni ci sono state alla Camera dei deputati, con che esito, e come hanno votato i gruppi parlamentari?
+Quante votazioni ci sono state alla Camera dei deputati, con che esito e quali sono gli indicatori di partecipazione e fiducia?
 
 ## Fonte
 
@@ -16,6 +16,7 @@ Tutte le votazioni della Camera dal 2018 a oggi (XVIII e XIX legislatura). Ogni 
 
 | Colonna | Tipo | Descrizione |
 |---|---|---|
+| `votazione` | string | URI RDF univoco della votazione (join con linked data) |
 | `favorevoli` | int | Voti favorevoli |
 | `contrari` | int | Voti contrari |
 | `astenuti` | int | Astenuti |
