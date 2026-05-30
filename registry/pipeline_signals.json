@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-29",
+  "generated_at": "2026-05-30",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 33,
+    "total": 34,
     "by_status": {
-      "ok": 33,
+      "ok": 34,
       "warn": 0,
       "error": 0
     }
@@ -74,21 +74,29 @@
     },
     {
       "id": "camera-deputati-legislature",
-      "source_id": "",
+      "source_id": "dati_camera",
       "status": "ok",
       "label": "camera-deputati-legislature",
       "detail": "anno 2024 — fonte: camera_deputati_sparql — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26456578571",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26456578571",
-        "checked_at": "2026-05-26",
+        "run_id": "26682747895",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26682747895",
+        "checked_at": "2026-05-30",
         "years": [
           2024
         ],
         "config_path": "candidates/camera-deputati-legislature/dataset.yml"
       }
+    },
+    {
+      "id": "camera-votazioni-sparql",
+      "source_id": "dati_camera",
+      "status": "ok",
+      "label": "camera-votazioni-sparql",
+      "detail": "anni 2018-2025 — fonte: sparql — mart: sì",
+      "action": ""
     },
     {
       "id": "civile-flussi",
