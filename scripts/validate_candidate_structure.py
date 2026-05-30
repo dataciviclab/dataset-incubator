@@ -84,6 +84,13 @@ def validate_dataset_name_yml(yml_path: Path, failures: list[str]) -> None:
         return
     try:
         import yaml
+    except ImportError:
+        rel = yml_path.relative_to(ROOT)
+        failures.append(
+            f"{rel}: cannot validate dataset.name — PyYAML non installato"
+        )
+        return
+    try:
         with open(yml_path, encoding="utf-8") as f:
             cfg = yaml.safe_load(f) or {}
         name = cfg.get("dataset", {}).get("name", "")
@@ -92,7 +99,7 @@ def validate_dataset_name_yml(yml_path: Path, failures: list[str]) -> None:
             failures.append(
                 f"{rel}: invalid dataset.name '{name}' — must match ^[a-z0-9_]+$"
             )
-    except Exception:
+    except yaml.YAMLError:
         pass  # YAML syntax errors are caught by other validators / CI
 
 

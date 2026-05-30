@@ -24,7 +24,9 @@ jobs:
         with:
           python-version: ${{ env.PYTHON_VERSION }}
       - name: Install dependencies
-        run: pip install -r dataset-incubator/requirements.txt
+        run: |
+          cd dataset-incubator
+          pip install -r requirements.txt
       - name: Smoke batch — HTTP candidates
         id: batch
         run: |
