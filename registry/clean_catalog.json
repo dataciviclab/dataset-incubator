@@ -422,6 +422,122 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "camera_votazioni_sparql",
+      "name": "Votazioni Camera dei Deputati",
+      "description": "Votazioni della Camera dei deputati: esito, conteggi favorevoli/contrari/astenuti, indicatori di partecipazione (presenti, votanti) e fiducia. Serie storica 2018-2025 da endpoint SPARQL dati.camera.it.",
+      "source": "https://dati.camera.it/sparql",
+      "source_id": "dati_camera",
+      "period": {
+        "start": 2018,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "votazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI RDF univoco della votazione (join con linked data)"
+        },
+        {
+          "name": "favorevoli",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Voti favorevoli"
+        },
+        {
+          "name": "contrari",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Voti contrari"
+        },
+        {
+          "name": "astenuti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Astenuti"
+        },
+        {
+          "name": "votanti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Totale votanti"
+        },
+        {
+          "name": "presenti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Totale presenti in Aula"
+        },
+        {
+          "name": "approvato",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": "Esito (true=approvato, false=respinto)"
+        },
+        {
+          "name": "votazione_finale",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": "Votazione finale su un atto"
+        },
+        {
+          "name": "votazione_segreta",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": "Votazione segreta"
+        },
+        {
+          "name": "richiesta_fiducia",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": "Questione di fiducia"
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Oggetto della votazione"
+        },
+        {
+          "name": "maggioranza",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Quorum richiesto"
+        },
+        {
+          "name": "data",
+          "type": "DATE",
+          "role": "metric",
+          "description": "Data della votazione"
+        },
+        {
+          "name": "legislatura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI della legislatura"
+        },
+        {
+          "name": "seduta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI della seduta"
+        },
+        {
+          "name": "atto_camera",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI dell'atto collegato"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/camera_votazioni_sparql/*/camera_votazioni_sparql_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "civile_flussi",
       "name": "Flussi Civile — Giustizia civile italiana",
       "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 (file snapshot 2025).",
@@ -2890,7 +3006,7 @@
     {
       "slug": "mim_alunni_corso_eta",
       "name": "Alunni per corso ed età — MIM",
-      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia di età. Dato MI-MIM a livello di singola scuola (CODICESCUOLA), aggregato opzionale per comune tramite anagrafica scuole statali.",
+      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia d'eta. Dato MIM a livello di singola scuola, arricchito con anagrafica scuole (regione, provincia, comune). Include gerarchia territoriale (nazionale → regione → provincia) per drill-down. Fonte: dati.istruzione.it.",
       "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
       "source_id": "mim_opendata",
       "period": {
@@ -2902,37 +3018,97 @@
           "name": "anno_scolastico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno scolastico di riferimento (es. 2024/25)"
+          "description": "Anno scolastico di riferimento (es. 202324 = 2023/24)"
         },
         {
           "name": "codice_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ministeriale della scuola"
+          "description": "Codice meccanografico ministeriale della scuola"
+        },
+        {
+          "name": "denominazione_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della scuola"
         },
         {
           "name": "ordine_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Ordine scolastico: Primaria, Secondaria di I grado, Secondaria di II grado"
+          "description": "Ordine scolastico: Primaria, Secondaria I grado, Secondaria II grado"
+        },
+        {
+          "name": "grado_istruzione_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Classificazione ministeriale del grado di istruzione"
+        },
+        {
+          "name": "caratteristica_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia della scuola (statale, paritaria, ecc.)"
         },
         {
           "name": "anno_corso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Anno di corso all'interno dell'ordine"
+          "description": "Anno di corso (1, 2, 3, ...)"
         },
         {
           "name": "fascia_eta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Fascia di età dell'alunno"
+          "description": "Fascia d'età degli alunni (es. 6 anni, 7 anni, ...)"
         },
         {
           "name": "alunni",
           "type": "BIGINT",
           "role": "metric",
           "description": "Numero di alunni"
+        },
+        {
+          "name": "area_geografica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Area geografica: Nord, Centro, Sud, Isole"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia (sigla)"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune"
+        },
+        {
+          "name": "codice_comune_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune"
+        },
+        {
+          "name": "cap_scuola",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CAP della scuola"
+        },
+        {
+          "name": "denominazione_istituto_riferimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione istituto di riferimento"
         }
       ],
       "location": {
