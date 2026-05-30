@@ -16,29 +16,67 @@
 
 ## Perché vale la pena incubarlo
 
-- granularità a livello `CODICESCUOLA` + join con anagrafica
+- granularità a livello scuola + join con anagrafica scuole
 - 10 anni di serie storica — trend demografico solido
 - forte leggibilità civica sul calo iscrizioni
-- il blocco `support:` del toolkit rende dichiarativo il join con l'anagrafica scuole
+- join con anagrafica scuole direttamente in clean layer
 
-## Output minimo atteso
+## Schema clean
 
-- raw: CSV per anno scolastico (2016-2025)
-- clean: tabella normalizzata con `CODICESCUOLA`, ordine, anno di corso, fascia età e numero alunni — raw-faithful
-- mart: 4 aggregati per comune (primaria, sec_I, sec_II, all) — filtri ordine nel mart SQL
-- notebook v0 per sanity check mart
+| Colonna | Descrizione |
+|---|---|
+| `anno_scolastico` | Anno scolastico (es. 202324) |
+| `codice_scuola` | Codice meccanografico scuola |
+| `denominazione_scuola` | Nome della scuola |
+| `ordine_scuola` | Primaria / Secondaria I / II |
+| `grado_istruzione_scuola` | Classificazione ministeriale |
+| `caratteristica_scuola` | Tipologia (statale, paritaria, ecc.) |
+| `anno_corso` | Anno di corso |
+| `fascia_eta` | Fascia d'età |
+| `alunni` | Numero alunni |
+| `area_geografica` | Nord / Centro / Sud |
+| `regione` | Regione |
+| `provincia` | Provincia (sigla) |
+| `comune` | Comune |
+| `codice_comune_scuola` | Codice ISTAT comune |
+| `cap_scuola` | CAP |
+| `denominazione_istituto_riferimento` | Istituto di riferimento |
+
+## Schema mart
+
+Due layer:
+
+**`mart_alunni`** — dati per singola scuola (no aggregazione):
+
+| Colonna | Descrizione |
+|---|---|
+| `codice_scuola` | Codice meccanografico |
+| `ordine_scuola` | Primaria / Secondaria I / II |
+| `fascia_eta`, `alunni` | Dati alunni |
+| `regione`, `provincia`, `nome_comune` | Territorio |
+
+**Gerarchia automatica** (`h_naz`, `h_reg`, `h_prv`) — generata dal toolkit dalla dichiarazione `mart.hierarchy` nel dataset.yml:
+
+| Livello | Righe | Grain |
+|---|---|---|
+| `h_naz` | 19 | nazionale × ordine scuola × fascia eta |
+| `h_reg` | 361 | regione × ordine scuola × fascia eta |
+| `h_prv` | 1976 | provincia × ordine scuola × fascia eta |
+
+Il toolkit genera automaticamente: `SELECT grain, SUM(alunni) FROM clean_input GROUP BY grain`.
+
+## Output
+
+- **Raw**: CSV per anno scolastico (2016-2025)
+- **Clean**: 305k righe/anno, 16 colonne, **93% copertura join** con anagrafica scuole
+- **Mart**: `mart_alunni` (per scuola) + gerarchia automatica 3 livelli
 
 ## Stato
 
-`runnable` — 2016-2025 run completo, raw-faithful, 4 mart verificate
+`runnable` — 2016-2025 run completo, clean arricchito con join, mart a gerarchia unica.
 
 ## QC
 
-- Clean = Raw su tutti gli anni (0% drop) ✅
-- Mart sum = Clean: perfetto per 2025 (delta=0, anagrafica 2024 copre tutte le scuole); delta crescente per anni precedenti (scuole chiuse/fuse assenti dall'anagrafica) — comportamento atteso, non errore ✅
-- 4 mart: tutte superano min_rows su tutti gli anni ✅
-
-## Criterio di promotion
-
-- mart comunale stabile come base di join con anagrafica
-- notebook v0 eseguito con output reali (2024/25)
+- Clean join: 93% righe con regione (7% scuole non in anagrafica — scuole chiuse/private)
+- Mart: 68k righe per livello territoriale + orine scuola + fascia eta
+- Tutti gli anni superano validate ✅
