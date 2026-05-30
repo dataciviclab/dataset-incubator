@@ -1,5 +1,6 @@
 from __future__ import annotations
 
+import re
 import sys
 from pathlib import Path
 from typing import Literal
@@ -10,6 +11,10 @@ LayoutType = Literal[
     "single-source", "multi-source", "ambiguous", "unknown",
     "support-dataset", "compose",
 ]
+
+# Convenzioni slug contratto cross-repo
+DIR_NAME_RE = re.compile(r"^[a-z0-9-]+$")
+DATASET_NAME_RE = re.compile(r"^[a-z0-9_]+$")
 
 
 def detect_candidate_layout(base_dir: Path) -> dict:
@@ -63,9 +68,46 @@ def validate_root_docs(base_dir: Path, failures: list[str]) -> None:
         failures.append(f"missing {base_dir.relative_to(ROOT) / 'notes.md'}")
 
 
+def validate_dir_name(base_dir: Path, failures: list[str]) -> None:
+    """Validate that the directory name follows the slug convention ^[a-z0-9-]+$."""
+    dir_name = base_dir.name
+    if not DIR_NAME_RE.match(dir_name):
+        rel = base_dir.relative_to(ROOT).as_posix()
+        failures.append(
+            f"{rel}: invalid directory name '{dir_name}' — must match ^[a-z0-9-]+$"
+        )
+
+
+def validate_dataset_name_yml(yml_path: Path, failures: list[str]) -> None:
+    """Validate that dataset.name (if present) follows ^[a-z0-9_]+$."""
+    if not yml_path.exists():
+        return
+    try:
+        import yaml
+    except ImportError:
+        rel = yml_path.relative_to(ROOT)
+        failures.append(
+            f"{rel}: cannot validate dataset.name — PyYAML non installato"
+        )
+        return
+    try:
+        with open(yml_path, encoding="utf-8") as f:
+            cfg = yaml.safe_load(f) or {}
+        name = cfg.get("dataset", {}).get("name", "")
+        if name and not DATASET_NAME_RE.match(name):
+            rel = yml_path.relative_to(ROOT)
+            failures.append(
+                f"{rel}: invalid dataset.name '{name}' — must match ^[a-z0-9_]+$"
+            )
+    except yaml.YAMLError:
+        pass  # YAML syntax errors are caught by other validators / CI
+
+
 def validate_single_source(base_dir: Path, failures: list[str]) -> None:
     dataset_yml = base_dir / "dataset.yml"
     sql_dir = base_dir / "sql"
+
+    validate_dataset_name_yml(dataset_yml, failures)
 
     if not dataset_yml.exists():
         failures.append(f"missing {dataset_yml.relative_to(ROOT)}")
@@ -82,6 +124,8 @@ def validate_compose_root(base_dir: Path, failures: list[str]) -> None:
     """Validate a standalone compose dataset (mart-only, no raw/clean)."""
     dataset_yml = base_dir / "dataset.yml"
     sql_dir = base_dir / "sql"
+
+    validate_dataset_name_yml(dataset_yml, failures)
 
     if not dataset_yml.exists():
         failures.append(f"missing {dataset_yml.relative_to(ROOT)}")
@@ -121,6 +165,8 @@ def validate_multi_source(base_dir: Path, failures: list[str]) -> None:
         dataset_yml = source_dir / "dataset.yml"
         sql_dir = source_dir / "sql"
 
+        validate_dataset_name_yml(dataset_yml, failures)
+
         if not dataset_yml.exists():
             failures.append(f"missing {dataset_yml.relative_to(ROOT)}")
         if not sql_dir.is_dir():
@@ -136,6 +182,10 @@ def validate_multi_source(base_dir: Path, failures: list[str]) -> None:
 
 def validate_entry(base_dir: Path, failures: list[str]) -> None:
     rel_str = base_dir.relative_to(ROOT).as_posix()
+
+    # Validate slug conventions
+    validate_dir_name(base_dir, failures)
+    validate_dataset_name_yml(base_dir / "dataset.yml", failures)
 
     info = detect_candidate_layout(base_dir)
     layout = info["layout"]

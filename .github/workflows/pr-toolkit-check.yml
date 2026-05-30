@@ -1,7 +1,11 @@
 name: Toolkit Pipeline Check
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 env:
-  TOOLKIT_VERSION: v1.19.0
+  # TOOLKIT_VERSION è centralizzato in requirements.txt
 
 # Esegue la pipeline toolkit su candidate modificati in PR.
 # Fallisce la PR se toolkit run full fallisce (run + validate + readiness).
@@ -33,7 +37,7 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: python -m pip install pyyaml
+        run: python -m pip install -r requirements.txt
 
       - name: Detect changed candidate/support roots
         id: detect
@@ -85,7 +89,7 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: python -m pip install pyyaml
+        run: python -m pip install -r requirements.txt
 
       - name: Configure extra source CA certificates
         env:
@@ -120,9 +124,6 @@ jobs:
 
           echo "REQUESTS_CA_BUNDLE=$bundle" >> "$GITHUB_ENV"
           echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
-
-      - name: Install toolkit
-        run: pip install git+https://github.com/dataciviclab/toolkit.git@${{ env.TOOLKIT_VERSION }}
 
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows)"
         id: run_full
