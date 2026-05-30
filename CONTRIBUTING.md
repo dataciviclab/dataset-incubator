@@ -216,6 +216,34 @@ cd toolkit
 python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/sources/{source}/dataset.yml
 ```
 
+## Test
+
+Prima di aprire una PR che tocca `scripts/`, `tools/` o `tests/`, esegui i test in locale:
+
+```bash
+# Dalla root del repo
+python -m pytest tests/ -q --tb=line
+```
+
+Per vedere la copertura:
+
+```bash
+python -m pytest tests/ --cov=scripts --cov=tools/clean-query-mcp --cov-report=term
+```
+
+I test usano i marker standard del Lab (definiti in `pyproject.toml`):
+
+- `contract` — output CLI, artifact format, path contract
+- `policy` — regole non ovvie dal codice
+- `regression` — bug fix documentato (richiede link issue/PR)
+- `adapter` — adapter a servizi esterni
+- `pure_unit` — logica pura, zero side effect
+- `smoke` — golden path E2E (richiede connettività)
+
+La threshold di coverage CI è al 55%. Ogni test nuovo o modificato in PR deve avere uno e un solo marker — il workflow `test-audit.yml` lo verifica automaticamente.
+
+Vedi [test-policy.md](https://github.com/dataciviclab/lab-ops/blob/main/operations/test-policy.md) per la policy completa.
+
 ## Promotion: quando un filone esce da DI
 
 Usa il template `promotion.yml` quando il filone sembra pronto per:

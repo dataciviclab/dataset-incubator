@@ -37,7 +37,7 @@ jobs:
           echo "total=$(python3 -c "import json;d=json.load(open('/tmp/batch_report.json'));print(d['total'])")" >> "$GITHUB_OUTPUT"
       - name: Upload batch report
         if: always()
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v7
         with:
           name: batch-report-http
           path: /tmp/batch_report.json
