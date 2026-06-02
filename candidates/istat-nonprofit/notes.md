@@ -1,4 +1,4 @@
-# Note - istat_nonprofit
+# Note - istat-nonprofit
 
 ## Source-check
 
@@ -12,7 +12,7 @@
 - **Approccio**: XLSX download diretto (HTTP file). SDMX tentato ma timeout sui dataflow multi-dimensione.
 - **Run 2023**: RAW ✅ → CLEAN ✅ → MART ✅
 - **Sheet usata**: "22" (Tavola 22 — dati provinciali, skip=1 per rimuovere riga titolo)
-- **Output**: `out/data/mart/istat_nonprofit/2023/mart_nonprofit_province.parquet`
+- **Output**: `out/data/mart/istat-nonprofit/2023/mart_nonprofit_province.parquet`
 - **107 righe**: tutte le province + righe totali/nazionali
 - **Dati verificati**: 368.367 istituzioni, 949.200 dipendenti — corrispondono al comunicato ISTAT
 
