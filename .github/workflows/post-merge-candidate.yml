@@ -290,7 +290,7 @@ jobs:
     needs:
       - detect
       - sample_run
-    if: always() && needs.detect.outputs.has_items == 'true'
+    if: needs.sample_run.result == 'success' && needs.detect.outputs.has_items == 'true'
     runs-on: ubuntu-latest
     permissions:
       contents: write
