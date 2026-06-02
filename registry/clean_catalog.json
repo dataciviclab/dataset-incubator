@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-05-30",
+  "updated_at": "2026-06-02",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -123,6 +123,404 @@
         "type": "gcs",
         "path": "gs://dataciviclab-clean/aifa_spesa_consumo/*/aifa_spesa_consumo_*_clean.parquet",
         "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "bdap_anagrafe_enti",
+      "name": "BDAP Anagrafe Enti Pubblici",
+      "description": "Anagrafe completa degli enti pubblici italiani. 63 colonne, ~38k enti. Mappa codici IPA, SIOPE, ISTAT, MIUR, SSN, catastale. Usata come bridge table per join cross-dataset nel joinability scan.",
+      "source": "MEF — Ragioneria Generale dello Stato / OpenBDAP",
+      "source_id": "openbdap",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "id_ente",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Identificativo univoco ente (chiave primaria)"
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ufficiale ente"
+        },
+        {
+          "name": "cf",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale ente"
+        },
+        {
+          "name": "piva",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Partita IVA ente"
+        },
+        {
+          "name": "data_istituzione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data istituzione ente"
+        },
+        {
+          "name": "data_cessazione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data cessazione ente (null se attivo)"
+        },
+        {
+          "name": "codice_ateco",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ATECO attività economica"
+        },
+        {
+          "name": "descr_codice_ateco",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione codice ATECO"
+        },
+        {
+          "name": "codice_forma_giuridica",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice forma giuridica"
+        },
+        {
+          "name": "descr_forma_giuridica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione forma giuridica"
+        },
+        {
+          "name": "telefono",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero telefono"
+        },
+        {
+          "name": "fax",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero fax"
+        },
+        {
+          "name": "url",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sito web"
+        },
+        {
+          "name": "nome_resp",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome responsabile"
+        },
+        {
+          "name": "cogn_resp",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome responsabile"
+        },
+        {
+          "name": "titolo_resp",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo responsabile"
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo sede"
+        },
+        {
+          "name": "cap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CAP sede"
+        },
+        {
+          "name": "codice_istat_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT comune (chiave join)"
+        },
+        {
+          "name": "codice_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice comune interno BDAP"
+        },
+        {
+          "name": "dizione_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione comune"
+        },
+        {
+          "name": "codice_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale comune (chiave join IRPEF)"
+        },
+        {
+          "name": "codice_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice provincia"
+        },
+        {
+          "name": "dizione_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione provincia"
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla provincia (chiave join)"
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT regione (chiave join)"
+        },
+        {
+          "name": "dizione_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione regione"
+        },
+        {
+          "name": "codice_zona",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice zona geografica"
+        },
+        {
+          "name": "dizione_zona",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione zona geografica"
+        },
+        {
+          "name": "stato_partecipazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato partecipazione (S/N)"
+        },
+        {
+          "name": "codice_ente_siope",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice SIOPE ente (chiave join BDAP)"
+        },
+        {
+          "name": "id_tipologia_siope",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID tipologia SIOPE"
+        },
+        {
+          "name": "codice_tipologia_siope",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice tipologia SIOPE"
+        },
+        {
+          "name": "descr_tipologia_siope",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione tipologia SIOPE"
+        },
+        {
+          "name": "data_inclusione_siope",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data inclusione registro SIOPE"
+        },
+        {
+          "name": "data_esclusione_siope",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data esclusione registro SIOPE"
+        },
+        {
+          "name": "codice_ente_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice IPA ente (chiave join PA)"
+        },
+        {
+          "name": "id_categoria_ipa",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID categoria IPA"
+        },
+        {
+          "name": "codice_categoria_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice categoria IPA"
+        },
+        {
+          "name": "descr_categoria_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione categoria IPA"
+        },
+        {
+          "name": "codice_tipologia_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice tipologia IPA (PA/GPS)"
+        },
+        {
+          "name": "descr_tipologia_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione tipologia IPA"
+        },
+        {
+          "name": "data_inclusione_ipa",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data inclusione IPA"
+        },
+        {
+          "name": "data_esclusione_ipa",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data esclusione IPA"
+        },
+        {
+          "name": "codice_ente_miur",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice MIUR ente (chiave join MIM scuola)"
+        },
+        {
+          "name": "id_tipologia_miur",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID tipologia MIUR"
+        },
+        {
+          "name": "codice_tipologia_miur",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice tipologia MIUR (IC, DD, ecc.)"
+        },
+        {
+          "name": "descr_tipologia_miur",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione tipologia MIUR"
+        },
+        {
+          "name": "id_tipologia_dt",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID tipologia DT"
+        },
+        {
+          "name": "codice_tipologia_dt",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice tipologia DT"
+        },
+        {
+          "name": "descr_tipologia_dt",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione tipologia DT"
+        },
+        {
+          "name": "codice_ente_ssn",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice SSN ente (chiave join sanità)"
+        },
+        {
+          "name": "codice_ente_istat_s13",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice ISTAT S13 ente"
+        },
+        {
+          "name": "id_tipologia_istat_s13",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID tipologia ISTAT S13"
+        },
+        {
+          "name": "codice_tipologia_istat_s13",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice tipologia ISTAT S13"
+        },
+        {
+          "name": "descr_tipologia_istat_s13",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione tipologia ISTAT S13"
+        },
+        {
+          "name": "data_inclusione_istat_s13",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data inclusione ISTAT S13"
+        },
+        {
+          "name": "data_esclusione_istat_s13",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data esclusione ISTAT S13"
+        },
+        {
+          "name": "id_tipologia_dlgs_118_2011",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID tipologia DLGS 118/2011"
+        },
+        {
+          "name": "codice_tipologia_dlgs_118_2011",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice tipologia DLGS 118/2011"
+        },
+        {
+          "name": "descr_tipologia_dlgs_118_2011",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione tipologia DLGS 118/2011"
+        },
+        {
+          "name": "data_inclusione_dlgs_118_2011",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data inclusione DLGS 118/2011"
+        },
+        {
+          "name": "data_esclusione_dlgs_118_2011",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data esclusione DLGS 118/2011"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/bdap_anagrafe_enti/2026/bdap_anagrafe_enti_2026_clean.parquet",
+        "multi_file": false
       },
       "stage": "published",
       "registry_source": "derive_auto"
