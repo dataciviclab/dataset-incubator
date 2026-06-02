@@ -1,12 +1,10 @@
 # ISTAT Nonprofit — Censimento permanente delle Istituzioni non profit
 
-Risorse umane (istituzioni, dipendenti, volontari) delle istituzioni non profit in Italia,
-per provincia, regione, settore di attività e forma giuridica.
+Istituzioni non profit e dipendenti per provincia (anno 2023).
 
-## Domanda civica
+## Domanda civica (v0)
 
-Quante istituzioni non profit sono attive in Italia, in quali settori operano,
-quanti dipendenti e volontari impiegano, e come si distribuiscono per provincia e regione?
+Quante istituzioni non profit e dipendenti ci sono per provincia?
 
 ## Fonte
 
