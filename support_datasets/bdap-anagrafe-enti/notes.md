@@ -25,6 +25,23 @@ Dataset di anagrafe enti pubblici italiani. Fonte primaria per join su codici en
 - Header row presente
 - 63 colonne — molte sono codici e descrizioni per diversi registri (IPA, SIOPE, ISTAT, MIUR, etc.)
 
+## Run
+
+- **Run 2026-06-02**: RAW ✅ → CLEAN ✅ (38.196 righe, 63 colonne) → MART ✅ (1/1)
+- **Tipo**: support dataset → non pubblicato su explorer, serve per join bridge
+- **Join bridge**: espone 6 chiavi semantiche (istat_comune, istat_regione, provincia, codice_catastale, codice_ente, codice_scuola) → usata da `source-observatory/scripts/joinability_scan.py` per match indiretti
+
+## Bridge columns (join keys)
+
+| Chiave semantica | Colonna BDAP | Dataset collegati |
+|---|---|---|
+| `istat_comune` | `codice_istat_comune` | popolazione, ispra_ru, irpef, consumo_suolo, fsc, housing |
+| `istat_regione` | `codice_regione` | aifa_spesa, bdap_lea, istat_gini, terna |
+| `provincia` | `codice_provincia`, `sigla_provincia` | consip, openga, civile_flussi |
+| `codice_catastale` | `codice_catastale` | irpef_comunale |
+| `codice_ente` | `codice_ente_ipa`, `codice_ente_siope` | dipendenti_pubblici, bdap_entrate |
+| `codice_scuola` | `codice_ente_miur` | mim_alunni, mim_anagrafica_scuole |
+
 ## Blocker
 
 Nessuno noto.

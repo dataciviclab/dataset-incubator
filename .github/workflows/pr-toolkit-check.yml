@@ -5,7 +5,7 @@ concurrency:
   cancel-in-progress: true
 
 env:
-  # TOOLKIT_VERSION è centralizzato in requirements.txt
+  TOOLKIT_VERSION: "from-requirements-txt"
 
 # Esegue la pipeline toolkit su candidate modificati in PR.
 # Fallisce la PR se toolkit run full fallisce (run + validate + readiness).
