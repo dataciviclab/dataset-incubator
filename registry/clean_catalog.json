@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-05-30",
+  "updated_at": "2026-06-02",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -123,6 +123,404 @@
         "type": "gcs",
         "path": "gs://dataciviclab-clean/aifa_spesa_consumo/*/aifa_spesa_consumo_*_clean.parquet",
         "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "bdap_anagrafe_enti",
+      "name": "Bdap Anagrafe Enti",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "id_ente",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cf",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "piva",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_istituzione",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_cessazione",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_ateco",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descr_codice_ateco",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_forma_giuridica",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "descr_forma_giuridica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "telefono",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "fax",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "url",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nome_resp",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cogn_resp",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo_resp",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_istat_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "dizione_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "dizione_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "dizione_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_zona",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "dizione_zona",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "stato_partecipazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_ente_siope",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "id_tipologia_siope",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_tipologia_siope",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descr_tipologia_siope",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_inclusione_siope",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_esclusione_siope",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_ente_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "id_categoria_ipa",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_categoria_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descr_categoria_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_tipologia_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descr_tipologia_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_inclusione_ipa",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_esclusione_ipa",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_ente_miur",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "id_tipologia_miur",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_tipologia_miur",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descr_tipologia_miur",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "id_tipologia_dt",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_tipologia_dt",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "descr_tipologia_dt",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_ente_ssn",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_ente_istat_s13",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "id_tipologia_istat_s13",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_tipologia_istat_s13",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "descr_tipologia_istat_s13",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_inclusione_istat_s13",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_esclusione_istat_s13",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "id_tipologia_dlgs_118_2011",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_tipologia_dlgs_118_2011",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descr_tipologia_dlgs_118_2011",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_inclusione_dlgs_118_2011",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_esclusione_dlgs_118_2011",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/bdap_anagrafe_enti/2026/bdap_anagrafe_enti_2026_clean.parquet",
+        "multi_file": false
       },
       "stage": "published",
       "registry_source": "derive_auto"

@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-05-30",
+  "generated_at": "2026-06-02",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -552,10 +552,12 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "25509412527",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25509412527",
-        "checked_at": "2026-05-07",
-        "year": 2024,
+        "run_id": "26845796510",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26845796510",
+        "checked_at": "2026-06-02",
+        "years": [
+          2026
+        ],
         "config_path": "support_datasets/bdap-anagrafe-enti/dataset.yml"
       }
     },
