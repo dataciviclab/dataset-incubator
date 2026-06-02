@@ -25,8 +25,10 @@
 ## Cautele
 
 - **Skip row**: la riga 1 è un titolo, va saltata con `skip: 1` + `header: true`
-- **Schema drift**: le XLSX degli anni precedenti potrebbero avere struttura diversa
-- **Solo 2023**: per ora. Da aggiungere anni precedenti (2016-2022) quando disponibili
+- **Schema drift**: le XLSX degli anni precedenti hanno struttura diversa.
+  Verificato 2022: 11 tavole (invece di 22), nomi sheet "Tavola N" (invece di "N"),
+  nessuna tavola provinciale. Serie storica non banale.
+- **Solo 2023**: perimetro v0. Anni 2016-2022 non sono direttamente compatibili.
 - **XLSX multi-sheet**: ogni tavola è un foglio separato. Per v1 servono altre sheet (1, 2)
 
 ## Rischi
