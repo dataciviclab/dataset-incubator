@@ -1,0 +1,42 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_nonprofit"
+  source_id: "istat"
+  years: [2023]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_nonprofit_xlsx"
+      type: "http_file"
+      args:
+        url: "https://www.istat.it/wp-content/uploads/2025/10/Tavole_nonprofit_2023.xlsx"
+        filename: "Tavole_nonprofit_2023.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+    sheet_name: "22"
+    skip: 1
+  validate:
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_nonprofit_province"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_nonprofit_province"
+  validate:
+    table_rules:
+      mart_nonprofit_province:
+        min_rows: 50
+
+validation:
+  fail_on_error: true
