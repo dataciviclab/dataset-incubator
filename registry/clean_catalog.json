@@ -2534,7 +2534,7 @@
         "path": "gs://dataciviclab-clean/istat_housing_crowding/2024/istat_housing_crowding_2024_clean.parquet",
         "multi_file": false
       },
-      "stage": "incubating",
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
@@ -3514,7 +3514,7 @@
         "path": "gs://dataciviclab-clean/mim_alunni_corso_eta/*/mim_alunni_corso_eta_*_clean.parquet",
         "multi_file": true
       },
-      "stage": "incubating",
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
@@ -4450,7 +4450,7 @@
         "path": "gs://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet",
         "multi_file": true
       },
-      "stage": "incubating",
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
