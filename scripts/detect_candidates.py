@@ -131,26 +131,29 @@ def _detect_from_files(files: list[str]) -> tuple[list[dict], list[dict]]:
                 if not source_dir.is_dir():
                     continue
                 config_path = source_dir / "dataset.yml"
+                if not config_path.exists():
+                    continue
                 configs.append({
                     **item,
                     "config_path": config_path.as_posix(),
-                    "config_exists": config_path.exists(),
+                    "config_exists": True,
                     "push_slug": f"{item['slug']}_{source_dir.name}",
                     "artifact_name": f"{item['slug']}-{source_dir.name}",
-                    "year": _resolve_year(config_path) if config_path.exists() else 0,
+                    "year": _resolve_year(config_path),
                     "is_nested": True,
                 })
         else:
             config_path = root / "dataset.yml"
-            cfg_exists = config_path.exists()
-            ds_name = _dataset_name(config_path) if cfg_exists else None
+            if not config_path.exists():
+                continue
+            ds_name = _dataset_name(config_path)
             configs.append({
                 **item,
                 "config_path": config_path.as_posix(),
-                "config_exists": cfg_exists,
+                "config_exists": True,
                 "push_slug": ds_name or item["slug"],
                 "artifact_name": item["slug"],
-                "year": _resolve_year(config_path) if cfg_exists else 0,
+                "year": _resolve_year(config_path),
                 "is_nested": False,
             })
 
