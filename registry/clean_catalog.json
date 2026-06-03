@@ -2136,7 +2136,7 @@
         "path": "gs://dataciviclab-clean/istat_housing_crowding/2024/istat_housing_crowding_2024_clean.parquet",
         "multi_file": false
       },
-      "stage": "incubating",
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
