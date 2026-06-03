@@ -24,6 +24,8 @@ clean:
     header: true
     delim: ";"
     encoding: "cp1252"
+    quote: "\""
+    strict_mode: false
   validate:
     min_rows: 1000
 
