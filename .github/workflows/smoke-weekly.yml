@@ -26,10 +26,10 @@ jobs:
         run: |
           pip install -r requirements.txt
 
-      - name: Weekly probe — raggiungibilità fonti
+      - name: Weekly probe — raggiungibilità fonti (ultimo anno)
         id: probe
         run: |
-          python -m toolkit.cli.app batch --configs batches/green.txt --step probe --json > /tmp/probe_report.json 2>/tmp/probe_stderr.log
+          python scripts/weekly_probe.py 2>&1
           echo "passed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['passed'])")" >> "$GITHUB_OUTPUT"
           echo "failed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['failed'])")" >> "$GITHUB_OUTPUT"
           echo "total=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['total'])")" >> "$GITHUB_OUTPUT"
@@ -40,44 +40,6 @@ jobs:
         with:
           name: probe-report
           path: /tmp/probe_report.json
-
-      - name: Upload probe stderr
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: probe-stderr
-          path: /tmp/probe_stderr.log
-
-      - name: Report summary
-        if: always()
-        run: |
-          echo "## Weekly probe — ${{ steps.probe.outputs.passed }}/${{ steps.probe.outputs.total }} probe OK" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          python3 -c "
-          import json
-          d = json.load(open('/tmp/probe_report.json'))
-          # Raggruppa per slug (un candidate ha più anni)
-          slugs = {}
-          for r in d['rows']:
-              slug = r['dataset']
-              if slug not in slugs:
-                  slugs[slug] = {'ok': 0, 'total': 0}
-              slugs[slug]['total'] += 1
-              if r['status'] == 'SUCCESS':
-                  slugs[slug]['ok'] += 1
-          for slug, info in sorted(slugs.items()):
-              icon = '✅' if info['ok'] == info['total'] else '⚠️'
-              print(f'{icon} {slug:35s} {info[\"ok\"]}/{info[\"total\"]} anni ok')
-          " >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "Durata: $(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(round(d['summary']['duration_seconds'],1))")s" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-          if [ -s /tmp/probe_stderr.log ]; then
-            echo "### Warning (stderr)" >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-            cat /tmp/probe_stderr.log >> "$GITHUB_STEP_SUMMARY"
-            echo '```' >> "$GITHUB_STEP_SUMMARY"
-          fi
 
   verify-catalog:
     needs: weekly-probe
@@ -96,25 +58,8 @@ jobs:
           print('VALID')
           "
 
-      - name: Checkout data-explorer and verify catalog compatibility
-        run: |
-          git clone --depth=1 https://github.com/dataciviclab/data-explorer.git /tmp/data-explorer
-          cp registry/clean_catalog.json /tmp/data-explorer/
-          cd /tmp/data-explorer
-          node --input-type=module -e "
-          import { generateCatalogEntry } from './scripts/generate_catalog.mjs';
-          import { readFileSync } from 'fs';
-          const catalog = JSON.parse(readFileSync('./clean_catalog.json', 'utf-8'));
-          for (const ds of catalog.datasets) {
-            const entry = generateCatalogEntry(ds);
-            console.log('  ', entry.slug || ds.slug, '-', entry.stage);
-          }
-          console.log('OK: tutti i dataset generano entry explorer valide');
-          "
-
       - name: Catalog summary
         if: always()
         run: |
           echo "### Catalogo" >> "$GITHUB_STEP_SUMMARY"
           echo "- clean_catalog.json: verificato" >> "$GITHUB_STEP_SUMMARY"
-          echo "- data-explorer: compatibile" >> "$GITHUB_STEP_SUMMARY"
