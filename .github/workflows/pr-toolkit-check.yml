@@ -125,15 +125,35 @@ jobs:
           echo "REQUESTS_CA_BUNDLE=$bundle" >> "$GITHUB_ENV"
           echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
 
-      - name: Configure proxy for sources that block CI (dati.salute.gov.it)
+      - name: Pre-download raw files from blocked sources via VPS proxy
+        shell: bash
         run: |
-          echo "HTTP_PROXY=http://152.70.15.192:8888" >> "$GITHUB_ENV"
-          echo "http_proxy=http://152.70.15.192:8888" >> "$GITHUB_ENV"
-          echo "HTTPS_PROXY=http://152.70.15.192:8888" >> "$GITHUB_ENV"
-          echo "https_proxy=http://152.70.15.192:8888" >> "$GITHUB_ENV"
-          echo "REQUESTS_CA_BUNDLE=" >> "$GITHUB_ENV"
-          echo "SSL_CERT_FILE=" >> "$GITHUB_ENV"
-          echo "Proxy configurato: http://152.70.15.192:8888"
+          PROXY="http://152.70.15.192:8888"
+          YEAR="${{ matrix.config.year }}"
+          SLUG="${{ matrix.config.push_slug }}"
+          RAW_DIR="out/data/raw/${SLUG}/${YEAR}"
+
+          # Mappa slug → URL raw (fonti che bloccano GitHub Actions)
+          case "${SLUG}" in
+            strutture_asl)
+              URL="https://www.dati.salute.gov.it/sites/default/files/2024-05/Strutture_e_attivit%C3%A0_ASL.csv"
+              ;;
+            reparti_ricovero)
+              URL="https://www.dati.salute.gov.it/sites/default/files/2024-05/Dati_di_anagrafe_e_di_attivit%C3%A0_delle_Strutture_di_Ricovero_Pubbliche_ed_equiparate.csv"
+              ;;
+            strutture_ricovero_asl)
+              URL="https://www.dati.salute.gov.it/sites/default/files/2025-01/Strutture_di_ricovero_pubbliche_presenti_nel_territorio_della_ASL.csv"
+              ;;
+            *)
+              echo "Nessun pre-download necessario per ${SLUG}"
+              exit 0
+              ;;
+          esac
+
+          echo "Pre-download ${SLUG} via proxy ${PROXY} ..."
+          mkdir -p "${RAW_DIR}"
+          curl -x "${PROXY}" -sfL "${URL}" -o "${RAW_DIR}/${SLUG}_${YEAR}.csv"
+          echo "✅ ${SLUG}: $(wc -c < "${RAW_DIR}/${SLUG}_${YEAR}.csv") bytes"
 
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows)"
         id: run_full
