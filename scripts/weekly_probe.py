@@ -80,6 +80,14 @@ def extract_primary_url(cfg: dict, year: int) -> str | None:
         return None
 
     url = url.replace("{year}", str(year))
+
+    # Appendi url_suffix_by_year se presente per l'anno specifico
+    suffix_map = args.get("url_suffix_by_year", {})
+    if suffix_map and isinstance(suffix_map, dict):
+        suffix = suffix_map.get(str(year)) or suffix_map.get(year)
+        if suffix:
+            url += suffix
+
     return url
 
 
