@@ -39,9 +39,14 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: probe-report
-          path: |
-            /tmp/probe_report.json
-            /tmp/probe_stderr.log
+          path: /tmp/probe_report.json
+
+      - name: Upload probe stderr
+        if: always()
+        uses: actions/upload-artifact@v7
+        with:
+          name: probe-stderr
+          path: /tmp/probe_stderr.log
 
       - name: Report summary
         if: always()
