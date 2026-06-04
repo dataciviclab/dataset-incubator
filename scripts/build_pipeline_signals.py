@@ -23,12 +23,15 @@ from pathlib import Path
 import jsonschema
 
 from toolkit.core.dataset_loader import (
-    detect_candidate_layout,
     has_mart_sql,
     load_dataset_manifest,
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# Layout detection è dominio DI — toolkit non la espone
+sys.path.insert(0, str(ROOT / "scripts"))
+from validate_candidate_structure import detect_candidate_layout  # noqa: E402
 
 _SCHEMA_DIR = ROOT / "registry"
 
@@ -61,7 +64,8 @@ def _resolve_layout_name(base_dir: Path) -> str:
         if yml.exists():
             return "support-dataset"
 
-    return detect_candidate_layout(base_dir)
+    info = detect_candidate_layout(base_dir)
+    return info.get("layout", "unknown") if isinstance(info, dict) else "unknown"
 
 
 def _years_label(years: list) -> str:
