@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-03",
+  "updated_at": "2026-06-04",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -4115,6 +4115,176 @@
         "multi_file": false
       },
       "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "opencoesione_progetti",
+      "name": "Opencoesione Progetti",
+      "description": "Progetti finanziati dalle politiche di coesione 2007-2027: finanziamenti, impegni e pagamenti per macroarea, tema e ciclo di programmazione",
+      "source": "PCM-OpenCoesione / dati.gov.it",
+      "source_id": "opencoesione",
+      "period": {
+        "start": 2007,
+        "end": 2027
+      },
+      "columns": [
+        {
+          "name": "COD_LOCALE_PROGETTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice identificativo locale del progetto"
+        },
+        {
+          "name": "CUP",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Unico di Progetto"
+        },
+        {
+          "name": "OC_COD_CICLO",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice del ciclo di programmazione"
+        },
+        {
+          "name": "OC_DESCR_CICLO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione del ciclo di programmazione"
+        },
+        {
+          "name": "OC_TEMA_SINTETICO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tema sintetico (11 categorie)"
+        },
+        {
+          "name": "OC_MACROAREA",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Macroarea geografica (Centro-Nord, Mezzogiorno, ...)"
+        },
+        {
+          "name": "OC_COD_SLL",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice Sistema Locale del Lavoro"
+        },
+        {
+          "name": "OC_DENOMINAZIONE_SLL",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione Sistema Locale del Lavoro"
+        },
+        {
+          "name": "COD_ATECO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ATECO del settore"
+        },
+        {
+          "name": "DESCRIZIONE_ATECO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione ATECO del settore"
+        },
+        {
+          "name": "OC_STATO_PROGETTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato del progetto"
+        },
+        {
+          "name": "OC_STATO_PROCEDURALE",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato procedurale del progetto"
+        },
+        {
+          "name": "OC_DATA_INIZIO_PROGETTO",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Data inizio progetto (YYYYMMDD)"
+        },
+        {
+          "name": "OC_DATA_FINE_PROGETTO_PREVISTA",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Data fine progetto prevista (YYYYMMDD)"
+        },
+        {
+          "name": "OC_DATA_FINE_PROGETTO_EFFETTIVA",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Data fine progetto effettiva (YYYYMMDD)"
+        },
+        {
+          "name": "FINANZ_UE",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Finanziamento UE (lordo)"
+        },
+        {
+          "name": "FINANZ_STATO_FSC",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Finanziamento FSC statale (lordo)"
+        },
+        {
+          "name": "FINANZ_REGIONE",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Finanziamento regionale (lordo)"
+        },
+        {
+          "name": "FINANZ_TOTALE_PUBBLICO",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Finanziamento totale pubblico (lordo)"
+        },
+        {
+          "name": "OC_FINANZ_TOT_PUB_NETTO",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Finanziamento totale pubblico netto (al netto economie)"
+        },
+        {
+          "name": "OC_COSTO_COESIONE",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Costo coesione"
+        },
+        {
+          "name": "IMPEGNI",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo impegni totali"
+        },
+        {
+          "name": "OC_IMPEGNI_COESIONE",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo impegni coesione"
+        },
+        {
+          "name": "TOT_PAGAMENTI",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo pagamenti totali"
+        },
+        {
+          "name": "OC_PAGAMENTI_COESIONE",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo pagamenti coesione"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/opencoesione_progetti/2026/opencoesione_progetti_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
