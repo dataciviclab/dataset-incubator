@@ -135,7 +135,8 @@ def main() -> None:
                 _download_with_curl(url, dest, proxy)
 
             # Path relativo alla root (root = "../../out", quindi senza "out/")
-            _patch_config(config_path, f"data/raw/{dataset_name}/{{year}}/{filename}")
+            rel_path = Path("data/raw") / dataset_name / str(year) / filename
+            _patch_config(config_path, rel_path)
 
     print("\n✅ Pre-download completato.")
 
