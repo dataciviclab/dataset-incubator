@@ -1,10 +1,11 @@
-# Batch: tutti i candidate che passano dry-run (26)
+# Batch: tutti i candidate che passano dry-run (27)
 # toolkit batch --configs batches/green.txt --step all --dry-run
 #
 candidates/aifa-spesa-consumo/dataset.yml
 candidates/bdap-entrate-stato/dataset.yml
 candidates/bdap-lea/dataset.yml
 candidates/camera-deputati-legislature/dataset.yml
+candidates/camera-votazioni-sparql/dataset.yml
 candidates/civile-flussi/dataset.yml
 candidates/consip-consumi-convenzione/dataset.yml
 candidates/dipendenti-pubblici/dataset.yml
@@ -22,7 +23,7 @@ candidates/mit-incidentalita-mensile-2001-2018/dataset.yml
 candidates/mit-opere-incompiute-2020/dataset.yml
 candidates/mur-contribuzione-universitaria/dataset.yml
 candidates/opencivitas-fsc-rso/dataset.yml
-candidates/opencoesione-pagamenti-ue-2014-2020/dataset.yml
+candidates/opencoesione-progetti/dataset.yml
 candidates/openga-ricorsi-cds/dataset.yml
 candidates/pensioni-pa-dag/dataset.yml
 candidates/terna-capacita-rinnovabile/dataset.yml

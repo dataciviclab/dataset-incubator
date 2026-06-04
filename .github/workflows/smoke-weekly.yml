@@ -1,4 +1,4 @@
-name: Smoke cross-repo (weekly)
+name: Weekly probe — reachability fonti
 
 on:
   schedule:
@@ -7,65 +7,72 @@ on:
 
 env:
   PYTHON_VERSION: "3.12"
-  # TOOLKIT_VERSION è centralizzato in requirements.txt
 
 jobs:
-  smoke-http:
+  weekly-probe:
     runs-on: ubuntu-latest
     outputs:
-      passed: ${{ steps.batch.outputs.passed }}
-      failed: ${{ steps.batch.outputs.failed }}
-      total: ${{ steps.batch.outputs.total }}
+      passed: ${{ steps.probe.outputs.passed }}
+      failed: ${{ steps.probe.outputs.failed }}
+      total: ${{ steps.probe.outputs.total }}
     steps:
       - uses: actions/checkout@v6
-        with:
-          path: dataset-incubator
+
       - uses: actions/setup-python@v6
         with:
           python-version: ${{ env.PYTHON_VERSION }}
+
       - name: Install dependencies
         run: |
-          cd dataset-incubator
           pip install -r requirements.txt
-      - name: Smoke batch — HTTP candidates
-        id: batch
+
+      - name: Weekly probe — raggiungibilità fonti
+        id: probe
         run: |
-          cd dataset-incubator
-          python scripts/smoke_batch.py batches/http.txt --json /tmp/batch_report.json 2>&1
-          echo "passed=$(python3 -c "import json;d=json.load(open('/tmp/batch_report.json'));print(d['passed'])")" >> "$GITHUB_OUTPUT"
-          echo "failed=$(python3 -c "import json;d=json.load(open('/tmp/batch_report.json'));print(d['failed'])")" >> "$GITHUB_OUTPUT"
-          echo "total=$(python3 -c "import json;d=json.load(open('/tmp/batch_report.json'));print(d['total'])")" >> "$GITHUB_OUTPUT"
-      - name: Upload batch report
+          python -m toolkit.cli.app batch --configs batches/green.txt --step probe --json > /tmp/probe_report.json 2>&1
+          echo "passed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['passed'])")" >> "$GITHUB_OUTPUT"
+          echo "failed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['failed'])")" >> "$GITHUB_OUTPUT"
+          echo "total=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['total'])")" >> "$GITHUB_OUTPUT"
+
+      - name: Upload probe report
         if: always()
         uses: actions/upload-artifact@v7
         with:
-          name: batch-report-http
-          path: /tmp/batch_report.json
+          name: probe-report
+          path: /tmp/probe_report.json
+
       - name: Report summary
         if: always()
         run: |
-          echo "## Smoke HTTP — ${{ steps.batch.outputs.passed }}/${{ steps.batch.outputs.total }}" >> "$GITHUB_STEP_SUMMARY"
+          echo "## Weekly probe — ${{ steps.probe.outputs.passed }}/${{ steps.probe.outputs.total }} probe OK" >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           python3 -c "
           import json
-          d = json.load(open('/tmp/batch_report.json'))
-          for r in d['results']:
-            icon = '✅' if r['status'] == 'PASSED' else '❌'
-            print(f'{icon} {r[\"slug\"]:35s} year={r[\"year\"]}  {r[\"duration\"]:>5.1f}s  {r[\"status\"]}')
+          d = json.load(open('/tmp/probe_report.json'))
+          # Raggruppa per slug (un candidate ha più anni)
+          slugs = {}
+          for r in d['rows']:
+              slug = r['dataset']
+              if slug not in slugs:
+                  slugs[slug] = {'ok': 0, 'total': 0}
+              slugs[slug]['total'] += 1
+              if r['status'] == 'SUCCESS':
+                  slugs[slug]['ok'] += 1
+          for slug, info in sorted(slugs.items()):
+              icon = '✅' if info['ok'] == info['total'] else '⚠️'
+              print(f'{icon} {slug:35s} {info[\"ok\"]}/{info[\"total\"]} anni ok')
           " >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
-          echo "Durata: $(python3 -c "import json;d=json.load(open('/tmp/batch_report.json'));print(d['duration_seconds'])")s" >> "$GITHUB_STEP_SUMMARY"
+          echo "Durata: $(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(round(d['summary']['duration_seconds'],1))")s" >> "$GITHUB_STEP_SUMMARY"
 
   verify-catalog:
-    needs: smoke-http
+    needs: weekly-probe
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v6
-        with:
-          path: dataset-incubator
+
       - name: Verify clean_catalog.json
         run: |
-          cd dataset-incubator
           python3 -c "
           import json
           data = json.load(open('registry/clean_catalog.json'))
@@ -74,10 +81,11 @@ jobs:
           assert n > 0
           print('VALID')
           "
+
       - name: Checkout data-explorer and verify catalog compatibility
         run: |
           git clone --depth=1 https://github.com/dataciviclab/data-explorer.git /tmp/data-explorer
-          cp dataset-incubator/registry/clean_catalog.json /tmp/data-explorer/
+          cp registry/clean_catalog.json /tmp/data-explorer/
           cd /tmp/data-explorer
           node --input-type=module -e "
           import { generateCatalogEntry } from './scripts/generate_catalog.mjs';
@@ -89,6 +97,7 @@ jobs:
           }
           console.log('OK: tutti i dataset generano entry explorer valide');
           "
+
       - name: Catalog summary
         if: always()
         run: |
