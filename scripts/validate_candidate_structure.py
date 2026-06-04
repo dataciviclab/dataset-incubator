@@ -5,6 +5,8 @@ import sys
 from pathlib import Path
 from typing import Literal
 
+from toolkit.core.dataset_loader import load_dataset_manifest
+
 ROOT = Path(__file__).resolve().parents[1]
 
 LayoutType = Literal[
@@ -83,24 +85,15 @@ def validate_dataset_name_yml(yml_path: Path, failures: list[str]) -> None:
     if not yml_path.exists():
         return
     try:
-        import yaml
-    except ImportError:
+        manifest = load_dataset_manifest(yml_path)
+        name = manifest.get("name", "")
+    except Exception:
+        return
+    if name and not DATASET_NAME_RE.match(name):
         rel = yml_path.relative_to(ROOT)
         failures.append(
-            f"{rel}: cannot validate dataset.name — PyYAML non installato"
+            f"{rel}: invalid dataset.name '{name}' — must match ^[a-z0-9_]+$"
         )
-        return
-    try:
-        with open(yml_path, encoding="utf-8") as f:
-            cfg = yaml.safe_load(f) or {}
-        name = cfg.get("dataset", {}).get("name", "")
-        if name and not DATASET_NAME_RE.match(name):
-            rel = yml_path.relative_to(ROOT)
-            failures.append(
-                f"{rel}: invalid dataset.name '{name}' — must match ^[a-z0-9_]+$"
-            )
-    except yaml.YAMLError:
-        pass  # YAML syntax errors are caught by other validators / CI
 
 
 def validate_single_source(base_dir: Path, failures: list[str]) -> None:

@@ -21,7 +21,12 @@ from datetime import date
 from pathlib import Path
 
 import jsonschema
-import yaml
+
+from toolkit.core.dataset_loader import (
+    detect_candidate_layout,
+    has_mart_sql,
+    load_dataset_manifest,
+)
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -41,18 +46,22 @@ def _validate_schema(instance: dict) -> None:
         print(f"❌ Validazione fallita (pipeline_signals.schema.json): {exc.message}")
         raise
 
-# Import helpers from the existing validation script — no duplication
-sys.path.insert(0, str(ROOT / "scripts"))
-from validate_candidate_structure import has_mart_sql, detect_candidate_layout  # noqa: E402
-
-
 # ---------------------------------------------------------------------------
-# dataset.yml reading
+# Layout resolution — delegata a toolkit.core.dataset_loader
 # ---------------------------------------------------------------------------
 
-def _read_yaml(path: Path) -> dict:
-    with open(path, encoding="utf-8") as f:
-        return yaml.safe_load(f) or {}
+_SUPPORT_DATASETS_DIR = ROOT / "support_datasets"
+
+
+def _resolve_layout_name(base_dir: Path) -> str:
+    """Rileva il layout, con gestione DI-specifica per support-dataset."""
+    # support-dataset: directory in support_datasets/ con dataset.yml
+    if _SUPPORT_DATASETS_DIR in base_dir.parents:
+        yml = base_dir / "dataset.yml"
+        if yml.exists():
+            return "support-dataset"
+
+    return detect_candidate_layout(base_dir)
 
 
 def _years_label(years: list) -> str:
@@ -87,17 +96,14 @@ def _inspect_single_source(base_dir: Path) -> dict:
     elif not (sql_dir / "clean.sql").exists():
         failures.append("missing sql/clean.sql")
 
-    mart_ok = sql_dir.is_dir() and has_mart_sql(sql_dir)
+    mart_ok = sql_dir.is_dir() and has_mart_sql(base_dir)
 
-    cfg = _read_yaml(yml_path) if yml_path.exists() else {}
-    ds = cfg.get("dataset", {})
-    years = ds.get("years", [])
-    raw_sources = cfg.get("raw", {}).get("sources", [])
-    source_names = _source_names(raw_sources)
+    manifest = load_dataset_manifest(yml_path) if yml_path.exists() else {}
+    source_names = _source_names(manifest.get("sources", []))
 
     return {
         "pattern": "single-source",
-        "years": years,
+        "years": manifest.get("years", []),
         "sources": source_names,
         "mart_ok": mart_ok,
         "failures": failures,
@@ -114,21 +120,18 @@ def _inspect_compose(base_dir: Path) -> dict:
         failures.append("missing dataset.yml")
     if not sql_dir.is_dir():
         failures.append("missing sql/")
-    elif not has_mart_sql(sql_dir):
+    elif not has_mart_sql(base_dir):
         failures.append("missing mart*.sql under sql/")
 
-    mart_ok = sql_dir.is_dir() and has_mart_sql(sql_dir)
+    mart_ok = sql_dir.is_dir() and has_mart_sql(base_dir)
 
-    cfg = _read_yaml(yml_path) if yml_path.exists() else {}
-    ds = cfg.get("dataset", {})
-    years = ds.get("years", [])
-    # Compose usa support: non raw.sources
-    support_list = cfg.get("support", []) or ds.get("support", [])
+    manifest = load_dataset_manifest(yml_path) if yml_path.exists() else {}
+    support_list = manifest.get("support", [])
     source_names = [s.get("name", "?") for s in support_list] if support_list else []
 
     return {
         "pattern": "compose",
-        "years": years,
+        "years": manifest.get("years", []),
         "sources": source_names,
         "mart_ok": mart_ok,
         "failures": failures,
@@ -158,23 +161,21 @@ def _inspect_multi_source(base_dir: Path) -> dict:
         if not (sql_dir / "clean.sql").exists():
             failures.append(f"missing {src_dir.name}/sql/clean.sql")
 
-        cfg = _read_yaml(yml_path)
-        ds = cfg.get("dataset", {})
-        years = [int(y) for y in ds.get("years", [])]
+        manifest = load_dataset_manifest(yml_path)
+        years = [int(y) for y in manifest.get("years", [])]
         all_years.extend(years)
-        raw_sources = cfg.get("raw", {}).get("sources", [])
-        all_sources.extend(_source_names(raw_sources))
+        all_sources.extend(_source_names(manifest.get("sources", [])))
 
-        if has_mart_sql(sql_dir):
+        if has_mart_sql(src_dir):
             mart_ok = True
 
     # compose layer — if present, its mart overrides individual source mart
     compose_dir = base_dir / "compose"
     if compose_dir.is_dir():
         compose_sql = compose_dir / "sql"
-        if compose_sql.is_dir() and has_mart_sql(compose_sql):
+        if compose_sql.is_dir() and has_mart_sql(compose_dir):
             mart_ok = True
-        elif compose_sql.is_dir() and not has_mart_sql(compose_sql):
+        elif compose_sql.is_dir() and not has_mart_sql(compose_dir):
             failures.append("compose/sql/ present but missing mart SQL")
 
     return {
@@ -195,38 +196,27 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
     yml_path = base_dir / "dataset.yml"
     if yml_path.is_file():
         try:
-            cfg = _read_yaml(yml_path)
-            dataset_cfg = cfg.get("dataset") or {}
-            source_id = dataset_cfg.get("source_id", "") or ""
+            manifest = load_dataset_manifest(yml_path)
+            source_id = manifest.get("source_id", "") or ""
         except Exception:
             pass
 
-    layout_info = detect_candidate_layout(base_dir)
-    layout = layout_info["layout"]
+    layout_name = _resolve_layout_name(base_dir)
 
     info: dict[str, Any]
-    if layout == "support-dataset":
-        # support_datasets follow single-source validation but are tracked separately
+    if layout_name == "support-dataset":
         info = {
             "pattern": "support-dataset",
             "years": [],
             "sources": [],
-            "mart_ok": (base_dir / "sql").is_dir() and has_mart_sql(base_dir / "sql"),
+            "mart_ok": (base_dir / "sql").is_dir() and has_mart_sql(base_dir),
             "failures": [],
         }
-    elif layout == "ambiguous":
-        info = {
-            "pattern": "ambiguous",
-            "years": [],
-            "sources": [],
-            "mart_ok": False,
-            "failures": ["ambiguous: root dataset.yml and sources/ cannot coexist"],
-        }
-    elif layout == "single-source":
+    elif layout_name == "single-source":
         info = _inspect_single_source(base_dir)
-    elif layout == "compose":
+    elif layout_name == "compose":
         info = _inspect_compose(base_dir)
-    elif layout == "multi-source":
+    elif layout_name == "multi-source":
         info = _inspect_multi_source(base_dir)
     else:
         info = {

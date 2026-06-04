@@ -43,16 +43,16 @@ import sys
 from pathlib import Path
 from typing import Any
 
+from toolkit.core.dataset_loader import load_dataset_manifest
+
 ROOT = Path(__file__).resolve().parents[1]
 
 
 def _resolve_year(cfg_path: Path) -> int:
     """Resolve the sample year from a dataset.yml — last year in list."""
-    import yaml
     try:
-        with open(cfg_path, encoding="utf-8") as f:
-            d = yaml.safe_load(f) or {}
-        years = d.get("dataset", {}).get("years", [])
+        manifest = load_dataset_manifest(cfg_path)
+        years = manifest.get("years", [])
         return int(years[-1]) if years else 0
     except Exception:
         return 0
@@ -60,11 +60,9 @@ def _resolve_year(cfg_path: Path) -> int:
 
 def _dataset_name(cfg_path: Path) -> str | None:
     """Read dataset.name from a dataset.yml — None if missing/unreadable."""
-    import yaml
     try:
-        with open(cfg_path, encoding="utf-8") as f:
-            d = yaml.safe_load(f) or {}
-        return d.get("dataset", {}).get("name")
+        manifest = load_dataset_manifest(cfg_path)
+        return manifest.get("name")
     except Exception:
         return None
 

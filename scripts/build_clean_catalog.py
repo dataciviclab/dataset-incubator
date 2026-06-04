@@ -11,6 +11,7 @@ from typing import Any
 
 from lab_connectors.gcs import list_objects, object_exists
 from lab_connectors.gcs.paths import gs_url
+from toolkit.core.dataset_loader import load_dataset_manifest
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -128,10 +129,6 @@ def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
     Per ogni dataset nel catalogo, se esiste un candidate dataset.yml con source_id,
     lo aggiunge al catalogo (non sovrascrive se già presente).
     """
-    try:
-        import yaml
-    except ImportError:
-        return  # PyYAML non installato — salta arricchimento
     candidates_dir = root / "candidates"
     if not candidates_dir.is_dir():
         return
@@ -142,13 +139,11 @@ def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
         if not yml_path.is_file():
             continue
         try:
-            with open(yml_path) as f:
-                cfg = yaml.safe_load(f) or {}
+            manifest = load_dataset_manifest(yml_path)
         except Exception:
             continue
-        ds_cfg = cfg.get("dataset") or {}
-        sid = ds_cfg.get("source_id")
-        slug = ds_cfg.get("name") or cfg.get("slug") or ""
+        sid = manifest.get("source_id")
+        slug = manifest.get("slug") or manifest.get("name") or ""
         if sid and slug:
             di_slug = slug.replace("-", "_")
             slug_to_source[di_slug] = sid
@@ -176,10 +171,6 @@ def _enrich_period_from_coverage(catalog: dict[str, Any], root: Path) -> None:
     evita che period rifletta solo gli anni di cui abbiamo un parquet su GCS,
     il che sarebbe fuorviante per dataset con file snapshot multi-anno.
     """
-    try:
-        import yaml
-    except ImportError:
-        return  # PyYAML non installato — salta arricchimento
     candidates_dir = root / "candidates"
     if not candidates_dir.is_dir():
         return
@@ -190,13 +181,11 @@ def _enrich_period_from_coverage(catalog: dict[str, Any], root: Path) -> None:
         if not yml_path.is_file():
             continue
         try:
-            with open(yml_path) as f:
-                cfg = yaml.safe_load(f) or {}
+            manifest = load_dataset_manifest(yml_path)
         except Exception:
             continue
-        ds_cfg = cfg.get("dataset") or {}
-        tc = ds_cfg.get("time_coverage")
-        slug = ds_cfg.get("name") or cfg.get("slug") or ""
+        tc = manifest.get("time_coverage")
+        slug = manifest.get("slug") or manifest.get("name") or ""
         if tc and slug and "start_year" in tc and "end_year" in tc:
             di_slug = slug.replace("-", "_")
             slug_to_period[di_slug] = {

@@ -16,38 +16,24 @@ import os
 import sys
 from pathlib import Path
 
-import yaml
+from toolkit.core.dataset_loader import load_dataset_manifest
 
 
 def get_urls(cfg_path: Path) -> list[str]:
     """Extract deduplicated extra CA cert URLs from a dataset.yml."""
     if not cfg_path.exists():
         return []
-
-    try:
-        cfg = yaml.safe_load(cfg_path.read_text(encoding="utf-8")) or {}
-    except FileNotFoundError:
-        return []
-
-    seen: list[str] = []
-    for source in cfg.get("raw", {}).get("sources") or []:
-        if not isinstance(source, dict):
-            continue
-        args = source.get("args") or {}
-        for key in ("extra_ca_cert_url", "extra_ca_cert_urls"):
-            value = args.get(key)
-            if not value:
-                continue
-            if isinstance(value, str):
-                urls = [value]
-            elif isinstance(value, list):
-                urls = [str(item) for item in value if item]
-            else:
-                continue
-            for url in urls:
-                if url and url not in seen:
-                    seen.append(url)
-    return seen
+    manifest = load_dataset_manifest(cfg_path)
+    if "error" in manifest:
+        raise ValueError(manifest["error"])
+    # Deduplica mantenendo l'ordine
+    seen: set[str] = set()
+    result: list[str] = []
+    for url in manifest.get("extra_ca_cert_urls", []):
+        if url and url not in seen:
+            seen.add(url)
+            result.append(url)
+    return result
 
 
 def main() -> int:
