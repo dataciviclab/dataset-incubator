@@ -134,8 +134,9 @@ def main() -> None:
 
                 _download_with_curl(url, dest, proxy)
 
-            # Path relativo alla root (root = "../../out", quindi senza "out/")
-            rel_path = Path("data/raw") / dataset_name / str(year) / filename
+            # Path relativo alla directory del dataset.yml
+            # dataset.yml è in candidates/<slug>/ → risale a ../../out/
+            rel_path = Path("../../out") / "data" / "raw" / dataset_name / str(year) / filename
             _patch_config(config_path, rel_path)
 
     print("\n✅ Pre-download completato.")
