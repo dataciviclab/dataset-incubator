@@ -125,6 +125,14 @@ jobs:
           echo "REQUESTS_CA_BUNDLE=$bundle" >> "$GITHUB_ENV"
           echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
 
+      - name: Pre-download blocked sources via proxy (dati.salute.gov.it)
+        if: env.BLOCKED_SOURCE_PROXY != ''
+        run: |
+          python scripts/prefetch_blocked_sources.py \
+            "${{ matrix.config.config_path }}"
+        env:
+          BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY || secrets.BLOCKED_SOURCE_PROXY || '' }}
+
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows)"
         id: run_full
         run: |
