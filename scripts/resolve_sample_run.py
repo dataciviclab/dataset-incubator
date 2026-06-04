@@ -34,7 +34,7 @@ import json
 import sys
 from pathlib import Path
 
-import yaml
+from toolkit.core.dataset_loader import load_dataset_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -45,22 +45,21 @@ def resolve(config_path: str) -> dict:
     if not path.exists():
         return {"error": f"File not found: {config_path}"}
 
-    try:
-        with open(path, encoding="utf-8") as f:
-            cfg = yaml.safe_load(f) or {}
-    except yaml.YAMLError as e:
-        return {"error": f"Invalid YAML: {e}"}
+    manifest = load_dataset_manifest(config_path)
+    if "error" in manifest:
+        err = manifest["error"]
+        if "YAML parse" in err:
+            return {"error": f"Invalid YAML: {' '.join(err.split()[3:])}"}
+        return {"error": f"Impossibile leggere dataset.yml: {err}"}
 
-    # Validate it's a dataset.yml with required fields
-    dataset = cfg.get("dataset", {})
-    if not dataset:
+    if not manifest.get("dataset"):
         return {"error": f"No 'dataset' section in {config_path}"}
 
-    name = dataset.get("name", "")
+    name = manifest.get("name", "")
     if not name:
         return {"error": f"No 'dataset.name' in {config_path}"}
 
-    years = dataset.get("years", [])
+    years = manifest.get("years", [])
     if not years:
         return {
             "error": f"No 'dataset.years' in {config_path} -- cannot determine sample year",
@@ -85,14 +84,9 @@ def resolve(config_path: str) -> dict:
     is_nested = "sources" in parts
 
     # Collect support[] entries from dataset config.
-    # Two patterns in use:
-    #   - root level: support: [{name, config, years}]  (es. mim-alunni-corso-eta)
-    #   - inside dataset: dataset.support: [{name, config, years}]  (es. ispra-ru-costi-kg, malasanita, opencivitas)
-    # Try root level first, then dataset.support
+    # merged from both root-level and dataset.support by load_dataset_manifest
     support_entries = []
-    raw_support = cfg.get("support", []) or []
-    dataset_support = cfg.get("dataset", {}).get("support", []) or []
-    for entry in raw_support + dataset_support:
+    for entry in manifest.get("support", []):
         cfg_path = entry.get("config", "")
         if cfg_path:
             support_cfg_path = str((path.parent / cfg_path).resolve())
