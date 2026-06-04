@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-03",
+  "generated_at": "2026-06-04",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -474,12 +474,22 @@
       }
     },
     {
-      "id": "opencoesione-pagamenti-ue-2014-2020",
-      "source_id": "",
+      "id": "opencoesione-progetti",
+      "source_id": "opencoesione",
       "status": "ok",
-      "label": "opencoesione-pagamenti-ue-2014-2020",
-      "detail": "anno 2020 — fonte: opencoesione_progetti_esteso_zip — mart: sì",
-      "action": ""
+      "label": "opencoesione-progetti",
+      "detail": "anno 2026 — fonte: progetti_parquet — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "26940428132",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26940428132",
+        "checked_at": "2026-06-04",
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/opencoesione-progetti/dataset.yml"
+      }
     },
     {
       "id": "openga-ricorsi-cds",
