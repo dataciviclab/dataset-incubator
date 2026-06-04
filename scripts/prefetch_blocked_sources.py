@@ -19,7 +19,6 @@ import os
 import re
 import subprocess
 import sys
-import tempfile
 from pathlib import Path
 
 import yaml
@@ -74,7 +73,7 @@ def _patch_config(config_path: Path, raw_path: Path) -> None:
 
     with open(config_path, "w") as f:
         f.write(content)
-    print(f"  ✅ dataset.yml aggiornato: http_file → local_file")
+    print("  ✅ dataset.yml aggiornato: http_file → local_file")
 
 
 def main() -> None:
@@ -135,7 +134,8 @@ def main() -> None:
 
                 _download_with_curl(url, dest, proxy)
 
-            _patch_config(config_path, f"out/data/raw/{dataset_name}/{{year}}/{filename}")
+            # Path relativo alla root (root = "../../out", quindi senza "out/")
+            _patch_config(config_path, f"data/raw/{dataset_name}/{{year}}/{filename}")
 
     print("\n✅ Pre-download completato.")
 
