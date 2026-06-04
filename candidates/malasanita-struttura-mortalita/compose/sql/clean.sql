@@ -1,4 +1,0 @@
--- clean.sql — compose/malasanita_struttura_mortalita
--- NON USATO: il compose non ha un clean layer proprio.
--- Il mart viene eseguito da sources/a_strutture_asl/dataset.yml.
--- Vedere compose/dataset.yml per dettagli architetturali.

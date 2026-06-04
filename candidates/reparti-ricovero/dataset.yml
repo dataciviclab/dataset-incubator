@@ -1,0 +1,41 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "reparti_ricovero"
+  years: [2022]
+
+raw:
+  sources:
+    - name: "reparti_ricovero"
+      type: "http_file"
+      args:
+        url: "https://www.dati.salute.gov.it/sites/default/files/2024-05/Dati_di_anagrafe_e_di_attivit%C3%A0_delle_Strutture_di_Ricovero_Pubbliche_ed_equiparate.csv"
+        filename: "reparti_ricovero_2022.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    decimal: ","
+  validate:
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_regioni"
+      sql: "sql/mart.sql"
+    - name: "mart_regioni_disciplina"
+      sql: "sql/mart_regioni_disciplina.sql"
+  validate:
+    table_rules:
+      mart_regioni: { min_rows: 21 }
+      mart_regioni_disciplina: { min_rows: 500 }
+
+validation:
+  fail_on_error: true
