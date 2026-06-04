@@ -1,5 +1,6 @@
-# Batch: tutti i candidate che passano dry-run (27)
-# toolkit batch --configs batches/green.txt --step all --dry-run
+# Batch: tutti i candidate attivi (27)
+#   weekly probe: toolkit batch --configs $file --step probe
+#   full dry-run: toolkit batch --configs $file --step all --dry-run
 #
 candidates/aifa-spesa-consumo/dataset.yml
 candidates/bdap-entrate-stato/dataset.yml

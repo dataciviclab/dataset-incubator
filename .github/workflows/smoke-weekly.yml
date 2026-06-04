@@ -29,7 +29,7 @@ jobs:
       - name: Weekly probe — raggiungibilità fonti
         id: probe
         run: |
-          python -m toolkit.cli.app batch --configs batches/green.txt --step probe --json > /tmp/probe_report.json 2>&1
+          python -m toolkit.cli.app batch --configs batches/green.txt --step probe --json > /tmp/probe_report.json 2>/tmp/probe_stderr.log
           echo "passed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['passed'])")" >> "$GITHUB_OUTPUT"
           echo "failed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['failed'])")" >> "$GITHUB_OUTPUT"
           echo "total=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['total'])")" >> "$GITHUB_OUTPUT"
@@ -39,7 +39,9 @@ jobs:
         uses: actions/upload-artifact@v7
         with:
           name: probe-report
-          path: /tmp/probe_report.json
+          path: |
+            /tmp/probe_report.json
+            /tmp/probe_stderr.log
 
       - name: Report summary
         if: always()
@@ -64,6 +66,13 @@ jobs:
           " >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           echo "Durata: $(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(round(d['summary']['duration_seconds'],1))")s" >> "$GITHUB_STEP_SUMMARY"
+          echo "" >> "$GITHUB_STEP_SUMMARY"
+          if [ -s /tmp/probe_stderr.log ]; then
+            echo "### Warning (stderr)" >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+            cat /tmp/probe_stderr.log >> "$GITHUB_STEP_SUMMARY"
+            echo '```' >> "$GITHUB_STEP_SUMMARY"
+          fi
 
   verify-catalog:
     needs: weekly-probe
