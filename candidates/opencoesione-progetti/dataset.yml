@@ -1,0 +1,36 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "opencoesione_progetti"
+  source_id: "opencoesione"
+  years: [2026]
+
+raw:
+  sources:
+    - name: "progetti_parquet"
+      type: "http_file"
+      args:
+        url: "https://opencoesione.gov.it/media/open_data/progetti_20260228.parquet"
+        filename: "progetti_20260228.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: latest
+  validate:
+    min_rows: 2000000
+
+mart:
+  tables:
+    - name: "mart_macroarea_tema"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      mart_macroarea_tema:
+        min_rows: 30
+
+validation:
+  fail_on_error: true
