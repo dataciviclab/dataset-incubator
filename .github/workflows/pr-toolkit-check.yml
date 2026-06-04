@@ -128,7 +128,11 @@ jobs:
       - name: Configure proxy for sources that block CI (dati.salute.gov.it)
         run: |
           echo "HTTP_PROXY=http://152.70.15.192:8888" >> "$GITHUB_ENV"
+          echo "http_proxy=http://152.70.15.192:8888" >> "$GITHUB_ENV"
           echo "HTTPS_PROXY=http://152.70.15.192:8888" >> "$GITHUB_ENV"
+          echo "https_proxy=http://152.70.15.192:8888" >> "$GITHUB_ENV"
+          echo "REQUESTS_CA_BUNDLE=" >> "$GITHUB_ENV"
+          echo "SSL_CERT_FILE=" >> "$GITHUB_ENV"
           echo "Proxy configurato: http://152.70.15.192:8888"
 
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows)"
