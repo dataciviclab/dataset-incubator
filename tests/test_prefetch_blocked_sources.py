@@ -1,8 +1,6 @@
 """Test per scripts/prefetch_blocked_sources.py."""
 from __future__ import annotations
 
-import os
-import subprocess
 from pathlib import Path
 
 import pytest
@@ -35,59 +33,59 @@ class TestIsBlocked:
 class TestPatchConfig:
     """Test trasformazione dataset.yml."""
 
+    BLOCKED_URL = "https://dati.salute.gov.it/file.csv"
+
     def test_http_to_local_file(self, tmp_path: Path):
         cfg = tmp_path / "dataset.yml"
         cfg.write_text(
-            "root: '../../out'\n"
             "raw:\n"
             "  sources:\n"
             "    - name: test\n"
-            "      type: 'http_file'\n"
+            "      type: http_file\n"
             "      args:\n"
-            "        url: 'https://dati.salute.gov.it/file.csv'\n"
-            "        filename: 'file.csv'\n"
-            "      primary: true\n"
+            "        url: https://dati.salute.gov.it/file.csv\n"
         )
-        raw_path = Path("out/data/raw/test/2022/file.csv")
-        _patch_config(cfg, raw_path)
+        _patch_config(cfg, Path("data/raw/test/2022/file.csv"), blocked_url=self.BLOCKED_URL)
 
         content = cfg.read_text()
-        # Dopo yaml.dump: type: local_file (senza virgolette)
         assert "type: local_file" in content
-        # path presente e url assente
-        assert str(raw_path) in content
+        assert "data/raw/test/2022/file.csv" in content
         assert "dati.salute.gov.it" not in content
 
-    def test_url_removed_when_no_sources(self, tmp_path: Path):
-        """Se non ci sono raw.sources, il file non viene modificato."""
-        cfg = tmp_path / "dataset.yml"
-        cfg.write_text("key: value\n")
-        before = cfg.read_text()
-        _patch_config(cfg, Path("new_path.csv"))
-        after = cfg.read_text()
-        # yaml.dump può cambiare la formattazione, ma il contenuto deve
-        # rimanere sostanzialmente lo stesso (nessuna trasformazione)
-        assert "key: value" in after
-
-    def test_multiple_sources_only_blocked_changed(self, tmp_path: Path):
-        """Solo i source con type=http_file e url bloccato vengono modificati."""
+    def test_only_blocked_source_changed(self, tmp_path: Path):
+        """Solo la source con URL bloccato viene modificata."""
         cfg = tmp_path / "dataset.yml"
         cfg.write_text(
             "raw:\n"
             "  sources:\n"
-            "    - name: a\n"
+            "    - name: salute\n"
             "      type: http_file\n"
             "      args:\n"
-            "        url: https://dati.salute.gov.it/a.csv\n"
-            "    - name: b\n"
-            "      type: local_file\n"
+            "        url: https://dati.salute.gov.it/bloccato.csv\n"
+            "    - name: istat\n"
+            "      type: http_file\n"
             "      args:\n"
-            "        path: data.csv\n"
+            "        url: https://www.istat.it/data.zip\n"
         )
-        _patch_config(cfg, Path("data/raw/a/2022/a.csv"))
+        _patch_config(cfg, Path("data/raw/salute/bloccato.csv"), blocked_url="https://dati.salute.gov.it/bloccato.csv")
+
         content = cfg.read_text()
-        assert "type: local_file" in content or "type: 'local_file'" in content
+        # Quella bloccata: local_file, niente url
+        assert "type: local_file" in content
         assert "dati.salute.gov.it" not in content
+        # Quella non bloccata: ancora http_file con url
+        assert "www.istat.it" in content
+        # Verifica esplicita: il type della seconda source è ancora http_file
+        # (yaml.dump produce type: http_file senza virgolette)
+        assert "type: http_file" in content
+
+    def test_no_blocked_url_does_nothing(self, tmp_path: Path):
+        """Se blocked_url non matcha nessuna source, il file non cambia."""
+        cfg = tmp_path / "dataset.yml"
+        cfg.write_text("raw:\n  sources:\n    - name: a\n      type: local_file\n")
+        before = cfg.read_text()
+        _patch_config(cfg, Path("x.csv"), blocked_url="https://altro.it/x.csv")
+        assert cfg.read_text() == before
 
 
 class TestPatternsList:

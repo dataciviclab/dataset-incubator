@@ -58,22 +58,33 @@ def _download_with_curl(url: str, dest: Path, proxy: str) -> None:
         sys.exit(1)
 
 
-def _patch_config(config_path: Path, raw_path: Path) -> None:
+def _patch_config(config_path: Path, raw_path: Path, blocked_url: str = "") -> None:
     """Modifica dataset.yml: http_file → local_file, url → path.
 
-    Usa il parser YAML invece di regex per gestire qualsiasi formato
-    di virgolette (singole, doppie, nessuna).
+    Modifica solo la source con URL == blocked_url. Se blocked_url è
+    vuoto, modifica tutti i source http_file (fallback).
     """
     with open(config_path) as f:
         cfg = yaml.safe_load(f)
 
+    modified = False
     for source in cfg.get("raw", {}).get("sources", []):
-        if source.get("type") == "http_file":
-            source["type"] = "local_file"
-            args = source.get("args", {})
-            if "url" in args:
-                args["path"] = str(raw_path)
-                del args["url"]
+        if source.get("type") != "http_file":
+            continue
+        src_url = source.get("args", {}).get("url", "")
+        if blocked_url and src_url != blocked_url:
+            continue
+        source["type"] = "local_file"
+        args = source.get("args", {})
+        if "url" in args:
+            args["path"] = str(raw_path)
+            del args["url"]
+        modified = True
+        break  # una sola source da modificare per chiamata
+
+    if not modified:
+        print(f"  ⚠️ Nessuna source http_file trovata (URL: {blocked_url})")
+        return
 
     with open(config_path, "w") as f:
         yaml.dump(cfg, f, default_flow_style=False, allow_unicode=True)
@@ -141,7 +152,7 @@ def main() -> None:
             # Path relativo alla directory del dataset.yml
             # dataset.yml è in candidates/<slug>/ → risale a ../../out/
             rel_path = Path("../../out") / "data" / "raw" / dataset_name / str(year) / filename
-            _patch_config(config_path, rel_path)
+            _patch_config(config_path, rel_path, blocked_url=url)
 
     print("\n✅ Pre-download completato.")
 
