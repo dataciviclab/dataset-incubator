@@ -27,17 +27,11 @@ jobs:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 2  # serve per git diff HEAD~1 nei passaggi notify
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - name: Python setup
+        uses: ./.github/actions/python-setup
         with:
-          python-version: "3.12"
-
-      - name: Install dependencies
-        run: |
-          python -m pip install -r requirements.txt
-          python -m pip install -r tools/clean-query-mcp/requirements.txt
-          python -m pip install pytest pytest-timeout
+          extra-requirements: tools/clean-query-mcp/requirements.txt
+          extra-packages: pytest pytest-timeout
 
       - name: Validate catalog and public GCS paths
         run: python scripts/build_clean_catalog.py --check-gcs
