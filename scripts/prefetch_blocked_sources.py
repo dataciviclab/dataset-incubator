@@ -139,8 +139,10 @@ def main(config_args: list[str] | None = None) -> None:
             for s in support_list:
                 scfg = s.get("config", "")
                 if scfg:
-                    print(f"  ↪️ Compose support: {scfg}")
-                    main([scfg])
+                    # Risolve path relativo rispetto alla directory del compose
+                    scfg_resolved = str((config_path.parent / scfg).resolve())
+                    print(f"  ↪️ Compose support: {scfg_resolved}")
+                    main([scfg_resolved])
 
         # Cerca raw.sources con http_file
         raw_sources = (cfg or {}).get("raw", {}).get("sources", [])
