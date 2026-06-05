@@ -46,16 +46,27 @@ def _is_blocked(url: str) -> bool:
 
 
 def _download_with_curl(url: str, dest: Path, proxy: str) -> None:
-    """Scarica file via proxy usando curl."""
+    """Scarica file via proxy usando curl (con retry)."""
     dest.parent.mkdir(parents=True, exist_ok=True)
-    cmd = ["curl", "-x", proxy, "-sfL", url, "-o", str(dest)]
-    try:
-        subprocess.run(cmd, check=True, capture_output=True, text=True)
-        size = dest.stat().st_size
-        print(f"  ✅ scaricato {size} bytes -> {dest}")
-    except subprocess.CalledProcessError as exc:
-        print(f"  ❌ curl fallito (exit {exc.returncode}): {exc.stderr.strip()}")
-        sys.exit(1)
+    MAX_ATTEMPTS = 3
+    for attempt in range(1, MAX_ATTEMPTS + 1):
+        cmd = [
+            "curl", "-x", proxy, "-sSL",
+            "--connect-timeout", "30",
+            "--max-time", "180",
+            url, "-o", str(dest),
+        ]
+        try:
+            subprocess.run(cmd, check=True, capture_output=True, text=True)
+            size = dest.stat().st_size
+            print(f"  ✅ scaricato {size} bytes -> {dest}")
+            return
+        except subprocess.CalledProcessError as exc:
+            print(f"  ⚠️ tentativo {attempt}/{MAX_ATTEMPTS} fallito (exit {exc.returncode})")
+            if attempt < MAX_ATTEMPTS:
+                time.sleep(5)
+    print(f"  ❌ curl fallito dopo {MAX_ATTEMPTS} tentativi")
+    sys.exit(1)
 
 
 def _patch_config(config_path: Path, raw_path: Path, blocked_url: str = "") -> None:
@@ -149,9 +160,12 @@ def main() -> None:
 
                 _download_with_curl(url, dest, proxy)
 
+            if len(years) > 1:
+                print(f"  ⚠️ multi-year non supportato: {years}. Patcherò solo {years[0]}.")
+            first_year = years[0]
+
             # Path relativo alla directory del dataset.yml
-            # dataset.yml è in candidates/<slug>/ → risale a ../../out/
-            rel_path = Path("../../out") / "data" / "raw" / dataset_name / str(year) / filename
+            rel_path = Path("../../out") / "data" / "raw" / dataset_name / str(first_year) / filename
             _patch_config(config_path, rel_path, blocked_url=url)
 
     print("\n✅ Pre-download completato.")
