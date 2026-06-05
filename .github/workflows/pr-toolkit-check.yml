@@ -129,7 +129,6 @@ jobs:
             extra_opts="--json --sample-rows 1000 --sample-bytes 5242880"
             out_file="run_full.json"
           fi
-<<<<<<< HEAD
           MAX_ATTEMPTS=2
           for i in $(seq 1 $MAX_ATTEMPTS); do
             $cmd \
@@ -152,20 +151,6 @@ jobs:
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
           cat "$out_file" 2>/dev/null || echo "No JSON output"
           if [ -s run_err.log ]; then
-            echo "--- stderr ---"
-            cat run_err.log
-            echo "---"
-          fi
-          exit $ec
-=======
-          $cmd \
-            --config "${{ matrix.config.config_path }}" \
-            $extra_opts \
-            > "$out_file" 2>run_err.log; ec=$?
-          echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
-          cat "$out_file" 2>/dev/null || echo "JSON output non disponibile"
-          if [ -s run_err.log ]; then
->>>>>>> d25ff6e (fix(CI): toolkit run mart senza flag incompatibili (--json, --sample-*))
             echo "--- stderr ---"
             cat run_err.log
             echo "---"
