@@ -112,16 +112,22 @@ jobs:
           python scripts/prefetch_blocked_sources.py \
             "${{ matrix.config.config_path }}"
         env:
-          BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
+          BLOCKED_SOURCE_PROXY: ${{ secrets.BLOCKED_SOURCE_PROXY }}
 
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows) [retry x2]"
         id: run_full
         env:
           HTTPS_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
         run: |
+          # Determina se è un compose (solo mart, senza raw/clean)
+          if grep -q '^support:' "${{ matrix.config.config_path }}" 2>/dev/null; then
+            cmd="toolkit run mart"
+          else
+            cmd="toolkit run full"
+          fi
           MAX_ATTEMPTS=2
           for i in $(seq 1 $MAX_ATTEMPTS); do
-            toolkit run full \
+            $cmd \
               --config "${{ matrix.config.config_path }}" \
               --json \
               --sample-rows 1000 \
@@ -142,6 +148,11 @@ jobs:
           done
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
           cat run_full.json 2>/dev/null || echo "No JSON output"
+          if [ -s run_full_err.log ]; then
+            echo "--- stderr ---"
+            cat run_full_err.log
+            echo "---"
+          fi
           exit $ec
 
       - name: Upload artifacts
