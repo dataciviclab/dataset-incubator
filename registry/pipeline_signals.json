@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-05",
+  "generated_at": "2026-06-04",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 36,
+    "total": 34,
     "by_status": {
-      "ok": 36,
+      "ok": 34,
       "warn": 0,
       "error": 0
     }
@@ -431,14 +431,6 @@
       }
     },
     {
-      "id": "mortalita-istat-evitabile",
-      "source_id": "",
-      "status": "ok",
-      "label": "mortalita-istat-evitabile",
-      "detail": "anno 2022 — fonte: mortalita_causa_istat — mart: sì",
-      "action": ""
-    },
-    {
       "id": "mur-contribuzione-universitaria",
       "source_id": "mur_ustat",
       "status": "ok",
@@ -536,24 +528,6 @@
           2024
         ],
         "config_path": "candidates/pensioni-pa-dag/dataset.yml"
-      }
-    },
-    {
-      "id": "strutture-asl",
-      "source_id": "",
-      "status": "ok",
-      "label": "strutture-asl",
-      "detail": "anno 2022 — fonte: strutture_asl — mart: sì",
-      "action": "",
-      "sample_run": {
-        "status": "passed",
-        "run_id": "27014606312",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27014606312",
-        "checked_at": "2026-06-05",
-        "years": [
-          2022
-        ],
-        "config_path": "candidates/strutture-asl/dataset.yml"
       }
     },
     {
