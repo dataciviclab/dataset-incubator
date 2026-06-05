@@ -1,8 +1,5 @@
--- mart.sql - malasanita_b_reparti_ricovero - mart_regioni
--- Output: una riga per regione / PA con dotazione per reparto e ampiezza disciplinare
--- Nota metodologica:
--- - i posti letto aggregati qui sono quasi sovrapposti a C a livello regionale
--- - il valore aggiunto di B e soprattutto il dettaglio per disciplina/reparto
+-- mart.sql - reparti_ricovero - mart_regioni
+-- Output: una riga per regione / PA con dotazione per reparto aggregata
 
 SELECT
     anno,
