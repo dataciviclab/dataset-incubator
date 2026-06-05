@@ -28,7 +28,7 @@ jobs:
         with:
           fetch-depth: 2  # serve per git diff HEAD~1 nei passaggi notify
       - name: Python setup
-        uses: ./.github/actions/python-setup
+        uses: dataciviclab/.github/actions/python-setup@main
         with:
           extra-requirements: tools/clean-query-mcp/requirements.txt
           extra-packages: pytest pytest-timeout
