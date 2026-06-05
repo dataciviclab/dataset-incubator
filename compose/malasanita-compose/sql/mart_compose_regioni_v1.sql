@@ -1,21 +1,17 @@
--- mart_compose_regioni_v1.sql - compose puro malasanita
--- Input: mart regionali di A (strutture-asl), C (strutture-ricovero-asl), D (mortalita-istat-evitabile)
--- Output: una riga per regione / PA con indicatori di struttura + mortalita totale 30+
---
+-- mart_compose_regioni_v1.sql — compose puro malasanita
 -- Baseline v1: mortalita totale 30+ (cod_causa=25) da D v1
+-- {support.d.mart} si risolve in mart_regioni_v1.parquet (primo mart di D).
+--
 -- Fonte B (reparti-ricovero) resta fuori dal compose principale.
 
 WITH a AS (
-    SELECT *
-    FROM read_parquet('{support.a.mart}')
+    SELECT * FROM read_parquet('{support.a.mart}')
 ),
 c AS (
-    SELECT *
-    FROM read_parquet('{support.c.mart}')
+    SELECT * FROM read_parquet('{support.c.mart}')
 ),
 d AS (
-    SELECT *
-    FROM read_parquet('out/data/mart/mortalita_istat_evitabile/{year}/mart_regioni_v1.parquet')
+    SELECT * FROM read_parquet('{support.d.mart}')
 ),
 a_lookup AS (
     SELECT

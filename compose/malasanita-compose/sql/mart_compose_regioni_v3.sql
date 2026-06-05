@@ -1,21 +1,18 @@
--- mart_compose_regioni_v3.sql - compose puro malasanita
--- Input: mart regionali di A, C, D
--- Output: una riga per regione / PA con indicatori + mortalita evitabile v3
---
+-- mart_compose_regioni_v3.sql — compose puro malasanita
 -- Baseline v3: broad age-standardization 30+ su 3 bande (D v3)
 -- Baseline raccomandata per confronto inter-regionale.
+-- Legge tutti e 3 i mart di D via {support.d.outputs} e filtra per la v3
+-- (tasso_std_broad_evitabile_10000_30plus presente solo in v3).
 
 WITH a AS (
-    SELECT *
-    FROM read_parquet('{support.a.mart}')
+    SELECT * FROM read_parquet('{support.a.mart}')
 ),
 c AS (
-    SELECT *
-    FROM read_parquet('{support.c.mart}')
+    SELECT * FROM read_parquet('{support.c.mart}')
 ),
 d AS (
-    SELECT *
-    FROM read_parquet('out/data/mart/mortalita_istat_evitabile/{year}/mart_regioni_v3.parquet')
+    SELECT * FROM read_parquet({support.d.outputs}, union_by_name=true)
+    WHERE tasso_std_broad_evitabile_10000_30plus IS NOT NULL
 ),
 a_lookup AS (
     SELECT

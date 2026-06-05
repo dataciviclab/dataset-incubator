@@ -9,9 +9,6 @@ support:
   - name: a
     config: "../../candidates/strutture-asl/dataset.yml"
     years: [2022]
-  - name: b
-    config: "../../candidates/reparti-ricovero/dataset.yml"
-    years: [2022]
   - name: c
     config: "../../candidates/strutture-ricovero-asl/dataset.yml"
     years: [2022]

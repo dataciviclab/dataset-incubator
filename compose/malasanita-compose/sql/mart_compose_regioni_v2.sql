@@ -1,20 +1,18 @@
--- mart_compose_regioni_v2.sql - compose puro malasanita
--- Input: mart regionali di A, C, D
--- Output: una riga per regione / PA con indicatori + mortalita evitabile
---
+-- mart_compose_regioni_v2.sql — compose puro malasanita
 -- Baseline v2: Euro-2013 proxy (12 cause amenable/preventable) da D v2
+-- Legge tutti e 3 i mart di D via {support.d.outputs} e filtra per la v2
+-- (decessi_evitabili_30plus presente, tasso_std_broad assente).
 
 WITH a AS (
-    SELECT *
-    FROM read_parquet('{support.a.mart}')
+    SELECT * FROM read_parquet('{support.a.mart}')
 ),
 c AS (
-    SELECT *
-    FROM read_parquet('{support.c.mart}')
+    SELECT * FROM read_parquet('{support.c.mart}')
 ),
 d AS (
-    SELECT *
-    FROM read_parquet('out/data/mart/mortalita_istat_evitabile/{year}/mart_regioni_v2.parquet')
+    SELECT * FROM read_parquet({support.d.outputs}, union_by_name=true)
+    WHERE decessi_evitabili_30plus IS NOT NULL
+      AND tasso_std_broad_evitabile_10000_30plus IS NULL
 ),
 a_lookup AS (
     SELECT
