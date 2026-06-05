@@ -1,33 +1,33 @@
--- clean.sql — strutture-ricovero-asl (raw-faithful, conversione separatore migliaia)
--- Il CSV usa "." come separatore migliaia (es. "1.385" = 1385)
--- Lettura con tutte le colonne VARCHAR, conversione manuale
+-- clean.sql — strutture-ricovero-asl (raw-faithful)
+-- Il CSV usa "." come separatore migliaia — gestito da DuckDB
+-- tramite read.decimal_separator + read.thousands nel dataset.yml
 
 SELECT
-    CAST(anno AS INTEGER) AS anno,
+    anno AS anno,
     TRIM(codice_struttura) AS codice_struttura,
     TRIM(denominazione_struttura) AS denominazione_struttura,
     TRIM(comune) AS comune,
     TRIM(sigla_provincia_struttura) AS sigla_provincia_struttura,
-    CAST(REPLACE(posti_letto_previsti, '.', '') AS INTEGER) AS posti_letto_previsti,
-    CAST(REPLACE(posti_letto_utilizzati, '.', '') AS INTEGER) AS posti_letto_utilizzati,
-    CAST(REPLACE(personale_uomini, '.', '') AS INTEGER) AS personale_uomini,
-    CAST(REPLACE(personale_donne, '.', '') AS INTEGER) AS personale_donne,
-    CAST(REPLACE(totale_personale, '.', '') AS INTEGER) AS totale_personale,
-    CAST(REPLACE(medici_uomini, '.', '') AS INTEGER) AS medici_uomini,
-    CAST(REPLACE(medici_donne, '.', '') AS INTEGER) AS medici_donne,
-    CAST(REPLACE(medici, '.', '') AS INTEGER) AS medici,
-    CAST(REPLACE(infermieri_uomini, '.', '') AS INTEGER) AS infermieri_uomini,
-    CAST(REPLACE(infermieri_donne, '.', '') AS INTEGER) AS infermieri_donne,
-    CAST(REPLACE(infermieri, '.', '') AS INTEGER) AS infermieri,
-    CAST(REPLACE(ricoveri, '.', '') AS INTEGER) AS ricoveri,
-    CAST(REPLACE(giornate_degenza, '.', '') AS INTEGER) AS giornate_degenza,
-    CAST(REPLACE(giornate_disponibili, '.', '') AS INTEGER) AS giornate_disponibili,
-    CAST(codice_tipo_struttura AS INTEGER) AS codice_tipo_struttura,
+    posti_letto_previsti AS posti_letto_previsti,
+    posti_letto_utilizzati AS posti_letto_utilizzati,
+    personale_uomini AS personale_uomini,
+    personale_donne AS personale_donne,
+    totale_personale AS totale_personale,
+    medici_uomini AS medici_uomini,
+    medici_donne AS medici_donne,
+    medici AS medici,
+    infermieri_uomini AS infermieri_uomini,
+    infermieri_donne AS infermieri_donne,
+    infermieri AS infermieri,
+    ricoveri AS ricoveri,
+    giornate_degenza AS giornate_degenza,
+    giornate_disponibili AS giornate_disponibili,
+    codice_tipo_struttura AS codice_tipo_struttura,
     CAST("Sottotipo struttura" AS INTEGER) AS sottotipo_struttura,
     TRIM("Tipo struttura") AS tipo_struttura,
     TRIM(codice_regione) AS codice_regione,
     TRIM("Regione") AS regione,
-    CAST(REPLACE(codice_asl, '.', '') AS INTEGER) AS codice_asl,
+    codice_asl AS codice_asl,
     TRIM(asl) AS asl
 FROM raw_input
-WHERE CAST(anno AS INTEGER) = {year}
+WHERE anno = {year}

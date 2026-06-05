@@ -17,38 +17,12 @@ raw:
 clean:
   sql: "sql/clean.sql"
   read:
-    source: config_only
+    source: auto
     mode: latest
     delim: ";"
     encoding: "latin-1"
     header: true
-    columns:
-      anno: VARCHAR
-      codice_struttura: VARCHAR
-      denominazione_struttura: VARCHAR
-      comune: VARCHAR
-      sigla_provincia_struttura: VARCHAR
-      posti_letto_previsti: VARCHAR
-      posti_letto_utilizzati: VARCHAR
-      personale_uomini: VARCHAR
-      personale_donne: VARCHAR
-      totale_personale: VARCHAR
-      medici_uomini: VARCHAR
-      medici_donne: VARCHAR
-      medici: VARCHAR
-      infermieri_uomini: VARCHAR
-      infermieri_donne: VARCHAR
-      infermieri: VARCHAR
-      ricoveri: VARCHAR
-      giornate_degenza: VARCHAR
-      giornate_disponibili: VARCHAR
-      codice_tipo_struttura: VARCHAR
-      Sottotipo struttura: VARCHAR
-      Tipo struttura: VARCHAR
-      codice_regione: VARCHAR
-      Regione: VARCHAR
-      codice_asl: VARCHAR
-      asl: VARCHAR
+    decimal: ","
   validate:
     min_rows: 100
 
