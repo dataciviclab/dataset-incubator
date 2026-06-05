@@ -23,6 +23,7 @@ clean:
     encoding: "latin-1"
     header: true
     decimal: ","
+    thousands: "."
   validate:
     min_rows: 100
 
