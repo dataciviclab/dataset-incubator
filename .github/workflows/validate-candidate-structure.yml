@@ -14,7 +14,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Python setup
-        uses: ./.github/actions/python-setup
+        uses: dataciviclab/.github/actions/python-setup@main
 
       - name: Validate candidate structure
         run: python scripts/validate_candidate_structure.py

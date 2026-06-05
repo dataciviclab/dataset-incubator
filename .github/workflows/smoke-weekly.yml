@@ -18,7 +18,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Python setup
-        uses: ./.github/actions/python-setup
+        uses: dataciviclab/.github/actions/python-setup@main
 
       - name: Weekly probe — raggiungibilità fonti
         id: probe

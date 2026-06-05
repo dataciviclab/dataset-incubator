@@ -28,7 +28,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Python setup
-        uses: ./.github/actions/python-setup
+        uses: dataciviclab/.github/actions/python-setup@main
 
       - name: Detect changed candidate/support roots
         id: detect
@@ -71,7 +71,7 @@ jobs:
         with:
           fetch-depth: 0
       - name: Python setup
-        uses: ./.github/actions/python-setup
+        uses: dataciviclab/.github/actions/python-setup@main
 
       - name: Configure extra source CA certificates
         env:

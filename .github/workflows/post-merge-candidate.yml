@@ -111,7 +111,7 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
           fetch-depth: 0
       - name: Python setup
-        uses: ./.github/actions/python-setup
+        uses: dataciviclab/.github/actions/python-setup@main
 
       - name: Download detect output
         uses: actions/download-artifact@v8
@@ -160,7 +160,7 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
           fetch-depth: 0
       - name: Python setup
-        uses: ./.github/actions/python-setup
+        uses: dataciviclab/.github/actions/python-setup@main
 
       - name: Download detect output
         if: needs.detect.outputs.has_items == 'true'

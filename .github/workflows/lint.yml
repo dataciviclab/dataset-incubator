@@ -22,7 +22,7 @@ jobs:
     steps:
       - uses: actions/checkout@v6
       - name: Python setup
-        uses: ./.github/actions/python-setup
+        uses: dataciviclab/.github/actions/python-setup@main
         with:
           extra-packages: ruff mypy types-pyyaml types-requests pytest pytest-cov pytest-timeout
           extra-requirements: tools/clean-query-mcp/requirements.txt
