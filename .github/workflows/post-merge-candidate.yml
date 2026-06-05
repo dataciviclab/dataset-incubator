@@ -23,6 +23,7 @@ env:
   DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+  BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
 
 jobs:
   detect:
@@ -208,6 +209,16 @@ jobs:
                           print(f"    attempt {i}/{attempts} failed, retry in {wait}s...")
                           time.sleep(wait)
                   return False
+
+              # --- Pre-download blocked sources via proxy (dati.salute.gov.it) ---
+              proxy = os.environ.get("BLOCKED_SOURCE_PROXY") or ""
+              if proxy:
+                  subprocess.run(
+                      ["python", "scripts/prefetch_blocked_sources.py", config_path],
+                      cwd=root,
+                      env={**os.environ, "BLOCKED_SOURCE_PROXY": proxy},
+                      check=True,
+                  )
 
               # --- Toolkit run full (run + validate + readiness + support) ---
               print(f"  toolkit run full --years {all_years}")

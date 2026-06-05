@@ -1,0 +1,44 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mortalita_istat_evitabile"
+  years: [2022]
+
+raw:
+  extractor:
+    type: unzip_first
+  sources:
+    - name: "mortalita_causa_istat"
+      type: "http_file"
+      args:
+        url: "https://www.istat.it/wp-content/uploads/2025/09/Tavole.zip"
+        filename: "tavole_mortalita_2022.zip"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    sheet_name: "d_base_2022"
+    header: true
+  validate:
+    min_rows: 1000
+
+mart:
+  tables:
+    - name: "mart_regioni_v1"
+      sql: "sql/mart_regioni_v1.sql"
+    - name: "mart_regioni_v2"
+      sql: "sql/mart_regioni_v2.sql"
+    - name: "mart_regioni_v3"
+      sql: "sql/mart_regioni_v3.sql"
+  validate:
+    table_rules:
+      mart_regioni_v1: { min_rows: 21 }
+      mart_regioni_v2: { min_rows: 21 }
+      mart_regioni_v3: { min_rows: 21 }
+
+validation:
+  fail_on_error: true

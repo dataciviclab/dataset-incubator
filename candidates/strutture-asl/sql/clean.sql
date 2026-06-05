@@ -1,0 +1,45 @@
+-- clean.sql — strutture-asl (raw-faithful)
+-- Tutte le 38 colonne del CSV, renominate in snake_case con CAST dei tipi
+-- Le colonne con separatore migliaia restano VARCHAR
+
+SELECT
+    CAST("Anno di Riferimento" AS INTEGER) AS anno,
+    TRIM(CAST("Codice Regione" AS VARCHAR)) AS codice_regione,
+    CAST("Codice Azienda Sanitaria Locale" AS INTEGER) AS codice_asl,
+    TRIM("Regione") AS regione,
+    TRIM("Denominazione ASL") AS denominazione_asl,
+    TRIM("Indirizzo ASL") AS indirizzo_asl,
+    TRIM("C.A.P. ASL") AS cap_asl,
+    TRIM("Comune ASL") AS comune_asl,
+    TRIM("Sigla provincia ASL") AS sigla_provincia_asl,
+    CAST("Residenti in Età Infantile" AS BIGINT) AS residenti_eta_infantile,
+    CAST("Residenti in Età Adulta" AS BIGINT) AS residenti_eta_adulta,
+    CAST("Residenti Anziani" AS BIGINT) AS residenti_anziani,
+    CAST("Totale Residenti" AS BIGINT) AS totale_residenti,
+    CAST("Centro Unificato di Prenotazione Tipo 1" AS INTEGER) AS cup_tipo_1,
+    CAST("Centro Unificato di Prenotazione Tipo 2" AS INTEGER) AS cup_tipo_2,
+    CAST("Dipartimento di Prevenzione" AS INTEGER) AS dipartimento_prevenzione,
+    CAST("Dipartimento Materno-Infantile" AS INTEGER) AS dipartimento_materno_infantile,
+    CAST("Dipartimento di Salute Mentale" AS INTEGER) AS dipartimento_salute_mentale,
+    CAST("Servizio Trasporto per Centro Dialisi" AS INTEGER) AS servizio_trasporto_dialisi,
+    CAST("Servizio di Assistenza Domiciliare Integrata" AS INTEGER) AS servizio_adi,
+    CAST("Unità Mobile di Rianimazione" AS INTEGER) AS unita_mobile_rianimazione,
+    CAST("Ambulanze Trasporto Emergenza Neonato" AS INTEGER) AS ambulanze_emergenza_neonato,
+    CAST("Totale medici" AS INTEGER) AS totale_medici,
+    CAST("Medici con indennità per attività in forma associativa" AS INTEGER) AS medici_indennita_associativa,
+    CAST("Totale scelte per classe di scelte" AS BIGINT) AS totale_scelte,
+    CAST("Totale pediatri" AS INTEGER) AS totale_pediatri,
+    CAST("Pediatri con indennità per attività in forma associativa" AS INTEGER) AS pediatri_indennita_associativa,
+    CAST("Totale scelte per classe di scelte dei pediatri" AS BIGINT) AS totale_scelte_pediatri,
+    CAST("Ambulatori e Laboratori" AS INTEGER) AS ambulatori_laboratori,
+    CAST("Ambulatori e Laboratori convenzionati" AS INTEGER) AS ambulatori_laboratori_convenzionati,
+    CAST("Numero medio punti di guardia medica" AS INTEGER) AS num_medio_punti_guardia_medica,
+    CAST("Numero medio medici titolari" AS INTEGER) AS num_medio_medici_titolari,
+    CAST("Ore totali guardia medica" AS BIGINT) AS ore_totali_guardia_medica,
+    CAST("Numero ricette di specialità medicinali e galenici" AS BIGINT) AS num_ricette_specialita_medicinali,
+    CAST("EURO Importo ricette di specialità medicinali e galenici" AS BIGINT) AS euro_importo_ricette,
+    CAST("Assistenza Domiciliare Integrata Casi Trattati" AS VARCHAR) AS adi_casi_trattati,
+    CAST("Assistenza Domiciliare Integrata Casi Trattati Anziani" AS VARCHAR) AS adi_casi_trattati_anziani,
+    CAST("Assistenza Domiciliare Integrata Casi Trattati Pazienti Terminali" AS INTEGER) AS adi_casi_trattati_terminali
+FROM raw_input
+WHERE CAST("Anno di Riferimento" AS INTEGER) = {year}
