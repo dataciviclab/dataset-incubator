@@ -4626,9 +4626,9 @@
     {
       "slug": "strutture_asl",
       "name": "Strutture Asl",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "description": "Strutture e attività delle ASL — medici di base, pediatri, popolazione residente, servizi territoriali e presidi per regione — Ministero della Salute 2022",
+      "source": "Ministero della Salute — Open Data Strutture e attività ASL",
+      "source_id": "ministero_salute",
       "period": {
         "start": 2022,
         "end": 2022
@@ -4638,229 +4638,229 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Anno di Riferimento"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice Regione (ISTAT)"
         },
         {
           "name": "codice_asl",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Codice Azienda Sanitaria Locale"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione Regione"
         },
         {
           "name": "denominazione_asl",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione ASL"
         },
         {
           "name": "indirizzo_asl",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo sede ASL"
         },
         {
           "name": "cap_asl",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "C.A.P. sede ASL"
         },
         {
           "name": "comune_asl",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune sede ASL"
         },
         {
           "name": "sigla_provincia_asl",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla provincia sede ASL"
         },
         {
           "name": "residenti_eta_infantile",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Residenti in età infantile (0-14 anni)"
         },
         {
           "name": "residenti_eta_adulta",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Residenti in età adulta (15-64 anni)"
         },
         {
           "name": "residenti_anziani",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Residenti anziani (65+ anni)"
         },
         {
           "name": "totale_residenti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Totale residenti nell'ASL"
         },
         {
           "name": "cup_tipo_1",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Centro Unificato di Prenotazione Tipo 1 (CUP aziendale)"
         },
         {
           "name": "cup_tipo_2",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Centro Unificato di Prenotazione Tipo 2 (CUP integrato/presso ASL)"
         },
         {
           "name": "dipartimento_prevenzione",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Presenza Dipartimento di Prevenzione (1/0)"
         },
         {
           "name": "dipartimento_materno_infantile",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Presenza Dipartimento Materno-Infantile (1/0)"
         },
         {
           "name": "dipartimento_salute_mentale",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Presenza Dipartimento di Salute Mentale (1/0)"
         },
         {
           "name": "servizio_trasporto_dialisi",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Servizio Trasporto per Centro Dialisi (1/0)"
         },
         {
           "name": "servizio_adi",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Servizio di Assistenza Domiciliare Integrata (1/0)"
         },
         {
           "name": "unita_mobile_rianimazione",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Unità Mobile di Rianimazione (1/0)"
         },
         {
           "name": "ambulanze_emergenza_neonato",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Ambulanze Trasporto Emergenza Neonato (1/0)"
         },
         {
           "name": "totale_medici",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Totale medici di medicina generale"
         },
         {
           "name": "medici_indennita_associativa",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Medici con indennità per attività in forma associativa"
         },
         {
           "name": "totale_scelte",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Totale scelte per classe di scelte (medici MG)"
         },
         {
           "name": "totale_pediatri",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Totale pediatri di libera scelta"
         },
         {
           "name": "pediatri_indennita_associativa",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Pediatri con indennità per attività in forma associativa"
         },
         {
           "name": "totale_scelte_pediatri",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Totale scelte per classe di scelte (pediatri)"
         },
         {
           "name": "ambulatori_laboratori",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Ambulatori e Laboratori"
         },
         {
           "name": "ambulatori_laboratori_convenzionati",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Ambulatori e Laboratori convenzionati"
         },
         {
           "name": "num_medio_punti_guardia_medica",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero medio punti di guardia medica"
         },
         {
           "name": "num_medio_medici_titolari",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero medio medici titolari (guardia medica)"
         },
         {
           "name": "ore_totali_guardia_medica",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Ore totali guardia medica"
         },
         {
           "name": "num_ricette_specialita_medicinali",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero ricette di specialità medicinali e galenici"
         },
         {
           "name": "euro_importo_ricette",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "EURO Importo ricette di specialità medicinali e galenici"
         },
         {
           "name": "adi_casi_trattati",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Assistenza Domiciliare Integrata — Casi Trattati (VARCHAR)"
         },
         {
           "name": "adi_casi_trattati_anziani",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Assistenza Domiciliare Integrata — Casi Trattati Anziani (VARCHAR)"
         },
         {
           "name": "adi_casi_trattati_terminali",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Assistenza Domiciliare Integrata — Casi Trattati Pazienti Terminali"
         }
       ],
       "location": {
