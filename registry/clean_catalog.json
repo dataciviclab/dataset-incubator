@@ -4637,7 +4637,7 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Anno di Riferimento"
         },
         {
@@ -4649,7 +4649,7 @@
         {
           "name": "codice_asl",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice Azienda Sanitaria Locale"
         },
         {
@@ -4848,13 +4848,13 @@
           "name": "adi_casi_trattati",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Assistenza Domiciliare Integrata — Casi Trattati (VARCHAR)"
+          "description": "Assistenza Domiciliare Integrata — Casi Trattati"
         },
         {
           "name": "adi_casi_trattati_anziani",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Assistenza Domiciliare Integrata — Casi Trattati Anziani (VARCHAR)"
+          "description": "Assistenza Domiciliare Integrata — Casi Trattati Anziani"
         },
         {
           "name": "adi_casi_trattati_terminali",

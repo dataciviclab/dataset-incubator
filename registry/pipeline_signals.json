@@ -432,7 +432,7 @@
     },
     {
       "id": "mortalita-istat-evitabile",
-      "source_id": "istat",
+      "source_id": "",
       "status": "ok",
       "label": "mortalita-istat-evitabile",
       "detail": "anno 2022 — fonte: mortalita_causa_istat — mart: sì",
@@ -540,7 +540,7 @@
     },
     {
       "id": "strutture-asl",
-      "source_id": "ministero_salute",
+      "source_id": "",
       "status": "ok",
       "label": "strutture-asl",
       "detail": "anno 2022 — fonte: strutture_asl — mart: sì",
