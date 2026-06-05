@@ -59,14 +59,19 @@
       "source_id": "openbdap",
       "status": "ok",
       "label": "bdap-lea",
-      "detail": "anno 2024 — fonte: bdap_lea_csv — mart: sì",
+      "detail": "anni 2019-2024 — fonte: bdap_lea_csv — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26397149682",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26397149682",
-        "checked_at": "2026-05-25",
+        "run_id": "27040177316",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27040177316",
+        "checked_at": "2026-06-05",
         "years": [
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
           2024
         ],
         "config_path": "candidates/bdap-lea/dataset.yml"
@@ -532,7 +537,7 @@
     },
     {
       "id": "reparti-ricovero",
-      "source_id": "ministero_salute",
+      "source_id": "",
       "status": "ok",
       "label": "reparti-ricovero",
       "detail": "anno 2022 — fonte: reparti_ricovero — mart: sì",
@@ -568,7 +573,7 @@
     },
     {
       "id": "strutture-ricovero-asl",
-      "source_id": "ministero_salute",
+      "source_id": "",
       "status": "ok",
       "label": "strutture-ricovero-asl",
       "detail": "anno 2022 — fonte: strutture_ricovero_asl — mart: sì",

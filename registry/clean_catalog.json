@@ -648,7 +648,7 @@
         },
         {
           "name": "codice_ente_bdap",
-          "type": "BIGINT",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Codice BDAP ente"
         },
@@ -678,7 +678,7 @@
         },
         {
           "name": "data_aggiornamento",
-          "type": "DATE",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Data aggiornamento record"
         },
@@ -763,8 +763,8 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_lea/2024/bdap_lea_2024_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/bdap_lea/*/bdap_lea_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "published",
       "registry_source": "derive_auto"
