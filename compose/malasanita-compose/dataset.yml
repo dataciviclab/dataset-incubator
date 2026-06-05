@@ -1,0 +1,37 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "malasanita_compose"
+  years: [2022]
+
+support:
+  - name: a
+    config: "../../candidates/strutture-asl/dataset.yml"
+    years: [2022]
+  - name: b
+    config: "../../candidates/reparti-ricovero/dataset.yml"
+    years: [2022]
+  - name: c
+    config: "../../candidates/strutture-ricovero-asl/dataset.yml"
+    years: [2022]
+  - name: d
+    config: "../../candidates/mortalita-istat-evitabile/dataset.yml"
+    years: [2022]
+
+mart:
+  tables:
+    - name: "mart_compose_regioni_v1"
+      sql: "sql/mart_compose_regioni_v1.sql"
+    - name: "mart_compose_regioni_v2"
+      sql: "sql/mart_compose_regioni_v2.sql"
+    - name: "mart_compose_regioni_v3"
+      sql: "sql/mart_compose_regioni_v3.sql"
+  validate:
+    table_rules:
+      mart_compose_regioni_v1: { min_rows: 21 }
+      mart_compose_regioni_v2: { min_rows: 21 }
+      mart_compose_regioni_v3: { min_rows: 21 }
+
+validation:
+  fail_on_error: true
