@@ -532,7 +532,7 @@
     },
     {
       "id": "reparti-ricovero",
-      "source_id": "",
+      "source_id": "ministero_salute",
       "status": "ok",
       "label": "reparti-ricovero",
       "detail": "anno 2022 — fonte: reparti_ricovero — mart: sì",
@@ -568,7 +568,7 @@
     },
     {
       "id": "strutture-ricovero-asl",
-      "source_id": "",
+      "source_id": "ministero_salute",
       "status": "ok",
       "label": "strutture-ricovero-asl",
       "detail": "anno 2022 — fonte: strutture_ricovero_asl — mart: sì",
