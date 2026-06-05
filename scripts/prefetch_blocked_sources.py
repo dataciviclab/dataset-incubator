@@ -19,6 +19,7 @@ import os
 import re
 import subprocess
 import sys
+import time
 from pathlib import Path
 
 import yaml
@@ -161,7 +162,8 @@ def main() -> None:
                 _download_with_curl(url, dest, proxy)
 
             if len(years) > 1:
-                print(f"  ⚠️ multi-year non supportato: {years}. Patcherò solo {years[0]}.")
+                print(f"  ❌ multi-year non supportato ({years}). Usa un solo anno per candidate con fonte bloccata.")
+                sys.exit(1)
             first_year = years[0]
 
             # Path relativo alla directory del dataset.yml

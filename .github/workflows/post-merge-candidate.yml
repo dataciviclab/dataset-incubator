@@ -217,6 +217,7 @@ jobs:
                       ["python", "scripts/prefetch_blocked_sources.py", config_path],
                       cwd=root,
                       env={**os.environ, "BLOCKED_SOURCE_PROXY": proxy},
+                      check=True,
                   )
 
               # --- Toolkit run full (run + validate + readiness + support) ---
