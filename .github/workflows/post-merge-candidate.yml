@@ -209,6 +209,15 @@ jobs:
                           time.sleep(wait)
                   return False
 
+              # --- Pre-download blocked sources via proxy (dati.salute.gov.it) ---
+              proxy = os.environ.get("BLOCKED_SOURCE_PROXY") or ""
+              if proxy:
+                  subprocess.run(
+                      ["python", "scripts/prefetch_blocked_sources.py", config_path],
+                      cwd=root,
+                      env={**os.environ, "BLOCKED_SOURCE_PROXY": proxy},
+                  )
+
               # --- Toolkit run full (run + validate + readiness + support) ---
               print(f"  toolkit run full --years {all_years}")
               run_ok = run_with_retry(
