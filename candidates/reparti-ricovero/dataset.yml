@@ -20,7 +20,7 @@ clean:
     source: auto
     mode: latest
     delim: ";"
-    encoding: "utf-8"
+    encoding: "latin-1"
     header: true
     decimal: ","
   validate:
