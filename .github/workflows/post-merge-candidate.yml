@@ -229,6 +229,8 @@ jobs:
                   )
 
               # --- Toolkit run full (run + validate + readiness + support) ---
+              if proxy:
+                  os.environ["HTTPS_PROXY"] = proxy
               print(f"  toolkit run full --years {all_years}")
               run_ok = run_with_retry(
                   ["toolkit", "run", "full", "--config", config_path, "--years", all_years, "--json"]

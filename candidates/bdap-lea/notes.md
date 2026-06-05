@@ -1,30 +1,46 @@
-# Notes
+# BDAP LEA — Note
 
-## Tecnico
+## Serie storica
 
-- dump CSV verificato via HTTPS sul datastore CKAN:
-  `https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/d598ebd9-949d-4214-bb33-cd9c1be08f15.csv`
-- header reale verificato localmente
-- delimitatore `;`
-- encoding da gestire esplicitamente nel `clean.read`
-- `toolkit inspect paths` OK: `effective_root` risolve a `dataset-incubator/out`
-- run aggiornato 2026-05-25:
-  - clean: 20.036 righe (filtro voci totali + `codice_ente_ssn NOT IN ('000','999')`)
-  - mart: 20.036 righe (stesso perimetro)
-- fix double-counting voci totali (2026-05-25): le voci 19999,29999,39999,48888,49999 duplicavano gli importi dettaglio.
-- fix double-counting enti 999 (2026-05-25): gli enti regione (999) andavano esclusi come i 000.
-  Pulitura finale: da 1.410 mld € (tutto incluso) → 748 mld (senza totali) → 738 mld (senza 000) → 396 mld (senza 999).
+Candidate esteso da singolo anno (2024) a serie storica 2019-2024 (6 anni).
 
-## Analitico
+## Schema drift: colonna "Oneri Finanziari"
 
-- il v0 parte sul solo `2024`
-- perimetro analitico: esclude `codice_ente_ssn IN ('000', '999')`
-- la domanda guida resta sulla prevenzione collettiva, ma il candidate lascia anche altre voci contabili per letture successive
+La colonna "Oneri Finanziari" è presente solo in alcuni anni della serie BDAP LEA:
 
-## Cautele
+| Anno | Oneri Finanziari |
+|:----:|:----------------:|
+| 2019 | ✅ presente |
+| 2020 | ❌ assente |
+| 2021 | ✅ presente |
+| 2022 | ✅ presente |
+| 2023 | ❌ assente |
+| 2024 | ✅ presente |
 
-- i dati sono contabili di spesa, non misurano esiti di salute
-- gli enti `000` (aggregazioni regionali) e `999` (enti regione) causano double-counting se sommati agli enti ASL/ATS
-- `prestazioni_sanitarie` (~€166 mld) sono transazioni inter-ente (mobilità sanitaria) — ogni prestazione è contata sia da chi paga sia da chi eroga
-- alcuni codici voce sono aggregati di sezione e vanno trattati con prudenza nelle letture successive
-- la serie storica 2012-2024 esiste, ma non entra nel primo ciclo tecnico
+Non c'è un pattern lineare: la colonna appare e scompare senza logica apparente tra gli anni.
+
+### Gestione
+
+Usato `align_by_header: true` (PR toolkit #329) che allinea le righe CSV per nome colonna invece che per posizione:
+- Se "Oneri Finanziari" manca → stringa vuota nella posizione attesa → `try_cast` → NULL
+- Se presente → lettura normale
+- Colonne extra ignorate
+
+Anni 2012-2018 non processati (hanno struttura 22 colonne senza Oneri, compatibili ma non inclusi per focus su periodo recente).
+
+## Url mapping
+
+Pattern: `https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/{uuid}.csv`
+
+| Anno | UUID |
+|:----:|------|
+| 2019 | `a0904cd1-4cd5-40cd-9cdb-9fc404bde499` |
+| 2020 | `d4816c3b-3c63-412e-aa82-ec65acaf64e7` |
+| 2021 | `f1cb1b41-d0bb-4d37-b2cb-b077a5720454` |
+| 2022 | `7572d620-36fd-4614-90d1-8412d48f5feb` |
+| 2023 | `ac535673-49fb-4449-960e-fac8e3d14fa7` |
+| 2024 | `d598ebd9-949d-4214-bb33-cd9c1be08f15` |
+
+## Dati chiave
+
+Spesa prevenzione sotto 5% LEA in tutti gli anni. La % più alta è 3,3% (2021).

@@ -134,6 +134,8 @@ jobs:
 
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows)"
         id: run_full
+        env:
+          HTTPS_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
         run: |
           toolkit run full \
             --config "${{ matrix.config.config_path }}" \
