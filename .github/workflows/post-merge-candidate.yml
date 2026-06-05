@@ -1,482 +1,315 @@
 name: Post-Merge Candidate Registry
-
-on:
+true:
   pull_request:
-    types: [closed]
     paths:
-      - "candidates/**"
-      - "compose/**"
-      - "support_datasets/**"
+    - candidates/**
+    - compose/**
+    - support_datasets/**
+    types:
+    - closed
   workflow_dispatch:
     inputs:
       slug:
-        description: "Slug del candidate da processare (es. inps-cig)"
+        description: Slug del candidate da processare (es. inps-cig)
         required: false
         type: string
-
 concurrency:
-  group: post-merge-candidate-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: false
-
+  group: post-merge-candidate-${{ github.event.pull_request.number || github.ref }}
 env:
-  # TOOLKIT_VERSION è centralizzato in requirements.txt
-  DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
-  GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-  GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
   BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
-
+  DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
+  GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+  GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
 jobs:
-  detect:
-    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      pull-requests: read
-    outputs:
-      has_items: ${{ steps.detect.outputs.has_items }}
-      has_configs: ${{ steps.detect.outputs.has_configs }}
-
-    steps:
-      - name: Checkout merge commit
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
-          fetch-depth: 0
-
-      - name: Detect changed candidate/support roots
-        id: detect
-        env:
-          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          SLUG_INPUT: ${{ inputs.slug }}
-        run: |
-          set -o pipefail
-
-          if [ -n "$SLUG_INPUT" ]; then
-            # Trigger manuale: processa direttamente lo slug richiesto
-            # Prova candidates/, poi compose/
-            if [ -f "candidates/${SLUG_INPUT}/dataset.yml" ]; then
-              echo "candidates/${SLUG_INPUT}/dataset.yml" | \
-                python scripts/detect_candidates.py --files --json > detect_output.json
-            elif [ -f "compose/${SLUG_INPUT}/dataset.yml" ]; then
-              echo "compose/${SLUG_INPUT}/dataset.yml" | \
-                python scripts/detect_candidates.py --files --json > detect_output.json
-            else
-              echo "::error::Slug '${SLUG_INPUT}' non trovato ne in candidates/ ne in compose/"
-              exit 1
-            fi
-          else
-            # Trigger da PR mergiata: rileva i file cambiati
-            gh pr view "$PR_NUMBER" --json files --jq ".files[].path" | \
-              python scripts/detect_candidates.py --files --json > detect_output.json
-          fi
-
-          python - <<'PY'
-          import json, os
-          d = json.load(open("detect_output.json"))
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
-               out.write(f"has_items={str(d['has_items']).lower()}\n")
-               out.write(f"has_configs={str(d['has_configs']).lower()}\n")
-          PY
-
-      - name: Upload detect output (per sample_run)
-        uses: actions/upload-artifact@v7
-        with:
-          name: detect-output
-          path: detect_output.json
-          retention-days: 1
-
-  sample_run:
-    needs: detect
-    if: needs.detect.outputs.has_configs == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-      - name: Checkout merge commit
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
-          fetch-depth: 0
-
-      - name: Download detect output
-        uses: actions/download-artifact@v8
-        with:
-          name: detect-output
-          path: .
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: python -m pip install -r requirements.txt
-
-      - name: GCP Auth (for GCS push)
-        if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
-        uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
-
-      - name: Set up gcloud
-        if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
-        uses: google-github-actions/setup-gcloud@v3
-
-      - name: Process each detected config
-        run: |
-          python - <<'PY'
-          import json, os, subprocess, sys, glob, time
-
-          with open("detect_output.json") as f:
-              detect = json.load(f)
-
-          configs = detect.get("configs", [])
-          if not configs:
-              print("Nessun config da processare")
-              sys.exit(0)
-
-          root = os.environ.get("GITHUB_WORKSPACE", ".")
-
-          failed_configs = []
-          gcs_push_ok = False
-
-          # Pre-install GCS lib se GCP auth disponibile — una volta, non per-candidato
-          if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
-              subprocess.run(
-                  ["python", "-m", "pip", "install", "google-cloud-storage", "-q"],
-                  capture_output=True,
-              )
-
-          for cfg in configs:
-              config_path = cfg.get("config_path", "")
-              slug = cfg.get("slug", "unknown")
-              artifact_name = cfg.get("artifact_name", slug)
-              config_exists = cfg.get("config_exists", False)
-
-              print(f"\n=== Processing {slug} ({config_path}) ===")
-
-              if not config_exists:
-                  print(f"  SKIP: config_path non esiste")
-                  continue
-
-              # --- CA certs ---
-              r = subprocess.run(["python", "scripts/get_extra_ca_cert_urls.py", config_path],
-                  capture_output=True, text=True, cwd=root)
-              urls = [u.strip() for u in r.stdout.strip().split('\n') if u.strip()]
-              if urls:
-                  bundle = f"/tmp/extra-ca-{artifact_name}.pem"
-                  with open("/etc/ssl/certs/ca-certificates.crt") as src, open(bundle, "w") as dst:
-                      dst.write(src.read())
-                  for url in urls:
-                      try:
-                          import urllib.request
-                          data = urllib.request.urlopen(url).read()
-                          with open(bundle, "a") as dst:
-                              dst.write(data.decode() if isinstance(data, bytes) else data)
-                      except Exception as e:
-                          print(f"  WARN CA cert {url}: {e}")
-                  os.environ["REQUESTS_CA_BUNDLE"] = bundle
-                  os.environ["SSL_CERT_FILE"] = bundle
-
-              # --- Resolve ---
-              r = subprocess.run(["python", "scripts/resolve_sample_run.py", config_path],
-                  capture_output=True, text=True, cwd=root)
-              if r.returncode != 0:
-                  print(f"  FAIL: resolve ({r.stderr.strip()})")
-                  failed_configs.append(slug)
-                  continue
-              params = json.loads(r.stdout)
-              all_years = ",".join(str(y) for y in params.get("all_years", []))
-
-              # Support datasets gestiti nativamente da toolkit run full.
-              # Non serve eseguirli separatamente.
-
-              def run_with_retry(cmd, attempts=3):
-                  for i in range(1, attempts + 1):
-                      r = subprocess.run(cmd, cwd=root)
-                      if r.returncode == 0:
-                          return True
-                      if i < attempts:
-                          wait = 20 * i
-                          print(f"    attempt {i}/{attempts} failed, retry in {wait}s...")
-                          time.sleep(wait)
-                  return False
-
-              # --- Pre-download blocked sources via proxy (dati.salute.gov.it) ---
-              proxy = os.environ.get("BLOCKED_SOURCE_PROXY") or ""
-              if proxy:
-                  subprocess.run(
-                      ["python", "scripts/prefetch_blocked_sources.py", config_path],
-                      cwd=root,
-                      env={**os.environ, "BLOCKED_SOURCE_PROXY": proxy},
-                      check=True,
-                  )
-
-              # --- Toolkit run full (run + validate + readiness + support) ---
-              print(f"  toolkit run full --years {all_years}")
-              run_ok = run_with_retry(
-                  ["toolkit", "run", "full", "--config", config_path, "--years", all_years, "--json"]
-              )
-              validate_ok = run_ok  # run full include gia validate
-
-              status = "passed" if (run_ok and validate_ok) else "failed"
-              if status == "failed":
-                  failed_configs.append(slug)
-              run_id = os.environ.get("GITHUB_RUN_ID", "0")
-              repo = os.environ.get("GITHUB_REPOSITORY", "")
-              payload = {
-                  "id": slug, "status": status,
-                  "years": params.get("all_years", []),
-                  "config_path": config_path, "config_exists": config_exists,
-                  "run_id": run_id,
-                  "run_url": f"https://github.com/{repo}/actions/runs/{run_id}",
-                  "checked_at": __import__("datetime").datetime.now().astimezone().date().isoformat(),
-              }
-              out_dir = f"sample_run_artifacts/{artifact_name}"
-              os.makedirs(out_dir, exist_ok=True)
-              with open(f"{out_dir}/sample_run_result.json", "w") as pf:
-                  json.dump(payload, pf, indent=2)
-              print(f"  {status}")
-
-              # --- GCS push (solo se GCP Auth ha settato le credenziali) ---
-              if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
-                  print(f"  GCS push per {slug}...")
-                  push_slug = cfg.get("push_slug", slug)
-                  r = subprocess.run(
-                      ["python", "scripts/push_archive.py", "--layer", "clean", "--slug", push_slug, "--no-bq"],
-                      cwd=root,
-                  )
-                  if r.returncode != 0:
-                      print(f"  GCS push FAILED for {slug} (code {r.returncode})")
-                      failed_configs.append(slug)
-                  else:
-                      print(f"  GCS push completato per {slug} (push_slug={push_slug})")
-                      gcs_push_ok = True
-
-          # --- Build clean catalog (solo se almeno un push è riuscito) ---
-          if gcs_push_ok:
-              print(f"\n  Rebuilding clean catalog...")
-              r = subprocess.run(
-                  ["python", "scripts/build_clean_catalog.py", "--derive", "--write"],
-                  cwd=root,
-              )
-              if r.returncode != 0:
-                  print(f"  WARN: build_clean_catalog --derive --write fallito (code {r.returncode}), check stderr sopra")
-              r = subprocess.run(
-                  ["python", "scripts/build_clean_catalog.py", "--check-gcs"],
-                  cwd=root,
-              )
-              if r.returncode != 0:
-                  print(f"  WARN: build_clean_catalog --check-gcs ha trovato errori (code {r.returncode})")
-          else:
-              print(f"\n  Skip clean catalog rebuild: nessun GCS push riuscito")
-
-          if failed_configs:
-              print("\nFAIL: one or more configs failed in post-merge full run:")
-              for slug in failed_configs:
-                  print(f" - {slug}")
-              sys.exit(1)
-          PY
-
-      - name: Upload sample-run artifacts
-        uses: actions/upload-artifact@v7
-        if: always()
-        with:
-          name: sample-run-results
-          path: |
-            sample_run_artifacts/
-            registry/clean_catalog.json
-          if-no-files-found: warn
-          retention-days: 14
-
   build-and-pr:
+    if: needs.sample_run.result == 'success' && needs.detect.outputs.has_items ==
+      'true'
     needs:
-      - detect
-      - sample_run
-    if: needs.sample_run.result == 'success' && needs.detect.outputs.has_items == 'true'
-    runs-on: ubuntu-latest
+    - detect
+    - sample_run
     permissions:
       contents: write
       pull-requests: write
-
+    runs-on: ubuntu-latest
     steps:
-      - name: Checkout merge commit
-        uses: actions/checkout@v6
-        with:
-          ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
-          fetch-depth: 0
+    - name: Checkout merge commit
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        cache: pip
+        python-version: '3.12'
+    - name: Install dependencies
+      run: python -m pip install -r requirements.txt
+    - if: needs.detect.outputs.has_items == 'true'
+      name: Download detect output
+      uses: actions/download-artifact@v8
+      with:
+        name: detect-output
+        path: .
+    - name: Build pipeline_signals.json
+      run: python scripts/build_pipeline_signals.py
+    - continue-on-error: true
+      if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result !=
+        'skipped'
+      name: Download sample-run artifacts
+      uses: actions/download-artifact@v8
+      with:
+        name: sample-run-results
+        path: sample_run_artifacts
+    - if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result !=
+        'skipped'
+      name: Restore clean_catalog from sample_run
+      run: "if [ -f sample_run_artifacts/registry/clean_catalog.json ]; then\n  cp\
+        \ sample_run_artifacts/registry/clean_catalog.json registry/clean_catalog.json\n\
+        \  echo \"clean_catalog.json ripristinato da sample_run\"\nelse\n  echo \"\
+        clean_catalog.json non presente negli artifact — skip\"\nfi\n"
+    - if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result !=
+        'skipped'
+      name: Apply sample-run results to pipeline_signals.json
+      run: "# Se non ci sono artifact (sample_run senza risultati), skip senza errore\n\
+        if [ ! -d sample_run_artifacts ] || [ -z \"$(ls -A sample_run_artifacts)\"\
+        \ ]; then\n  echo \"Nessun artifact sample_run — skip apply\"\n  exit 0\n\
+        fi\npython scripts/update_pipeline_sample_runs.py --samples-dir sample_run_artifacts\n"
+    - id: diff
+      name: Check registry diff
+      run: "if git diff --quiet -- registry/pipeline_signals.json registry/clean_catalog.json;\
+        \ then\n  echo \"changed=false\" >> \"$GITHUB_OUTPUT\"\nelse\n  echo \"changed=true\"\
+        \ >> \"$GITHUB_OUTPUT\"\nfi\n"
+    - env:
+        PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        PR_TITLE: ${{ github.event.pull_request.title }}
+        SAMPLE_RESULT: ${{ needs.sample_run.result }}
+      name: Build draft PR body
+      run: "python - <<'PY'\nimport json, os\n\nwith open(\"detect_output.json\")\
+        \ as f:\n    detect = json.load(f)\nitems = detect.get(\"items\", [])\nconfigs\
+        \ = detect.get(\"configs\", [])\nsample_result = os.environ.get(\"SAMPLE_RESULT\"\
+        , \"skipped\")\nsample_passed = sample_result == \"success\"\nsignals_changed\
+        \ = os.environ.get(\"PIPELINE_SIGNALS_CHANGED\", \"false\") == \"true\"\n\
+        pr_number = os.environ.get(\"PR_NUMBER\", \"?\")\npr_title = os.environ.get(\"\
+        PR_TITLE\", \"?\")\ngcp_available = os.environ.get(\"GCP_WORKLOAD_IDENTITY_PROVIDER\"\
+        , \"\") != \"\" and os.environ.get(\"GCP_SERVICE_ACCOUNT\", \"\") != \"\"\n\
+        \nitem_list = \"\\n\".join(f'- `{i[\"slug\"]}` ({i[\"kind\"]}, `{i[\"root\"\
+        ]}`)' for i in items)\nsample_list = \"\\n\".join(\n    f'- `{c[\"config_path\"\
+        ]}` -> artifact `sample-run-{c[\"artifact_name\"]}`'\n    for c in configs\n\
+        ) or \"- No sample-run config detected\"\n\ncommands = []\nfor c in configs:\n\
+        \    commands.append(\n        f\"python scripts/push_archive.py --mart --slug\
+        \ {c['push_slug']} \"\n        f\"--create-bq-table --update-catalog\"\n \
+        \   )\n\nbody = \"\\n\".join([\n    \"## Post-merge registry handoff\",\n\
+        \    \"\",\n    f\"Source PR: #{pr_number} — {pr_title}\",\n    \"\",\n  \
+        \  \"Changed candidate/support roots:\",\n    \"\",\n    item_list,\n    \"\
+        \",\n    \"## Automatic updates\",\n    \"\",\n    f\"- [x] Rebuilt `registry/pipeline_signals.json`{'\
+        \ (no diff)' if not signals_changed else ''}\",\n    f\"- [{'x' if sample_passed\
+        \ else ' '}] CI: full run completato (tutti gli anni)\",\n    f\"- [{'x' if\
+        \ gcp_available else ' '}] CI: clean parquet pushato su GCS\",\n    f\"- [{'x'\
+        \ if gcp_available else ' '}] CI: `registry/clean_catalog.json` aggiornato\"\
+        ,\n    \"- [ ] Maintainer: push mart + BQ (se serve)\",\n    \"\",\n    \"\
+        ## Sample-run artifacts\",\n    \"\",\n    sample_list,\n    \"\",\n    \"\
+        ## Maintainer commands\",\n    \"\",\n    \"```bash\",\n    \"\\n\".join(commands),\n\
+        \    \"```\",\n    \"\",\n    \"CI ha eseguito: full run (tutti gli anni),\
+        \ push clean su GCS, aggiornamento catalog. Il maintainer deve solo mart +\
+        \ BQ se serve.\",\n])\n\nwith open(\"post_merge_pr_body.md\", \"w\", encoding=\"\
+        utf-8\") as f:\n    f.write(body + \"\\n\")\nPY\n"
+    - env:
+        GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+        PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+      name: Create draft registry PR
+      run: "# Skip if nothing changed — avoid empty PR noise\nif [ \"$PIPELINE_SIGNALS_CHANGED\"\
+        \ = \"false\" ]; then\n  echo \"No changes to registry/pipeline_signals.json\
+        \ or registry/clean_catalog.json — skipping registry PR\"\n  exit 0\nfi\n\n\
+        BRANCH=\"post-merge-candidate/pr-${PR_NUMBER}-registry\"\n\ngit config user.name\
+        \ \"github-actions[bot]\"\ngit config user.email \"github-actions[bot]@users.noreply.github.com\"\
+        \ngit checkout -B \"$BRANCH\"\n\nif [ \"$PIPELINE_SIGNALS_CHANGED\" = \"true\"\
+        \ ]; then\n  git add registry/pipeline_signals.json registry/clean_catalog.json\n\
+        \  git commit -m \"chore(post-merge): aggiorna registry per PR #${PR_NUMBER}\"\
+        \nfi\n\ngit push --force-with-lease -u origin \"$BRANCH\"\n\nEXISTING_PR=$(gh\
+        \ pr list --head \"$BRANCH\" --json number --jq '.[0].number // empty')\n\
+        if [ -n \"$EXISTING_PR\" ]; then\n  gh pr edit \"$EXISTING_PR\" \\\n    --title\
+        \ \"chore(post-merge): aggiorna registry per PR #${PR_NUMBER}\" \\\n    --body-file\
+        \ post_merge_pr_body.md \\\n    --add-label post-merge\nelse\n  gh pr create\
+        \ \\\n    --base main \\\n    --head \"$BRANCH\" \\\n    --title \"chore(post-merge):\
+        \ aggiorna registry per PR #${PR_NUMBER}\" \\\n    --body-file post_merge_pr_body.md\
+        \ \\\n    --label post-merge \\\n    --draft\nfi\n"
+  detect:
+    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
+    outputs:
+      has_configs: ${{ steps.detect.outputs.has_configs }}
+      has_items: ${{ steps.detect.outputs.has_items }}
+    permissions:
+      contents: read
+      pull-requests: read
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout merge commit
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        python-version: '3.12'
+    - name: Install dependencies
+      run: python -m pip install -r requirements.txt
+    - env:
+        GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+        PR_NUMBER: ${{ github.event.pull_request.number }}
+        SLUG_INPUT: ${{ inputs.slug }}
+      id: detect
+      name: Detect changed candidate/support roots
+      run: "set -o pipefail\n\nif [ -n \"$SLUG_INPUT\" ]; then\n  # Trigger manuale:\
+        \ processa direttamente lo slug richiesto\n  # Prova candidates/, poi compose/\n\
+        \  if [ -f \"candidates/${SLUG_INPUT}/dataset.yml\" ]; then\n    echo \"candidates/${SLUG_INPUT}/dataset.yml\"\
+        \ | \\\n      python scripts/detect_candidates.py --files --json > detect_output.json\n\
+        \  elif [ -f \"compose/${SLUG_INPUT}/dataset.yml\" ]; then\n    echo \"compose/${SLUG_INPUT}/dataset.yml\"\
+        \ | \\\n      python scripts/detect_candidates.py --files --json > detect_output.json\n\
+        \  else\n    echo \"::error::Slug '${SLUG_INPUT}' non trovato ne in candidates/\
+        \ ne in compose/\"\n    exit 1\n  fi\nelse\n  # Trigger da PR mergiata: rileva\
+        \ i file cambiati\n  gh pr view \"$PR_NUMBER\" --json files --jq \".files[].path\"\
+        \ | \\\n    python scripts/detect_candidates.py --files --json > detect_output.json\n\
+        fi\n\npython - <<'PY'\nimport json, os\nd = json.load(open(\"detect_output.json\"\
+        ))\nwith open(os.environ[\"GITHUB_OUTPUT\"], \"a\", encoding=\"utf-8\") as\
+        \ out:\n     out.write(f\"has_items={str(d['has_items']).lower()}\\n\")\n\
+        \     out.write(f\"has_configs={str(d['has_configs']).lower()}\\n\")\nPY\n"
+    - name: Upload detect output (per sample_run)
+      uses: actions/upload-artifact@v7
+      with:
+        name: detect-output
+        path: detect_output.json
+        retention-days: 1
+  sample_run:
+    defaults:
+      run:
+        shell: bash
+    if: needs.detect.outputs.has_configs == 'true'
+    needs: detect
+    permissions:
+      contents: read
+      id-token: write
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout merge commit
+      uses: actions/checkout@v6
+      with:
+        fetch-depth: 0
+        ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
+    - name: Download detect output
+      uses: actions/download-artifact@v8
+      with:
+        name: detect-output
+        path: .
+    - name: Set up Python
+      uses: actions/setup-python@v6
+      with:
+        cache: pip
+        python-version: '3.12'
+    - name: Install dependencies
+      run: python -m pip install -r requirements.txt
+    - if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
+      name: GCP Auth (for GCS push)
+      uses: google-github-actions/auth@v3
+      with:
+        service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+        workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+    - if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
+      name: Set up gcloud
+      uses: google-github-actions/setup-gcloud@v3
+    - name: Process each detected config
+      run: "python - <<'PY'\nimport json, os, subprocess, sys, glob, time\n\nwith\
+        \ open(\"detect_output.json\") as f:\n    detect = json.load(f)\n\nconfigs\
+        \ = detect.get(\"configs\", [])\nif not configs:\n    print(\"Nessun config\
+        \ da processare\")\n    sys.exit(0)\n\nroot = os.environ.get(\"GITHUB_WORKSPACE\"\
+        , \".\")\n\nfailed_configs = []\ngcs_push_ok = False\n\n# Pre-install GCS\
+        \ lib se GCP auth disponibile — una volta, non per-candidato\nif os.environ.get(\"\
+        GOOGLE_APPLICATION_CREDENTIALS\"):\n    subprocess.run(\n        [\"python\"\
+        , \"-m\", \"pip\", \"install\", \"google-cloud-storage\", \"-q\"],\n     \
+        \   capture_output=True,\n    )\n\nfor cfg in configs:\n    config_path =\
+        \ cfg.get(\"config_path\", \"\")\n    slug = cfg.get(\"slug\", \"unknown\"\
+        )\n    artifact_name = cfg.get(\"artifact_name\", slug)\n    config_exists\
+        \ = cfg.get(\"config_exists\", False)\n\n    print(f\"\\n=== Processing {slug}\
+        \ ({config_path}) ===\")\n\n    if not config_exists:\n        print(f\" \
+        \ SKIP: config_path non esiste\")\n        continue\n\n    # --- CA certs\
+        \ ---\n    r = subprocess.run([\"python\", \"scripts/get_extra_ca_cert_urls.py\"\
+        , config_path],\n        capture_output=True, text=True, cwd=root)\n    urls\
+        \ = [u.strip() for u in r.stdout.strip().split('\\n') if u.strip()]\n    if\
+        \ urls:\n        bundle = f\"/tmp/extra-ca-{artifact_name}.pem\"\n       \
+        \ with open(\"/etc/ssl/certs/ca-certificates.crt\") as src, open(bundle, \"\
+        w\") as dst:\n            dst.write(src.read())\n        for url in urls:\n\
+        \            try:\n                import urllib.request\n               \
+        \ data = urllib.request.urlopen(url).read()\n                with open(bundle,\
+        \ \"a\") as dst:\n                    dst.write(data.decode() if isinstance(data,\
+        \ bytes) else data)\n            except Exception as e:\n                print(f\"\
+        \  WARN CA cert {url}: {e}\")\n        os.environ[\"REQUESTS_CA_BUNDLE\"]\
+        \ = bundle\n        os.environ[\"SSL_CERT_FILE\"] = bundle\n\n    # --- Resolve\
+        \ ---\n    r = subprocess.run([\"python\", \"scripts/resolve_sample_run.py\"\
+        , config_path],\n        capture_output=True, text=True, cwd=root)\n    if\
+        \ r.returncode != 0:\n        print(f\"  FAIL: resolve ({r.stderr.strip()})\"\
+        )\n        failed_configs.append(slug)\n        continue\n    params = json.loads(r.stdout)\n\
+        \    all_years = \",\".join(str(y) for y in params.get(\"all_years\", []))\n\
+        \n    # Support datasets gestiti nativamente da toolkit run full.\n    # Non\
+        \ serve eseguirli separatamente.\n\n    def run_with_retry(cmd, attempts=3):\n\
+        \        for i in range(1, attempts + 1):\n            r = subprocess.run(cmd,\
+        \ cwd=root)\n            if r.returncode == 0:\n                return True\n\
+        \            if i < attempts:\n                wait = 20 * i\n           \
+        \     print(f\"    attempt {i}/{attempts} failed, retry in {wait}s...\")\n\
+        \                time.sleep(wait)\n        return False\n\n    # --- Pre-download\
+        \ blocked sources via proxy (dati.salute.gov.it) ---\n    proxy = os.environ.get(\"\
+        BLOCKED_SOURCE_PROXY\") or \"\"\n    if proxy:\n        subprocess.run(\n\
+        \            [\"python\", \"scripts/prefetch_blocked_sources.py\", config_path],\n\
+        \            cwd=root,\n            env={**os.environ, \"BLOCKED_SOURCE_PROXY\"\
+        : proxy},\n            check=True,\n        )\n\n    # --- Toolkit run full\
+        \ (run + validate + readiness + support) ---\n    print(f\"  toolkit run full\
+        \ --years {all_years}\")\n    run_ok = run_with_retry(\n        [\"toolkit\"\
+        , \"run\", \"full\", \"--config\", config_path, \"--years\", all_years, \"\
+        --json\"]\n    )\n    validate_ok = run_ok  # run full include gia validate\n\
+        \n    status = \"passed\" if (run_ok and validate_ok) else \"failed\"\n  \
+        \  if status == \"failed\":\n        failed_configs.append(slug)\n    run_id\
+        \ = os.environ.get(\"GITHUB_RUN_ID\", \"0\")\n    repo = os.environ.get(\"\
+        GITHUB_REPOSITORY\", \"\")\n    payload = {\n        \"id\": slug, \"status\"\
+        : status,\n        \"years\": params.get(\"all_years\", []),\n        \"config_path\"\
+        : config_path, \"config_exists\": config_exists,\n        \"run_id\": run_id,\n\
+        \        \"run_url\": f\"https://github.com/{repo}/actions/runs/{run_id}\"\
+        ,\n        \"checked_at\": __import__(\"datetime\").datetime.now().astimezone().date().isoformat(),\n\
+        \    }\n    out_dir = f\"sample_run_artifacts/{artifact_name}\"\n    os.makedirs(out_dir,\
+        \ exist_ok=True)\n    with open(f\"{out_dir}/sample_run_result.json\", \"\
+        w\") as pf:\n        json.dump(payload, pf, indent=2)\n    print(f\"  {status}\"\
+        )\n\n    # --- GCS push (solo se GCP Auth ha settato le credenziali) ---\n\
+        \    if status == \"passed\" and os.environ.get(\"GOOGLE_APPLICATION_CREDENTIALS\"\
+        ):\n        print(f\"  GCS push per {slug}...\")\n        push_slug = cfg.get(\"\
+        push_slug\", slug)\n        r = subprocess.run(\n            [\"python\",\
+        \ \"scripts/push_archive.py\", \"--layer\", \"clean\", \"--slug\", push_slug,\
+        \ \"--no-bq\"],\n            cwd=root,\n        )\n        if r.returncode\
+        \ != 0:\n            print(f\"  GCS push FAILED for {slug} (code {r.returncode})\"\
+        )\n            failed_configs.append(slug)\n        else:\n            print(f\"\
+        \  GCS push completato per {slug} (push_slug={push_slug})\")\n           \
+        \ gcs_push_ok = True\n\n# --- Build clean catalog (solo se almeno un push\
+        \ è riuscito) ---\nif gcs_push_ok:\n    print(f\"\\n  Rebuilding clean catalog...\"\
+        )\n    r = subprocess.run(\n        [\"python\", \"scripts/build_clean_catalog.py\"\
+        , \"--derive\", \"--write\"],\n        cwd=root,\n    )\n    if r.returncode\
+        \ != 0:\n        print(f\"  WARN: build_clean_catalog --derive --write fallito\
+        \ (code {r.returncode}), check stderr sopra\")\n    r = subprocess.run(\n\
+        \        [\"python\", \"scripts/build_clean_catalog.py\", \"--check-gcs\"\
+        ],\n        cwd=root,\n    )\n    if r.returncode != 0:\n        print(f\"\
+        \  WARN: build_clean_catalog --check-gcs ha trovato errori (code {r.returncode})\"\
+        )\nelse:\n    print(f\"\\n  Skip clean catalog rebuild: nessun GCS push riuscito\"\
+        )\n\nif failed_configs:\n    print(\"\\nFAIL: one or more configs failed in\
+        \ post-merge full run:\")\n    for slug in failed_configs:\n        print(f\"\
+        \ - {slug}\")\n    sys.exit(1)\nPY\n"
+    - if: always()
+      name: Upload sample-run artifacts
+      uses: actions/upload-artifact@v7
+      with:
+        if-no-files-found: warn
+        name: sample-run-results
+        path: 'sample_run_artifacts/
 
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-          cache: 'pip'
+          registry/clean_catalog.json
 
-      - name: Install dependencies
-        run: python -m pip install -r requirements.txt
-
-      - name: Download detect output
-        if: needs.detect.outputs.has_items == 'true'
-        uses: actions/download-artifact@v8
-        with:
-          name: detect-output
-          path: .
-
-      - name: Build pipeline_signals.json
-        run: python scripts/build_pipeline_signals.py
-
-      - name: Download sample-run artifacts
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
-        uses: actions/download-artifact@v8
-        continue-on-error: true
-        with:
-          name: sample-run-results
-          path: sample_run_artifacts
-
-      - name: Restore clean_catalog from sample_run
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
-        run: |
-          if [ -f sample_run_artifacts/registry/clean_catalog.json ]; then
-            cp sample_run_artifacts/registry/clean_catalog.json registry/clean_catalog.json
-            echo "clean_catalog.json ripristinato da sample_run"
-          else
-            echo "clean_catalog.json non presente negli artifact — skip"
-          fi
-
-      - name: Apply sample-run results to pipeline_signals.json
-        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
-        run: |
-          # Se non ci sono artifact (sample_run senza risultati), skip senza errore
-          if [ ! -d sample_run_artifacts ] || [ -z "$(ls -A sample_run_artifacts)" ]; then
-            echo "Nessun artifact sample_run — skip apply"
-            exit 0
-          fi
-          python scripts/update_pipeline_sample_runs.py --samples-dir sample_run_artifacts
-
-      - name: Check registry diff
-        id: diff
-        run: |
-          if git diff --quiet -- registry/pipeline_signals.json registry/clean_catalog.json; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Build draft PR body
-        env:
-          SAMPLE_RESULT: ${{ needs.sample_run.result }}
-          PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PR_TITLE: ${{ github.event.pull_request.title }}
-        run: |
-          python - <<'PY'
-          import json, os
-
-          with open("detect_output.json") as f:
-              detect = json.load(f)
-          items = detect.get("items", [])
-          configs = detect.get("configs", [])
-          sample_result = os.environ.get("SAMPLE_RESULT", "skipped")
-          sample_passed = sample_result == "success"
-          signals_changed = os.environ.get("PIPELINE_SIGNALS_CHANGED", "false") == "true"
-          pr_number = os.environ.get("PR_NUMBER", "?")
-          pr_title = os.environ.get("PR_TITLE", "?")
-          gcp_available = os.environ.get("GCP_WORKLOAD_IDENTITY_PROVIDER", "") != "" and os.environ.get("GCP_SERVICE_ACCOUNT", "") != ""
-
-          item_list = "\n".join(f'- `{i["slug"]}` ({i["kind"]}, `{i["root"]}`)' for i in items)
-          sample_list = "\n".join(
-              f'- `{c["config_path"]}` -> artifact `sample-run-{c["artifact_name"]}`'
-              for c in configs
-          ) or "- No sample-run config detected"
-
-          commands = []
-          for c in configs:
-              commands.append(
-                  f"python scripts/push_archive.py --mart --slug {c['push_slug']} "
-                  f"--create-bq-table --update-catalog"
-              )
-
-          body = "\n".join([
-              "## Post-merge registry handoff",
-              "",
-              f"Source PR: #{pr_number} — {pr_title}",
-              "",
-              "Changed candidate/support roots:",
-              "",
-              item_list,
-              "",
-              "## Automatic updates",
-              "",
-              f"- [x] Rebuilt `registry/pipeline_signals.json`{' (no diff)' if not signals_changed else ''}",
-              f"- [{'x' if sample_passed else ' '}] CI: full run completato (tutti gli anni)",
-              f"- [{'x' if gcp_available else ' '}] CI: clean parquet pushato su GCS",
-              f"- [{'x' if gcp_available else ' '}] CI: `registry/clean_catalog.json` aggiornato",
-              "- [ ] Maintainer: push mart + BQ (se serve)",
-              "",
-              "## Sample-run artifacts",
-              "",
-              sample_list,
-              "",
-              "## Maintainer commands",
-              "",
-              "```bash",
-              "\n".join(commands),
-              "```",
-              "",
-              "CI ha eseguito: full run (tutti gli anni), push clean su GCS, aggiornamento catalog. Il maintainer deve solo mart + BQ se serve.",
-          ])
-
-          with open("post_merge_pr_body.md", "w", encoding="utf-8") as f:
-              f.write(body + "\n")
-          PY
-
-      - name: Create draft registry PR
-        env:
-          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
-        run: |
-          # Skip if nothing changed — avoid empty PR noise
-          if [ "$PIPELINE_SIGNALS_CHANGED" = "false" ]; then
-            echo "No changes to registry/pipeline_signals.json or registry/clean_catalog.json — skipping registry PR"
-            exit 0
-          fi
-
-          BRANCH="post-merge-candidate/pr-${PR_NUMBER}-registry"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -B "$BRANCH"
-
-          if [ "$PIPELINE_SIGNALS_CHANGED" = "true" ]; then
-            git add registry/pipeline_signals.json registry/clean_catalog.json
-            git commit -m "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}"
-          fi
-
-          git push --force-with-lease -u origin "$BRANCH"
-
-          EXISTING_PR=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number // empty')
-          if [ -n "$EXISTING_PR" ]; then
-            gh pr edit "$EXISTING_PR" \
-              --title "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}" \
-              --body-file post_merge_pr_body.md \
-              --add-label post-merge
-          else
-            gh pr create \
-              --base main \
-              --head "$BRANCH" \
-              --title "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}" \
-              --body-file post_merge_pr_body.md \
-              --label post-merge \
-              --draft
-          fi
-
-
+          '
+        retention-days: 14
