@@ -4624,6 +4624,176 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "reparti_ricovero",
+      "name": "Reparti Ricovero",
+      "description": "Dati di struttura e attività dei reparti di ricovero — posti letto, dimessi, discipline, degenza per struttura — Ministero della Salute 2022",
+      "source": "Ministero della Salute — Open Data Dati di struttura e attività dei reparti di ricovero",
+      "source_id": "ministero_salute",
+      "period": {
+        "start": 2022,
+        "end": 2022
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di Riferimento"
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Regione (ISTAT)"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione Regione"
+        },
+        {
+          "name": "codice_asl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Azienda Sanitaria Locale"
+        },
+        {
+          "name": "asl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ASL"
+        },
+        {
+          "name": "codice_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice struttura di ricovero"
+        },
+        {
+          "name": "struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione struttura di ricovero"
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo struttura"
+        },
+        {
+          "name": "codice_tipo_struttura",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Codice tipo struttura"
+        },
+        {
+          "name": "sottotipo_struttura",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Sottotipo struttura"
+        },
+        {
+          "name": "tipo_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo struttura (pubblica, IRCCS, etc.)"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune sede struttura"
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla provincia sede struttura"
+        },
+        {
+          "name": "codice_disciplina",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice disciplina"
+        },
+        {
+          "name": "disciplina",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Disciplina / specialità"
+        },
+        {
+          "name": "posti_letto_day_hospital",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Posti letto Day Hospital"
+        },
+        {
+          "name": "posti_letto_day_surgery",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Posti letto Day Surgery"
+        },
+        {
+          "name": "posti_letto_degenza_ordinaria",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Posti letto degenza ordinaria"
+        },
+        {
+          "name": "posti_letto_utilizzati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Posti letto utilizzati"
+        },
+        {
+          "name": "num_dimessi",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero dimessi (VARCHAR — separatore migliaia)"
+        },
+        {
+          "name": "giornate_degenza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Giornate di degenza (VARCHAR — separatore migliaia)"
+        },
+        {
+          "name": "giornate_disponibili",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Giornate disponibili"
+        },
+        {
+          "name": "degenza_media_ordinaria",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Degenza media ordinaria (giorni)"
+        },
+        {
+          "name": "icm",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Indice Case-Mix (ICM)"
+        },
+        {
+          "name": "tasso_utilizzo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Tasso di utilizzo posti letto"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/reparti_ricovero/2022/reparti_ricovero_2022_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "strutture_asl",
       "name": "Strutture Asl",
       "description": "Strutture e attività delle ASL — medici di base, pediatri, popolazione residente, servizi territoriali e presidi per regione — Ministero della Salute 2022",
@@ -4866,6 +5036,182 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/strutture_asl/2022/strutture_asl_2022_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "strutture_ricovero_asl",
+      "name": "Strutture Ricovero Asl",
+      "description": "Strutture di ricovero pubbliche presenti nel territorio della ASL — personale, posti letto, ricoveri per struttura — Ministero della Salute 2022",
+      "source": "Ministero della Salute — Open Data Strutture di ricovero per ASL",
+      "source_id": "ministero_salute",
+      "period": {
+        "start": 2022,
+        "end": 2022
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Anno di Riferimento"
+        },
+        {
+          "name": "codice_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice struttura di ricovero"
+        },
+        {
+          "name": "denominazione_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione struttura di ricovero"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune sede struttura"
+        },
+        {
+          "name": "sigla_provincia_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla provincia sede struttura"
+        },
+        {
+          "name": "posti_letto_previsti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Posti letto previsti"
+        },
+        {
+          "name": "posti_letto_utilizzati",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Posti letto utilizzati"
+        },
+        {
+          "name": "personale_uomini",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Personale — uomini"
+        },
+        {
+          "name": "personale_donne",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Personale — donne"
+        },
+        {
+          "name": "totale_personale",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Totale personale"
+        },
+        {
+          "name": "medici_uomini",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Medici — uomini"
+        },
+        {
+          "name": "medici_donne",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Medici — donne"
+        },
+        {
+          "name": "medici",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Totale medici"
+        },
+        {
+          "name": "infermieri_uomini",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Infermieri — uomini"
+        },
+        {
+          "name": "infermieri_donne",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Infermieri — donne"
+        },
+        {
+          "name": "infermieri",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Totale infermieri"
+        },
+        {
+          "name": "ricoveri",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Ricoveri"
+        },
+        {
+          "name": "giornate_degenza",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Giornate di degenza"
+        },
+        {
+          "name": "giornate_disponibili",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Giornate disponibili"
+        },
+        {
+          "name": "codice_tipo_struttura",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Codice tipo struttura"
+        },
+        {
+          "name": "sottotipo_struttura",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Sottotipo struttura"
+        },
+        {
+          "name": "tipo_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo struttura"
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Regione (ISTAT)"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione Regione"
+        },
+        {
+          "name": "codice_asl",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice Azienda Sanitaria Locale"
+        },
+        {
+          "name": "asl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ASL"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/strutture_ricovero_asl/2022/strutture_ricovero_asl_2022_clean.parquet",
         "multi_file": false
       },
       "stage": "published",

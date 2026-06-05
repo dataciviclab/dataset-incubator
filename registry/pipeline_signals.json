@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 36,
+    "total": 37,
     "by_status": {
-      "ok": 36,
+      "ok": 37,
       "warn": 0,
       "error": 0
     }
@@ -323,14 +323,6 @@
       }
     },
     {
-      "id": "malasanita-struttura-mortalita",
-      "source_id": "",
-      "status": "ok",
-      "label": "malasanita-struttura-mortalita",
-      "detail": "anno 2022 — multi-source (4 fonti) — mart: sì",
-      "action": ""
-    },
-    {
       "id": "mef-irpef-regionale",
       "source_id": "",
       "status": "ok",
@@ -539,6 +531,24 @@
       }
     },
     {
+      "id": "reparti-ricovero",
+      "source_id": "ministero_salute",
+      "status": "ok",
+      "label": "reparti-ricovero",
+      "detail": "anno 2022 — fonte: reparti_ricovero — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27019783972",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27019783972",
+        "checked_at": "2026-06-05",
+        "years": [
+          2022
+        ],
+        "config_path": "candidates/reparti-ricovero/dataset.yml"
+      }
+    },
+    {
       "id": "strutture-asl",
       "source_id": "",
       "status": "ok",
@@ -554,6 +564,24 @@
           2022
         ],
         "config_path": "candidates/strutture-asl/dataset.yml"
+      }
+    },
+    {
+      "id": "strutture-ricovero-asl",
+      "source_id": "ministero_salute",
+      "status": "ok",
+      "label": "strutture-ricovero-asl",
+      "detail": "anno 2022 — fonte: strutture_ricovero_asl — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27019783972",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27019783972",
+        "checked_at": "2026-06-05",
+        "years": [
+          2022
+        ],
+        "config_path": "candidates/strutture-ricovero-asl/dataset.yml"
       }
     },
     {
