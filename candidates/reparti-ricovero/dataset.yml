@@ -1,19 +1,12 @@
-# STATO: spike completato su issue #22.
-# mart_regioni definito; a livello regionale B e` tendenzialmente ridondante rispetto a C
-# sui posti letto. Valore distintivo = dettaglio per disciplina/reparto.
-# Decisione: B resta fuori dal compose principale (vedi notes.md sezione Fonte B).
-
-root: "../../../../out"
+root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "malasanita_b_reparti_ricovero"
+  name: "reparti_ricovero"
   years: [2022]
 
 raw:
   sources:
-    # Reparti strutture di ricovero — dati.salute.gov.it
-    # Granularità: reparto/struttura | Anno copertura: fino al 2022
     - name: "reparti_ricovero"
       type: "http_file"
       args:
@@ -41,10 +34,8 @@ mart:
       sql: "sql/mart_regioni_disciplina.sql"
   validate:
     table_rules:
-      mart_regioni:
-        min_rows: 21
-      mart_regioni_disciplina:
-        min_rows: 500
+      mart_regioni: { min_rows: 21 }
+      mart_regioni_disciplina: { min_rows: 500 }
 
 validation:
   fail_on_error: true

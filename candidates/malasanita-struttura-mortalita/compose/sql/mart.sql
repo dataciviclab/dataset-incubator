@@ -1,4 +1,0 @@
--- compose/sql/mart.sql - riferimento documentale
--- SQL eseguibile: sources/a_strutture_asl/sql/mart_compose_regioni.sql
--- Motivo: il toolkit richiede che il file SQL del mart stia sotto la base_dir
--- del dataset.yml che lo esegue.

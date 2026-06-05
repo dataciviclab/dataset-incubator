@@ -1,18 +1,16 @@
-root: "../../../../out"
+root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "malasanita_c_strutture_ricovero"
+  name: "strutture_ricovero_asl"
   years: [2022]
 
 raw:
   sources:
-    # Strutture ricovero per ASL — dati.salute.gov.it
-    # Granularità: struttura | Anno copertura: fino al 2022
     - name: "strutture_ricovero_asl"
-      type: "local_file"
+      type: "http_file"
       args:
-        path: "inputs/strutture_ricovero_asl_2022.csv"
+        url: "https://www.dati.salute.gov.it/sites/default/files/2025-01/Strutture_di_ricovero_pubbliche_presenti_nel_territorio_della_ASL.csv"
         filename: "strutture_ricovero_asl_2022.csv"
       primary: true
 
@@ -24,6 +22,8 @@ clean:
     delim: ";"
     encoding: "latin-1"
     header: true
+    decimal: ","
+    thousands: "."
   validate:
     min_rows: 100
 
@@ -33,8 +33,7 @@ mart:
       sql: "sql/mart.sql"
   validate:
     table_rules:
-      mart_regioni:
-        min_rows: 21
+      mart_regioni: { min_rows: 21 }
 
 validation:
   fail_on_error: true

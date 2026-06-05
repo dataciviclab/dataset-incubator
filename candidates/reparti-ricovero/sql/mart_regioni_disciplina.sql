@@ -1,4 +1,4 @@
--- mart_regioni_disciplina.sql - malasanita_b_reparti_ricovero
+-- mart_regioni_disciplina.sql - reparti_ricovero
 -- Output: una riga per regione / PA x disciplina
 -- Serve per analisi di offerta disciplinare; non entra nel compose regionale corrente.
 
