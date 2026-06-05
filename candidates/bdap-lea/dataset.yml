@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "bdap_lea"
   source_id: "openbdap"
-  years: [2024]
+  years: [2019, 2021, 2022, 2024]
 
 raw:
   output_policy: overwrite
@@ -12,8 +12,13 @@ raw:
     - name: "bdap_lea_csv"
       type: "http_file"
       args:
-        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/d598ebd9-949d-4214-bb33-cd9c1be08f15.csv"
-        filename: "bdap_lea_2024.csv"
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/"
+        filename: "bdap_lea_{year}.csv"
+        url_suffix_by_year:
+          2019: "a0904cd1-4cd5-40cd-9cdb-9fc404bde499.csv"
+          2021: "f1cb1b41-d0bb-4d37-b2cb-b077a5720454.csv"
+          2022: "7572d620-36fd-4614-90d1-8412d48f5feb.csv"
+          2024: "d598ebd9-949d-4214-bb33-cd9c1be08f15.csv"
       primary: true
 
 clean:
@@ -29,13 +34,13 @@ clean:
 
 mart:
   tables:
-    - name: "mart_spesa_enti_2024"
+    - name: "mart_spesa_enti"
       sql: "sql/mart.sql"
   required_tables:
-    - "mart_spesa_enti_2024"
+    - "mart_spesa_enti"
   validate:
     table_rules:
-      mart_spesa_enti_2024:
+      mart_spesa_enti:
         min_rows: 1000
 
 validation:
