@@ -117,7 +117,7 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+        run: python -m pip install --no-cache-dir -r requirements.txt
 
       - name: GCP Auth (for GCS push)
         if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
@@ -321,7 +321,7 @@ jobs:
           cache: 'pip'
 
       - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+        run: python -m pip install --no-cache-dir -r requirements.txt
 
       - name: Download detect output
         if: needs.detect.outputs.has_items == 'true'
