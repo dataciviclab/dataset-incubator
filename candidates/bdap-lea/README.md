@@ -59,7 +59,7 @@ Gestito con `align_by_header: true` nel `clean.read` (toolkit ≥ v1.25.0): il r
 ## Output
 
 - `out/data/clean/bdap_lea/{year}/bdap_lea_{year}_clean.parquet`
-- `out/data/mart/bdap_lea/{year}/mart_spesa_enti_{year}.parquet`
+- `out/data/mart/bdap_lea/{year}/mart_spesa_enti.parquet`
 
 ## Run
 
