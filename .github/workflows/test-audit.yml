@@ -17,6 +17,10 @@ jobs:
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
 
+      # Preflight: verifica che il CLI esista anche se nessun test è cambiato
+      - name: Verify audit-test-markers CLI
+        run: audit-test-markers --help
+
       - name: Audit test markers on changed files
         run: |
           # List test files changed in PR (vs base branch)
