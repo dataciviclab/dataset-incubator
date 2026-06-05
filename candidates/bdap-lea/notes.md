@@ -1,5 +1,9 @@
 # BDAP LEA — Note
 
+## Serie storica
+
+Candidate esteso da singolo anno (2024) a serie storica 2019-2024 (6 anni).
+
 ## Schema drift: colonna "Oneri Finanziari"
 
 La colonna "Oneri Finanziari" è presente solo in alcuni anni della serie BDAP LEA:
@@ -13,21 +17,30 @@ La colonna "Oneri Finanziari" è presente solo in alcuni anni della serie BDAP L
 | 2023 | ❌ assente |
 | 2024 | ✅ presente |
 
-Gli anni 2012-2018 (non presenti in questo candidate) hanno struttura simile al 2020/2023.
+Non c'è un pattern lineare: la colonna appare e scompare senza logica apparente tra gli anni.
 
-### Decisione
+### Gestione
 
-Per evitare complessità di schema drift (la colonna non è in coda ma in mezzo, causando shift di tutte le colonne successive), il candidate processa solo gli anni con "Oneri Finanziari" presente: **2019, 2021, 2022, 2024**.
+Usato `align_by_header: true` (PR toolkit #329) che allinea le righe CSV per nome colonna invece che per posizione:
+- Se "Oneri Finanziari" manca → stringa vuota nella posizione attesa → `try_cast` → NULL
+- Se presente → lettura normale
+- Colonne extra ignorate
 
-I raw per gli altri anni (2012-2018, 2020, 2023) sono disponibili su BDAP ma non processati in questo candidate. Possono essere aggiunti in futuro normalizzando lo schema (aggiungendo "Oneri Finanziari" = 0 per gli anni mancanti).
+Anni 2012-2018 non processati (hanno struttura 22 colonne senza Oneri, compatibili ma non inclusi per focus su periodo recente).
 
 ## Url mapping
 
-Tutti i dump URL seguono il pattern:
-`https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/{uuid}.csv`
+Pattern: `https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/{uuid}.csv`
 
-UUID per anno:
-- 2019: `a0904cd1-4cd5-40cd-9cdb-9fc404bde499`
-- 2021: `f1cb1b41-d0bb-4d37-b2cb-b077a5720454`
-- 2022: `7572d620-36fd-4614-90d1-8412d48f5feb`
-- 2024: `d598ebd9-949d-4214-bb33-cd9c1be08f15`
+| Anno | UUID |
+|:----:|------|
+| 2019 | `a0904cd1-4cd5-40cd-9cdb-9fc404bde499` |
+| 2020 | `d4816c3b-3c63-412e-aa82-ec65acaf64e7` |
+| 2021 | `f1cb1b41-d0bb-4d37-b2cb-b077a5720454` |
+| 2022 | `7572d620-36fd-4614-90d1-8412d48f5feb` |
+| 2023 | `ac535673-49fb-4449-960e-fac8e3d14fa7` |
+| 2024 | `d598ebd9-949d-4214-bb33-cd9c1be08f15` |
+
+## Dati chiave
+
+Spesa prevenzione sotto 5% LEA in tutti gli anni. La % più alta è 3,3% (2021).

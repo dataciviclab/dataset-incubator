@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "bdap_lea"
   source_id: "openbdap"
-  years: [2019, 2021, 2022, 2024]
+  years: [2019, 2020, 2021, 2022, 2023, 2024]
 
 raw:
   output_policy: overwrite
@@ -16,19 +16,52 @@ raw:
         filename: "bdap_lea_{year}.csv"
         url_suffix_by_year:
           2019: "a0904cd1-4cd5-40cd-9cdb-9fc404bde499.csv"
+          2020: "d4816c3b-3c63-412e-aa82-ec65acaf64e7.csv"
           2021: "f1cb1b41-d0bb-4d37-b2cb-b077a5720454.csv"
           2022: "7572d620-36fd-4614-90d1-8412d48f5feb.csv"
+          2023: "ac535673-49fb-4449-960e-fac8e3d14fa7.csv"
           2024: "d598ebd9-949d-4214-bb33-cd9c1be08f15.csv"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
   read:
-    source: "auto"
+    source: "config_only"
     mode: "latest"
     header: true
     delim: ";"
     encoding: "cp1252"
+    normalize_rows_to_columns: true
+    align_by_header: true
+    null_padding: true
+    strict_mode: false
+    ignore_errors: true
+    sample_size: -1
+    trim_whitespace: true
+    columns:
+      "Anno di Riferimento": "VARCHAR"
+      "Codice Regione": "VARCHAR"
+      "Descrizione Regione": "VARCHAR"
+      "Codice Ente SSN": "VARCHAR"
+      "Codice Ente BDAP": "VARCHAR"
+      "Descrizione Ente": "VARCHAR"
+      "Codice Voce Contabile": "VARCHAR"
+      "Descrizione Voce Contabile": "VARCHAR"
+      "Oneri Finanziari": "VARCHAR"
+      "Data Aggiornamento": "VARCHAR"
+      "Consumi sanitari": "VARCHAR"
+      "Consumi non sanitari": "VARCHAR"
+      "Prestazioni sanitarie": "VARCHAR"
+      "Servizi sanitari": "VARCHAR"
+      "Servizi non sanitari": "VARCHAR"
+      "Personale Sanitario": "VARCHAR"
+      "Personale Professionale": "VARCHAR"
+      "Personale Tecnico": "VARCHAR"
+      "Personale Amministrativo": "VARCHAR"
+      "Ammortamenti": "VARCHAR"
+      "Sopravvenienze e Insussistenze": "VARCHAR"
+      "Altri costi": "VARCHAR"
+      "Importo Totale": "VARCHAR"
   validate:
     min_rows: 1000
 
