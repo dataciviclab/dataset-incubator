@@ -4624,6 +4624,176 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "reparti_ricovero",
+      "name": "Reparti Ricovero",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2022,
+        "end": 2022
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_asl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "asl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_tipo_struttura",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "sottotipo_struttura",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipo_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_disciplina",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "disciplina",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_day_hospital",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_day_surgery",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_degenza_ordinaria",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_utilizzati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "num_dimessi",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "giornate_degenza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "giornate_disponibili",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "degenza_media_ordinaria",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "icm",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tasso_utilizzo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/reparti_ricovero/2022/reparti_ricovero_2022_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "strutture_asl",
       "name": "Strutture Asl",
       "description": "Strutture e attività delle ASL — medici di base, pediatri, popolazione residente, servizi territoriali e presidi per regione — Ministero della Salute 2022",
@@ -4866,6 +5036,182 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/strutture_asl/2022/strutture_asl_2022_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "strutture_ricovero_asl",
+      "name": "Strutture Ricovero Asl",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2022,
+        "end": 2022
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "denominazione_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sigla_provincia_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_previsti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_utilizzati",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "personale_uomini",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "personale_donne",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "totale_personale",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "medici_uomini",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "medici_donne",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "medici",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "infermieri_uomini",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "infermieri_donne",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "infermieri",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "ricoveri",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "giornate_degenza",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "giornate_disponibili",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_tipo_struttura",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "sottotipo_struttura",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipo_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_asl",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "asl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/strutture_ricovero_asl/2022/strutture_ricovero_asl_2022_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
