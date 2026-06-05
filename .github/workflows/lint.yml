@@ -8,6 +8,7 @@ on:
     branches: [main]
     paths:
       - ".github/workflows/**"
+      - ".github/actions/**"
       - "requirements.txt"
       - "scripts/**"
       - "tools/**"
@@ -19,20 +20,12 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout dataset-incubator
-        uses: actions/checkout@v6
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
+      - uses: actions/checkout@v6
+      - name: Python setup
+        uses: ./.github/actions/python-setup
         with:
-          python-version: "3.12"
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: |
-          pip install -r requirements.txt
-          pip install ruff mypy types-pyyaml types-requests pytest pytest-cov pytest-timeout
-          pip install -r tools/clean-query-mcp/requirements.txt 2>/dev/null || true
+          extra-packages: ruff mypy types-pyyaml types-requests pytest pytest-cov pytest-timeout
+          extra-requirements: tools/clean-query-mcp/requirements.txt
 
       - name: Ruff
         run: ruff check scripts/ tools/

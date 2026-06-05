@@ -106,26 +106,18 @@ jobs:
         shell: bash
 
     steps:
-      - name: Checkout merge commit
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
           fetch-depth: 0
+      - name: Python setup
+        uses: ./.github/actions/python-setup
 
       - name: Download detect output
         uses: actions/download-artifact@v8
         with:
           name: detect-output
           path: .
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: python -m pip install -r requirements.txt
 
       - name: GCP Auth (for GCS push)
         if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
@@ -139,162 +131,7 @@ jobs:
         uses: google-github-actions/setup-gcloud@v3
 
       - name: Process each detected config
-        run: |
-          python - <<'PY'
-          import json, os, subprocess, sys, glob, time
-
-          with open("detect_output.json") as f:
-              detect = json.load(f)
-
-          configs = detect.get("configs", [])
-          if not configs:
-              print("Nessun config da processare")
-              sys.exit(0)
-
-          root = os.environ.get("GITHUB_WORKSPACE", ".")
-
-          failed_configs = []
-          gcs_push_ok = False
-
-          # Pre-install GCS lib se GCP auth disponibile — una volta, non per-candidato
-          if os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
-              subprocess.run(
-                  ["python", "-m", "pip", "install", "google-cloud-storage", "-q"],
-                  capture_output=True,
-              )
-
-          for cfg in configs:
-              config_path = cfg.get("config_path", "")
-              slug = cfg.get("slug", "unknown")
-              artifact_name = cfg.get("artifact_name", slug)
-              config_exists = cfg.get("config_exists", False)
-
-              print(f"\n=== Processing {slug} ({config_path}) ===")
-
-              if not config_exists:
-                  print(f"  SKIP: config_path non esiste")
-                  continue
-
-              # --- CA certs ---
-              r = subprocess.run(["python", "scripts/get_extra_ca_cert_urls.py", config_path],
-                  capture_output=True, text=True, cwd=root)
-              urls = [u.strip() for u in r.stdout.strip().split('\n') if u.strip()]
-              if urls:
-                  bundle = f"/tmp/extra-ca-{artifact_name}.pem"
-                  with open("/etc/ssl/certs/ca-certificates.crt") as src, open(bundle, "w") as dst:
-                      dst.write(src.read())
-                  for url in urls:
-                      try:
-                          import urllib.request
-                          data = urllib.request.urlopen(url).read()
-                          with open(bundle, "a") as dst:
-                              dst.write(data.decode() if isinstance(data, bytes) else data)
-                      except Exception as e:
-                          print(f"  WARN CA cert {url}: {e}")
-                  os.environ["REQUESTS_CA_BUNDLE"] = bundle
-                  os.environ["SSL_CERT_FILE"] = bundle
-
-              # --- Resolve ---
-              r = subprocess.run(["python", "scripts/resolve_sample_run.py", config_path],
-                  capture_output=True, text=True, cwd=root)
-              if r.returncode != 0:
-                  print(f"  FAIL: resolve ({r.stderr.strip()})")
-                  failed_configs.append(slug)
-                  continue
-              params = json.loads(r.stdout)
-              all_years = ",".join(str(y) for y in params.get("all_years", []))
-
-              # Support datasets gestiti nativamente da toolkit run full.
-              # Non serve eseguirli separatamente.
-
-              def run_with_retry(cmd, attempts=3):
-                  for i in range(1, attempts + 1):
-                      r = subprocess.run(cmd, cwd=root)
-                      if r.returncode == 0:
-                          return True
-                      if i < attempts:
-                          wait = 20 * i
-                          print(f"    attempt {i}/{attempts} failed, retry in {wait}s...")
-                          time.sleep(wait)
-                  return False
-
-              # --- Pre-download blocked sources via proxy (dati.salute.gov.it) ---
-              proxy = os.environ.get("BLOCKED_SOURCE_PROXY") or ""
-              if proxy:
-                  subprocess.run(
-                      ["python", "scripts/prefetch_blocked_sources.py", config_path],
-                      cwd=root,
-                      env={**os.environ, "BLOCKED_SOURCE_PROXY": proxy},
-                      check=True,
-                  )
-
-              # --- Toolkit run full (run + validate + readiness + support) ---
-              if proxy:
-                  os.environ["HTTPS_PROXY"] = proxy
-              print(f"  toolkit run full --years {all_years}")
-              run_ok = run_with_retry(
-                  ["toolkit", "run", "full", "--config", config_path, "--years", all_years, "--json"]
-              )
-              validate_ok = run_ok  # run full include gia validate
-
-              status = "passed" if (run_ok and validate_ok) else "failed"
-              if status == "failed":
-                  failed_configs.append(slug)
-              run_id = os.environ.get("GITHUB_RUN_ID", "0")
-              repo = os.environ.get("GITHUB_REPOSITORY", "")
-              payload = {
-                  "id": slug, "status": status,
-                  "years": params.get("all_years", []),
-                  "config_path": config_path, "config_exists": config_exists,
-                  "run_id": run_id,
-                  "run_url": f"https://github.com/{repo}/actions/runs/{run_id}",
-                  "checked_at": __import__("datetime").datetime.now().astimezone().date().isoformat(),
-              }
-              out_dir = f"sample_run_artifacts/{artifact_name}"
-              os.makedirs(out_dir, exist_ok=True)
-              with open(f"{out_dir}/sample_run_result.json", "w") as pf:
-                  json.dump(payload, pf, indent=2)
-              print(f"  {status}")
-
-              # --- GCS push (solo se GCP Auth ha settato le credenziali) ---
-              if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
-                  print(f"  GCS push per {slug}...")
-                  push_slug = cfg.get("push_slug", slug)
-                  r = subprocess.run(
-                      ["python", "scripts/push_archive.py", "--layer", "clean", "--slug", push_slug, "--no-bq"],
-                      cwd=root,
-                  )
-                  if r.returncode != 0:
-                      print(f"  GCS push FAILED for {slug} (code {r.returncode})")
-                      failed_configs.append(slug)
-                  else:
-                      print(f"  GCS push completato per {slug} (push_slug={push_slug})")
-                      gcs_push_ok = True
-
-          # --- Build clean catalog (solo se almeno un push è riuscito) ---
-          if gcs_push_ok:
-              print(f"\n  Rebuilding clean catalog...")
-              r = subprocess.run(
-                  ["python", "scripts/build_clean_catalog.py", "--derive", "--write"],
-                  cwd=root,
-              )
-              if r.returncode != 0:
-                  print(f"  WARN: build_clean_catalog --derive --write fallito (code {r.returncode}), check stderr sopra")
-              r = subprocess.run(
-                  ["python", "scripts/build_clean_catalog.py", "--check-gcs"],
-                  cwd=root,
-              )
-              if r.returncode != 0:
-                  print(f"  WARN: build_clean_catalog --check-gcs ha trovato errori (code {r.returncode})")
-          else:
-              print(f"\n  Skip clean catalog rebuild: nessun GCS push riuscito")
-
-          if failed_configs:
-              print("\nFAIL: one or more configs failed in post-merge full run:")
-              for slug in failed_configs:
-                  print(f" - {slug}")
-              sys.exit(1)
-          PY
+        run: python scripts/post_merge_runner.py sample-run --retry 3
 
       - name: Upload sample-run artifacts
         uses: actions/upload-artifact@v7
@@ -318,20 +155,12 @@ jobs:
       pull-requests: write
 
     steps:
-      - name: Checkout merge commit
-        uses: actions/checkout@v6
+      - uses: actions/checkout@v6
         with:
           ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
           fetch-depth: 0
-
-      - name: Set up Python
-        uses: actions/setup-python@v6
-        with:
-          python-version: "3.12"
-          cache: 'pip'
-
-      - name: Install dependencies
-        run: python -m pip install -r requirements.txt
+      - name: Python setup
+        uses: ./.github/actions/python-setup
 
       - name: Download detect output
         if: needs.detect.outputs.has_items == 'true'
@@ -382,71 +211,16 @@ jobs:
 
       - name: Build draft PR body
         env:
-          SAMPLE_RESULT: ${{ needs.sample_run.result }}
-          PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
           PR_TITLE: ${{ github.event.pull_request.title }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          SAMPLE_RESULT: ${{ needs.sample_run.result }}
+          SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
         run: |
-          python - <<'PY'
-          import json, os
-
-          with open("detect_output.json") as f:
-              detect = json.load(f)
-          items = detect.get("items", [])
-          configs = detect.get("configs", [])
-          sample_result = os.environ.get("SAMPLE_RESULT", "skipped")
-          sample_passed = sample_result == "success"
-          signals_changed = os.environ.get("PIPELINE_SIGNALS_CHANGED", "false") == "true"
-          pr_number = os.environ.get("PR_NUMBER", "?")
-          pr_title = os.environ.get("PR_TITLE", "?")
-          gcp_available = os.environ.get("GCP_WORKLOAD_IDENTITY_PROVIDER", "") != "" and os.environ.get("GCP_SERVICE_ACCOUNT", "") != ""
-
-          item_list = "\n".join(f'- `{i["slug"]}` ({i["kind"]}, `{i["root"]}`)' for i in items)
-          sample_list = "\n".join(
-              f'- `{c["config_path"]}` -> artifact `sample-run-{c["artifact_name"]}`'
-              for c in configs
-          ) or "- No sample-run config detected"
-
-          commands = []
-          for c in configs:
-              commands.append(
-                  f"python scripts/push_archive.py --mart --slug {c['push_slug']} "
-                  f"--create-bq-table --update-catalog"
-              )
-
-          body = "\n".join([
-              "## Post-merge registry handoff",
-              "",
-              f"Source PR: #{pr_number} — {pr_title}",
-              "",
-              "Changed candidate/support roots:",
-              "",
-              item_list,
-              "",
-              "## Automatic updates",
-              "",
-              f"- [x] Rebuilt `registry/pipeline_signals.json`{' (no diff)' if not signals_changed else ''}",
-              f"- [{'x' if sample_passed else ' '}] CI: full run completato (tutti gli anni)",
-              f"- [{'x' if gcp_available else ' '}] CI: clean parquet pushato su GCS",
-              f"- [{'x' if gcp_available else ' '}] CI: `registry/clean_catalog.json` aggiornato",
-              "- [ ] Maintainer: push mart + BQ (se serve)",
-              "",
-              "## Sample-run artifacts",
-              "",
-              sample_list,
-              "",
-              "## Maintainer commands",
-              "",
-              "```bash",
-              "\n".join(commands),
-              "```",
-              "",
-              "CI ha eseguito: full run (tutti gli anni), push clean su GCS, aggiornamento catalog. Il maintainer deve solo mart + BQ se serve.",
-          ])
-
-          with open("post_merge_pr_body.md", "w", encoding="utf-8") as f:
-              f.write(body + "\n")
-          PY
+          python scripts/post_merge_runner.py build-pr-body \
+            --pr-number "$PR_NUMBER" \
+            --pr-title "$PR_TITLE" \
+            --sample-result "$SAMPLE_RESULT" \
+            --signals-changed "$SIGNALS_CHANGED"
 
       - name: Create draft registry PR
         env:
