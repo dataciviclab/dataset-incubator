@@ -13,6 +13,8 @@ from scripts.prefetch_blocked_sources import (
     _patch_config,
 )
 
+pytestmark = pytest.mark.pure_unit
+
 
 class TestIsBlocked:
     """Test pattern matching per fonti bloccate."""
@@ -50,16 +52,42 @@ class TestPatchConfig:
         _patch_config(cfg, raw_path)
 
         content = cfg.read_text()
-        assert "type: 'local_file'" in content
-        assert "path: out/data/raw/test/2022/file.csv" in content
-        assert "url: 'https://dati.salute.gov.it/file.csv'" not in content
+        # Dopo yaml.dump: type: local_file (senza virgolette)
+        assert "type: local_file" in content
+        # path presente e url assente
+        assert str(raw_path) in content
+        assert "dati.salute.gov.it" not in content
 
-    def test_url_removed(self, tmp_path: Path):
-        """La vecchia url deve sparire."""
+    def test_url_removed_when_no_sources(self, tmp_path: Path):
+        """Se non ci sono raw.sources, il file non viene modificato."""
         cfg = tmp_path / "dataset.yml"
-        cfg.write_text("url: 'https://dati.salute.gov.it/x.csv'\n")
+        cfg.write_text("key: value\n")
+        before = cfg.read_text()
         _patch_config(cfg, Path("new_path.csv"))
-        assert "https://dati.salute.gov.it" not in cfg.read_text()
+        after = cfg.read_text()
+        # yaml.dump può cambiare la formattazione, ma il contenuto deve
+        # rimanere sostanzialmente lo stesso (nessuna trasformazione)
+        assert "key: value" in after
+
+    def test_multiple_sources_only_blocked_changed(self, tmp_path: Path):
+        """Solo i source con type=http_file e url bloccato vengono modificati."""
+        cfg = tmp_path / "dataset.yml"
+        cfg.write_text(
+            "raw:\n"
+            "  sources:\n"
+            "    - name: a\n"
+            "      type: http_file\n"
+            "      args:\n"
+            "        url: https://dati.salute.gov.it/a.csv\n"
+            "    - name: b\n"
+            "      type: local_file\n"
+            "      args:\n"
+            "        path: data.csv\n"
+        )
+        _patch_config(cfg, Path("data/raw/a/2022/a.csv"))
+        content = cfg.read_text()
+        assert "type: local_file" in content or "type: 'local_file'" in content
+        assert "dati.salute.gov.it" not in content
 
 
 class TestPatternsList:

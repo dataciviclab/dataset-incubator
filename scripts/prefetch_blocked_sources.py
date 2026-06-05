@@ -59,20 +59,24 @@ def _download_with_curl(url: str, dest: Path, proxy: str) -> None:
 
 
 def _patch_config(config_path: Path, raw_path: Path) -> None:
-    """Modifica dataset.yml: http_file → local_file, url → path."""
-    with open(config_path) as f:
-        content = f.read()
+    """Modifica dataset.yml: http_file → local_file, url → path.
 
-    # Sostituisci tipo e URL
-    content = content.replace('type: "http_file"', 'type: "local_file"')
-    content = re.sub(
-        r'url: "https?://[^"]+"',
-        f'path: "{raw_path}"',
-        content,
-    )
+    Usa il parser YAML invece di regex per gestire qualsiasi formato
+    di virgolette (singole, doppie, nessuna).
+    """
+    with open(config_path) as f:
+        cfg = yaml.safe_load(f)
+
+    for source in cfg.get("raw", {}).get("sources", []):
+        if source.get("type") == "http_file":
+            source["type"] = "local_file"
+            args = source.get("args", {})
+            if "url" in args:
+                args["path"] = str(raw_path)
+                del args["url"]
 
     with open(config_path, "w") as f:
-        f.write(content)
+        yaml.dump(cfg, f, default_flow_style=False, allow_unicode=True)
     print("  ✅ dataset.yml aggiornato: http_file → local_file")
 
 
