@@ -1,15 +1,11 @@
-# lab-connectors — infrastruttura condivisa: HTTP client, DuckDB safe_connect,
-# GCS client/paths, MCP core. Usata da scripts/ e tools/clean-query-mcp/.
-# Extras duckdb + gcs per safe_connect() e upload su GCS.
-lab-connectors[duckdb,gcs] @ git+https://github.com/dataciviclab/lab-connectors.git@v0.12.0
+# lab-connectors[gcs] per script che usano GCS direttamente (toolkit porta solo [duckdb])
+lab-connectors[duckdb,gcs] @ git+https://github.com/dataciviclab/lab-connectors.git@v0.13.4
 
 # dataciviclab-toolkit — motore RAW->CLEAN->MART. Usato da CI e localmente.
-dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.26.0
+dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.27.3
 
 # jsonschema — validazione registry schemas (pipeline_signals, clean_catalog)
 jsonschema>=4.0
 
 # pyarrow — per push_archive.py (GCS push post-merge)
 pyarrow>=24.0.0
-
-# pyyaml è transitivo da toolkit — non serve esplicitarlo

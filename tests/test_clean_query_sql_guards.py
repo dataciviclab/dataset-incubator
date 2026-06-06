@@ -73,7 +73,7 @@ class CleanQueryYearFilterContractTest(unittest.TestCase):
     Copre i tre tool che il fix ha modificato: count, preview (via _duckdb_read), time_series.
     """
 
-    @patch("lab_connectors.duckdb.safe_connect")
+    @patch("lab_connectors.duckdb.gcs_connect")
     @patch.object(server, "resolve_parquet_path")
     def test_count_injects_year_filter(
         self, mock_resolve: MagicMock, mock_sc: MagicMock
@@ -87,7 +87,7 @@ class CleanQueryYearFilterContractTest(unittest.TestCase):
         sql = conn.execute.call_args[0][0]
         self.assertIn("WHERE anno = 2024", sql)
 
-    @patch("lab_connectors.duckdb.safe_connect")
+    @patch("lab_connectors.duckdb.gcs_connect")
     @patch.object(server, "resolve_parquet_path")
     def test_count_no_year_no_filter(
         self, mock_resolve: MagicMock, mock_sc: MagicMock
@@ -101,7 +101,7 @@ class CleanQueryYearFilterContractTest(unittest.TestCase):
         sql = conn.execute.call_args[0][0]
         self.assertNotIn("WHERE", sql)
 
-    @patch("lab_connectors.duckdb.safe_connect")
+    @patch("lab_connectors.duckdb.gcs_connect")
     @patch.object(server, "resolve_parquet_path")
     def test_preview_injects_year_filter(
         self, mock_resolve: MagicMock, mock_sc: MagicMock
@@ -116,7 +116,7 @@ class CleanQueryYearFilterContractTest(unittest.TestCase):
         sql = conn.execute.call_args[0][0]
         self.assertIn("WHERE anno = 2024", sql)
 
-    @patch("lab_connectors.duckdb.safe_connect")
+    @patch("lab_connectors.duckdb.gcs_connect")
     @patch.object(server, "resolve_parquet_path")
     def test_time_series_injects_year_filter(
         self, mock_resolve: MagicMock, mock_sc: MagicMock
@@ -130,7 +130,7 @@ class CleanQueryYearFilterContractTest(unittest.TestCase):
         sql = conn.execute.call_args[0][0]
         self.assertIn("WHERE anno = 2024", sql)
 
-    @patch("lab_connectors.duckdb.safe_connect")
+    @patch("lab_connectors.duckdb.gcs_connect")
     @patch.object(server, "resolve_parquet_path")
     def test_time_series_no_year_no_filter(
         self, mock_resolve: MagicMock, mock_sc: MagicMock

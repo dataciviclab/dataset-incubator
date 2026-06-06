@@ -142,10 +142,10 @@ def _duckdb_read(
         if year_col:
             sql = _inject_year_filter(sql, year_col, year)
 
-    from lab_connectors.duckdb import safe_connect
+    from lab_connectors.duckdb import gcs_connect
     import concurrent.futures
 
-    with safe_connect() as conn:
+    with gcs_connect(parquet_paths[0]) as conn:
         conn.execute("PRAGMA disable_progress_bar")
         conn.execute("SET memory_limit='2GB'")
 
@@ -351,10 +351,10 @@ def run_query(
     def _exec() -> dict[str, Any]:
         _guard_max_rows(max_rows)
 
-        from lab_connectors.duckdb import safe_connect
+        from lab_connectors.duckdb import gcs_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with gcs_connect(parquet_paths[0]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             conn.execute("SET memory_limit='2GB'")
 
@@ -519,10 +519,10 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
             wrapped_sql = _inject_year_filter(wrapped_sql, year_col, year)
 
     def _exec() -> dict[str, Any]:
-        from lab_connectors.duckdb import safe_connect
+        from lab_connectors.duckdb import gcs_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with gcs_connect(parquet_paths[0]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             conn.execute("SET memory_limit='2GB'")
 
@@ -613,10 +613,10 @@ def time_series(
         wrapped_sql = _inject_year_filter(wrapped_sql, year_col, year)
 
     def _exec() -> dict[str, Any]:
-        from lab_connectors.duckdb import safe_connect
+        from lab_connectors.duckdb import gcs_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with gcs_connect(parquet_paths[0]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             conn.execute("SET memory_limit='2GB'")
 
@@ -689,10 +689,10 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
     )
 
     def _exec() -> dict[str, Any]:
-        from lab_connectors.duckdb import safe_connect
+        from lab_connectors.duckdb import gcs_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with gcs_connect(parquet_paths[0]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             conn.execute("SET memory_limit='2GB'")
 
@@ -859,10 +859,10 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
     wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
 
     def _exec() -> dict[str, Any]:
-        from lab_connectors.duckdb import safe_connect
+        from lab_connectors.duckdb import gcs_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with gcs_connect(parquet_paths[0]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             try:

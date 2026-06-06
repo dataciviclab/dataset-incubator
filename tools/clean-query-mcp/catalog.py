@@ -7,8 +7,6 @@ import time
 import json
 from pathlib import Path
 from typing import Any
-from urllib.parse import quote
-
 from lab_connectors.gcs import list_objects
 
 DI_ROOT = Path(__file__).resolve().parents[2]
@@ -174,9 +172,7 @@ def resolve_parquet_path(slug: str, year: int | None = None) -> list[str]:
                     if pattern.match(blob_name):
                         if year and f"/{year}/" not in blob_name:
                             continue
-                        urls.append(
-                            f"https://storage.googleapis.com/{bucket}/{quote(blob_name, safe='/._-')}"
-                        )
+                        urls.append(f"s3://{bucket}/{blob_name}")
             if not urls:
                 raise FileNotFoundError(
                     f"Nessun file trovato per pattern '{raw}'"
@@ -186,9 +182,7 @@ def resolve_parquet_path(slug: str, year: int | None = None) -> list[str]:
             with _gcs_res_lock:
                 _gcs_res_cache[cache_key] = (time.time(), urls)
         else:
-            urls = [
-                f"https://storage.googleapis.com/{bucket}/{quote(key, safe='/._-')}"
-            ]
+            urls = [f"s3://{bucket}/{key}"]
     else:
         raise ValueError(f"Tipo location non supportato: {loc['type']}")
 
