@@ -771,9 +771,9 @@
     },
     {
       "slug": "bdap_spese_stato",
-      "name": "Bdap Spese Stato",
-      "description": "",
-      "source": "",
+      "name": "BDAP Spese Stato",
+      "description": "Spese statali da BDAP, aggregate per amministrazione, missione, programma, macroaggregato",
+      "source": "MEF-BDAP",
       "source_id": "openbdap",
       "period": {
         "start": 2008,
@@ -783,74 +783,74 @@
         {
           "name": "esercizio_finanziario",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "stato_previsione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Stato della previsione (Previsioni definitive)"
         },
         {
           "name": "amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Amministrazione dello Stato"
         },
         {
           "name": "missione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Missione di spesa"
         },
         {
           "name": "programma",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Programma di spesa"
         },
         {
           "name": "udv_livello_1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Unità di voto livello 1"
         },
         {
           "name": "udv_livello_2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Unità di voto livello 2"
         },
         {
           "name": "udv_livello_3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Unità di voto livello 3"
         },
         {
           "name": "codice_puntato_udv",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice puntato unità di voto"
         },
         {
           "name": "macroaggregato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Macroaggregato economico"
         },
         {
           "name": "previsioni_definitive_cp",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Previsioni definitive competenze di cassa"
         },
         {
           "name": "previsioni_definitive_cs",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Previsioni definitive competenze di competenza"
         }
       ],
       "location": {
