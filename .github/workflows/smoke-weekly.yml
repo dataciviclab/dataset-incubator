@@ -20,10 +20,22 @@ jobs:
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
 
+      - name: Generate candidate batch (dinamico)
+        run: |
+          # Genera batch da candidates/*/dataset.yml invece di mantenere
+          # batches/green.txt manualmente. Ogni aggiunta/rimozione candidate
+          # viene inclusa automaticamente al prossimo run.
+          for dir in candidates/*/; do
+            if [ -f "${dir}dataset.yml" ]; then
+              echo "${dir}dataset.yml"
+            fi
+          done > /tmp/current_batch.txt
+          echo "Generated batch: $(wc -l < /tmp/current_batch.txt) candidates"
+
       - name: Weekly probe — raggiungibilità fonti
         id: probe
         run: |
-          python -m toolkit.cli.app batch --configs batches/green.txt --step probe --json > /tmp/probe_report.json 2>/tmp/probe_stderr.log
+          python -m toolkit.cli.app batch --configs /tmp/current_batch.txt --step probe --json > /tmp/probe_report.json 2>/tmp/probe_stderr.log
           echo "passed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['passed'])")" >> "$GITHUB_OUTPUT"
           echo "failed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['failed'])")" >> "$GITHUB_OUTPUT"
           echo "total=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['total'])")" >> "$GITHUB_OUTPUT"
