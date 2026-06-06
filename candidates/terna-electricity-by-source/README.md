@@ -1,4 +1,4 @@
-# Terna electricity by source 2023-2024
+# Terna electricity by source 2015-2024
 
 > **Promosso.** Il layer pubblico vive in `dataciviclab/analisi/terna-electricity-by-source`. I file qui sotto sono storico di incubazione.
 
@@ -16,7 +16,7 @@ Come cambia tra 2015 e 2024 il peso delle diverse fonti nel mix di produzione el
 ## Perche vale la pena testarlo
 
 - e una fonte pubblica, ufficiale e gia scaricabile con URL stabile
-- il confronto 2023 vs 2024 puo dare un primo output molto leggibile
+- il confronto storico 2015-2024 puo dare un output molto leggibile
 - puo diventare un filone ambiente senza aprire subito un repo dedicato
 
 ## Output minimo atteso

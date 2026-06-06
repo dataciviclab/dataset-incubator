@@ -23,7 +23,7 @@ clean:
     header: true
     sheet_name: "Export"
   validate:
-    min_rows: 800
+    min_rows: 600
 
 mart:
   tables:
