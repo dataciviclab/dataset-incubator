@@ -23,7 +23,7 @@ classifiers = [
 ]
 
 dependencies = [
-"lab-connectors[duckdb,gcs] @ git+https://github.com/dataciviclab/lab-connectors.git@v0.11.0",
+"lab-connectors[duckdb,gcs] @ git+https://github.com/dataciviclab/lab-connectors.git@v0.13.1",
 "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.25.0",
   "jsonschema>=4.0",
 ]
