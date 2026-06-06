@@ -145,7 +145,7 @@ def _duckdb_read(
     from lab_connectors.duckdb import safe_connect
     import concurrent.futures
 
-    with safe_connect() as conn:
+    with safe_connect(extensions=["httpfs"]) as conn:
         conn.execute("PRAGMA disable_progress_bar")
         conn.execute("SET memory_limit='2GB'")
 
@@ -354,7 +354,7 @@ def run_query(
         from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with safe_connect(extensions=["httpfs"]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             conn.execute("SET memory_limit='2GB'")
 
@@ -522,7 +522,7 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
         from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with safe_connect(extensions=["httpfs"]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             conn.execute("SET memory_limit='2GB'")
 
@@ -616,7 +616,7 @@ def time_series(
         from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with safe_connect(extensions=["httpfs"]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             conn.execute("SET memory_limit='2GB'")
 
@@ -692,7 +692,7 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
         from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with safe_connect(extensions=["httpfs"]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             conn.execute("SET memory_limit='2GB'")
 
@@ -862,7 +862,7 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
         from lab_connectors.duckdb import safe_connect
         import concurrent.futures
 
-        with safe_connect() as conn:
+        with safe_connect(extensions=["httpfs"]) as conn:
             conn.execute("PRAGMA disable_progress_bar")
             pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             try:
