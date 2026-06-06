@@ -27,7 +27,9 @@ class TestGuardMaxRows:
 
 class TestValidateSelectSql:
     def test_allows_valid_select(self):
-        assert server._validate_select_sql("SELECT * FROM clean_input") == "SELECT * FROM clean_input"
+        assert (
+            server._validate_select_sql("SELECT * FROM clean_input") == "SELECT * FROM clean_input"
+        )
 
     def test_allows_with(self):
         assert server._validate_select_sql("WITH t AS (SELECT 1) SELECT * FROM t")
@@ -89,9 +91,7 @@ class TestValidateScope:
         server._validate_scope("SELECT COUNT(*) FROM clean_input")
 
     def test_allows_join_clean_input(self):
-        server._validate_scope(
-            "SELECT * FROM clean_input JOIN clean_input AS ci USING (id)"
-        )
+        server._validate_scope("SELECT * FROM clean_input JOIN clean_input AS ci USING (id)")
 
     def test_blocks_read_parquet(self):
         with pytest.raises(server.DuckdbClientError, match="read_parquet"):
@@ -192,7 +192,10 @@ def test_search_datasets_empty_query():
 
 def test_cache_stats(monkeypatch):
     import catalog
-    monkeypatch.setattr(catalog, "gcs_cache_stats", lambda: {"parquet_files": 10, "cached_bytes": 1000})
+
+    monkeypatch.setattr(
+        catalog, "gcs_cache_stats", lambda: {"parquet_files": 10, "cached_bytes": 1000}
+    )
     result = server.cache_stats()
     assert result["parquet_files"] == 10
 
@@ -257,7 +260,9 @@ class TestAggregate:
 
     def test_with_filters(self, monkeypatch):
         _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "valore", ["regione"], filters="anno = 2023 AND regione = 'Lombardia'")
+        result = server.aggregate(
+            _SLUG, "valore", ["regione"], filters="anno = 2023 AND regione = 'Lombardia'"
+        )
         assert "WHERE" in result["sql"]
         assert "Lombardia" in result["sql"]
 

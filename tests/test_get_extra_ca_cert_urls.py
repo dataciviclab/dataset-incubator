@@ -3,6 +3,7 @@
 Contratto: get_urls() estrae URL extra_ca_cert_url/extra_ca_cert_urls da YAML.
 Usato in fase di fetch raw per certificati CA aggiuntivi.
 """
+
 from __future__ import annotations
 
 import tempfile
@@ -50,10 +51,13 @@ raw:
           - https://example.test/b.crt
           - https://example.test/a.crt
 """)
-            self.assertEqual(get_urls(cfg), [
-                "https://example.test/a.crt",
-                "https://example.test/b.crt",
-            ])
+            self.assertEqual(
+                get_urls(cfg),
+                [
+                    "https://example.test/a.crt",
+                    "https://example.test/b.crt",
+                ],
+            )
 
     def test_malformed_yaml_raises(self) -> None:
         with tempfile.TemporaryDirectory() as td:

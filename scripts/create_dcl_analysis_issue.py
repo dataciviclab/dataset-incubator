@@ -37,12 +37,12 @@ def main() -> int:
 
         body = (
             f"## Nuovo dataset pronto per analisi\n\n"
-f"Il dataset `{slug}` è stato aggiunto al catalogo "
-f"({pr_ref}).\n\n"
-f"### Dati disponibili\n\n"
-f"- **Contratto tecnico**: `{root}/{slug}/` in dataset-incubator\n"
-f"- **Parquet (se GCS OK)**: `gs://dataciviclab-clean/{slug}/`\n"
-f"- **Catalogo**: {slug} in registry/clean_catalog.json\n\n"
+            f"Il dataset `{slug}` è stato aggiunto al catalogo "
+            f"({pr_ref}).\n\n"
+            f"### Dati disponibili\n\n"
+            f"- **Contratto tecnico**: `{root}/{slug}/` in dataset-incubator\n"
+            f"- **Parquet (se GCS OK)**: `gs://dataciviclab-clean/{slug}/`\n"
+            f"- **Catalogo**: {slug} in registry/clean_catalog.json\n\n"
             f"### Prossimo passo\n\n"
             f"Usare [new-analysis](https://github.com/dataciviclab/dataciviclab/blob/main/skills/new-analysis.md) "
             f"per aprire un'analisi in `dataciviclab/analisi/{slug}/`:\n\n"
@@ -55,13 +55,20 @@ f"- **Catalogo**: {slug} in registry/clean_catalog.json\n\n"
 
         result = subprocess.run(
             [
-                "gh", "issue", "create",
-                "--repo", "dataciviclab/dataciviclab",
-                "--title", title,
-                "--label", "analisi",
-                "--body", body,
+                "gh",
+                "issue",
+                "create",
+                "--repo",
+                "dataciviclab/dataciviclab",
+                "--title",
+                title,
+                "--label",
+                "analisi",
+                "--body",
+                body,
             ],
-            capture_output=True, text=True,
+            capture_output=True,
+            text=True,
         )
 
         if result.returncode != 0:

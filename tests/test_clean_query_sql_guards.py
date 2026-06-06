@@ -24,9 +24,7 @@ class CleanQuerySqlGuardTest(unittest.TestCase):
         self.assert_allowed("SELECT COUNT(*) FROM clean_input")
 
     def test_allows_cte(self) -> None:
-        self.assert_allowed(
-            "WITH t AS (SELECT * FROM clean_input) SELECT COUNT(*) FROM t"
-        )
+        self.assert_allowed("WITH t AS (SELECT * FROM clean_input) SELECT COUNT(*) FROM t")
 
     def test_blocks_direct_parquet_read(self) -> None:
         self.assert_blocked("SELECT * FROM read_parquet('gs://bucket/file.parquet')")
@@ -75,9 +73,7 @@ class CleanQueryYearFilterContractTest(unittest.TestCase):
 
     @patch("lab_connectors.duckdb.gcs_connect")
     @patch.object(server, "resolve_parquet_path")
-    def test_count_injects_year_filter(
-        self, mock_resolve: MagicMock, mock_sc: MagicMock
-    ) -> None:
+    def test_count_injects_year_filter(self, mock_resolve: MagicMock, mock_sc: MagicMock) -> None:
         mock_resolve.return_value = ["gs://fake/giustizia_penale_indicatori_2024.parquet"]
         conn = _make_mock_conn()
         mock_sc.return_value.__enter__.return_value = conn
@@ -89,9 +85,7 @@ class CleanQueryYearFilterContractTest(unittest.TestCase):
 
     @patch("lab_connectors.duckdb.gcs_connect")
     @patch.object(server, "resolve_parquet_path")
-    def test_count_no_year_no_filter(
-        self, mock_resolve: MagicMock, mock_sc: MagicMock
-    ) -> None:
+    def test_count_no_year_no_filter(self, mock_resolve: MagicMock, mock_sc: MagicMock) -> None:
         mock_resolve.return_value = ["gs://fake/giustizia_penale_indicatori_2024.parquet"]
         conn = _make_mock_conn()
         mock_sc.return_value.__enter__.return_value = conn
@@ -103,9 +97,7 @@ class CleanQueryYearFilterContractTest(unittest.TestCase):
 
     @patch("lab_connectors.duckdb.gcs_connect")
     @patch.object(server, "resolve_parquet_path")
-    def test_preview_injects_year_filter(
-        self, mock_resolve: MagicMock, mock_sc: MagicMock
-    ) -> None:
+    def test_preview_injects_year_filter(self, mock_resolve: MagicMock, mock_sc: MagicMock) -> None:
         """preview usa _duckdb_read, che ora inietta il filtro anno."""
         mock_resolve.return_value = ["gs://fake/giustizia_penale_indicatori_2024.parquet"]
         conn = _make_mock_conn()

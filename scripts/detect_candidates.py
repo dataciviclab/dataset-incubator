@@ -78,12 +78,16 @@ def _git_diff_files(base_sha: str | None, head_sha: str) -> list[str]:
     if base_sha:
         result = subprocess.run(
             ["git", "diff", "--name-only", base_sha, head_sha],
-            capture_output=True, text=True, cwd=ROOT,
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
         )
     else:
         result = subprocess.run(
             ["git", "diff", "--name-only", "HEAD"],
-            capture_output=True, text=True, cwd=ROOT,
+            capture_output=True,
+            text=True,
+            cwd=ROOT,
         )
     if result.returncode != 0:
         raise subprocess.CalledProcessError(
@@ -137,29 +141,33 @@ def _detect_from_files(files: list[str]) -> tuple[list[dict], list[dict]]:
                 config_path = source_dir / "dataset.yml"
                 if not config_path.exists():
                     continue
-                configs.append({
-                    **item,
-                    "config_path": config_path.as_posix(),
-                    "config_exists": True,
-                    "push_slug": f"{item['slug']}_{source_dir.name}",
-                    "artifact_name": f"{item['slug']}-{source_dir.name}",
-                    "year": _resolve_year(config_path),
-                    "is_nested": True,
-                })
+                configs.append(
+                    {
+                        **item,
+                        "config_path": config_path.as_posix(),
+                        "config_exists": True,
+                        "push_slug": f"{item['slug']}_{source_dir.name}",
+                        "artifact_name": f"{item['slug']}-{source_dir.name}",
+                        "year": _resolve_year(config_path),
+                        "is_nested": True,
+                    }
+                )
         else:
             config_path = root / "dataset.yml"
             if not config_path.exists():
                 continue
             ds_name = _dataset_name(config_path)
-            configs.append({
-                **item,
-                "config_path": config_path.as_posix(),
-                "config_exists": True,
-                "push_slug": ds_name or item["slug"],
-                "artifact_name": item["slug"],
-                "year": _resolve_year(config_path),
-                "is_nested": False,
-            })
+            configs.append(
+                {
+                    **item,
+                    "config_path": config_path.as_posix(),
+                    "config_exists": True,
+                    "push_slug": ds_name or item["slug"],
+                    "artifact_name": item["slug"],
+                    "year": _resolve_year(config_path),
+                    "is_nested": False,
+                }
+            )
 
     return items, configs
 
@@ -197,51 +205,69 @@ def detect_candidates(
                     if not source_dir.is_dir():
                         continue
                     cfg = source_dir / "dataset.yml"
-                    configs.append({
-                        "kind": kind, "slug": slug, "config_path": cfg.as_posix(),
-                        "config_exists": cfg.exists(),
-                        "push_slug": f"{slug}_{source_dir.name}",
-                        "artifact_name": f"{slug}-{source_dir.name}",
-                        "year": _resolve_year(cfg) if cfg.exists() else 0,
-                        "is_nested": True,
-                    })
+                    configs.append(
+                        {
+                            "kind": kind,
+                            "slug": slug,
+                            "config_path": cfg.as_posix(),
+                            "config_exists": cfg.exists(),
+                            "push_slug": f"{slug}_{source_dir.name}",
+                            "artifact_name": f"{slug}-{source_dir.name}",
+                            "year": _resolve_year(cfg) if cfg.exists() else 0,
+                            "is_nested": True,
+                        }
+                    )
             else:
                 cfg = root_candidates / "dataset.yml"
                 cfg_exists = cfg.exists()
                 ds_name = _dataset_name(cfg) if cfg_exists else None
-                configs.append({
-                    "kind": kind, "slug": slug, "config_path": cfg.as_posix(),
-                    "config_exists": cfg_exists,
-                    "push_slug": ds_name or slug,
-                    "artifact_name": slug,
-                    "year": _resolve_year(cfg) if cfg_exists else 0,
-                    "is_nested": False,
-                })
+                configs.append(
+                    {
+                        "kind": kind,
+                        "slug": slug,
+                        "config_path": cfg.as_posix(),
+                        "config_exists": cfg_exists,
+                        "push_slug": ds_name or slug,
+                        "artifact_name": slug,
+                        "year": _resolve_year(cfg) if cfg_exists else 0,
+                        "is_nested": False,
+                    }
+                )
         root_compose = ROOT / "compose" / slug
         if root_compose.exists():
             kind = "compose"
             root = f"compose/{slug}"
             items.append({"kind": kind, "slug": slug, "root": root})
             cfg = root_compose / "dataset.yml"
-            configs.append({
-                "kind": kind, "slug": slug, "config_path": cfg.as_posix(),
-                "config_exists": cfg.exists(),
-                "push_slug": slug, "artifact_name": slug,
-                "year": _resolve_year(cfg) if cfg.exists() else 0,
-                "is_nested": False,
-            })
+            configs.append(
+                {
+                    "kind": kind,
+                    "slug": slug,
+                    "config_path": cfg.as_posix(),
+                    "config_exists": cfg.exists(),
+                    "push_slug": slug,
+                    "artifact_name": slug,
+                    "year": _resolve_year(cfg) if cfg.exists() else 0,
+                    "is_nested": False,
+                }
+            )
         elif root_support.exists():
             kind = "support_dataset"
             root = f"support_datasets/{slug}"
             items.append({"kind": kind, "slug": slug, "root": root})
             cfg = root_support / "dataset.yml"
-            configs.append({
-                "kind": kind, "slug": slug, "config_path": cfg.as_posix(),
-                "config_exists": cfg.exists(),
-                "push_slug": slug, "artifact_name": slug,
-                "year": _resolve_year(cfg) if cfg.exists() else 0,
-                "is_nested": False,
-            })
+            configs.append(
+                {
+                    "kind": kind,
+                    "slug": slug,
+                    "config_path": cfg.as_posix(),
+                    "config_exists": cfg.exists(),
+                    "push_slug": slug,
+                    "artifact_name": slug,
+                    "year": _resolve_year(cfg) if cfg.exists() else 0,
+                    "is_nested": False,
+                }
+            )
     else:
         # Git diff mode
         if head_sha is None:
@@ -262,7 +288,9 @@ def main() -> int:
     parser.add_argument("--base-sha", help="Base commit SHA for git diff")
     parser.add_argument("--head-sha", help="Head commit SHA for git diff (default: HEAD)")
     parser.add_argument("--slug", help="Detect only a specific slug (local use)")
-    parser.add_argument("--files", action="store_true", help="Read file list from stdin (gh pr view mode)")
+    parser.add_argument(
+        "--files", action="store_true", help="Read file list from stdin (gh pr view mode)"
+    )
     parser.add_argument("--json", action="store_true", help="Output JSON (default: text summary)")
 
     args = parser.parse_args()

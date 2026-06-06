@@ -16,7 +16,10 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-from _catalog_helpers import extract_slugs as _extract_slugs, read_catalog_json as _read_catalog_json
+from _catalog_helpers import (
+    extract_slugs as _extract_slugs,
+    read_catalog_json as _read_catalog_json,
+)
 
 pytestmark = pytest.mark.contract
 
@@ -31,9 +34,9 @@ FIXTURE_CATALOG = {
 }
 
 FIXTURE_ITEMS = [
-    {"slug": "bdap-lea", "kind": "candidate"},            # già in catalogo
+    {"slug": "bdap-lea", "kind": "candidate"},  # già in catalogo
     {"slug": "dipendenti-pubblici", "kind": "candidate"},  # già in catalogo
-    {"slug": "mega-nuovo-dataset", "kind": "candidate"},   # NUOVO
+    {"slug": "mega-nuovo-dataset", "kind": "candidate"},  # NUOVO
 ]
 
 

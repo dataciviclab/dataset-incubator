@@ -124,9 +124,7 @@ class NotebookHelper:
                 cfg = yaml.safe_load(candidate.read_text())
                 anno = cfg["dataset"]["years"][-1]
                 return candidate, anno
-        raise FileNotFoundError(
-            f"dataset.yml non trovato risalendo da {start}"
-        )
+        raise FileNotFoundError(f"dataset.yml non trovato risalendo da {start}")
 
 
 # ── utility di visualizzazione ────────────────────────────────────────────

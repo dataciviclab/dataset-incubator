@@ -10,8 +10,12 @@ from toolkit.core.dataset_loader import load_dataset_manifest
 ROOT = Path(__file__).resolve().parents[1]
 
 LayoutType = Literal[
-    "single-source", "multi-source", "ambiguous", "unknown",
-    "support-dataset", "compose",
+    "single-source",
+    "multi-source",
+    "ambiguous",
+    "unknown",
+    "support-dataset",
+    "compose",
 ]
 
 # Convenzioni slug contratto cross-repo
@@ -56,8 +60,7 @@ def detect_candidate_layout(base_dir: Path) -> dict:
 
 def has_mart_sql(sql_dir: Path) -> bool:
     has_root_mart = any(
-        path.name.startswith("mart") and path.suffix == ".sql"
-        for path in sql_dir.glob("*.sql")
+        path.name.startswith("mart") and path.suffix == ".sql" for path in sql_dir.glob("*.sql")
     )
     has_nested_mart = any(path.suffix == ".sql" for path in (sql_dir / "mart").glob("*.sql"))
     return has_root_mart or has_nested_mart
@@ -75,9 +78,7 @@ def validate_dir_name(base_dir: Path, failures: list[str]) -> None:
     dir_name = base_dir.name
     if not DIR_NAME_RE.match(dir_name):
         rel = base_dir.relative_to(ROOT).as_posix()
-        failures.append(
-            f"{rel}: invalid directory name '{dir_name}' — must match ^[a-z0-9-]+$"
-        )
+        failures.append(f"{rel}: invalid directory name '{dir_name}' — must match ^[a-z0-9-]+$")
 
 
 def validate_dataset_name_yml(yml_path: Path, failures: list[str]) -> None:
@@ -91,9 +92,7 @@ def validate_dataset_name_yml(yml_path: Path, failures: list[str]) -> None:
         return
     if name and not DATASET_NAME_RE.match(name):
         rel = yml_path.relative_to(ROOT)
-        failures.append(
-            f"{rel}: invalid dataset.name '{name}' — must match ^[a-z0-9_]+$"
-        )
+        failures.append(f"{rel}: invalid dataset.name '{name}' — must match ^[a-z0-9_]+$")
 
 
 def validate_single_source(base_dir: Path, failures: list[str]) -> None:
@@ -212,9 +211,7 @@ def validate_entry(base_dir: Path, failures: list[str]) -> None:
         validate_multi_source(base_dir, failures)
         return
 
-    failures.append(
-        f"{rel_str} has no valid structure: expected root dataset.yml or sources/"
-    )
+    failures.append(f"{rel_str} has no valid structure: expected root dataset.yml or sources/")
 
 
 def main() -> int:

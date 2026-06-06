@@ -4,6 +4,7 @@ Fixture condivise per i test di dataset-incubator.
 Aggiunge scripts/ e tools/clean-query-mcp/ al path di default,
 così nessun test deve ripetere sys.path.insert().
 """
+
 import sys
 from pathlib import Path
 from typing import Any
@@ -55,6 +56,7 @@ def fake_root(tmp_path: Path) -> Path:
 def _make_yml(path: Path, content: dict[str, Any]) -> None:
     """Scrive un dataset.yml nella directory indicata."""
     import yaml
+
     path.parent.mkdir(parents=True, exist_ok=True)
     with open(path, "w", encoding="utf-8") as f:
         yaml.dump(content, f, default_flow_style=False)
@@ -74,16 +76,19 @@ def single_source_candidate(tmp_path: Path) -> Path:
     (sql_dir / "mart.sql").write_text("SELECT * FROM clean", encoding="utf-8")
 
     # dataset.yml
-    _make_yml(base / "dataset.yml", {
-        "dataset": {
-            "name": "OK Dataset",
-            "years": [2020, 2021, 2022],
-            "source_id": "test-source-id",
+    _make_yml(
+        base / "dataset.yml",
+        {
+            "dataset": {
+                "name": "OK Dataset",
+                "years": [2020, 2021, 2022],
+                "source_id": "test-source-id",
+            },
+            "raw": {
+                "sources": [{"name": "Fonte Test", "url": "https://example.com"}],
+            },
         },
-        "raw": {
-            "sources": [{"name": "Fonte Test", "url": "https://example.com"}],
-        },
-    })
+    )
 
     return base
 
@@ -97,10 +102,13 @@ def single_source_no_mart(tmp_path: Path) -> Path:
 
     (sql_dir / "clean.sql").write_text("SELECT 1", encoding="utf-8")
 
-    _make_yml(base / "dataset.yml", {
-        "dataset": {"name": "No Mart", "years": [2021]},
-        "raw": {"sources": [{"name": "Fonte"}]},
-    })
+    _make_yml(
+        base / "dataset.yml",
+        {
+            "dataset": {"name": "No Mart", "years": [2021]},
+            "raw": {"sources": [{"name": "Fonte"}]},
+        },
+    )
 
     return base
 
@@ -125,19 +133,25 @@ def multi_source_candidate(tmp_path: Path) -> Path:
     src_a = sources_dir / "fonte-a"
     (src_a / "sql").mkdir(parents=True)
     (src_a / "sql" / "clean.sql").write_text("SELECT 1", encoding="utf-8")
-    _make_yml(src_a / "dataset.yml", {
-        "dataset": {"name": "Fonte A", "years": [2020]},
-        "raw": {"sources": [{"name": "Fonte A Data"}]},
-    })
+    _make_yml(
+        src_a / "dataset.yml",
+        {
+            "dataset": {"name": "Fonte A", "years": [2020]},
+            "raw": {"sources": [{"name": "Fonte A Data"}]},
+        },
+    )
 
     # Fonte B
     src_b = sources_dir / "fonte-b"
     (src_b / "sql").mkdir(parents=True)
     (src_b / "sql" / "clean.sql").write_text("SELECT 2", encoding="utf-8")
-    _make_yml(src_b / "dataset.yml", {
-        "dataset": {"name": "Fonte B", "years": [2021]},
-        "raw": {"sources": [{"name": "Fonte B Data"}]},
-    })
+    _make_yml(
+        src_b / "dataset.yml",
+        {
+            "dataset": {"name": "Fonte B", "years": [2021]},
+            "raw": {"sources": [{"name": "Fonte B Data"}]},
+        },
+    )
 
     # Compose layer con mart
     (compose_dir / "sql").mkdir(parents=True)
@@ -154,10 +168,13 @@ def compose_candidate(tmp_path: Path) -> Path:
     sql_dir.mkdir(parents=True)
     (sql_dir / "mart.sql").write_text("SELECT * FROM clean", encoding="utf-8")
 
-    _make_yml(base / "dataset.yml", {
-        "dataset": {"name": "Aggregato", "years": [2020, 2021]},
-        "support": [{"name": "Dataset Base"}],
-    })
+    _make_yml(
+        base / "dataset.yml",
+        {
+            "dataset": {"name": "Aggregato", "years": [2020, 2021]},
+            "support": [{"name": "Dataset Base"}],
+        },
+    )
 
     return base
 

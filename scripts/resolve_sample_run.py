@@ -94,11 +94,13 @@ def resolve(config_path: str) -> dict:
                 support_rel = Path(support_cfg_path).relative_to(ROOT)
             except ValueError:
                 support_rel = Path(support_cfg_path)
-            support_entries.append({
-                "name": entry.get("name", ""),
-                "config": str(support_rel),
-                "years": entry.get("years", []),
-            })
+            support_entries.append(
+                {
+                    "name": entry.get("name", ""),
+                    "config": str(support_rel),
+                    "years": entry.get("years", []),
+                }
+            )
 
     has_support = len(support_entries) > 0
 
@@ -129,11 +131,7 @@ def resolve(config_path: str) -> dict:
         "is_nested": is_nested,
         "has_support": has_support,
         "support": support_entries,
-        "note": (
-            "nested config -- run via source layer"
-            if is_nested
-            else ""
-        ),
+        "note": ("nested config -- run via source layer" if is_nested else ""),
     }
 
 

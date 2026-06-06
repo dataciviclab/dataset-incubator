@@ -1,4 +1,5 @@
 """Test per scripts/prefetch_blocked_sources.py."""
+
 from __future__ import annotations
 
 from pathlib import Path
@@ -67,7 +68,11 @@ class TestPatchConfig:
             "      args:\n"
             "        url: https://www.istat.it/data.zip\n"
         )
-        _patch_config(cfg, Path("data/raw/salute/bloccato.csv"), blocked_url="https://dati.salute.gov.it/bloccato.csv")
+        _patch_config(
+            cfg,
+            Path("data/raw/salute/bloccato.csv"),
+            blocked_url="https://dati.salute.gov.it/bloccato.csv",
+        )
 
         content = cfg.read_text()
         # Quella bloccata: local_file, niente url

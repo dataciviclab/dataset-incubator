@@ -10,7 +10,6 @@ Contratto:
 
 from __future__ import annotations
 
-import os
 
 import pytest
 
@@ -287,6 +286,7 @@ class TestGcsCache:
     def test_cache_stats_with_entries(self):
         """Cache con entry -> statistiche corrette."""
         import time
+
         now = time.time()
         catalog._gcs_res_cache.clear()
         catalog._gcs_res_cache[("ds1", 2023)] = (now, ["url1", "url2"])
@@ -302,6 +302,7 @@ class TestGcsCache:
         """Entry scadute -> non conteggiate come valide."""
         catalog._gcs_res_cache.clear()
         import time
+
         old = time.time() - catalog._gcs_res_cache_ttl - 10
         catalog._gcs_res_cache[("old", 2020)] = (old, ["url"])
         stats = catalog.gcs_cache_stats()

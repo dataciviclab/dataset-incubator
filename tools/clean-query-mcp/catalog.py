@@ -17,10 +17,9 @@ _cache_lock = threading.Lock()
 
 # GCS resolution cache: { (slug, year): (timestamp, [urls]) }
 _gcs_res_cache: dict[tuple, tuple[float, list[str]]] = {}
-_gcs_res_cache_ttl = int(
-    os.environ.get("CLEAN_QUERY_GCS_CACHE_TTL", "300")
-)  # 5 min default
+_gcs_res_cache_ttl = int(os.environ.get("CLEAN_QUERY_GCS_CACHE_TTL", "300"))  # 5 min default
 _gcs_res_lock = threading.Lock()
+
 
 # GCS auth mode: auto = try SDK, fallback HTTP; true = force SDK; false = force HTTP
 def _gcs_auth_mode() -> bool | None:
@@ -73,14 +72,16 @@ def search_datasets(query: str) -> list[dict[str, Any]]:
         desc = ds.get("description", "").lower()
         source = ds.get("source", "").lower()
         if q in name or q in desc or q in source:
-            matches.append({
-                "slug": ds["slug"],
-                "name": ds["name"],
-                "description": ds["description"],
-                "source": ds.get("source"),
-                "period_start": ds["period"]["start"],
-                "period_end": ds["period"]["end"],
-            })
+            matches.append(
+                {
+                    "slug": ds["slug"],
+                    "name": ds["name"],
+                    "description": ds["description"],
+                    "source": ds.get("source"),
+                    "period_start": ds["period"]["start"],
+                    "period_end": ds["period"]["end"],
+                }
+            )
     return matches
 
 
@@ -89,9 +90,7 @@ def describe_dataset(slug: str) -> dict[str, Any]:
     ds = next((d for d in catalog if d["slug"] == slug), None)
     if ds is None:
         slugs = [d["slug"] for d in catalog]
-        return {
-            "error": f"Dataset '{slug}' non trovato. Disponibili: {', '.join(slugs)}"
-        }
+        return {"error": f"Dataset '{slug}' non trovato. Disponibili: {', '.join(slugs)}"}
     return {
         "slug": ds["slug"],
         "name": ds["name"],
@@ -175,8 +174,7 @@ def resolve_parquet_path(slug: str, year: int | None = None) -> list[str]:
                         urls.append(f"s3://{bucket}/{blob_name}")
             if not urls:
                 raise FileNotFoundError(
-                    f"Nessun file trovato per pattern '{raw}'"
-                    + (f" anno={year}" if year else "")
+                    f"Nessun file trovato per pattern '{raw}'" + (f" anno={year}" if year else "")
                 )
             # Cache the result
             with _gcs_res_lock:
@@ -194,9 +192,7 @@ def gcs_cache_stats() -> dict[str, Any]:
     now = time.time()
     with _gcs_res_lock:
         total = len(_gcs_res_cache)
-        valid = sum(
-            1 for ts, _ in _gcs_res_cache.values() if now - ts < _gcs_res_cache_ttl
-        )
+        valid = sum(1 for ts, _ in _gcs_res_cache.values() if now - ts < _gcs_res_cache_ttl)
         entries = []
         for (slug, year), (ts, urls) in sorted(
             _gcs_res_cache.items(), key=lambda item: (item[0][0], item[0][1] or 0)
