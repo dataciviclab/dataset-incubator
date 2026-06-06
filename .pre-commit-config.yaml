@@ -1,0 +1,30 @@
+# Pre-commit hooks per dataset-incubator.
+# Installare con: pre-commit install
+# Run su tutti i file: pre-commit run --all-files
+#
+# candidates/, support_datasets/, templates/ sono esclusi dagli hook
+# che modificano file (trailing-whitespace, end-of-file-fixer) per
+# evitare che ogni normalizzazione inneschi toolkit-check CI su
+# decine di candidate.
+repos:
+  - repo: https://github.com/pre-commit/pre-commit-hooks
+    rev: v5.0.0
+    hooks:
+      - id: trailing-whitespace
+        exclude: '^(candidates/|support_datasets/|templates/)'
+      - id: end-of-file-fixer
+        exclude: '^(candidates/|support_datasets/|templates/)'
+      - id: check-yaml
+      - id: check-json
+      - id: check-added-large-files
+      - id: check-merge-conflict
+      - id: detect-private-key
+
+  - repo: https://github.com/astral-sh/ruff-pre-commit
+    rev: v0.15.16
+    hooks:
+      - id: ruff
+        args: [--fix]
+        exclude: '\.ipynb$'
+      - id: ruff-format
+        exclude: '\.ipynb$'

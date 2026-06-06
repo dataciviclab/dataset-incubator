@@ -22,11 +22,11 @@ body:
       label: Checklist promozione
       description: Conferma gli elementi minimi richiesti per la promozione.
       options:
-        - label: pipeline `clean` + `mart` stabile sul perimetro dichiarato
-        - label: notebook `v0` presente ed eseguibile, se il filone prevede notebook
-        - label: `README.md` del candidate aggiornato con stato, perimetro e gate aperti
-        - label: criterio di promozione dichiarato nel `README.md`
-        - label: issue o discussion pubblica gia' aperta, se il target e' `dataciviclab`
+        - label: "pipeline `clean` + `mart` stabile sul perimetro dichiarato"
+        - label: "notebook `v0` presente ed eseguibile, se il filone prevede notebook"
+        - label: "`README.md` del candidate aggiornato con stato, perimetro e gate aperti"
+        - label: "criterio di promozione dichiarato nel `README.md`"
+        - label: "issue o discussion pubblica gia' aperta, se il target e' `dataciviclab`"
         - label: nessun gate tecnico aperto bloccante
         - label: prossimo passo operativo esplicito
 
