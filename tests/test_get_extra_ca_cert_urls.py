@@ -14,6 +14,8 @@ import pytest
 
 from get_extra_ca_cert_urls import get_urls
 
+pytestmark = pytest.mark.contract
+
 
 @pytest.mark.contract
 class GetExtraCaCertUrlsTest(unittest.TestCase):
