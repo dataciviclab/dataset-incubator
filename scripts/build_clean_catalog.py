@@ -25,9 +25,7 @@ def main() -> int:
     )
     parser.add_argument("--catalog", type=Path, default=DEFAULT_CATALOG)
     parser.add_argument("--schema", type=Path, default=DEFAULT_SCHEMA)
-    parser.add_argument(
-        "--write", action="store_true", help="Rewrite catalog in canonical form."
-    )
+    parser.add_argument("--write", action="store_true", help="Rewrite catalog in canonical form.")
     parser.add_argument(
         "--refresh-date",
         action="store_true",
@@ -102,15 +100,15 @@ def normalize_catalog(catalog: dict[str, Any], *, refresh_date: bool = False) ->
         "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
     )
     normalized.setdefault("source_repo", "dataciviclab/dataset-incubator")
-    normalized["updated_at"] = str(date.today()) if refresh_date else normalized.get(
-        "updated_at", str(date.today())
+    normalized["updated_at"] = (
+        str(date.today()) if refresh_date else normalized.get("updated_at", str(date.today()))
     )
 
     datasets = []
     for dataset in normalized.get("datasets", []):
         item = dict(dataset)
-        item.pop("status", None)       # vecchio nome, rimosso
-        item.pop("visibility", None)   # sempre public, rimosso
+        item.pop("status", None)  # vecchio nome, rimosso
+        item.pop("visibility", None)  # sempre public, rimosso
         item.setdefault("stage", "incubating")
         datasets.append(item)
     normalized["datasets"] = sorted(datasets, key=lambda item: item["slug"])
@@ -300,17 +298,30 @@ def derive_catalog_from_gcs(
                 raw_type = str(row[1]).lower()
                 # Mappa tipo DuckDB → catalogo (preserva BIGINT vs INTEGER)
                 duckdb_to_catalog = {
-                    "integer": "INTEGER", "int32": "INTEGER", "int": "INTEGER",
-                    "bigint": "BIGINT", "int64": "BIGINT",
-                    "smallint": "INTEGER", "tinyint": "INTEGER", "hugeint": "BIGINT",
-                    "float": "DOUBLE", "real": "DOUBLE", "double": "DOUBLE",
-                    "decimal": "DOUBLE", "numeric": "DOUBLE",
-                    "varchar": "VARCHAR", "text": "VARCHAR", "char": "VARCHAR",
+                    "integer": "INTEGER",
+                    "int32": "INTEGER",
+                    "int": "INTEGER",
+                    "bigint": "BIGINT",
+                    "int64": "BIGINT",
+                    "smallint": "INTEGER",
+                    "tinyint": "INTEGER",
+                    "hugeint": "BIGINT",
+                    "float": "DOUBLE",
+                    "real": "DOUBLE",
+                    "double": "DOUBLE",
+                    "decimal": "DOUBLE",
+                    "numeric": "DOUBLE",
+                    "varchar": "VARCHAR",
+                    "text": "VARCHAR",
+                    "char": "VARCHAR",
                     "date": "DATE",
-                    "timestamp": "TIMESTAMP", "timestamp_s": "TIMESTAMP",
-                    "timestamp_ms": "TIMESTAMP", "timestamp_ns": "TIMESTAMP",
+                    "timestamp": "TIMESTAMP",
+                    "timestamp_s": "TIMESTAMP",
+                    "timestamp_ms": "TIMESTAMP",
+                    "timestamp_ns": "TIMESTAMP",
                     "time": "TIME",
-                    "boolean": "BOOLEAN", "bool": "BOOLEAN",
+                    "boolean": "BOOLEAN",
+                    "bool": "BOOLEAN",
                 }
                 bq_type = duckdb_to_catalog.get(raw_type, "VARCHAR")
                 role = "dimension" if bq_type == "VARCHAR" else "metric"
@@ -363,7 +374,10 @@ def derive_catalog_from_gcs(
 
     nuovi = sum(1 for d in datasets if d["slug"] not in editorial)
     agg = sum(1 for d in datasets if d["slug"] in editorial)
-    print(f"[derive] Catalogo: {len(datasets)} dataset ({nuovi} nuovi, {agg} aggiornati)", file=sys.stderr)
+    print(
+        f"[derive] Catalogo: {len(datasets)} dataset ({nuovi} nuovi, {agg} aggiornati)",
+        file=sys.stderr,
+    )
     if errors:
         for e in errors:
             print(f"[derive] ERROR: {e}", file=sys.stderr)
@@ -467,9 +481,7 @@ def _validate_node(
         for field, value in instance.items():
             if field in properties:
                 errors.extend(
-                    _validate_node(
-                        value, properties[field], root_schema, f"{path}.{field}"
-                    )
+                    _validate_node(value, properties[field], root_schema, f"{path}.{field}")
                 )
 
     if isinstance(instance, list):
@@ -479,9 +491,7 @@ def _validate_node(
         item_schema = node.get("items")
         if item_schema:
             for index, value in enumerate(instance):
-                errors.extend(
-                    _validate_node(value, item_schema, root_schema, f"{path}[{index}]")
-                )
+                errors.extend(_validate_node(value, item_schema, root_schema, f"{path}[{index}]"))
 
     return errors
 

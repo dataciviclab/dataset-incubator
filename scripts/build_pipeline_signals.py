@@ -49,6 +49,7 @@ def _validate_schema(instance: dict) -> None:
         print(f"❌ Validazione fallita (pipeline_signals.schema.json): {exc.message}")
         raise
 
+
 # ---------------------------------------------------------------------------
 # Layout resolution — delegata a toolkit.core.dataset_loader
 # ---------------------------------------------------------------------------
@@ -86,6 +87,7 @@ def _source_names(sources: list[dict]) -> list[str]:
 # from validate_candidate_structure, but does its own structure walk
 # to avoid coupling with validate_entry() which is designed for CLI output.
 # ---------------------------------------------------------------------------
+
 
 def _inspect_single_source(base_dir: Path) -> dict:
     """Inspect a single-source candidate (root dataset.yml)."""
@@ -240,7 +242,9 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
         n = len(sources)
         src_label = f"multi-source ({n} {'fonte' if n == 1 else 'fonti'})"
     elif sources:
-        src_label = f"fonte: {sources[0]}" if len(sources) == 1 else f"fonti: {', '.join(sources[:2])}"
+        src_label = (
+            f"fonte: {sources[0]}" if len(sources) == 1 else f"fonti: {', '.join(sources[:2])}"
+        )
     else:
         src_label = "fonte: ?"
 
@@ -278,6 +282,7 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
+
 
 def build_signals(out_path: Path) -> int:
     previous_sample_runs = load_previous_sample_runs(out_path)

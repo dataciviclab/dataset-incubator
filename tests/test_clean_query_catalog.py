@@ -1,3 +1,4 @@
+# ruff: noqa: E402
 """Test per validazione catalogo clean contro schema JSON.
 
 Contratto: validate_catalog() verifica che un catalogo rispetti lo schema
@@ -6,6 +7,7 @@ JSON regolamentare. Usato in CI per validare clean_catalog.json.
 Prova del fuoco: se cancello questi test, un catalogo malformato puo'
 essere pubblicato senza preavviso.
 """
+
 from __future__ import annotations
 
 import json
@@ -22,9 +24,7 @@ from build_clean_catalog import validate_catalog
 class CleanCatalogValidationTest(unittest.TestCase):
     def setUp(self) -> None:
         self.schema = json.loads(
-            (ROOT / "registry" / "clean_catalog.schema.json").read_text(
-                encoding="utf-8"
-            )
+            (ROOT / "registry" / "clean_catalog.schema.json").read_text(encoding="utf-8")
         )
         self.catalog = json.loads(
             (ROOT / "registry" / "clean_catalog.json").read_text(encoding="utf-8")

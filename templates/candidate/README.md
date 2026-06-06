@@ -1,6 +1,6 @@
 # Template candidato
 
-Questo è il template operativo canonico della repo.   
+Questo è il template operativo canonico della repo.
 
 Ogni nuovo ingresso in `dataset-incubator` dovrebbe partire da questa cartella, adattando:
 

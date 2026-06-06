@@ -13,6 +13,7 @@ Variabili d'ambiente:
     HTTPS_PROXY / HTTP_PROXY : proxy da usare per lo scaricamento
     BLOCKED_SOURCE_PROXY     : proxy specifico per fonti bloccate (override)
 """
+
 from __future__ import annotations
 
 import os
@@ -52,10 +53,17 @@ def _download_with_curl(url: str, dest: Path, proxy: str) -> None:
     MAX_ATTEMPTS = 3
     for attempt in range(1, MAX_ATTEMPTS + 1):
         cmd = [
-            "curl", "-x", proxy, "-sSL",
-            "--connect-timeout", "30",
-            "--max-time", "180",
-            url, "-o", str(dest),
+            "curl",
+            "-x",
+            proxy,
+            "-sSL",
+            "--connect-timeout",
+            "30",
+            "--max-time",
+            "180",
+            url,
+            "-o",
+            str(dest),
         ]
         try:
             subprocess.run(cmd, check=True, capture_output=True, text=True)
@@ -162,12 +170,16 @@ def main() -> None:
                 _download_with_curl(url, dest, proxy)
 
             if len(years) > 1:
-                print(f"  ❌ multi-year non supportato ({years}). Usa un solo anno per candidate con fonte bloccata.")
+                print(
+                    f"  ❌ multi-year non supportato ({years}). Usa un solo anno per candidate con fonte bloccata."
+                )
                 sys.exit(1)
             first_year = years[0]
 
             # Path relativo alla directory del dataset.yml
-            rel_path = Path("../../out") / "data" / "raw" / dataset_name / str(first_year) / filename
+            rel_path = (
+                Path("../../out") / "data" / "raw" / dataset_name / str(first_year) / filename
+            )
             _patch_config(config_path, rel_path, blocked_url=url)
 
     print("\n✅ Pre-download completato.")

@@ -6,6 +6,7 @@ Skip automatico se toolkit non e' disponibile.
 Prova del fuoco: se cancello questi test, un refactor di toolkit o del formato
 output puo' rompere la pipeline CI senza preavviso.
 """
+
 from __future__ import annotations
 
 import csv
@@ -54,7 +55,7 @@ def test_toolkit_run_minimal_candidate() -> None:
         yml = dst / "dataset.yml"
         yml.write_text(
             f"""
-root: "{dst / 'out'}"
+root: "{dst / "out"}"
 dataset:
   name: test_intg
   years: [2024]
@@ -63,7 +64,7 @@ raw:
     - name: fonte
       type: local_file
       args:
-        path: "{raw_dir / 'dataset_2024.csv'}"
+        path: "{raw_dir / "dataset_2024.csv"}"
 clean:
   sql: sql/clean.sql
   read:
@@ -88,13 +89,17 @@ validation:
         # Esegui toolkit
         result = subprocess.run(
             ["toolkit", "run", "all", "--config", str(yml), "--years", "2024"],
-            capture_output=True, text=True, timeout=120,
+            capture_output=True,
+            text=True,
+            timeout=120,
         )
         if result.returncode != 0:
             pytest.fail(f"toolkit run all fallito:\nSTDOUT:{result.stdout}\nSTDERR:{result.stderr}")
 
         # Verifica output CLEAN
-        clean_parquet = dst / "out" / "data" / "clean" / "test_intg" / "2024" / "test_intg_2024_clean.parquet"
+        clean_parquet = (
+            dst / "out" / "data" / "clean" / "test_intg" / "2024" / "test_intg_2024_clean.parquet"
+        )
         assert clean_parquet.exists(), f"Clean parquet non trovato: {clean_parquet}"
 
         # Verifica metadata CLEAN

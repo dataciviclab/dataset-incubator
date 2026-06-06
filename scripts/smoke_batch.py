@@ -29,7 +29,9 @@ def resolve_year(config_path: str) -> dict | None:
     try:
         r = subprocess.run(
             [sys.executable, str(SCRIPTS_DIR / "resolve_sample_run.py"), config_path],
-            capture_output=True, text=True, timeout=15,
+            capture_output=True,
+            text=True,
+            timeout=15,
         )
         if r.returncode == 0:
             return json.loads(r.stdout)
@@ -44,9 +46,22 @@ def run_one(config_path: str, year: int) -> dict:
     start = time.time()
     try:
         r = subprocess.run(
-            [sys.executable, "-m", "toolkit.cli.app", "run", "all",
-             "-c", config_path, "-y", str(year), "--smoke"],
-            cwd=ROOT, capture_output=True, text=True, timeout=120,
+            [
+                sys.executable,
+                "-m",
+                "toolkit.cli.app",
+                "run",
+                "all",
+                "-c",
+                config_path,
+                "-y",
+                str(year),
+                "--smoke",
+            ],
+            cwd=ROOT,
+            capture_output=True,
+            text=True,
+            timeout=120,
         )
         ok = r.returncode == 0
         duration = round(time.time() - start, 1)
@@ -61,14 +76,20 @@ def run_one(config_path: str, year: int) -> dict:
         }
     except subprocess.TimeoutExpired:
         return {
-            "slug": slug, "config": config_path, "year": year,
-            "status": "TIMEOUT", "duration": round(time.time() - start, 1),
+            "slug": slug,
+            "config": config_path,
+            "year": year,
+            "status": "TIMEOUT",
+            "duration": round(time.time() - start, 1),
             "output": "timeout 120s",
         }
     except Exception as e:
         return {
-            "slug": slug, "config": config_path, "year": year,
-            "status": "ERROR", "duration": round(time.time() - start, 1),
+            "slug": slug,
+            "config": config_path,
+            "year": year,
+            "status": "ERROR",
+            "duration": round(time.time() - start, 1),
             "output": str(e),
         }
 
@@ -90,6 +111,7 @@ def load_configs(batch_file: str) -> list[str]:
 
 def main() -> int:
     import argparse
+
     parser = argparse.ArgumentParser(description="Smoke batch per candidate DI")
     parser.add_argument("batch_file", help="Path a batches/*.txt")
     parser.add_argument("--parallel", type=int, default=1, help="Run paralleli (default: 1)")
@@ -120,24 +142,28 @@ def main() -> int:
     # Add SKIPPED entries before parallel execution (year could not be resolved)
     for cfg, year in tasks:
         if year is None:
-            results.append({
-                "slug": Path(cfg).parent.name, "config": cfg,
-                "year": None, "status": "SKIPPED",
-                "duration": 0, "output": "anno non risolto",
-            })
+            results.append(
+                {
+                    "slug": Path(cfg).parent.name,
+                    "config": cfg,
+                    "year": None,
+                    "status": "SKIPPED",
+                    "duration": 0,
+                    "output": "anno non risolto",
+                }
+            )
             print(f"  ⏭️ {Path(cfg).parent.name:35s} — SKIPPED (no year)")
 
     if args.parallel > 1:
         with ThreadPoolExecutor(max_workers=args.parallel) as ex:
-            futures = {
-                ex.submit(run_one, cfg, year): (cfg, year)
-                for cfg, year in tasks if year
-            }
+            futures = {ex.submit(run_one, cfg, year): (cfg, year) for cfg, year in tasks if year}
             for future in as_completed(futures):
                 r = future.result()
                 results.append(r)
                 icon = "✅" if r["status"] == "PASSED" else "❌"
-                print(f"  {icon} {r['slug']:35s} year={r['year']}  {r['duration']:>5.1f}s  {r['status']}")
+                print(
+                    f"  {icon} {r['slug']:35s} year={r['year']}  {r['duration']:>5.1f}s  {r['status']}"
+                )
     else:
         for cfg, year in tasks:
             if year is None:
@@ -145,7 +171,9 @@ def main() -> int:
             r = run_one(cfg, year)
             results.append(r)
             icon = "✅" if r["status"] == "PASSED" else "❌"
-            print(f"  {icon} {r['slug']:35s} year={r['year']}  {r['duration']:>5.1f}s  {r['status']}")
+            print(
+                f"  {icon} {r['slug']:35s} year={r['year']}  {r['duration']:>5.1f}s  {r['status']}"
+            )
 
     total_time = round(time.time() - start_total, 1)
     passed = sum(1 for r in results if r["status"] == "PASSED")
@@ -157,7 +185,7 @@ def main() -> int:
     print("=" * 60)
     for r in results:
         if r["status"] != "PASSED":
-            print(f"  ❌ {r['slug']} ({r['status']}): {str(r.get('output',''))[:120]}")
+            print(f"  ❌ {r['slug']} ({r['status']}): {str(r.get('output', ''))[:120]}")
 
     report = {
         "batch_file": args.batch_file,
@@ -171,6 +199,7 @@ def main() -> int:
         Path(args.json).write_text(json.dumps(report, indent=2))
         print(f"\nReport salvato: {args.json}")
     return 0 if failed == 0 else 1
+
 
 if __name__ == "__main__":
     sys.exit(main())

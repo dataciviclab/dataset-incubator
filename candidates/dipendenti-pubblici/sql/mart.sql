@@ -26,4 +26,3 @@ select
 from base
 group by 1, 2
 order by anno, dipendenti_totali desc
-

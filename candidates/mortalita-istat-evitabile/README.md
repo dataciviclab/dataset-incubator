@@ -17,7 +17,7 @@ Dataset ISTAT — Disuguaglianze nella mortalità per causa per caratteristiche 
 | `mart_regioni_v2` | `decessi_evitabili_30plus` | Euro-2013 proxy, 12 cause, tasso grezzo 30+ |
 | `mart_regioni_v3` | `tasso_std_broad_evitabile_10000_30plus` | broad age-standardization 30+ ⭐ |
 
-**Note tecniche**: 
+**Note tecniche**:
 - Escluso cod_territorio=4 (Trentino-Alto Adige aggregato, doppio conteggio).
 - Filtro: solo righe con cod_sesso=3 (totale), cod_classe_eta=9 (30+), cod_titolo_studio=9 (totale).
 - v3 è la baseline raccomandata per confronti inter-regionali (issue #24).

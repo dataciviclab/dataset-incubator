@@ -11,7 +11,6 @@ I test chiamano le funzioni direttamente (non via subprocess) per copertura real
 
 import argparse
 import json
-import os
 from pathlib import Path
 
 import pytest
@@ -101,7 +100,8 @@ class TestBuildPrBody:
     def test_generates_markdown(self, sample_detect_json: Path, tmp_path: Path):
         """build-pr-body produce markdown valido con i placeholder giusti."""
         body = _run_build_pr_body(
-            sample_detect_json, tmp_path,
+            sample_detect_json,
+            tmp_path,
             pr_number="42",
             pr_title="feat: test dataset",
         )
@@ -224,13 +224,20 @@ class TestMain:
             mp.setattr(
                 "sys.argv",
                 [
-                    "prog", "build-pr-body",
-                    "--detect-json", str(sample_detect_json),
-                    "--pr-number", "99",
-                    "--pr-title", "via-main",
-                    "--sample-result", "success",
-                    "--signals-changed", "true",
-                    "--output", str(out),
+                    "prog",
+                    "build-pr-body",
+                    "--detect-json",
+                    str(sample_detect_json),
+                    "--pr-number",
+                    "99",
+                    "--pr-title",
+                    "via-main",
+                    "--sample-result",
+                    "success",
+                    "--signals-changed",
+                    "true",
+                    "--output",
+                    str(out),
                 ],
             )
             pmr.main()
@@ -279,7 +286,6 @@ class TestMain:
     @pytest.mark.pure_unit
     def test_run_with_retry_first_attempt_succeeds(self):
         """_run_with_retry ritorna True se il comando ha successo al primo tentativo."""
-        import subprocess
         result = pmr._run_with_retry(
             ["python", "-c", "exit(0)"],
             cwd=".",
@@ -291,6 +297,7 @@ class TestMain:
     def test_run_with_retry_second_attempt_succeeds(self):
         """_run_with_retry riprova se primo tentativo fallisce."""
         import subprocess
+
         # Fallisce 1 volta, poi succeede
         calls = [0]
 
@@ -299,7 +306,6 @@ class TestMain:
             r = subprocess.CompletedProcess([], 1 if calls[0] == 1 else 0)
             return r
 
-        original_run = subprocess.run
         monkeypatch = pytest.MonkeyPatch()
         monkeypatch.setattr(subprocess, "run", _run_fail_once)
         try:

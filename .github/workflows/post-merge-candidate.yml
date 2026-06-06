@@ -262,5 +262,3 @@ jobs:
               --label post-merge \
               --draft
           fi
-
-

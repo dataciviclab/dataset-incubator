@@ -46,5 +46,3 @@ Ogni riga rappresenta il numero di ricorsi pendenti in un dato mese per una sede
 - readiness: ready (5/5 checks)
 - notebook v0 verificato
 - issue: #379
-
-
