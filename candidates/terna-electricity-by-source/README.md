@@ -4,12 +4,12 @@
 
 ## Domanda
 
-Come cambia tra 2023 e 2024 il peso delle diverse fonti nel mix di produzione elettrica regionale?
+Come cambia tra 2015 e 2024 il peso delle diverse fonti nel mix di produzione elettrica regionale?
 
 ## Dataset
 
 - fonte principale: export XLSX pubblico Terna `ElectricityBySource`
-- copertura iniziale del preproject: dicembre 2023 e dicembre 2024
+- copertura iniziale del preproject: dicembre 2015 - dicembre 2024 (10 anni)
 - formato sorgente: workbook `.xlsx` scaricato via HTTP
 - valore del caso: possibile filone energia/ambiente con confronto semplice anno su anno
 

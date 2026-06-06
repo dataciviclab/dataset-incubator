@@ -1,34 +1,9 @@
-# Notes
+# terna-electricity-by-source — Note
 
-## Tecnico
+## Espansione serie storica 2026-06-06
 
-- setup iniziale limitato al solo layer `raw`
-- due snapshot espliciti: `2023`, `2024`
-- sorgente HTTP Terna che restituisce direttamente workbook `.xlsx`
-- file naming locale separato per anno
-- workbook con un solo foglio: `Export`
-- presente una riga finale di testo `Applied filters...` da scartare nel clean
-- colonne rilevate: `Anno`, `Tipo produzione`, `Regione`, `Provincia`, `Fonte`, `Produzione (GWh)`
-- notebook iniziale previsto: `v0`, oggi promosso nel layer pubblico del filone
+Da 2 anni (2023-2024) a 10 anni (2015-2024).
 
-## Analitico
+L'API Terna supporta tutti gli anni con `filterYear={year}`. `pageSize` aumentato da 900 a 5000 per sicurezza.
 
-- domanda chiave: come cambia il peso delle fonti nel mix elettrico regionale tra 2023 e 2024?
-- taglio iniziale da tenere stretto: produzione `Netta`, aggregata per `anno-regione-fonte`
-- domande complementari:
-  - quali regioni restano piu termoelettriche?
-  - dove cresce il fotovoltaico?
-  - dove l'idroelettrico sposta davvero il mix?
-- non allargare subito a serie lunga o granularita territoriali
-
-## Cautele
-
-- l'URL Terna contiene parametri applicativi (`pageSize`, `filterMonth`) da non dare per stabili a lungo
-- finche non leggiamo il workbook non fissiamo ancora foglio, schema o metrica principale
-- `Tipo produzione` ha due valori (`Lorda`, `Netta`) con totale nazionale uguale nei due anni osservati: per il primo mart usiamo `Netta`, ma la ridondanza va ricontrollata prima di trarre conclusioni metodologiche
-
-## QC 2026-05-01
-
-**Confermato**: Lorda = Netta esattamente (270963 GWh totali, 450 righe ciascuna). Il mart usa `Netta` → nessuna perdita di informazione. Questo scioglie il dubbio metodologico sollevato in notes originarie.
-
-**Output atteso**: mart ha 95 righe = 21 regioni × ~4-6 fonti (aggregazione anno/regione/fonte). Output coerente.
+Run verificati: 2015, 2024 raw+clean+mart OK.

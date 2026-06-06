@@ -2,14 +2,14 @@
 
 ## Domanda
 
-Dove si concentra la capacita rinnovabile installata in Italia e quali territori risultano piu attrezzati, a fine anno, per fonte e nel confronto minimo 2023-2024?
+Dove si concentra la capacita rinnovabile installata in Italia e quali territori risultano piu attrezzati, a fine anno, per fonte e nel confronto 2015-2024?
 
 ## Dataset
 
 - Fonte: Terna, download center ufficiale sulla capacita installata delle fonti rinnovabili
 - Formato: XLSX, sheet `Export`
 - Livello disponibile in raw: provincia
-- Perimetro intake: dicembre 2023 e dicembre 2024
+- Perimetro intake: serie storica 2015-2024 (dicembre di ogni anno)
 
 ## Perche vale la pena testarlo
 
@@ -19,14 +19,14 @@ Dove si concentra la capacita rinnovabile installata in Italia e quali territori
 
 ## Output minimo atteso
 
-- candidate DI riproducibile per 2023-2024
+- candidate DI riproducibile per 2015-2024
 - clean provinciale coerente con il tracciato Terna
 - mart v0 su capacita netta aggregata per regione e fonte
 - notebook v0 di sanity check sul mart
 
 ## Criterio di promozione
 
-- raw, clean e mart rigenerabili per entrambi gli anni
+- raw, clean e mart rigenerabili per 10 annualita (2015-2024)
 - documentazione coerente con il perimetro reale
 - notebook v0 eseguibile senza trasformarlo in analisi pubblica
 
