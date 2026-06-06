@@ -56,17 +56,21 @@ DI_ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
 OUT_ROOT = DI_ROOT / "out"
 
+
 # Helper: directory radice di un layer (per scandire tutti gli slug).
 # toolkit.contracts lavora per slug specifico; qui serve il contenitore.
 def _layer_root(layer: str) -> Path:
     return OUT_ROOT / "data" / layer
 
+
 # Helper per path canonici via toolkit.contracts
 def _clean_dir(slug: str) -> Path:
     return layer_dataset_dir(OUT_ROOT, "clean", slug)
 
+
 def _mart_dir(slug: str) -> Path:
     return layer_dataset_dir(OUT_ROOT, "mart", slug)
+
 
 SKIP_DIRS = {"_validate", "_run"}
 SKIP_SLUGS: set[str] = set()
@@ -94,7 +98,8 @@ def get_slugs(root, slug_filter=None):
 
 def get_years(slug_dir, year_filter=None):
     years = [
-        d.name for d in sorted(slug_dir.iterdir())
+        d.name
+        for d in sorted(slug_dir.iterdir())
         if d.is_dir() and d.name not in SKIP_DIRS and d.name.isdigit()
     ]
     if year_filter:
@@ -243,12 +248,24 @@ def push_bq(bq_client, local_path, slug, year, dry_run=False):
 # Catalog update
 # ---------------------------------------------------------------------------
 _PARQUET_TYPE_MAP = {
-    "int8": "INTEGER", "int16": "INTEGER", "int32": "INTEGER", "int64": "INTEGER",
-    "uint8": "INTEGER", "uint16": "INTEGER", "uint32": "INTEGER", "uint64": "INTEGER",
-    "float": "DOUBLE", "double": "DOUBLE", "float32": "DOUBLE", "float64": "DOUBLE",
-    "bool": "BOOLEAN", "boolean": "BOOLEAN",
-    "date32[day]": "DATE", "date64[us]": "TIMESTAMP",
-    "timestamp[us]": "TIMESTAMP", "timestamp[ms]": "TIMESTAMP",
+    "int8": "INTEGER",
+    "int16": "INTEGER",
+    "int32": "INTEGER",
+    "int64": "INTEGER",
+    "uint8": "INTEGER",
+    "uint16": "INTEGER",
+    "uint32": "INTEGER",
+    "uint64": "INTEGER",
+    "float": "DOUBLE",
+    "double": "DOUBLE",
+    "float32": "DOUBLE",
+    "float64": "DOUBLE",
+    "bool": "BOOLEAN",
+    "boolean": "BOOLEAN",
+    "date32[day]": "DATE",
+    "date64[us]": "TIMESTAMP",
+    "timestamp[us]": "TIMESTAMP",
+    "timestamp[ms]": "TIMESTAMP",
 }
 
 
@@ -284,7 +301,9 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
             break
 
     if existing:
-        existing["period"]["start"] = min(int_years[0], existing["period"].get("start", int_years[0]))
+        existing["period"]["start"] = min(
+            int_years[0], existing["period"].get("start", int_years[0])
+        )
         existing["period"]["end"] = max(int_years[-1], existing["period"].get("end", int_years[-1]))
         existing["location"] = {"type": "gcs", "path": gcs_path, "multi_file": multi_file}
         if latest_parquet and not existing.get("columns"):
@@ -314,7 +333,9 @@ def update_catalog(slug: str, years: list[str], status: str, dry_run: bool = Fal
         print(f"  [dry] catalog: {slug} {action}")
         return
 
-    CATALOG_PATH.write_text(json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    CATALOG_PATH.write_text(
+        json.dumps(catalog, ensure_ascii=False, indent=2) + "\n", encoding="utf-8"
+    )
     print(f"  catalog: {slug} {action}")
 
 
@@ -368,7 +389,9 @@ def push_clean(slug_filter=None, year_filter=None, dry_run=False):
                 run_gcs_path = pipeline_run(slug, year)
                 push_gcs(run_record, CLEAN_BUCKET, run_gcs_path, dry_run)
             else:
-                print(f"  [{slug}/{year}] nessun run record trovato, pipeline_run.json non pushato.")
+                print(
+                    f"  [{slug}/{year}] nessun run record trovato, pipeline_run.json non pushato."
+                )
         print()
 
     if manifest["items"]:
@@ -408,21 +431,35 @@ def push_mart(bq_client, slug_filter=None, year_filter=None, dry_run=False):
 # ---------------------------------------------------------------------------
 def main():
     parser = argparse.ArgumentParser(description="Push CLEAN/MART → GCS + BigQuery")
-    parser.add_argument("--layer", choices=["clean", "mart", "all"], default="all",
-                        help="Layer da pushare (default: all)")
+    parser.add_argument(
+        "--layer",
+        choices=["clean", "mart", "all"],
+        default="all",
+        help="Layer da pushare (default: all)",
+    )
     parser.add_argument("--slug", help="Slug specifico (default: tutti)")
     parser.add_argument("--year", help="Anno specifico (default: tutti)")
     parser.add_argument("--dry-run", action="store_true", help="Simula senza caricare")
     parser.add_argument("--no-bq", action="store_true", help="Salta BigQuery (solo GCS)")
-    parser.add_argument("--create-bq-table", action="store_true",
-                        help="Crea/aggiorna external table BQ per i clean pushati")
-    parser.add_argument("--update-catalog", action="store_true",
-                        help="Aggiorna registry/clean_catalog.json con period e location aggiornati")
-    parser.add_argument("--status", default="candidate",
-                        choices=["candidate", "clean_ready", "public_catalog_ready"],
-                        help="Status da impostare nel catalog per i nuovi entry (default: candidate)")
-    parser.add_argument("--catalog-only", action="store_true",
-                        help="Solo aggiornamento catalogo, senza push GCS")
+    parser.add_argument(
+        "--create-bq-table",
+        action="store_true",
+        help="Crea/aggiorna external table BQ per i clean pushati",
+    )
+    parser.add_argument(
+        "--update-catalog",
+        action="store_true",
+        help="Aggiorna registry/clean_catalog.json con period e location aggiornati",
+    )
+    parser.add_argument(
+        "--status",
+        default="candidate",
+        choices=["candidate", "clean_ready", "public_catalog_ready"],
+        help="Status da impostare nel catalog per i nuovi entry (default: candidate)",
+    )
+    parser.add_argument(
+        "--catalog-only", action="store_true", help="Solo aggiornamento catalogo, senza push GCS"
+    )
     args = parser.parse_args()
 
     # --catalog-only disabilita tutto il push GCS/BQ, solo catalogo
@@ -433,6 +470,7 @@ def main():
 
     if not args.no_bq or args.create_bq_table:
         from google.cloud import bigquery
+
         bq_client = bigquery.Client(project=GCP_PROJECT)
     else:
         bq_client = None

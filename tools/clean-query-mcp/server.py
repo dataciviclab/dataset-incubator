@@ -68,9 +68,14 @@ def _validate_select_sql(sql: str) -> str:
 
     lowered = text.lower()
     if ";" in text:
-        raise DuckdbClientError("Query multiple o statement terminati da ';' non consentiti", ErrorCode.QUERY_SCOPE_VIOLATION)
+        raise DuckdbClientError(
+            "Query multiple o statement terminati da ';' non consentiti",
+            ErrorCode.QUERY_SCOPE_VIOLATION,
+        )
     if not (lowered.startswith("select") or lowered.startswith("with")):
-        raise DuckdbClientError("Sono consentite solo query SELECT o WITH", ErrorCode.QUERY_SCOPE_VIOLATION)
+        raise DuckdbClientError(
+            "Sono consentite solo query SELECT o WITH", ErrorCode.QUERY_SCOPE_VIOLATION
+        )
 
     scrubbed = re.sub(r"--.*?$", " ", text, flags=re.MULTILINE)
     scrubbed = re.sub(r"/\*.*?\*/", " ", scrubbed, flags=re.DOTALL)
@@ -80,7 +85,9 @@ def _validate_select_sql(sql: str) -> str:
 
     for keyword in BLOCKED_KEYWORDS:
         if keyword in tokens:
-            raise DuckdbClientError(f"Keyword non consentita nella query: {keyword}", ErrorCode.QUERY_SCOPE_VIOLATION)
+            raise DuckdbClientError(
+                f"Keyword non consentita nella query: {keyword}", ErrorCode.QUERY_SCOPE_VIOLATION
+            )
     return text
 
 
@@ -159,13 +166,13 @@ def _duckdb_read(
             columns, rows = future.result(timeout=timeout)
         except concurrent.futures.TimeoutError:
             pool.shutdown(wait=False)
-            return {"error": f"Query timeout ({timeout}s). Riduci la complessita o aggiungi filtri."}
+            return {
+                "error": f"Query timeout ({timeout}s). Riduci la complessita o aggiungi filtri."
+            }
         finally:
             pool.shutdown(wait=False)
 
     return {"columns": columns, "rows": rows}
-
-
 
 
 def _validate_scope(sql: str) -> None:
@@ -237,9 +244,7 @@ mcp = create_mcp_server(
 )
 
 
-@mcp.tool(
-    description="Lista dei dataset clean disponibili per query.", structured_output=True
-)
+@mcp.tool(description="Lista dei dataset clean disponibili per query.", structured_output=True)
 def list_datasets() -> list[dict[str, Any]]:
     return list_impl()
 
@@ -273,7 +278,7 @@ def _inject_year_filter(sql: str, year_col: str | None, year: int) -> str:
     s = sql.strip()
     low = s.lower()
 
-    from_match = list(re.finditer(r'\bfrom\s+clean_input\b', low))
+    from_match = list(re.finditer(r"\bfrom\s+clean_input\b", low))
     if not from_match:
         return s
 
@@ -372,9 +377,7 @@ def run_query(
                 future = pool.submit(_run_query)
                 columns, rows_raw = future.result(timeout=60)
             except concurrent.futures.TimeoutError:
-                return {
-                    "error": "Query timeout (60s). Ridurre la complessita o aggiungere filtri."
-                }
+                return {"error": "Query timeout (60s). Ridurre la complessita o aggiungere filtri."}
             finally:
                 pool.shutdown(wait=False)
 
@@ -399,7 +402,6 @@ def cache_stats() -> dict[str, Any]:
     from catalog import gcs_cache_stats
 
     return gcs_cache_stats()
-
 
 
 @mcp.tool(
@@ -430,9 +432,13 @@ def aggregate(
     col_names = {c["name"] for c in schema.get("columns", [])}
     for col in group_by:
         if col not in col_names:
-            return {"error": f"Colonna group_by '{col}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+            return {
+                "error": f"Colonna group_by '{col}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
+            }
     if metric not in col_names:
-        return {"error": f"Metrica '{metric}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+        return {
+            "error": f"Metrica '{metric}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
+        }
 
     year_col = get_year_column(dataset)
     where_parts = []
@@ -573,9 +579,13 @@ def time_series(
 
     col_names = {c["name"] for c in schema.get("columns", [])}
     if metric not in col_names:
-        return {"error": f"Metrica '{metric}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+        return {
+            "error": f"Metrica '{metric}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
+        }
     if group_by not in col_names:
-        return {"error": f"Dimensione group_by '{group_by}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+        return {
+            "error": f"Dimensione group_by '{group_by}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
+        }
 
     try:
         parquet_paths = resolve_parquet_path(dataset, year=year)
@@ -595,7 +605,9 @@ def time_series(
 
     year_col = get_year_column(dataset)
     if year_col is None:
-        return {"error": f"Dataset '{dataset}' non ha una colonna anno riconosciuta. Impossibile costruire serie storica."}
+        return {
+            "error": f"Dataset '{dataset}' non ha una colonna anno riconosciuta. Impossibile costruire serie storica."
+        }
 
     select_cols = f"{year_col}, {group_by}"
     group_cols = f"{year_col}, {group_by}"
@@ -665,7 +677,9 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
 
     col_names = {c["name"] for c in schema.get("columns", [])}
     if column not in col_names:
-        return {"error": f"Colonna '{column}' non trovata. Disponibili: {', '.join(sorted(col_names))}"}
+        return {
+            "error": f"Colonna '{column}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
+        }
 
     try:
         parquet_paths = resolve_parquet_path(dataset, year=None)
@@ -745,7 +759,12 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
 
             # Filter by query (search in name/description/source)
             q_lower = query.lower()
-            if q_lower and q_lower not in ds.get("name", "").lower() and q_lower not in ds.get("description", "").lower() and q_lower not in ds.get("source", "").lower():
+            if (
+                q_lower
+                and q_lower not in ds.get("name", "").lower()
+                and q_lower not in ds.get("description", "").lower()
+                and q_lower not in ds.get("source", "").lower()
+            ):
                 continue
 
             # Filter by metric name
@@ -754,14 +773,16 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
                 if not any(mn_lower in mc["name"].lower() for mc in metric_cols):
                     continue
 
-            results.append({
-                "slug": ds["slug"],
-                "name": ds["name"],
-                "source": ds.get("source"),
-                "period": ds.get("period"),
-                "metric_columns": metric_cols,
-                "match_hint": metric_name or query,
-            })
+            results.append(
+                {
+                    "slug": ds["slug"],
+                    "name": ds["name"],
+                    "source": ds.get("source"),
+                    "period": ds.get("period"),
+                    "metric_columns": metric_cols,
+                    "match_hint": metric_name or query,
+                }
+            )
 
             if len(results) >= limit:
                 break
@@ -793,25 +814,29 @@ def column_search(query: str, limit: int = 15) -> dict[str, Any]:
             matched_cols = []
             for col in ds.get("columns", []):
                 if q in col.get("name", "").lower() or q in col.get("description", "").lower():
-                    matched_cols.append({
-                        "name": col["name"],
-                        "type": col.get("type"),
-                        "role": col.get("role"),
-                        "description": col.get("description"),
-                    })
+                    matched_cols.append(
+                        {
+                            "name": col["name"],
+                            "type": col.get("type"),
+                            "role": col.get("role"),
+                            "description": col.get("description"),
+                        }
+                    )
 
             # Match in dataset metadata or in column names/descriptions
             meta_match = q in ds.get("name", "").lower() or q in ds.get("description", "").lower()
 
             if matched_cols or meta_match:
-                results.append({
-                    "slug": ds["slug"],
-                    "name": ds["name"],
-                    "source": ds.get("source"),
-                    "period": ds.get("period"),
-                    "matched_columns": matched_cols,
-                    "meta_match": meta_match,
-                })
+                results.append(
+                    {
+                        "slug": ds["slug"],
+                        "name": ds["name"],
+                        "source": ds.get("source"),
+                        "period": ds.get("period"),
+                        "matched_columns": matched_cols,
+                        "meta_match": meta_match,
+                    }
+                )
 
             if len(results) >= limit:
                 break

@@ -20,7 +20,9 @@ def read_catalog_json(git_ref: str | None = None) -> dict | None:
         try:
             result = subprocess.run(
                 ["git", "show", f"{git_ref}:registry/clean_catalog.json"],
-                capture_output=True, text=True, cwd=repo_root,
+                capture_output=True,
+                text=True,
+                cwd=repo_root,
             )
             if result.returncode != 0:
                 print(
@@ -50,9 +52,7 @@ def extract_slugs(catalog: dict | None) -> set[str]:
     if not catalog:
         return set()
     return {
-        entry["slug"].replace("_", "-")
-        for entry in catalog.get("datasets", [])
-        if "slug" in entry
+        entry["slug"].replace("_", "-") for entry in catalog.get("datasets", []) if "slug" in entry
     }
 
 

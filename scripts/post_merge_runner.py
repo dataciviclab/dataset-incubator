@@ -46,7 +46,9 @@ def _ca_cert_setup(config_path: str, artifact_name: str, root: str) -> None:
     """Configure extra CA certificates if the config requires them."""
     r = subprocess.run(
         ["python", "scripts/get_extra_ca_cert_urls.py", config_path],
-        capture_output=True, text=True, cwd=root,
+        capture_output=True,
+        text=True,
+        cwd=root,
     )
     urls = [u.strip() for u in r.stdout.strip().split("\n") if u.strip()]
     if not urls:
@@ -72,7 +74,9 @@ def _resolve_years(config_path: str, root: str) -> list[int]:
     """Resolve all_years from resolve_sample_run.py."""
     r = subprocess.run(
         ["python", "scripts/resolve_sample_run.py", config_path],
-        capture_output=True, text=True, cwd=root,
+        capture_output=True,
+        text=True,
+        cwd=root,
     )
     if r.returncode != 0:
         raise RuntimeError(f"resolve fallito ({r.stderr.strip()})")
@@ -256,13 +260,13 @@ def cmd_build_pr_body(args: argparse.Namespace) -> None:
         and os.environ.get("GCP_SERVICE_ACCOUNT", "") != ""
     )
 
-    item_list = "\n".join(
-        f'- `{i["slug"]}` ({i["kind"]}, `{i["root"]}`)' for i in items
+    item_list = "\n".join(f"- `{i['slug']}` ({i['kind']}, `{i['root']}`)" for i in items)
+    sample_list = (
+        "\n".join(
+            f"- `{c['config_path']}` -> artifact `sample-run-{c['artifact_name']}`" for c in configs
+        )
+        or "- No sample-run config detected"
     )
-    sample_list = "\n".join(
-        f'- `{c["config_path"]}` -> artifact `sample-run-{c["artifact_name"]}`'
-        for c in configs
-    ) or "- No sample-run config detected"
 
     commands = [
         f"python scripts/push_archive.py --mart --slug {c['push_slug']} "
@@ -270,35 +274,37 @@ def cmd_build_pr_body(args: argparse.Namespace) -> None:
         for c in configs
     ]
 
-    body = "\n".join([
-        "## Post-merge registry handoff",
-        "",
-        f"Source PR: #{args.pr_number} — {args.pr_title}",
-        "",
-        "Changed candidate/support roots:",
-        "",
-        item_list,
-        "",
-        "## Automatic updates",
-        "",
-        f"- [x] Rebuilt `registry/pipeline_signals.json`{' (no diff)' if not signals_changed else ''}",
-        f"- [{'x' if sample_passed else ' '}] CI: full run completato (tutti gli anni)",
-        f"- [{'x' if gcp_available else ' '}] CI: clean parquet pushato su GCS",
-        f"- [{'x' if gcp_available else ' '}] CI: `registry/clean_catalog.json` aggiornato",
-        "- [ ] Maintainer: push mart + BQ (se serve)",
-        "",
-        "## Sample-run artifacts",
-        "",
-        sample_list,
-        "",
-        "## Maintainer commands",
-        "",
-        "```bash",
-        "\n".join(commands),
-        "```",
-        "",
-        "CI ha eseguito: full run (tutti gli anni), push clean su GCS, aggiornamento catalog. Il maintainer deve solo mart + BQ se serve.",
-    ])
+    body = "\n".join(
+        [
+            "## Post-merge registry handoff",
+            "",
+            f"Source PR: #{args.pr_number} — {args.pr_title}",
+            "",
+            "Changed candidate/support roots:",
+            "",
+            item_list,
+            "",
+            "## Automatic updates",
+            "",
+            f"- [x] Rebuilt `registry/pipeline_signals.json`{' (no diff)' if not signals_changed else ''}",
+            f"- [{'x' if sample_passed else ' '}] CI: full run completato (tutti gli anni)",
+            f"- [{'x' if gcp_available else ' '}] CI: clean parquet pushato su GCS",
+            f"- [{'x' if gcp_available else ' '}] CI: `registry/clean_catalog.json` aggiornato",
+            "- [ ] Maintainer: push mart + BQ (se serve)",
+            "",
+            "## Sample-run artifacts",
+            "",
+            sample_list,
+            "",
+            "## Maintainer commands",
+            "",
+            "```bash",
+            "\n".join(commands),
+            "```",
+            "",
+            "CI ha eseguito: full run (tutti gli anni), push clean su GCS, aggiornamento catalog. Il maintainer deve solo mart + BQ se serve.",
+        ]
+    )
 
     out_path = args.output
     with open(out_path, "w", encoding="utf-8") as f:
@@ -312,13 +318,13 @@ def cmd_build_pr_body(args: argparse.Namespace) -> None:
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Post-merge runner per dataset-incubator"
-    )
+    parser = argparse.ArgumentParser(description="Post-merge runner per dataset-incubator")
     sub = parser.add_subparsers(dest="command", required=True)
 
     # sample-run
-    p_sample = sub.add_parser("sample-run", help="Esegui toolkit run full + GCS push per ogni config")
+    p_sample = sub.add_parser(
+        "sample-run", help="Esegui toolkit run full + GCS push per ogni config"
+    )
     p_sample.add_argument(
         "--detect-json",
         default="detect_output.json",

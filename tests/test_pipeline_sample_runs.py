@@ -9,6 +9,8 @@ import pytest
 
 from update_pipeline_sample_runs import apply_sample_results, summarize_sample_results
 
+pytestmark = pytest.mark.contract
+
 ROOT = Path(__file__).resolve().parents[1]
 _SCHEMA_PATH = ROOT / "registry" / "pipeline_signals.schema.json"
 

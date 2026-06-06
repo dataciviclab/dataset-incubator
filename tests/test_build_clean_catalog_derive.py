@@ -28,14 +28,17 @@ FAKE_PARQUET_OBJECTS = [
     {"name": "test_slug_c/2024/test_slug_c_2024_clean.parquet"},  # no pipeline_run
 ]
 
+
 def fake_list_objects(bucket, **kw):
     return FAKE_PARQUET_OBJECTS
+
 
 def fake_object_exists(bucket, key):
     # Solo test_slug_a e test_slug_b hanno pipeline_run.json
     if "pipeline_run" in key:
         return key.startswith("test_slug_a/") or key.startswith("test_slug_b/")
     return True  # per i parquet, esistono tutti
+
 
 # DuckDB mock che ritorna schema prevedibile
 MOCK_DESCRIBE_ROWS = [
@@ -48,12 +51,16 @@ MOCK_DESCRIBE_ROWS = [
 class FakeDuckDBConnection:
     def sql(self, query):
         return self
+
     def fetchall(self):
         return MOCK_DESCRIBE_ROWS
+
     def close(self):
         pass
+
     def __enter__(self):
         return self
+
     def __exit__(self, *args):
         pass
 
@@ -77,10 +84,24 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
                     "source_id": "manual-id",
                     "period": {"start": 2020, "end": 2025},  # piu' ampio del GCS (2023-2024)
                     "columns": [
-                        {"name": "anno", "type": "INTEGER", "role": "dimension", "description": "Anno di riferimento"},
-                        {"name": "nome", "type": "VARCHAR", "role": "dimension", "description": "Nome del dataset"},
+                        {
+                            "name": "anno",
+                            "type": "INTEGER",
+                            "role": "dimension",
+                            "description": "Anno di riferimento",
+                        },
+                        {
+                            "name": "nome",
+                            "type": "VARCHAR",
+                            "role": "dimension",
+                            "description": "Nome del dataset",
+                        },
                     ],
-                    "location": {"type": "gcs", "path": "gs://bucket/test_slug_a/*/test_slug_a_*_clean.parquet", "multi_file": True},
+                    "location": {
+                        "type": "gcs",
+                        "path": "gs://bucket/test_slug_a/*/test_slug_a_*_clean.parquet",
+                        "multi_file": True,
+                    },
                     "stage": "published",
                     "registry_source": "manual",
                 }
@@ -160,9 +181,9 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
         cols = {c["name"]: c for c in a["columns"]}
 
         # anno: role diverso tra editoriale (dimension) e derive (metric → INTEGER)
-        self.assertEqual(cols["anno"]["role"], "dimension")        # da editoriale
+        self.assertEqual(cols["anno"]["role"], "dimension")  # da editoriale
         self.assertEqual(cols["anno"]["description"], "Anno di riferimento")  # da editoriale
-        self.assertEqual(cols["anno"]["type"], "INTEGER")          # dal parquet
+        self.assertEqual(cols["anno"]["type"], "INTEGER")  # dal parquet
 
         # nome: uguale in editoriale e derive
         self.assertEqual(cols["nome"]["role"], "dimension")
@@ -205,11 +226,20 @@ class TestBuildCleanCatalogDerive(unittest.TestCase):
         ]
 
         class FakeTypeConnection:
-            def sql(self, query): return self
-            def fetchall(self): return mock_rows
-            def close(self): pass
-            def __enter__(self): return self
-            def __exit__(self, *args): pass
+            def sql(self, query):
+                return self
+
+            def fetchall(self):
+                return mock_rows
+
+            def close(self):
+                pass
+
+            def __enter__(self):
+                return self
+
+            def __exit__(self, *args):
+                pass
 
         mock_connect.return_value = FakeTypeConnection()
 
@@ -294,11 +324,13 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
     def tearDown(self):
         shutil.rmtree(self.tmpdir, ignore_errors=True)
 
-    def _make_candidate(self, slug: str, start_year: int | None = None, end_year: int | None = None) -> Path:
+    def _make_candidate(
+        self, slug: str, start_year: int | None = None, end_year: int | None = None
+    ) -> Path:
         cand_dir = self.candidates_dir / slug
         cand_dir.mkdir(exist_ok=True)
         yml = cand_dir / "dataset.yml"
-        lines = [f'dataset:', f'  name: "{slug}"', f'  years: [2024]']
+        lines = ["dataset:", f'  name: "{slug}"', "  years: [2024]"]
         if start_year is not None:
             lines.append("  time_coverage:")
             lines.append(f"    start_year: {start_year}")
@@ -307,7 +339,9 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
         yml.write_text("\n".join(lines))
         return yml
 
-    def _make_catalog_entry(self, slug: str, period_start: int = 2024, period_end: int = 2024) -> dict:
+    def _make_catalog_entry(
+        self, slug: str, period_start: int = 2024, period_end: int = 2024
+    ) -> dict:
         return {
             "slug": slug,
             "name": slug.replace("_", " ").title(),
@@ -315,16 +349,25 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
             "source": "",
             "period": {"start": period_start, "end": period_end},
             "columns": [{"name": "x", "type": "INTEGER", "role": "metric", "description": ""}],
-            "location": {"type": "gcs", "path": f"gs://bucket/{slug}/2024/{slug}_2024_clean.parquet", "multi_file": False},
+            "location": {
+                "type": "gcs",
+                "path": f"gs://bucket/{slug}/2024/{slug}_2024_clean.parquet",
+                "multi_file": False,
+            },
         }
 
     @pytest.mark.contract
     def test_overrides_period_from_coverage(self):
         """time_coverage.start_year/end_year deve sovrascrivere period."""
         self._make_candidate("test_slug_x", start_year=2010, end_year=2024)
-        catalog = {"datasets": [self._make_catalog_entry("test_slug_x", period_start=2024, period_end=2024)]}
+        catalog = {
+            "datasets": [
+                self._make_catalog_entry("test_slug_x", period_start=2024, period_end=2024)
+            ]
+        }
 
         from scripts.build_clean_catalog import _enrich_period_from_coverage
+
         _enrich_period_from_coverage(catalog, self.tmpdir)
 
         ds = catalog["datasets"][0]
@@ -335,9 +378,14 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
     def test_ignores_candidate_without_coverage(self):
         """Candidato senza time_coverage non altera period."""
         self._make_candidate("test_slug_x")  # no time_coverage
-        catalog = {"datasets": [self._make_catalog_entry("test_slug_x", period_start=2024, period_end=2024)]}
+        catalog = {
+            "datasets": [
+                self._make_catalog_entry("test_slug_x", period_start=2024, period_end=2024)
+            ]
+        }
 
         from scripts.build_clean_catalog import _enrich_period_from_coverage
+
         _enrich_period_from_coverage(catalog, self.tmpdir)
 
         ds = catalog["datasets"][0]
@@ -348,9 +396,14 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
     def test_ignores_unrelated_slug(self):
         """Slug non presente nei candidati non viene alterato."""
         self._make_candidate("test_slug_a", start_year=2010, end_year=2024)
-        catalog = {"datasets": [self._make_catalog_entry("test_slug_b", period_start=2020, period_end=2020)]}
+        catalog = {
+            "datasets": [
+                self._make_catalog_entry("test_slug_b", period_start=2020, period_end=2020)
+            ]
+        }
 
         from scripts.build_clean_catalog import _enrich_period_from_coverage
+
         _enrich_period_from_coverage(catalog, self.tmpdir)
 
         ds = catalog["datasets"][0]
@@ -370,6 +423,7 @@ class TestEnrichPeriodFromCoverage(unittest.TestCase):
         }
 
         from scripts.build_clean_catalog import _enrich_period_from_coverage
+
         _enrich_period_from_coverage(catalog, self.tmpdir)
 
         by_slug = {d["slug"]: d for d in catalog["datasets"]}
