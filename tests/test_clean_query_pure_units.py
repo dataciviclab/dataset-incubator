@@ -7,7 +7,7 @@ from __future__ import annotations
 
 import pytest
 
-import server
+from tools.clean_query_mcp import server
 
 pytestmark = pytest.mark.pure_unit
 
@@ -191,7 +191,7 @@ def test_search_datasets_empty_query():
 
 
 def test_cache_stats(monkeypatch):
-    import catalog
+    from tools.clean_query_mcp import catalog
 
     monkeypatch.setattr(
         catalog, "gcs_cache_stats", lambda: {"parquet_files": 10, "cached_bytes": 1000}

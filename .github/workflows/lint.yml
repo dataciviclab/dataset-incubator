@@ -24,8 +24,7 @@ jobs:
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
         with:
-          extra-packages: ruff mypy types-pyyaml types-requests pytest pytest-cov pytest-timeout
-          extra-requirements: tools/clean-query-mcp/requirements.txt
+          extra-packages: ruff mypy types-pyyaml types-requests pytest pytest-cov pytest-timeout mcp>=1.26.0 duckdb==1.5.1
 
       - name: Ruff
         run: ruff check scripts/ tools/
@@ -34,4 +33,4 @@ jobs:
         run: mypy scripts/ tools/
 
       - name: Pytest
-        run: python -m pytest tests/ -q --tb=line --cov=scripts --cov=tools/clean-query-mcp --cov-report=term --cov-fail-under=55
+        run: python -m pytest tests/ -q --tb=line --cov=scripts --cov=tools/clean_query_mcp --cov-report=term --cov-fail-under=55

@@ -6,12 +6,12 @@ from typing import Any
 from lab_connectors.mcp import create_mcp_server, guard_timed
 from lab_connectors.mcp.errors import McpError, ErrorCode
 
-from catalog import describe_dataset as describe_impl  # noqa: E402
-from catalog import get_year_column  # noqa: E402
-from catalog import list_datasets as list_impl  # noqa: E402
-from catalog import resolve_parquet_path  # noqa: E402
-from catalog import search_datasets as search_impl  # noqa: E402
-from catalog import load_catalog  # noqa: E402
+from .catalog import describe_dataset as describe_impl  # noqa: E402
+from .catalog import get_year_column  # noqa: E402
+from .catalog import list_datasets as list_impl  # noqa: E402
+from .catalog import resolve_parquet_path  # noqa: E402
+from .catalog import search_datasets as search_impl  # noqa: E402
+from .catalog import load_catalog  # noqa: E402
 
 ALLOWED_FROM = {"clean_input"}
 MAX_ROWS_HARD_CAP = 500
@@ -399,7 +399,7 @@ def run_query(
     structured_output=True,
 )
 def cache_stats() -> dict[str, Any]:
-    from catalog import gcs_cache_stats
+    from .catalog import gcs_cache_stats
 
     return gcs_cache_stats()
 

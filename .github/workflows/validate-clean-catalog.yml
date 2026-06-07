@@ -6,7 +6,7 @@ on:
       - "registry/clean_catalog.json"
       - "registry/clean_catalog.schema.json"
       - "scripts/build_clean_catalog.py"
-      - "tools/clean-query-mcp/**"
+      - "tools/clean_query_mcp/**"
       - ".github/workflows/validate-clean-catalog.yml"
   push:
     branches:
@@ -15,7 +15,7 @@ on:
       - "registry/clean_catalog.json"
       - "registry/clean_catalog.schema.json"
       - "scripts/build_clean_catalog.py"
-      - "tools/clean-query-mcp/**"
+      - "tools/clean_query_mcp/**"
       - ".github/workflows/validate-clean-catalog.yml"
   workflow_dispatch:
 
@@ -30,14 +30,13 @@ jobs:
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
         with:
-          extra-requirements: tools/clean-query-mcp/requirements.txt
-          extra-packages: pytest pytest-timeout
+          extra-packages: mcp>=1.26.0 duckdb==1.5.1 pytest pytest-timeout
 
       - name: Validate catalog and public GCS paths
         run: python scripts/build_clean_catalog.py --check-gcs
 
       - name: Smoke test clean-query MCP
-        run: python tools/clean-query-mcp/scripts/smoke.py
+        run: python -m tools.clean_query_mcp.scripts.smoke
 
       - name: Run clean-query tests
         run: python -m pytest tests/test_clean_query_catalog.py tests/test_clean_query_sql_guards.py -q --tb=line

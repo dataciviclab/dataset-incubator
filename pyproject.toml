@@ -46,11 +46,14 @@ dev = [
   "twine>=5.0.0",
 ]
 
+[project.scripts]
+clean-query-mcp = "tools.clean_query_mcp.server:main"
+
 [project.urls]
 Repository = "https://github.com/dataciviclab/dataset-incubator"
 
 [tool.setuptools.packages.find]
-include = ["scripts", "scripts.*"]
+include = ["scripts", "scripts.*", "tools", "tools.*"]
 exclude = ["tests*"]
 
 [tool.setuptools.dynamic]
