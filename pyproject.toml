@@ -26,6 +26,7 @@ dependencies = [
 "lab-connectors[duckdb,gcs] @ git+https://github.com/dataciviclab/lab-connectors.git@v0.13.4",
 "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.27.3",
   "jsonschema>=4.0",
+  "mcp>=1.26.0",
 ]
 
 [project.optional-dependencies]

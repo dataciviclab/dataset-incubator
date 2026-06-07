@@ -911,5 +911,10 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
     return guard_timed(_exec, "explain_query")
 
 
-if __name__ == "__main__":
+def main() -> None:
+    """Entry point per l'MCP server."""
     mcp.run()
+
+
+if __name__ == "__main__":
+    main()
