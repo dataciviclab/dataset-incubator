@@ -112,7 +112,7 @@ jobs:
           python scripts/prefetch_blocked_sources.py \
             "${{ matrix.config.config_path }}"
         env:
-          BLOCKED_SOURCE_PROXY: ${{ secrets.BLOCKED_SOURCE_PROXY }}
+          BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
 
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows) [retry x2]"
         id: run_full
