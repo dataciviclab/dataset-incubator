@@ -4,11 +4,11 @@ import argparse
 import sys
 from pathlib import Path
 
-TOOL_ROOT = Path(__file__).resolve().parents[1]
-if str(TOOL_ROOT) not in sys.path:
-    sys.path.insert(0, str(TOOL_ROOT))
+REPO_ROOT = Path(__file__).resolve().parents[2]
+if str(REPO_ROOT) not in sys.path:
+    sys.path.insert(0, str(REPO_ROOT))
 
-import server  # noqa: E402
+from tools.clean_query_mcp import server  # noqa: E402
 
 
 def main() -> int:
