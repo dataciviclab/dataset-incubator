@@ -1,6 +1,6 @@
 # malasanita-compose
 
-Compose puro del filone **malasanita**. Mette insieme i 4 candidate flat regionali e produce 3 mart con diversa metodologia di mortalità.
+Compose puro del filone **malasanita**. Mette insieme 3 candidate flat regionali (A+C+D) e produce 3 mart con diversa metodologia di mortalità.
 
 ## Domanda
 
@@ -31,15 +31,13 @@ Tutti i mart hanno join A+C+D verificato: 21/21 unità territoriali.
 ## Esecuzione
 
 ```bash
-# Unico comando: toolkit risolve ed esegue automaticamente i support (anche transitivi)
+# Il toolkit esegue automaticamente i 3 support prima del compose
 toolkit run full --config compose/malasanita-compose/dataset.yml
 ```
 
-Grazie al **transitive support resolution** del toolkit (v1.28.0+), i support dataset (A, C, D) vengono eseguiti automaticamente prima del compose, incluse eventuali dipendenze annidate.
-
 ## Dipendenze
 
-- Toolkit **>= v1.28.0** (transitive support resolution + supporto parametro `thousands` per CSV con separatore migliaia)
+- Toolkit **>= v1.24.0** (supporto parametro `thousands` per CSV con separatore migliaia)
 
 ## Note tecniche
 
