@@ -58,13 +58,6 @@ mart:
         # Nota: portale MUR ora espone solo 10 atenei (~100 righe)
         min_rows: 50
 
-cross_year:
-  tables:
-    - name: "mart_gettito_ateneo_tipo_multi_anno"
-      sql: "sql/mart_multi_anno.sql"
-      source_layer: "mart"
-      source_table: "mart_gettito_ateneo_tipo"
-
 validation:
   fail_on_error: true
 
