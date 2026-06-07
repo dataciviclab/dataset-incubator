@@ -22,11 +22,10 @@ clean:
   read:
     source: "auto"
     mode: "latest"
-    delim: ";"
-    encoding: "cp1252"
     header: true
   validate:
-    min_rows: 500
+    # Minimo osservato 2017-2024: 1067 righe. Soglia a 800 per margine.
+    min_rows: 800
 
 mart:
   tables:
@@ -55,14 +54,8 @@ mart:
           - codice_gettito
           - descrizione_gettito
           - totale_euro
-        min_rows: 500
-
-cross_year:
-  tables:
-    - name: "mart_gettito_ateneo_tipo_multi_anno"
-      sql: "sql/mart_multi_anno.sql"
-      source_layer: "mart"
-      source_table: "mart_gettito_ateneo_tipo"
+        # Minimo osservato 2017-2024: 1067 righe. Soglia a 800 per margine.
+        min_rows: 800
 
 validation:
   fail_on_error: true
