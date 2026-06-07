@@ -111,10 +111,8 @@ def _patch_config(config_path: Path, raw_path: Path, blocked_url: str = "") -> N
     print("  ✅ dataset.yml aggiornato: http_file → local_file")
 
 
-def main(config_args: list[str] | None = None) -> None:
-    if config_args is None:
-        config_args = sys.argv[1:]
-    if len(config_args) < 1:
+def main() -> None:
+    if len(sys.argv) < 2:
         print(f"Uso: {sys.argv[0]} <dataset.yml> [dataset.yml ...]")
         sys.exit(1)
 
@@ -123,7 +121,7 @@ def main(config_args: list[str] | None = None) -> None:
         print("Nessun proxy configurato (HTTPS_PROXY / BLOCKED_SOURCE_PROXY). Skipping.")
         return
 
-    config_paths = [Path(a) for a in config_args]
+    config_paths = [Path(a) for a in sys.argv[1:]]
 
     for config_path in config_paths:
         if not config_path.exists():
@@ -132,17 +130,6 @@ def main(config_args: list[str] | None = None) -> None:
 
         with open(config_path) as f:
             cfg = yaml.safe_load(f)
-
-        # Se è un compose (ha support:), prefetch ricorsivo per ogni support
-        support_list = (cfg or {}).get("support", [])
-        if support_list:
-            for s in support_list:
-                scfg = s.get("config", "")
-                if scfg:
-                    # Risolve path relativo rispetto alla directory del compose
-                    scfg_resolved = str((config_path.parent / scfg).resolve())
-                    print(f"  ↪️ Compose support: {scfg_resolved}")
-                    main([scfg_resolved])
 
         # Cerca raw.sources con http_file
         raw_sources = (cfg or {}).get("raw", {}).get("sources", [])
