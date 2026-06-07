@@ -119,16 +119,9 @@ jobs:
         env:
           HTTPS_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
         run: |
-          # Determina se è un compose (solo mart, senza raw/clean)
-          if grep -q '^support:' "${{ matrix.config.config_path }}" 2>/dev/null; then
-            cmd="toolkit run mart"
-            extra_opts=""
-            out_file="run_mart.json"
-          else
-            cmd="toolkit run full"
-            extra_opts="--json --sample-rows 1000 --sample-bytes 5242880"
-            out_file="run_full.json"
-          fi
+          cmd="toolkit run full"
+          extra_opts="--json --sample-rows 1000 --sample-bytes 5242880"
+          out_file="run_full.json"
           MAX_ATTEMPTS=2
           for i in $(seq 1 $MAX_ATTEMPTS); do
             $cmd \
