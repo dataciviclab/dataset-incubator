@@ -13,7 +13,7 @@ from __future__ import annotations
 
 import pytest
 
-import catalog
+from tools.clean_query_mcp import catalog
 
 pytestmark = pytest.mark.pure_unit
 

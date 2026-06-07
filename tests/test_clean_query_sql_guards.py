@@ -5,7 +5,7 @@ from unittest.mock import MagicMock, patch
 
 import pytest
 
-import server
+from tools.clean_query_mcp import server
 
 pytestmark = pytest.mark.contract
 

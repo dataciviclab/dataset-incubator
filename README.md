@@ -64,7 +64,7 @@ dataset-incubator/
     clean_catalog.json         # catalogo dei clean pubblici
     pipeline_signals.json      # stato dei run per filone
   tools/
-    clean-query-mcp/          # MCP per interrogare i clean pubblici
+    clean_query_mcp/          # MCP per interrogare i clean pubblici
   templates/
     candidate/                 # template di partenza per filone
   skills/                      # skill markdown (riferimento umano per agenti e operatori)

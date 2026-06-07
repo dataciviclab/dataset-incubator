@@ -26,6 +26,7 @@ dependencies = [
 "lab-connectors[duckdb,gcs] @ git+https://github.com/dataciviclab/lab-connectors.git@v0.13.4",
 "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.27.3",
   "jsonschema>=4.0",
+  "mcp>=1.26.0",
 ]
 
 [project.optional-dependencies]
@@ -45,11 +46,14 @@ dev = [
   "twine>=5.0.0",
 ]
 
+[project.scripts]
+clean-query-mcp = "tools.clean_query_mcp.server:main"
+
 [project.urls]
 Repository = "https://github.com/dataciviclab/dataset-incubator"
 
 [tool.setuptools.packages.find]
-include = ["scripts", "scripts.*"]
+include = ["scripts", "scripts.*", "tools", "tools.*"]
 exclude = ["tests*"]
 
 [tool.setuptools.dynamic]
@@ -70,6 +74,7 @@ markers = [
 
 [tool.mypy]
 python_version = "3.12"
+explicit_package_bases = true
 warn_unused_configs = true
 warn_redundant_casts = true
 warn_unused_ignores = true

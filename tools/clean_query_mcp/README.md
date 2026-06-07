@@ -50,7 +50,7 @@ Il file locale `datasets.yml` non è più fonte di verità. Il catalogo MCP deve
 Da root del repository `dataset-incubator`:
 
 ```bash
-python -m pip install -r tools/clean-query-mcp/requirements.txt
+pip install -e .
 ```
 
 Config MCP:
@@ -59,10 +59,7 @@ Config MCP:
 {
   "mcpServers": {
     "clean-query": {
-      "command": "python",
-      "args": [
-        "/absolute/path/to/dataset-incubator/tools/clean-query-mcp/server.py"
-      ]
+      "command": "clean-query-mcp"
     }
   }
 }
@@ -154,13 +151,13 @@ time_series(dataset, metric='...', group_by='regione', year=None)
 ## Smoke test
 
 ```bash
-python tools/clean-query-mcp/scripts/smoke.py
+python -m tools.clean_query_mcp.scripts.smoke
 ```
 
 Limitato a un dataset:
 
 ```bash
-python tools/clean-query-mcp/scripts/smoke.py --dataset ispra_ru_base
+python -m tools.clean_query_mcp.scripts.smoke --dataset ispra_ru_base
 ```
 
 ## Limiti noti

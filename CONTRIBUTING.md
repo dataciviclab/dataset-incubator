@@ -228,7 +228,7 @@ python -m pytest tests/ -q --tb=line
 Per vedere la copertura:
 
 ```bash
-python -m pytest tests/ --cov=scripts --cov=tools/clean-query-mcp --cov-report=term
+python -m pytest tests/ --cov=scripts --cov=tools/clean_query_mcp --cov-report=term
 ```
 
 I test usano i marker standard del Lab (definiti in `pyproject.toml`):

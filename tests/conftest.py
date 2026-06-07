@@ -1,8 +1,9 @@
 """
 Fixture condivise per i test di dataset-incubator.
 
-Aggiunge scripts/ e tools/clean-query-mcp/ al path di default,
-così nessun test deve ripetere sys.path.insert().
+Aggiunge scripts/ e REPO_ROOT al path di default.
+REPO_ROOT serve per import package (``from tools.clean_query_mcp import server``).
+scripts/ serve per import moduli scripts (non sono un package).
 """
 
 import sys
@@ -15,16 +16,11 @@ _REPO_ROOT = Path(__file__).resolve().parents[1]
 
 # Path setup — una volta sola
 _SCRIPTS_PATH = str(_REPO_ROOT / "scripts")
-_TOOLS_PATH = str(_REPO_ROOT / "tools" / "clean-query-mcp")
-
-if _SCRIPTS_PATH not in sys.path:
-    sys.path.insert(0, _SCRIPTS_PATH)
-if _TOOLS_PATH not in sys.path:
-    sys.path.insert(0, _TOOLS_PATH)
-# Aggiunge anche ROOT per import via `scripts.xxx` (es. test_build_clean_catalog_derive)
 _ROOT_PATH = str(_REPO_ROOT)
-if _ROOT_PATH not in sys.path:
-    sys.path.insert(0, _ROOT_PATH)
+
+for _p in (_REPO_ROOT, _SCRIPTS_PATH):
+    if str(_p) not in sys.path:
+        sys.path.insert(0, str(_p))
 
 
 @pytest.fixture
