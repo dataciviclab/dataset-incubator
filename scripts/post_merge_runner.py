@@ -96,19 +96,6 @@ def _run_with_retry(cmd: list[str], cwd: str, attempts: int = 3) -> bool:
     return False
 
 
-def _prefetch_blocked_sources(config_path: str, root: str) -> None:
-    """Pre-download blocked sources via proxy."""
-    proxy = os.environ.get("BLOCKED_SOURCE_PROXY") or ""
-    if not proxy:
-        return
-    subprocess.run(
-        ["python", "scripts/prefetch_blocked_sources.py", config_path],
-        cwd=root,
-        env={**os.environ, "BLOCKED_SOURCE_PROXY": proxy},
-        check=True,
-    )
-
-
 def _push_clean_to_gcs(slug: str, root: str) -> bool:
     """Push clean parquet to GCS. Returns True on success."""
     r = subprocess.run(
@@ -178,9 +165,6 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             continue
 
         years_str = ",".join(str(y) for y in all_years)
-
-        # --- Pre-download blocked sources ---
-        _prefetch_blocked_sources(config_path, root)
 
         # --- Toolkit run full (run + validate + readiness + support) ---
         proxy = os.environ.get("BLOCKED_SOURCE_PROXY") or ""
