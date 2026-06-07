@@ -119,13 +119,44 @@ jobs:
         env:
           HTTPS_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
         run: |
+          cfg="${{ matrix.config.config_path }}"
           cmd="toolkit run full"
           extra_opts="--json --sample-rows 1000 --sample-bytes 5242880"
           out_file="run_full.json"
+
+          # Se è un compose con support, esegue support in sequenza
+          if grep -q '^support:' "$cfg" 2>/dev/null; then
+            echo "📦 Compose rilevato — eseguo support dataset..."
+            python scripts/run_compose_with_support.py "$cfg" \
+              --json --sample-rows 1000 --sample-bytes 5242880 > run_full.json 2>run_err.log; ec=$?
+          else
+            # Candidate standard: run full
+            MAX_ATTEMPTS=2
+            for i in $(seq 1 $MAX_ATTEMPTS); do
+              toolkit run full \
+                --config "$cfg" \
+                $extra_opts \
+                > run_full.json 2>run_err.log; ec=$?
+              if [ $ec -eq 0 ]; then
+                echo "exit_code=0" >> "$GITHUB_OUTPUT"
+                cat run_full.json
+                exit 0
+              fi
+              echo "Attempt $i/$MAX_ATTEMPTS failed (exit=$ec). Stderr:"
+              cat run_err.log
+              if [ $i -lt $MAX_ATTEMPTS ]; then
+                WAIT=$(( i * 15 ))
+                echo "Retrying in ${WAIT}s..."
+                sleep $WAIT
+              fi
+            done
+          fi
+
+          # Run principale (compose o candidate)
           MAX_ATTEMPTS=2
           for i in $(seq 1 $MAX_ATTEMPTS); do
             $cmd \
-              --config "${{ matrix.config.config_path }}" \
+              --config "$cfg" \
               $extra_opts \
               > "$out_file" 2>run_err.log; ec=$?
             if [ $ec -eq 0 ]; then
