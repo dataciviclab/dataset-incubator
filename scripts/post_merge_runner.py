@@ -167,10 +167,7 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
         years_str = ",".join(str(y) for y in all_years)
 
         # --- Toolkit run full (run + validate + readiness + support) ---
-        proxy = os.environ.get("BLOCKED_SOURCE_PROXY") or ""
-        if proxy:
-            os.environ["HTTPS_PROXY"] = proxy
-
+        # HTTPS_PROXY arriva già dal workflow (post-merge-candidate.yml)
         print(f"  toolkit run full --years {years_str}")
         run_ok = _run_with_retry(
             ["toolkit", "run", "full", "--config", config_path, "--years", years_str, "--json"],
