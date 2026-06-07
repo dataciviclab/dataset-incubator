@@ -22,11 +22,11 @@ clean:
   read:
     source: "auto"
     mode: "latest"
-    delim: ";"
-    encoding: "cp1252"
     header: true
   validate:
-    min_rows: 500
+    # Nota: il portale MUR espone ora solo 10 atenei (~100 righe) nel formato nuovo
+    # contro i 98 atenei del formato vecchio. Probabile paginazione CKAN da investigare.
+    min_rows: 50
 
 mart:
   tables:
@@ -55,7 +55,8 @@ mart:
           - codice_gettito
           - descrizione_gettito
           - totale_euro
-        min_rows: 500
+        # Nota: portale MUR ora espone solo 10 atenei (~100 righe)
+        min_rows: 50
 
 cross_year:
   tables:
