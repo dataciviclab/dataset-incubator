@@ -1,0 +1,45 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "posti_letto_stabilimento"
+  years: [2020, 2021, 2022, 2023]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "posti_letto"
+      type: "http_file"
+      args:
+        url: "https://www.dati.salute.gov.it"
+        filename: "posti_letto_stabilimento_{year}.csv"
+        url_suffix_by_year:
+          2020: "/sites/default/files/imported/C_17_dataset_115_0_upFile.csv"
+          2021: "/sites/default/files/imported/C_17_dataset_153_0_upFile.csv"
+          2022: "/sites/default/files/2024-12/Posti%20letto%20per%20stabilimento%20ospedaliero%20e%20disciplina_2022.csv"
+          2023: "/sites/default/files/2025-07/Posti%20letto%20per%20stabilimento%20ospedaliero%20e%20disciplina_2023_0.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "config_only"
+    mode: "latest"
+    delim: ";"
+    encoding: "latin-1"
+    header: true
+    decimal: ","
+    sample_size: -1
+  validate:
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_regioni_disciplina"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      mart_regioni_disciplina: { min_rows: 500 }
+
+validation:
+  fail_on_error: true
