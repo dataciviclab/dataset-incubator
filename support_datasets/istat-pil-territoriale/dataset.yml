@@ -1,0 +1,49 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_pil_territoriale"
+  source_id: "istat_sdmx"
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sdmx_pil"
+      type: "sdmx"
+      client:
+        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        timeout: 120
+        retries: 3
+      args:
+        agency: "IT1"
+        flow: "93_498"
+        version: "1.0"
+        filename: "istat_pil_territoriale_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    min_rows: 500
+
+mart:
+  tables:
+    - name: "pil_territoriale"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "pil_territoriale"
+  validate:
+    table_rules:
+      pil_territoriale:
+        min_rows: 500
+
+validation:
+  fail_on_error: true
