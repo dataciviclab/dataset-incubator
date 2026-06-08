@@ -5,6 +5,9 @@ dataset:
   name: "opencoesione_progetti"
   source_id: "opencoesione"
   years: [2026]
+  time_coverage:
+    start_year: 2007
+    end_year: 2027
 
 raw:
   sources:
