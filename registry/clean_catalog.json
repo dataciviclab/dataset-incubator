@@ -2698,7 +2698,7 @@
       "source": "ISTAT — Conti economici territoriali",
       "source_id": "istat_sdmx",
       "period": {
-        "start": 2024,
+        "start": 1995,
         "end": 2024
       },
       "columns": [
