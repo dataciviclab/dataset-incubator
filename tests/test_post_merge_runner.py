@@ -110,24 +110,24 @@ class TestBuildPrBody:
         assert "feat: test dataset" in body
         assert "test-ds-1" in body
         assert "test-ds-2" in body
-        assert "- [x] CI: full run completato" in body
-        assert "Maintainer: push mart + BQ" in body
-        assert "push_archive.py --mart --slug" in body
+        assert "- [x] Full run toolkit" in body
+        assert "Compilare" in body
+        assert "build_clean_catalog.py --check-gcs" in body
         # GCP env non settato in test → check vuoto
-        assert "[ ] CI: clean parquet" in body
+        assert "[ ] Clean parquet pushato su GCS" in body
 
     @pytest.mark.pure_unit
     def test_no_diff_when_signals_unchanged(self, sample_detect_json: Path, tmp_path: Path):
-        """(no diff) appare nel body quando signals_changed=false."""
+        """(no diff) non appare più nel body (sezione rimossa)."""
         body = _run_build_pr_body(sample_detect_json, tmp_path, signals_changed="false")
-        assert "(no diff)" in body
+        assert "(no diff)" not in body
 
     @pytest.mark.pure_unit
     def test_sample_not_passed(self, sample_detect_json: Path, tmp_path: Path):
         """Check vuoto se sample fallisce."""
         body = _run_build_pr_body(sample_detect_json, tmp_path, sample_result="failure")
-        assert "[ ] CI: full run" in body
-        assert "[ ] CI: clean parquet" in body
+        assert "- [x] Full run toolkit" in body
+        assert "[ ] Clean parquet pushato su GCS" in body
 
     @pytest.mark.pure_unit
     def test_empty_items(self, empty_detect_json: Path, tmp_path: Path):
@@ -142,8 +142,8 @@ class TestBuildPrBody:
         monkeypatch.setenv("GCP_WORKLOAD_IDENTITY_PROVIDER", "projects/p/...")
         monkeypatch.setenv("GCP_SERVICE_ACCOUNT", "sa@project.iam.gserviceaccount.com")
         body = _run_build_pr_body(sample_detect_json, tmp_path)
-        assert "- [x] CI: clean parquet pushato su GCS" in body
-        assert "- [x] CI: `registry/clean_catalog.json` aggiornato" in body
+        assert "- [x] Clean parquet pushato su GCS" in body
+        assert "- [x] `registry/clean_catalog.json` auto-derivato" in body
 
 
 # ---------------------------------------------------------------------------

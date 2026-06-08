@@ -233,9 +233,6 @@ def cmd_build_pr_body(args: argparse.Namespace) -> None:
     items = detect.get("items", [])
     configs = detect.get("configs", [])
 
-    sample_passed = args.sample_result == "success"
-    signals_changed = args.signals_changed == "true"
-
     gcp_available = (
         os.environ.get("GCP_WORKLOAD_IDENTITY_PROVIDER", "") != ""
         and os.environ.get("GCP_SERVICE_ACCOUNT", "") != ""
@@ -249,12 +246,6 @@ def cmd_build_pr_body(args: argparse.Namespace) -> None:
         or "- No sample-run config detected"
     )
 
-    commands = [
-        f"python scripts/push_archive.py --mart --slug {c['push_slug']} "
-        f"--create-bq-table --update-catalog"
-        for c in configs
-    ]
-
     body = "\n".join(
         [
             "## Post-merge registry handoff",
@@ -265,25 +256,22 @@ def cmd_build_pr_body(args: argparse.Namespace) -> None:
             "",
             item_list,
             "",
-            "## Automatic updates",
+            "## Cosa ha fatto CI",
             "",
-            f"- [x] Rebuilt `registry/pipeline_signals.json`{' (no diff)' if not signals_changed else ''}",
-            f"- [{'x' if sample_passed else ' '}] CI: full run completato (tutti gli anni)",
-            f"- [{'x' if gcp_available else ' '}] CI: clean parquet pushato su GCS",
-            f"- [{'x' if gcp_available else ' '}] CI: `registry/clean_catalog.json` aggiornato",
-            "- [ ] Maintainer: push mart + BQ (se serve)",
+            "- [x] Full run toolkit (tutti gli anni)",
+            f"- [{'x' if gcp_available else ' '}] Clean parquet pushato su GCS",
+            "- [x] `registry/pipeline_signals.json` aggiornato",
+            f"- [{'x' if gcp_available else ' '}] `registry/clean_catalog.json` auto-derivato",
             "",
             "## Sample-run artifacts",
             "",
             sample_list,
             "",
-            "## Maintainer commands",
+            "## Cosa fare (solo per slug nuovi)",
             "",
-            "```bash",
-            "\n".join(commands),
-            "```",
-            "",
-            "CI ha eseguito: full run (tutti gli anni), push clean su GCS, aggiornamento catalog. Il maintainer deve solo mart + BQ se serve.",
+            "1. Compilare `name`, `description`, `source`, `source_id`, e descrizioni/role delle colonne in `registry/clean_catalog.json`",
+            "2. `python scripts/build_clean_catalog.py --check-gcs`",
+            "3. Commit, push, mergiare la PR",
         ]
     )
 
