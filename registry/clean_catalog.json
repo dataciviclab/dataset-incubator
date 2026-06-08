@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-07",
+  "updated_at": "2026-06-08",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -2686,6 +2686,80 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/istat_ipab_aree/2024/istat_ipab_aree_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "istat_pil_territoriale",
+      "name": "PIL regionale e provinciale",
+      "description": "PIL, Valore Aggiunto e Imposte nette per nazione, macro-aree, regioni e province. Fonte: ISTAT Conti economici territoriali (DCCN_PILT). Serie 1995-2024.",
+      "source": "ISTAT — Conti economici territoriali",
+      "source_id": "istat_sdmx",
+      "period": {
+        "start": 1995,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT/NUTS del territorio"
+        },
+        {
+          "name": "territorio_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del territorio"
+        },
+        {
+          "name": "livello",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "nazionale | macro_area | regione | provincia"
+        },
+        {
+          "name": "tipo_dato_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice tipo dato (B1GQ_B_W2_S1=PIL, B1G_B_W2_S1=VA, D21X31_C_W2_S1=imposte)"
+        },
+        {
+          "name": "tipo_dato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Etichetta tipo dato"
+        },
+        {
+          "name": "valutazione_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice valutazione (V=prezzi correnti, L_2020=concatenati)"
+        },
+        {
+          "name": "valutazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Etichetta valutazione"
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "valore_mln_eu",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Valore in milioni di euro"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_pil_territoriale/2024/istat_pil_territoriale_2024_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
