@@ -1,5 +1,4 @@
 -- Mart: PIL, Valore Aggiunto, Imposte nette per territorio e anno
--- Include: nazionale, macro-aree, regioni, province
 
 select
     territorio_codice,

@@ -10,9 +10,14 @@ raw:
   output_policy: overwrite
   sources:
     - name: "istat_sdmx_pil"
-      type: "http_file"
+      type: "sdmx"
+      client:
+        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
       args:
-        url: "https://esploradati.istat.it/SDMXWS/rest/data/93_498_DF_DCCN_PILT_1/all?format=csv"
+        agency: "IT1"
+        flow: "93_498"
+        version: "1.0"
         filename: "istat_pil_territoriale_series.csv"
       primary: true
 
