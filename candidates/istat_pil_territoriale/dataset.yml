@@ -1,0 +1,42 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_pil_territoriale"
+  source_id: "istat_sdmx"
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sdmx_pil"
+      type: "http_file"
+      args:
+        url: "https://esploradati.istat.it/SDMXWS/rest/data/93_498_DF_DCCN_PILT_1/all?format=csv"
+        filename: "istat_pil_territoriale_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    min_rows: 500
+
+mart:
+  tables:
+    - name: "pil_territoriale"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "pil_territoriale"
+  validate:
+    table_rules:
+      pil_territoriale:
+        min_rows: 500
+
+validation:
+  fail_on_error: true
