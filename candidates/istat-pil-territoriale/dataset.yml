@@ -14,7 +14,6 @@ raw:
       client:
         data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
         metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
-        # ISTAT SDMX è spesso lento; timeout più alto del default 60s
         timeout: 120
         retries: 3
       args:

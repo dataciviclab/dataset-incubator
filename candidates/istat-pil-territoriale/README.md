@@ -1,4 +1,4 @@
-# istat_pil_territoriale — PIL regionale e provinciale
+# istat-pil-territoriale — PIL regionale e provinciale
 
 **Support dataset** — ISTAT SDMX Dataflow 93_498 (DCCN_PILT)
 
