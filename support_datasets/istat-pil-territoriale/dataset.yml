@@ -5,6 +5,9 @@ dataset:
   name: "istat_pil_territoriale"
   source_id: "istat_sdmx"
   years: [2024]
+  time_coverage:
+    start_year: 1995
+    end_year: 2024
 
 raw:
   output_policy: overwrite
