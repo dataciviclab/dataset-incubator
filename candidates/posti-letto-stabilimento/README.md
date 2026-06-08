@@ -1,4 +1,4 @@
-# posti_letto_stabilimento
+# posti-letto-stabilimento
 
 Fonte: Ministero della Salute — Open Data (dati.salute.gov.it)
 Dataset: Posti letto per stabilimento ospedaliero e disciplina
