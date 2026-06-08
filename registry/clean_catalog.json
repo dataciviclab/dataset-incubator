@@ -2693,10 +2693,10 @@
     },
     {
       "slug": "istat_pil_territoriale",
-      "name": "Istat Pil Territoriale",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "PIL regionale e provinciale",
+      "description": "PIL, Valore Aggiunto e Imposte nette per nazione, macro-aree, regioni e province. Fonte: ISTAT Conti economici territoriali (DCCN_PILT). Serie 1995-2024.",
+      "source": "ISTAT — Conti economici territoriali",
+      "source_id": "istat_sdmx",
       "period": {
         "start": 2024,
         "end": 2024
@@ -2706,55 +2706,55 @@
           "name": "territorio_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT/NUTS del territorio"
         },
         {
           "name": "territorio_nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del territorio"
         },
         {
           "name": "livello",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "nazionale | macro_area | regione | provincia"
         },
         {
           "name": "tipo_dato_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice tipo dato (B1GQ_B_W2_S1=PIL, B1G_B_W2_S1=VA, D21X31_C_W2_S1=imposte)"
         },
         {
           "name": "tipo_dato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Etichetta tipo dato"
         },
         {
           "name": "valutazione_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice valutazione (V=prezzi correnti, L_2020=concatenati)"
         },
         {
           "name": "valutazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Etichetta valutazione"
         },
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "valore_mln_eu",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Valore in milioni di euro"
         }
       ],
       "location": {
