@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-07",
+  "generated_at": "2026-06-08",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 39,
+    "total": 40,
     "by_status": {
-      "ok": 39,
+      "ok": 40,
       "warn": 0,
       "error": 0
     }
@@ -677,6 +677,24 @@
           2026
         ],
         "config_path": "support_datasets/bdap-anagrafe-enti/dataset.yml"
+      }
+    },
+    {
+      "id": "istat-pil-territoriale",
+      "source_id": "istat_sdmx",
+      "status": "ok",
+      "label": "istat-pil-territoriale",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27136216949",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27136216949",
+        "checked_at": "2026-06-08",
+        "years": [
+          2024
+        ],
+        "config_path": "support_datasets/istat-pil-territoriale/dataset.yml"
       }
     },
     {
