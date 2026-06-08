@@ -5,6 +5,9 @@ dataset:
   name: "inps_pensioni_trimestrale"
   source_id: inps
   years: [2024] # serie 2020-2024
+  time_coverage:
+    start_year: 2020
+    end_year: 2024
 
 raw:
   output_policy: overwrite

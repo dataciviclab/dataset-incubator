@@ -5,6 +5,9 @@ dataset:
   name: "istat_ipab_aree"
   source_id: "istat_sdmx"
   years: [2024]
+  time_coverage:
+    start_year: 2010
+    end_year: 2025
 
 raw:
   output_policy: overwrite
