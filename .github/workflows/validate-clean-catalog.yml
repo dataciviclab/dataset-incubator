@@ -73,14 +73,12 @@ jobs:
           new_slugs = {e["slug"] for e in new.get("datasets", []) if "slug" in e}
 
           added = new_slugs - old_slugs
+          # Solo i candidate generano issue DE/DCL — i support vengono filtrati via
           items = []
           for s in sorted(added):
-              # Le directory candidate/support usano trattini, gli slug del catalogo underscore
               dir_name = s.replace("_", "-")
-              if os.path.exists(f"support_datasets/{dir_name}/dataset.yml"):
-                  items.append({"slug": s, "kind": "support"})
-              else:
-                  items.append({"slug": s, "kind": "candidate"})
+              if not os.path.exists(f"support_datasets/{dir_name}/dataset.yml"):
+                  items.append({"slug": s, "root": "candidates"})
           result = json.dumps(items)
 
           with open(os.environ["GITHUB_OUTPUT"], "a") as out:

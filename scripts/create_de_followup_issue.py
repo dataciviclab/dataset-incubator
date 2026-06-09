@@ -29,15 +29,6 @@ def main() -> int:
         print("Nessun item — skip")
         return 0
 
-    # Filtra solo candidate (salta support datasets)
-    candidates = [
-        i for i in items if i.get("kind") != "support" and i.get("root") != "support_datasets"
-    ]
-    if not candidates:
-        print("Solo support dataset — skip issue DE")
-        return 0
-    items = candidates
-
     # Costruisci lista items
     item_lines = "\n".join(
         f"- [ ] {i['slug']}: aggiungere tema in src/data/themes.json.py (data-explorer) e creare pagina dataset"
