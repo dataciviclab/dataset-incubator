@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-08",
+  "updated_at": "2026-06-09",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -1376,7 +1376,7 @@
       "source": "Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa",
       "source_id": "giustizia_statistiche",
       "period": {
-        "start": 2024,
+        "start": 2014,
         "end": 2024
       },
       "columns": [
@@ -4516,8 +4516,8 @@
       "source": "INPS - OpenData",
       "source_id": "inps",
       "period": {
-        "start": 2024,
-        "end": 2024
+        "start": 2017,
+        "end": 2022
       },
       "columns": [
         {
@@ -4784,6 +4784,164 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "posti_letto_stabilimento",
+      "name": "Posti Letto Stabilimento",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2020,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_regione",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "descrizione_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_azienda",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipo_azienda",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_struttura",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "subcodice",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "denominazione_struttura_stabilimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_comune",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_tipo_struttura",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "descrizione_tipo_struttura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_disciplina",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "descrizione_disciplina",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_di_disciplina",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "n_reparti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_degenza_ordinaria",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_degenza_a_pagamento",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_day_hospital",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "posti_letto_day_surgery",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "totale_posti_letto",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/posti_letto_stabilimento/*/posti_letto_stabilimento_*_clean.parquet",
         "multi_file": true
       },
       "stage": "published",
