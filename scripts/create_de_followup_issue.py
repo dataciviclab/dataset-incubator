@@ -30,7 +30,9 @@ def main() -> int:
         return 0
 
     # Filtra solo candidate (salta support datasets)
-    candidates = [i for i in items if i.get("kind") != "support"]
+    candidates = [
+        i for i in items if i.get("kind") != "support" and i.get("root") != "support_datasets"
+    ]
     if not candidates:
         print("Solo support dataset — skip issue DE")
         return 0

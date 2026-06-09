@@ -75,7 +75,9 @@ jobs:
           added = new_slugs - old_slugs
           items = []
           for s in sorted(added):
-              if os.path.exists(f"support_datasets/{s}/dataset.yml"):
+              # Le directory candidate/support usano trattini, gli slug del catalogo underscore
+              dir_name = s.replace("_", "-")
+              if os.path.exists(f"support_datasets/{dir_name}/dataset.yml"):
                   items.append({"slug": s, "kind": "support"})
               else:
                   items.append({"slug": s, "kind": "candidate"})
