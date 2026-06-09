@@ -7,7 +7,6 @@ on:
       - "registry/clean_catalog.schema.json"
       - "scripts/build_clean_catalog.py"
       - "tools/clean_query_mcp/**"
-      - ".github/workflows/validate-clean-catalog.yml"
   push:
     branches:
       - main
@@ -16,7 +15,6 @@ on:
       - "registry/clean_catalog.schema.json"
       - "scripts/build_clean_catalog.py"
       - "tools/clean_query_mcp/**"
-      - ".github/workflows/validate-clean-catalog.yml"
   workflow_dispatch:
 
 jobs:
@@ -75,7 +73,12 @@ jobs:
           new_slugs = {e["slug"] for e in new.get("datasets", []) if "slug" in e}
 
           added = new_slugs - old_slugs
-          items = [{"slug": s, "root": "candidates"} for s in added]
+          # Solo i candidate generano issue DE/DCL — i support vengono filtrati via
+          items = []
+          for s in sorted(added):
+              dir_name = s.replace("_", "-")
+              if not os.path.exists(f"support_datasets/{dir_name}/dataset.yml"):
+                  items.append({"slug": s, "root": "candidates"})
           result = json.dumps(items)
 
           with open(os.environ["GITHUB_OUTPUT"], "a") as out:
