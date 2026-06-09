@@ -4792,9 +4792,9 @@
     {
       "slug": "posti_letto_stabilimento",
       "name": "Posti Letto Stabilimento",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "description": "Posti letto per stabilimento ospedaliero, disciplina e regime di degenza (ordinaria, day hospital, day surgery). Dati del Ministero della Salute.",
+      "source": "Ministero della Salute — Banca Dati Posti Letto",
+      "source_id": "ministero_salute_posti_letto",
       "period": {
         "start": 2020,
         "end": 2023
@@ -4803,140 +4803,140 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "codice_regione",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT regione"
         },
         {
           "name": "descrizione_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione regione"
         },
         {
           "name": "codice_azienda",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice azienda sanitaria"
         },
         {
           "name": "tipo_azienda",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Tipo azienda (ASL/AO/IRCCS)"
         },
         {
           "name": "codice_struttura",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice struttura/stabilimento"
         },
         {
           "name": "subcodice",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Subcodice struttura"
         },
         {
           "name": "denominazione_struttura_stabilimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione struttura/stabilimento"
         },
         {
           "name": "indirizzo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo struttura"
         },
         {
           "name": "codice_comune",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT comune"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione comune"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla provincia"
         },
         {
           "name": "codice_tipo_struttura",
           "type": "DOUBLE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice tipo struttura"
         },
         {
           "name": "descrizione_tipo_struttura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione tipo struttura (pubblico, privato, etc.)"
         },
         {
           "name": "codice_disciplina",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice disciplina"
         },
         {
           "name": "descrizione_disciplina",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione disciplina"
         },
         {
           "name": "tipo_di_disciplina",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia disciplina"
         },
         {
           "name": "n_reparti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero reparti"
         },
         {
           "name": "posti_letto_degenza_ordinaria",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Posti letto in degenza ordinaria"
         },
         {
           "name": "posti_letto_degenza_a_pagamento",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Posti letto in degenza a pagamento"
         },
         {
           "name": "posti_letto_day_hospital",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Posti letto day hospital"
         },
         {
           "name": "posti_letto_day_surgery",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Posti letto day surgery"
         },
         {
           "name": "totale_posti_letto",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Totale posti letto"
         }
       ],
       "location": {
