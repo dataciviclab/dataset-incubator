@@ -1,0 +1,46 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_elenco_comuni"
+  source_id: "istat_situas"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_elenco_comuni"
+      type: "local_file"
+      args:
+        path: "raw/istat_elenco_comuni_raw.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+    delim: ","
+    encoding: "utf-8"
+  validate:
+    min_rows: 7000
+
+mart:
+  tables:
+    - name: "mart_superficie"
+      sql: "sql/mart_superficie.sql"
+    - name: "mart_codici_catastali"
+      sql: "sql/mart_codici_catastali.sql"
+  required_tables:
+    - "mart_superficie"
+    - "mart_codici_catastali"
+  validate:
+    table_rules:
+      mart_superficie:
+        min_rows: 7890
+      mart_codici_catastali:
+        min_rows: 7890
+
+validation:
+  fail_on_error: true
