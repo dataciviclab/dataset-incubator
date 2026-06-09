@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-08",
+  "generated_at": "2026-06-09",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 40,
+    "total": 41,
     "by_status": {
-      "ok": 40,
+      "ok": 41,
       "warn": 0,
       "error": 0
     }
@@ -551,6 +551,27 @@
           2024
         ],
         "config_path": "candidates/pensioni-pa-dag/dataset.yml"
+      }
+    },
+    {
+      "id": "posti-letto-stabilimento",
+      "source_id": "",
+      "status": "ok",
+      "label": "posti-letto-stabilimento",
+      "detail": "anni 2020-2023 — fonte: posti_letto — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27209348374",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27209348374",
+        "checked_at": "2026-06-09",
+        "years": [
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "config_path": "candidates/posti-letto-stabilimento/dataset.yml"
       }
     },
     {
