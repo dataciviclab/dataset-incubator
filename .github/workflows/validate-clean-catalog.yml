@@ -7,7 +7,6 @@ on:
       - "registry/clean_catalog.schema.json"
       - "scripts/build_clean_catalog.py"
       - "tools/clean_query_mcp/**"
-      - ".github/workflows/validate-clean-catalog.yml"
   push:
     branches:
       - main
@@ -16,7 +15,6 @@ on:
       - "registry/clean_catalog.schema.json"
       - "scripts/build_clean_catalog.py"
       - "tools/clean_query_mcp/**"
-      - ".github/workflows/validate-clean-catalog.yml"
   workflow_dispatch:
 
 jobs:
