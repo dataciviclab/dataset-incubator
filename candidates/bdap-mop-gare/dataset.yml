@@ -1,0 +1,255 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "bdap_mop_gare"
+  source_id: "openbdap"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    # ── Territorio Nazionale ──
+    - name: "bdap_mop_gare_IT"
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/b0603af6-f0c9-48a1-9e34-ece73a608aad.csv"
+        filename: "bdap_mop_gare_IT.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: true
+
+    # ── Regioni con DataStore dump CSV diretto ──
+    - name: "bdap_mop_gare_01"  # Piemonte
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/874296f7-93dd-41a7-b860-4ae1c59c2e93.csv"
+        filename: "bdap_mop_gare_01.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    - name: "bdap_mop_gare_03"  # Lombardia
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/228df76d-de44-454e-9bdf-bcc782815b9d.csv"
+        filename: "bdap_mop_gare_03.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    - name: "bdap_mop_gare_06"  # Friuli-Venezia Giulia
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/5220238c-44f2-461f-a1ac-c905b504b26e.csv"
+        filename: "bdap_mop_gare_06.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    - name: "bdap_mop_gare_07"  # Liguria
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/8c2a99b1-62ea-44a3-b8a8-a66289a4cc7a.csv"
+        filename: "bdap_mop_gare_07.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    - name: "bdap_mop_gare_09"  # Toscana
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/73905b2f-9bfd-4518-9b26-32f40f48c73c.csv"
+        filename: "bdap_mop_gare_09.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    - name: "bdap_mop_gare_11"  # Marche
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/16e8ae35-1c89-43f2-a891-4ae3e96bfd8d.csv"
+        filename: "bdap_mop_gare_11.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    - name: "bdap_mop_gare_14"  # Molise
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/cc2eded1-2cc5-4669-b7fc-d5921fff82e9.csv"
+        filename: "bdap_mop_gare_14.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    - name: "bdap_mop_gare_16"  # Puglia
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/7cfa12af-a764-4224-98d1-922b82392fb9.csv"
+        filename: "bdap_mop_gare_16.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    - name: "bdap_mop_gare_17"  # Basilicata
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/b21cb4dc-32cf-4dd8-9836-68a8b97d4d7b.csv"
+        filename: "bdap_mop_gare_17.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    - name: "bdap_mop_gare_19"  # Sicilia
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/f1b05fea-4b28-4010-b8ef-f4049056c6dd.csv"
+        filename: "bdap_mop_gare_19.csv"
+      client:
+        timeout: 120
+        retries: 3
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+
+    # ── Regioni senza CSV dump diretto (da testare via UUID) ──
+    - name: "bdap_mop_gare_02"  # Valle d'Aosta
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/473eb03c-846e-49b2-84d7-389260da4acb.csv"
+        filename: "bdap_mop_gare_02.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
+
+    - name: "bdap_mop_gare_04"  # Trentino-Alto Adige
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/c9b036f7-06a0-4ee8-bd8e-39b4dc08318b.csv"
+        filename: "bdap_mop_gare_04.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
+
+    - name: "bdap_mop_gare_05"  # Veneto
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/acae7f65-9e7a-4e1f-b15b-f590533d5cd6.csv"
+        filename: "bdap_mop_gare_05.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
+
+    - name: "bdap_mop_gare_08"  # Emilia-Romagna
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/c2210ecf-52c5-4db2-a90b-a43b7a3fbde9.csv"
+        filename: "bdap_mop_gare_08.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
+
+    - name: "bdap_mop_gare_10"  # Umbria
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/f3d54366-a91f-4675-88bf-dec13baabff1.csv"
+        filename: "bdap_mop_gare_10.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
+
+    - name: "bdap_mop_gare_12"  # Lazio
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/372f630c-d7fb-47ba-9173-4bde3d9d1f96.csv"
+        filename: "bdap_mop_gare_12.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
+
+    - name: "bdap_mop_gare_13"  # Abruzzo
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/cac73cc4-7eb9-4219-a4ff-2ba6614e5205.csv"
+        filename: "bdap_mop_gare_13.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
+
+    - name: "bdap_mop_gare_15"  # Campania
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/a7cc0311-2197-41c9-8bb8-6b37c439ad32.csv"
+        filename: "bdap_mop_gare_15.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
+
+    - name: "bdap_mop_gare_18"  # Calabria
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/4628d028-66d2-4b7a-9a30-d148c3f7bd89.csv"
+        filename: "bdap_mop_gare_18.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
+
+    - name: "bdap_mop_gare_20"  # Sardegna
+      type: "http_file"
+      year: 2026
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/4644ba01-49bb-42bc-af01-7bcec01aac4a.csv"
+        filename: "bdap_mop_gare_20.csv"
+      client:
+        timeout: 120
+        retries: 2
+        user_agent: "Mozilla/5.0 (compatible; DataCivicLab/1.0)"
+      primary: false
