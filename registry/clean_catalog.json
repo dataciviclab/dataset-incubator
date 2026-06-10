@@ -2387,10 +2387,10 @@
     },
     {
       "slug": "istat_elenco_comuni",
-      "name": "Istat Elenco Comuni",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "Elenco comuni italiani (codici ISTAT, catastali, superficie km²)",
+      "description": "Elenco completo dei 7.894 comuni italiani con codici ISTAT (6 cifre), codici catastali Belfiore, superficie territoriale in km², popolazione residente e legale, e caratteristiche geografiche (regione, provincia, zona altimetrica, altitudine, litoraneità/insularità). Fonte: ISTAT SITUAS.",
+      "source": "ISTAT SITUAS (via opensituas)",
+      "source_id": "istat_situas",
       "period": {
         "start": 2026,
         "end": 2026
@@ -2400,79 +2400,79 @@
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune (6 caratteri: codice regione + provincia + comune)"
         },
         {
           "name": "denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione ufficiale del comune in italiano"
         },
         {
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice catastale Belfiore (4-5 caratteri, es. A074 per Agliè)"
         },
         {
           "name": "superficie_km2",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie territoriale del comune in km²"
         },
         {
           "name": "popolazione_residente",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione residente al momento dello snapshot"
         },
         {
           "name": "popolazione_legale",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione legale (censita) al momento dello snapshot"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della regione di appartenenza"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della provincia (denominazione UTS) di appartenenza"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla automobilistica della provincia (2 caratteri)"
         },
         {
           "name": "zona_altimetrica",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice zona altimetrica ISTAT: 1=Montagna, 2=Collina, 3=Pianura"
         },
         {
           "name": "altitudine",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Altitudine del comune in metri sul livello del mare"
         },
         {
           "name": "comune_litoraneo",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Indica se il comune è bagnato dal mare (vero/falso)"
         },
         {
           "name": "comune_isolano",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Indica se il comune è situato su un'isola (vero/falso)"
         }
       ],
       "location": {
