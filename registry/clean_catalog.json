@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-09",
+  "updated_at": "2026-06-10",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -2383,6 +2383,104 @@
         "multi_file": true
       },
       "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "istat_elenco_comuni",
+      "name": "Elenco comuni italiani (codici ISTAT, catastali, superficie km²)",
+      "description": "Elenco completo dei 7.894 comuni italiani con codici ISTAT (6 cifre), codici catastali Belfiore, superficie territoriale in km², popolazione residente e legale, e caratteristiche geografiche (regione, provincia, zona altimetrica, altitudine, litoraneità/insularità). Fonte: ISTAT SITUAS.",
+      "source": "ISTAT SITUAS (via opensituas)",
+      "source_id": "istat_situas",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 caratteri: codice regione + provincia + comune)"
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ufficiale del comune in italiano"
+        },
+        {
+          "name": "codice_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale Belfiore (4-5 caratteri, es. A074 per Agliè)"
+        },
+        {
+          "name": "superficie_km2",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Superficie territoriale del comune in km²"
+        },
+        {
+          "name": "popolazione_residente",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Popolazione residente al momento dello snapshot"
+        },
+        {
+          "name": "popolazione_legale",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Popolazione legale (censita) al momento dello snapshot"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della regione di appartenenza"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della provincia (denominazione UTS) di appartenenza"
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla automobilistica della provincia (2 caratteri)"
+        },
+        {
+          "name": "zona_altimetrica",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice zona altimetrica ISTAT: 1=Montagna, 2=Collina, 3=Pianura"
+        },
+        {
+          "name": "altitudine",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Altitudine del comune in metri sul livello del mare"
+        },
+        {
+          "name": "comune_litoraneo",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Indica se il comune è bagnato dal mare (vero/falso)"
+        },
+        {
+          "name": "comune_isolano",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Indica se il comune è situato su un'isola (vero/falso)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_elenco_comuni/2026/istat_elenco_comuni_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
