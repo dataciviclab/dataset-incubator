@@ -153,8 +153,6 @@ def _duckdb_read(
     import concurrent.futures
 
     with gcs_connect(parquet_paths[0]) as conn:
-        conn.execute("PRAGMA disable_progress_bar")
-        conn.execute("SET memory_limit='2GB'")
 
         def _run():
             result = conn.execute(sql)
@@ -360,8 +358,6 @@ def run_query(
         import concurrent.futures
 
         with gcs_connect(parquet_paths[0]) as conn:
-            conn.execute("PRAGMA disable_progress_bar")
-            conn.execute("SET memory_limit='2GB'")
 
             def _run_query():
                 result = conn.execute(wrapped_sql)
@@ -529,8 +525,6 @@ def count(dataset: str, year: int | None = None) -> dict[str, Any]:
         import concurrent.futures
 
         with gcs_connect(parquet_paths[0]) as conn:
-            conn.execute("PRAGMA disable_progress_bar")
-            conn.execute("SET memory_limit='2GB'")
 
             def _run():
                 result = conn.execute(wrapped_sql)
@@ -629,8 +623,6 @@ def time_series(
         import concurrent.futures
 
         with gcs_connect(parquet_paths[0]) as conn:
-            conn.execute("PRAGMA disable_progress_bar")
-            conn.execute("SET memory_limit='2GB'")
 
             def _run():
                 result = conn.execute(wrapped_sql)
@@ -707,8 +699,6 @@ def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, An
         import concurrent.futures
 
         with gcs_connect(parquet_paths[0]) as conn:
-            conn.execute("PRAGMA disable_progress_bar")
-            conn.execute("SET memory_limit='2GB'")
 
             def _run():
                 result = conn.execute(wrapped_sql)
@@ -888,7 +878,6 @@ def explain_query(sql: str, dataset: str) -> dict[str, Any]:
         import concurrent.futures
 
         with gcs_connect(parquet_paths[0]) as conn:
-            conn.execute("PRAGMA disable_progress_bar")
             pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
             try:
                 future = pool.submit(lambda: conn.execute(f"EXPLAIN {wrapped_sql}"))
