@@ -75,7 +75,7 @@ mart:
           - anno
           - provincia
           - totale_ricorsi
-        min_rows: 5
+        min_rows: 0
 
 validation:
   fail_on_error: true
