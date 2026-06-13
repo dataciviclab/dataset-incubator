@@ -1,0 +1,92 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "openga_ricorsi_appalto"
+  source_id: "openga"
+  years: [2023, 2024, 2025, 2026]
+  time_coverage:
+    start_year: 2023
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "ga_ricorsi_appalto_ckan"
+      type: "ckan"
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "cds-ricorsi-pervenuti-in-materia-d-appalto"
+        resource_name: "CDS - Ricorsi pervenuti in materia d'appalto - {year}"
+        filename: "cds-ricorsi-appalto-{year}.csv"
+      primary: true
+
+clean:
+  read:
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    columns:
+      - {name: "_id", type: "VARCHAR"}
+      - {name: "ANNO_DEPOSITO_RICORSO", type: "VARCHAR"}
+      - {name: "CODICE_SEDE", type: "VARCHAR"}
+      - {name: "NOME_SEDE", type: "VARCHAR"}
+      - {name: "CODICE_SEZIONE", type: "VARCHAR"}
+      - {name: "NOME_SEZIONE", type: "VARCHAR"}
+      - {name: "NUMERO_RICORSO", type: "VARCHAR"}
+      - {name: "DATA_DEPOSITO_RICORSO", type: "VARCHAR"}
+      - {name: "CLASSIFICAZIONE_RICORSO", type: "VARCHAR"}
+      - {name: "CODICE_CIG", type: "VARCHAR"}
+      - {name: "CODICE_ACCORDO_QUADRO", type: "VARCHAR"}
+      - {name: "NUMERO_GARA", type: "VARCHAR"}
+      - {name: "OGGETTO_GARA", type: "VARCHAR"}
+      - {name: "IMPORTO_COMPLESSIVO_GARA", type: "VARCHAR"}
+      - {name: "NUMERO_LOTTI_COMPONENTI", type: "VARCHAR"}
+      - {name: "OGGETTO_LOTTO", type: "VARCHAR"}
+      - {name: "IMPORTO_LOTTO", type: "VARCHAR"}
+      - {name: "STATO_GARA", type: "VARCHAR"}
+      - {name: "SETTORE", type: "VARCHAR"}
+      - {name: "LUOGO_ISTAT", type: "VARCHAR"}
+      - {name: "PROVINCIA", type: "VARCHAR"}
+      - {name: "DATA_PUBBLICAZIONE", type: "VARCHAR"}
+      - {name: "DATA_SCADENZA_OFFERTA", type: "VARCHAR"}
+      - {name: "CF_AMMINISTRAZIONE_APPALTANTE", type: "VARCHAR"}
+      - {name: "DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE", type: "VARCHAR"}
+  required_columns:
+    - "anno"
+    - "codice_sede"
+    - "nome_sede"
+    - "classificazione_ricorso"
+    - "provincia"
+  sql: "sql/clean.sql"
+  validate:
+    min_rows: 5
+    not_null:
+      - "numero_ricorso"
+      - "data_deposito_ricorso"
+
+mart:
+  tables:
+    - name: "mart_ricorsi_sede_classificazione"
+      sql: "sql/mart_sede_classificazione.sql"
+    - name: "mart_ricorsi_territorio_settore"
+      sql: "sql/mart_territorio_settore.sql"
+  required_tables:
+    - "mart_ricorsi_sede_classificazione"
+  validate:
+    table_rules:
+      mart_ricorsi_sede_classificazione:
+        required_columns:
+          - anno
+          - codice_sede
+          - nome_sede
+          - classificazione_ricorso
+          - totale_ricorsi
+        not_null:
+          - anno
+          - codice_sede
+          - totale_ricorsi
+        min_rows: 5
+
+validation:
+  fail_on_error: true
