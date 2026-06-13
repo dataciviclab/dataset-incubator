@@ -26,32 +26,6 @@ clean:
     delim: ","
     encoding: "utf-8"
     header: true
-    columns:
-      - {name: "_id", type: "VARCHAR"}
-      - {name: "ANNO_DEPOSITO_RICORSO", type: "VARCHAR"}
-      - {name: "CODICE_SEDE", type: "VARCHAR"}
-      - {name: "NOME_SEDE", type: "VARCHAR"}
-      - {name: "CODICE_SEZIONE", type: "VARCHAR"}
-      - {name: "NOME_SEZIONE", type: "VARCHAR"}
-      - {name: "NUMERO_RICORSO", type: "VARCHAR"}
-      - {name: "DATA_DEPOSITO_RICORSO", type: "VARCHAR"}
-      - {name: "CLASSIFICAZIONE_RICORSO", type: "VARCHAR"}
-      - {name: "CODICE_CIG", type: "VARCHAR"}
-      - {name: "CODICE_ACCORDO_QUADRO", type: "VARCHAR"}
-      - {name: "NUMERO_GARA", type: "VARCHAR"}
-      - {name: "OGGETTO_GARA", type: "VARCHAR"}
-      - {name: "IMPORTO_COMPLESSIVO_GARA", type: "VARCHAR"}
-      - {name: "NUMERO_LOTTI_COMPONENTI", type: "VARCHAR"}
-      - {name: "OGGETTO_LOTTO", type: "VARCHAR"}
-      - {name: "IMPORTO_LOTTO", type: "VARCHAR"}
-      - {name: "STATO_GARA", type: "VARCHAR"}
-      - {name: "SETTORE", type: "VARCHAR"}
-      - {name: "LUOGO_ISTAT", type: "VARCHAR"}
-      - {name: "PROVINCIA", type: "VARCHAR"}
-      - {name: "DATA_PUBBLICAZIONE", type: "VARCHAR"}
-      - {name: "DATA_SCADENZA_OFFERTA", type: "VARCHAR"}
-      - {name: "CF_AMMINISTRAZIONE_APPALTANTE", type: "VARCHAR"}
-      - {name: "DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE", type: "VARCHAR"}
   required_columns:
     - "anno"
     - "codice_sede"
