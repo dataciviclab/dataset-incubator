@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-10",
+  "generated_at": "2026-06-13",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 42,
+    "total": 43,
     "by_status": {
-      "ok": 42,
+      "ok": 43,
       "warn": 0,
       "error": 0
     }
@@ -512,6 +512,27 @@
           2026
         ],
         "config_path": "candidates/opencoesione-progetti/dataset.yml"
+      }
+    },
+    {
+      "id": "openga-ricorsi-appalto",
+      "source_id": "openga",
+      "status": "ok",
+      "label": "openga-ricorsi-appalto",
+      "detail": "anni 2023-2026 — fonte: ga_ricorsi_appalto_ckan — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27473807844",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27473807844",
+        "checked_at": "2026-06-13",
+        "years": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "config_path": "candidates/openga-ricorsi-appalto/dataset.yml"
       }
     },
     {

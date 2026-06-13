@@ -67,7 +67,7 @@ def main() -> int:
     if args.check_gcs:
         errors.extend(validate_gcs_locations(normalized))
 
-    if errors:
+    if errors and not args.write:
         for error in errors:
             print(f"ERROR: {error}", file=sys.stderr)
         return 1
