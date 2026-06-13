@@ -48,6 +48,8 @@ mart:
   required_tables:
     - "mart_ricorsi_sede_classificazione"
   validate:
+    # Cardinalità attesa: SUM(totale_ricorsi) = COUNT(DISTINCT numero_ricorso)
+    # nel clean. Es. 2024: 763 ricorsi su 905 righe.
     table_rules:
       mart_ricorsi_sede_classificazione:
         required_columns:
@@ -62,6 +64,20 @@ mart:
           - codice_sede
           - totale_ricorsi
         min_rows: 5
+        max_rows: 200
+      mart_ricorsi_territorio_settore:
+        required_columns:
+          - anno
+          - provincia
+          - settore
+          - totale_ricorsi
+          - gare_distinte
+        not_null:
+          - anno
+          - provincia
+          - totale_ricorsi
+        min_rows: 5
+        max_rows: 200
 
 validation:
   fail_on_error: true

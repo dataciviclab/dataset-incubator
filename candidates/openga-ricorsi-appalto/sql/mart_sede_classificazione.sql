@@ -1,27 +1,35 @@
-WITH ricorsi AS (
-    -- Una riga per ricorso, indipendentemente dai lotti CIG
-    SELECT DISTINCT numero_ricorso, anno, codice_sede, nome_sede, classificazione_ricorso
+WITH ricorsi_per_gruppo AS (
+    SELECT
+        anno,
+        codice_sede,
+        nome_sede,
+        classificazione_ricorso,
+        COUNT(DISTINCT numero_ricorso) AS totale_ricorsi
     FROM clean_input
+    GROUP BY anno, codice_sede, nome_sede, classificazione_ricorso
 ),
 gare_per_gruppo AS (
-    -- Gare coinvolte in almeno un ricorso del gruppo
-    SELECT DISTINCT r.anno, r.codice_sede, r.nome_sede, r.classificazione_ricorso,
-           ci.numero_gara
-    FROM clean_input ci
-    JOIN ricorsi r ON ci.numero_ricorso = r.numero_ricorso AND ci.anno = r.anno
-    WHERE ci.numero_gara IS NOT NULL AND ci.numero_gara != ''
+    SELECT
+        anno,
+        codice_sede,
+        nome_sede,
+        classificazione_ricorso,
+        COUNT(DISTINCT numero_gara) AS gare_distinte
+    FROM clean_input
+    WHERE numero_gara IS NOT NULL AND numero_gara != ''
+    GROUP BY anno, codice_sede, nome_sede, classificazione_ricorso
 )
 SELECT
     r.anno,
     r.codice_sede,
     r.nome_sede,
     r.classificazione_ricorso,
-    COUNT(*) AS totale_ricorsi,
-    COUNT(DISTINCT gg.numero_gara) AS gare_distinte
-FROM ricorsi r
-LEFT JOIN gare_per_gruppo gg ON r.anno = gg.anno 
-    AND r.codice_sede = gg.codice_sede 
-    AND r.nome_sede = gg.nome_sede 
-    AND r.classificazione_ricorso = gg.classificazione_ricorso
-GROUP BY r.anno, r.codice_sede, r.nome_sede, r.classificazione_ricorso
-ORDER BY r.anno DESC, totale_ricorsi DESC
+    r.totale_ricorsi,
+    COALESCE(g.gare_distinte, 0) AS gare_distinte
+FROM ricorsi_per_gruppo r
+LEFT JOIN gare_per_gruppo g
+    ON r.anno = g.anno
+    AND r.codice_sede = g.codice_sede
+    AND r.nome_sede = g.nome_sede
+    AND r.classificazione_ricorso = g.classificazione_ricorso
+ORDER BY r.anno DESC, r.totale_ricorsi DESC

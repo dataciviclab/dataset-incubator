@@ -14,7 +14,7 @@ Quali sono i volumi e la distribuzione del contenzioso sugli appalti pubblici in
 
 ## Dataset
 
-24 colonne. Ogni riga è un ricorso depositato al Consiglio di Stato in materia di appalti pubblici, con dati ANAC integrati (CIG, importi gara, stazione appaltante, settore, provincia).
+24 colonne. Granularità: ricorso × lotto/CIG (un ricorso può riguardare più lotti). La chiave del ricorso è `numero_ricorso`. Dati ANAC integrati (CIG, importi gara, stazione appaltante, settore, provincia).
 
 **Copertura**: 2023–2026 (4 anni), aggiornamento mensile.
 
@@ -22,13 +22,13 @@ Quali sono i volumi e la distribuzione del contenzioso sugli appalti pubblici in
 
 - **Tema civico**: il contenzioso sugli appalti pubblici è un indicatore di salute del sistema degli acquisti pubblici
 - **Già integrato**: la fonte unisce dati GA + ANAC (CIG, importi)
-- **Granularità**: ogni ricorso è un record, con dati economici e geografici
+- **Granularità**: record-level con chiave ricorso e dati economici/geografici
 - **Collegabile**: via CIG ad altri dataset ANAC
 
 ## Output minimo atteso
 
-- `mart_ricorsi_sede_classificazione`: conteggio e importi per anno/sede/classificazione
-- `mart_ricorsi_territorio_settore`: conteggio e importi per provincia/anno/settore
+- `mart_ricorsi_sede_classificazione`: ricorsi e gare per anno/sede/classificazione
+- `mart_ricorsi_territorio_settore`: ricorsi e gare per provincia/anno/settore
 
 ## Criterio di promozione
 
