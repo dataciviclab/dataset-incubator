@@ -33,18 +33,26 @@ Per unire file con schemi diversi servirebbe clean.sql manuale con UNION ALL e a
 
 ## Analitico
 
-- `codice_regione`, `codice_provincia`, `codice_comune`: codici ISTAT (leading zero perso nel cast INTEGER)
+- `codice_regione`, `codice_provincia`, `codice_comune`: codici ISTAT conservati come VARCHAR (leading zero preservato). Chiave composita `codice_completo` = regione(2) || provincia(3) || comune(3) — 8 caratteri.
 - `denominazione_comune`, `sigla_provincia`: dati territoriali
 - `popolazione_censita_alla_data_elezione`: popolazione al momento dell'elezione (spesso NULL se non aggiornata)
 - `cognome`, `nome`, `sesso`: anagrafica (M/F) — sesso quasi sempre valorizzato
-- `data_nascita`: formato DD/MM/YYYY nel raw, mantenuto come VARCHAR nel clean
+- `data_nascita`: formato DD/MM/YYYY nel raw, parsato come DATE dal clean (tramite `clean.read.dateformat`)
 - `luogo_nascita`: comune di nascita (es. "ACQUI TERME (AL)")
 - `descrizione_carica`: valori osservati → Sindaco, Assessore, Consigliere, Consigliere candidato sindaco
 - `incarico`: sub-ruolo opzionale (Vicesindaco, Presidente del consiglio, ecc.)
-- `data_elezione`, `data_entrata_in_carica`: date in formato DD/MM/YYYY (VARCHAR nel clean)
+- `data_elezione`, `data_entrata_in_carica`: date in formato DD/MM/YYYY, parsate come DATE
 - `lista_appartenenza/collegamento`: nome della lista elettorale (rinominata in `lista_appartenenza` nel clean)
 - `titolo_studio`: categorizzazione amministrativa (es. "Laurea Magistrale", "Istruzione Secondaria di Secondo Grado")
 - `professione`: classificazione ISTAT-like delle professioni (es. "IMPRENDITORI TITOLARI E AMMIN. DELEGATI DI IMPRESE COMMERCIALI")
+
+## Licenza e trattamento dati personali
+
+- **Fonte**: DAIT — Ministero dell'Interno, open data amministratori locali
+- **URL**: https://dait.interno.gov.it/elezioni/open-data/amministratori-locali-e-regionali-in-carica
+- **Licenza**: i dati sono pubblicati dalla PA come open data. Il riutilizzo è soggetto alle condizioni della licenza indicata sulla fonte (tipicamente CC-BY o equivalente per dati pubblici).
+- **Dati personali**: il dataset contiene dati anagrafici di persone fisiche (nome, cognome, data di nascita, sesso, titolo di studio, professione). Questi dati sono pubblicati dalla PA come open data in quanto relativi a cariche pubbliche. Il Lab non effettua operazioni di arricchimento o profilazione. Per qualsiasi riutilizzo downstream, verificare la compatibilità con il GDPR e la licenza della fonte.
+- **Conservazione**: lo snapshot 2026 è singolo anno. Una serie storica richiederebbe valutazione della liceità del trattamento su base continuativa.
 
 ## Cautele
 
