@@ -64,7 +64,6 @@ mart:
           - codice_sede
           - totale_ricorsi
         min_rows: 5
-        max_rows: 200
       mart_ricorsi_territorio_settore:
         required_columns:
           - anno
@@ -77,7 +76,6 @@ mart:
           - provincia
           - totale_ricorsi
         min_rows: 5
-        max_rows: 200
 
 validation:
   fail_on_error: true
