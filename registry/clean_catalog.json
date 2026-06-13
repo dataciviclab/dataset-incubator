@@ -5907,12 +5907,7 @@
           "description": "Denominazione dell'amministrazione appaltante"
         }
       ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/openga_ricorsi_appalto/*/openga_ricorsi_appalto_*_clean.parquet",
-        "multi_file": true
-      },
-      "stage": "published",
+      "stage": "incubating",
       "registry_source": "manual"
     }
   ]
