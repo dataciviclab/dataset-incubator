@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-10",
+  "updated_at": "2026-06-13",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -4552,6 +4552,170 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "openga_ricorsi_appalto",
+      "name": "Ricorsi Appalto Consiglio di Stato",
+      "description": "Ricorsi pervenuti in materia di appalto al Consiglio di Stato (OpenGA). Dati integrati con ANAC (CIG, importi gara, stazione appaltante, settore). Ogni riga e un ricorso con 24 colonne.",
+      "source": "OpenGA — Giustizia Amministrativa (Consiglio di Stato)",
+      "source_id": "openga",
+      "period": {
+        "start": 2023,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Anno di deposito del ricorso"
+        },
+        {
+          "name": "codice_sede",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice della sede giudiziaria (CdS)"
+        },
+        {
+          "name": "nome_sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della sede giudiziaria"
+        },
+        {
+          "name": "codice_sezione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice della sezione"
+        },
+        {
+          "name": "nome_sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della sezione"
+        },
+        {
+          "name": "numero_ricorso",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Numero identificativo del ricorso"
+        },
+        {
+          "name": "data_deposito_ricorso",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di deposito del ricorso"
+        },
+        {
+          "name": "classificazione_ricorso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Classificazione del ricorso (es. APPALTI PUBBLICI DI SERVIZI -> AGGIUDICAZIONE)"
+        },
+        {
+          "name": "codice_cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice CIG della gara (ANAC)"
+        },
+        {
+          "name": "codice_accordo_quadro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice accordo quadro"
+        },
+        {
+          "name": "numero_gara",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero della gara"
+        },
+        {
+          "name": "oggetto_gara",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Oggetto della gara"
+        },
+        {
+          "name": "importo_complessivo_gara",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo complessivo della gara (EUR)"
+        },
+        {
+          "name": "numero_lotti_componenti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero di lotti della gara"
+        },
+        {
+          "name": "oggetto_lotto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Oggetto del lotto"
+        },
+        {
+          "name": "importo_lotto",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo del lotto (EUR)"
+        },
+        {
+          "name": "stato_gara",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato della gara (ATTIVO, ecc.)"
+        },
+        {
+          "name": "settore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Settore della gara (SETTORI ORDINARI, ecc.)"
+        },
+        {
+          "name": "luogo_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Luogo ISTAT della gara"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia della gara"
+        },
+        {
+          "name": "data_pubblicazione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di pubblicazione della gara"
+        },
+        {
+          "name": "data_scadenza_offerta",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di scadenza dell'offerta"
+        },
+        {
+          "name": "cf_amministrazione_appaltante",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'amministrazione appaltante"
+        },
+        {
+          "name": "denominazione_amministrazione_appaltante",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione dell'amministrazione appaltante"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/openga_ricorsi_appalto/*/openga_ricorsi_appalto_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "openga_ricorsi_cds",
       "name": "Openga Ricorsi Cds",
       "description": "Ricorsi pendenti presso il Consiglio di Stato — dati mensili per sede giudiziaria",
@@ -5750,165 +5914,6 @@
       },
       "stage": "published",
       "registry_source": "derive_auto"
-    },
-    {
-      "slug": "openga_ricorsi_appalto",
-      "name": "Ricorsi Appalto Consiglio di Stato",
-      "description": "Ricorsi pervenuti in materia di appalto al Consiglio di Stato (OpenGA). Dati integrati con ANAC (CIG, importi gara, stazione appaltante, settore). Ogni riga e un ricorso con 24 colonne.",
-      "source": "OpenGA — Giustizia Amministrativa (Consiglio di Stato)",
-      "source_id": "openga",
-      "period": {
-        "start": 2023,
-        "end": 2026
-      },
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di deposito del ricorso"
-        },
-        {
-          "name": "codice_sede",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice della sede giudiziaria (CdS)"
-        },
-        {
-          "name": "nome_sede",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione della sede giudiziaria"
-        },
-        {
-          "name": "codice_sezione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice della sezione"
-        },
-        {
-          "name": "nome_sezione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione della sezione"
-        },
-        {
-          "name": "numero_ricorso",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Numero identificativo del ricorso"
-        },
-        {
-          "name": "data_deposito_ricorso",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di deposito del ricorso"
-        },
-        {
-          "name": "classificazione_ricorso",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Classificazione del ricorso (es. APPALTI PUBBLICI DI SERVIZI -> AGGIUDICAZIONE)"
-        },
-        {
-          "name": "codice_cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice CIG della gara (ANAC)"
-        },
-        {
-          "name": "codice_accordo_quadro",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice accordo quadro"
-        },
-        {
-          "name": "numero_gara",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Numero della gara"
-        },
-        {
-          "name": "oggetto_gara",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Oggetto della gara"
-        },
-        {
-          "name": "importo_complessivo_gara",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo complessivo della gara (EUR)"
-        },
-        {
-          "name": "numero_lotti_componenti",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": "Numero di lotti della gara"
-        },
-        {
-          "name": "oggetto_lotto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Oggetto del lotto"
-        },
-        {
-          "name": "importo_lotto",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo del lotto (EUR)"
-        },
-        {
-          "name": "stato_gara",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Stato della gara (ATTIVO, ecc.)"
-        },
-        {
-          "name": "settore",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Settore della gara (SETTORI ORDINARI, ecc.)"
-        },
-        {
-          "name": "luogo_istat",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Luogo ISTAT della gara"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia della gara"
-        },
-        {
-          "name": "data_pubblicazione",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di pubblicazione della gara"
-        },
-        {
-          "name": "data_scadenza_offerta",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di scadenza dell'offerta"
-        },
-        {
-          "name": "cf_amministrazione_appaltante",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale dell'amministrazione appaltante"
-        },
-        {
-          "name": "denominazione_amministrazione_appaltante",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione dell'amministrazione appaltante"
-        }
-      ],
-      "stage": "incubating",
-      "registry_source": "manual"
     }
   ]
 }
