@@ -36,7 +36,7 @@ Mart aggiuntivi (`dait_sindaci`, `dait_amministratori_territorio`) da sviluppare
 
 - **Primo dataset "anagrafico" del Lab**: primo dataset con persone fisiche (nome, cognome, età, professione, titolo di studio)
 - **Domanda civica forte e trasversale**: la composizione della classe politica locale interessa cittadini, giornalisti, ricercatori
-- **Alto valore di join**: si aggancia a tutti i dataset comunali del Lab (IRPEF, rifiuti, popolazione, FSC, ecc.) via codice_comune × anno
+- **Potenziale di join**: i codici DAIT sono proprietari. Serve una mappatura verificata per join con dataset ISTAT/BDAP (es. via denominazione_comune + sigla_provincia)
 - **Unico nel catalogo**: nessun altro dataset dà il profilo socio-demografico dei politici locali
 - **Serie storica lunghissima**: 1991–2026 = 35 anni di dati, permette analisi di trend (fase 2)
 - **Fonte ufficiale e strutturale**: Ministero dell'Interno, aggiornamento annuale

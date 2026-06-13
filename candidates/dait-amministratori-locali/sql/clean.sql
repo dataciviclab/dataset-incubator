@@ -7,10 +7,11 @@
 -- Colonna "lista_appartenenza/collegamento" rinominata in SQL
 --
 -- Codici territoriali (codice_regione/provincia/comune) mantenuti come VARCHAR
--- per preservare il leading zero. La chiave ISTAT completa e':
---   codice_regione (2) || codice_provincia (3) || codice_comune (3) = 8 char
--- Il cast a INTEGER perderebbe il padding, rendendo impossibile il join
--- con dataset ISTAT o BDAP.
+-- per preservare il leading zero. DAIT usa un proprio sistema di codifica
+-- comunale (codice_comune a 4 cifre, non 3 come ISTAT): la concatenazione
+-- regione(2)+provincia(3)+comune(4) genera codice_dait_completo (9 caratteri).
+-- Non e' un codice ISTAT — serve una mappatura verificata per join con dataset
+-- ISTAT o BDAP.
 
 SELECT
     {year}::INTEGER                                       AS anno,
@@ -18,7 +19,7 @@ SELECT
     NULLIF(codice_provincia, '')                          AS codice_provincia,
     NULLIF(codice_comune, '')                             AS codice_comune,
     NULLIF(codice_regione || codice_provincia || codice_comune, '')
-                                                          AS codice_completo,
+                                                          AS codice_dait_completo,
     denominazione_comune                                  AS denominazione_comune,
     sigla_provincia                                       AS sigla_provincia,
     NULLIF(popolazione_censita_alla_data_elezione, '')::INTEGER

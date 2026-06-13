@@ -33,7 +33,7 @@ Per unire file con schemi diversi servirebbe clean.sql manuale con UNION ALL e a
 
 ## Analitico
 
-- `codice_regione`, `codice_provincia`, `codice_comune`: codici ISTAT conservati come VARCHAR (leading zero preservato). Chiave composita `codice_completo` = regione(2) || provincia(3) || comune(3) — 8 caratteri.
+- `codice_regione`, `codice_provincia`, `codice_comune`: codici DAIT conservati come VARCHAR (leading zero preservato). DAIT usa un sistema di codifica comunale a 4 cifre (non 3 come ISTAT). `codice_dait_completo` = regione(2)\|\|provincia(3)\|\|comune(4) — 9 caratteri. Non è un codice ISTAT: serve mappatura verificata per join.
 - `denominazione_comune`, `sigla_provincia`: dati territoriali
 - `popolazione_censita_alla_data_elezione`: popolazione al momento dell'elezione (spesso NULL se non aggiornata)
 - `cognome`, `nome`, `sesso`: anagrafica (M/F) — sesso quasi sempre valorizzato
@@ -50,7 +50,7 @@ Per unire file con schemi diversi servirebbe clean.sql manuale con UNION ALL e a
 
 - **Fonte**: DAIT — Ministero dell'Interno, open data amministratori locali
 - **URL**: https://dait.interno.gov.it/elezioni/open-data/amministratori-locali-e-regionali-in-carica
-- **Licenza**: i dati sono pubblicati dalla PA come open data. Il riutilizzo è soggetto alle condizioni della licenza indicata sulla fonte (tipicamente CC-BY o equivalente per dati pubblici).
+- **Licenza**: non espressa sulla fonte. Tuttavia, ai sensi dell'**art. 52 del CAD (D.Lgs 82/2005)**, i dati pubblicati dalla PA senza licenza espressa si intendono rilasciati come dati di tipo aperto. Il riutilizzo downstream deve comunque rispettare il GDPR per le componenti contenenti dati personali (art. 2-ter D.Lgs 196/2003).
 - **Dati personali**: il dataset contiene dati anagrafici di persone fisiche (nome, cognome, data di nascita, sesso, titolo di studio, professione). Questi dati sono pubblicati dalla PA come open data in quanto relativi a cariche pubbliche. Il Lab non effettua operazioni di arricchimento o profilazione. Per qualsiasi riutilizzo downstream, verificare la compatibilità con il GDPR e la licenza della fonte.
 - **Conservazione**: lo snapshot 2026 è singolo anno. Una serie storica richiederebbe valutazione della liceità del trattamento su base continuativa.
 
