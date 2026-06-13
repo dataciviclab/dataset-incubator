@@ -23,7 +23,6 @@ env:
   DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-  HTTPS_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
 
 jobs:
   detect:
@@ -131,6 +130,8 @@ jobs:
         uses: google-github-actions/setup-gcloud@v3
 
       - name: Process each detected config
+        env:
+          HTTPS_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
         run: python scripts/post_merge_runner.py sample-run --retry 3
 
       - name: Upload sample-run artifacts
