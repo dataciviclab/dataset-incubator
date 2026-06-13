@@ -27,6 +27,7 @@ clean:
     skip: 2
     parallel: false
     ignore_errors: true
+    dateformat: "%d/%m/%Y"
     columns:
       codice_regione: "VARCHAR"
       codice_provincia: "VARCHAR"
@@ -37,12 +38,12 @@ clean:
       cognome: "VARCHAR"
       nome: "VARCHAR"
       sesso: "VARCHAR"
-      data_nascita: "VARCHAR"
+      data_nascita: "DATE"
       luogo_nascita: "VARCHAR"
       descrizione_carica: "VARCHAR"
       incarico: "VARCHAR"
-      data_elezione: "VARCHAR"
-      data_entrata_in_carica: "VARCHAR"
+      data_elezione: "DATE"
+      data_entrata_in_carica: "DATE"
       "lista_appartenenza/collegamento": "VARCHAR"
       titolo_studio: "VARCHAR"
       professione: "VARCHAR"
