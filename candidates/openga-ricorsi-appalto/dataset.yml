@@ -1,0 +1,81 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "openga_ricorsi_appalto"
+  source_id: "openga"
+  years: [2023, 2024, 2025, 2026]
+  time_coverage:
+    start_year: 2023
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "ga_ricorsi_appalto_ckan"
+      type: "ckan"
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "cds-ricorsi-pervenuti-in-materia-d-appalto"
+        resource_name: "CDS - Ricorsi pervenuti in materia d'appalto - {year}"
+        filename: "cds-ricorsi-appalto-{year}.csv"
+      primary: true
+
+clean:
+  read:
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  required_columns:
+    - "anno"
+    - "codice_sede"
+    - "nome_sede"
+    - "classificazione_ricorso"
+    - "provincia"
+  sql: "sql/clean.sql"
+  validate:
+    min_rows: 5
+    not_null:
+      - "numero_ricorso"
+      - "data_deposito_ricorso"
+
+mart:
+  tables:
+    - name: "mart_ricorsi_sede_classificazione"
+      sql: "sql/mart_sede_classificazione.sql"
+    - name: "mart_ricorsi_territorio_settore"
+      sql: "sql/mart_territorio_settore.sql"
+  required_tables:
+    - "mart_ricorsi_sede_classificazione"
+  validate:
+    # Cardinalità attesa: SUM(totale_ricorsi) = COUNT(DISTINCT numero_ricorso)
+    # nel clean. Es. 2024: 763 ricorsi su 905 righe.
+    table_rules:
+      mart_ricorsi_sede_classificazione:
+        required_columns:
+          - anno
+          - codice_sede
+          - nome_sede
+          - classificazione_ricorso
+          - totale_ricorsi
+          - gare_distinte
+        not_null:
+          - anno
+          - codice_sede
+          - totale_ricorsi
+        min_rows: 5
+      mart_ricorsi_territorio_settore:
+        required_columns:
+          - anno
+          - provincia
+          - settore
+          - totale_ricorsi
+          - gare_distinte
+        not_null:
+          - anno
+          - provincia
+          - totale_ricorsi
+        min_rows: 5
+
+validation:
+  fail_on_error: true
