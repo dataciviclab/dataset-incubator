@@ -1,7 +1,8 @@
 ## Tecnico
 
 - Source type: `ckan` (resource_name pattern `"CDS - Ricorsi pervenuti in materia d'appalto - {year}"`)
-- 2023: risorsa DataStore con colonna `_id` extra — gestita con columns espliciti in clean.read
+- 2023: risorsa DataStore con colonna `_id` extra — gestita con auto-detect DuckDB (ignorata dal clean.sql che seleziona per nome)
+- Anche 2025 e 2026 sono dump DataStore con colonna `_id` (25 colonne) — auto-detect gestisce entrambi i formati
 - 2024-2026: risorse upload standard, 24 colonne
 - Granularità: singolo ricorso (record-level)
 - Topic: giustizia
@@ -15,6 +16,8 @@
 - `CODICE_CIG`: presente per la maggior parte dei ricorsi, permette join con dataset ANAC
 - Notevole la presenza di ricorsi PNRR già dal 2023
 - Solo Consiglio di Stato (II grado), non include i ricorsi di I grado (TAR)
+- **Grana**: la riga non è il ricorso ma il ricorso × lotto/CIG. Un ricorso può riguardare più lotti della stessa gara o di gare diverse. `numero_ricorso` è la chiave del ricorso (763 distinti su 905 righe nel 2024). I mart usano `COUNT(DISTINCT numero_ricorso)` per contare i ricorsi reali
+- **Importi**: `IMPORTO_COMPLESSIVO_GARA` è l'importo totale della gara, non del singolo lotto. Per somme aggregate va deduplicato per `numero_gara` (101 gare nel 2024, importo totale 9,5 mld). I mart non includono importi per evitare sovrapposizioni tra gruppi; chi serve l'importo lo calcola dal clean con `SELECT SUM(importo_complessivo_gara) FROM (SELECT DISTINCT numero_gara, importo_complessivo_gara FROM clean_input WHERE importo_complessivo_gara IS NOT NULL)`
 
 ## Cautele
 

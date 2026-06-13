@@ -9,7 +9,7 @@ SELECT
     TRY_CAST("CLASSIFICAZIONE_RICORSO" AS VARCHAR) AS classificazione_ricorso,
     TRY_CAST("CODICE_CIG" AS VARCHAR) AS codice_cig,
     TRY_CAST("CODICE_ACCORDO_QUADRO" AS VARCHAR) AS codice_accordo_quadro,
-    TRY_CAST("NUMERO_GARA" AS BIGINT) AS numero_gara,
+    TRY_CAST("NUMERO_GARA" AS VARCHAR) AS numero_gara,
     TRY_CAST("OGGETTO_GARA" AS VARCHAR) AS oggetto_gara,
     TRY_CAST(replace("IMPORTO_COMPLESSIVO_GARA"::VARCHAR, ',', '.') AS DOUBLE) AS importo_complessivo_gara,
     TRY_CAST("NUMERO_LOTTI_COMPONENTI" AS BIGINT) AS numero_lotti_componenti,
