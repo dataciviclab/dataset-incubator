@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 44,
+    "total": 45,
     "by_status": {
-      "ok": 44,
+      "ok": 45,
       "warn": 0,
       "error": 0
     }
@@ -737,6 +737,24 @@
           2026
         ],
         "config_path": "support_datasets/bdap-anagrafe-enti/dataset.yml"
+      }
+    },
+    {
+      "id": "ipa-istat-mapping",
+      "source_id": "agid",
+      "status": "ok",
+      "label": "ipa-istat-mapping",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27644975517",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27644975517",
+        "checked_at": "2026-06-16",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/ipa-istat-mapping/dataset.yml"
       }
     },
     {
