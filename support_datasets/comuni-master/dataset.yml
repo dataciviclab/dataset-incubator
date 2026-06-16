@@ -1,0 +1,42 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "comuni_master"
+  source_id: "istat_situas"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_elenco_comuni"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/istat_elenco_comuni/2026/istat_elenco_comuni_2026_clean.parquet"
+        filename: "istat_clean.parquet"
+      primary: true
+    - name: "ipa_istat_mapping"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/ipa_istat_mapping/2026/ipa_istat_mapping_2026_clean.parquet"
+        filename: "ipa_clean.parquet"
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+  validate:
+    min_rows: 7000
+
+mart:
+  tables:
+    - name: "mart_comuni_master"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      mart_comuni_master:
+        min_rows: 7000
+
+validation:
+  fail_on_error: true
