@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-13",
+  "generated_at": "2026-06-16",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 43,
+    "total": 44,
     "by_status": {
-      "ok": 43,
+      "ok": 44,
       "warn": 0,
       "error": 0
     }
@@ -174,6 +174,24 @@
           2025
         ],
         "config_path": "candidates/consip-consumi-convenzione/dataset.yml"
+      }
+    },
+    {
+      "id": "dait-amministratori-locali",
+      "source_id": "dait",
+      "status": "ok",
+      "label": "dait-amministratori-locali",
+      "detail": "anno 2026 — fonte: dait_ammcom — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27638710012",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27638710012",
+        "checked_at": "2026-06-16",
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/dait-amministratori-locali/dataset.yml"
       }
     },
     {
