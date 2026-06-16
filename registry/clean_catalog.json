@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-13",
+  "updated_at": "2026-06-16",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -1207,6 +1207,146 @@
         "type": "gcs",
         "path": "gs://dataciviclab-clean/consip_consumi_convenzione/*/consip_consumi_convenzione_*_clean.parquet",
         "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "dait_amministratori_locali",
+      "name": "Dait Amministratori Locali",
+      "description": "",
+      "source": "",
+      "source_id": "dait",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_dait_completo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "denominazione_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "popolazione_censita",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_nascita",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "luogo_nascita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_carica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "incarico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_elezione",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_entrata_in_carica",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "lista_appartenenza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo_studio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "professione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/dait_amministratori_locali/2026/dait_amministratori_locali_2026_clean.parquet",
+        "multi_file": false
       },
       "stage": "published",
       "registry_source": "derive_auto"
