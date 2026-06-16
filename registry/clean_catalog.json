@@ -1120,6 +1120,170 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "comuni_master",
+      "name": "Comuni Master",
+      "description": "Raccordo completo dei comuni italiani: codici ISTAT, catastale (Belfiore), IPA, fiscale, superficie, popolazione, altitudine, indirizzo e contatti. Fusione di istat-elenco-comuni e ipa-istat-mapping.",
+      "source": "ISTAT SITUAS + AgID IPA",
+      "source_id": "istat_situas",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 caratteri, zero-padded)"
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del comune"
+        },
+        {
+          "name": "codice_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale Belfiore"
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla della provincia"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia (nome esteso)"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione"
+        },
+        {
+          "name": "superficie_km2",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Superficie territoriale in km²"
+        },
+        {
+          "name": "popolazione_residente",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Popolazione residente"
+        },
+        {
+          "name": "popolazione_legale",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Popolazione legale"
+        },
+        {
+          "name": "zona_altimetrica",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Zona altimetrica (1-5)"
+        },
+        {
+          "name": "altitudine",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Altitudine in metri"
+        },
+        {
+          "name": "comune_litoraneo",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "True se comune litoraneo"
+        },
+        {
+          "name": "comune_isolano",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "True se comune insulare"
+        },
+        {
+          "name": "codice_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice IPA dell'ente (es. c_b354)"
+        },
+        {
+          "name": "codice_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'ente"
+        },
+        {
+          "name": "codice_categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Categoria IPA (sempre L6 per comuni)"
+        },
+        {
+          "name": "codice_catastale_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale (da IPA)"
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT regione (2 cifre)"
+        },
+        {
+          "name": "codice_istat_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT attribuito da IPA"
+        },
+        {
+          "name": "denominazione_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ente in IPA"
+        },
+        {
+          "name": "acronimo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Acronimo"
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo sede"
+        },
+        {
+          "name": "cap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CAP"
+        },
+        {
+          "name": "sito_istituzionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sito web istituzionale"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/comuni_master/2026/comuni_master_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "consip_consumi_convenzione",
       "name": "Consip Consumi Convenzione",
       "description": "Consumi generati tramite ordini diretti di acquisto in convenzione Consip. Spesa delle PA per regione, provincia, tipologia amministrazione e fornitore (2023-2025).",
