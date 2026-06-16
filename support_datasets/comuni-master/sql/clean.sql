@@ -4,7 +4,9 @@
 --   raw_input: istat_clean.parquet (da GCS)
 --   {root}/data/raw/{dataset}/{year}/ipa_clean.parquet (da GCS)
 -- Una riga per comune italiano con tutte le codifiche e dati territoriali.
--- La chiave di JOIN è il codice ISTAT (6 caratteri).
+-- La chiave di JOIN è il codice catastale (Belfiore), non il codice ISTAT:
+-- i codici ISTAT non coincidono tra SITUAS e IPA per tutte le regioni
+-- (es. Sardegna: Cagliari 118006 in SITUAS vs 092009 in IPA).
 
 WITH istat AS (
     SELECT * FROM raw_input
@@ -51,5 +53,5 @@ SELECT
 
 FROM istat i
 LEFT JOIN ipa ip
-    ON i.codice_istat = ip.codice_istat
+    ON upper(trim(i.codice_catastale)) = upper(trim(ip.codice_catastale_istat))
 ORDER BY i.codice_istat
