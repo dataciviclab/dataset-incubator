@@ -84,10 +84,14 @@ ipa AS (
         trim(Tipo_Mail1) AS tipo_mail1
     FROM raw_input
     WHERE trim(Codice_Categoria) = 'L6'
-      AND Codice_comune_ISTAT IS NOT NULL
+      AND Codice_catastale_comune IS NOT NULL
+      AND trim(Codice_catastale_comune) != ''
 ),
 
--- LEFT JOIN con dedup: un comune ISTAT può avere zero o più righe IPA
+-- LEFT JOIN via codice catastale (Belfiore): chiave universale presente in
+-- entrambe le fonti. Il codice_comune_ISTAT di IPA non coincide con il codice
+-- ISTAT per tutte le regioni (es. Sardegna), mentre il codice catastale sì.
+-- Un comune ISTAT può avere zero o più righe IPA.
 -- Priorità: codice_ipa che inizia con 'c_' (canonico Comune in IPA)
 anagrafica_joined AS (
     SELECT
@@ -117,7 +121,7 @@ anagrafica_joined AS (
         ) AS rn
     FROM istat i
     LEFT JOIN ipa ip
-        ON i.codice_istat = ip.codice_comune_istat
+        ON UPPER(trim(i.codice_catastale)) = UPPER(trim(ip.codice_catastale_comune))
 )
 
 -- Output: una riga per comune
