@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 45,
+    "total": 46,
     "by_status": {
-      "ok": 45,
+      "ok": 46,
       "warn": 0,
       "error": 0
     }
@@ -737,6 +737,24 @@
           2026
         ],
         "config_path": "support_datasets/bdap-anagrafe-enti/dataset.yml"
+      }
+    },
+    {
+      "id": "comuni-master",
+      "source_id": "istat_situas",
+      "status": "ok",
+      "label": "comuni-master",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27646152426",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27646152426",
+        "checked_at": "2026-06-16",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/comuni-master/dataset.yml"
       }
     },
     {
