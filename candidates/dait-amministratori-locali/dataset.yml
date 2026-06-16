@@ -1,0 +1,61 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "dait_amministratori_locali"
+  source_id: "dait"
+  years: [2026]
+
+# --- RAW LAYER ---
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "dait_ammcom"
+      type: "http_file"
+      args:
+        url: "https://dait.interno.gov.it/documenti/ammcom.csv"
+        filename: "ammcom.csv"
+      primary: true
+
+# --- CLEAN LAYER ---
+# Le prime 2 righe del CSV contengono metadati (titolo + data aggiornamento) — skip:2
+clean:
+  read:
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    skip: 2
+    parallel: false
+    ignore_errors: true
+    dateformat: "%d/%m/%Y"
+    columns:
+      codice_regione: "VARCHAR"
+      codice_provincia: "VARCHAR"
+      codice_comune: "VARCHAR"
+      denominazione_comune: "VARCHAR"
+      sigla_provincia: "VARCHAR"
+      popolazione_censita_alla_data_elezione: "VARCHAR"
+      cognome: "VARCHAR"
+      nome: "VARCHAR"
+      sesso: "VARCHAR"
+      data_nascita: "DATE"
+      luogo_nascita: "VARCHAR"
+      descrizione_carica: "VARCHAR"
+      incarico: "VARCHAR"
+      data_elezione: "DATE"
+      data_entrata_in_carica: "DATE"
+      "lista_appartenenza/collegamento": "VARCHAR"
+      titolo_studio: "VARCHAR"
+      professione: "VARCHAR"
+  read_mode: robust
+  sql: "sql/clean.sql"
+
+# --- MART LAYER ---
+# Tre mart:
+#   1) dait_amministratori_locali — tutti gli amministratori (passthrough del clean)
+#   2) dait_sindaci — solo sindaci (filtro su descrizione_carica)
+#   3) dait_amministratori_territorio — aggregazioni per provincia/regione
+mart:
+  tables:
+    - name: "dait_amministratori_locali"
+      sql: "sql/mart.sql"
