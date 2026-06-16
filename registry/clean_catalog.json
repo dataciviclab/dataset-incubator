@@ -1122,9 +1122,9 @@
     {
       "slug": "comuni_master",
       "name": "Comuni Master",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "description": "Raccordo completo dei comuni italiani: codici ISTAT, catastale (Belfiore), IPA, fiscale, superficie, popolazione, altitudine, indirizzo e contatti. Fusione di istat-elenco-comuni e ipa-istat-mapping.",
+      "source": "ISTAT SITUAS + AgID IPA",
+      "source_id": "istat_situas",
       "period": {
         "start": 2026,
         "end": 2026
@@ -1134,145 +1134,145 @@
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune (6 caratteri, zero-padded)"
         },
         {
           "name": "denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune"
         },
         {
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice catastale Belfiore"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla della provincia"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia (nome esteso)"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione"
         },
         {
           "name": "superficie_km2",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie territoriale in km²"
         },
         {
           "name": "popolazione_residente",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione residente"
         },
         {
           "name": "popolazione_legale",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione legale"
         },
         {
           "name": "zona_altimetrica",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Zona altimetrica (1-5)"
         },
         {
           "name": "altitudine",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Altitudine in metri"
         },
         {
           "name": "comune_litoraneo",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True se comune litoraneo"
         },
         {
           "name": "comune_isolano",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True se comune insulare"
         },
         {
           "name": "codice_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice IPA dell'ente (es. c_b354)"
         },
         {
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale dell'ente"
         },
         {
           "name": "codice_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Categoria IPA (sempre L6 per comuni)"
         },
         {
           "name": "codice_catastale_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice catastale (da IPA)"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT regione (2 cifre)"
         },
         {
           "name": "codice_istat_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT attribuito da IPA"
         },
         {
           "name": "denominazione_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione ente in IPA"
         },
         {
           "name": "acronimo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Acronimo"
         },
         {
           "name": "indirizzo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo sede"
         },
         {
           "name": "cap",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CAP"
         },
         {
           "name": "sito_istituzionale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sito web istituzionale"
         }
       ],
       "location": {
