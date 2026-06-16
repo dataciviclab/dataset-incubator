@@ -114,7 +114,7 @@ anagrafica_joined AS (
         ROW_NUMBER() OVER (
             PARTITION BY i.codice_istat
             ORDER BY
-                CASE WHEN ip.codice_ipa LIKE 'c\_%' THEN 0
+                CASE WHEN lower(ip.codice_ipa) LIKE 'c\_%' ESCAPE '\' THEN 0
                      WHEN ip.codice_ipa IS NOT NULL THEN 1
                      ELSE 2 END,
                 ip.codice_ipa NULLS LAST
