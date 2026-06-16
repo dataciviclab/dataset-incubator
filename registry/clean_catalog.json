@@ -1213,9 +1213,9 @@
     },
     {
       "slug": "dait_amministratori_locali",
-      "name": "Dait Amministratori Locali",
-      "description": "",
-      "source": "",
+      "name": "Amministratori Locali DAIT",
+      "description": "Anagrafe degli Amministratori Locali e Regionali (DAIT) — snapshot giugno 2026. Amministratori comunali in carica con dati anagrafici (cognome, nome, sesso, data nascita), carica ricoperta, incarico, titolo di studio, professione e lista elettorale.",
+      "source": "Ministero dell'Interno — DAIT (Dipartimento per gli Affari Interni e Territoriali)",
       "source_id": "dait",
       "period": {
         "start": 2026,
@@ -1225,122 +1225,122 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento dello snapshot"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice regione DAIT"
         },
         {
           "name": "codice_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice provincia DAIT"
         },
         {
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice comune DAIT"
         },
         {
           "name": "codice_dait_completo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice DAIT completo (regione+provincia+comune, 9 caratteri)"
         },
         {
           "name": "denominazione_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla della provincia"
         },
         {
           "name": "popolazione_censita",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione censita al momento dell'elezione"
         },
         {
           "name": "cognome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome dell'amministratore"
         },
         {
           "name": "nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome dell'amministratore"
         },
         {
           "name": "sesso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sesso dell'amministratore (M/F)"
         },
         {
           "name": "data_nascita",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di nascita dell'amministratore"
         },
         {
           "name": "luogo_nascita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Luogo di nascita dell'amministratore"
         },
         {
           "name": "descrizione_carica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione della carica (Sindaco, Assessore, Consigliere)"
         },
         {
           "name": "incarico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Incarico specifico (Vicesindaco, Presidente del consiglio, ecc.)"
         },
         {
           "name": "data_elezione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data dell'elezione"
         },
         {
           "name": "data_entrata_in_carica",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di entrata in carica"
         },
         {
           "name": "lista_appartenenza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Lista elettorale di appartenenza"
         },
         {
           "name": "titolo_studio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Titolo di studio"
         },
         {
           "name": "professione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Professione"
         }
       ],
       "location": {
@@ -1348,7 +1348,7 @@
         "path": "gs://dataciviclab-clean/dait_amministratori_locali/2026/dait_amministratori_locali_2026_clean.parquet",
         "multi_file": false
       },
-      "stage": "published",
+      "stage": "incubating",
       "registry_source": "derive_auto"
     },
     {
