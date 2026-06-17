@@ -194,80 +194,229 @@ def test_cache_stats(monkeypatch):
     from tools.clean_query_mcp import catalog
 
     monkeypatch.setattr(
-        catalog, "gcs_cache_stats", lambda: {"parquet_files": 10, "cached_bytes": 1000}
+        catalog,
+        "gcs_cache_stats",
+        lambda: {"total_entries": 2, "valid_entries": 2, "ttl_sec": 300, "entries": []},
     )
     result = server.cache_stats()
-    assert result["parquet_files"] == 10
+    assert "gcs_path_resolution" in result
+    assert "query_results" in result
+    assert result["gcs_path_resolution"]["total_entries"] == 2
+
+
+def test_column_search(monkeypatch):
+    """column_search cerca in nome dataset, descrizione e colonne."""
+    fake_catalog = [
+        {
+            "slug": "ds_redditi",
+            "name": "Redditi Comunali",
+            "description": "Dati reddito per comune",
+            "source": "MEF",
+            "period": {"start": 2020, "end": 2024},
+            "columns": [
+                {"name": "anno", "type": "BIGINT", "role": "dimension"},
+                {"name": "regione", "type": "VARCHAR", "role": "dimension", "description": "Regione"},
+                {"name": "reddito_totale", "type": "DOUBLE", "role": "metric", "description": "Reddito totale"},
+            ],
+        },
+        {
+            "slug": "ds_popolazione",
+            "name": "Popolazione",
+            "description": "Popolazione italiana",
+            "source": "ISTAT",
+            "period": {"start": 2022, "end": 2024},
+            "columns": [
+                {"name": "anno", "type": "BIGINT", "role": "dimension"},
+                {"name": "popolazione", "type": "BIGINT", "role": "metric"},
+            ],
+        },
+    ]
+    monkeypatch.setattr(server, "load_catalog", lambda: fake_catalog)
+
+    # Match per nome colonna
+    res = server.column_search("reddito")
+    assert res["count"] == 1
+    assert res["datasets"][0]["slug"] == "ds_redditi"
+    assert len(res["datasets"][0]["matched_columns"]) == 1
+
+    # Match per meta dataset
+    res = server.column_search("popolazione")
+    assert res["count"] == 1
+    assert res["datasets"][0]["meta_match"] is True
+
+    # Nessun match
+    res = server.column_search("xyz_notfound")
+    assert res["count"] == 0
+
+
+def test_find_metric_datasets(monkeypatch):
+    """find_metric_datasets cerca dataset con colonne role=metric."""
+    fake_catalog = [
+        {
+            "slug": "ds_con_metriche",
+            "name": "Con Metriche",
+            "source": "Test",
+            "period": {"start": 2020, "end": 2024},
+            "columns": [
+                {"name": "valore", "type": "DOUBLE", "role": "metric", "description": "Valore"},
+            ],
+        },
+        {
+            "slug": "ds_senza_metriche",
+            "name": "Senza Metriche",
+            "source": "Test",
+            "period": {"start": 2020, "end": 2024},
+            "columns": [
+                {"name": "nome", "type": "VARCHAR", "role": "dimension"},
+            ],
+        },
+    ]
+    monkeypatch.setattr(server, "load_catalog", lambda: fake_catalog)
+
+    res = server.find_metric_datasets()
+    assert res["count"] == 1
+    assert res["datasets"][0]["slug"] == "ds_con_metriche"
+    assert len(res["datasets"][0]["metric_columns"]) == 1
+
+    # Filtro per nome metrica
+    res = server.find_metric_datasets(metric_name="valore")
+    assert res["count"] == 1
+
+    # Filtro per nome metrica inesistente
+    res = server.find_metric_datasets(metric_name="fake_metric")
+    assert res["count"] == 0
+
+    # Filtro per query
+    res = server.find_metric_datasets(query="metriche")
+    assert res["count"] == 1
+
+    # Query senza match
+    res = server.find_metric_datasets(query="xyz")
+    assert res["count"] == 0
 
 
 # ---------------------------------------------------------------------------
-# aggregate: logica pura, nessun DuckDB, solo describe_impl mockato
+# dataset_overview: test mockati, nessun DuckDB reale
 # ---------------------------------------------------------------------------
 
-_SLUG = "test_aggregate"
-_COLS = [
+_OVERVIEW_COLS = [
     {"name": "anno", "type": "BIGINT", "role": "dimension"},
     {"name": "regione", "type": "VARCHAR", "role": "dimension"},
     {"name": "valore", "type": "DOUBLE", "role": "metric"},
 ]
-_AGG_DESC = {"slug": _SLUG, "columns": _COLS, "period": {"start_year": 2020, "end_year": 2024}}
-_AGG_DESC_NO_YEAR = {"slug": _SLUG, "columns": _COLS}
+_OVERVIEW_DESC = {
+    "slug": "test_overview",
+    "name": "Test Overview",
+    "description": "Un dataset di test",
+    "source": "Test Source",
+    "period": {"start_year": 2020, "end_year": 2024},
+    "columns": _OVERVIEW_COLS,
+}
+
+_COUNT_OK = [{"columns": ["total"], "rows": [[5]]}]
+_PREVIEW_OK = [{"columns": ["anno", "regione", "valore"], "rows": [[2020, "Lombardia", 100.0]]}]
+_BATCH_OK = _COUNT_OK + _PREVIEW_OK
+_BATCH_ERR = [{"error": "simulated duckdb error"}, {"error": "simulated duckdb error"}]
+_BATCH_EMPTY = [
+    {"columns": ["total"], "rows": [[0]]},
+    {"columns": ["anno", "regione", "valore"], "rows": []},
+]
 
 
-def _mock_aggregate(monkeypatch, desc=_AGG_DESC):
-    monkeypatch.setattr(server, "describe_impl", lambda s: desc)
-    monkeypatch.setattr(server, "get_year_column", lambda s: "anno")
+class TestDatasetOverview:
+    def setup_method(self):
+        """Pulisce la cache query tra un test e l'altro."""
+        server._query_cache.clear()
 
-
-class TestAggregate:
-    def test_metric_empty(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "", ["regione"])
+    def test_limit_invalid(self):
+        result = server.dataset_overview("test_overview", limit=0)
         assert "error" in result
 
-    def test_group_by_empty(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "valore", [])
+    def test_limit_exceeds_hard_cap(self):
+        result = server.dataset_overview("test_overview", limit=server.MAX_ROWS_HARD_CAP + 1)
         assert "error" in result
 
     def test_schema_error_propagated(self, monkeypatch):
-        monkeypatch.setattr(server, "describe_impl", lambda s: {"error": "schema not found"})
-        result = server.aggregate(_SLUG, "valore", ["regione"])
+        monkeypatch.setattr(server, "describe_impl", lambda s: {"error": "not found"})
+        result = server.dataset_overview("inesistente")
         assert "error" in result
 
-    def test_invalid_group_by_column(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "valore", ["inesistente"])
+    def test_batch_error_propagated(self, monkeypatch):
+        """Se _execute_sql_batch fallisce, l'errore è nel risultato."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_ERR)
+        # Usa slug diverso per evitare cache
+        result = server.dataset_overview("overview_batch_err")
         assert "error" in result
-        assert "inesistente" in result["error"]
+        assert "simulated" in result["error"]
 
-    def test_invalid_metric(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "fake_metric", ["regione"])
-        assert "error" in result
+    def test_returns_schema_fields(self, monkeypatch):
+        """I campi dello schema sono presenti nell'output."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
+        result = server.dataset_overview("overview_fields")
+        assert result["slug"] == "overview_fields"
+        assert result["name"] == "Test Overview"
+        assert result["total_rows"] == 5
+        assert result["preview"]["row_count"] == 1
+        assert result["_cached"] is False
 
-    def test_generates_sql(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "valore", ["regione"])
-        assert "sql" in result
-        assert "SUM(valore)" in result["sql"]
-        assert "GROUP BY regione" in result["sql"]
+    def test_cache_hit(self, monkeypatch):
+        """Seconda chiamata con stesso slug+limit deve tornare cached."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
+        # Prima chiamata — popola cache
+        r1 = server.dataset_overview("overview_cache_test")
+        assert r1["total_rows"] == 5
+        assert r1["_cached"] is False
 
-    def test_with_year_filter(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "valore", ["regione"], year=2023)
-        assert "WHERE anno = 2023" in result["sql"]
+        # Seconda chiamata — deve venire da cache (describe_impl non mockato fallirebbe)
+        monkeypatch.setattr(server, "describe_impl", lambda s: {"error": "should not be called"})
+        r2 = server.dataset_overview("overview_cache_test")
+        assert r2["total_rows"] == 5
 
-    def test_with_filters(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(
-            _SLUG, "valore", ["regione"], filters="anno = 2023 AND regione = 'Lombardia'"
-        )
-        assert "WHERE" in result["sql"]
-        assert "Lombardia" in result["sql"]
+    def test_preview_columns_structure(self, monkeypatch):
+        """Le preview columns non devono contenere campi aggiuntivi."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
+        result = server.dataset_overview("overview_preview_cols")
+        assert result["preview"]["columns"] == ["anno", "regione", "valore"]
 
-    def test_no_year_column_no_filter(self, monkeypatch):
-        monkeypatch.setattr(server, "describe_impl", lambda s: _AGG_DESC_NO_YEAR)
-        monkeypatch.setattr(server, "get_year_column", lambda s: None)
-        result = server.aggregate(_SLUG, "valore", ["regione"], year=2023)
-        assert "WHERE" not in result["sql"]
+    def test_preview_rows_type(self, monkeypatch):
+        """Le righe di preview sono liste (non tuple)."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
+        result = server.dataset_overview("overview_rows_type")
+        row = result["preview"]["rows"][0]
+        assert isinstance(row, list)
+        assert row == [2020, "Lombardia", 100.0]
+
+    def test_empty_dataset(self, monkeypatch):
+        """Dataset vuoto -> total_rows = 0, preview vuoto."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_EMPTY)
+        result = server.dataset_overview("overview_empty")
+        assert result["total_rows"] == 0
+        assert result["preview"]["row_count"] == 0
+
+
+# ---------------------------------------------------------------------------
+# Entry point, cache GCS
+# ---------------------------------------------------------------------------
+
+
+def test_main_exists():
+    """main() è callable (non la eseguiamo, bloccherebbe il server)."""
+    assert callable(server.main)
+
+
+def test_gcs_cache_clear(monkeypatch):
+    """gcs_cache_clear pulisce la cache GCS."""
+    from tools.clean_query_mcp import catalog as cat_mod
+
+    # Popola cache con un entry finto
+    cat_mod._gcs_res_cache[("test", 2024)] = (1000.0, ["gs://fake/test.parquet"])
+    cat_mod.gcs_cache_clear()
+    stats = cat_mod.gcs_cache_stats()
+    assert stats["total_entries"] == 0
+    assert stats["valid_entries"] == 0

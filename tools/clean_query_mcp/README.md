@@ -22,20 +22,12 @@ Il file locale `datasets.yml` non è più fonte di verità. Il catalogo MCP deve
 | `find_metric_datasets(query, metric_name)` | Cerca dataset che abbiano colonne role=metric |
 | `column_search(query)` | Cerca sia in meta dataset che in nome/descrizione colonne |
 
-### Esplorazione senza SQL
+### Esplorazione semplificata
 
 | Tool | Scopo |
 |---|---|
-| `preview(dataset, limit, year)` | Prime N righe — no SQL, veloce per capire la struttura |
-| `count(dataset, year)` | Conteggio righe totale, con filtro anno opzionale |
-| `distinct_values(dataset, column, limit)` | Valori unici di una colonna — utile per UI filter |
-
-### Analisi pre-costruita
-
-| Tool | Scopo |
-|---|---|
-| `aggregate(dataset, metric, group_by, filters, year)` | Helper: SQL di aggregazione pre-scritto, passa a `run_query()` |
-| `time_series(dataset, metric, group_by, year, limit)` | Serie storica metric×dimension nel tempo |
+| `dataset_overview(slug, limit)` | Panoramica completa: schema + conteggio righe + anteprima in una chiamata |
+| `describe_dataset(slug)` | Schema completo: colonne, tipi, ruolo, periodo |
 
 ### Query e debug
 
@@ -43,7 +35,7 @@ Il file locale `datasets.yml` non è più fonte di verità. Il catalogo MCP deve
 |---|---|
 | `run_query(sql, dataset, max_rows, year)` | Query DuckDB read-only — solo SELECT/WITH, hard cap 500 righe |
 | `explain_query(sql, dataset)` | Valida SQL senza eseguirla — stima validità e risolve parquet |
-| `cache_stats()` | Stato della cache GCS — utile per debug
+| `cache_stats()` | Stato delle cache (GCS path resolution + risultati query) — utile per debug
 
 ## Runtime
 
@@ -101,32 +93,26 @@ gs://dataciviclab-clean/catalog/clean_catalog.json
 
 Pipeline: `source → raw → clean → mart → output`
 
-### Post-clean (verifica qualità)
+### Esplorazione iniziale
 
 Dopo `toolkit run --config candidates/{slug}/dataset.yml` e push GCS:
 
 ```python
-# 1. Verifica struttura e righe
-preview(slug, limit=5)          # prime righe — ok se non vuoto
-count(slug, year=2024)          # conteggio — confronta con atteso
+# 1. Panoramica completa (schema + conteggio + preview in un colpo)
+dataset_overview(slug, limit=5)
 
-# 2. Verifica schema
-describe_dataset(slug)          # colonne, tipi, role — per conferma contract
-
-# 3. Verifica valori chiave
-distinct_values(slug, 'regione')  # valori distinti — outlier visibility
+# 2. Verifica valori chiave
+run_query("SELECT DISTINCT regione FROM clean_input ORDER BY regione", slug)
 ```
 
-### Post-mart (analisi readiness)
-
-Dopo mart SQL e output parquet disponibili:
+### Analisi esplorativa
 
 ```python
-# 1. Serie storica disponibile?
-time_series(dataset, metric='spesa_convenzionata', group_by='regione')
+# 1. Serie storica per dimensione
+run_query("SELECT anno, regione, SUM(metric) AS value FROM clean_input GROUP BY anno, regione ORDER BY anno, regione", dataset)
 
-# 2. metriche aggregate
-aggregate(dataset, metric='totale_ru_tonnellate', group_by=['regione'], year=2024)
+# 2. Metriche aggregate
+run_query("SELECT regione, SUM(metric) AS total FROM clean_input GROUP BY regione ORDER BY total DESC", dataset)
 
 # 3. Query esplorativa
 run_query("SELECT regione, SUM(...) FROM clean_input GROUP BY regione", dataset)
@@ -134,7 +120,7 @@ run_query("SELECT regione, SUM(...) FROM clean_input GROUP BY regione", dataset)
 
 ### Pre-publication (validazione)
 
-Prima di aprire Discussion opromuovere su data-explorer:
+Prima di aprire Discussion o promuovere su data-explorer:
 
 ```python
 # 1. Quali dataset hanno metriche simili?
@@ -145,7 +131,7 @@ column_search('regione')                            # per capire coverage
 explain_query(sql, dataset)                         # senza eseguirla
 
 # 3. Verifica copertura temporale
-time_series(dataset, metric='...', group_by='regione', year=None)
+dataset_overview(slug)                              # period e total_rows
 ```
 
 ## Smoke test
