@@ -14,6 +14,7 @@ raw:
       args:
         command: "python preprocess.py raw_input.csv"
         output: "raw_input.csv"
+        filename: "raw_input.csv"
       primary: true
 
 clean:
