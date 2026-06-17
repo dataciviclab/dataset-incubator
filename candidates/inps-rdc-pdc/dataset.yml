@@ -8,8 +8,6 @@ dataset:
   name: "inps_rdc_pdc"
   source_id: "inps_open_data"
   years: [2020]
-  topic: "welfare"
-  description: "Nuclei familiari percettori di Reddito di Cittadinanza (RdC) e Pensione di Cittadinanza (PdC) per comune ISTAT, luglio 2020. Include importo medio mensile, individui coinvolti, takeup e dati demografici di base."
 
 
 raw:
