@@ -8,6 +8,7 @@ import json
 from pathlib import Path
 from typing import Any
 from lab_connectors.gcs import list_objects
+from lab_connectors.gcs.paths import glob_to_regex as _glob_to_regex_fn, parse_gs_url
 
 DI_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
@@ -158,13 +159,12 @@ def resolve_parquet_path(slug: str, year: int | None = None) -> list[str]:
     elif loc["type"] == "gcs":
         raw = loc["path"]
         multi_file = loc.get("multi_file", False)
-        bucket_and_key = raw[5:]
-        bucket, key = bucket_and_key.split("/", 1)
+        bucket, key = parse_gs_url(raw)
 
         if multi_file and "*" in key:
             prefix = key.split("*")[0]
             blobs = _list_gcs_blobs(bucket, prefix=prefix)
-            pattern = _glob_to_regex(key)
+            pattern = re.compile(_glob_to_regex_fn(key))
             urls = []
             for blob_name in sorted(blobs):
                 if blob_name.endswith("_clean.parquet"):
@@ -229,16 +229,3 @@ def _list_gcs_blobs(bucket: str, prefix: str) -> list[str]:
     auth = _gcs_auth_mode()
     results = list_objects(bucket, prefix=prefix, auth=auth)
     return [r["name"] for r in results]
-
-
-def _glob_to_regex(pattern: str) -> re.Pattern:
-    """Convert a simple glob pattern (* only) to compiled regex."""
-    escaped = ""
-    for ch in pattern:
-        if ch == "*":
-            escaped += ".*"
-        elif ch in r"\.+(){}^$|":
-            escaped += "\\" + ch
-        else:
-            escaped += ch
-    return re.compile("^" + escaped + "$")
