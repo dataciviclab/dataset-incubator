@@ -23,17 +23,18 @@ con `toolkit schema_diff` prima di estendere.
 
 ## Qualità dati
 
-**Outlier negli importi**: il dataset ANAC contiene alcuni importi palesemente
-errati (es. €12.6Mld per formazione camerale, €7.9Mld per cancelleria di un
-liceo). Probabilmente centesimi interpretati come euro. Su 1.47M righe, 44
-lotti superano 1 miliardo — esclusi dal mart con `WHERE importo_lotto < 1e9`.
+**`importo_complessivo_gara` è l'importo dell'intera gara, non del lotto**.
+Se una gara ha N lotti, l'importo viene ripetuto N volte. Per aggregazioni
+usare `importo_lotto`, non `importo_complessivo_gara`.
 
-**`importo_complessivo_gara` duplicato per lotto**: se una gara ha N lotti,
-l'importo complessivo gara viene ripetuto N volte. Usare `importo_lotto` per
-aggregazioni, non `importo_complessivo_gara`.
+**Importi elevati — verificare caso per caso**: alcuni importi sopra il
+miliardo sono reali (es. `B77825C53E` — €17.37Mld per servizio idrico Puglia
+2026-2046, confermato su ANAC), altri sono probabilmente errati
+(es. €12.6Mld per formazione Camera Commercio Cagliari). Il mart non filtra:
+usa mediana come metrica robusta e `importo_lotto_massimo` per tracciare i
+picchi.
 
-CIG outlier da verificare su portale ANAC:
-- `B77825C53E` — €17.4Mld — Servizio idrico Puglia 2026-2046 (20 anni, forse reale)
+CIG da verificare su portale ANAC (`dati.anticorruzione.it`):
 - `B737822CB8` — €12.6Mld — Formazione personale Camera Commercio Cagliari
 - `B98FB8A800` — €11.1Mld — Buoni pasto Corte dei Conti
 - `B683A6EB40` — €9.2Mld — A.O. Rummo Benevento (lotto 13)
