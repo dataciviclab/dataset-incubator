@@ -111,6 +111,7 @@ jobs:
         id: run_full
         env:
           HTTPS_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
+          TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: |
           MAX_ATTEMPTS=2
           for i in $(seq 1 $MAX_ATTEMPTS); do
