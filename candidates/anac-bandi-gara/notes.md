@@ -21,6 +21,28 @@ con `toolkit schema_diff` prima di estendere.
 - Mart: ~5.6MB, 611K righe aggregate
 - Run time (2025): ~3.5s mart, raw/clean via cache
 
+## Qualità dati
+
+**Outlier negli importi**: il dataset ANAC contiene alcuni importi palesemente
+errati (es. €12.6Mld per formazione camerale, €7.9Mld per cancelleria di un
+liceo). Probabilmente centesimi interpretati come euro. Su 1.47M righe, 44
+lotti superano 1 miliardo — esclusi dal mart con `WHERE importo_lotto < 1e9`.
+
+**`importo_complessivo_gara` duplicato per lotto**: se una gara ha N lotti,
+l'importo complessivo gara viene ripetuto N volte. Usare `importo_lotto` per
+aggregazioni, non `importo_complessivo_gara`.
+
+CIG outlier da verificare su portale ANAC:
+- `B77825C53E` — €17.4Mld — Servizio idrico Puglia 2026-2046 (20 anni, forse reale)
+- `B737822CB8` — €12.6Mld — Formazione personale Camera Commercio Cagliari
+- `B98FB8A800` — €11.1Mld — Buoni pasto Corte dei Conti
+- `B683A6EB40` — €9.2Mld — A.O. Rummo Benevento (lotto 13)
+- `B7A484F39D` — €7.9Mld — Forniture Liceo Scientifico Silvestri
+- `B8B40BE774` — €6.1Mld — ASP Agrigento (emodinamica)
+- `B8F7CC264D` — €5.7Mld — Marina Militare (PA 615)
+- `B66A1238E3` — €5.4Mld — ASL Salerno (energia elettrica)
+- `B641EBD927` — €5.2Mld — Comune Castelguglielmo (pulizie)
+
 ## Limiti CI
 
 - `pr-toolkit-check.yml` usa `--sample-bytes 5242880`: le risorse ANAC sono ZIP
