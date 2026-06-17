@@ -219,19 +219,19 @@
         {
           "name": "data_pubblicazione",
           "type": "DATE",
-          "role": "metric",
+          "role": "dimension",
           "description": "Data di pubblicazione del bando"
         },
         {
           "name": "data_scadenza_offerta",
           "type": "DATE",
-          "role": "metric",
+          "role": "dimension",
           "description": "Data di scadenza per la presentazione delle offerte"
         },
         {
           "name": "cod_tipo_scelta_contraente",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice della procedura di scelta del contraente"
         },
         {
@@ -243,7 +243,7 @@
         {
           "name": "cod_modalita_realizzazione",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice modalità di realizzazione"
         },
         {
@@ -315,19 +315,19 @@
         {
           "name": "flag_pnrr",
           "type": "BOOLEAN",
-          "role": "metric",
+          "role": "dimension",
           "description": "Indicatore PNRR/PNC (Vero se la gara è legata al Piano)"
         },
         {
           "name": "flag_urgenza",
           "type": "BOOLEAN",
-          "role": "metric",
+          "role": "dimension",
           "description": "Indicatore di urgenza"
         },
         {
           "name": "flag_delega",
           "type": "BOOLEAN",
-          "role": "metric",
+          "role": "dimension",
           "description": "Indicatore di delega a centrale di committenza"
         },
         {
@@ -435,13 +435,13 @@
         {
           "name": "data_comunicazione_esito",
           "type": "DATE",
-          "role": "metric",
+          "role": "dimension",
           "description": "Data di comunicazione dell'esito"
         },
         {
           "name": "data_cancellazione",
           "type": "DATE",
-          "role": "metric",
+          "role": "dimension",
           "description": "Data di cancellazione della gara (se annullata)"
         },
         {
@@ -453,7 +453,7 @@
         {
           "name": "data_ultimo_perfezionamento",
           "type": "DATE",
-          "role": "metric",
+          "role": "dimension",
           "description": "Data ultimo perfezionamento"
         }
       ],
