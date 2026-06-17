@@ -22,8 +22,8 @@ requirements.txt:
 - toolkit: `v1.35.0` → **v1.37.0** (bump + PR #382 download_all + PR #385 layer + PR #386 cleanup MCP)
 - lab-connectors: `v0.15.0` → **v0.15.1** (allineato a toolkit)
 
-Il tag `v1.37.0` è stato creato localmente in toolkit e va pushato su remote
-prima che il CI di DI possa usarlo.
+Il tag `v1.37.0` è stato pushato su remote il 2026-06-17. Il CI di DI
+dovrebbe ora risolvere la dipendenza correttamente.
 
 ## Schema raw
 
