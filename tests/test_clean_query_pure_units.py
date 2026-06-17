@@ -194,24 +194,27 @@ def test_cache_stats(monkeypatch):
     from tools.clean_query_mcp import catalog
 
     monkeypatch.setattr(
-        catalog, "gcs_cache_stats", lambda: {"parquet_files": 10, "cached_bytes": 1000}
+        catalog,
+        "gcs_cache_stats",
+        lambda: {"total_entries": 2, "valid_entries": 2, "ttl_sec": 300, "entries": []},
     )
     result = server.cache_stats()
-    assert result["parquet_files"] == 10
+    assert "gcs_path_resolution" in result
+    assert "query_results" in result
+    assert result["gcs_path_resolution"]["total_entries"] == 2
 
 
 # ---------------------------------------------------------------------------
 # dataset_overview: test mockati, nessun DuckDB reale
 # ---------------------------------------------------------------------------
 
-_OVERVIEW_SLUG = "test_overview"
 _OVERVIEW_COLS = [
     {"name": "anno", "type": "BIGINT", "role": "dimension"},
     {"name": "regione", "type": "VARCHAR", "role": "dimension"},
     {"name": "valore", "type": "DOUBLE", "role": "metric"},
 ]
 _OVERVIEW_DESC = {
-    "slug": _OVERVIEW_SLUG,
+    "slug": "test_overview",
     "name": "Test Overview",
     "description": "Un dataset di test",
     "source": "Test Source",
@@ -219,15 +222,27 @@ _OVERVIEW_DESC = {
     "columns": _OVERVIEW_COLS,
 }
 
+_COUNT_OK = [{"columns": ["total"], "rows": [[5]]}]
+_PREVIEW_OK = [{"columns": ["anno", "regione", "valore"], "rows": [[2020, "Lombardia", 100.0]]}]
+_BATCH_OK = _COUNT_OK + _PREVIEW_OK
+_BATCH_ERR = [{"error": "simulated duckdb error"}, {"error": "simulated duckdb error"}]
+_BATCH_EMPTY = [
+    {"columns": ["total"], "rows": [[0]]},
+    {"columns": ["anno", "regione", "valore"], "rows": []},
+]
+
 
 class TestDatasetOverview:
-    def test_limit_invalid(self, monkeypatch):
-        """Limite fuori range -> errore."""
-        result = server.dataset_overview(_OVERVIEW_SLUG, limit=0)
+    def setup_method(self):
+        """Pulisce la cache query tra un test e l'altro."""
+        server._query_cache.clear()
+
+    def test_limit_invalid(self):
+        result = server.dataset_overview("test_overview", limit=0)
         assert "error" in result
 
-    def test_limit_exceeds_hard_cap(self, monkeypatch):
-        result = server.dataset_overview(_OVERVIEW_SLUG, limit=server.MAX_ROWS_HARD_CAP + 1)
+    def test_limit_exceeds_hard_cap(self):
+        result = server.dataset_overview("test_overview", limit=server.MAX_ROWS_HARD_CAP + 1)
         assert "error" in result
 
     def test_schema_error_propagated(self, monkeypatch):
@@ -235,61 +250,60 @@ class TestDatasetOverview:
         result = server.dataset_overview("inesistente")
         assert "error" in result
 
-    def test_execute_sql_error_propagated(self, monkeypatch):
-        """Se _execute_sql fallisce, l'errore è nel risultato."""
+    def test_batch_error_propagated(self, monkeypatch):
+        """Se _execute_sql_batch fallisce, l'errore è nel risultato."""
         monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-
-        def fake_execute(*args, **kwargs):
-            return {"error": "simulated duckdb error"}
-
-        monkeypatch.setattr(server, "_execute_sql", fake_execute)
-        result = server.dataset_overview(_OVERVIEW_SLUG)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_ERR)
+        # Usa slug diverso per evitare cache
+        result = server.dataset_overview("overview_batch_err")
         assert "error" in result
         assert "simulated" in result["error"]
 
     def test_returns_schema_fields(self, monkeypatch):
         """I campi dello schema sono presenti nell'output."""
         monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-        monkeypatch.setattr(
-            server,
-            "_execute_sql",
-            lambda *a, **kw: {
-                "columns": ["anno", "regione", "valore", "total_rows"],
-                "rows": [[2020, "Lombardia", 100.0, 5]],
-            },
-        )
-        result = server.dataset_overview(_OVERVIEW_SLUG)
-        assert result["slug"] == _OVERVIEW_SLUG
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
+        result = server.dataset_overview("overview_fields")
+        assert result["slug"] == "overview_fields"
         assert result["name"] == "Test Overview"
         assert result["total_rows"] == 5
         assert result["preview"]["row_count"] == 1
+        assert result["_cached"] is False
 
-    def test_preview_columns_exclude_total_rows(self, monkeypatch):
-        """La colonna total_rows non deve apparire nelle preview columns."""
+    def test_cache_hit(self, monkeypatch):
+        """Seconda chiamata con stesso slug+limit deve tornare cached."""
         monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-        monkeypatch.setattr(
-            server,
-            "_execute_sql",
-            lambda *a, **kw: {
-                "columns": ["anno", "regione", "valore", "total_rows"],
-                "rows": [[2020, "Lombardia", 100.0, 5]],
-            },
-        )
-        result = server.dataset_overview(_OVERVIEW_SLUG)
-        assert "total_rows" not in result["preview"]["columns"]
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
+        # Prima chiamata — popola cache
+        r1 = server.dataset_overview("overview_cache_test")
+        assert r1["total_rows"] == 5
+        assert r1["_cached"] is False
+
+        # Seconda chiamata — deve venire da cache (describe_impl non mockato fallirebbe)
+        monkeypatch.setattr(server, "describe_impl", lambda s: {"error": "should not be called"})
+        r2 = server.dataset_overview("overview_cache_test")
+        assert r2["total_rows"] == 5
+
+    def test_preview_columns_structure(self, monkeypatch):
+        """Le preview columns non devono contenere campi aggiuntivi."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
+        result = server.dataset_overview("overview_preview_cols")
         assert result["preview"]["columns"] == ["anno", "regione", "valore"]
+
+    def test_preview_rows_type(self, monkeypatch):
+        """Le righe di preview sono liste (non tuple)."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
+        result = server.dataset_overview("overview_rows_type")
+        row = result["preview"]["rows"][0]
+        assert isinstance(row, list)
+        assert row == [2020, "Lombardia", 100.0]
 
     def test_empty_dataset(self, monkeypatch):
         """Dataset vuoto -> total_rows = 0, preview vuoto."""
         monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-        monkeypatch.setattr(
-            server,
-            "_execute_sql",
-            lambda *a, **kw: {
-                "columns": ["anno", "regione", "valore", "total_rows"],
-                "rows": [],
-            },
-        )
-        result = server.dataset_overview(_OVERVIEW_SLUG)
+        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_EMPTY)
+        result = server.dataset_overview("overview_empty")
         assert result["total_rows"] == 0
         assert result["preview"]["row_count"] == 0

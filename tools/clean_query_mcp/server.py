@@ -5,6 +5,7 @@ from typing import Any
 
 from lab_connectors.mcp import create_mcp_server, guard_timed
 from lab_connectors.mcp.errors import McpError, ErrorCode
+from lab_connectors.mcp.cache import TtlCache
 
 from .catalog import describe_dataset as describe_impl  # noqa: E402
 from .catalog import get_year_column  # noqa: E402
@@ -36,6 +37,9 @@ BLOCKED_KEYWORDS = {
     "vacuum",
 }
 TOKEN_RE = re.compile(r"[a-z_][a-z0-9_]*", re.IGNORECASE)
+
+# Cache risultati query: TTL 120s per dataset_overview e COUNT frequenti
+_query_cache: TtlCache[tuple, dict] = TtlCache(ttl_seconds=120)
 
 
 class DuckdbClientError(McpError):
@@ -116,9 +120,8 @@ def _execute_sql(
     year: int | None = None,
     timeout: int = 60,
 ) -> dict[str, Any]:
-    """Helper DuckDB unificato: risolve path, connette, esegue, ritorna {columns, rows}.
+    """Helper DuckDB: risolve path, connette, esegue, ritorna {columns, rows}.
 
-    Sostituisce la logica duplicata in preview/count/time_series/distinct_values/run_query.
     Il parametro ``sql`` è il corpo della query che usa ``clean_input`` come FROM.
     La CTE ``clean_input`` viene costruita automaticamente e lo year filter iniettato.
     """
@@ -140,7 +143,6 @@ def _execute_sql(
 
     wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
 
-    # Inject year filter for single-file multi-year datasets (es. giustizia_penale_indicatori)
     if year is not None:
         year_col = get_year_column(dataset)
         if year_col:
@@ -168,6 +170,65 @@ def _execute_sql(
             pool.shutdown(wait=False)
 
     return {"columns": columns, "rows": rows}
+
+
+def _execute_sql_batch(
+    dataset: str,
+    sql_list: list[str],
+    year: int | None = None,
+    timeout: int = 60,
+) -> list[dict[str, Any]]:
+    """Esegue più query SQL nella stessa connessione DuckDB.
+
+    Utile per tool che devono fare più query sullo stesso dataset
+    (es. dataset_overview: count + preview) senza ripetere connessione GCS.
+    """
+    try:
+        parquet_paths = resolve_parquet_path(dataset, year=year)
+    except (ValueError, FileNotFoundError) as exc:
+        return [{"error": str(exc)}] * len(sql_list)
+
+    try:
+        _validate_parquet_paths(parquet_paths)
+    except DuckdbClientError as exc:
+        return [{"error": str(exc)}] * len(sql_list)
+
+    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
+    if len(parquet_paths) == 1:
+        source_expr = f"'{escaped_paths}'"
+    else:
+        source_expr = f"['{escaped_paths}']"
+
+    from lab_connectors.duckdb import gcs_connect
+    import concurrent.futures
+
+    with gcs_connect(parquet_paths[0]) as conn:
+
+        def _run_all():
+            batch_results: list[dict[str, Any]] = []
+            for sql in sql_list:
+                wrapped = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
+                if year is not None:
+                    year_col = get_year_column(dataset)
+                    if year_col:
+                        wrapped = _inject_year_filter(wrapped, year_col, year)
+                result = conn.execute(wrapped)
+                cols = [item[0] for item in (result.description or [])]
+                rows = result.fetchall()
+                batch_results.append({"columns": cols, "rows": rows})
+            return batch_results
+
+        pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
+        try:
+            future = pool.submit(_run_all)
+            batch_results = future.result(timeout=timeout)
+        except concurrent.futures.TimeoutError:
+            pool.shutdown(wait=False)
+            return [{"error": f"Query timeout ({timeout}s)."}] * len(sql_list)
+        finally:
+            pool.shutdown(wait=False)
+
+    return batch_results
 
 
 def _validate_scope(sql: str) -> None:
@@ -347,13 +408,27 @@ def run_query(
 
 
 @mcp.tool(
-    description="Restituisce statistiche sulla cache GCS del catalogo (utile per debug).",
+    description=(
+        "Restituisce statistiche sulle cache: GCS path resolution e risultati query. "
+        "Utile per monitorare efficienza cache e debug."
+    ),
     structured_output=True,
 )
 def cache_stats() -> dict[str, Any]:
     from .catalog import gcs_cache_stats
 
-    return gcs_cache_stats()
+    gcs_stats = gcs_cache_stats()
+    query_stats = _query_cache.stats
+
+    return {
+        "gcs_path_resolution": gcs_stats,
+        "query_results": {
+            "entries": query_stats.entries,
+            "oldest_age_seconds": round(query_stats.oldest_age_seconds, 1),
+            "ttl_seconds": query_stats.ttl_seconds,
+        },
+        "note": "query_results cache: dataset_overview e COUNT frequenti, TTL 120s",
+    }
 
 
 @mcp.tool(
@@ -361,7 +436,8 @@ def cache_stats() -> dict[str, Any]:
         "Panoramica completa di un dataset: schema + conteggio righe + anteprima dati. "
         "Combina describe_dataset, count e preview in una singola chiamata. "
         "Usa una sola connessione DuckDB per count e preview, riducendo la latenza. "
-        "Utile per esplorare rapidamente un dataset prima di scrivere query SQL."
+        "Utile per esplorare rapidamente un dataset prima di scrivere query SQL. "
+        "I risultati sono cacheati per 120s."
     ),
     structured_output=True,
 )
@@ -369,27 +445,31 @@ def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
     if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
         return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
 
+    # Cache check
+    cache_key = ("dataset_overview", slug, limit)
+    cached = _query_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     schema = describe_impl(slug)
     if "error" in schema:
         return schema
 
-    # Una sola query DuckDB: SELECT con COUNT(*) OVER() per count + preview in un colpo
-    sql = f"SELECT *, COUNT(*) OVER() AS total_rows FROM clean_input LIMIT {limit}"
-
     def _exec() -> dict[str, Any]:
-        result = _execute_sql(slug, sql)
-        if "error" in result:
-            return {**schema, "error": result["error"]}
+        # Due query nella stessa connessione: COUNT + preview
+        sql_list = [
+            "SELECT COUNT(*) AS total FROM clean_input",
+            f"SELECT * FROM clean_input LIMIT {limit}",
+        ]
+        batch = _execute_sql_batch(slug, sql_list)
+        if "error" in batch[0]:
+            return {**schema, "error": batch[0]["error"]}
 
-        columns = result["columns"]
-        rows_raw = result["rows"]
+        total_rows = batch[0]["rows"][0][0] if batch[0]["rows"] else 0
+        preview_cols = batch[1]["columns"]
+        preview_rows = batch[1]["rows"]
 
-        # L'ultima colonna è total_rows (COUNT(*) OVER())
-        total_rows = rows_raw[0][-1] if rows_raw else 0
-        preview_columns = columns[:-1]
-        preview_rows = [list(row[:-1]) for row in rows_raw]
-
-        return {
+        result = {
             "slug": slug,
             "name": schema.get("name"),
             "description": schema.get("description"),
@@ -398,12 +478,15 @@ def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
             "columns": schema.get("columns", []),
             "total_rows": total_rows,
             "preview": {
-                "columns": preview_columns,
-                "rows": preview_rows,
+                "columns": preview_cols,
+                "rows": [list(row) for row in preview_rows],
                 "row_count": len(preview_rows),
                 "limit_applied": limit,
             },
+            "_cached": False,
         }
+        _query_cache.set(cache_key, result)
+        return result
 
     return guard_timed(_exec, "dataset_overview")
 
