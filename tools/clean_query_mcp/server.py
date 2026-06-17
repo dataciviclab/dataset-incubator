@@ -123,7 +123,9 @@ def _execute_sql(
     """Helper DuckDB: risolve path, connette, esegue, ritorna {columns, rows}.
 
     Il parametro ``sql`` è il corpo della query che usa ``clean_input`` come FROM.
-    La CTE ``clean_input`` viene costruita automaticamente e lo year filter iniettato.
+    La CTE ``clean_input`` viene costruita automaticamente.
+    Il filtro anno NON viene iniettato qui — i chiamanti devono applicarlo
+    PRIMA del wrapping se necessario (es. run_query inietta prima di avvolgere).
     """
     try:
         parquet_paths = resolve_parquet_path(dataset, year=year)
@@ -142,11 +144,6 @@ def _execute_sql(
         source_expr = f"['{escaped_paths}']"
 
     wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
-
-    if year is not None:
-        year_col = get_year_column(dataset)
-        if year_col:
-            wrapped_sql = _inject_year_filter(wrapped_sql, year_col, year)
 
     from lab_connectors.duckdb import gcs_connect
     import concurrent.futures
@@ -208,10 +205,6 @@ def _execute_sql_batch(
             batch_results: list[dict[str, Any]] = []
             for sql in sql_list:
                 wrapped = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
-                if year is not None:
-                    year_col = get_year_column(dataset)
-                    if year_col:
-                        wrapped = _inject_year_filter(wrapped, year_col, year)
                 result = conn.execute(wrapped)
                 cols = [item[0] for item in (result.description or [])]
                 rows = result.fetchall()
@@ -387,10 +380,18 @@ def run_query(
 
     _guard_max_rows(max_rows)
 
-    wrapped_sql = f"SELECT * FROM ({sql}) AS q LIMIT {max_rows + 1}"
+    # Inietta year filter PRIMA del wrapping, così WHERE opera su clean_input
+    # e non sulla subquery esterna (evita "Column anno not found in FROM clause")
+    sql_to_exec = sql
+    if year is not None:
+        year_col = get_year_column(dataset)
+        if year_col:
+            sql_to_exec = _inject_year_filter(sql_to_exec, year_col, year)
+
+    wrapped_sql = f"SELECT * FROM ({sql_to_exec}) AS q LIMIT {max_rows + 1}"
 
     def _exec() -> dict[str, Any]:
-        result = _execute_sql(dataset, wrapped_sql, year=year)
+        result = _execute_sql(dataset, wrapped_sql)
         if "error" in result:
             return result
         rows_raw = result["rows"]

@@ -8,7 +8,12 @@ import json
 from pathlib import Path
 from typing import Any
 from lab_connectors.gcs import list_objects
-from lab_connectors.gcs.paths import glob_to_regex as _glob_to_regex_fn, parse_gs_url
+from lab_connectors.gcs.paths import glob_to_regex as _glob_to_regex_str, parse_gs_url
+
+
+def _glob_to_regex(pattern: str) -> re.Pattern:
+    """Converte glob in regex compilata (delega a lab-connectors, compila per compatibilità)."""
+    return re.compile(_glob_to_regex_str(pattern))
 
 DI_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
@@ -164,7 +169,7 @@ def resolve_parquet_path(slug: str, year: int | None = None) -> list[str]:
         if multi_file and "*" in key:
             prefix = key.split("*")[0]
             blobs = _list_gcs_blobs(bucket, prefix=prefix)
-            pattern = re.compile(_glob_to_regex_fn(key))
+            pattern = _glob_to_regex(key)
             urls = []
             for blob_name in sorted(blobs):
                 if blob_name.endswith("_clean.parquet"):
