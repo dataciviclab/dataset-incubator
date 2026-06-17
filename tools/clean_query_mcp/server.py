@@ -391,7 +391,7 @@ def run_query(
     wrapped_sql = f"SELECT * FROM ({sql_to_exec}) AS q LIMIT {max_rows + 1}"
 
     def _exec() -> dict[str, Any]:
-        result = _execute_sql(dataset, wrapped_sql)
+        result = _execute_sql(dataset, wrapped_sql, year=year)
         if "error" in result:
             return result
         rows_raw = result["rows"]

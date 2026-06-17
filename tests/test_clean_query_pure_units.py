@@ -204,6 +204,97 @@ def test_cache_stats(monkeypatch):
     assert result["gcs_path_resolution"]["total_entries"] == 2
 
 
+def test_column_search(monkeypatch):
+    """column_search cerca in nome dataset, descrizione e colonne."""
+    fake_catalog = [
+        {
+            "slug": "ds_redditi",
+            "name": "Redditi Comunali",
+            "description": "Dati reddito per comune",
+            "source": "MEF",
+            "period": {"start": 2020, "end": 2024},
+            "columns": [
+                {"name": "anno", "type": "BIGINT", "role": "dimension"},
+                {"name": "regione", "type": "VARCHAR", "role": "dimension", "description": "Regione"},
+                {"name": "reddito_totale", "type": "DOUBLE", "role": "metric", "description": "Reddito totale"},
+            ],
+        },
+        {
+            "slug": "ds_popolazione",
+            "name": "Popolazione",
+            "description": "Popolazione italiana",
+            "source": "ISTAT",
+            "period": {"start": 2022, "end": 2024},
+            "columns": [
+                {"name": "anno", "type": "BIGINT", "role": "dimension"},
+                {"name": "popolazione", "type": "BIGINT", "role": "metric"},
+            ],
+        },
+    ]
+    monkeypatch.setattr(server, "load_catalog", lambda: fake_catalog)
+
+    # Match per nome colonna
+    res = server.column_search("reddito")
+    assert res["count"] == 1
+    assert res["datasets"][0]["slug"] == "ds_redditi"
+    assert len(res["datasets"][0]["matched_columns"]) == 1
+
+    # Match per meta dataset
+    res = server.column_search("popolazione")
+    assert res["count"] == 1
+    assert res["datasets"][0]["meta_match"] is True
+
+    # Nessun match
+    res = server.column_search("xyz_notfound")
+    assert res["count"] == 0
+
+
+def test_find_metric_datasets(monkeypatch):
+    """find_metric_datasets cerca dataset con colonne role=metric."""
+    fake_catalog = [
+        {
+            "slug": "ds_con_metriche",
+            "name": "Con Metriche",
+            "source": "Test",
+            "period": {"start": 2020, "end": 2024},
+            "columns": [
+                {"name": "valore", "type": "DOUBLE", "role": "metric", "description": "Valore"},
+            ],
+        },
+        {
+            "slug": "ds_senza_metriche",
+            "name": "Senza Metriche",
+            "source": "Test",
+            "period": {"start": 2020, "end": 2024},
+            "columns": [
+                {"name": "nome", "type": "VARCHAR", "role": "dimension"},
+            ],
+        },
+    ]
+    monkeypatch.setattr(server, "load_catalog", lambda: fake_catalog)
+
+    res = server.find_metric_datasets()
+    assert res["count"] == 1
+    assert res["datasets"][0]["slug"] == "ds_con_metriche"
+    assert len(res["datasets"][0]["metric_columns"]) == 1
+
+    # Filtro per nome metrica
+    res = server.find_metric_datasets(metric_name="valore")
+    assert res["count"] == 1
+
+    # Filtro per nome metrica inesistente
+    res = server.find_metric_datasets(metric_name="fake_metric")
+    assert res["count"] == 0
+
+    # Filtro per query
+    res = server.find_metric_datasets(query="metriche")
+    assert res["count"] == 1
+
+    # Query senza match
+    res = server.find_metric_datasets(query="xyz")
+    assert res["count"] == 0
+
+
 # ---------------------------------------------------------------------------
 # dataset_overview: test mockati, nessun DuckDB reale
 # ---------------------------------------------------------------------------
@@ -307,3 +398,25 @@ class TestDatasetOverview:
         result = server.dataset_overview("overview_empty")
         assert result["total_rows"] == 0
         assert result["preview"]["row_count"] == 0
+
+
+# ---------------------------------------------------------------------------
+# Entry point, cache GCS
+# ---------------------------------------------------------------------------
+
+
+def test_main_exists():
+    """main() è callable (non la eseguiamo, bloccherebbe il server)."""
+    assert callable(server.main)
+
+
+def test_gcs_cache_clear(monkeypatch):
+    """gcs_cache_clear pulisce la cache GCS."""
+    from tools.clean_query_mcp import catalog as cat_mod
+
+    # Popola cache con un entry finto
+    cat_mod._gcs_res_cache[("test", 2024)] = (1000.0, ["gs://fake/test.parquet"])
+    cat_mod.gcs_cache_clear()
+    stats = cat_mod.gcs_cache_stats()
+    assert stats["total_entries"] == 0
+    assert stats["valid_entries"] == 0

@@ -29,20 +29,13 @@ Il file locale `datasets.yml` non è più fonte di verità. Il catalogo MCP deve
 | `dataset_overview(slug, limit)` | Panoramica completa: schema + conteggio righe + anteprima in una chiamata |
 | `describe_dataset(slug)` | Schema completo: colonne, tipi, ruolo, periodo |
 
-### Query diretta
-
-| Tool | Scopo |
-|---|---|
-| `run_query(sql, dataset, max_rows, year)` | Query DuckDB read-only — solo SELECT/WITH, hard cap 500 righe |
-| `explain_query(sql, dataset)` | Valida SQL senza eseguirla — stima validità e risolve parquet |
-
 ### Query e debug
 
 | Tool | Scopo |
 |---|---|
 | `run_query(sql, dataset, max_rows, year)` | Query DuckDB read-only — solo SELECT/WITH, hard cap 500 righe |
 | `explain_query(sql, dataset)` | Valida SQL senza eseguirla — stima validità e risolve parquet |
-| `cache_stats()` | Stato della cache GCS — utile per debug
+| `cache_stats()` | Stato delle cache (GCS path resolution + risultati query) — utile per debug
 
 ## Runtime
 
