@@ -201,73 +201,95 @@ def test_cache_stats(monkeypatch):
 
 
 # ---------------------------------------------------------------------------
-# aggregate: logica pura, nessun DuckDB, solo describe_impl mockato
+# dataset_overview: test mockati, nessun DuckDB reale
 # ---------------------------------------------------------------------------
 
-_SLUG = "test_aggregate"
-_COLS = [
+_OVERVIEW_SLUG = "test_overview"
+_OVERVIEW_COLS = [
     {"name": "anno", "type": "BIGINT", "role": "dimension"},
     {"name": "regione", "type": "VARCHAR", "role": "dimension"},
     {"name": "valore", "type": "DOUBLE", "role": "metric"},
 ]
-_AGG_DESC = {"slug": _SLUG, "columns": _COLS, "period": {"start_year": 2020, "end_year": 2024}}
-_AGG_DESC_NO_YEAR = {"slug": _SLUG, "columns": _COLS}
+_OVERVIEW_DESC = {
+    "slug": _OVERVIEW_SLUG,
+    "name": "Test Overview",
+    "description": "Un dataset di test",
+    "source": "Test Source",
+    "period": {"start_year": 2020, "end_year": 2024},
+    "columns": _OVERVIEW_COLS,
+}
 
 
-def _mock_aggregate(monkeypatch, desc=_AGG_DESC):
-    monkeypatch.setattr(server, "describe_impl", lambda s: desc)
-    monkeypatch.setattr(server, "get_year_column", lambda s: "anno")
-
-
-class TestAggregate:
-    def test_metric_empty(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "", ["regione"])
+class TestDatasetOverview:
+    def test_limit_invalid(self, monkeypatch):
+        """Limite fuori range -> errore."""
+        result = server.dataset_overview(_OVERVIEW_SLUG, limit=0)
         assert "error" in result
 
-    def test_group_by_empty(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "valore", [])
+    def test_limit_exceeds_hard_cap(self, monkeypatch):
+        result = server.dataset_overview(_OVERVIEW_SLUG, limit=server.MAX_ROWS_HARD_CAP + 1)
         assert "error" in result
 
     def test_schema_error_propagated(self, monkeypatch):
-        monkeypatch.setattr(server, "describe_impl", lambda s: {"error": "schema not found"})
-        result = server.aggregate(_SLUG, "valore", ["regione"])
+        monkeypatch.setattr(server, "describe_impl", lambda s: {"error": "not found"})
+        result = server.dataset_overview("inesistente")
         assert "error" in result
 
-    def test_invalid_group_by_column(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "valore", ["inesistente"])
+    def test_execute_sql_error_propagated(self, monkeypatch):
+        """Se _execute_sql fallisce, l'errore è nel risultato."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+
+        def fake_execute(*args, **kwargs):
+            return {"error": "simulated duckdb error"}
+
+        monkeypatch.setattr(server, "_execute_sql", fake_execute)
+        result = server.dataset_overview(_OVERVIEW_SLUG)
         assert "error" in result
-        assert "inesistente" in result["error"]
+        assert "simulated" in result["error"]
 
-    def test_invalid_metric(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "fake_metric", ["regione"])
-        assert "error" in result
-
-    def test_generates_sql(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "valore", ["regione"])
-        assert "sql" in result
-        assert "SUM(valore)" in result["sql"]
-        assert "GROUP BY regione" in result["sql"]
-
-    def test_with_year_filter(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(_SLUG, "valore", ["regione"], year=2023)
-        assert "WHERE anno = 2023" in result["sql"]
-
-    def test_with_filters(self, monkeypatch):
-        _mock_aggregate(monkeypatch)
-        result = server.aggregate(
-            _SLUG, "valore", ["regione"], filters="anno = 2023 AND regione = 'Lombardia'"
+    def test_returns_schema_fields(self, monkeypatch):
+        """I campi dello schema sono presenti nell'output."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(
+            server,
+            "_execute_sql",
+            lambda *a, **kw: {
+                "columns": ["anno", "regione", "valore", "total_rows"],
+                "rows": [[2020, "Lombardia", 100.0, 5]],
+            },
         )
-        assert "WHERE" in result["sql"]
-        assert "Lombardia" in result["sql"]
+        result = server.dataset_overview(_OVERVIEW_SLUG)
+        assert result["slug"] == _OVERVIEW_SLUG
+        assert result["name"] == "Test Overview"
+        assert result["total_rows"] == 5
+        assert result["preview"]["row_count"] == 1
 
-    def test_no_year_column_no_filter(self, monkeypatch):
-        monkeypatch.setattr(server, "describe_impl", lambda s: _AGG_DESC_NO_YEAR)
-        monkeypatch.setattr(server, "get_year_column", lambda s: None)
-        result = server.aggregate(_SLUG, "valore", ["regione"], year=2023)
-        assert "WHERE" not in result["sql"]
+    def test_preview_columns_exclude_total_rows(self, monkeypatch):
+        """La colonna total_rows non deve apparire nelle preview columns."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(
+            server,
+            "_execute_sql",
+            lambda *a, **kw: {
+                "columns": ["anno", "regione", "valore", "total_rows"],
+                "rows": [[2020, "Lombardia", 100.0, 5]],
+            },
+        )
+        result = server.dataset_overview(_OVERVIEW_SLUG)
+        assert "total_rows" not in result["preview"]["columns"]
+        assert result["preview"]["columns"] == ["anno", "regione", "valore"]
+
+    def test_empty_dataset(self, monkeypatch):
+        """Dataset vuoto -> total_rows = 0, preview vuoto."""
+        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
+        monkeypatch.setattr(
+            server,
+            "_execute_sql",
+            lambda *a, **kw: {
+                "columns": ["anno", "regione", "valore", "total_rows"],
+                "rows": [],
+            },
+        )
+        result = server.dataset_overview(_OVERVIEW_SLUG)
+        assert result["total_rows"] == 0
+        assert result["preview"]["row_count"] == 0

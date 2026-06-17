@@ -110,20 +110,17 @@ def _validate_parquet_paths(paths: list[str]) -> None:
             )
 
 
-def _duckdb_read(
+def _execute_sql(
     dataset: str,
-    year: int | None,
-    wrapped_sql: str,
+    sql: str,
+    year: int | None = None,
     timeout: int = 60,
 ) -> dict[str, Any]:
-    """Helper per esecuzione DuckDB read-only su parquet GCS.
+    """Helper DuckDB unificato: risolve path, connette, esegue, ritorna {columns, rows}.
 
-    Estrae e condivide il pattern comune a preview/count/time_series/distinct_values:
-    - risoluzione path parquet
-    - costruzione source_expr
-    - connessione DuckDB in-memory
-    - esecuzione con timeout
-    - ritorno {columns, rows} o errore
+    Sostituisce la logica duplicata in preview/count/time_series/distinct_values/run_query.
+    Il parametro ``sql`` è il corpo della query che usa ``clean_input`` come FROM.
+    La CTE ``clean_input`` viene costruita automaticamente e lo year filter iniettato.
     """
     try:
         parquet_paths = resolve_parquet_path(dataset, year=year)
@@ -141,13 +138,13 @@ def _duckdb_read(
     else:
         source_expr = f"['{escaped_paths}']"
 
-    # Replace the placeholder in wrapped_sql if present
-    sql = wrapped_sql.replace("{SOURCE_EXPR}", source_expr)
-    # Inject year filter for single-file multi-year datasets (e.g. giustizia_penale_indicatori)
+    wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
+
+    # Inject year filter for single-file multi-year datasets (es. giustizia_penale_indicatori)
     if year is not None:
         year_col = get_year_column(dataset)
         if year_col:
-            sql = _inject_year_filter(sql, year_col, year)
+            wrapped_sql = _inject_year_filter(wrapped_sql, year_col, year)
 
     from lab_connectors.duckdb import gcs_connect
     import concurrent.futures
@@ -155,7 +152,7 @@ def _duckdb_read(
     with gcs_connect(parquet_paths[0]) as conn:
 
         def _run():
-            result = conn.execute(sql)
+            result = conn.execute(wrapped_sql)
             return [item[0] for item in (result.description or [])], result.fetchall()
 
         pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
@@ -318,11 +315,6 @@ def run_query(
     sql: str, dataset: str, max_rows: int = 100, year: int | None = None
 ) -> dict[str, Any]:
     try:
-        parquet_paths = resolve_parquet_path(dataset, year=year)
-    except (ValueError, FileNotFoundError) as exc:
-        return {"error": str(exc)}
-
-    try:
         _validate_scope(sql)
     except DuckdbClientError as exc:
         return {"error": str(exc)}
@@ -332,55 +324,19 @@ def run_query(
     except DuckdbClientError as exc:
         return {"error": str(exc)}
 
-    if year is not None:
-        year_col = get_year_column(dataset)
-        if year_col:
-            sql = _inject_year_filter(sql, year_col, year)
+    _guard_max_rows(max_rows)
 
-    try:
-        _validate_parquet_paths(parquet_paths)
-    except DuckdbClientError as exc:
-        return {"error": str(exc)}
-    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
-    if len(parquet_paths) == 1:
-        source_expr = f"'{escaped_paths}'"
-    else:
-        source_expr = f"['{escaped_paths}']"
-    wrapped_sql = (
-        f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) "
-        f"SELECT * FROM ({sql}) AS q LIMIT {max_rows + 1}"
-    )
+    wrapped_sql = f"SELECT * FROM ({sql}) AS q LIMIT {max_rows + 1}"
 
     def _exec() -> dict[str, Any]:
-        _guard_max_rows(max_rows)
-
-        from lab_connectors.duckdb import gcs_connect
-        import concurrent.futures
-
-        with gcs_connect(parquet_paths[0]) as conn:
-
-            def _run_query():
-                result = conn.execute(wrapped_sql)
-                columns = [item[0] for item in (result.description or [])]
-                rows_raw = result.fetchall()
-                return columns, rows_raw
-
-            # 60s hard timeout: ThreadPoolExecutor without 'with' so we don't
-            # wait for the worker to finish after timeout. The orphan thread will
-            # eventually finish and its connection is isolated (in-memory).
-            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-            try:
-                future = pool.submit(_run_query)
-                columns, rows_raw = future.result(timeout=60)
-            except concurrent.futures.TimeoutError:
-                return {"error": "Query timeout (60s). Ridurre la complessita o aggiungere filtri."}
-            finally:
-                pool.shutdown(wait=False)
-
+        result = _execute_sql(dataset, wrapped_sql, year=year)
+        if "error" in result:
+            return result
+        rows_raw = result["rows"]
         truncated = len(rows_raw) > max_rows
         rows = rows_raw[:max_rows]
         return {
-            "columns": columns,
+            "columns": result["columns"],
             "rows": [list(row) for row in rows],
             "row_count": len(rows),
             "truncated": truncated,
@@ -402,328 +358,54 @@ def cache_stats() -> dict[str, Any]:
 
 @mcp.tool(
     description=(
-        "Helper per aggregazioni pre-scritte: somma una metrica raggruppando per una o più dimensioni. "
-        "Restituisce SQL che può essere passato a run_query(). "
-        "metric: colonna numerica da sommare (es. 'numero_pensioni'). "
-        "group_by: lista di dimensioni (es. ['anno','regione']). "
-        "filters:WHERE aggiuntivo opzionale (es. \"anno = 2023 AND regione = 'Lombardia'\")."
+        "Panoramica completa di un dataset: schema + conteggio righe + anteprima dati. "
+        "Combina describe_dataset, count e preview in una singola chiamata. "
+        "Usa una sola connessione DuckDB per count e preview, riducendo la latenza. "
+        "Utile per esplorare rapidamente un dataset prima di scrivere query SQL."
     ),
     structured_output=True,
 )
-def aggregate(
-    dataset: str,
-    metric: str,
-    group_by: list[str],
-    filters: str | None = None,
-    year: int | None = None,
-) -> dict[str, Any]:
-    if not metric:
-        return {"error": "metric non può essere vuota"}
-    if not group_by:
-        return {"error": "group_by deve avere almeno una dimensione"}
-
-    schema = describe_impl(dataset)
-    if "error" in schema:
-        return schema
-    col_names = {c["name"] for c in schema.get("columns", [])}
-    for col in group_by:
-        if col not in col_names:
-            return {
-                "error": f"Colonna group_by '{col}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
-            }
-    if metric not in col_names:
-        return {
-            "error": f"Metrica '{metric}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
-        }
-
-    year_col = get_year_column(dataset)
-    where_parts = []
-    if year is not None and year_col:
-        where_parts.append(f"{year_col} = {year}")
-    if filters:
-        where_parts.append(f"({filters})")
-    where_clause = ""
-    if where_parts:
-        where_clause = "WHERE " + " AND ".join(where_parts)
-
-    group_cols = ", ".join(group_by)
-    sql = (
-        f"SELECT {group_cols}, SUM({metric}) AS total "
-        f"FROM clean_input {where_clause} "
-        f"GROUP BY {group_cols} "
-        f"ORDER BY {group_by[0]}, total DESC"
-    )
-    return {
-        "sql": sql,
-        "dataset": dataset,
-        "metric": metric,
-        "group_by": group_by,
-        "year": year,
-        "note": "Passa questo sql a run_query(). Non include LIMIT; aggiungilo in run_query.",
-    }
-
-
-@mcp.tool(
-    description=(
-        "Anteprima: prime N righe di un dataset senza SQL. "
-        "Utile per esplorare la struttura prima di scrivere una query. "
-        "Non usa SQL, ritorna righe raw dal parquet."
-    ),
-    structured_output=True,
-)
-def preview(dataset: str, limit: int = 10, year: int | None = None) -> dict[str, Any]:
+def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
     if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
         return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
-    wrapped_sql = (
-        f"WITH clean_input AS (SELECT * FROM read_parquet({{SOURCE_EXPR}})) "
-        f"SELECT * FROM clean_input LIMIT {limit}"
-    )
-    result = _duckdb_read(dataset, year, wrapped_sql)
-    if "error" in result:
-        return result
-    return {
-        "columns": result["columns"],
-        "rows": [list(row) for row in result["rows"]],
-        "row_count": len(result["rows"]),
-        "dataset": dataset,
-        "limit_applied": limit,
-    }
 
-
-@mcp.tool(
-    description=(
-        "Conteggio righe: numero totale di record in un dataset, opzionalmente filtrato per anno. "
-        "Utile per verificare copertura e dimensionalità prima di query complesse."
-    ),
-    structured_output=True,
-)
-def count(dataset: str, year: int | None = None) -> dict[str, Any]:
-    try:
-        parquet_paths = resolve_parquet_path(dataset, year=year)
-    except (ValueError, FileNotFoundError) as exc:
-        return {"error": str(exc)}
-
-    try:
-        _validate_parquet_paths(parquet_paths)
-    except DuckdbClientError as exc:
-        return {"error": str(exc)}
-
-    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
-    if len(parquet_paths) == 1:
-        source_expr = f"'{escaped_paths}'"
-    else:
-        source_expr = f"['{escaped_paths}']"
-
-    wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) SELECT COUNT(*) AS total FROM clean_input"
-    if year is not None:
-        year_col = get_year_column(dataset)
-        if year_col:
-            wrapped_sql = _inject_year_filter(wrapped_sql, year_col, year)
-
-    def _exec() -> dict[str, Any]:
-        from lab_connectors.duckdb import gcs_connect
-        import concurrent.futures
-
-        with gcs_connect(parquet_paths[0]) as conn:
-
-            def _run():
-                result = conn.execute(wrapped_sql)
-                return result.fetchone()[0]
-
-            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-            try:
-                future = pool.submit(_run)
-                total = future.result(timeout=60)
-            except concurrent.futures.TimeoutError:
-                pool.shutdown(wait=False)
-                return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
-            finally:
-                pool.shutdown(wait=False)
-
-        return {
-            "dataset": dataset,
-            "total_rows": total,
-            "year_filter": year,
-            "files_count": len(parquet_paths),
-        }
-
-    return guard_timed(_exec, "count")
-
-
-@mcp.tool(
-    description=(
-        "Serie storica: valori di una metrica nel tempo, raggruppati per una dimensione (es. regione). "
-        "Se year è specificato, ritorna una singola annualità. "
-        "Se year è None, ritorna tutti gli anni disponibili con la metrica aggregata per la dimensione scelta."
-    ),
-    structured_output=True,
-)
-def time_series(
-    dataset: str,
-    metric: str,
-    group_by: str,
-    year: int | None = None,
-    limit: int = 200,
-) -> dict[str, Any]:
-    if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
-        return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
-    schema = describe_impl(dataset)
+    schema = describe_impl(slug)
     if "error" in schema:
         return schema
 
-    col_names = {c["name"] for c in schema.get("columns", [])}
-    if metric not in col_names:
-        return {
-            "error": f"Metrica '{metric}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
-        }
-    if group_by not in col_names:
-        return {
-            "error": f"Dimensione group_by '{group_by}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
-        }
-
-    try:
-        parquet_paths = resolve_parquet_path(dataset, year=year)
-    except (ValueError, FileNotFoundError) as exc:
-        return {"error": str(exc)}
-
-    try:
-        _validate_parquet_paths(parquet_paths)
-    except DuckdbClientError as exc:
-        return {"error": str(exc)}
-
-    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
-    if len(parquet_paths) == 1:
-        source_expr = f"'{escaped_paths}'"
-    else:
-        source_expr = f"['{escaped_paths}']"
-
-    year_col = get_year_column(dataset)
-    if year_col is None:
-        return {
-            "error": f"Dataset '{dataset}' non ha una colonna anno riconosciuta. Impossibile costruire serie storica."
-        }
-
-    select_cols = f"{year_col}, {group_by}"
-    group_cols = f"{year_col}, {group_by}"
-    order_clause = f"{year_col}, {group_by}"
-
-    wrapped_sql = (
-        f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) "
-        f"SELECT {select_cols}, SUM({metric}) AS value "
-        f"FROM clean_input "
-        f"GROUP BY {group_cols} "
-        f"ORDER BY {order_clause} "
-        f"LIMIT {limit + 1}"
-    )
-    if year is not None:
-        wrapped_sql = _inject_year_filter(wrapped_sql, year_col, year)
+    # Una sola query DuckDB: SELECT con COUNT(*) OVER() per count + preview in un colpo
+    sql = f"SELECT *, COUNT(*) OVER() AS total_rows FROM clean_input LIMIT {limit}"
 
     def _exec() -> dict[str, Any]:
-        from lab_connectors.duckdb import gcs_connect
-        import concurrent.futures
+        result = _execute_sql(slug, sql)
+        if "error" in result:
+            return {**schema, "error": result["error"]}
 
-        with gcs_connect(parquet_paths[0]) as conn:
+        columns = result["columns"]
+        rows_raw = result["rows"]
 
-            def _run():
-                result = conn.execute(wrapped_sql)
-                return [item[0] for item in (result.description or [])], result.fetchall()
+        # L'ultima colonna è total_rows (COUNT(*) OVER())
+        total_rows = rows_raw[0][-1] if rows_raw else 0
+        preview_columns = columns[:-1]
+        preview_rows = [list(row[:-1]) for row in rows_raw]
 
-            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-            try:
-                future = pool.submit(_run)
-                columns, rows = future.result(timeout=60)
-            except concurrent.futures.TimeoutError:
-                pool.shutdown(wait=False)
-                return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
-            finally:
-                pool.shutdown(wait=False)
-
-        truncated = len(rows) > limit
         return {
-            "columns": columns,
-            "rows": [list(row) for row in rows[:limit]],
-            "row_count": len(rows),
-            "truncated": truncated,
-            "dataset": dataset,
-            "metric": metric,
-            "group_by": group_by,
-            "year_filter": year,
+            "slug": slug,
+            "name": schema.get("name"),
+            "description": schema.get("description"),
+            "source": schema.get("source"),
+            "period": schema.get("period"),
+            "columns": schema.get("columns", []),
+            "total_rows": total_rows,
+            "preview": {
+                "columns": preview_columns,
+                "rows": preview_rows,
+                "row_count": len(preview_rows),
+                "limit_applied": limit,
+            },
         }
 
-    return guard_timed(_exec, "time_series")
-
-
-@mcp.tool(
-    description=(
-        "Valori distinti di una colonna. "
-        "Utile per popolare dropdown/filter nelle UI, o per verificare i valori disponibili prima di query."
-    ),
-    structured_output=True,
-)
-def distinct_values(dataset: str, column: str, limit: int = 100) -> dict[str, Any]:
-    if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
-        return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
-    schema = describe_impl(dataset)
-    if "error" in schema:
-        return schema
-
-    col_names = {c["name"] for c in schema.get("columns", [])}
-    if column not in col_names:
-        return {
-            "error": f"Colonna '{column}' non trovata. Disponibili: {', '.join(sorted(col_names))}"
-        }
-
-    try:
-        parquet_paths = resolve_parquet_path(dataset, year=None)
-    except (ValueError, FileNotFoundError) as exc:
-        return {"error": str(exc)}
-
-    try:
-        _validate_parquet_paths(parquet_paths)
-    except DuckdbClientError as exc:
-        return {"error": str(exc)}
-
-    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
-    if len(parquet_paths) == 1:
-        source_expr = f"'{escaped_paths}'"
-    else:
-        source_expr = f"['{escaped_paths}']"
-
-    wrapped_sql = (
-        f"WITH clean_input AS (SELECT {column} FROM read_parquet({source_expr})) "
-        f"SELECT DISTINCT {column} FROM clean_input WHERE {column} IS NOT NULL LIMIT {limit + 1}"
-    )
-
-    def _exec() -> dict[str, Any]:
-        from lab_connectors.duckdb import gcs_connect
-        import concurrent.futures
-
-        with gcs_connect(parquet_paths[0]) as conn:
-
-            def _run():
-                result = conn.execute(wrapped_sql)
-                return [item[0] for item in (result.description or [])], result.fetchall()
-
-            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-            try:
-                future = pool.submit(_run)
-                columns, rows = future.result(timeout=60)
-            except concurrent.futures.TimeoutError:
-                pool.shutdown(wait=False)
-                return {"error": "Query timeout (60s). Riduci la complessita o aggiungi filtri."}
-            finally:
-                pool.shutdown(wait=False)
-
-        truncated = len(rows) > limit
-        return {
-            "column": column,
-            "values": [row[0] for row in rows[:limit]],
-            "count": len(rows),
-            "truncated": truncated,
-            "dataset": dataset,
-        }
-
-    return guard_timed(_exec, "distinct_values")
+    return guard_timed(_exec, "dataset_overview")
 
 
 @mcp.tool(

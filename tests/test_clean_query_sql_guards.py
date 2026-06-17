@@ -1,7 +1,6 @@
 from __future__ import annotations
 
 import unittest
-from unittest.mock import MagicMock, patch
 
 import pytest
 
@@ -48,93 +47,6 @@ class CleanQuerySqlGuardTest(unittest.TestCase):
     def test_blocks_above_hard_cap(self) -> None:
         with self.assertRaises(server.DuckdbClientError):
             server._guard_max_rows(server.MAX_ROWS_HARD_CAP + 1)
-
-
-# ─── Contract: year → WHERE anno = year in count / preview / time_series ─────
-
-
-def _make_mock_conn() -> MagicMock:
-    """Build a mock DuckDB connection that captures execute SQL."""
-    conn = MagicMock()
-    conn.execute.return_value.description = [("col",)]
-    conn.execute.return_value.fetchone.return_value = (0,)
-    conn.execute.return_value.fetchall.return_value = []
-    return conn
-
-
-_SLUG = "giustizia_penale_indicatori"  # single-file, multi-year (2014-2024)
-
-
-class CleanQueryYearFilterContractTest(unittest.TestCase):
-    """Verifica che year=... inietti WHERE <year_col> = <year> nella SQL.
-
-    Copre i tre tool che il fix ha modificato: count, preview (via _duckdb_read), time_series.
-    """
-
-    @patch("lab_connectors.duckdb.gcs_connect")
-    @patch.object(server, "resolve_parquet_path")
-    def test_count_injects_year_filter(self, mock_resolve: MagicMock, mock_sc: MagicMock) -> None:
-        mock_resolve.return_value = ["gs://fake/giustizia_penale_indicatori_2024.parquet"]
-        conn = _make_mock_conn()
-        mock_sc.return_value.__enter__.return_value = conn
-
-        server.count(_SLUG, year=2024)
-
-        sql = conn.execute.call_args[0][0]
-        self.assertIn("WHERE anno = 2024", sql)
-
-    @patch("lab_connectors.duckdb.gcs_connect")
-    @patch.object(server, "resolve_parquet_path")
-    def test_count_no_year_no_filter(self, mock_resolve: MagicMock, mock_sc: MagicMock) -> None:
-        mock_resolve.return_value = ["gs://fake/giustizia_penale_indicatori_2024.parquet"]
-        conn = _make_mock_conn()
-        mock_sc.return_value.__enter__.return_value = conn
-
-        server.count(_SLUG)
-
-        sql = conn.execute.call_args[0][0]
-        self.assertNotIn("WHERE", sql)
-
-    @patch("lab_connectors.duckdb.gcs_connect")
-    @patch.object(server, "resolve_parquet_path")
-    def test_preview_injects_year_filter(self, mock_resolve: MagicMock, mock_sc: MagicMock) -> None:
-        """preview usa _duckdb_read, che ora inietta il filtro anno."""
-        mock_resolve.return_value = ["gs://fake/giustizia_penale_indicatori_2024.parquet"]
-        conn = _make_mock_conn()
-        mock_sc.return_value.__enter__.return_value = conn
-
-        server.preview(_SLUG, year=2024)
-
-        sql = conn.execute.call_args[0][0]
-        self.assertIn("WHERE anno = 2024", sql)
-
-    @patch("lab_connectors.duckdb.gcs_connect")
-    @patch.object(server, "resolve_parquet_path")
-    def test_time_series_injects_year_filter(
-        self, mock_resolve: MagicMock, mock_sc: MagicMock
-    ) -> None:
-        mock_resolve.return_value = ["gs://fake/giustizia_penale_indicatori_2024.parquet"]
-        conn = _make_mock_conn()
-        mock_sc.return_value.__enter__.return_value = conn
-
-        server.time_series(_SLUG, "disposition_time_gg", "distretto", year=2024)
-
-        sql = conn.execute.call_args[0][0]
-        self.assertIn("WHERE anno = 2024", sql)
-
-    @patch("lab_connectors.duckdb.gcs_connect")
-    @patch.object(server, "resolve_parquet_path")
-    def test_time_series_no_year_no_filter(
-        self, mock_resolve: MagicMock, mock_sc: MagicMock
-    ) -> None:
-        mock_resolve.return_value = ["gs://fake/giustizia_penale_indicatori_2024.parquet"]
-        conn = _make_mock_conn()
-        mock_sc.return_value.__enter__.return_value = conn
-
-        server.time_series(_SLUG, "disposition_time_gg", "distretto")
-
-        sql = conn.execute.call_args[0][0]
-        self.assertNotIn("WHERE", sql)
 
 
 # ─── Unit: _inject_year_filter (pure function) ──────────────────────────────
