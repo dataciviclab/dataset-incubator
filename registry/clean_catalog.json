@@ -129,9 +129,9 @@
     },
     {
       "slug": "anac_bandi_gara",
-      "name": "Anac Bandi Gara",
-      "description": "",
-      "source": "",
+      "name": "ANAC Bandi di Gara (CIG)",
+      "description": "Bandi di gara pubblici italiani (CIG): oggetto, importi, stazione appaltante, territorio, CPV, esito e flag PNRR/urgenza/delega. Fonte ANAC, serie annuale 2025+.",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
       "source_id": "anac",
       "period": {
         "start": 2025,
@@ -142,319 +142,319 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice Identificativo Gara"
         },
         {
           "name": "cig_accordo_quadro",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CIG dell'accordo quadro di riferimento"
         },
         {
           "name": "numero_gara",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Numero identificativo della gara"
         },
         {
           "name": "oggetto_gara",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Oggetto/descrizione della gara"
         },
         {
           "name": "importo_complessivo_gara",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo complessivo della gara (intero, non per lotto)"
         },
         {
           "name": "n_lotti_componenti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero di lotti in cui è suddivisa la gara"
         },
         {
           "name": "oggetto_lotto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Oggetto/descrizione del singolo lotto"
         },
         {
           "name": "importo_lotto",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo del singolo lotto"
         },
         {
           "name": "oggetto_principale_contratto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Categoria principale del contratto (LAVORI/SERVIZI/FORNITURE)"
         },
         {
           "name": "stato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Stato della gara (ATTIVO, ANNULLATO, ecc.)"
         },
         {
           "name": "settore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Settore (SETTORI ORDINARI, SETTORI SPECIALI)"
         },
         {
           "name": "codice_istat_luogo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del luogo di esecuzione"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia del luogo di esecuzione"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
           "role": "metric",
-          "description": ""
+          "description": "Data di pubblicazione del bando"
         },
         {
           "name": "data_scadenza_offerta",
           "type": "DATE",
           "role": "metric",
-          "description": ""
+          "description": "Data di scadenza per la presentazione delle offerte"
         },
         {
           "name": "cod_tipo_scelta_contraente",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Codice della procedura di scelta del contraente"
         },
         {
           "name": "tipo_scelta_contraente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di procedura (APERTA, NEGOZIATA, AFFIDAMENTO DIRETTO, ecc.)"
         },
         {
           "name": "cod_modalita_realizzazione",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Codice modalità di realizzazione"
         },
         {
           "name": "modalita_realizzazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Modalità di realizzazione (CONTRATTO D'APPALTO, CONCESSIONE, ecc.)"
         },
         {
           "name": "codice_ausa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice AUSA (Anagrafe Unica Stazioni Appaltanti)"
         },
         {
           "name": "cf_amministrazione_appaltante",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale della stazione appaltante"
         },
         {
           "name": "denominazione_amministrazione_appaltante",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della stazione appaltante"
         },
         {
           "name": "sezione_regionale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sezione regionale ANAC competente"
         },
         {
           "name": "id_centro_costo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Identificativo del centro di costo"
         },
         {
           "name": "denominazione_centro_costo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del centro di costo"
         },
         {
           "name": "anno_pubblicazione",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Anno di pubblicazione del bando"
         },
         {
           "name": "mese_pubblicazione",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Mese di pubblicazione del bando"
         },
         {
           "name": "cod_cpv",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice CPV (Vocabolario comune per gli appalti pubblici)"
         },
         {
           "name": "descrizione_cpv",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione del codice CPV"
         },
         {
           "name": "flag_pnrr",
           "type": "BOOLEAN",
           "role": "metric",
-          "description": ""
+          "description": "Indicatore PNRR/PNC (Vero se la gara è legata al Piano)"
         },
         {
           "name": "flag_urgenza",
           "type": "BOOLEAN",
           "role": "metric",
-          "description": ""
+          "description": "Indicatore di urgenza"
         },
         {
           "name": "flag_delega",
           "type": "BOOLEAN",
           "role": "metric",
-          "description": ""
+          "description": "Indicatore di delega a centrale di committenza"
         },
         {
           "name": "COD_MODALITA_INDIZIONE_SPECIALI",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "(raw) Codice modalità indizione speciali"
         },
         {
           "name": "MODALITA_INDIZIONE_SPECIALI",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "(raw) Modalità indizione speciali"
         },
         {
           "name": "COD_MODALITA_INDIZIONE_SERVIZI",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "(raw) Codice modalità indizione servizi"
         },
         {
           "name": "MODALITA_INDIZIONE_SERVIZI",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "(raw) Modalità indizione servizi"
         },
         {
           "name": "durata_prevista",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Durata prevista del contratto (mesi)"
         },
         {
           "name": "COD_STRUMENTO_SVOLGIMENTO",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "(raw) Codice strumento di svolgimento"
         },
         {
           "name": "STRUMENTO_SVOLGIMENTO",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "(raw) Strumento di svolgimento"
         },
         {
           "name": "COD_MOTIVO_URGENZA",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "(raw) Codice motivo urgenza"
         },
         {
           "name": "MOTIVO_URGENZA",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "(raw) Motivo dell'urgenza dichiarata"
         },
         {
           "name": "FUNZIONI_DELEGATE",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "(raw) Funzioni delegate"
         },
         {
           "name": "CF_SA_DELEGANTE",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale stazione appaltante delegante"
         },
         {
           "name": "DENOMINAZIONE_SA_DELEGANTE",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione stazione appaltante delegante"
         },
         {
           "name": "CF_SA_DELEGATA",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale stazione appaltante delegata"
         },
         {
           "name": "DENOMINAZIONE_SA_DELEGATA",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione stazione appaltante delegata"
         },
         {
           "name": "importo_sicurezza",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo per oneri di sicurezza"
         },
         {
           "name": "COD_ESITO",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "(raw) Codice esito della gara"
         },
         {
           "name": "ESITO",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Esito della gara (AGGIUDICATA, NON AGGIUDICATA, ecc.)"
         },
         {
           "name": "data_comunicazione_esito",
           "type": "DATE",
           "role": "metric",
-          "description": ""
+          "description": "Data di comunicazione dell'esito"
         },
         {
           "name": "data_cancellazione",
           "type": "DATE",
           "role": "metric",
-          "description": ""
+          "description": "Data di cancellazione della gara (se annullata)"
         },
         {
           "name": "MOTIVO_CANCELLAZIONE",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "(raw) Motivo della cancellazione"
         },
         {
           "name": "data_ultimo_perfezionamento",
           "type": "DATE",
           "role": "metric",
-          "description": ""
+          "description": "Data ultimo perfezionamento"
         }
       ],
       "location": {
