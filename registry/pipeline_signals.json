@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-16",
+  "generated_at": "2026-06-17",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 46,
+    "total": 47,
     "by_status": {
-      "ok": 46,
+      "ok": 47,
       "warn": 0,
       "error": 0
     }
@@ -34,6 +34,24 @@
           2024
         ],
         "config_path": "candidates/aifa-spesa-consumo/dataset.yml"
+      }
+    },
+    {
+      "id": "anac-bandi-gara",
+      "source_id": "anac",
+      "status": "ok",
+      "label": "anac-bandi-gara",
+      "detail": "anno 2025 — fonte: cig_2025 — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27695583352",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27695583352",
+        "checked_at": "2026-06-17",
+        "years": [
+          2025
+        ],
+        "config_path": "candidates/anac-bandi-gara/dataset.yml"
       }
     },
     {
