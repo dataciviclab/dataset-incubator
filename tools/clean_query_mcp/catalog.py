@@ -15,6 +15,7 @@ def _glob_to_regex(pattern: str) -> re.Pattern:
     """Converte glob in regex compilata (delega a lab-connectors, compila per compatibilità)."""
     return re.compile(_glob_to_regex_str(pattern))
 
+
 DI_ROOT = Path(__file__).resolve().parents[2]
 DEFAULT_CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
 CATALOG_PATH = Path(os.environ.get("CLEAN_QUERY_CATALOG_PATH", DEFAULT_CATALOG_PATH))
