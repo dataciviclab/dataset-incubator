@@ -291,13 +291,13 @@
         {
           "name": "anno_pubblicazione",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Anno di pubblicazione del bando"
         },
         {
           "name": "mese_pubblicazione",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Mese di pubblicazione del bando"
         },
         {
@@ -333,7 +333,7 @@
         {
           "name": "COD_MODALITA_INDIZIONE_SPECIALI",
           "type": "DOUBLE",
-          "role": "metric",
+          "role": "dimension",
           "description": "(raw) Codice modalità indizione speciali"
         },
         {
@@ -345,7 +345,7 @@
         {
           "name": "COD_MODALITA_INDIZIONE_SERVIZI",
           "type": "DOUBLE",
-          "role": "metric",
+          "role": "dimension",
           "description": "(raw) Codice modalità indizione servizi"
         },
         {
@@ -363,7 +363,7 @@
         {
           "name": "COD_STRUMENTO_SVOLGIMENTO",
           "type": "DOUBLE",
-          "role": "metric",
+          "role": "dimension",
           "description": "(raw) Codice strumento di svolgimento"
         },
         {
@@ -375,7 +375,7 @@
         {
           "name": "COD_MOTIVO_URGENZA",
           "type": "DOUBLE",
-          "role": "metric",
+          "role": "dimension",
           "description": "(raw) Codice motivo urgenza"
         },
         {
@@ -423,7 +423,7 @@
         {
           "name": "COD_ESITO",
           "type": "DOUBLE",
-          "role": "metric",
+          "role": "dimension",
           "description": "(raw) Codice esito della gara"
         },
         {
