@@ -1,0 +1,43 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "anac_bandi_gara"
+  source_id: "anac"
+  years: [2025]
+
+raw:
+  sources:
+    - name: "cig_2025"
+      type: "ckan"
+      year: 2025
+      client:
+        user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      args:
+        portal_url: "https://dati.anticorruzione.it/opendata"
+        dataset_id: "cig-{year}"
+        download_all: true
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: all
+    header: true
+    delim: ";"
+    encoding: "utf-8"
+    quote: '"'
+    escape: '"'
+    null_padding: true
+    trim_whitespace: true
+
+mart:
+  tables:
+    - name: "mart_bandi_annuale"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_bandi_annuale"
+
+validation:
+  fail_on_error: true
