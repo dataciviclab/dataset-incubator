@@ -1,0 +1,3 @@
+-- Colonne clean_input: codice_istat: str, Comune: str, Codice_Regione: float, Codice_Provincia: float, Nuclei_familiari_percettori_RDC_luglio_2020: float, Nuclei_familiari_percettori_PDC_luglio_2020: float, Individui_coinvolti_luglio_2020: float, Numero_componenti_per_famiglia: float, Numero_donne_per_famiglia: float, Numero_minori_<_18_anni_per_famiglia: float, Numero_anziani_>_75_anni_per_famiglia: float, Importo_medio_mensile: float, Dev.standard_importo_mensile: float, Uomini_residenti_al_1-1-2020: float, Donne_residenti_al_1-1-2020: float, Popolazione_residente_al_1-1-2020: float, Takeup: float, Takeup_donne: float
+-- Sostituisci con la tua aggregazione (es. SUM, COUNT, AVG).
+SELECT * FROM clean_input
