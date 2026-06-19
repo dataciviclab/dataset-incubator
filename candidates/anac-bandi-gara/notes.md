@@ -2,11 +2,13 @@
 
 ## Schema raw
 
-| Anno | Formato | Delim | Encoding | Righe |
-|---|---|---|---|---|
-| 2025 | CSV in ZIP | `;` | UTF-8 | ~1.47M |
+| Anno | Formato | Delim | Encoding | Righe | Importo lotti |
+|---|---|---|---|---|---|---|
+| 2023 | CSV in ZIP | `;` | UTF-8 | 655.125 | €404 mld |
+| 2024 | CSV in ZIP | `;` | UTF-8 | 1.228.909 | €694 mld |
+| 2025 | CSV in ZIP | `;` | UTF-8 | 1.475.581 | €635 mld |
 
-Altri anni (2007-2024) disponibili in formato misto CSV/JSON/TTL. Da verificare
+Altri anni (2007-2022) disponibili in formato misto CSV/JSON/TTL. Da verificare
 con `toolkit schema_diff` prima di estendere.
 
 ## Join testati
@@ -17,8 +19,8 @@ con `toolkit schema_diff` prima di estendere.
 ## Performance
 
 - Raw: 12 file ZIP mensili → 1.23GB (37 risorse CKAN, filtrate a 12 CSV)
-- Clean parquet: 330MB, 57 colonne (v2: +cig_collegamento, cui_programma, cod_motivo_cancellazione, tipo_appalto_riservato)
-- Mart: ~5.6MB, 611K righe aggregate
+- Clean parquet: 330MB (2025), 57 colonne (v2: +cig_collegamento, cui_programma, cod_motivo_cancellazione, tipo_appalto_riservato)
+- Mart: ~5.6MB (2025), 611K righe aggregate
 - Run time (2025): ~3.5s mart, raw/clean via cache
 
 ## Schema coverage

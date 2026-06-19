@@ -4,13 +4,12 @@ schema_version: 1
 dataset:
   name: "anac_bandi_gara"
   source_id: "anac"
-  years: [2025]
+  years: [2023, 2024, 2025]
 
 raw:
   sources:
-    - name: "cig_2025"
+    - name: "cig_{year}"
       type: "ckan"
-      year: 2025
       client:
         user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       args:
