@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-17",
+  "updated_at": "2026-06-19",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -2859,6 +2859,62 @@
         "multi_file": false
       },
       "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "ispra_emissioni_ghg",
+      "name": "ISPRA — Emissioni GHG da processi energetici per settore (1990-2023)",
+      "description": "Emissioni di gas serra da processi energetici in Italia, per settore economico (industrie energetiche, manifatturiere, residenziale, trasporti). Fonte ISPRA Inventario Nazionale UNFCCC/EEA. Mt CO₂ equivalente.",
+      "source": "ISPRA — Indicatori Ambientali",
+      "source_id": "ispra",
+      "period": {
+        "start": 1990,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento (1990-2023)"
+        },
+        {
+          "name": "industrie_energetiche",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Emissioni da industrie energetiche [Mt CO₂ eq]"
+        },
+        {
+          "name": "industrie_manifatturiere",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Emissioni da industrie manifatturiere [Mt CO₂ eq]"
+        },
+        {
+          "name": "residenziale_e_servizi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Emissioni da residenziale e servizi [Mt CO₂ eq]"
+        },
+        {
+          "name": "trasporti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Emissioni da trasporti [Mt CO₂ eq]"
+        },
+        {
+          "name": "totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Emissioni totali (somma 4 settori) [Mt CO₂ eq]"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ispra_emissioni_ghg/2023/ispra_emissioni_ghg_2023_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
