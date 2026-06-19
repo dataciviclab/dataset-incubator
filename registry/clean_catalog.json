@@ -151,6 +151,18 @@
           "description": "CIG dell'accordo quadro di riferimento"
         },
         {
+          "name": "CIG_COLLEGAMENTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "CUI_PROGRAMMA",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
           "name": "numero_gara",
           "type": "VARCHAR",
           "role": "dimension",
@@ -379,16 +391,16 @@
           "description": "(raw) Codice motivo urgenza"
         },
         {
-          "name": "MOTIVO_URGENZA",
+          "name": "motivo_urgenza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "(raw) Motivo dell'urgenza dichiarata"
+          "description": ""
         },
         {
-          "name": "FUNZIONI_DELEGATE",
+          "name": "funzioni_delegate",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "(raw) Funzioni delegate"
+          "description": ""
         },
         {
           "name": "CF_SA_DELEGANTE",
@@ -445,10 +457,22 @@
           "description": "Data di cancellazione della gara (se annullata)"
         },
         {
+          "name": "COD_MOTIVO_CANCELLAZIONE",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
           "name": "MOTIVO_CANCELLAZIONE",
           "type": "VARCHAR",
           "role": "dimension",
           "description": "(raw) Motivo della cancellazione"
+        },
+        {
+          "name": "TIPO_APPALTO_RISERVATO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         },
         {
           "name": "data_ultimo_perfezionamento",
@@ -459,8 +483,8 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_bandi_gara/2025/anac_bandi_gara_2025_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/anac_bandi_gara/*/anac_bandi_gara_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "published",
       "registry_source": "derive_auto"
@@ -858,92 +882,6 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/bdap_anagrafe_enti/2026/bdap_anagrafe_enti_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published",
-      "registry_source": "derive_auto"
-    },
-    {
-      "slug": "bdap_entrate_stato",
-      "name": "BDAP Entrate Stato - Serie Storica",
-      "description": "Entrate statali da BDAP, aggregate per titolo, natura, tipologia, provento",
-      "source": "MEF-BDAP",
-      "source_id": "openbdap",
-      "period": {
-        "start": 2008,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "esercizio_finanziario",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento"
-        },
-        {
-          "name": "codice_titolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice del titolo di entrata"
-        },
-        {
-          "name": "titolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione del titolo (es: TITOLO I - ENTRATE TRIBUTARIE)"
-        },
-        {
-          "name": "codice_natura",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice della natura"
-        },
-        {
-          "name": "natura",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione della natura (es: Entrate ricorrenti)"
-        },
-        {
-          "name": "codice_tipologia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice della tipologia"
-        },
-        {
-          "name": "tipologia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione della tipologia"
-        },
-        {
-          "name": "codice_provento",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice del provento"
-        },
-        {
-          "name": "provento",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione del provento"
-        },
-        {
-          "name": "previsioni_definitive_cp",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Previsioni definitive competenze di cassa"
-        },
-        {
-          "name": "previsioni_definitive_cs",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Previsioni definitive competenze di competenza"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_entrate_stato/2024/bdap_entrate_stato_2024_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
