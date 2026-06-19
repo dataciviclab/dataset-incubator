@@ -134,7 +134,7 @@
       "source": "ANAC - Autorit\u00e0 Nazionale Anticorruzione",
       "source_id": "anac",
       "period": {
-        "start": 2025,
+        "start": 2023,
         "end": 2025
       },
       "columns": [
@@ -154,13 +154,13 @@
           "name": "CIG_COLLEGAMENTO",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CIG originario in caso di varianti/modifiche"
         },
         {
           "name": "CUI_PROGRAMMA",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice Unico di Programma \u2014 join con OpenCoesione"
         },
         {
           "name": "numero_gara",
@@ -394,13 +394,13 @@
           "name": "motivo_urgenza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Motivo dell'urgenza dichiarata (normalizzato UPPER)"
         },
         {
           "name": "funzioni_delegate",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Funzioni delegate alla centrale di committenza (normalizzato UPPER)"
         },
         {
           "name": "CF_SA_DELEGANTE",
@@ -460,7 +460,7 @@
           "name": "COD_MOTIVO_CANCELLAZIONE",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice motivo cancellazione"
         },
         {
           "name": "MOTIVO_CANCELLAZIONE",
@@ -472,7 +472,7 @@
           "name": "TIPO_APPALTO_RISERVATO",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di appalto riservato (cooperative sociali, inclusione)"
         },
         {
           "name": "data_ultimo_perfezionamento",
