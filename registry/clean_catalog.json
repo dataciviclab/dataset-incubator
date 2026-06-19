@@ -2863,50 +2863,50 @@
     },
     {
       "slug": "ispra_emissioni_ghg",
-      "name": "Ispra Emissioni Ghg",
-      "description": "",
-      "source": "",
+      "name": "ISPRA — Emissioni GHG da processi energetici per settore (1990-2023)",
+      "description": "Emissioni di gas serra da processi energetici in Italia, per settore economico (industrie energetiche, manifatturiere, residenziale, trasporti). Fonte ISPRA Inventario Nazionale UNFCCC/EEA. Mt CO₂ equivalente.",
+      "source": "ISPRA — Indicatori Ambientali",
       "source_id": "ispra",
       "period": {
-        "start": 2023,
+        "start": 1990,
         "end": 2023
       },
       "columns": [
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento (1990-2023)"
         },
         {
           "name": "industrie_energetiche",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Emissioni da industrie energetiche [Mt CO₂ eq]"
         },
         {
           "name": "industrie_manifatturiere",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Emissioni da industrie manifatturiere [Mt CO₂ eq]"
         },
         {
           "name": "residenziale_e_servizi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Emissioni da residenziale e servizi [Mt CO₂ eq]"
         },
         {
           "name": "trasporti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Emissioni da trasporti [Mt CO₂ eq]"
         },
         {
           "name": "totale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Emissioni totali (somma 4 settori) [Mt CO₂ eq]"
         }
       ],
       "location": {
