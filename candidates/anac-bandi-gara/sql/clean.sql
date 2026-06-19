@@ -1,6 +1,8 @@
 SELECT
     cig,
     cig_accordo_quadro,
+    cig_collegamento,
+    cui_programma,
     numero_gara,
     oggetto_gara,
     TRY_CAST(importo_complessivo_gara AS DOUBLE) AS importo_complessivo_gara,
@@ -39,8 +41,8 @@ SELECT
     cod_strumento_svolgimento,
     strumento_svolgimento,
     cod_motivo_urgenza,
-    motivo_urgenza,
-    funzioni_delegate,
+    UPPER(motivo_urgenza) AS motivo_urgenza,
+    UPPER(funzioni_delegate) AS funzioni_delegate,
     cf_sa_delegante,
     denominazione_sa_delegante,
     cf_sa_delegata,
@@ -50,6 +52,8 @@ SELECT
     esito,
     TRY_CAST(data_comunicazione_esito AS DATE) AS data_comunicazione_esito,
     TRY_CAST(data_cancellazione AS DATE) AS data_cancellazione,
+    cod_motivo_cancellazione,
     motivo_cancellazione,
+    tipo_appalto_riservato,
     TRY_CAST(data_ultimo_perfezionamento AS DATE) AS data_ultimo_perfezionamento
 FROM raw_input

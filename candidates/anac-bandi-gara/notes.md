@@ -2,11 +2,13 @@
 
 ## Schema raw
 
-| Anno | Formato | Delim | Encoding | Righe |
-|---|---|---|---|---|
-| 2025 | CSV in ZIP | `;` | UTF-8 | ~1.47M |
+| Anno | Formato | Delim | Encoding | Righe | Importo lotti |
+|---|---|---|---|---|---|---|
+| 2023 | CSV in ZIP | `;` | UTF-8 | 655.125 | €404 mld |
+| 2024 | CSV in ZIP | `;` | UTF-8 | 1.228.909 | €694 mld |
+| 2025 | CSV in ZIP | `;` | UTF-8 | 1.475.581 | €635 mld |
 
-Altri anni (2007-2024) disponibili in formato misto CSV/JSON/TTL. Da verificare
+Altri anni (2007-2022) disponibili in formato misto CSV/JSON/TTL. Da verificare
 con `toolkit schema_diff` prima di estendere.
 
 ## Join testati
@@ -17,9 +19,38 @@ con `toolkit schema_diff` prima di estendere.
 ## Performance
 
 - Raw: 12 file ZIP mensili → 1.23GB (37 risorse CKAN, filtrate a 12 CSV)
-- Clean parquet: 330MB, 53 colonne
-- Mart: ~5.6MB, 611K righe aggregate
+- Clean parquet: 330MB (2025), 57 colonne (v2: +cig_collegamento, cui_programma, cod_motivo_cancellazione, tipo_appalto_riservato)
+- Mart: ~5.6MB (2025), 611K righe aggregate
 - Run time (2025): ~3.5s mart, raw/clean via cache
+
+## Schema coverage
+
+| Layer | Colonne |
+|---|---|
+| Raw CSV | 61 |
+| Clean | **57** (53 v1 + 4 recuperate v2) |
+| Non passate | 4 — tutte a bassissima densità (86-99% missing) |
+
+Colonne raw escluse volutamente: `flag_prevalente`, `FLAG_PREV_RIPETIZIONI` (98.7% null), `COD_IPOTESI_COLLEGAMENTO` (86.2% null), `IPOTESI_COLLEGAMENTO` (86.2% null).
+
+## Colonne recuperate (v2, 2026-06-19)
+
+Da issue #514: recuperate 4 colonne raw omesse nello scaffold iniziale.
+
+| Colonna | Missing % | Utilità |
+|---|---|---|
+| `cig_collegamento` | 99.99% | Tracciare varianti/modifiche tra CIG |
+| `cui_programma` | 97.4% | Join con OpenCoesione (CUI) |
+| `cod_motivo_cancellazione` | 100% | Codice motivo cancellazione (complementa `motivo_cancellazione` che è sempre NULL) |
+| `tipo_appalto_riservato` | 85.3% | Appalti riservati a cooperative sociali, inclusione |
+
+Nota: tutte e 4 hanno alta % null perché sono colonne opzionali del dataset ANAC (varianti, CUI, riserve). I dati presenti sono comunque preziosi per le analisi specifiche.
+
+## Normalizzazioni applicate (v2)
+
+- `motivo_urgenza`: normalizzato con `UPPER()` — eliminati 5 duplicati case-sensitivi
+  (es. "non applicabile" / "NON APPLICABILE", "Somma urgenza e protezione civile" / "SOMMA URGENZA E PROTEZIONE CIVILE")
+- `funzioni_delegate`: normalizzato con `UPPER()` — eliminati 3 duplicati
 
 ## Qualità dati
 
