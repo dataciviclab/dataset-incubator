@@ -8,8 +8,8 @@
     {
       "slug": "aifa_spesa_consumo",
       "name": "AIFA Spesa Farmaceutica Convenzionata",
-      "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC \u2014 AIFA 2018-2024",
-      "source": "AIFA \u2014 Open Data Spesa e Consumo Farmaceutico",
+      "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC — AIFA 2018-2024",
+      "source": "AIFA — Open Data Spesa e Consumo Farmaceutico",
       "source_id": "aifa",
       "period": {
         "start": 2018,
@@ -98,13 +98,13 @@
           "name": "numero_confezioni_traccia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero confezioni tracciabilit\u00e0"
+          "description": "Numero confezioni tracciabilità"
         },
         {
           "name": "spesa_flusso_tracciabilita",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Spesa flusso tracciabilit\u00e0 (euro)"
+          "description": "Spesa flusso tracciabilità (euro)"
         },
         {
           "name": "numero_confezioni_convenzionata",
@@ -131,7 +131,7 @@
       "slug": "anac_bandi_gara",
       "name": "ANAC Bandi di Gara (CIG)",
       "description": "Bandi di gara pubblici italiani (CIG): oggetto, importi, stazione appaltante, territorio, CPV, esito e flag PNRR/urgenza/delega. Fonte ANAC, serie annuale 2025+.",
-      "source": "ANAC - Autorit\u00e0 Nazionale Anticorruzione",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
       "source_id": "anac",
       "period": {
         "start": 2023,
@@ -160,7 +160,7 @@
           "name": "CUI_PROGRAMMA",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Unico di Programma \u2014 join con OpenCoesione"
+          "description": "Codice Unico di Programma — join con OpenCoesione"
         },
         {
           "name": "numero_gara",
@@ -184,7 +184,7 @@
           "name": "n_lotti_componenti",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Numero di lotti in cui \u00e8 suddivisa la gara"
+          "description": "Numero di lotti in cui è suddivisa la gara"
         },
         {
           "name": "oggetto_lotto",
@@ -256,13 +256,13 @@
           "name": "cod_modalita_realizzazione",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice modalit\u00e0 di realizzazione"
+          "description": "Codice modalità di realizzazione"
         },
         {
           "name": "modalita_realizzazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalit\u00e0 di realizzazione (CONTRATTO D'APPALTO, CONCESSIONE, ecc.)"
+          "description": "Modalità di realizzazione (CONTRATTO D'APPALTO, CONCESSIONE, ecc.)"
         },
         {
           "name": "codice_ausa",
@@ -328,7 +328,7 @@
           "name": "flag_pnrr",
           "type": "BOOLEAN",
           "role": "dimension",
-          "description": "Indicatore PNRR/PNC (Vero se la gara \u00e8 legata al Piano)"
+          "description": "Indicatore PNRR/PNC (Vero se la gara è legata al Piano)"
         },
         {
           "name": "flag_urgenza",
@@ -346,25 +346,25 @@
           "name": "COD_MODALITA_INDIZIONE_SPECIALI",
           "type": "DOUBLE",
           "role": "dimension",
-          "description": "(raw) Codice modalit\u00e0 indizione speciali"
+          "description": "(raw) Codice modalità indizione speciali"
         },
         {
           "name": "MODALITA_INDIZIONE_SPECIALI",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "(raw) Modalit\u00e0 indizione speciali"
+          "description": "(raw) Modalità indizione speciali"
         },
         {
           "name": "COD_MODALITA_INDIZIONE_SERVIZI",
           "type": "DOUBLE",
           "role": "dimension",
-          "description": "(raw) Codice modalit\u00e0 indizione servizi"
+          "description": "(raw) Codice modalità indizione servizi"
         },
         {
           "name": "MODALITA_INDIZIONE_SERVIZI",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "(raw) Modalit\u00e0 indizione servizi"
+          "description": "(raw) Modalità indizione servizi"
         },
         {
           "name": "durata_prevista",
@@ -493,7 +493,7 @@
       "slug": "bdap_anagrafe_enti",
       "name": "BDAP Anagrafe Enti Pubblici",
       "description": "Anagrafe completa degli enti pubblici italiani. 63 colonne, ~38k enti. Mappa codici IPA, SIOPE, ISTAT, MIUR, SSN, catastale. Usata come bridge table per join cross-dataset nel joinability scan.",
-      "source": "MEF \u2014 Ragioneria Generale dello Stato / OpenBDAP",
+      "source": "MEF — Ragioneria Generale dello Stato / OpenBDAP",
       "source_id": "openbdap",
       "period": {
         "start": 2026,
@@ -540,7 +540,7 @@
           "name": "codice_ateco",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ATECO attivit\u00e0 economica"
+          "description": "Codice ATECO attività economica"
         },
         {
           "name": "descr_codice_ateco",
@@ -810,7 +810,7 @@
           "name": "codice_ente_ssn",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice SSN ente (chiave join sanit\u00e0)"
+          "description": "Codice SSN ente (chiave join sanità)"
         },
         {
           "name": "codice_ente_istat_s13",
@@ -976,8 +976,8 @@
     {
       "slug": "bdap_lea",
       "name": "Bdap Lea",
-      "description": "Spesa sanitaria enti SSN per regione \u2014 Modello LEA (BDAP RGS MEF). Consumi, personale, servizi e altre voci di costo delle ASL italiane.",
-      "source": "BDAP LEA \u2014 Ragioneria Generale dello Stato (MEF)",
+      "description": "Spesa sanitaria enti SSN per regione — Modello LEA (BDAP RGS MEF). Consumi, personale, servizi e altre voci di costo delle ASL italiane.",
+      "source": "BDAP LEA — Ragioneria Generale dello Stato (MEF)",
       "source_id": "openbdap",
       "period": {
         "start": 2024,
@@ -1176,25 +1176,25 @@
           "name": "udv_livello_1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Unit\u00e0 di voto livello 1"
+          "description": "Unità di voto livello 1"
         },
         {
           "name": "udv_livello_2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Unit\u00e0 di voto livello 2"
+          "description": "Unità di voto livello 2"
         },
         {
           "name": "udv_livello_3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Unit\u00e0 di voto livello 3"
+          "description": "Unità di voto livello 3"
         },
         {
           "name": "codice_puntato_udv",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice puntato unit\u00e0 di voto"
+          "description": "Codice puntato unità di voto"
         },
         {
           "name": "macroaggregato",
@@ -1226,8 +1226,8 @@
     {
       "slug": "camera_deputati_legislature",
       "name": "Camera Deputati Legislature",
-      "description": "Deputati italiani per legislatura \u2014 Camera dei Deputati",
-      "source": "Camera dei Deputati \u2014 OpenData SPARQL endpoint",
+      "description": "Deputati italiani per legislatura — Camera dei Deputati",
+      "source": "Camera dei Deputati — OpenData SPARQL endpoint",
       "source_id": "dati_camera",
       "period": {
         "start": 2024,
@@ -1391,9 +1391,9 @@
     },
     {
       "slug": "civile_flussi",
-      "name": "Flussi Civile \u2014 Giustizia civile italiana",
+      "name": "Flussi Civile — Giustizia civile italiana",
       "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 (file snapshot 2025).",
-      "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia \u2014 Direzione Generale di Statistica)",
+      "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
       "source_id": "giustizia_statistiche",
       "period": {
         "start": 2014,
@@ -1532,7 +1532,7 @@
           "name": "superficie_km2",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Superficie territoriale in km\u00b2"
+          "description": "Superficie territoriale in km²"
         },
         {
           "name": "popolazione_residente",
@@ -1649,7 +1649,7 @@
       "slug": "consip_consumi_convenzione",
       "name": "Consip Consumi Convenzione",
       "description": "Consumi generati tramite ordini diretti di acquisto in convenzione Consip. Spesa delle PA per regione, provincia, tipologia amministrazione e fornitore (2023-2025).",
-      "source": "Consip SpA / MEF \u2014 dati.consip.it (CKAN)",
+      "source": "Consip SpA / MEF — dati.consip.it (CKAN)",
       "source_id": "consip",
       "period": {
         "start": 2023,
@@ -1708,7 +1708,7 @@
           "name": "valore_economico_consumi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Valore economico dei consumi (\u20ac)"
+          "description": "Valore economico dei consumi (€)"
         },
         {
           "name": "numero_ordini_con_consumi",
@@ -1740,8 +1740,8 @@
     {
       "slug": "dait_amministratori_locali",
       "name": "Amministratori Locali DAIT",
-      "description": "Anagrafe degli Amministratori Locali e Regionali (DAIT) \u2014 snapshot giugno 2026. Amministratori comunali in carica con dati anagrafici (cognome, nome, sesso, data nascita), carica ricoperta, incarico, titolo di studio, professione e lista elettorale.",
-      "source": "Ministero dell'Interno \u2014 DAIT (Dipartimento per gli Affari Interni e Territoriali)",
+      "description": "Anagrafe degli Amministratori Locali e Regionali (DAIT) — snapshot giugno 2026. Amministratori comunali in carica con dati anagrafici (cognome, nome, sesso, data nascita), carica ricoperta, incarico, titolo di studio, professione e lista elettorale.",
+      "source": "Ministero dell'Interno — DAIT (Dipartimento per gli Affari Interni e Territoriali)",
       "source_id": "dait",
       "period": {
         "start": 2026,
@@ -2037,9 +2037,9 @@
     },
     {
       "slug": "giustizia_penale_indicatori",
-      "name": "Giustizia Penale \u2014 Clearance Rate e Disposition Time",
-      "description": "Indicatori di efficienza della giustizia penale: clearance rate (casi definiti/casi sopravvenuti) e disposition time (durata media in giorni) per distretto e tipo ufficio. Sheet Tribunali, anni 2014-2024. Fonte: Ministero della Giustizia \u2014 DG Statistica.",
-      "source": "Ministero della Giustizia \u2014 Direzione Generale di Statistica e Analisi Organizzativa",
+      "name": "Giustizia Penale — Clearance Rate e Disposition Time",
+      "description": "Indicatori di efficienza della giustizia penale: clearance rate (casi definiti/casi sopravvenuti) e disposition time (durata media in giorni) per distretto e tipo ufficio. Sheet Tribunali, anni 2014-2024. Fonte: Ministero della Giustizia — DG Statistica.",
+      "source": "Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa",
       "source_id": "giustizia_statistiche",
       "period": {
         "start": 2014,
@@ -2099,7 +2099,7 @@
     },
     {
       "slug": "inps_pensioni_trimestrale",
-      "name": "INPS Pensioni \u2014 trimestrale",
+      "name": "INPS Pensioni — trimestrale",
       "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2020-2024)",
       "source": "https://www.inps.it/gestione-previdenziale",
       "source_id": "inps",
@@ -2185,7 +2185,7 @@
     },
     {
       "slug": "ipa_istat_mapping",
-      "name": "IPA\u2194ISTAT Mapping Comuni",
+      "name": "IPA↔ISTAT Mapping Comuni",
       "description": "Raccordo tra codici IPA (Indice PA, AgID) e codici ISTAT per tutti i comuni italiani. Include codice fiscale, codice catastale, indirizzo e contatti.",
       "source": "AgID (IPA) + ISTAT",
       "source_id": "agid",
@@ -2887,9 +2887,9 @@
     },
     {
       "slug": "ispra_emissioni_ghg",
-      "name": "ISPRA \u2014 Emissioni GHG da processi energetici per settore (1990-2023)",
-      "description": "Emissioni di gas serra da processi energetici in Italia, per settore economico (industrie energetiche, manifatturiere, residenziale, trasporti). Fonte ISPRA Inventario Nazionale UNFCCC/EEA. Mt CO\u2082 equivalente.",
-      "source": "ISPRA \u2014 Indicatori Ambientali",
+      "name": "ISPRA — Emissioni GHG da processi energetici per settore (1990-2023)",
+      "description": "Emissioni di gas serra da processi energetici in Italia, per settore economico (industrie energetiche, manifatturiere, residenziale, trasporti). Fonte ISPRA Inventario Nazionale UNFCCC/EEA. Mt CO₂ equivalente.",
+      "source": "ISPRA — Indicatori Ambientali",
       "source_id": "ispra",
       "period": {
         "start": 1990,
@@ -2906,31 +2906,31 @@
           "name": "industrie_energetiche",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Emissioni da industrie energetiche [Mt CO\u2082 eq]"
+          "description": "Emissioni da industrie energetiche [Mt CO₂ eq]"
         },
         {
           "name": "industrie_manifatturiere",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Emissioni da industrie manifatturiere [Mt CO\u2082 eq]"
+          "description": "Emissioni da industrie manifatturiere [Mt CO₂ eq]"
         },
         {
           "name": "residenziale_e_servizi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Emissioni da residenziale e servizi [Mt CO\u2082 eq]"
+          "description": "Emissioni da residenziale e servizi [Mt CO₂ eq]"
         },
         {
           "name": "trasporti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Emissioni da trasporti [Mt CO\u2082 eq]"
+          "description": "Emissioni da trasporti [Mt CO₂ eq]"
         },
         {
           "name": "totale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Emissioni totali (somma 4 settori) [Mt CO\u2082 eq]"
+          "description": "Emissioni totali (somma 4 settori) [Mt CO₂ eq]"
         }
       ],
       "location": {
@@ -3225,8 +3225,8 @@
     },
     {
       "slug": "istat_elenco_comuni",
-      "name": "Elenco comuni italiani (codici ISTAT, catastali, superficie km\u00b2)",
-      "description": "Elenco completo dei 7.894 comuni italiani con codici ISTAT (6 cifre), codici catastali Belfiore, superficie territoriale in km\u00b2, popolazione residente e legale, e caratteristiche geografiche (regione, provincia, zona altimetrica, altitudine, litoraneit\u00e0/insularit\u00e0). Fonte: ISTAT SITUAS.",
+      "name": "Elenco comuni italiani (codici ISTAT, catastali, superficie km²)",
+      "description": "Elenco completo dei 7.894 comuni italiani con codici ISTAT (6 cifre), codici catastali Belfiore, superficie territoriale in km², popolazione residente e legale, e caratteristiche geografiche (regione, provincia, zona altimetrica, altitudine, litoraneità/insularità). Fonte: ISTAT SITUAS.",
       "source": "ISTAT SITUAS (via opensituas)",
       "source_id": "istat_situas",
       "period": {
@@ -3250,13 +3250,13 @@
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale Belfiore (4-5 caratteri, es. A074 per Agli\u00e8)"
+          "description": "Codice catastale Belfiore (4-5 caratteri, es. A074 per Agliè)"
         },
         {
           "name": "superficie_km2",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Superficie territoriale del comune in km\u00b2"
+          "description": "Superficie territoriale del comune in km²"
         },
         {
           "name": "popolazione_residente",
@@ -3304,13 +3304,13 @@
           "name": "comune_litoraneo",
           "type": "BOOLEAN",
           "role": "dimension",
-          "description": "Indica se il comune \u00e8 bagnato dal mare (vero/falso)"
+          "description": "Indica se il comune è bagnato dal mare (vero/falso)"
         },
         {
           "name": "comune_isolano",
           "type": "BOOLEAN",
           "role": "dimension",
-          "description": "Indica se il comune \u00e8 situato su un'isola (vero/falso)"
+          "description": "Indica se il comune è situato su un'isola (vero/falso)"
         }
       ],
       "location": {
@@ -3325,7 +3325,7 @@
       "slug": "istat_gini_regionale",
       "name": "ISTAT - Indice di Gini regionale",
       "description": "Indice di Gini sul reddito netto regionale, con serie storica annuale 2003-2024",
-      "source": "ISTAT \u2014 Dataflow 32_221 (Omogeneita del reddito regionale), SDMX-CSV",
+      "source": "ISTAT — Dataflow 32_221 (Omogeneita del reddito regionale), SDMX-CSV",
       "source_id": "istat_sdmx",
       "period": {
         "start": 2003,
@@ -3381,7 +3381,7 @@
       "slug": "istat_housing_crowding",
       "name": "Istat Housing Crowding",
       "description": "Indice di densita abitativa (componenti per 100 mq) per titolo di godimento. Serie storica 2004-2025, ISTAT SDMX 33_179",
-      "source": "ISTAT \u2014 Dataflow 33_179 (Housing conditions), SDMX-CSV",
+      "source": "ISTAT — Dataflow 33_179 (Housing conditions), SDMX-CSV",
       "source_id": "istat_sdmx",
       "period": {
         "start": 2004,
@@ -3568,8 +3568,8 @@
     {
       "slug": "istat_ipab_aree",
       "name": "Istat Ipab Aree",
-      "description": "ISTAT \u2014 Indice dei prezzi delle abitazioni (IPAB) trimestrale: prezzi per tipo di abitazione (nuove costruzioni, esistenti) e area geografica, base 2015=100, serie 2010-2025.",
-      "source": "ISTAT \u2014 Dataflow 33_292 (IPAB trimestrale), SDMX-CSV",
+      "description": "ISTAT — Indice dei prezzi delle abitazioni (IPAB) trimestrale: prezzi per tipo di abitazione (nuove costruzioni, esistenti) e area geografica, base 2015=100, serie 2010-2025.",
+      "source": "ISTAT — Dataflow 33_292 (IPAB trimestrale), SDMX-CSV",
       "source_id": "istat_sdmx",
       "period": {
         "start": 2010,
@@ -3631,7 +3631,7 @@
       "slug": "istat_pil_territoriale",
       "name": "PIL regionale e provinciale",
       "description": "PIL, Valore Aggiunto e Imposte nette per nazione, macro-aree, regioni e province. Fonte: ISTAT Conti economici territoriali (DCCN_PILT). Serie 1995-2024.",
-      "source": "ISTAT \u2014 Conti economici territoriali",
+      "source": "ISTAT — Conti economici territoriali",
       "source_id": "istat_sdmx",
       "period": {
         "start": 1995,
@@ -3976,8 +3976,8 @@
     {
       "slug": "mef_partecipazioni",
       "name": "MEF Partecipazioni Pubbliche",
-      "description": "Partecipazioni pubbliche dichiarate dalle PA italiane: amministrazioni, partecipate, quote, servizi affidati per territorio e categoria \u2014 MEF 2020-2023",
-      "source": "MEF \u2014 Dipartimento dell'Economia, Open Data Partecipazioni Pubbliche",
+      "description": "Partecipazioni pubbliche dichiarate dalle PA italiane: amministrazioni, partecipate, quote, servizi affidati per territorio e categoria — MEF 2020-2023",
+      "source": "MEF — Dipartimento dell'Economia, Open Data Partecipazioni Pubbliche",
       "source_id": "",
       "period": {
         "start": 2020,
@@ -4054,7 +4054,7 @@
           "name": "partecipata_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione della societ\u00e0 partecipata"
+          "description": "Denominazione della società partecipata"
         },
         {
           "name": "partecipata_codice_fiscale",
@@ -4126,19 +4126,19 @@
           "name": "societa_controllata_da_una_quotata",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se la societ\u00e0 \u00e8 controllata da una quotata (SI/NO)"
+          "description": "Indicazione se la società è controllata da una quotata (SI/NO)"
         },
         {
           "name": "gal",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se \u00e8 un GAL (Gruppo di Azione Locale, SI/NO)"
+          "description": "Indicazione se è un GAL (Gruppo di Azione Locale, SI/NO)"
         },
         {
           "name": "partecipata_settore_attivita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Settore di attivit\u00e0 della partecipata"
+          "description": "Settore di attività della partecipata"
         },
         {
           "name": "partecipata_divisione_ateco",
@@ -4162,7 +4162,7 @@
           "name": "modalita_affidamento_servizio_1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalit\u00e0 di affidamento del servizio 1"
+          "description": "Modalità di affidamento del servizio 1"
         },
         {
           "name": "ente_affidante_servizio_1",
@@ -4186,7 +4186,7 @@
           "name": "modalita_affidamento_servizio_2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalit\u00e0 di affidamento del servizio 2"
+          "description": "Modalità di affidamento del servizio 2"
         },
         {
           "name": "ente_affidante_servizio_2",
@@ -4210,7 +4210,7 @@
           "name": "modalita_affidamento_servizio_3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalit\u00e0 di affidamento del servizio 3"
+          "description": "Modalità di affidamento del servizio 3"
         },
         {
           "name": "ente_affidante_servizio_3",
@@ -4234,7 +4234,7 @@
           "name": "modalita_affidamento_servizio_4",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalit\u00e0 di affidamento del servizio 4"
+          "description": "Modalità di affidamento del servizio 4"
         },
         {
           "name": "ente_affidante_servizio_4",
@@ -4258,7 +4258,7 @@
           "name": "modalita_affidamento_servizio_5",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalit\u00e0 di affidamento del servizio 5"
+          "description": "Modalità di affidamento del servizio 5"
         },
         {
           "name": "ente_affidante_servizio_5",
@@ -4270,7 +4270,7 @@
           "name": "importo_impegnato_servizio_5",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Importo impegnato per il servizio 5 (pu\u00f2 contenere valori non numerici)"
+          "description": "Importo impegnato per il servizio 5 (può contenere valori non numerici)"
         },
         {
           "name": "quota_partecipazione_diretta",
@@ -4312,7 +4312,7 @@
           "name": "partecipata_tipo_contabilita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipo di contabilit\u00e0 della partecipata"
+          "description": "Tipo di contabilità della partecipata"
         },
         {
           "name": "partecipata_tipo_bilancio",
@@ -4324,7 +4324,7 @@
           "name": "partecipata_bilancio_di_esercizio_approvato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se il bilancio di esercizio \u00e8 approvato (SI/NO)"
+          "description": "Indicazione se il bilancio di esercizio è approvato (SI/NO)"
         },
         {
           "name": "partecipata_numero_di_addetti",
@@ -4426,31 +4426,31 @@
           "name": "partecipazione_ancora_detenuta_alla_data_di_adozione_del_provvedimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se la partecipazione \u00e8 ancora detenuta alla data del provvedimento"
+          "description": "Indicazione se la partecipazione è ancora detenuta alla data del provvedimento"
         },
         {
           "name": "societa_controllata_da_una_quotata_dichiarata",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se societ\u00e0 \u00e8 controllata da quotata dichiarata (SI/NO)"
+          "description": "Indicazione se società è controllata da quotata dichiarata (SI/NO)"
         },
         {
           "name": "attivita_a_favore_amm",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Attivit\u00e0 svolta a favore dell'amministrazione"
+          "description": "Attività svolta a favore dell'amministrazione"
         },
         {
           "name": "societa_all_a",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Indicazione se societ\u00e0 \u00e8 in classe A (SI/NO)"
+          "description": "Indicazione se società è in classe A (SI/NO)"
         },
         {
           "name": "attivita_svolta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Attivit\u00e0 effettivamente svolta dalla partecipata"
+          "description": "Attività effettivamente svolta dalla partecipata"
         },
         {
           "name": "quota_soggetto_privato",
@@ -4462,7 +4462,7 @@
           "name": "attivita_analoghe_art_20_c_2_lett_c",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Attivit\u00e0 analoghe art. 20 c.2 lett. c (SI/NO)"
+          "description": "Attività analoghe art. 20 c.2 lett. c (SI/NO)"
         },
         {
           "name": "contenimento_dei_costi_art_20_c_2_lett_f",
@@ -4474,7 +4474,7 @@
           "name": "aggregazione_di_societa_art_20_c_2_lett_g",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Aggregazione di societ\u00e0 art. 20 c.2 lett. g (SI/NO)"
+          "description": "Aggregazione di società art. 20 c.2 lett. g (SI/NO)"
         },
         {
           "name": "esito_della_ricognizione",
@@ -4486,7 +4486,7 @@
           "name": "modalita_razionalizzazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Modalit\u00e0 di razionalizzazione prevista"
+          "description": "Modalità di razionalizzazione prevista"
         },
         {
           "name": "termine_razionalizzazione",
@@ -4505,9 +4505,9 @@
     },
     {
       "slug": "mim_alunni_corso_eta",
-      "name": "Alunni per corso ed et\u00e0 \u2014 MIM",
-      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia d'eta. Dato MIM a livello di singola scuola, arricchito con anagrafica scuole (regione, provincia, comune). Include gerarchia territoriale (nazionale \u2192 regione \u2192 provincia) per drill-down. Fonte: dati.istruzione.it.",
-      "source": "https://dati.istruzione.it/opendata/ \u2014 Ministero dell'Istruzione e del Merito (MIM)",
+      "name": "Alunni per corso ed età — MIM",
+      "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia d'eta. Dato MIM a livello di singola scuola, arricchito con anagrafica scuole (regione, provincia, comune). Include gerarchia territoriale (nazionale → regione → provincia) per drill-down. Fonte: dati.istruzione.it.",
+      "source": "https://dati.istruzione.it/opendata/ — Ministero dell'Istruzione e del Merito (MIM)",
       "source_id": "mim_opendata",
       "period": {
         "start": 2016,
@@ -4560,7 +4560,7 @@
           "name": "fascia_eta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Fascia d'et\u00e0 degli alunni (es. 6 anni, 7 anni, ...)"
+          "description": "Fascia d'età degli alunni (es. 6 anni, 7 anni, ...)"
         },
         {
           "name": "alunni",
@@ -4725,9 +4725,9 @@
     },
     {
       "slug": "mit_incidentalita_mensile",
-      "name": "MIT Incidentalit\u00e0 Stradale Mensile",
-      "description": "Serie mensile di incidenti stradali, morti, feriti e indicatori di mortalit\u00e0/gravit\u00e0/lesivit\u00e0 \u2014 Italia 2001-2018, 216 mesi",
-      "source": "MIT \u2014 Ministero delle Infrastrutture e dei Trasporti, portale open data",
+      "name": "MIT Incidentalità Stradale Mensile",
+      "description": "Serie mensile di incidenti stradali, morti, feriti e indicatori di mortalità/gravità/lesività — Italia 2001-2018, 216 mesi",
+      "source": "MIT — Ministero delle Infrastrutture e dei Trasporti, portale open data",
       "source_id": "mit_opendata",
       "period": {
         "start": 2001,
@@ -4798,31 +4798,31 @@
           "name": "indice_mortalita",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice di mortalit\u00e0 generico (morti/incidenti \u00d7 100)"
+          "description": "Indice di mortalità generico (morti/incidenti × 100)"
         },
         {
           "name": "indice_gravita",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice di gravit\u00e0"
+          "description": "Indice di gravità"
         },
         {
           "name": "indice_lesivita",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice di lesivit\u00e0 (feriti/incidenti \u00d7 100)"
+          "description": "Indice di lesività (feriti/incidenti × 100)"
         },
         {
           "name": "indice_mortalita_spec",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice specifico di mortalit\u00e0"
+          "description": "Indice specifico di mortalità"
         },
         {
           "name": "indice_incidentalita_spec",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Indice specifico di incidentalit\u00e0"
+          "description": "Indice specifico di incidentalità"
         },
         {
           "name": "mese_numero",
@@ -4842,8 +4842,8 @@
     {
       "slug": "mit_opere_incompiute_2020",
       "name": "MIT Opere Pubbliche Incompiute",
-      "description": "Opere pubbliche incompiute al 31/12/2020 \u2014 Italia, 405 opere con CUP, stato, cause e importi",
-      "source": "MIT \u2014 Ministero delle Infrastrutture e dei Trasporti, portale open data",
+      "description": "Opere pubbliche incompiute al 31/12/2020 — Italia, 405 opere con CUP, stato, cause e importi",
+      "source": "MIT — Ministero delle Infrastrutture e dei Trasporti, portale open data",
       "source_id": "mit_opendata",
       "period": {
         "start": 2020,
@@ -4926,25 +4926,25 @@
           "name": "importo_complessivo_qe",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo complessivo ultimo quadro economico (\u20ac)"
+          "description": "Importo complessivo ultimo quadro economico (€)"
         },
         {
           "name": "importo_lavori_qe",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo lavori ultimo q.e. approvato (\u20ac)"
+          "description": "Importo lavori ultimo q.e. approvato (€)"
         },
         {
           "name": "importo_lavori_sal",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo complessivo lavori ultimo SAL (\u20ac)"
+          "description": "Importo complessivo lavori ultimo SAL (€)"
         },
         {
           "name": "importo_oneri_ultimazione",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Importo oneri per ultimazione (\u20ac)"
+          "description": "Importo oneri per ultimazione (€)"
         },
         {
           "name": "perc_avanzamento_lavori",
@@ -5080,7 +5080,7 @@
     {
       "slug": "opencivitas_fsc_2025_rso",
       "name": "Opencivitas Fsc 2025 Rso",
-      "description": "Fondo di Solidariet\u00e0 Comunale 2025 \u2014 6 componenti FSC per comune RSO con geografia",
+      "description": "Fondo di Solidarietà Comunale 2025 — 6 componenti FSC per comune RSO con geografia",
       "source": "OpenCivitas / Sogei",
       "source_id": "opencivitas",
       "period": {
@@ -5128,13 +5128,13 @@
           "name": "capacita_fiscale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Capacit\u00e0 fiscale (euro)"
+          "description": "Capacità fiscale (euro)"
         },
         {
           "name": "fondo_perequativo",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Fondo perequativo (euro) \u2014 negativo = contribuente netto"
+          "description": "Fondo perequativo (euro) — negativo = contribuente netto"
         },
         {
           "name": "dotazione_finale_fsc",
@@ -5172,7 +5172,7 @@
     {
       "slug": "opencivitas_fsc_enti_rso",
       "name": "Opencivitas Fsc Enti Rso",
-      "description": "Anagrafica enti FSC 2025 \u2014 mapping username \u2192 comune/provincia/regione (solo support, non pubblicato)",
+      "description": "Anagrafica enti FSC 2025 — mapping username → comune/provincia/regione (solo support, non pubblicato)",
       "source": "",
       "source_id": "",
       "period": {
@@ -5393,7 +5393,7 @@
       "slug": "openga_ricorsi_appalto",
       "name": "Ricorsi Appalto Consiglio di Stato",
       "description": "Ricorsi pervenuti in materia di appalto al Consiglio di Stato (OpenGA). Dati integrati con ANAC (CIG, importi gara, stazione appaltante, settore). Ogni riga e un ricorso con 24 colonne.",
-      "source": "OpenGA \u2014 Giustizia Amministrativa (Consiglio di Stato)",
+      "source": "OpenGA — Giustizia Amministrativa (Consiglio di Stato)",
       "source_id": "openga",
       "period": {
         "start": 2023,
@@ -5556,8 +5556,8 @@
     {
       "slug": "openga_ricorsi_cds",
       "name": "Openga Ricorsi Cds",
-      "description": "Ricorsi pendenti presso il Consiglio di Stato \u2014 dati mensili per sede giudiziaria",
-      "source": "OpenGA \u2014 Giustizia Amministrativa",
+      "description": "Ricorsi pendenti presso il Consiglio di Stato — dati mensili per sede giudiziaria",
+      "source": "OpenGA — Giustizia Amministrativa",
       "source_id": "openga",
       "period": {
         "start": 2023,
@@ -5740,8 +5740,8 @@
     {
       "slug": "popolazione_istat_comunale_2019_2025",
       "name": "Popolazione ISTAT Comunale",
-      "description": "Popolazione residente italiana per comune, sesso, classe di et\u00e0 \u2014 POSAS ISTAT 2019-2025",
-      "source": "ISTAT - demo.posas (Popolazione residente per sesso, et\u00e0 e comune)",
+      "description": "Popolazione residente italiana per comune, sesso, classe di età — POSAS ISTAT 2019-2025",
+      "source": "ISTAT - demo.posas (Popolazione residente per sesso, età e comune)",
       "source_id": "istat_sdmx",
       "period": {
         "start": 2019,
@@ -5770,13 +5770,13 @@
           "name": "eta",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Classe di et\u00e0 (0-100, 999 = totale comunale)"
+          "description": "Classe di età (0-100, 999 = totale comunale)"
         },
         {
           "name": "fascia_eta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Fascia d'et\u00e0 aggregata (0-14, 15-29, 30-44, 45-59, 60-74, 75+)"
+          "description": "Fascia d'età aggregata (0-14, 15-29, 30-44, 45-59, 60-74, 75+)"
         },
         {
           "name": "celibi",
@@ -5812,13 +5812,13 @@
           "name": "maschi_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Maschi gi\u00e0 in unione civile \u2014 scioglimento"
+          "description": "Maschi già in unione civile — scioglimento"
         },
         {
           "name": "maschi_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Maschi gi\u00e0 in unione civile \u2014 decesso del coniuge"
+          "description": "Maschi già in unione civile — decesso del coniuge"
         },
         {
           "name": "totale_maschi",
@@ -5860,13 +5860,13 @@
           "name": "femmine_gia_unione_civile_scioglimento",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Femmine gi\u00e0 in unione civile \u2014 scioglimento"
+          "description": "Femmine già in unione civile — scioglimento"
         },
         {
           "name": "femmine_gia_unione_civile_decesso",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Femmine gi\u00e0 in unione civile \u2014 decesso del coniuge"
+          "description": "Femmine già in unione civile — decesso del coniuge"
         },
         {
           "name": "totale_femmine",
@@ -5893,7 +5893,7 @@
       "slug": "posti_letto_stabilimento",
       "name": "Posti Letto Stabilimento",
       "description": "Posti letto per stabilimento ospedaliero, disciplina e regime di degenza (ordinaria, day hospital, day surgery). Dati del Ministero della Salute.",
-      "source": "Ministero della Salute \u2014 Banca Dati Posti Letto",
+      "source": "Ministero della Salute — Banca Dati Posti Letto",
       "source_id": "ministero_salute_posti_letto",
       "period": {
         "start": 2020,
@@ -6050,8 +6050,8 @@
     {
       "slug": "reparti_ricovero",
       "name": "Reparti Ricovero",
-      "description": "Dati di struttura e attivit\u00e0 dei reparti di ricovero \u2014 posti letto, dimessi, discipline, degenza per struttura \u2014 Ministero della Salute 2022",
-      "source": "Ministero della Salute \u2014 Open Data Dati di struttura e attivit\u00e0 dei reparti di ricovero",
+      "description": "Dati di struttura e attività dei reparti di ricovero — posti letto, dimessi, discipline, degenza per struttura — Ministero della Salute 2022",
+      "source": "Ministero della Salute — Open Data Dati di struttura e attività dei reparti di ricovero",
       "source_id": "ministero_salute",
       "period": {
         "start": 2022,
@@ -6146,7 +6146,7 @@
           "name": "disciplina",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Disciplina / specialit\u00e0"
+          "description": "Disciplina / specialità"
         },
         {
           "name": "posti_letto_day_hospital",
@@ -6176,13 +6176,13 @@
           "name": "num_dimessi",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Numero dimessi (VARCHAR \u2014 separatore migliaia)"
+          "description": "Numero dimessi (VARCHAR — separatore migliaia)"
         },
         {
           "name": "giornate_degenza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Giornate di degenza (VARCHAR \u2014 separatore migliaia)"
+          "description": "Giornate di degenza (VARCHAR — separatore migliaia)"
         },
         {
           "name": "giornate_disponibili",
@@ -6220,8 +6220,8 @@
     {
       "slug": "strutture_asl",
       "name": "Strutture Asl",
-      "description": "Strutture e attivit\u00e0 delle ASL \u2014 medici di base, pediatri, popolazione residente, servizi territoriali e presidi per regione \u2014 Ministero della Salute 2022",
-      "source": "Ministero della Salute \u2014 Open Data Strutture e attivit\u00e0 ASL",
+      "description": "Strutture e attività delle ASL — medici di base, pediatri, popolazione residente, servizi territoriali e presidi per regione — Ministero della Salute 2022",
+      "source": "Ministero della Salute — Open Data Strutture e attività ASL",
       "source_id": "ministero_salute",
       "period": {
         "start": 2022,
@@ -6286,13 +6286,13 @@
           "name": "residenti_eta_infantile",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Residenti in et\u00e0 infantile (0-14 anni)"
+          "description": "Residenti in età infantile (0-14 anni)"
         },
         {
           "name": "residenti_eta_adulta",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Residenti in et\u00e0 adulta (15-64 anni)"
+          "description": "Residenti in età adulta (15-64 anni)"
         },
         {
           "name": "residenti_anziani",
@@ -6352,7 +6352,7 @@
           "name": "unita_mobile_rianimazione",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Unit\u00e0 Mobile di Rianimazione (1/0)"
+          "description": "Unità Mobile di Rianimazione (1/0)"
         },
         {
           "name": "ambulanze_emergenza_neonato",
@@ -6370,7 +6370,7 @@
           "name": "medici_indennita_associativa",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Medici con indennit\u00e0 per attivit\u00e0 in forma associativa"
+          "description": "Medici con indennità per attività in forma associativa"
         },
         {
           "name": "totale_scelte",
@@ -6388,7 +6388,7 @@
           "name": "pediatri_indennita_associativa",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Pediatri con indennit\u00e0 per attivit\u00e0 in forma associativa"
+          "description": "Pediatri con indennità per attività in forma associativa"
         },
         {
           "name": "totale_scelte_pediatri",
@@ -6430,31 +6430,31 @@
           "name": "num_ricette_specialita_medicinali",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Numero ricette di specialit\u00e0 medicinali e galenici"
+          "description": "Numero ricette di specialità medicinali e galenici"
         },
         {
           "name": "euro_importo_ricette",
           "type": "BIGINT",
           "role": "metric",
-          "description": "EURO Importo ricette di specialit\u00e0 medicinali e galenici"
+          "description": "EURO Importo ricette di specialità medicinali e galenici"
         },
         {
           "name": "adi_casi_trattati",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Assistenza Domiciliare Integrata \u2014 Casi Trattati"
+          "description": "Assistenza Domiciliare Integrata — Casi Trattati"
         },
         {
           "name": "adi_casi_trattati_anziani",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Assistenza Domiciliare Integrata \u2014 Casi Trattati Anziani"
+          "description": "Assistenza Domiciliare Integrata — Casi Trattati Anziani"
         },
         {
           "name": "adi_casi_trattati_terminali",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Assistenza Domiciliare Integrata \u2014 Casi Trattati Pazienti Terminali"
+          "description": "Assistenza Domiciliare Integrata — Casi Trattati Pazienti Terminali"
         }
       ],
       "location": {
@@ -6468,8 +6468,8 @@
     {
       "slug": "strutture_ricovero_asl",
       "name": "Strutture Ricovero Asl",
-      "description": "Strutture di ricovero pubbliche presenti nel territorio della ASL \u2014 personale, posti letto, ricoveri per struttura \u2014 Ministero della Salute 2022",
-      "source": "Ministero della Salute \u2014 Open Data Strutture di ricovero per ASL",
+      "description": "Strutture di ricovero pubbliche presenti nel territorio della ASL — personale, posti letto, ricoveri per struttura — Ministero della Salute 2022",
+      "source": "Ministero della Salute — Open Data Strutture di ricovero per ASL",
       "source_id": "ministero_salute",
       "period": {
         "start": 2022,
@@ -6522,13 +6522,13 @@
           "name": "personale_uomini",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Personale \u2014 uomini"
+          "description": "Personale — uomini"
         },
         {
           "name": "personale_donne",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Personale \u2014 donne"
+          "description": "Personale — donne"
         },
         {
           "name": "totale_personale",
@@ -6540,13 +6540,13 @@
           "name": "medici_uomini",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Medici \u2014 uomini"
+          "description": "Medici — uomini"
         },
         {
           "name": "medici_donne",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Medici \u2014 donne"
+          "description": "Medici — donne"
         },
         {
           "name": "medici",
@@ -6558,13 +6558,13 @@
           "name": "infermieri_uomini",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Infermieri \u2014 uomini"
+          "description": "Infermieri — uomini"
         },
         {
           "name": "infermieri_donne",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Infermieri \u2014 donne"
+          "description": "Infermieri — donne"
         },
         {
           "name": "infermieri",
@@ -6645,7 +6645,7 @@
       "slug": "terna_capacita_rinnovabile",
       "name": "Terna Capacita Rinnovabile",
       "description": "Capacita rinnovabile installata per regione, fonte e anno (MW). Fonti: Fotovoltaico, Eolico, Idroelettrico, Geotermico, Biomasse. Dati Terna.",
-      "source": "Terna S.p.A. \u2014 dati pubblicati su terna.com",
+      "source": "Terna S.p.A. — dati pubblicati su terna.com",
       "source_id": "terna",
       "period": {
         "start": 2023,
