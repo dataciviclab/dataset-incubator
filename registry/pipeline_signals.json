@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-19",
+  "generated_at": "2026-06-20",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 48,
+    "total": 49,
     "by_status": {
-      "ok": 48,
+      "ok": 49,
       "warn": 0,
       "error": 0
     }
@@ -279,6 +279,24 @@
           2024
         ],
         "config_path": "candidates/inps-pensioni/dataset.yml"
+      }
+    },
+    {
+      "id": "inps-rdc-pdc",
+      "source_id": "inps_open_data",
+      "status": "ok",
+      "label": "inps-rdc-pdc",
+      "detail": "anno 2020 — fonte: inps-rdc-pdc_source — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27872392672",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27872392672",
+        "checked_at": "2026-06-20",
+        "years": [
+          2020
+        ],
+        "config_path": "candidates/inps-rdc-pdc/dataset.yml"
       }
     },
     {
