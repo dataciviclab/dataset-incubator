@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 49,
+    "total": 50,
     "by_status": {
-      "ok": 49,
+      "ok": 50,
       "warn": 0,
       "error": 0
     }
@@ -243,6 +243,24 @@
           2023
         ],
         "config_path": "candidates/dipendenti-pubblici/dataset.yml"
+      }
+    },
+    {
+      "id": "farmacie",
+      "source_id": "ministero_salute",
+      "status": "ok",
+      "label": "farmacie",
+      "detail": "anno 2026 — fonte: farmacie_source — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27872594347",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27872594347",
+        "checked_at": "2026-06-20",
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/farmacie/dataset.yml"
       }
     },
     {
