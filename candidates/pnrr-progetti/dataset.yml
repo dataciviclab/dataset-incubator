@@ -23,7 +23,7 @@ clean:
     delim: ";"
     encoding: "utf-8"
     header: true
-    ignore_errors: true
+    sample_size: -1
   sql: "sql/clean.sql"
 
 mart:

@@ -2,7 +2,7 @@
 
 Tutti i progetti del Piano Nazionale di Ripresa e Resilienza (PNRR) con dettaglio CUP, missione, componente, misura, finanziamenti per 14 fonti, soggetto attuatore e stato avanzamento.
 
-**222.379 righe**, **218.240 progetti** (CUP unici), **€59,2 mld PNRR**, **€72,1 mld complessivi**.
+**280.769 righe**, **275.636 progetti** (CUP unici), **€116,1 mld PNRR**, **€148,9 mld complessivi**.
 
 ## Dati
 
