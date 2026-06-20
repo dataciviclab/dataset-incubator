@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-19",
+  "updated_at": "2026-06-20",
   "datasets": [
     {
       "slug": "aifa_spesa_consumo",
@@ -2178,6 +2178,140 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/inps_pensioni_trimestrale/2024/inps_pensioni_trimestrale_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "inps_rdc_pdc",
+      "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
+      "description": "Nuclei familiari percettori di Reddito di Cittadinanza (RdC) e Pensione di Cittadinanza (PdC) per comune ISTAT. Snapshot luglio 2020. Include takeup rate, composizione familiare, genere e importo medio.",
+      "source": "INPS — Open Data (opendata.inps.it)",
+      "source_id": "inps_open_data",
+      "period": {
+        "start": 2020,
+        "end": 2020
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento (2020)"
+        },
+        {
+          "name": "codice_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 cifre)"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del comune"
+        },
+        {
+          "name": "codice_regione",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice ISTAT della regione"
+        },
+        {
+          "name": "codice_provincia",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice ISTAT della provincia"
+        },
+        {
+          "name": "nuclei_familiari_percettori_rdc_luglio_2020",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Nuclei familiari percettori di RdC a luglio 2020"
+        },
+        {
+          "name": "nuclei_familiari_percettori_pdc_luglio_2020",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Nuclei familiari percettori di PdC a luglio 2020"
+        },
+        {
+          "name": "individui_coinvolti_luglio_2020",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Individui coinvolti nei nuclei percettori RdC/PdC a luglio 2020"
+        },
+        {
+          "name": "numero_componenti_per_famiglia",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero medio di componenti per nucleo familiare"
+        },
+        {
+          "name": "numero_donne_per_famiglia",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero medio di donne per nucleo familiare"
+        },
+        {
+          "name": "numero_minori_18_anni_per_famiglia",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero medio di minori (< 18 anni) per nucleo familiare"
+        },
+        {
+          "name": "numero_anziani_75_anni_per_famiglia",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero medio di anziani (> 75 anni) per nucleo familiare"
+        },
+        {
+          "name": "importo_medio_mensile",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo medio mensile per nucleo (€)"
+        },
+        {
+          "name": "dev_standard_importo_mensile",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Deviazione standard dell'importo medio mensile"
+        },
+        {
+          "name": "uomini_residenti_al_1_1_2020",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Uomini residenti nel comune al 1° gennaio 2020"
+        },
+        {
+          "name": "donne_residenti_al_1_1_2020",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Donne residenti nel comune al 1° gennaio 2020"
+        },
+        {
+          "name": "popolazione_residente_al_1_1_2020",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Popolazione totale residente al 1° gennaio 2020"
+        },
+        {
+          "name": "takeup",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Takeup rate RdC (nuclei percettori / popolazione residente)"
+        },
+        {
+          "name": "takeup_donne",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Takeup rate RdC femminile (donne coinvolte / donne residenti)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/inps_rdc_pdc/2020/inps_rdc_pdc_2020_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
