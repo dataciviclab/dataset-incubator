@@ -334,9 +334,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26091030726",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26091030726",
-        "checked_at": "2026-05-19",
+        "run_id": "27878799069",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27878799069",
+        "checked_at": "2026-06-20",
         "years": [
           2024
         ],
@@ -636,9 +636,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26462812456",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
-        "checked_at": "2026-05-26",
+        "run_id": "27878799069",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27878799069",
+        "checked_at": "2026-06-20",
         "years": [
           2023,
           2024,
@@ -894,9 +894,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26106467223",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26106467223",
-        "checked_at": "2026-05-19",
+        "run_id": "27878799069",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27878799069",
+        "checked_at": "2026-06-20",
         "years": [
           2024
         ],

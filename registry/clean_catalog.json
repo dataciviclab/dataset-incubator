@@ -1224,56 +1224,6 @@
       "registry_source": "derive_auto"
     },
     {
-      "slug": "camera_deputati_legislature",
-      "name": "Camera Deputati Legislature",
-      "description": "Deputati italiani per legislatura — Camera dei Deputati",
-      "source": "Camera dei Deputati — OpenData SPARQL endpoint",
-      "source_id": "dati_camera",
-      "period": {
-        "start": 2024,
-        "end": 2024
-      },
-      "columns": [
-        {
-          "name": "deputato",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "URI identificativo del deputato"
-        },
-        {
-          "name": "cognome",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "nome",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Nome del deputato"
-        },
-        {
-          "name": "legislatura",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Numero della legislatura"
-        },
-        {
-          "name": "gender",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Genere del deputato"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/camera_deputati_legislature/2024/camera_deputati_legislature_2024_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
-      "registry_source": "derive_auto"
-    },
-    {
       "slug": "camera_votazioni_sparql",
       "name": "Votazioni Camera dei Deputati",
       "description": "Votazioni della Camera dei deputati: esito, conteggi favorevoli/contrari/astenuti, indicatori di partecipazione (presenti, votanti) e fiducia. Serie storica 2018-2025 da endpoint SPARQL dati.camera.it.",
