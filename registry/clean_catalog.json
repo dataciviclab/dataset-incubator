@@ -134,7 +134,7 @@
       "source": "ANAC - Autorità Nazionale Anticorruzione",
       "source_id": "anac",
       "period": {
-        "start": 2025,
+        "start": 2023,
         "end": 2025
       },
       "columns": [
@@ -149,6 +149,18 @@
           "type": "VARCHAR",
           "role": "dimension",
           "description": "CIG dell'accordo quadro di riferimento"
+        },
+        {
+          "name": "CIG_COLLEGAMENTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CIG originario in caso di varianti/modifiche"
+        },
+        {
+          "name": "CUI_PROGRAMMA",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Unico di Programma — join con OpenCoesione"
         },
         {
           "name": "numero_gara",
@@ -379,16 +391,16 @@
           "description": "(raw) Codice motivo urgenza"
         },
         {
-          "name": "MOTIVO_URGENZA",
+          "name": "motivo_urgenza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "(raw) Motivo dell'urgenza dichiarata"
+          "description": "Motivo dell'urgenza dichiarata (normalizzato UPPER)"
         },
         {
-          "name": "FUNZIONI_DELEGATE",
+          "name": "funzioni_delegate",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "(raw) Funzioni delegate"
+          "description": "Funzioni delegate alla centrale di committenza (normalizzato UPPER)"
         },
         {
           "name": "CF_SA_DELEGANTE",
@@ -445,10 +457,22 @@
           "description": "Data di cancellazione della gara (se annullata)"
         },
         {
+          "name": "COD_MOTIVO_CANCELLAZIONE",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice motivo cancellazione"
+        },
+        {
           "name": "MOTIVO_CANCELLAZIONE",
           "type": "VARCHAR",
           "role": "dimension",
           "description": "(raw) Motivo della cancellazione"
+        },
+        {
+          "name": "TIPO_APPALTO_RISERVATO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di appalto riservato (cooperative sociali, inclusione)"
         },
         {
           "name": "data_ultimo_perfezionamento",
@@ -459,8 +483,8 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_bandi_gara/2025/anac_bandi_gara_2025_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/anac_bandi_gara/*/anac_bandi_gara_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "published",
       "registry_source": "derive_auto"

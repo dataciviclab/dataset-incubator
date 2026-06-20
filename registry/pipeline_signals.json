@@ -41,14 +41,16 @@
       "source_id": "anac",
       "status": "ok",
       "label": "anac-bandi-gara",
-      "detail": "anno 2025 — fonte: cig_2025 — mart: sì",
+      "detail": "anni 2023-2025 — fonte: cig_{year} — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "27695583352",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27695583352",
-        "checked_at": "2026-06-17",
+        "run_id": "27846892775",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27846892775",
+        "checked_at": "2026-06-19",
         "years": [
+          2023,
+          2024,
           2025
         ],
         "config_path": "candidates/anac-bandi-gara/dataset.yml"
