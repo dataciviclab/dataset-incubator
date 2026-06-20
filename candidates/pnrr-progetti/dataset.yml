@@ -13,7 +13,7 @@ raw:
   sources:
     - type: script
       args:
-        command: "wget -q --user-agent='Mozilla/5.0' -O - 'https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Progetti.csv' | sed '1s/^\\xEF\\xBB\\xBF//' > raw_input.csv"
+        command: "python preprocess.py raw_input.csv"
         output: "raw_input.csv"
         filename: "raw_input.csv"
       primary: true
