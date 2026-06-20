@@ -1639,9 +1639,9 @@
     },
     {
       "slug": "farmacie",
-      "name": "Farmacie",
-      "description": "",
-      "source": "",
+      "name": "Farmacie — Anagrafica farmacie italiane (Ministero Salute)",
+      "description": "Anagrafica delle farmacie italiane: indirizzo, comune, provincia, regione, coordinate geografiche, tipologia e periodo di validità. Fonte Ministero della Salute.",
+      "source": "Ministero della Salute — Open Data",
       "source_id": "ministero_salute",
       "period": {
         "start": 2026,
@@ -1651,134 +1651,134 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento del dato"
         },
         {
           "name": "cod_farmacia",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice identificativo della farmacia (Ministero Salute)"
         },
         {
           "name": "cod_farmacia_asl",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice farmacia assegnato dalla ASL"
         },
         {
           "name": "indirizzo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo della farmacia"
         },
         {
           "name": "descrizione_farmacia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione o ragione sociale della farmacia"
         },
         {
           "name": "p_iva",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Partita IVA della farmacia"
         },
         {
           "name": "cap",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice di avviamento postale"
         },
         {
           "name": "cod_comune",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT del comune"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune"
         },
         {
           "name": "frazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Frazione o località (se presente)"
         },
         {
           "name": "cod_provincia",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT della provincia"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla della provincia"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della provincia"
         },
         {
           "name": "cod_regione",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT della regione"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della regione"
         },
         {
           "name": "data_inizio_validita",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di inizio validità dell'apertura/ autorizzazione"
         },
         {
           "name": "data_fine_validita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Data di fine validità (se chiusa o dismessa)"
         },
         {
           "name": "descrizione_tipologia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia della farmacia (urbana, rurale, ospedaliera, ecc.)"
         },
         {
           "name": "codice_tipologia",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice della tipologia"
         },
         {
           "name": "latitudine",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Latitudine (coordinate WGS84)"
         },
         {
           "name": "longitudine",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Longitudine (coordinate WGS84)"
         },
         {
           "name": "localizzazione",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice di localizzazione"
         }
       ],
       "location": {
