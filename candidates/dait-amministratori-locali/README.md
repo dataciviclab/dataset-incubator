@@ -22,7 +22,7 @@ Sotto-domande esplorative:
 - **Granularità**: 1 riga = 1 amministratore in 1 carica
 - **Periodo**: snapshot corrente (2026). In futuro → serie storica 1991–2025
 - **Righe**: 116.054 amministratori in carica
-- **Colonne (19)**: anno, codice_regione, codice_provincia, codice_comune, denominazione_comune, sigla_provincia, popolazione_censita, cognome, nome, sesso, data_nascita, luogo_nascita, descrizione_carica (Sindaco/Assessore/Consigliere/Consigliere candidato sindaco), incarico (Vicesindaco, Presidente del consiglio, ecc.), data_elezione, data_entrata_in_carica, lista_appartenenza, titolo_studio, professione
+- **Colonne (20)**: anno, codice_regione, codice_provincia, codice_comune, codice_dait_completo, denominazione_comune, sigla_provincia, popolazione_censita, cognome, nome, sesso, data_nascita, luogo_nascita, descrizione_carica (Sindaco/Assessore/Consigliere/Consigliere candidato sindaco), incarico (Vicesindaco, Presidente del consiglio, ecc.), data_elezione, data_entrata_in_carica, lista_appartenenza, titolo_studio, professione
 
 ## Mart
 

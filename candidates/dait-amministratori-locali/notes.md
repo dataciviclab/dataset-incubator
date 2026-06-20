@@ -50,12 +50,8 @@ Per unire file con schemi diversi servirebbe clean.sql manuale con UNION ALL e a
 
 - **Fonte**: DAIT — Ministero dell'Interno, open data amministratori locali
 - **URL**: https://dait.interno.gov.it/elezioni/open-data/amministratori-locali-e-regionali-in-carica
-- **Sezione open data**: la pagina è pubblicata nell'archivio [open-data del DAIT](/elezioni/open-data) con etichetta esplicita "Open-data"
-- **Licenza**: non espressa direttamente sulla pagina DAIT. Tuttavia:
-  - Le [Note legali](https://www.interno.gov.it/it/note-legali) del Ministero dell'Interno (ente capofila) rilasciano i contenuti testuali in **CC BY 4.0**
-  - DAIT è un dipartimento del Ministero — per analogia, la licenza applicabile ai dati è **CC BY 4.0**
-  - L'**art. 52 del CAD (D.Lgs 82/2005)** stabilisce che i dati pubblicati dalla PA senza licenza espressa si intendono rilasciati come dati di tipo aperto
-- **Base giuridica trattamento dati personali**: i dati anagrafici (nome, cognome, data nascita, sesso, titolo di studio, professione) sono pubblicati dalla PA in quanto relativi a cariche pubbliche. Base giuridica: art. 2-ter D.Lgs 196/2003 (GDPR nazionale) e art. 6(1)(c) GDPR (obbligo di legge). Il Lab non effettua operazioni di profilazione o arricchimento. Per qualsiasi riutilizzo downstream, verificare compatibilità con il GDPR e la licenza della fonte.
+- **Licenza**: non espressa sulla fonte. La pagina DAIT etichetta i dati come "open data" ma non specifica una licenza standard (CC-BY, CC0, ecc.). I dati sono pubblicati ai sensi del D.Lgs 33/2013 (trasparenza delle cariche pubbliche). Per il riutilizzo downstream di dati personali, verificare la base giuridica ai sensi del GDPR (art. 2-ter D.Lgs 196/2003). Richiedere chiarimenti alla fonte prima di pubblicazioni downstream.
+- **Dati personali**: il dataset contiene dati anagrafici di persone fisiche (nome, cognome, data di nascita, sesso, titolo di studio, professione). Questi dati sono pubblicati dalla PA come open data in quanto relativi a cariche pubbliche. Il Lab non effettua operazioni di arricchimento o profilazione. Per qualsiasi riutilizzo downstream, verificare la compatibilità con il GDPR e la licenza della fonte.
 - **Conservazione**: lo snapshot 2026 è singolo anno. Una serie storica richiederebbe valutazione della liceità del trattamento su base continuativa.
 
 ## Cautele
