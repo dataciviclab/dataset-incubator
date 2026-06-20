@@ -10,6 +10,6 @@ SELECT
     MIN(numero_ricorsi_pendenti) AS min_ricorsi_pendenti,
     AVG(numero_ricorsi_pendenti)::BIGINT AS media_ricorsi_pendenti,
     MAX(numero_ricorsi_pendenti) - MIN(numero_ricorsi_pendenti) AS variazione_annuale
-FROM clean
+FROM clean_input
 GROUP BY anno, codice_sede, nome_sede
 ORDER BY anno, nome_sede
