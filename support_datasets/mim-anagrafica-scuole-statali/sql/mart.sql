@@ -13,4 +13,4 @@ SELECT DISTINCT
     indirizzo_scuola,
     caratteristica_scuola,
     grado_istruzione_scuola
-FROM clean
+FROM clean_input
