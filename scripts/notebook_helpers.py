@@ -44,8 +44,8 @@ class NotebookHelper:
     def tk(self, *args: str) -> dict[str, Any]:
         """Esegue un comando toolkit e restituisce il JSON di output.
 
-        I comandi supportati includono: ``inspect paths``, ``review-readiness``,
-        ``inspect schema``, etc.
+        I comandi supportati includono: ``inspect config``, ``inspect summary``,
+        ``inspect runs``, etc.
 
         Args:
             *args: Argomenti del comando (es. ``"inspect", "paths"``).
@@ -63,8 +63,8 @@ class NotebookHelper:
     def tk_year(self, *args: str) -> dict[str, Any]:
         """Come :meth:`tk` ma aggiunge automaticamente ``--year <anno>``.
 
-        Utile per comandi che richiedono l'anno (``inspect paths``,
-        ``inspect schema``).
+        Utile per comandi che richiedono l'anno (``inspect config``,
+        ``inspect summary``).
         """
         return self.tk(*args, "--year", str(self.anno))
 
@@ -78,24 +78,8 @@ class NotebookHelper:
             Dict con chiavi ``columns``, ``schema``, etc. In caso di errore
             restituisce ``{"columns": 0, "schema": []}``.
         """
-        cmd = [
-            "toolkit",
-            "inspect",
-            "schema",
-            "-l",
-            layer,
-            str(self.cfg_path),
-            "--json",
-            "--year",
-            str(self.anno),
-        ]
-        result = subprocess.run(cmd, capture_output=True, text=True)
-        if result.returncode:
-            print(result.stderr, file=sys.stderr)
-            return {"columns": 0, "schema": []}
-        data = json.loads(result.stdout) if result.stdout.strip() else {}
+        data = self.tk_year("inspect", "config", "-l", layer, "-m", "schema")
         if isinstance(data, dict) and "column_count" in data and "columns" in data:
-            # Normalizza: toolkit torna column_count/columns → columns/schema
             return {"columns": data["column_count"], "schema": data["columns"]}
         return data
 
