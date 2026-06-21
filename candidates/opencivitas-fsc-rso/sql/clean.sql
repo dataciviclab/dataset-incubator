@@ -46,6 +46,6 @@ select
   fsc.totale_risorse_storiche,
   enti.username is not null as join_enti_ok
 from fsc
-left join enti on fsc.username = enti.username
+inner join enti on fsc.username = enti.username
 where fsc.username is not null
 order by enti.regione, enti.provincia, enti.denominazione
