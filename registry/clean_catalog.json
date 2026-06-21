@@ -5509,6 +5509,12 @@
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
           "name": "username",
           "type": "VARCHAR",
           "role": "dimension",
@@ -5583,8 +5589,8 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/opencivitas_fsc_2025_rso/2025/opencivitas_fsc_2025_rso_2025_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/opencivitas_fsc_2025_rso/*/opencivitas_fsc_2025_rso_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "published",
       "registry_source": "derive_auto"

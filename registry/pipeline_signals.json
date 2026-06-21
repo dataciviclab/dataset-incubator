@@ -608,14 +608,17 @@
       "source_id": "",
       "status": "ok",
       "label": "opencivitas-fsc-rso",
-      "detail": "anno 2025 — fonte: opencivitas_fsc_2025_zip — mart: sì",
+      "detail": "anni 2022-2025 — fonte: opencivitas_fsc_zip — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26562225396",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26562225396",
-        "checked_at": "2026-05-28",
+        "run_id": "27903144369",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27903144369",
+        "checked_at": "2026-06-21",
         "years": [
+          2022,
+          2023,
+          2024,
           2025
         ],
         "config_path": "candidates/opencivitas-fsc-rso/dataset.yml"
