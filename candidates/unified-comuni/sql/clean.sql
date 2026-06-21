@@ -1,84 +1,78 @@
 -- Clean: unified_comuni
--- Dataset composito: JOIN tra dataset clean via comuni_master.
+-- Dataset composito multi-anno.
 --
--- Ogni fonte viene caricata dal parquet GCS scaricato nella raw (http_file).
--- Il JOIN usa comuni_master come hub, con le normalizzazioni documentate
--- in registry/join_map.yaml.
+-- Hub (comuni_master) letto da raw_input (scaricato via http_file).
+-- Tutte le altre fonti lette direttamente da GCS via S3 glob pattern.
+-- Una run produce TUTTI gli anni in un unico parquet.
 --
 -- Schema output: una riga per comune × anno, con metriche multi-dominio.
---
--- Fonti attuali:
---   hub:     comuni_master (golden record, ISTAT + IPA)
---   pop:     popolazione_istat_comunale (2019-2025)
---   irpef:   irpef_comunale (2019-2023)
---   ru:      ispra_ru_base (2020-2024)
---   cs:      ispra_consumo_suolo (2024 snapshot)
---   fsc:     opencivitas_fsc_2025_rso (2025)
 
 WITH hub AS (
-    SELECT * FROM read_parquet('{root}/data/raw/{dataset}/{year}/hub.parquet')
+    SELECT * FROM raw_input
 ),
 
 pop AS (
     SELECT
-        codice_comune                                      AS cod_istat,
+        codice_comune                        AS cod_istat,
         anno,
-        SUM(popolazione_residente)                         AS popolazione_residente,
-        SUM(totale_maschi)                                 AS maschi,
-        SUM(totale_femmine)                                AS femmine
-    FROM read_parquet('{root}/data/raw/{dataset}/{year}/pop.parquet')
+        SUM(popolazione_residente)           AS popolazione_residente,
+        SUM(totale_maschi)                   AS maschi,
+        SUM(totale_femmine)                  AS femmine
+    FROM read_parquet('s3://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet')
     GROUP BY codice_comune, anno
 ),
 
 irpef AS (
     SELECT
-        codice_istat_comune                                AS cod_istat,
-        anno_di_imposta                                    AS anno,
-        numero_contribuenti,
-        reddito_complessivo_eur,
-        imposta_netta_eur,
-        reddito_da_lavoro_dipendente_e_assimilati_eur      AS reddito_lav_dip_eur,
-        reddito_da_pensione_eur,
-        addizionale_comunale_dovuta_eur                    AS addizionale_comunale_eur,
-        addizionale_regionale_dovuta_eur                   AS addizionale_regionale_eur
-    FROM read_parquet('{root}/data/raw/{dataset}/{year}/irpef.parquet')
+        codice_istat_comune                  AS cod_istat,
+        anno_di_imposta                      AS anno,
+        MAX(numero_contribuenti)             AS numero_contribuenti,
+        MAX(reddito_imponibile_eur)          AS reddito_imponibile_eur,
+        MAX(reddito_complessivo_eur)         AS reddito_complessivo_eur,
+        MAX(imposta_netta_eur)               AS imposta_netta_eur,
+        MAX(reddito_da_lavoro_dipendente_e_assimilati_eur) AS reddito_lav_dip_eur,
+        MAX(reddito_da_pensione_eur)         AS reddito_da_pensione_eur,
+        MAX(addizionale_comunale_dovuta_eur) AS addizionale_comunale_eur,
+        MAX(addizionale_regionale_dovuta_eur) AS addizionale_regionale_eur
+    FROM read_parquet('s3://dataciviclab-clean/irpef_comunale/*/irpef_comunale_*_clean.parquet')
+    GROUP BY codice_istat_comune, anno_di_imposta
 ),
 
 rifiuti AS (
     SELECT
-        RIGHT(codice_comune_istat, 6)                      AS cod_istat,
+        RIGHT(codice_comune_istat, 6)        AS cod_istat,
         anno,
-        totale_ru_tonnellate,
-        totale_rd_tonnellate,
-        percentuale_rd
-    FROM read_parquet('{root}/data/raw/{dataset}/{year}/ru.parquet')
+        SUM(totale_ru_tonnellate)            AS totale_ru_tonnellate,
+        SUM(totale_rd_tonnellate)            AS totale_rd_tonnellate,
+        AVG(percentuale_rd)                  AS percentuale_rd
+    FROM read_parquet('s3://dataciviclab-clean/ispra_ru_base/*/ispra_ru_base_*_clean.parquet')
+    GROUP BY RIGHT(codice_comune_istat, 6), anno
 ),
 
 consumo_suolo AS (
     SELECT
-        LPAD(CAST(pro_com AS VARCHAR), 6, '0')             AS cod_istat,
-        stock_ha_2024                                      AS suolo_consumato_ha,
-        stock_pct_2024                                     AS suolo_consumato_pct,
-        incremento_netto_ha_2023_2024                      AS suolo_incremento_netto_ha
-    FROM read_parquet('{root}/data/raw/{dataset}/{year}/cs.parquet')
+        LPAD(CAST(pro_com AS VARCHAR), 6, '0') AS cod_istat,
+        stock_ha_2024                         AS suolo_consumato_ha,
+        stock_pct_2024                        AS suolo_consumato_pct,
+        incremento_netto_ha_2023_2024         AS suolo_incremento_netto_ha
+    FROM read_parquet('s3://dataciviclab-clean/ispra_consumo_suolo/2024/ispra_consumo_suolo_2024_clean.parquet')
 ),
 
 fsc AS (
     SELECT
-        UPPER(TRIM(comune))                                AS denom_upper,
-        CAST(popolazione AS INTEGER)                       AS popolazione_fsc,
+        UPPER(TRIM(comune))                   AS denom_upper,
+        CAST(popolazione AS INTEGER)          AS popolazione_fsc,
         capacita_fiscale,
         dotazione_finale_fsc,
         fondo_perequativo,
-        imu_tasi_standard,
-        totale_risorse_storiche
-    FROM read_parquet('{root}/data/raw/{dataset}/{year}/fsc.parquet')
+        imu_tasi_standard
+    FROM read_parquet('s3://dataciviclab-clean/opencivitas_fsc_2025_rso/2025/opencivitas_fsc_2025_rso_2025_clean.parquet')
 )
 
 SELECT
     -- 🔑 Chiave
     h.codice_istat,
-    p.anno                                   AS anno,
+    p.anno,
 
     -- 📍 Anagrafica (da hub)
     h.denominazione,
@@ -95,9 +89,11 @@ SELECT
 
     -- 💰 Redditi (da IRPEF)
     i.numero_contribuenti,
-    i.reddito_complessivo_eur,
-    ROUND(i.reddito_complessivo_eur / NULLIF(p.popolazione_residente, 0), 0)
-        AS reddito_procapite,
+    -- reddito_imponibile_eur copre 2019-2023, reddito_complessivo_eur solo 2023
+    i.reddito_imponibile_eur                 AS reddito_imponibile_eur,
+    i.reddito_complessivo_eur                AS reddito_complessivo_eur,
+    ROUND(COALESCE(i.reddito_imponibile_eur, i.reddito_complessivo_eur)
+        / NULLIF(p.popolazione_residente, 0), 0) AS reddito_procapite,
     i.reddito_lav_dip_eur,
     i.reddito_da_pensione_eur,
     i.imposta_netta_eur,
@@ -124,21 +120,14 @@ SELECT
     fsc.imu_tasi_standard
 
 FROM hub h
--- Popolazione: tutti i comuni, solo anni con dati
-LEFT JOIN pop p
+INNER JOIN pop p
     ON h.codice_istat = p.cod_istat
--- IRPEF: stesso anno della popolazione
 LEFT JOIN irpef i
     ON h.codice_istat = i.cod_istat AND p.anno = i.anno
--- Rifiuti: stesso anno
 LEFT JOIN rifiuti r
     ON h.codice_istat = r.cod_istat AND p.anno = r.anno
--- Consumo suolo: dataset singolo anno, join su codice
 LEFT JOIN consumo_suolo cs
     ON h.codice_istat = cs.cod_istat
--- FSC: join su denominazione
 LEFT JOIN fsc
     ON UPPER(TRIM(h.denominazione)) = fsc.denom_upper
--- Solo comuni con dati popolazione (filtra righe vuote)
-WHERE p.anno IS NOT NULL
 ORDER BY h.denominazione, p.anno
