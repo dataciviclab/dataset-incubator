@@ -95,7 +95,7 @@ mart:
       sql: "sql/mart_comuni.sql"
     - name: "irpef_capacita_fiscale_multi_anno"
       sql: "sql/mart_multi_anno.sql"
-      years: [2019, 2020, 2021, 2022, 2023]
+      years: [2019, 2020, 2021, 2022, 2023, 2024]
       source_layer: "clean"
   required_tables: ["irpef_by_regione", "irpef_by_comune"]
   validate: {}
