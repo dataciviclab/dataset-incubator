@@ -1,5 +1,6 @@
 -- Clean: unified_comuni — multi-anno via S3 glob
 -- Ogni fonte prende TUTTI gli anni disponibili (nessuna lista da mantenere).
+-- Config S3 GCS gestita da lab-connectors safe_connect
 
 WITH hub AS (SELECT * FROM raw_input),
 
@@ -45,12 +46,13 @@ consumo_suolo AS (
 
 fsc AS (
     SELECT UPPER(TRIM(comune)) AS denom_upper,
+        anno,
         CAST(popolazione AS INTEGER) AS popolazione_fsc,
         capacita_fiscale,
         dotazione_finale_fsc,
         fondo_perequativo,
         imu_tasi_standard
-    FROM read_parquet('s3://dataciviclab-clean/opencivitas_fsc_2025_rso/2025/opencivitas_fsc_2025_rso_2025_clean.parquet')
+    FROM read_parquet('s3://dataciviclab-clean/opencivitas_fsc_2025_rso/*/opencivitas_fsc_2025_rso_*_clean.parquet')
 )
 
 SELECT
@@ -79,5 +81,5 @@ INNER JOIN pop p ON h.codice_istat = p.cod_istat
 LEFT JOIN irpef i ON h.codice_istat = i.cod_istat AND p.anno = i.anno
 LEFT JOIN rifiuti r ON h.codice_istat = r.cod_istat AND p.anno = r.anno
 LEFT JOIN consumo_suolo cs ON h.codice_istat = cs.cod_istat
-LEFT JOIN fsc ON UPPER(TRIM(h.denominazione)) = fsc.denom_upper
+LEFT JOIN fsc ON UPPER(TRIM(h.denominazione)) = fsc.denom_upper AND p.anno = fsc.anno
 ORDER BY h.denominazione, p.anno
