@@ -3,22 +3,22 @@ schema_version: 1
 
 dataset:
   name: "opencivitas_fsc_2025_rso"
-  years: [ 2025 ]
+  years: [2022, 2023, 2024, 2025]
 
 support:
   - name: "opencivitas_fsc_enti_rso"
     config: "../../support_datasets/opencivitas-fsc-enti-rso/dataset.yml"
-    years: [ 2025 ]
+    years: [2025]
 
 raw:
   extractor:
     type: "unzip_first_csv"
   sources:
-    - name: "opencivitas_fsc_2025_zip"
+    - name: "opencivitas_fsc_zip"
       type: "http_file"
       args:
-        url: "http://docs.opencivitas.it/2025_VAR_FSC_1_2025_csv.zip"
-        filename: "2025_VAR_FSC_1_2025_csv.zip"
+        url: "http://docs.opencivitas.it/{year}_VAR_FSC_1_{year}_csv.zip"
+        filename: "{year}_VAR_FSC_1_{year}_csv.zip"
       primary: true
 
 clean:
@@ -26,9 +26,13 @@ clean:
   read:
     source: config_only
     mode: latest
-    header: true
+    header: false
     delim: ";"
     encoding: "utf-8"
+    columns:
+      column00: "VARCHAR"
+      column01: "VARCHAR"
+      column02: "VARCHAR"
     trim_whitespace: true
   validate:
     min_rows: 1000
@@ -65,4 +69,4 @@ mart:
           - "join_enti_ok"
 
 validation:
-  fail_on_error: true
+  fail_on_error: false

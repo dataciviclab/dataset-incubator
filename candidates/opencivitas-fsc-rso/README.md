@@ -1,7 +1,7 @@
 # opencivitas-fsc-rso
 
-Candidate single-source con support — Fondo di Solidarietà Comunale 2025 per i
-Comuni delle Regioni a Statuto Ordinario.
+Candidate single-source con support — Fondo di Solidarietà Comunale per i
+Comuni delle Regioni a Statuto Ordinario. **Multi-anno: 2022–2025.**
 
 ## Stato
 
@@ -11,8 +11,8 @@ derivato dalla Discussion [#75](https://github.com/dataciviclab/dataset-incubato
 ## Domanda
 
 I comuni con capacità fiscale più bassa ricevono davvero più risorse
-perequative in proporzione, oppure la dotazione finale FSC 2025 redistribuisce
-in modo meno intuitivo del previsto?
+perequative in proporzione, oppure la dotazione finale FSC redistribuisce
+in modo meno intuitivo del previsto? E come cambia la distribuzione tra 2022 e 2025?
 
 ## Dataset
 
@@ -20,19 +20,29 @@ Struttura: candidate principale con support per geografia.
 
 | ID | Fonte | Ruolo | Stato |
 |---|---|---|---|
-| A | FSC 2025 variabile-valore | candidate: base principale | ✅ mart `mart_compose_comuni` |
-| B | Metadati enti FSC 2025 | support: mapping `USERNAME -> geografia comune` | ✅ in `support_datasets/opencivitas-fsc-enti-rso/` |
+| A | FSC {year} variabile-valore | candidate: base principale | ✅ anni 2022–2025 |
+| B | Metadati enti FSC | support: mapping `USERNAME -> geografia comune` | ✅ fisso (2025) |
 
-Perimetro iniziale:
+Perimetro:
 
-- solo `2025`
-- solo RSO
-- pivot FSC (EAV→wide) + join geografia da support già nel CLEAN
-- output CLEAN: 12 colonne wide (6573 comuni RSO, analizzabile subito)
-- output MART: CLEAN + 3 metriche procapite (15 colonne)
+- **2022–2025** (4 annualità)
+- solo RSO (Regioni a Statuto Ordinario)
+- pivot FSC (EAV→wide) + join geografia da support nel CLEAN
+- output CLEAN: 13 colonne wide (include `anno`)
+
+## Anni
+
+| Anno | Comuni | Fonte | Note |
+|:----:|:-----:|-------|------|
+| 2022 | 6.581 | OpenCivitas | Colonna: VAR_FSC_NAME / VAR_FSC_VAL |
+| 2023 | 6.578 | OpenCivitas | Colonna: VAR_FSC_NAME / VAR_FSC_VAL |
+| 2024 | 6.578 | OpenCivitas | Colonna: VAR_FSC_NAME / VAR_FSC_VAL |
+| 2025 | 6.573 | OpenCivitas | Colonna: Componenti di calcolo del fondo / Valore |
+
+Il clean SQL gestisce entrambi i formati raw (colonne per posizione).
 
 ## Output minimo atteso
 
 - [x] candidate eseguibile (RAW → CLEAN → MART)
 - [x] mart table `mart_compose_comuni` con join 100%
-- [X] notebook v0 verificato
+- [x] notebook v0 verificato
