@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "unified_comuni"
   source_id: "dataciviclab_composite"
-  years: [2024]
+  years: [2026]
 
 raw:
   output_policy: overwrite

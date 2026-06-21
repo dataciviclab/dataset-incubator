@@ -37,7 +37,7 @@ Ogni fonte ha la sua normalizzazione (documentata in `registry/join_map.yaml`):
 |-------|:---------:|:----------:|------|
 | hub (comuni_master) | 2026 | 2026 | Golden record |
 | popolazione | 2019-2025 | {year} | Serie multi-anno |
-| irpef | 2019-2023 | 2023 | Ultimo disponibile |
+| irpef | 2019-2024 | {year} | Dati 2024 aggiunti in PR #532 |
 | rifiuti | 2020-2024 | {year} | Serie multi-anno |
 | consumo suolo | 2024 | 2024 | Snapshot |
 | FSC | 2025 | 2025 | Singolo anno |
@@ -56,12 +56,13 @@ toolkit run full --config candidates/unified-comuni/dataset.yml --years 2023
 | Anno | Righe | Popolazione | IRPEF | Rifiuti | Cons. suolo | FSC | Validazione |
 |:----:|:-----:|:-----------:|:-----:|:-------:|:-----------:|:---:|:-----------:|
 | 2023 | 7.517 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ passata |
-| 2024 | 7.517 | ✅ | ❌ (solo fino 2023) | ✅ | ✅ | ✅ | ✅ passata |
+| 2024 | 7.517 | ✅ | ✅ (da IRPEF 2024) | ✅ | ✅ | ✅ | ✅ passata |
 
 Cross-validato su Abbiategrasso: ogni valore unificato matcha le fonti originali.
 - Popolazione 2023: 32.492 (raw) → 32.492 (unified) ✅
 - IRPEF 2023: €642.398.192 → €642.398.192 ✅
-- Reddito procapite: 19.771 (calcolato) ✅
+- IRPEF 2024: €631.383.270 → €631.383.270 ✅ (da PR #532)
+- Reddito procapite 2023: 19.771 (calcolato) ✅
 - RD% 2023: 71,39% → 71,39% ✅
 
 ## Aggiungere una nuova fonte
