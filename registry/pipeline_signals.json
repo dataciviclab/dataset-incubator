@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-20",
+  "generated_at": "2026-06-21",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -322,8 +322,23 @@
       "source_id": "mef_irpef",
       "status": "ok",
       "label": "irpef-comunale",
-      "detail": "anni 2019-2023 — fonte: finanze_http_zip — mart: sì",
-      "action": ""
+      "detail": "anni 2019-2024 — fonte: finanze_http_zip — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27899103827",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27899103827",
+        "checked_at": "2026-06-21",
+        "years": [
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "config_path": "candidates/irpef-comunale/dataset.yml"
+      }
     },
     {
       "id": "ispra-consumo-suolo",
