@@ -28,14 +28,17 @@ _gcs_res_cache_ttl = int(os.environ.get("CLEAN_QUERY_GCS_CACHE_TTL", "300"))  # 
 _gcs_res_lock = threading.Lock()
 
 
-# GCS auth mode: auto = try SDK, fallback HTTP; true = force SDK; false = force HTTP
+# GCS auth mode: false = HTTP API (default, bucket pubblico);
+# true = SDK (richiede google-cloud-storage + credenziali);
+# auto = tenta SDK, fallback HTTP.
 def _gcs_auth_mode() -> bool | None:
     val = os.environ.get("CLEAN_QUERY_GCS_AUTH", "").lower()
     if val in ("1", "true", "yes"):
         return True
-    if val in ("0", "false", "no"):
-        return False
-    return None
+    if val in ("auto",):
+        return None
+    # default: HTTP API — bucket Lab è pubblico, nessuna autenticazione necessaria
+    return False
 
 
 def _load_catalog() -> list[dict[str, Any]]:
