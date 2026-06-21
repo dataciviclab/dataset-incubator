@@ -6165,10 +6165,10 @@
     },
     {
       "slug": "pnrr_progetti",
-      "name": "Pnrr Progetti",
-      "description": "",
-      "source": "",
-      "source_id": "italiadomani",
+      "name": "PNRR Progetti — Italia Domani",
+      "description": "Progetti finanziati dal PNRR (Piano Nazionale di Ripresa e Resilienza): programma, missione, CUP, finanziamenti, soggetto attuatore, stato avanzamento. 63 colonne, 280k righe. Fonte: MEF Italia Domani.",
+      "source": "MEF — Italia Domani (italiadomani.gov.it)",
+      "source_id": "mef_italia_domani",
       "period": {
         "start": 2026,
         "end": 2026
@@ -6178,379 +6178,379 @@
           "name": "programma",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Programma"
         },
         {
           "name": "missione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Missione"
         },
         {
           "name": "descrizione_missione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione missione"
         },
         {
           "name": "componente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Componente"
         },
         {
           "name": "descrizione_componente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione componente"
         },
         {
           "name": "id_misura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Id misura"
         },
         {
           "name": "codice_univoco_misura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice univoco misura"
         },
         {
           "name": "descrizione_misura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione misura"
         },
         {
           "name": "id_submisura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Id submisura"
         },
         {
           "name": "codice_cid",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice cid"
         },
         {
           "name": "codice_univoco_submisura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice univoco submisura"
         },
         {
           "name": "descrizione_submisura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione submisura"
         },
         {
           "name": "amministrazione_titolare",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Amministrazione titolare"
         },
         {
           "name": "codice_procedura_attivazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice procedura attivazione"
         },
         {
           "name": "titolo_procedura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Titolo procedura"
         },
         {
           "name": "tipologia_procedura_attivazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia procedura attivazione"
         },
         {
           "name": "cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup"
         },
         {
           "name": "codice_locale_progetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice locale progetto"
         },
         {
           "name": "stato_cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Stato cup"
         },
         {
           "name": "cup_codice_natura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup codice natura"
         },
         {
           "name": "cup_descrizione_natura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup descrizione natura"
         },
         {
           "name": "cup_codice_tipologia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup codice tipologia"
         },
         {
           "name": "cup_descrizione_tipologia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup descrizione tipologia"
         },
         {
           "name": "cup_codice_settore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup codice settore"
         },
         {
           "name": "cup_descrizione_settore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup descrizione settore"
         },
         {
           "name": "cup_codice_sottosettore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup codice sottosettore"
         },
         {
           "name": "cup_descrizione_sottosettore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup descrizione sottosettore"
         },
         {
           "name": "cup_codice_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup codice categoria"
         },
         {
           "name": "cup_descrizione_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cup descrizione categoria"
         },
         {
           "name": "titolo_progetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Titolo progetto"
         },
         {
           "name": "sintesi_progetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sintesi progetto"
         },
         {
           "name": "descrizione_tipo_aiuto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione tipo aiuto"
         },
         {
           "name": "fin_stato",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Stato (€)"
         },
         {
           "name": "fin_stato_bilancio",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Stato - Bilancio (€)"
         },
         {
           "name": "fin_stato_foi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Stato - FOI (€)"
         },
         {
           "name": "fin_fpop",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Prosecuzione Opere Pubbliche (€)"
         },
         {
           "name": "fin_ue",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento UE diverso da PNRR (€)"
         },
         {
           "name": "fin_regione",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Regione (€)"
         },
         {
           "name": "fin_provincia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Provincia (€)"
         },
         {
           "name": "fin_comune",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Comune (€)"
         },
         {
           "name": "fin_altro_pubblico",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Altro Pubblico (€)"
         },
         {
           "name": "fin_privato",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Privato (€)"
         },
         {
           "name": "fin_da_reperire",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento da Reperire (€)"
         },
         {
           "name": "fin_pnrr",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento PNRR (€)"
         },
         {
           "name": "fin_pnc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento PNC (€)"
         },
         {
           "name": "altri_fondi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Altri Fondi (€)"
         },
         {
           "name": "fin_totale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Totale (€)"
         },
         {
           "name": "fin_totale_pubblico",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Totale Pubblico (€)"
         },
         {
           "name": "fin_totale_pubblico_netto",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento Totale Pubblico Netto (€)"
         },
         {
           "name": "soggetto_attuatore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Soggetto attuatore"
         },
         {
           "name": "cf_soggetto_attuatore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cf soggetto attuatore"
         },
         {
           "name": "flag_progetti_in_essere",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Flag progetti in essere"
         },
         {
           "name": "data_inizio_prevista",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data inizio prevista"
         },
         {
           "name": "data_inizio_effettiva",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data inizio effettiva"
         },
         {
           "name": "data_fine_prevista",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data fine prevista"
         },
         {
           "name": "data_fine_effettiva",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data fine effettiva"
         },
         {
           "name": "data_estrazione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data estrazione"
         },
         {
           "name": "data_ultima_validazione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data ultima validazione"
         },
         {
           "name": "esito_validazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Esito validazione"
         },
         {
           "name": "codice_fase_iter",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fase iter"
         },
         {
           "name": "descrizione_fase_iter",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione fase iter"
         },
         {
           "name": "stato_fase_iter",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Stato fase iter"
         },
         {
           "name": "stato_avanzamento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Stato avanzamento"
         }
       ],
       "location": {
