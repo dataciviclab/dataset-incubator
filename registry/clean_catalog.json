@@ -7175,9 +7175,9 @@
     },
     {
       "slug": "unified_comuni",
-      "name": "Unified Comuni",
-      "description": "",
-      "source": "",
+      "name": "Unified Comuni — metriche multi-dominio",
+      "description": "Dataset composito che unisce popolazione, redditi IRPEF, rifiuti urbani, consumo suolo e Fondo Solidarietà Comunale per comune italiano. Ogni riga = comune × anno. Fonte: JOIN tra dataset clean del DataCivicLab via comuni_master.",
+      "source": "DataCivicLab — dataset composito",
       "source_id": "dataciviclab_composite",
       "period": {
         "start": 2026,
@@ -7188,187 +7188,187 @@
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune (6 cifre)"
         },
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla della provincia"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione di appartenenza"
         },
         {
           "name": "superficie_km2",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie territoriale in km²"
         },
         {
           "name": "altitudine",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Altitudine in metri"
         },
         {
           "name": "popolazione_residente",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione residente totale"
         },
         {
           "name": "maschi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione maschile"
         },
         {
           "name": "femmine",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione femminile"
         },
         {
           "name": "contribuenti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero di contribuenti IRPEF"
         },
         {
           "name": "reddito_imponibile_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Reddito imponibile IRPEF (€)"
         },
         {
           "name": "reddito_complessivo_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Reddito complessivo IRPEF (€) — solo 2023+"
         },
         {
           "name": "reddito_procapite",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Reddito procapite (imponibile/popolazione)"
         },
         {
           "name": "reddito_lav_dip_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Reddito da lavoro dipendente (€)"
         },
         {
           "name": "reddito_pensione_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Reddito da pensione (€)"
         },
         {
           "name": "imposta_netta_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Imposta netta IRPEF (€)"
         },
         {
           "name": "addizionale_comunale_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Addizionale comunale all'IRPEF (€)"
         },
         {
           "name": "addizionale_regionale_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Addizionale regionale all'IRPEF (€)"
         },
         {
           "name": "ru_tonnellate",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Rifiuti urbani totali (tonnellate)"
         },
         {
           "name": "rd_tonnellate",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Rifiuti urbani raccolta differenziata (tonnellate)"
         },
         {
           "name": "rd_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Percentuale di raccolta differenziata"
         },
         {
           "name": "rd_procapite_kg",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "RD procapite (kg/abitante)"
         },
         {
           "name": "suolo_consumato_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Stock suolo consumato (ettari) — 2024"
         },
         {
           "name": "suolo_consumato_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Percentuale di suolo consumato sul totale"
         },
         {
           "name": "suolo_incremento_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Incremento netto suolo consumato (ha) — 2023→2024"
         },
         {
           "name": "popolazione_fsc",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione FSC (fonte OpenCivitas)"
         },
         {
           "name": "capacita_fiscale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Capacità fiscale FSC (€)"
         },
         {
           "name": "dotazione_finale_fsc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Dotazione finale FSC (€)"
         },
         {
           "name": "fondo_perequativo",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Fondo perequativo FSC (€)"
         },
         {
           "name": "imu_tasi_standard",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "IMU/TASI standard FSC (€)"
         }
       ],
       "location": {
