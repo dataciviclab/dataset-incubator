@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 50,
+    "total": 51,
     "by_status": {
-      "ok": 50,
+      "ok": 51,
       "warn": 0,
       "error": 0
     }
@@ -243,6 +243,24 @@
           2023
         ],
         "config_path": "candidates/dipendenti-pubblici/dataset.yml"
+      }
+    },
+    {
+      "id": "elezioni-politiche-2022",
+      "source_id": "eligendo",
+      "status": "ok",
+      "label": "elezioni-politiche-2022",
+      "detail": "anno 2022 — fonti: camera_livcomune, senato_livcomune — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27900677822",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27900677822",
+        "checked_at": "2026-06-21",
+        "years": [
+          2022
+        ],
+        "config_path": "candidates/elezioni-politiche-2022/dataset.yml"
       }
     },
     {
