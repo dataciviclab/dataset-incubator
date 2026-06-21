@@ -78,7 +78,10 @@ class NotebookHelper:
             Dict con chiavi ``columns``, ``schema``, etc. In caso di errore
             restituisce ``{"columns": 0, "schema": []}``.
         """
-        data = self.tk_year("inspect", "config", "-l", layer, "-m", "schema")
+        try:
+            data = self.tk_year("inspect", "config", "-l", layer, "-m", "schema")
+        except Exception:
+            return {"columns": 0, "schema": []}
         if isinstance(data, dict) and "column_count" in data and "columns" in data:
             return {"columns": data["column_count"], "schema": data["columns"]}
         return data
