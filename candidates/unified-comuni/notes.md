@@ -47,8 +47,22 @@ Ogni fonte ha la sua normalizzazione (documentata in `registry/join_map.yaml`):
 ## Run
 
 ```bash
-toolkit run full --config candidates/unified-comuni/dataset.yml --year 2024
+toolkit run full --config candidates/unified-comuni/dataset.yml --years 2024
+toolkit run full --config candidates/unified-comuni/dataset.yml --years 2023
 ```
+
+## Stato (2026-06-21)
+
+| Anno | Righe | Popolazione | IRPEF | Rifiuti | Cons. suolo | FSC | Validazione |
+|:----:|:-----:|:-----------:|:-----:|:-------:|:-----------:|:---:|:-----------:|
+| 2023 | 7.517 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ passata |
+| 2024 | 7.517 | ✅ | ❌ (solo fino 2023) | ✅ | ✅ | ✅ | ✅ passata |
+
+Cross-validato su Abbiategrasso: ogni valore unificato matcha le fonti originali.
+- Popolazione 2023: 32.492 (raw) → 32.492 (unified) ✅
+- IRPEF 2023: €642.398.192 → €642.398.192 ✅
+- Reddito procapite: 19.771 (calcolato) ✅
+- RD% 2023: 71,39% → 71,39% ✅
 
 ## Aggiungere una nuova fonte
 

@@ -4,11 +4,7 @@ schema_version: 1
 dataset:
   name: "unified_comuni"
   source_id: "dataciviclab_composite"
-  description: >
-    Dataset composito che aggrega popolazione, redditi, rifiuti, consumo suolo,
-    FSC e dipendenti PA per comune italiano. Ogni riga = comune × anno.
-    Fonte: JOIN tra dataset clean del DataCivicLab via comuni_master.
-  years: [2024]
+  years: [2023, 2024]
 
 raw:
   output_policy: overwrite
