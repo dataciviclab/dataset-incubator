@@ -1,0 +1,66 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "unified_comuni"
+  source_id: "dataciviclab_composite"
+  description: >
+    Dataset composito che aggrega popolazione, redditi, rifiuti, consumo suolo,
+    FSC e dipendenti PA per comune italiano. Ogni riga = comune × anno.
+    Fonte: JOIN tra dataset clean del DataCivicLab via comuni_master.
+  years: [2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "comuni_master"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/comuni_master/2026/comuni_master_2026_clean.parquet"
+        filename: "hub.parquet"
+      primary: true
+    - name: "popolazione"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/popolazione_istat_comunale_2019_2025/{year}/popolazione_istat_comunale_2019_2025_{year}_clean.parquet"
+        filename: "pop.parquet"
+    - name: "irpef"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/irpef_comunale/2023/irpef_comunale_2023_clean.parquet"
+        filename: "irpef.parquet"
+    - name: "rifiuti_base"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/ispra_ru_base/{year}/ispra_ru_base_{year}_clean.parquet"
+        filename: "ru.parquet"
+    - name: "consumo_suolo"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/ispra_consumo_suolo/2024/ispra_consumo_suolo_2024_clean.parquet"
+        filename: "cs.parquet"
+    - name: "fsc"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/opencivitas_fsc_2025_rso/2025/opencivitas_fsc_2025_rso_2025_clean.parquet"
+        filename: "fsc.parquet"
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+  validate:
+    min_rows: 7000
+
+mart:
+  tables:
+    - name: "unified_comuni"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      unified_comuni:
+        min_rows: 7000
+
+validation:
+  fail_on_error: true
