@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 51,
+    "total": 52,
     "by_status": {
-      "ok": 51,
+      "ok": 52,
       "warn": 0,
       "error": 0
     }
@@ -826,6 +826,24 @@
           2024
         ],
         "config_path": "candidates/terna-electricity-by-source/dataset.yml"
+      }
+    },
+    {
+      "id": "unified-comuni",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "unified-comuni",
+      "detail": "anno 2026 — fonte: comuni_master — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "27900963302",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27900963302",
+        "checked_at": "2026-06-21",
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/unified-comuni/dataset.yml"
       }
     },
     {
