@@ -1,14 +1,29 @@
--- Clean: unified_comuni — multi-anno via S3 glob
--- Ogni fonte prende TUTTI gli anni disponibili (nessuna lista da mantenere).
+-- Clean: unified_comuni — multi-anno via HTTPS diretto
+-- DuckDB 1.5.4 legge https://storage.googleapis.com/ nativamente,
+-- senza estensioni httpfs. Niente bug S3, niente config.
+-- union_by_name=true gestisce eterogeneità colonne tra anni.
+--
+-- Policy manutenzione: quando si aggiunge un anno, aggiungere l'URL
+-- o estendere il glob. Per dataset multi-anno si elencano tutti.
 
-WITH hub AS (SELECT * FROM raw_input),
+WITH hub AS (
+    SELECT * FROM read_parquet('https://storage.googleapis.com/dataciviclab-clean/comuni_master/2026/comuni_master_2026_clean.parquet', union_by_name=true)
+),
 
 pop AS (
     SELECT codice_comune AS cod_istat, anno,
         SUM(popolazione_residente) AS popolazione_residente,
         SUM(totale_maschi) AS maschi,
         SUM(totale_femmine) AS femmine
-    FROM read_parquet('s3://dataciviclab-clean/popolazione_istat_comunale_2019_2025/*/popolazione_istat_comunale_2019_2025_*_clean.parquet')
+    FROM read_parquet([
+        'https://storage.googleapis.com/dataciviclab-clean/popolazione_istat_comunale_2019_2025/2019/popolazione_istat_comunale_2019_2025_2019_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/popolazione_istat_comunale_2019_2025/2020/popolazione_istat_comunale_2019_2025_2020_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/popolazione_istat_comunale_2019_2025/2021/popolazione_istat_comunale_2019_2025_2021_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/popolazione_istat_comunale_2019_2025/2022/popolazione_istat_comunale_2019_2025_2022_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/popolazione_istat_comunale_2019_2025/2023/popolazione_istat_comunale_2019_2025_2023_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/popolazione_istat_comunale_2019_2025/2024/popolazione_istat_comunale_2019_2025_2024_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/popolazione_istat_comunale_2019_2025/2025/popolazione_istat_comunale_2019_2025_2025_clean.parquet'
+    ], union_by_name=true)
     GROUP BY codice_comune, anno
 ),
 
@@ -22,7 +37,14 @@ irpef AS (
         MAX(reddito_da_pensione_eur) AS reddito_pensione_eur,
         MAX(addizionale_comunale_dovuta_eur) AS addizionale_comunale_eur,
         MAX(addizionale_regionale_dovuta_eur) AS addizionale_regionale_eur
-    FROM read_parquet('s3://dataciviclab-clean/irpef_comunale/*/irpef_comunale_*_clean.parquet')
+    FROM read_parquet([
+        'https://storage.googleapis.com/dataciviclab-clean/irpef_comunale/2019/irpef_comunale_2019_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/irpef_comunale/2020/irpef_comunale_2020_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/irpef_comunale/2021/irpef_comunale_2021_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/irpef_comunale/2022/irpef_comunale_2022_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/irpef_comunale/2023/irpef_comunale_2023_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/irpef_comunale/2024/irpef_comunale_2024_clean.parquet'
+    ], union_by_name=true)
     GROUP BY codice_istat_comune, anno_di_imposta
 ),
 
@@ -31,7 +53,13 @@ rifiuti AS (
         SUM(totale_ru_tonnellate) AS ru_tonnellate,
         SUM(totale_rd_tonnellate) AS rd_tonnellate,
         AVG(percentuale_rd) AS rd_pct
-    FROM read_parquet('s3://dataciviclab-clean/ispra_ru_base/*/ispra_ru_base_*_clean.parquet')
+    FROM read_parquet([
+        'https://storage.googleapis.com/dataciviclab-clean/ispra_ru_base/2020/ispra_ru_base_2020_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/ispra_ru_base/2021/ispra_ru_base_2021_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/ispra_ru_base/2022/ispra_ru_base_2022_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/ispra_ru_base/2023/ispra_ru_base_2023_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/ispra_ru_base/2024/ispra_ru_base_2024_clean.parquet'
+    ], union_by_name=true)
     GROUP BY RIGHT(codice_comune_istat, 6), anno
 ),
 
@@ -40,17 +68,23 @@ consumo_suolo AS (
         stock_ha_2024 AS suolo_consumato_ha,
         stock_pct_2024 AS suolo_consumato_pct,
         incremento_netto_ha_2023_2024 AS suolo_incremento_ha
-    FROM read_parquet('s3://dataciviclab-clean/ispra_consumo_suolo/2024/ispra_consumo_suolo_2024_clean.parquet')
+    FROM read_parquet('https://storage.googleapis.com/dataciviclab-clean/ispra_consumo_suolo/2024/ispra_consumo_suolo_2024_clean.parquet', union_by_name=true)
 ),
 
 fsc AS (
     SELECT UPPER(TRIM(comune)) AS denom_upper,
+        anno,
         CAST(popolazione AS INTEGER) AS popolazione_fsc,
         capacita_fiscale,
         dotazione_finale_fsc,
         fondo_perequativo,
         imu_tasi_standard
-    FROM read_parquet('s3://dataciviclab-clean/opencivitas_fsc_2025_rso/2025/opencivitas_fsc_2025_rso_2025_clean.parquet')
+    FROM read_parquet([
+        'https://storage.googleapis.com/dataciviclab-clean/opencivitas_fsc_2025_rso/2022/opencivitas_fsc_2025_rso_2022_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/opencivitas_fsc_2025_rso/2023/opencivitas_fsc_2025_rso_2023_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/opencivitas_fsc_2025_rso/2024/opencivitas_fsc_2025_rso_2024_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/opencivitas_fsc_2025_rso/2025/opencivitas_fsc_2025_rso_2025_clean.parquet'
+    ], union_by_name=true)
 )
 
 SELECT
@@ -79,5 +113,5 @@ INNER JOIN pop p ON h.codice_istat = p.cod_istat
 LEFT JOIN irpef i ON h.codice_istat = i.cod_istat AND p.anno = i.anno
 LEFT JOIN rifiuti r ON h.codice_istat = r.cod_istat AND p.anno = r.anno
 LEFT JOIN consumo_suolo cs ON h.codice_istat = cs.cod_istat
-LEFT JOIN fsc ON UPPER(TRIM(h.denominazione)) = fsc.denom_upper
+LEFT JOIN fsc ON UPPER(TRIM(h.denominazione)) = fsc.denom_upper AND p.anno = fsc.anno
 ORDER BY h.denominazione, p.anno
