@@ -100,17 +100,17 @@ Prima lascia che la pipeline dica se è tutto ok, poi controlla che i dati abbia
 
 ```bash
 # 1. Stato pipeline
-toolkit status -c candidates/{slug}/dataset.yml -y 2024 --json
+toolkit inspect summary -c candidates/{slug}/dataset.yml -y 2024 --json
 # Oppure MCP: toolkit_status(config_path) → paths, summary, readiness, run_stats
 
 # 2. Dati — conta righe e vedi un campione
-toolkit query -c candidates/{slug}/dataset.yml -l clean -y 2024 --sql "SELECT count(*) FROM data"
-toolkit query -c candidates/{slug}/dataset.yml -l clean -y 2024 --sql "SELECT * FROM data LIMIT 5"
+toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m sql --sql "SELECT count(*) FROM data"
+toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m preview --limit 5
 # Oppure MCP: toolkit_layer(config_path, layer="clean", mode="preview", limit=5)
 
 # 3. Se c'è mart, stessa verifica
-toolkit query -c candidates/{slug}/dataset.yml -l mart -y 2024 --sql "SELECT count(*) FROM data"
-toolkit query -c candidates/{slug}/dataset.yml -l mart -y 2024 --sql "SELECT * FROM data LIMIT 5"
+toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m sql --sql "SELECT count(*) FROM data"
+toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m preview --limit 5
 ```
 
 I numeri sono nel range atteso? Le colonne sono quelle giuste? Se sì → candidate ok.
@@ -124,9 +124,9 @@ toolkit_layer(config_path, layer="clean", mode="schema")  → schema parquet
 toolkit_schema_diff(config_path)                          → drift colonne tra anni
 
 # CLI
-toolkit inspect profile -c candidates/{slug}/dataset.yml --json
-toolkit inspect schema -c candidates/{slug}/dataset.yml --layer clean --json
-toolkit inspect schema-diff -c candidates/{slug}/dataset.yml --json
+toolkit inspect config -c candidates/{slug}/dataset.yml -l raw -m profile --json
+toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m schema --json
+toolkit inspect config -c candidates/{slug}/dataset.yml --diff --json
 ```
 
 Blocker specifico documentato, non formulaico.

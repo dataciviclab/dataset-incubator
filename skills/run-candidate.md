@@ -30,7 +30,7 @@ Stop: candidate immaturo, boundary clean/mart assente, problema di fase preceden
 ### 1. Pre-flight
 
 ```bash
-toolkit status -c candidates/{slug}/dataset.yml -y 2024 --json
+toolkit inspect summary -c candidates/{slug}/dataset.yml -y 2024 --json
 ```
 
 Oppure MCP: `toolkit_status(config_path)` → sezioni `paths_info` + `run_stats`.
@@ -49,17 +49,17 @@ Prima lo stato pipeline, poi controlla che i dati abbiano senso.
 
 ```bash
 # Stato pipeline
-toolkit status -c candidates/{slug}/dataset.yml -y 2024 --json
+toolkit inspect summary -c candidates/{slug}/dataset.yml -y 2024 --json
 # Oppure MCP: toolkit_status(config_path) → sezione readiness
 
 # Ispezione dati — conta righe e campione
-toolkit query -c candidates/{slug}/dataset.yml -l clean -y 2024 --sql "SELECT count(*) FROM data"
-toolkit query -c candidates/{slug}/dataset.yml -l clean -y 2024 --sql "SELECT * FROM data LIMIT 5"
+toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m sql --sql "SELECT count(*) FROM data"
+toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m preview --limit 5
 # Oppure MCP: toolkit_layer(config_path, layer="clean", mode="preview", limit=5)
 
 # Se c'è mart
-toolkit query -c candidates/{slug}/dataset.yml -l mart -y 2024 --sql "SELECT count(*) FROM data"
-toolkit query -c candidates/{slug}/dataset.yml -l mart -y 2024 --sql "SELECT * FROM data LIMIT 5"
+toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m sql --sql "SELECT count(*) FROM data"
+toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m preview --limit 5
 ```
 
 ### 4. Diagnostica (se fallisce)
@@ -72,9 +72,9 @@ toolkit_schema_diff(config_path)                           → drift colonne tra
 toolkit_list_runs(config_path, status="FAILED", limit=5)  → pattern di fallimento
 
 # CLI equivalente
-toolkit inspect profile -c candidates/{slug}/dataset.yml --json
-toolkit inspect schema -c candidates/{slug}/dataset.yml --layer clean --json
-toolkit inspect schema-diff -c candidates/{slug}/dataset.yml --json
+toolkit inspect config -c candidates/{slug}/dataset.yml -l raw -m profile --json
+toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m schema --json
+toolkit inspect config -c candidates/{slug}/dataset.yml --diff --json
 ```
 
 Se il blocker è isolato → documentalo e chiudi con `scaffolded_with_blocker`.
