@@ -1,19 +1,15 @@
--- clean.sql — FSC 2025: pivot EAV→wide + join geografico
---
--- Trasforma il formato long (username, componente, valore_num) in formato wide
--- con le 6 componenti FSC principali. Arricchisce con geografia dal support dataset.
---
--- Il support dataset (opencivitas-fsc-enti-rso) viene eseguito automaticamente
--- prima del main grazie alla sezione support: in dataset.yml.
+-- clean.sql — FSC multi-anno: pivot EAV→wide + join geografico
+-- Colonne raw sempre per posizione (col0=USERNAME, col1=nome, col2=valore)
+-- Compatibile con tutti i formati (VAR_FSC_NAME/VAR_FSC_VAL e varianti)
 
 with parsed as (
   select
-    trim("USERNAME") as username,
-    trim("Componenti di calcolo del fondo") as componente,
-    try_cast(replace(trim(cast("Valore" as varchar)), ',', '.') as double) as valore_num
+    trim("column00") as username,
+    trim("column01") as componente,
+    try_cast(replace(trim(cast("column02" as varchar)), ',', '.') as double) as valore_num
   from raw_input
-  where trim(coalesce("USERNAME", '')) <> ''
-    and trim(coalesce("Componenti di calcolo del fondo", '')) <> ''
+  where trim(coalesce("column00", '')) <> ''
+    and trim(coalesce("column01", '')) <> ''
 ),
 fsc as (
   select
@@ -36,6 +32,7 @@ enti as (
   from read_parquet('{support.opencivitas_fsc_enti_rso.mart}')
 )
 select
+  {year} as anno,
   fsc.username,
   enti.denominazione as comune,
   enti.provincia,
@@ -49,6 +46,6 @@ select
   fsc.totale_risorse_storiche,
   enti.username is not null as join_enti_ok
 from fsc
-left join enti on fsc.username = enti.username
+inner join enti on fsc.username = enti.username
 where fsc.username is not null
 order by enti.regione, enti.provincia, enti.denominazione
