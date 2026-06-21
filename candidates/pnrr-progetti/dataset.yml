@@ -1,0 +1,35 @@
+# PNRR Progetti — Italia Domani
+# Download via wget: il server AEM blocca python-requests ma accetta wget.
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "pnrr_progetti"
+  source_id: "italiadomani"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python preprocess.py raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  read:
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    sample_size: -1
+  sql: "sql/clean.sql"
+
+mart:
+  tables:
+    - name: "pnrr_progetti"
+      sql: "sql/mart.sql"
+
+validation:
+  fail_on_error: true
