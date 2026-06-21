@@ -1,0 +1,42 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "elezioni_politiche_2022"
+  source_id: "eligendo"
+  years: [2022]
+
+raw:
+  sources:
+    - name: "camera_livcomune"
+      type: "http_file"
+      year: 2022
+      args:
+        url: "https://dait.interno.gov.it/documenti/opendata/catalogoagid/camera-2022-Italia-livcomune.csv"
+      primary: true
+    - name: "senato_livcomune"
+      type: "http_file"
+      year: 2022
+      args:
+        url: "https://dait.interno.gov.it/documenti/opendata/catalogoagid/senato-2022-italia-livcomune.csv"
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: all
+    header: true
+    delim: ";"
+    encoding: "utf-8"
+    null_padding: true
+    trim_whitespace: true
+
+mart:
+  tables:
+    - name: "mart_voti_lista_comune"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_voti_lista_comune"
+
+validation:
+  fail_on_error: true
