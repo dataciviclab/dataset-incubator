@@ -5500,14 +5500,20 @@
     {
       "slug": "opencivitas_fsc_2025_rso",
       "name": "Opencivitas Fsc 2025 Rso",
-      "description": "Fondo di Solidarietà Comunale 2025 — 6 componenti FSC per comune RSO con geografia",
+      "description": "Fondo di Solidarietà Comunale 2022-2025 — 6 componenti FSC per comune RSO con geografia. Multi-anno: 2022-2025.",
       "source": "OpenCivitas / Sogei",
       "source_id": "opencivitas",
       "period": {
-        "start": 2025,
+        "start": 2022,
         "end": 2025
       },
       "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento del FSC"
+        },
         {
           "name": "username",
           "type": "VARCHAR",
@@ -5542,25 +5548,25 @@
           "name": "popolazione",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Popolazione residente"
+          "description": "Popolazione residente (fonte FSC)"
         },
         {
           "name": "capacita_fiscale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Capacità fiscale (euro)"
+          "description": "Capacità fiscale del comune (€)"
         },
         {
           "name": "fondo_perequativo",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Fondo perequativo (euro) — negativo = contribuente netto"
+          "description": "Fondo perequativo (€)"
         },
         {
           "name": "dotazione_finale_fsc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Dotazione finale FSC (euro)"
+          "description": "Dotazione finale del Fondo di Solidarietà Comunale (€)"
         },
         {
           "name": "imu_tasi_standard",
@@ -5578,13 +5584,13 @@
           "name": "join_enti_ok",
           "type": "BOOLEAN",
           "role": "dimension",
-          "description": "Join con anagrafica enti riuscito (sempre TRUE su RSO 2025)"
+          "description": "Indica se il join con l'anagrafica enti è riuscito"
         }
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/opencivitas_fsc_2025_rso/2025/opencivitas_fsc_2025_rso_2025_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/opencivitas_fsc_2025_rso/*/opencivitas_fsc_2025_rso_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "published",
       "registry_source": "derive_auto"
