@@ -2037,10 +2037,10 @@
     },
     {
       "slug": "elezioni_politiche_2022",
-      "name": "Elezioni Politiche 2022",
-      "description": "",
-      "source": "",
-      "source_id": "eligendo",
+      "name": "Elezioni Politiche 2022 — Camera e Senato",
+      "description": "Risultati elezioni politiche 2022 (Camera e Senato) per comune: voti di lista, candidati, affluenza. Fonte: Ministero dell'Interno — DAIT.",
+      "source": "Ministero dell'Interno — DAIT (Dipartimento per gli Affari Interni e Territoriali)",
+      "source_id": "ministero_interno_dait",
       "period": {
         "start": 2022,
         "end": 2022
@@ -2049,125 +2049,124 @@
         {
           "name": "data_elezione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di svolgimento delle elezioni"
         },
         {
           "name": "cod_tipo_elezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice del tipo di elezione (Camera/Senato)"
         },
         {
           "name": "circoscrizione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Circoscrizione elettorale"
         },
         {
           "name": "collegio_plurinominale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Collegio plurinominale"
         },
         {
           "name": "collegio_uninominale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Collegio uninominale"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune"
         },
         {
           "name": "elettori_totali",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero totale di elettori iscritti"
         },
         {
           "name": "elettori_maschi",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di elettori maschi iscritti"
         },
         {
           "name": "votanti_totali",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero totale di votanti"
         },
         {
           "name": "votanti_maschi",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di votanti maschi"
         },
         {
           "name": "schede_bianche",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di schede bianche"
         },
         {
           "name": "voti_lista",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti ottenuti dalla lista"
         },
         {
           "name": "descr_lista",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione/nome della lista elettorale"
         },
         {
           "name": "cognome_candidato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome del candidato"
         },
         {
           "name": "nome_candidato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del candidato"
         },
         {
           "name": "luogo_nascita_candidato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Luogo di nascita del candidato"
         },
         {
           "name": "data_nascita_candidato",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di nascita del candidato"
         },
         {
           "name": "sesso_candidato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sesso del candidato"
         },
         {
           "name": "voti_candidato",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti preferenza ottenuti dal candidato"
         }
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/elezioni_politiche_2022/2022/elezioni_politiche_2022_2022_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/elezioni_politiche_2022/*/elezioni_politiche_2022_*_clean.parquet",
+        "multi_file": true
       },
-      "stage": "published",
-      "registry_source": "derive_auto"
+      "stage": "incubating"
     },
     {
       "slug": "farmacie",
@@ -7173,5 +7172,6 @@
       "stage": "published",
       "registry_source": "derive_auto"
     }
-  ]
+  ],
+  "derived_from": "auto: post-merge PR #526"
 }
