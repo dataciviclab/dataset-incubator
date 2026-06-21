@@ -1,0 +1,37 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "unified_comuni"
+  source_id: "dataciviclab_composite"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "comuni_master"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/comuni_master/2026/comuni_master_2026_clean.parquet"
+        filename: "hub.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+  validate:
+    min_rows: 7000
+
+mart:
+  tables:
+    - name: "unified_comuni"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      unified_comuni:
+        min_rows: 7000
+
+validation:
+  fail_on_error: true
