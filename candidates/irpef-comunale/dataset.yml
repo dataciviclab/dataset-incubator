@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "irpef_comunale"
   source_id: mef_irpef
-  years: [2019, 2020, 2021, 2022, 2023]
+  years: [2019, 2020, 2021, 2022, 2023, 2024]
 
 raw:
   extractor:

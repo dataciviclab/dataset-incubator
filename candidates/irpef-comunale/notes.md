@@ -7,7 +7,7 @@ ZIP annuali ufficiali MEF / Finanze:
 
 ## Copertura temporale
 
-2019–2023 (5 anni di dichiarazione)
+2019–2024 (6 anni di dichiarazione). URL pattern confermato per anni dal 2000 al 2024.
 
 ## Copertura territoriale
 
@@ -22,12 +22,13 @@ Tutti i comuni italiani (~7.900 per anno). I codici ISTAT sono stabili nel tempo
 | 2021 | 50 | Header: `Trattamento spettante` (col 26-27) — nuovo |
 | 2022 | 50 | Header: `Trattamento spettante` (col 26-27) |
 | 2023 | 52 | Aggiunte `Reddito complessivo` (col 34-35) + `Trattamento spettante` |
+| 2024 | 52 | Stessa struttura 2023. `Reddito complessivo` ora popolato |
 
 ## Struttura clean
 
 52 colonne fisse per tutti gli anni (slot 0–51). Le colonne assenti nel raw originale hanno valore NULL:
 - **col 26–27**: `Bonus spettante` per 2019-2020 (NULL dal 2021); `Trattamento spettante` per 2021-2023 (NULL nel 2019-2020)
-- **col 34–35**: `Reddito complessivo` solo per 2023 (assenti = NULL per 2019-2022)
+- **col 34–35**: `Reddito complessivo` per 2023 e 2024 (assenti = NULL per 2019-2022)
 
 Il clean è raw-faithful: nessuna logica interpretativa, nessun case/when, nessuna colonna derivata. Il consumatore vede esattamente cosa c'è nel raw per ogni anno.
 
@@ -68,8 +69,8 @@ Il clean è raw-faithful: nessuna logica interpretativa, nessun case/when, nessu
 31 addizionale_regionale_dovuta_eur
 32 addizionale_comunale_dovuta_freq
 33 addizionale_comunale_dovuta_eur
-34 reddito_complessivo_freq             ← NULL per 2019-2022 (introdotto nel 2023)
-35 reddito_complessivo_eur             ← NULL per 2019-2022 (introdotto nel 2023)
+34 reddito_complessivo_freq             ← NULL per 2019-2022 (introdotto nel 2023; popolato anche 2024)
+35 reddito_complessivo_eur             ← NULL per 2019-2022 (introdotto nel 2023; popolato anche 2024)
 36 reddito_complessivo_minore_o_uguale_a_zero_euro_freq
 37 reddito_complessivo_minore_o_uguale_a_zero_euro_eur
 38–51 reddito_complessivo_da_NN_a_MM_euro (fasce freq+eur)
@@ -78,7 +79,7 @@ Il clean è raw-faithful: nessuna logica interpretativa, nessun case/when, nessu
 ## Limiti e caveat
 
 - **Bonus vs Trattamento**: il MEF ha sostituito il Bonus Covid con il Trattamento (legge 2021). Le due misure non sono direttamente confrontabili come semantica economica — il Bonus era un credito d'imposta una tantum, il Trattamento è un importo erogato. Non sommarle mai come "spettante totale".
-- **Reddito complessivo** (2023): non esiste nei precedenti — non è ricostruibile dai raw precedenti.
+- **Reddito complessivo** (2023+): non esiste nei precedenti 2019-2022 — non è ricostruibile dai raw di quegli anni.
 - **Frequenze vs ammontare**: le frequenze (colonne `*_freq`) per le fasce di reddito complessivo (col 38-51) sono conteggi di contribuenti, non valori monetari. Non hanno corrispondente euro.
 - **Somalettura regionale**: la somma dei comuni può non coincidere con il totale regionale (dati.flags rettifiche, segreti comunali, variazioni anagrafiche). I totali regionali vanno chiesti direttamente al MEF.
 - **Anno di imposta vs anno di dichiarazione**: i dati si riferiscono all'anno di imposta, non all'anno di presentazione della dichiarazione. Di norma c'è un anno di ritardo.
