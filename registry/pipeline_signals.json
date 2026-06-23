@@ -4,14 +4,32 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 54,
+    "total": 55,
     "by_status": {
-      "ok": 54,
+      "ok": 55,
       "warn": 0,
       "error": 0
     }
   },
   "signals": [
+    {
+      "id": "ade-cinque-per-mille",
+      "source_id": "",
+      "status": "ok",
+      "label": "ade-cinque-per-mille",
+      "detail": "anno 2024 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28028688331",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28028688331",
+        "checked_at": "2026-06-23",
+        "years": [
+          2024
+        ],
+        "config_path": "candidates/ade-cinque-per-mille/dataset.yml"
+      }
+    },
     {
       "id": "aifa-spesa-consumo",
       "source_id": "aifa",

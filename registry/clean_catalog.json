@@ -6,6 +6,140 @@
   "updated_at": "2026-06-23",
   "datasets": [
     {
+      "slug": "ade_cinque_per_mille",
+      "name": "Ade Cinque Per Mille",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2024,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "progressivo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_ets_onlus",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_asd",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_ricerca_scientifica",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_ricerca_sanitaria",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_comune",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_beni_culturali",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_area_protetta",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_scelte",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "importo_scelte_espresse",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "importo_scelte_generiche",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "importo_ripartizione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "importo_totale_erogabile",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ade_cinque_per_mille/2024/ade_cinque_per_mille_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "aifa_spesa_consumo",
       "name": "AIFA Spesa Farmaceutica Convenzionata",
       "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC — AIFA 2018-2024",
