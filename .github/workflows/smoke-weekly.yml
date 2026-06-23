@@ -16,7 +16,7 @@ jobs:
       failed: ${{ steps.probe.outputs.failed }}
       total: ${{ steps.probe.outputs.total }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
 
@@ -89,7 +89,7 @@ jobs:
     needs: weekly-probe
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@v7
 
       - name: Verify clean_catalog.json
         run: |
