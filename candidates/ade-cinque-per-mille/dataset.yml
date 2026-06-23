@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "ade_cinque_per_mille"
-  years: [2024]
+  years: [2022, 2023, 2024, 2025]
 
 raw:
   output_policy: overwrite

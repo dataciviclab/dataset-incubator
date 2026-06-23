@@ -17,26 +17,66 @@ import sys
 import urllib.request
 import urllib.error
 
-# URL di esempio verificato per il 2024:
-#   .../5x1000-af2024-elenco-destinatari-ammessi-al-contributo-1-agg-24-06-2025
-#
-# Mappa: per ogni anno, la data di aggiornamento (parte finale dell'URL).
-# La data è l'ultimo aggiornamento del dataset quell'anno.
-_UPDATE_DATES = {
-    2024: "24-06-2025",
-    # 2025: da verificare — aggiungere dopo aver trovato l'URL reale
+# URL per anno: lista di 7 URL (uno per parte).
+# 2024: pattern guest con data. 2025: pattern Liferay document store.
+_YEAR_URLS = {
+    2022: [
+        "https://www.agenziaentrate.gov.it/portale/documents/d/guest/"
+        "5x1000-af-2022-elenco-destinatari-ammessi-al-contributo-{parte}-agg-12-06-2026",
+    ],
+    2023: [
+        "https://www.agenziaentrate.gov.it/portale/documents/d/guest/"
+        "5x1000-af-2023-elenco-destinatari-ammessi-al-contributo-{parte}-agg-16-06-2026",
+    ],
+    2024: [
+        "https://www.agenziaentrate.gov.it/portale/documents/d/guest/"
+        "5x1000-af2024-elenco-destinatari-ammessi-al-contributo-{parte}-agg-24-06-2025",
+    ],
+    2025: [
+        # P01-P02
+        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038477/"
+        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
+        "2452a155-9501-dc03-0d5b-6c3efddf202f",
+        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038477/"
+        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
+        "d1e84ff0-0c1c-548b-3f39-f5a66f269ef4",
+        # P03-P04
+        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038744/"
+        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
+        "63c00ea0-8e31-505c-2ca4-c7d0cf02bedb",
+        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038744/"
+        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
+        "0da4703a-0a2d-363d-c2f5-53faad87afeb",
+        # P05-P07
+        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038972/"
+        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
+        "0d3b80ca-6d93-c2a5-c79b-720041a1e33b",
+        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038972/"
+        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
+        "dd781e8a-f882-219c-7583-a0a6a8e0ebde",
+        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038972/"
+        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
+        "a6d16ce2-1486-ed87-270f-f9dc87b13b12",
+    ],
 }
 
 NUM_PARTS = 7
 
-BASE_URL = (
-    "https://www.agenziaentrate.gov.it/portale/documents/d/guest/"
-    "5x1000-af{year}-elenco-destinatari-ammessi-al-contributo-{parte}-agg-{date}"
-)
 
-
-def download_part(year: int, parte: int, date: str) -> str | None:
-    url = BASE_URL.format(year=year, parte=parte, date=date)
+def download_part(year: int, parte: int) -> str | None:
+    urls = _YEAR_URLS.get(year)
+    if not urls:
+        print(f"  Nessun URL configurato per anno {year}", file=sys.stderr)
+        return None
+    # Se c'è un solo URL con {parte}, è un template per tutte le parti
+    # Altrimenti usa URL dedicato per parte
+    if len(urls) == 1 and "{parte}" in urls[0]:
+        url = urls[0].replace("{parte}", str(parte))
+    else:
+        if parte < 1 or parte > len(urls):
+            print(f"  Nessun URL configurato per anno {year} parte {parte}", file=sys.stderr)
+            return None
+        url = urls[parte - 1]
     print(f"  Downloading parte {parte}/7...", file=sys.stderr, end=" ")
     try:
         req = urllib.request.Request(url)
@@ -59,19 +99,21 @@ def main() -> None:
     args = parser.parse_args()
 
     year = args.year
-    date = _UPDATE_DATES.get(year)
-    if not date:
-        print(f"ERRORE: anno {year} non configurato. Date note: {_UPDATE_DATES}", file=sys.stderr)
+    if year not in _YEAR_URLS:
+        print(
+            f"ERRORE: anno {year} non configurato. Anni noti: {list(_YEAR_URLS.keys())}",
+            file=sys.stderr,
+        )
         sys.exit(1)
 
-    print(f"Download 5x1000 anno {year} — {NUM_PARTS} parti", file=sys.stderr)
+    print(f"Download 5x1000 anno {year} — {len(_YEAR_URLS[year])} parti", file=sys.stderr)
 
     header: str | None = None
     rows: list[str] = []
     downloaded = 0
 
     for parte in range(1, NUM_PARTS + 1):
-        content = download_part(year, parte, date)
+        content = download_part(year, parte)
         if content is None:
             print(f"  ⚠ Parte {parte} non scaricata, continuo...", file=sys.stderr)
             continue
@@ -115,6 +157,9 @@ def main() -> None:
     if not header or not rows:
         print("ERRORE: nessun dato scaricato", file=sys.stderr)
         sys.exit(1)
+
+    # Normalizza header: "ETS e ONLUS" → "ETS" (2024 vs 2025)
+    header = header.replace("ETS e ONLUS", "ETS")
 
     with open(args.output, "w", encoding="utf-8") as f:
         f.write(header + "\n")

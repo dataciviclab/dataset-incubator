@@ -6,9 +6,9 @@ importi erogabili, per anno.
 ## Dati
 
 - **Fonte**: Agenzia delle Entrate — 7 file CSV per anno (partizioni)
-- **Copertura**: 2024 (v0)
-- **Record**: 90.611 enti
-- **Importo totale**: ~522M€
+- **Copertura**: 2022–2025 (4 anni)
+- **Record**: 41.310 (2022), 80.597 (2023), 90.611 (2024), 95.983 (2025)
+- **Importo totale 2025**: ~601M€
 - **Colonne clean**: 19 (anno, progressivo, codice fiscale, denominazione,
   regione, provincia, comune, 7 flag categoria, numero scelte, 4 importi)
 - **Licenza**: CC-BY 4.0
