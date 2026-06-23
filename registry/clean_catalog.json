@@ -2605,10 +2605,10 @@
     },
     {
       "slug": "ipa_enti",
-      "name": "Ipa Enti",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "Anagrafica Enti PA (IndicePA)",
+      "description": "Anagrafica completa delle pubbliche amministrazioni e gestori di pubblici servizi dall'Indice dei domicili digitali della PA (IPA). Fonte AgID, CC-BY-4.0, aggiornamento giornaliero. 23.709 enti con PEC, indirizzi, responsabili.",
+      "source": "AgID — IndicePA (ipa-dati)",
+      "source_id": "agid",
       "period": {
         "start": 2026,
         "end": 2026
@@ -2618,181 +2618,181 @@
           "name": "codice_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice identificativo univoco dell'ente in IPA"
         },
         {
           "name": "denominazione_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione ufficiale dell'ente"
         },
         {
           "name": "codice_fiscale_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale dell'ente"
         },
         {
           "name": "tipologia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia ente (PA, Stazione Appaltante, Gestore, ecc.)"
         },
         {
           "name": "codice_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice categoria IPA (L6=Comune, C1=Ministero, L7=ASL, ecc.)"
         },
         {
           "name": "codice_natura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice natura giuridica dell'ente"
         },
         {
           "name": "codice_ateco",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice Ateco dell'attività dell'ente"
         },
         {
           "name": "ente_in_liquidazione",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Indicatore ente in liquidazione (true/false)"
         },
         {
           "name": "codice_miur",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice MIUR per istituti scolastici"
         },
         {
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT dell'ente"
         },
         {
           "name": "acronimo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Acronimo o sigla dell'ente"
         },
         {
           "name": "nome_responsabile",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del responsabile/vertice dell'ente"
         },
         {
           "name": "cognome_responsabile",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome del responsabile/vertice dell'ente"
         },
         {
           "name": "titolo_responsabile",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Qualifica del responsabile (Ministro, Sindaco, DG, ecc.)"
         },
         {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune sede dell'ente"
         },
         {
           "name": "codice_catastale_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice catastale (Belfiore) del comune sede"
         },
         {
           "name": "cap",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CAP della sede dell'ente"
         },
         {
           "name": "indirizzo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo della sede dell'ente"
         },
         {
           "name": "mail1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo email principale dell'ente"
         },
         {
           "name": "tipo_mail1",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia mail1 (Pec/Altro)"
         },
         {
           "name": "mail2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo email secondario dell'ente"
         },
         {
           "name": "tipo_mail2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia mail2 (Pec/Altro)"
         },
         {
           "name": "mail3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo email terziario dell'ente"
         },
         {
           "name": "tipo_mail3",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia mail3 (Pec/Altro)"
         },
         {
           "name": "mail4",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo email quarto dell'ente"
         },
         {
           "name": "tipo_mail4",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia mail4 (Pec/Altro)"
         },
         {
           "name": "mail5",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo email quinto dell'ente"
         },
         {
           "name": "tipo_mail5",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia mail5 (Pec/Altro)"
         },
         {
           "name": "sito_istituzionale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sito web istituzionale dell'ente"
         },
         {
           "name": "data_aggiornamento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Data ultimo aggiornamento dei dati IPA dell'ente"
         }
       ],
       "location": {
