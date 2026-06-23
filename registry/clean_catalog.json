@@ -7,9 +7,9 @@
   "datasets": [
     {
       "slug": "ade_cinque_per_mille",
-      "name": "Ade Cinque Per Mille",
-      "description": "",
-      "source": "",
+      "name": "5x1000 — Beneficiari e importi per ente",
+      "description": "Elenco enti beneficiari del 5x1000 dell'Agenzia delle Entrate, con importi erogabili, flag categoria (ETS, ASD, ricerca, comune, beni culturali, area protetta) e ripartizione territoriale per regione.",
+      "source": "Agenzia delle Entrate",
       "source_id": "",
       "period": {
         "start": 2024,
@@ -19,116 +19,116 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno finanziario"
         },
         {
           "name": "progressivo",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Numero progressivo riga"
         },
         {
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale ente beneficiario"
         },
         {
           "name": "denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione ente"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione sede ente"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla provincia sede"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune sede"
         },
         {
           "name": "flag_ets_onlus",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Ente del Terzo Settore / ONLUS"
         },
         {
           "name": "flag_asd",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Associazione Sportiva Dilettantistica"
         },
         {
           "name": "flag_ricerca_scientifica",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Ente di ricerca scientifica"
         },
         {
           "name": "flag_ricerca_sanitaria",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Ente di ricerca sanitaria"
         },
         {
           "name": "flag_comune",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Comune beneficiario"
         },
         {
           "name": "flag_beni_culturali",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Ente beni culturali e paesaggistici"
         },
         {
           "name": "flag_area_protetta",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Ente gestore aree protette"
         },
         {
           "name": "numero_scelte",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero di scelte espresse dai contribuenti"
         },
         {
           "name": "importo_scelte_espresse",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo da scelte espresse (€)"
         },
         {
           "name": "importo_scelte_generiche",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo proporzionale da scelte generiche (€)"
         },
         {
           "name": "importo_ripartizione",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo da ripartizione importi inferiori a 100€ (€)"
         },
         {
           "name": "importo_totale_erogabile",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo totale erogabile (€)"
         }
       ],
       "location": {
