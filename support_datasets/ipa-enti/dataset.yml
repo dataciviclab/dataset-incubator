@@ -1,0 +1,45 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ipa_enti"
+  source_id: "agid"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "ipa_enti"
+      type: "http_file"
+      args:
+        url: "https://indicepa.gov.it/ipa-dati/datastore/dump/d09adf99-dc10-4349-8c53-27b1e5aa97b6?bom=True"
+        filename: "ipa_enti.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "config_only"
+    mode: "latest"
+    header: true
+    delim: ","
+    encoding: "utf-8"
+    quote: '"'
+    strict_mode: false
+    ignore_errors: true
+  validate:
+    min_rows: 10000
+
+mart:
+  tables:
+    - name: "ipa_enti"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "ipa_enti"
+  validate:
+    table_rules:
+      ipa_enti:
+        min_rows: 10000
+
+validation:
+  fail_on_error: true
