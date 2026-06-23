@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-21",
+  "generated_at": "2026-06-23",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 53,
+    "total": 54,
     "by_status": {
-      "ok": 53,
+      "ok": 54,
       "warn": 0,
       "error": 0
     }
@@ -901,6 +901,24 @@
           2026
         ],
         "config_path": "support_datasets/comuni-master/dataset.yml"
+      }
+    },
+    {
+      "id": "ipa-enti",
+      "source_id": "agid",
+      "status": "ok",
+      "label": "ipa-enti",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28023791270",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28023791270",
+        "checked_at": "2026-06-23",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/ipa-enti/dataset.yml"
       }
     },
     {
