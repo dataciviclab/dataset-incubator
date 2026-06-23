@@ -72,6 +72,14 @@ def download_part(year: int, parte: int, tot_parti: int) -> str:
             text = data.decode("utf-8")
             print(f"{len(data):,} bytes ✅", file=sys.stderr)
             return text
+        except urllib.error.HTTPError as e:
+            if tentativo < max_tentativi and e.code in (502, 503, 504, 429):
+                print(f"HTTP {e.code}, riprovo...", file=sys.stderr)
+                import time
+
+                time.sleep(3)
+                continue
+            raise RuntimeError(f"HTTP {e.code} per parte {parte}") from e
         except urllib.error.URLError as e:
             if tentativo < max_tentativi:
                 print(
@@ -85,14 +93,6 @@ def download_part(year: int, parte: int, tot_parti: int) -> str:
             raise RuntimeError(
                 f"rete: {e.reason} per parte {parte} dopo {max_tentativi} tentativi"
             ) from e
-        except urllib.error.HTTPError as e:
-            if tentativo < max_tentativi and e.code in (502, 503, 504, 429):
-                print(f"HTTP {e.code}, riprovo...", file=sys.stderr)
-                import time
-
-                time.sleep(3)
-                continue
-            raise RuntimeError(f"HTTP {e.code} per parte {parte}") from e
         except UnicodeDecodeError:
             raise RuntimeError(f"parte {parte} non è testo UTF-8")
 
