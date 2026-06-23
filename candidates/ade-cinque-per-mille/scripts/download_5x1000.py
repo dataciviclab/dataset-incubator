@@ -19,77 +19,60 @@ import urllib.error
 
 # URL per anno: lista di 7 URL (uno per parte).
 # 2024: pattern guest con data. 2025: pattern Liferay document store.
-_YEAR_URLS = {
-    2022: [
-        "https://www.agenziaentrate.gov.it/portale/documents/d/guest/"
-        "5x1000-af-2022-elenco-destinatari-ammessi-al-contributo-{parte}-agg-12-06-2026",
-    ],
-    2023: [
-        "https://www.agenziaentrate.gov.it/portale/documents/d/guest/"
-        "5x1000-af-2023-elenco-destinatari-ammessi-al-contributo-{parte}-agg-16-06-2026",
-    ],
-    2024: [
-        "https://www.agenziaentrate.gov.it/portale/documents/d/guest/"
-        "5x1000-af2024-elenco-destinatari-ammessi-al-contributo-{parte}-agg-24-06-2025",
-    ],
-    2025: [
-        # P01-P02
-        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038477/"
-        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
-        "2452a155-9501-dc03-0d5b-6c3efddf202f",
-        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038477/"
-        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
-        "d1e84ff0-0c1c-548b-3f39-f5a66f269ef4",
-        # P03-P04
-        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038744/"
-        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
-        "63c00ea0-8e31-505c-2ca4-c7d0cf02bedb",
-        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038744/"
-        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
-        "0da4703a-0a2d-363d-c2f5-53faad87afeb",
-        # P05-P07
-        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038972/"
-        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
-        "0d3b80ca-6d93-c2a5-c79b-720041a1e33b",
-        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038972/"
-        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
-        "dd781e8a-f882-219c-7583-a0a6a8e0ebde",
-        "https://www.agenziaentrate.gov.it/portale/documents/20143/10038972/"
-        "5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/"
-        "a6d16ce2-1486-ed87-270f-f9dc87b13b12",
-    ],
+# Per anno: numero di parti e singolo URL template con {parte}
+# 2023 ha 6 parti, 2024 e 2025 hanno 7 parti.
+_ANNI = {
+    2023: {
+        "parti": 6,
+        "url": "https://www.agenziaentrate.gov.it/portale/documents/d/guest/5x1000-af-2023-elenco-destinatari-ammessi-al-contributo-{parte}-agg-16-06-2026",
+    },
+    2024: {
+        "parti": 7,
+        "url": "https://www.agenziaentrate.gov.it/portale/documents/d/guest/5x1000-af2024-elenco-destinatari-ammessi-al-contributo-{parte}-agg-24-06-2025",
+    },
+    2025: {"parti": 7, "url": ""},  # 2025 ha URL dedicati sotto
 }
+# 2025: URL diversi per ogni parte (Liferay document store)
+_2025_URLS = [
+    "https://www.agenziaentrate.gov.it/portale/documents/20143/10038477/5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/2452a155-9501-dc03-0d5b-6c3efddf202f",
+    "https://www.agenziaentrate.gov.it/portale/documents/20143/10038477/5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/d1e84ff0-0c1c-548b-3f39-f5a66f269ef4",
+    "https://www.agenziaentrate.gov.it/portale/documents/20143/10038744/5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/63c00ea0-8e31-505c-2ca4-c7d0cf02bedb",
+    "https://www.agenziaentrate.gov.it/portale/documents/20143/10038744/5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/0da4703a-0a2d-363d-c2f5-53faad87afeb",
+    "https://www.agenziaentrate.gov.it/portale/documents/20143/10038972/5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/0d3b80ca-6d93-c2a5-c79b-720041a1e33b",
+    "https://www.agenziaentrate.gov.it/portale/documents/20143/10038972/5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/dd781e8a-f882-219c-7583-a0a6a8e0ebde",
+    "https://www.agenziaentrate.gov.it/portale/documents/20143/10038972/5X1000-AF2025+-+Elenco+destinatari+ammessi+al+contributo+-P{parte}.csv/a6d16ce2-1486-ed87-270f-f9dc87b13b12",
+]
 
-NUM_PARTS = 7
 
+def download_part(year: int, parte: int, tot_parti: int) -> str:
+    info = _ANNI.get(year)
+    if not info:
+        raise ValueError(f"Anno {year} non configurato")
 
-def download_part(year: int, parte: int) -> str | None:
-    urls = _YEAR_URLS.get(year)
-    if not urls:
-        print(f"  Nessun URL configurato per anno {year}", file=sys.stderr)
-        return None
-    # Se c'è un solo URL con {parte}, è un template per tutte le parti
-    # Altrimenti usa URL dedicato per parte
-    if len(urls) == 1 and "{parte}" in urls[0]:
-        url = urls[0].replace("{parte}", str(parte))
+    if info["url"]:
+        url = info["url"].replace("{parte}", str(parte))
+    elif year == 2025:
+        if parte < 1 or parte > len(_2025_URLS):
+            raise ValueError(f"Anno {year} parte {parte} non configurata")
+        url = _2025_URLS[parte - 1].replace("{parte}", str(parte))
     else:
-        if parte < 1 or parte > len(urls):
-            print(f"  Nessun URL configurato per anno {year} parte {parte}", file=sys.stderr)
-            return None
-        url = urls[parte - 1]
-    print(f"  Downloading parte {parte}/7...", file=sys.stderr, end=" ")
+        raise ValueError(f"Anno {year} senza template URL")
+
+    print(f"  Downloading parte {parte}/{tot_parti}...", file=sys.stderr, end=" ")
     try:
         req = urllib.request.Request(url)
         with urllib.request.urlopen(req, timeout=60) as resp:
             data = resp.read()
-        print(f"{len(data):,} bytes", file=sys.stderr)
-        return data.decode("utf-8")
+        # Valida che sia CSV, non PDF
+        if data.startswith(b"%PDF"):
+            raise ValueError(f"parte {parte} è PDF, non CSV")
+        text = data.decode("utf-8")
+        print(f"{len(data):,} bytes ✅", file=sys.stderr)
+        return text
     except urllib.error.HTTPError as e:
-        print(f"HTTP {e.code}", file=sys.stderr)
-        return None
-    except Exception as e:
-        print(f"ERR: {e}", file=sys.stderr)
-        return None
+        raise RuntimeError(f"HTTP {e.code} per parte {parte}") from e
+    except UnicodeDecodeError:
+        raise RuntimeError(f"parte {parte} non è testo UTF-8")
 
 
 def main() -> None:
@@ -99,52 +82,49 @@ def main() -> None:
     args = parser.parse_args()
 
     year = args.year
-    if year not in _YEAR_URLS:
+    if year not in _ANNI:
         print(
-            f"ERRORE: anno {year} non configurato. Anni noti: {list(_YEAR_URLS.keys())}",
-            file=sys.stderr,
+            f"ERRORE: anno {year} non configurato. Anni noti: {list(_ANNI.keys())}", file=sys.stderr
         )
         sys.exit(1)
 
-    print(f"Download 5x1000 anno {year} — {len(_YEAR_URLS[year])} parti", file=sys.stderr)
+    tot_parti = _ANNI[year]["parti"]
+    print(f"Download 5x1000 anno {year} — {tot_parti} parti", file=sys.stderr)
 
     header: str | None = None
     rows: list[str] = []
-    downloaded = 0
+    falliti: list[int] = []
 
-    for parte in range(1, NUM_PARTS + 1):
-        content = download_part(year, parte)
-        if content is None:
-            print(f"  ⚠ Parte {parte} non scaricata, continuo...", file=sys.stderr)
+    for parte in range(1, tot_parti + 1):
+        try:
+            content = download_part(year, parte, tot_parti)
+        except (RuntimeError, ValueError) as e:
+            print(f"  ❌ {e}", file=sys.stderr)
+            falliti.append(parte)
             continue
 
-        # Legge le righe CSV
         reader = csv.reader(io.StringIO(content), delimiter=";")
         lines = list(reader)
-
         if not lines:
+            falliti.append(parte)
             continue
 
-        # La prima parte ha header + 3 righe di intestazione
-        # Salta le prime 3 righe (descrizione) e usa la quarta come header
         if header is None:
-            # Trova l'header: riga che inizia con "Prog;"
             for i, row in enumerate(lines):
                 if row and row[0].strip().startswith("Prog"):
                     header = ";".join(row)
-                    lines = lines[i + 1 :]  # righe dopo l'header
+                    lines = lines[i + 1 :]
                     break
             else:
                 print(f"  ⚠ Header non trovato in parte {parte}", file=sys.stderr)
+                falliti.append(parte)
                 continue
         else:
-            # Parti successive: cerca l'header e salta
             for i, row in enumerate(lines):
                 if row and row[0].strip().startswith("Prog"):
                     lines = lines[i + 1 :]
                     break
             else:
-                # Se non trova header, salta le prime 3 (descrizione) e usa tutto
                 if len(lines) > 3:
                     lines = lines[3:]
 
@@ -152,7 +132,9 @@ def main() -> None:
             if row and row[0].strip() and not row[0].strip().startswith("Prog"):
                 rows.append(";".join(row))
 
-        downloaded += 1
+    if falliti:
+        print(f"\n❌ ERRORE: {len(falliti)} parti non scaricate: {falliti}", file=sys.stderr)
+        sys.exit(1)
 
     if not header or not rows:
         print("ERRORE: nessun dato scaricato", file=sys.stderr)
@@ -166,7 +148,7 @@ def main() -> None:
         f.write("\n".join(rows) + "\n")
 
     print(f"\n✅ Scritti {len(rows):,} records in {args.output}", file=sys.stderr)
-    print(f"   ({downloaded}/{NUM_PARTS} parti scaricate)", file=sys.stderr)
+    print(f"   (tutte le {tot_parti} parti scaricate)", file=sys.stderr)
 
 
 if __name__ == "__main__":
