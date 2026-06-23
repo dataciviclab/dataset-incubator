@@ -129,8 +129,16 @@ def main() -> None:
                     lines = lines[3:]
 
         for row in lines:
-            if row and row[0].strip() and not row[0].strip().startswith("Prog"):
-                rows.append(";".join(row))
+            if not row or not row[0].strip() or row[0].strip().startswith("Prog"):
+                continue
+            # Filtra righe non-dato: note legali, righe vuote, ecc.
+            # Una riga valida ha un progressivo numerico in colonna 0
+            # e un codice fiscale in colonna 1
+            if not row[0].strip().isdigit():
+                continue
+            if len(row) < 2 or not row[1].strip():
+                continue
+            rows.append(";".join(row))
 
     if falliti:
         print(f"\n❌ ERRORE: {len(falliti)} parti non scaricate: {falliti}", file=sys.stderr)

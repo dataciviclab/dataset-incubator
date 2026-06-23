@@ -5,7 +5,7 @@ importi erogabili, per anno.
 
 ## Dati
 
-- **Fonte**: Agenzia delle Entrate — 7 file CSV per anno (partizioni)
+- **Fonte**: Agenzia delle Entrate — 6-7 file CSV per anno (partizioni)
 - **Copertura**: 2023–2025 (3 anni)
 - **Record**: 80.597 (2023), 90.611 (2024), 95.983 (2025)
 - **Importo totale 2025**: ~601M€
