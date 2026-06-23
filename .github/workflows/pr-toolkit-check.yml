@@ -118,8 +118,8 @@ jobs:
             toolkit run full \
               --config "${{ matrix.config.config_path }}" \
               --json \
-              --sample-rows 1000 \
-              --sample-bytes 5242880 \
+              --sample-rows 10000 \
+              --sample-bytes 15728640 \
               > run_full.json 2>run_full_err.log; ec=$?
             if [ $ec -eq 0 ]; then
               echo "exit_code=0" >> "$GITHUB_OUTPUT"
