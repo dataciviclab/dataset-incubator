@@ -86,7 +86,7 @@ _SAMPLE_CATALOG = [
 class TestGcsAuthMode:
     def test_default_none(self, monkeypatch):
         monkeypatch.delenv("CLEAN_QUERY_GCS_AUTH", raising=False)
-        assert catalog._gcs_auth_mode() is None
+        assert catalog._gcs_auth_mode() is False
 
     def test_true_values(self, monkeypatch):
         for val in ("1", "true", "True", "yes", "YES"):
@@ -100,7 +100,7 @@ class TestGcsAuthMode:
 
     def test_unknown_value(self, monkeypatch):
         monkeypatch.setenv("CLEAN_QUERY_GCS_AUTH", "unknown")
-        assert catalog._gcs_auth_mode() is None
+        assert catalog._gcs_auth_mode() is False
 
 
 # ---------------------------------------------------------------------------
