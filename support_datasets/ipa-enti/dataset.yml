@@ -24,6 +24,7 @@ clean:
     header: true
     delim: ","
     encoding: "utf-8"
+    quote: '"'
     strict_mode: false
     ignore_errors: true
   validate:
