@@ -59,20 +59,42 @@ def download_part(year: int, parte: int, tot_parti: int) -> str:
         raise ValueError(f"Anno {year} senza template URL")
 
     print(f"  Downloading parte {parte}/{tot_parti}...", file=sys.stderr, end=" ")
-    try:
-        req = urllib.request.Request(url)
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            data = resp.read()
-        # Valida che sia CSV, non PDF
-        if data.startswith(b"%PDF"):
-            raise ValueError(f"parte {parte} è PDF, non CSV")
-        text = data.decode("utf-8")
-        print(f"{len(data):,} bytes ✅", file=sys.stderr)
-        return text
-    except urllib.error.HTTPError as e:
-        raise RuntimeError(f"HTTP {e.code} per parte {parte}") from e
-    except UnicodeDecodeError:
-        raise RuntimeError(f"parte {parte} non è testo UTF-8")
+    # Retry: la fonte ADE può essere fragile in CI
+    max_tentativi = 3
+    for tentativo in range(1, max_tentativi + 1):
+        try:
+            req = urllib.request.Request(url)
+            with urllib.request.urlopen(req, timeout=90) as resp:
+                data = resp.read()
+            # Valida che sia CSV, non PDF
+            if data.startswith(b"%PDF"):
+                raise ValueError(f"parte {parte} è PDF, non CSV")
+            text = data.decode("utf-8")
+            print(f"{len(data):,} bytes ✅", file=sys.stderr)
+            return text
+        except urllib.error.URLError as e:
+            if tentativo < max_tentativi:
+                print(
+                    f"tentativo {tentativo}/{max_tentativi} fallito ({e.reason}), riprovo...",
+                    file=sys.stderr,
+                )
+                import time
+
+                time.sleep(3)
+                continue
+            raise RuntimeError(
+                f"rete: {e.reason} per parte {parte} dopo {max_tentativi} tentativi"
+            ) from e
+        except urllib.error.HTTPError as e:
+            if tentativo < max_tentativi and e.code in (502, 503, 504, 429):
+                print(f"HTTP {e.code}, riprovo...", file=sys.stderr)
+                import time
+
+                time.sleep(3)
+                continue
+            raise RuntimeError(f"HTTP {e.code} per parte {parte}") from e
+        except UnicodeDecodeError:
+            raise RuntimeError(f"parte {parte} non è testo UTF-8")
 
 
 def main() -> None:
