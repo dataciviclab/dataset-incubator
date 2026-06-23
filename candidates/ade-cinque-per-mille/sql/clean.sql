@@ -1,0 +1,21 @@
+SELECT
+    {year}::INTEGER AS anno,
+    TRY_CAST("Prog" AS INTEGER) AS progressivo,
+    TRIM("Codice fiscale") AS codice_fiscale,
+    TRIM("Denominazione") AS denominazione,
+    TRIM("Regione") AS regione,
+    TRIM("PR") AS sigla_provincia,
+    TRIM("Comune") AS comune,
+    CASE WHEN TRIM("ETS e ONLUS") = 'X' THEN TRUE ELSE FALSE END AS flag_ets_onlus,
+    CASE WHEN TRIM("ASD") = 'X' THEN TRUE ELSE FALSE END AS flag_asd,
+    CASE WHEN TRIM("Ricerca scientifica") = 'X' THEN TRUE ELSE FALSE END AS flag_ricerca_scientifica,
+    CASE WHEN TRIM("Ricerca sanitaria") = 'X' THEN TRUE ELSE FALSE END AS flag_ricerca_sanitaria,
+    CASE WHEN TRIM("Comuni") = 'X' THEN TRUE ELSE FALSE END AS flag_comune,
+    CASE WHEN TRIM("Beni culturali e paesaggistici") = 'X' THEN TRUE ELSE FALSE END AS flag_beni_culturali,
+    CASE WHEN TRIM("Enti Gestori aree protette") = 'X' THEN TRUE ELSE FALSE END AS flag_area_protetta,
+    TRY_CAST(REPLACE(REPLACE("Numero scelte", '.', ''), ',', '.') AS INTEGER) AS numero_scelte,
+    TRY_CAST(REPLACE(REPLACE("Importo delle scelte espresse", '.', ''), ',', '.') AS DOUBLE) AS importo_scelte_espresse,
+    TRY_CAST(REPLACE(REPLACE("Importo proporzionale per le scelte generiche", '.', ''), ',', '.') AS DOUBLE) AS importo_scelte_generiche,
+    TRY_CAST(REPLACE(REPLACE("Importo proporzionale per ripartizione importi inferiori a 100 euro", '.', ''), ',', '.') AS DOUBLE) AS importo_ripartizione,
+    TRY_CAST(REPLACE(REPLACE("Importo totale erogabile", '.', ''), ',', '.') AS DOUBLE) AS importo_totale_erogabile
+FROM raw_input
