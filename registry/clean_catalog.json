@@ -12,8 +12,8 @@
       "source": "Agenzia delle Entrate",
       "source_id": "",
       "period": {
-        "start": 2024,
-        "end": 2024
+        "start": 2023,
+        "end": 2025
       },
       "columns": [
         {
@@ -2524,7 +2524,7 @@
       "source": "https://www.inps.it/gestione-previdenziale",
       "source_id": "inps",
       "period": {
-        "start": 2024,
+        "start": 2020,
         "end": 2024
       },
       "columns": [
@@ -7806,7 +7806,7 @@
       "source": "Terna S.p.A. — dati pubblicati su terna.com",
       "source_id": "terna",
       "period": {
-        "start": 2023,
+        "start": 2015,
         "end": 2024
       },
       "columns": [
