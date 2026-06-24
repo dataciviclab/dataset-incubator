@@ -107,6 +107,13 @@ jobs:
           echo "REQUESTS_CA_BUNDLE=$bundle" >> "$GITHUB_ENV"
           echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
 
+      - name: "Preflight: config valida + fonte raggiungibile + quality score"
+        id: preflight
+        continue-on-error: true
+        run: |
+          toolkit preflight --config "${{ matrix.config.config_path }}" --json 2>&1 \
+            || echo "::warning::Preflight issues detected for ${{ matrix.config.config_path }}"
+
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows) [retry x2]"
         id: run_full
         env:

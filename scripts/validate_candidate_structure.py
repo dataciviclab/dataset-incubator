@@ -6,6 +6,7 @@ from pathlib import Path
 from typing import Literal
 
 from toolkit.core.dataset_loader import load_dataset_manifest
+from toolkit.core.config_models import load_config_model
 
 ROOT = Path(__file__).resolve().parents[1]
 
@@ -95,11 +96,15 @@ def validate_dataset_name_yml(yml_path: Path, failures: list[str]) -> None:
         failures.append(f"{rel}: invalid dataset.name '{name}' — must match ^[a-z0-9_]+$")
 
 
-def validate_single_source(base_dir: Path, failures: list[str]) -> None:
+def validate_single_source(
+    base_dir: Path, failures: list[str], warnings: list[str] | None = None
+) -> None:
     dataset_yml = base_dir / "dataset.yml"
     sql_dir = base_dir / "sql"
 
     validate_dataset_name_yml(dataset_yml, failures)
+    if warnings is not None:
+        check_clean_validation_config(dataset_yml, warnings)
 
     if not dataset_yml.exists():
         failures.append(f"missing {dataset_yml.relative_to(ROOT)}")
@@ -146,6 +151,46 @@ def validate_compose(base_dir: Path, failures: list[str]) -> None:
         failures.append(f"missing mart*.sql under {sql_dir.relative_to(ROOT)}")
 
 
+def check_clean_validation_config(dataset_yml: Path, warnings: list[str]) -> None:
+    """Verifica che il candidate abbia validazione minima configurata.
+
+    Policy: ogni nuovo candidate deve avere almeno not_null e required_columns
+    in clean.validate. Questa funzione produce raccomandazioni, non errori —
+    i dataset esistenti vengono migrati gradualmente.
+    """
+    if not dataset_yml.exists():
+        return
+    try:
+        cfg = load_config_model(dataset_yml)
+    except Exception:
+        return
+
+    if not cfg.clean or not cfg.clean.sql:
+        return  # compose (mart-only) — no clean layer validation needed
+
+    clean_validate = cfg.clean.validate
+    missing: list[str] = []
+    if not clean_validate.not_null:
+        missing.append("clean.validate.not_null")
+    if not cfg.clean.required_columns:
+        missing.append("clean.required_columns")
+    if not clean_validate.primary_key:
+        missing.append(
+            "clean.validate.primary_key (utile ma opzionale — deroga se PK non dichiarabile)"
+        )
+
+    if len(missing) == 1:
+        warnings.append(
+            f"{dataset_yml.relative_to(ROOT)}: manca {missing[0]} — "
+            "aggiungilo per avere validazione automatica"
+        )
+    elif len(missing) > 1:
+        warnings.append(
+            f"{dataset_yml.relative_to(ROOT)}: mancano {len(missing)} elementi di validazione "
+            f"({', '.join(missing)})"
+        )
+
+
 def validate_multi_source(base_dir: Path, failures: list[str]) -> None:
     sources_dir = base_dir / "sources"
     source_dirs = sorted(path for path in sources_dir.iterdir() if path.is_dir())
@@ -172,7 +217,7 @@ def validate_multi_source(base_dir: Path, failures: list[str]) -> None:
     validate_compose(base_dir, failures)
 
 
-def validate_entry(base_dir: Path, failures: list[str]) -> None:
+def validate_entry(base_dir: Path, failures: list[str], warnings: list[str] | None = None) -> None:
     rel_str = base_dir.relative_to(ROOT).as_posix()
 
     # Validate slug conventions
@@ -200,7 +245,7 @@ def validate_entry(base_dir: Path, failures: list[str]) -> None:
         return
 
     if layout == "single-source":
-        validate_single_source(base_dir, failures)
+        validate_single_source(base_dir, failures, warnings=warnings)
         return
 
     if layout == "compose":
@@ -216,13 +261,20 @@ def validate_entry(base_dir: Path, failures: list[str]) -> None:
 
 def main() -> int:
     failures: list[str] = []
+    validation_warnings: list[str] = []
 
     for section in ("compose", "candidates", "support_datasets"):
         base = ROOT / section
         if not base.exists():
             continue
         for entry in sorted(path for path in base.iterdir() if path.is_dir()):
-            validate_entry(entry, failures)
+            validate_entry(entry, failures, warnings=validation_warnings)
+
+    if validation_warnings:
+        print("Validation recommendations:", file=sys.stdout)
+        for w in validation_warnings:
+            print(f"  ! {w}", file=sys.stdout)
+        print(file=sys.stdout)
 
     if failures:
         print("Candidate structure validation failed:", file=sys.stderr)
