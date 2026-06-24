@@ -131,7 +131,6 @@ jobs:
 
       - name: Process each detected config
         env:
-          HTTPS_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: python scripts/post_merge_runner.py sample-run --retry 3
 

@@ -110,7 +110,6 @@ jobs:
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows) [retry x2]"
         id: run_full
         env:
-          HTTPS_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: |
           MAX_ATTEMPTS=2
