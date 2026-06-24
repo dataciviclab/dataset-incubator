@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-23",
+  "generated_at": "2026-06-24",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -17,15 +17,17 @@
       "source_id": "",
       "status": "ok",
       "label": "ade-cinque-per-mille",
-      "detail": "anno 2024 — fonte: ? — mart: sì",
+      "detail": "anni 2023-2025 — fonte: ? — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "28028688331",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28028688331",
-        "checked_at": "2026-06-23",
+        "run_id": "28093698479",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28093698479",
+        "checked_at": "2026-06-24",
         "years": [
-          2024
+          2023,
+          2024,
+          2025
         ],
         "config_path": "candidates/ade-cinque-per-mille/dataset.yml"
       }
