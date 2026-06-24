@@ -111,7 +111,7 @@ jobs:
         id: preflight
         continue-on-error: true
         run: |
-          toolkit preflight --config "${{ matrix.config.config_path }}" --json 2>&1 \
+          toolkit run preflight --config "${{ matrix.config.config_path }}" --json 2>&1 \
             || echo "::warning::Preflight issues detected for ${{ matrix.config.config_path }}"
 
       - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows) [retry x2]"
