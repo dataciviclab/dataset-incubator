@@ -6,7 +6,7 @@ SELECT
     TRIM("Regione") AS regione,
     TRIM("PR") AS sigla_provincia,
     TRIM("Comune") AS comune,
-    CASE WHEN TRIM("ETS e ONLUS") = 'X' THEN TRUE ELSE FALSE END AS flag_ets_onlus,
+    CASE WHEN TRIM("ETS") = 'X' THEN TRUE ELSE FALSE END AS flag_ets_onlus,
     CASE WHEN TRIM("ASD") = 'X' THEN TRUE ELSE FALSE END AS flag_asd,
     CASE WHEN TRIM("Ricerca scientifica") = 'X' THEN TRUE ELSE FALSE END AS flag_ricerca_scientifica,
     CASE WHEN TRIM("Ricerca sanitaria") = 'X' THEN TRUE ELSE FALSE END AS flag_ricerca_sanitaria,
