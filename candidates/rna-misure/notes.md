@@ -11,5 +11,5 @@
 - **Fonte**: XML del Registro Nazionale Aiuti di Stato (MIMIT)
 - **Pipeline**: `rna-aiuti-stato/scripts/full_batch.py --misure`
 - **GCS**: `gs://dataciviclab-clean/rna-aiuti-stato/misure/misure.parquet`
-- **Deploy**: gestito dal workflow `build-misure` del repo upstream. auto_deploy=false qui.
+- **Deploy su GCS**: tramite CI di dataset-incubator (post-merge)
 - **Forma**: unico parquet cumulativo (non partizionato per anno)

@@ -105,18 +105,6 @@ def _push_clean_to_gcs(slug: str, root: str) -> bool:
     return r.returncode == 0
 
 
-def _read_auto_deploy(config_path: str, root: str) -> bool:
-    """Legge auto_deploy dalla directory del dataset.yml.
-
-    Se esiste un file ``auto_deploy`` (sentinella) nella stessa directory
-    del dataset.yml, il valore e' ``False`` (deploy gestito upstream).
-    Default ``True`` per tutti gli altri candidati.
-    """
-    dspath = Path(root) / config_path
-    sentinel = dspath.parent / "auto_deploy"
-    return not sentinel.exists()
-
-
 def _rebuild_clean_catalog(root: str) -> None:
     """Rebuild clean_catalog.json after GCS push."""
     r = subprocess.run(
@@ -165,11 +153,6 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             print("  SKIP: config_path non esiste")
             continue
 
-        # --- auto_deploy check (se false, salta solo GCS push) ---
-        auto_deploy = _read_auto_deploy(config_path, root)
-        if not auto_deploy:
-            print("  auto_deploy=false: toolkit run si, GCS push no")
-
         # --- CA certs ---
         _ca_cert_setup(config_path, artifact_name, root)
 
@@ -215,8 +198,8 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             json.dump(payload, pf, indent=2)
         print(f"  {status}")
 
-        # --- GCS push (solo se auto_deploy=true) ---
-        if auto_deploy and status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
+        # --- GCS push ---
+        if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
             print(f"  GCS push per {slug}...")
             push_slug = cfg.get("push_slug", slug)
             if _push_clean_to_gcs(push_slug, root):
@@ -225,9 +208,6 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             else:
                 print(f"  GCS push FAILED for {slug}")
                 failed_configs.append(slug)
-        elif not auto_deploy:
-            print("  GCS push saltato (auto_deploy=false)")
-            gcs_push_ok = True  # forza rebuild catalogo
 
     # --- Clean catalog rebuild ---
     if gcs_push_ok:

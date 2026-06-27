@@ -12,5 +12,5 @@ Questo candidate esiste per registrare il dataset nel catalogo Lab.
 ### Note
 
 - Parquet unico su GCS (`gs://dataciviclab-clean/rna-aiuti-stato/misure/misure.parquet`)
-- Il push via CI è disabilitato: il deploy avviene dal workflow `build-misure`
+- Il deploy su GCS avviene tramite CI di dataset-incubator (post-merge)
 - MART passthrough (nessuna aggregazione — dataset piccolo)
