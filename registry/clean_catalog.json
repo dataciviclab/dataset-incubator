@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-24",
+  "updated_at": "2026-06-27",
   "datasets": [
     {
       "slug": "ade_cinque_per_mille",
@@ -7370,6 +7370,352 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/reparti_ricovero/2022/reparti_ricovero_2022_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "rna_aiuti_stato",
+      "name": "RNA — Aiuti di Stato alle imprese",
+      "description": "Ogni aiuto pubblico concesso alle imprese italiane: beneficiario, importo, concedente, procedimento, settore NACE, regione, CUP. Dati dal Registro Nazionale Aiuti di Stato (MIMIT), 2017-2026.",
+      "source": "MIMIT — Registro Nazionale Aiuti di Stato",
+      "source_id": "mimit_rna",
+      "period": {
+        "start": 2017,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "data_concessione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data di concessione dell'aiuto (YYYY-MM-DD)"
+        },
+        {
+          "name": "car",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice identificativo della misura (CAR)"
+        },
+        {
+          "name": "cor",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice identificativo dell'aiuto (COR)"
+        },
+        {
+          "name": "denominazione_beneficiario",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ragione sociale del beneficiario"
+        },
+        {
+          "name": "codice_fiscale_beneficiario",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale / Partita IVA del beneficiario"
+        },
+        {
+          "name": "tipo_beneficiario",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "PMI, Grande impresa, Persona fisica, ..."
+        },
+        {
+          "name": "regione_beneficiario",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione del beneficiario"
+        },
+        {
+          "name": "soggetto_concedente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ente che ha concesso l'aiuto"
+        },
+        {
+          "name": "titolo_misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della misura agevolativa"
+        },
+        {
+          "name": "des_tipo_misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di misura (Regime, Aiuto ad hoc, ...)"
+        },
+        {
+          "name": "titolo_progetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo del progetto finanziato"
+        },
+        {
+          "name": "descrizione_progetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione del progetto"
+        },
+        {
+          "name": "cup",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Unico di Progetto"
+        },
+        {
+          "name": "atto_concessione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Atto di concessione"
+        },
+        {
+          "name": "base_giuridica_nazionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Base giuridica nazionale"
+        },
+        {
+          "name": "identificativo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice dell'ufficio concedente"
+        },
+        {
+          "name": "link_trasparenza_nazionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Link ai dettagli pubblici dell'aiuto"
+        },
+        {
+          "name": "id_componente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Identificativo della componente di aiuto"
+        },
+        {
+          "name": "procedimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "De Minimis / Notifica / Esenzione"
+        },
+        {
+          "name": "cod_procedimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "1=De Minimis, 2=Notifica, 3=Esenzione"
+        },
+        {
+          "name": "regolamento_ue",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regolamento UE applicabile"
+        },
+        {
+          "name": "cod_regolamento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice del regolamento UE"
+        },
+        {
+          "name": "obiettivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Obiettivo dell'aiuto"
+        },
+        {
+          "name": "cod_obiettivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice obiettivo"
+        },
+        {
+          "name": "settore_attivita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Settore economico NACE Rev.2"
+        },
+        {
+          "name": "cod_strumento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice strumento (2=Sovvenzione, 7=Prestito, ...)"
+        },
+        {
+          "name": "strumento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sovvenzione, Prestito, Garanzia, ..."
+        },
+        {
+          "name": "elemento_aiuto",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo effettivo dell'aiuto concesso (ESL) in EUR"
+        },
+        {
+          "name": "importo_nominale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo nominale dell'operazione in EUR"
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di concessione (partizione)"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Mese di concessione"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/rna_aiuti_stato/*/rna_aiuti_stato_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "rna_misure",
+      "name": "RNA — Misure (leggi e regimi di aiuto)",
+      "description": "Leggi, decreti e regimi che autorizzano aiuti di Stato in Italia. Collegabile agli aiuti via CAR. Dati dal Registro Nazionale Aiuti di Stato (MIMIT), 1994-2023.",
+      "source": "MIMIT — Registro Nazionale Aiuti di Stato",
+      "source_id": "mimit_rna",
+      "period": {
+        "start": 1994,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "car",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice identificativo della misura (PK)"
+        },
+        {
+          "name": "car_padre",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice della misura padre"
+        },
+        {
+          "name": "car_attivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice della misura attiva"
+        },
+        {
+          "name": "titolo_misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della misura"
+        },
+        {
+          "name": "des_tipo_misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regime di aiuti, Aiuto ad hoc, Regime Quadro"
+        },
+        {
+          "name": "cod_tipo_misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "1=Regime, 2=Aiuto ad hoc, 3=Esenzione"
+        },
+        {
+          "name": "data_inizio_misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data di inizio validità (ISO 8601)"
+        },
+        {
+          "name": "data_fine_misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data di fine validità (ISO 8601)"
+        },
+        {
+          "name": "base_giuridica_nazionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Legge/decreto che istituisce la misura"
+        },
+        {
+          "name": "stato_membro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato membro (ITALIA)"
+        },
+        {
+          "name": "cod_amm",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice amministrazione"
+        },
+        {
+          "name": "des_autorita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione autorità concedente"
+        },
+        {
+          "name": "autorita_concedente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ente che concede la misura"
+        },
+        {
+          "name": "importo_prestiti_garantiti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo prestiti garantiti in EUR"
+        },
+        {
+          "name": "importo_aiuto_ad_hoc",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo aiuto ad hoc in EUR"
+        },
+        {
+          "name": "link_aiuto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Link alla pagina della misura"
+        },
+        {
+          "name": "flag_quadro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Se la misura è un regime quadro (SI/NO)"
+        },
+        {
+          "name": "flag_modifica_regime",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Se modifica un regime esistente (SI/NO)"
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di inizio validità"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Mese di inizio validità"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/rna_misure/2023/rna_misure_2023_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
