@@ -1,0 +1,35 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "costituzione_master"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python preprocess.py raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  read:
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    skip: 0
+  read_mode: strict
+  required_columns:
+    - articolo
+    - n_modifiche
+    - n_giudizi
+    - n_indicatori
+  sql: "sql/clean.sql"
+
+mart:
+  tables:
+    - name: "costituzione_master"
+      sql: "sql/mart.sql"
