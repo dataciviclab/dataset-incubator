@@ -3,11 +3,8 @@ schema_version: 1
 
 dataset:
   name: "rna_misure"
-  auto_deploy: false
   source_id: "mimit_rna"
   years: [2023]
-  period_start: 1994
-  period_end: 2023
 
 raw:
   output_policy: "overwrite"

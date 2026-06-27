@@ -106,22 +106,15 @@ def _push_clean_to_gcs(slug: str, root: str) -> bool:
 
 
 def _read_auto_deploy(config_path: str, root: str) -> bool:
-    """Legge auto_deploy da dataset.yml. Default True se campo mancante."""
-    import yaml
+    """Legge auto_deploy dalla directory del dataset.yml.
 
+    Se esiste un file ``auto_deploy`` (sentinella) nella stessa directory
+    del dataset.yml, il valore e' ``False`` (deploy gestito upstream).
+    Default ``True`` per tutti gli altri candidati.
+    """
     dspath = Path(root) / config_path
-    if not dspath.exists():
-        return True
-    try:
-        with open(dspath) as f:
-            cfg = yaml.safe_load(f)
-    except Exception:
-        return True
-    ds = cfg.get("dataset", {})
-    val = ds.get("auto_deploy", True)
-    if isinstance(val, bool):
-        return val
-    return True
+    sentinel = dspath.parent / "auto_deploy"
+    return not sentinel.exists()
 
 
 def _rebuild_clean_catalog(root: str) -> None:
