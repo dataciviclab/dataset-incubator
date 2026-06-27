@@ -1,0 +1,37 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "rna_aiuti_stato"
+  source_id: "mimit_rna"
+  years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+
+raw:
+  output_policy: "overwrite"
+  sources:
+    - name: "rna_aiuti_parquet"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/rna-aiuti-stato/rna_{year}.parquet"
+        filename: "rna_{year}.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+  validate:
+    min_rows: 100000
+
+mart:
+  tables:
+    - name: "mart_aiuti_per_regione"
+      sql: "sql/mart_per_regione.sql"
+    - name: "mart_aiuti_per_procedimento"
+      sql: "sql/mart_per_procedimento.sql"
+    - name: "mart_aiuti_top_beneficiari"
+      sql: "sql/mart_top_beneficiari.sql"
+  required_tables:
+    - "mart_aiuti_per_regione"
+  validate: {}

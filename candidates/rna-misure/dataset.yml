@@ -1,0 +1,33 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "rna_misure"
+  source_id: "mimit_rna"
+  years: [2023]
+
+raw:
+  output_policy: "overwrite"
+  sources:
+    - name: "rna_misure_parquet"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/rna-aiuti-stato/misure/misure.parquet"
+        filename: "misure.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+  validate:
+    min_rows: 10000
+
+mart:
+  tables:
+    - name: "mart_misure"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_misure"
+  validate: {}
