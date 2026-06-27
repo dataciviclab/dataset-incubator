@@ -1,2 +1,2 @@
 -- RNA Misure — CLEAN
-SELECT * FROM clean_input
+SELECT * FROM raw_input

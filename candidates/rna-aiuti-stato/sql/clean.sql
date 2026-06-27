@@ -34,4 +34,4 @@ SELECT
     importo_nominale,
     anno,
     mese
-FROM clean_input
+FROM raw_input
