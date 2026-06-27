@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-24",
+  "generated_at": "2026-06-27",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 55,
+    "total": 57,
     "by_status": {
-      "ok": 55,
+      "ok": 57,
       "warn": 0,
       "error": 0
     }
@@ -777,6 +777,51 @@
           2022
         ],
         "config_path": "candidates/reparti-ricovero/dataset.yml"
+      }
+    },
+    {
+      "id": "rna-aiuti-stato",
+      "source_id": "mimit_rna",
+      "status": "ok",
+      "label": "rna-aiuti-stato",
+      "detail": "anni 2017-2026 — fonte: rna_aiuti_parquet — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28290057933",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28290057933",
+        "checked_at": "2026-06-27",
+        "years": [
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "config_path": "candidates/rna-aiuti-stato/dataset.yml"
+      }
+    },
+    {
+      "id": "rna-misure",
+      "source_id": "mimit_rna",
+      "status": "ok",
+      "label": "rna-misure",
+      "detail": "anno 2023 — fonte: rna_misure_parquet — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28290057933",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28290057933",
+        "checked_at": "2026-06-27",
+        "years": [
+          2023
+        ],
+        "config_path": "candidates/rna-misure/dataset.yml"
       }
     },
     {
