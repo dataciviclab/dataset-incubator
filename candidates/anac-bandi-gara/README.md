@@ -19,10 +19,22 @@ Bandi di gara pubblicati dalle stazioni appaltanti italiane, identificati dal CI
 
 ## Copertura
 
-| Anno | Righe | Note |
+10 anni (2016-2025), tutti via API CKAN con pattern `cig-{year}`.
+
+| Anno | Righe clean | Raw |
 |---|---|---|
-| 2025 | ~1.47M | Primo anno validato (12 mesi, 1.23GB raw → 330MB parquet clean) |
-| 2007-2024 | — | Disponibili su portale ANAC, da estendere progressivamente |
+| 2016 | 332.115 | ~225 MB zippato |
+| 2017 | 374.234 | ~240 MB |
+| 2018 | 371.944 | ~270 MB |
+| 2019 | 369.654 | ~310 MB |
+| 2020 | 388.451 | ~350 MB |
+| 2021 | 490.443 (stima) | ~350 MB |
+| 2022 | 490.443 | ~420 MB |
+| 2023 | 655.125 | ~550 MB |
+| 2024 | 1.228.909 | ~940 MB |
+| 2025 | 1.475.581 | ~1.2 GB |
+
+Anni precedenti (2007-2015) disponibili ma non ancora integrati.
 
 ## Schema clean (53 colonne)
 
