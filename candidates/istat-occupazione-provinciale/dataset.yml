@@ -1,0 +1,59 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_occupazione_provinciale"
+  source_id: "istat_sdmx"
+  years: [2025]
+  time_coverage:
+    start_year: 2018
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sdmx_occupazione"
+      type: "sdmx"
+      client:
+        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+      args:
+        agency: "IT1"
+        flow: "150_915"
+        version: "1.0"
+        filters:
+          FREQ: "A"
+          DATA_TYPE: "EMP_R"
+          CITIZENSHIP: "TOTAL"
+          EDU_LEV_HIGHEST: "99"
+        year: "2025"
+        filename: "istat_occupazione_serie.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    min_rows: 10000
+    promotion:
+      max_row_drop_pct: 80
+      fail_on_row_drop_exceeded: false
+
+mart:
+  tables:
+    - name: "mart_occupazione_provinciale"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_occupazione_provinciale"
+  validate:
+    table_rules:
+      mart_occupazione_provinciale:
+        min_rows: 10000
+
+validation:
+  fail_on_error: true
