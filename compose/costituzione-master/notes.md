@@ -10,8 +10,8 @@ Ogni riga = un articolo (1-139) con metriche aggregate da:
 
 ## Dipendenza
 
-Lo script RAW scarica i parquet da GitHub (repo pubblico `dataciviclab/costituzione-italiana`).
-Il repo deve essere pubblico perché `raw.githubusercontent.com` sia accessibile senza token.
+Lo script RAW scarica i parquet da `raw.githubusercontent.com/dataciviclab/costituzione-italiana`.
+Il repo è pubblico — nessun token richiesto.
 
 ## Esecuzione
 

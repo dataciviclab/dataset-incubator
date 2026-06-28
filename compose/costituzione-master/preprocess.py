@@ -17,11 +17,8 @@ from urllib.request import urlopen
 
 logger = logging.getLogger("costituzione-master")
 
-# Percorso locale (repo clonato accanto) — per sviluppo
-LOCAL = Path(__file__).resolve().parent.parent.parent.parent / "costituzione-italiana" / "data"
-
-# URL remoto (repo pubblico su GitHub) — per CI/produzione
-REMOTE = "https://raw.githubusercontent.com/dataciviclab/costituzione-italiana/main/data"
+# Repository pubblico su GitHub
+BASE = "https://raw.githubusercontent.com/dataciviclab/costituzione-italiana/main/data"
 
 NOMI = {
     "articoli": "articoli.parquet",
@@ -32,14 +29,9 @@ NOMI = {
 
 
 def _leggi_file(nome: str) -> bytes:
-    """Legge un parquet: prima locale (sviluppo), poi remoto (CI)."""
-    fname = NOMI[nome]
-    locale = LOCAL / fname
-    if locale.exists():
-        logger.info("Locale %s", locale)
-        return locale.read_bytes()
-    url = f"{REMOTE}/{fname}"
-    logger.info("Remoto %s", url)
+    """Scarica un parquet dal repo pubblico costituzione-italiana."""
+    url = f"{BASE}/{NOMI[nome]}"
+    logger.info("Download %s", url)
     with urlopen(url, timeout=60) as resp:
         return resp.read()
 
