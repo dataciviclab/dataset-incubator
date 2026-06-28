@@ -3489,214 +3489,46 @@
           "description": "Regione"
         },
         {
-          "name": "incremento_netto_ha_2006_2012",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2006-2012 [ha]"
+          "name": "periodo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         },
         {
-          "name": "incremento_lordo_ha_2006_2012",
-          "type": "DOUBLE",
+          "name": "anno",
+          "type": "INTEGER",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2006-2012 [ha]"
+          "description": ""
         },
         {
-          "name": "ripristino_ha_2006_2012",
+          "name": "incremento_netto_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2006-2012 [ha]"
+          "description": ""
         },
         {
-          "name": "incremento_netto_ha_2012_2015",
+          "name": "incremento_lordo_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2012-2015 [ha]"
+          "description": ""
         },
         {
-          "name": "incremento_lordo_ha_2012_2015",
+          "name": "ripristino_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento lordo consumo suolo 2012-2015 [ha]"
+          "description": ""
         },
         {
-          "name": "ripristino_ha_2012_2015",
+          "name": "stock_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Aree ripristinate 2012-2015 [ha]"
+          "description": ""
         },
         {
-          "name": "incremento_netto_ha_2015_2016",
+          "name": "stock_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Incremento netto consumo suolo 2015-2016 [ha]"
-        },
-        {
-          "name": "incremento_lordo_ha_2015_2016",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento lordo consumo suolo 2015-2016 [ha]"
-        },
-        {
-          "name": "ripristino_ha_2015_2016",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Aree ripristinate 2015-2016 [ha]"
-        },
-        {
-          "name": "incremento_netto_ha_2016_2017",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2016-2017 [ha]"
-        },
-        {
-          "name": "incremento_lordo_ha_2016_2017",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento lordo consumo suolo 2016-2017 [ha]"
-        },
-        {
-          "name": "ripristino_ha_2016_2017",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Aree ripristinate 2016-2017 [ha]"
-        },
-        {
-          "name": "incremento_netto_ha_2017_2018",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2017-2018 [ha]"
-        },
-        {
-          "name": "incremento_lordo_ha_2017_2018",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento lordo consumo suolo 2017-2018 [ha]"
-        },
-        {
-          "name": "ripristino_ha_2017_2018",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Aree ripristinate 2017-2018 [ha]"
-        },
-        {
-          "name": "incremento_netto_ha_2018_2019",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2018-2019 [ha]"
-        },
-        {
-          "name": "incremento_lordo_ha_2018_2019",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento lordo consumo suolo 2018-2019 [ha]"
-        },
-        {
-          "name": "ripristino_ha_2018_2019",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Aree ripristinate 2018-2019 [ha]"
-        },
-        {
-          "name": "incremento_netto_ha_2019_2020",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2019-2020 [ha]"
-        },
-        {
-          "name": "incremento_lordo_ha_2019_2020",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento lordo consumo suolo 2019-2020 [ha]"
-        },
-        {
-          "name": "ripristino_ha_2019_2020",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Aree ripristinate 2019-2020 [ha]"
-        },
-        {
-          "name": "incremento_netto_ha_2020_2021",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2020-2021 [ha]"
-        },
-        {
-          "name": "incremento_lordo_ha_2020_2021",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento lordo consumo suolo 2020-2021 [ha]"
-        },
-        {
-          "name": "ripristino_ha_2020_2021",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Aree ripristinate 2020-2021 [ha]"
-        },
-        {
-          "name": "incremento_netto_ha_2021_2022",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2021-2022 [ha]"
-        },
-        {
-          "name": "incremento_lordo_ha_2021_2022",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento lordo consumo suolo 2021-2022 [ha]"
-        },
-        {
-          "name": "ripristino_ha_2021_2022",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Aree ripristinate 2021-2022 [ha]"
-        },
-        {
-          "name": "incremento_netto_ha_2022_2023",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2022-2023 [ha]"
-        },
-        {
-          "name": "incremento_lordo_ha_2022_2023",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento lordo consumo suolo 2022-2023 [ha]"
-        },
-        {
-          "name": "ripristino_ha_2022_2023",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Aree ripristinate 2022-2023 [ha]"
-        },
-        {
-          "name": "incremento_netto_ha_2023_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento netto consumo suolo 2023-2024 [ha]"
-        },
-        {
-          "name": "incremento_lordo_ha_2023_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Incremento lordo consumo suolo 2023-2024 [ha]"
-        },
-        {
-          "name": "ripristino_ha_2023_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Aree ripristinate 2023-2024 [ha]"
-        },
-        {
-          "name": "stock_ha_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Stock consumo suolo 2024 [ha]"
-        },
-        {
-          "name": "stock_pct_2024",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Stock consumo suolo 2024 [% territorio comunale]"
+          "description": ""
         }
       ],
       "location": {
