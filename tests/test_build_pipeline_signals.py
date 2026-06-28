@@ -383,6 +383,52 @@ class TestBuildSignals:
         assert s["sample_run"]["run_id"] == "r1"
 
     @pytest.mark.contract
+    def test_preserves_compose_sample_runs(self, tmp_path):
+        """I sample run dei compose (con prefisso 'compose:') sono preservati dopo rebuild."""
+        from build_pipeline_signals import build_signals
+
+        root = tmp_path / "repo-compose-sample"
+        reg = root / "registry"
+        reg.mkdir(parents=True)
+        (reg / "pipeline_signals.json").write_text(
+            json.dumps(
+                {
+                    "signals": [
+                        {
+                            "id": "compose:agg",
+                            "sample_run": {
+                                "status": "passed",
+                                "run_id": "c1",
+                                "run_url": "u",
+                                "checked_at": "2026-06-28",
+                                "years": [2026],
+                                "config_path": "compose/agg/dataset.yml",
+                            },
+                        }
+                    ],
+                }
+            )
+        )
+        # Crea la struttura compose
+        comp = root / "compose" / "agg"
+        (comp / "sql").mkdir(parents=True)
+        (comp / "sql" / "mart.sql").write_text("SELECT 1")
+        (comp / "dataset.yml").write_text("dataset:\n  name: agg\n  years: [2026]")
+        # Crea candidates vuoto (build_signals lo richiede)
+        (root / "candidates").mkdir()
+
+        out = reg / "pipeline_signals.json"
+        with patch("build_pipeline_signals.ROOT", root):
+            assert build_signals(out) == 0
+
+        signals = json.loads(out.read_text())["signals"]
+        compose_signal = [s for s in signals if s["id"] == "compose:agg"]
+        assert len(compose_signal) == 1, "compose:agg non trovato dopo rebuild"
+        assert compose_signal[0]["sample_run"]["run_id"] == "c1", (
+            f"sample_run perso dopo rebuild: {compose_signal[0]}"
+        )
+
+    @pytest.mark.contract
     def test_handles_no_candidates_dir(self, tmp_path):
         from build_pipeline_signals import build_signals
 
