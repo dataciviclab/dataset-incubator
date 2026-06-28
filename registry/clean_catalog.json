@@ -3455,8 +3455,8 @@
     },
     {
       "slug": "ispra_consumo_suolo",
-      "name": "ISPRA - Consumo di Suolo 2024",
-      "description": "Consumo di suolo per comune: incremento annuo e stock territoriale (7896 comuni)",
+      "name": "ISPRA — Consumo di Suolo (serie 2006-2024)",
+      "description": "Consumo di suolo per comune italiano: serie storica 2006-2024 in formato long. Stock ricostruito per anno. 11 periodi, 7896 comuni.",
       "source": "ISPRA",
       "source_id": "ispra_linked_data",
       "period": {
@@ -3492,43 +3492,43 @@
           "name": "periodo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Periodo di riferimento (es. \"2015-2016\")"
         },
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno finale del periodo (per JOIN e ordinamento)"
         },
         {
           "name": "incremento_netto_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Incremento netto di suolo consumato nel periodo (ettari)"
         },
         {
           "name": "incremento_lordo_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Incremento lordo di suolo consumato nel periodo (ettari)"
         },
         {
           "name": "ripristino_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Aree ripristinate/rinaturalizzate nel periodo (ettari)"
         },
         {
           "name": "stock_ha",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Stock di suolo consumato a fine periodo (ettari) — ricostruito per anni < 2024"
         },
         {
           "name": "stock_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Percentuale di suolo consumato sul totale comunale a fine periodo"
         }
       ],
       "location": {
