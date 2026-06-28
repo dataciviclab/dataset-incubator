@@ -1872,6 +1872,74 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "costituzione_master",
+      "name": "Costituzione Master",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "articolo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "parte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "heading",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "testo_preview",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "n_modifiche",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_giudizi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_indicatori",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "dataset_slugs",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione_master/2026/costituzione_master_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "dait_amministratori_locali",
       "name": "Amministratori Locali DAIT",
       "description": "Anagrafe degli Amministratori Locali e Regionali (DAIT) — snapshot giugno 2026. Amministratori comunali in carica con dati anagrafici (cognome, nome, sesso, data nascita), carica ricoperta, incarico, titolo di studio, professione e lista elettorale.",
