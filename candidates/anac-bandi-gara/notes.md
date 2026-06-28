@@ -9,13 +9,14 @@
 | 2018 | CSV in ZIP | `;` | UTF-8 | 371.944 | |
 | 2019 | CSV in ZIP | `;` | UTF-8 | 369.654 | |
 | 2020 | CSV in ZIP | `;` | UTF-8 | 388.451 | |
-| 2021 | CSV in ZIP | `;` | UTF-8 | — | raw QA falso positivo (null byte) |
+| 2021 | CSV in ZIP | `;` | UTF-8 | 490.443 | |
 | 2022 | CSV in ZIP | `;` | UTF-8 | 490.443 | |
 | 2023 | CSV in ZIP | `;` | UTF-8 | 655.125 | |
 | 2024 | CSV in ZIP | `;` | UTF-8 | 1.228.909 | |
 | 2025 | CSV in ZIP | `;` | UTF-8 | 1.475.581 | |
 
 Espansione 2016-2025 (10 anni), pattern CKAN `cig-{year}` stabile.
+Toolkit v1.44.1: raw QA checka null byte solo nei primi 4 KB.
 `sample_size: -1` per evitare auto-detection errata di CIG_COLLEGAMENTO (2017).
 
 ## Join testati
