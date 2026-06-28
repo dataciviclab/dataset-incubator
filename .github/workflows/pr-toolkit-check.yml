@@ -6,6 +6,7 @@ concurrency:
 
 env:
   TOOLKIT_VERSION: "from-requirements-txt"
+  BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
 
 # Esegue la pipeline toolkit su candidate modificati in PR.
 # Fallisce la PR se toolkit run full fallisce (run + validate + readiness).
