@@ -317,9 +317,9 @@ def build_signals(out_path: Path) -> int:
         for entry in sorted(p for p in compose_dir.iterdir() if p.is_dir()):
             slug = f"compose:{entry.name}"
             signal = _build_signal(slug, entry)
-            # sample_run per compose usa ID senza prefisso (directory name)
-            if entry.name in previous_sample_runs:
-                signal["sample_run"] = previous_sample_runs[entry.name]
+            # sample_run per compose usa ID con prefisso "compose:"
+            if slug in previous_sample_runs:
+                signal["sample_run"] = previous_sample_runs[slug]
             signals.append(signal)
 
     by_status: dict[str, int] = {"ok": 0, "warn": 0, "error": 0}
