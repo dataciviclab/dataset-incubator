@@ -4,6 +4,7 @@ schema_version: 1
 dataset:
   name: "costituzione_master"
   years: [2026]
+  source_id: "costituzione-italiana"
 
 raw:
   output_policy: overwrite
@@ -24,9 +25,13 @@ clean:
   read_mode: strict
   required_columns:
     - articolo
+    - parte
+    - heading
+    - testo_preview
     - n_modifiche
     - n_giudizi
     - n_indicatori
+    - dataset_slugs
   sql: "sql/clean.sql"
 
 mart:
