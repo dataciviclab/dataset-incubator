@@ -2,13 +2,12 @@
 
 ## Stato
 
-Candidate v0. Run passato su 2017-2023 (7 anni, schema uniforme).
+Candidate v0. Run passato su 2018-2023 (6 anni, schema uniforme).
 
 ## Anni
 
 | Anno | Righe | Note |
 |:----:|:-----:|------|
-| 2017 | 17.911 | |
 | 2018 | 16.610 | |
 | 2019 | 16.930 | |
 | 2020 | 16.712 | |
@@ -18,8 +17,9 @@ Candidate v0. Run passato su 2017-2023 (7 anni, schema uniforme).
 
 ## Anni esclusi
 
+- **2017**: dati importo anomali (100M€ per Formez PA). Escluso.
 - **2014**: disponibile come `OpenData_2014_Incarichi_CSV.csv` con schema diverso
-- **2015-2016**: disponibili ma con nomi colonna diversi (es. `Sede Amministrazione Regione` vs `Amministrazione Regione Sede`, `Rappresentante Codice Fiscale` vs `Rappresentante identificativo`)
+- **2015-2016**: disponibili ma con nomi colonna diversi
 
 ## URL pattern
 

@@ -5,7 +5,7 @@
 **Fonte:** MEF — Dipartimento del Tesoro
 **URL:** https://www.de.mef.gov.it/it/attivita_istituzionali/partecipazioni_pubbliche/open_data_partecipazioni/
 **Formato:** CSV (ISO-8859-1, delimitatore `;`)
-**Copertura:** 2017–2023 (7 anni)
+**Copertura:** 2018–2023 (6 anni)
 **Licenza:** CC BY 4.0
 
 ## Schema output (28 colonne)

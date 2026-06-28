@@ -16,7 +16,6 @@ raw:
         url: "https://www.de.mef.gov.it/modules/documenti_it/attivo_patrimonio"
         filename: "dati_rappresentanti_{year}.csv"
         url_suffix_by_year:
-          2017: "/partecipazioni_2017/dati_rappresentanti_anno_2017.csv"
           2018: "/partecipazioni_2018/dati_rappresentanti_anno_2018.csv"
           2019: "/partecipazioni_2019/dati_rappresentanti_anno_2019.csv"
           2020: "/partecipazioni_2020/dati_rappresentanti_anno_2020.csv"
