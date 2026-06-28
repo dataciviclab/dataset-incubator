@@ -36,12 +36,24 @@ mart:
   tables:
     - name: "mart_comuni"
       sql: "sql/mart.sql"
+    - name: "mart_trend_nazionale"
+      sql: "sql/mart_trend_nazionale.sql"
+    - name: "mart_trend_regionale"
+      sql: "sql/mart_trend_regionale.sql"
+    - name: "mart_trend_provinciale"
+      sql: "sql/mart_trend_provinciale.sql"
   required_tables:
     - "mart_comuni"
   validate:
     table_rules:
       mart_comuni:
         min_rows: 70000
+      mart_trend_nazionale:
+        min_rows: 8
+      mart_trend_regionale:
+        min_rows: 100
+      mart_trend_provinciale:
+        min_rows: 500
 
 validation:
   fail_on_error: true
