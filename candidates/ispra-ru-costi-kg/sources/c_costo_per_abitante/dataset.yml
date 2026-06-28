@@ -46,6 +46,9 @@ clean:
       CTOTab: VARCHAR
   validate:
     min_rows: 4000
+    promotion:
+      max_row_drop_pct: 35
+      fail_on_row_drop_exceeded: false
 
 mart:
   tables:
