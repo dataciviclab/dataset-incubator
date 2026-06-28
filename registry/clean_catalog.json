@@ -1872,6 +1872,74 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "costituzione_master",
+      "name": "Costituzione Master",
+      "description": "Metriche aggregate per ogni articolo della Costituzione: numero di modifiche costituzionali, giudizi di legittimità in Corte Costituzionale, e dataset del DataCivicLab che ne monitorano l'attuazione. Fonte: JOIN tra i 4 parquet di dataciviclab/costituzione-italiana.",
+      "source": "dataciviclab/costituzione-italiana",
+      "source_id": "costituzione-italiana",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "articolo",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Numero dell'articolo della Costituzione (1-139)"
+        },
+        {
+          "name": "parte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Parte della Costituzione (es. Principi fondamentali, Parte prima, Parte seconda)"
+        },
+        {
+          "name": "heading",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Intestazione dell'articolo (es. Art. 1, Art. 32)"
+        },
+        {
+          "name": "testo_preview",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Primi 200 caratteri del testo dell'articolo"
+        },
+        {
+          "name": "n_modifiche",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di leggi di revisione costituzionale che hanno modificato l'articolo"
+        },
+        {
+          "name": "n_giudizi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di volte che l'articolo è stato evocato come parametro in giudizi di legittimità costituzionale"
+        },
+        {
+          "name": "n_indicatori",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di dataset del DataCivicLab che monitorano l'attuazione dell'articolo"
+        },
+        {
+          "name": "dataset_slugs",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Lista degli slug dei dataset Lab collegati all'articolo"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/costituzione_master/2026/costituzione_master_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "dait_amministratori_locali",
       "name": "Amministratori Locali DAIT",
       "description": "Anagrafe degli Amministratori Locali e Regionali (DAIT) — snapshot giugno 2026. Amministratori comunali in carica con dati anagrafici (cognome, nome, sesso, data nascita), carica ricoperta, incarico, titolo di studio, professione e lista elettorale.",

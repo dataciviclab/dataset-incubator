@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 59,
+    "total": 60,
     "by_status": {
-      "ok": 59,
+      "ok": 60,
       "warn": 0,
       "error": 0
     }
@@ -1152,6 +1152,24 @@
           2025
         ],
         "config_path": "support_datasets/popolazione-istat-comunale-2019-2025/dataset.yml"
+      }
+    },
+    {
+      "id": "compose:costituzione-master",
+      "source_id": "costituzione-italiana",
+      "status": "ok",
+      "label": "compose:costituzione-master",
+      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28324305577",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28324305577",
+        "checked_at": "2026-06-28",
+        "years": [
+          2026
+        ],
+        "config_path": "compose/costituzione-master/dataset.yml"
       }
     },
     {
