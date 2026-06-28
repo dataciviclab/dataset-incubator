@@ -1,0 +1,58 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mim_scuola_infanzia"
+  source_id: "mim_opendata"
+  years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  # NOTA: 2017 non disponibile — il server restituisce HTML invece del CSV
+
+support:
+  - name: "scu_anagrafica_statali"
+    config: "../../support_datasets/mim-anagrafica-scuole-statali/dataset.yml"
+    years: [2024]
+
+raw:
+  sources:
+    - name: "mim_scuola_infanzia_csv"
+      type: "http_file"
+      args:
+        url: "https://dati.istruzione.it/opendata/opendata/catalogo/elements1/INFANZIASTRACITSTA"
+        filename: "INFANZIASTRACITSTA{year}.csv"
+        url_suffix_by_year:
+          2018: "20171820180831.csv"
+          2019: "20181920190831.csv"
+          2020: "20192020200831.csv"
+          2021: "20202120210831.csv"
+          2022: "20212220220831.csv"
+          2023: "20222320230831.csv"
+          2024: "20232420240831.csv"
+          2025: "20242520250831.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    min_rows: 500
+
+mart:
+  tables:
+    - name: "mart_bambini"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_bambini"
+  validate:
+    table_rules:
+      mart_bambini:
+        min_rows: 500
+
+validation:
+  fail_on_error: true
