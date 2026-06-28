@@ -4,7 +4,8 @@ schema_version: 1
 dataset:
   name: "mef_rappresentanti_partecipate"
   source_id: "mef_tesoro"
-  years: [2017, 2018, 2019, 2020, 2021, 2022, 2023]
+  years: [2018, 2019, 2020, 2021, 2022, 2023]
+  # 2017 escluso: dati importo anomali (100M€, formato numerico errato)
 
 raw:
   output_policy: overwrite
