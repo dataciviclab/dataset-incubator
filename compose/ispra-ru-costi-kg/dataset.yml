@@ -7,13 +7,13 @@ dataset:
 
 support:
   - name: a
-    config: "../../candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml"
-    years: [2020, 2021, 2022, 2023, 2024]
+    config: "../../candidates/ispra-ru-base/dataset.yml"
+    years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
   - name: b
-    config: "../../candidates/ispra-ru-costi-kg/sources/b_kg_per_abitante/dataset.yml"
+    config: "../../candidates/ispra-ru-costi-kg/dataset.yml"
     years: [2020, 2021, 2022, 2023, 2024]
   - name: c
-    config: "../../candidates/ispra-ru-costi-kg/sources/c_costo_per_abitante/dataset.yml"
+    config: "../../candidates/ispra-ru-costi-procapite/dataset.yml"
     years: [2020, 2021, 2022, 2023, 2024]
 
 mart:

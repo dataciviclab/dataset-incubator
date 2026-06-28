@@ -1,18 +1,18 @@
-root: "../../../../out"
+root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "ispra_ru_costi_procapite"
+  name: "ispra_ru_costi_kg"
   source_id: "ispra_linked_data"
   years: [2020, 2021, 2022, 2023, 2024]
 
 raw:
   sources:
-    - name: "ispra_ru_costi_procapite_http_csv"
+    - name: "ispra_ru_costi_kg_http_csv"
       type: "http_file"
       args:
-        url: "https://www.catasto-rifiuti.isprambiente.it/costi/getCostiComunaleproc.csv.php?costicomuneproc&aa={year}&regid=1&regid2=Italia&reg1=Italia&p=1"
-        filename: "ispra_ru_costi_procapite_{year}.csv"
+        url: "https://www.catasto-rifiuti.isprambiente.it/costi/getCostiComunalechilo.csv.php?costicomuneproc&aa={year}&regid=1&regid2=Italia&reg1=Italia&p=1"
+        filename: "ispra_ru_costi_kg_{year}.csv"
       primary: true
 
 clean:
@@ -21,7 +21,7 @@ clean:
     source: auto
     mode: latest
     header: false
-    skip: 3
+    skip: 5
     delim: ";"
     encoding: "utf-8"
     trim_whitespace: true
@@ -35,15 +35,12 @@ clean:
       Provincia: VARCHAR
       Numero di comuni: VARCHAR
       Pop.(abitanti): VARCHAR
-      CRTab: VARCHAR
-      CTSab: VARCHAR
-      CRDab: VARCHAR
-      CTRab: VARCHAR
-      CSLab: VARCHAR
-      CCab: VARCHAR
-      CKab: VARCHAR
-      Altri costi: VARCHAR
-      CTOTab: VARCHAR
+      CRTkg: VARCHAR
+      CRDkg: VARCHAR
+      CSLkg: VARCHAR
+      CCkg: VARCHAR
+      CKkg: VARCHAR
+      CTOTkg: VARCHAR
   validate:
     min_rows: 4000
     promotion:
