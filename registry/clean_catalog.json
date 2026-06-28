@@ -1885,7 +1885,7 @@
         {
           "name": "articolo",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Numero dell'articolo della Costituzione (1-139)"
         },
         {
