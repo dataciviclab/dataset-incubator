@@ -7,6 +7,7 @@ dataset:
   years: [ 2024 ]
   # Anno nominale: il file XLSX copre l'intera serie 2006-2024.
   # Non esistono file separati per anno: year=2024 e` il rilascio piu recente.
+  # Output in formato long: una riga per comune x periodo (11 periodi).
 
 raw:
   sources:
@@ -28,8 +29,8 @@ clean:
     # La riga 0 e` header (nomi colonne originali ISPRA)
     # La riga 1 e` spesso una riga di unita` misura: skippiata in clean.sql
   validate:
-    min_rows: 7000
-    # ISPRA 2024: ~8.000 comuni con dati
+    min_rows: 70000
+    # ~7.896 comuni x 11 periodi = ~86.856 righe in formato long
 
 mart:
   tables:
@@ -40,7 +41,7 @@ mart:
   validate:
     table_rules:
       mart_comuni:
-        min_rows: 7000
+        min_rows: 70000
 
 validation:
   fail_on_error: true
