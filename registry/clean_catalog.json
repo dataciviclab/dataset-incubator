@@ -5453,9 +5453,9 @@
     },
     {
       "slug": "mim_scuola_infanzia",
-      "name": "Mim Scuola Infanzia",
-      "description": "",
-      "source": "",
+      "name": "MIM — Bambini Scuola Infanzia per Cittadinanza (2018-2025)",
+      "description": "Bambini italiani e non italiani iscritti alle scuole dell'infanzia statali, per scuola e anno scolastico. Arricchito con anagrafica territoriale MIM. 8 anni, ~13.000 scuole/anno.",
+      "source": "MIM — dati.istruzione.it (INFANZIASTRACITSTA)",
       "source_id": "mim_opendata",
       "period": {
         "start": 2018,
@@ -5466,85 +5466,85 @@
           "name": "anno_scolastico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Anno scolastico (es. 202425 = 2024/2025)"
         },
         {
           "name": "codice_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice unico ministeriale della scuola"
         },
         {
           "name": "denominazione_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della scuola"
         },
         {
           "name": "grado_istruzione_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Grado di istruzione (es. SCUOLA INFANZIA)"
         },
         {
           "name": "caratteristica_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia (NORMALE, SPECIALE, ecc.)"
         },
         {
           "name": "bambini_italiani",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero bambini con cittadinanza italiana"
         },
         {
           "name": "bambini_non_italiani",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero bambini con cittadinanza non italiana"
         },
         {
           "name": "bambini_totale",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Totale bambini (italiani + non italiani)"
         },
         {
           "name": "area_geografica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Area geografica (Nord Ovest, Nord Est, Centro, Sud, Isole)"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune"
         },
         {
           "name": "codice_comune_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice catastale del comune"
         },
         {
           "name": "denominazione_istituto_riferimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione istituto comprensivo di riferimento"
         }
       ],
       "location": {
