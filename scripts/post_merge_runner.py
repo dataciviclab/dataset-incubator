@@ -182,8 +182,11 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
 
         run_id = os.environ.get("GITHUB_RUN_ID", "0")
         repo = os.environ.get("GITHUB_REPOSITORY", "")
+        # Compose datasets usano prefisso "compose:" per allinearsi
+        # a build_pipeline_signals.py che lo usa per evitare collisioni
+        resolved_id = f"compose:{slug}" if config_path.startswith("compose/") else slug
         payload = {
-            "id": slug,
+            "id": resolved_id,
             "status": status,
             "years": all_years,
             "config_path": config_path,
