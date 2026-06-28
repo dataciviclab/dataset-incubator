@@ -14,6 +14,15 @@ Stato attuale:
 - notebook `v0` e `v1` disponibili
 - Discussion pubblica già aggiornata: `#22`
 
+### Espansione temporale A (2026-06-28)
+
+- `a_ru_base` espanso da `2020-2024` a **`2010-2024`** (15 anni)
+- URL ISPRA stabile e schema identico per tutti gli anni
+- `min_rows` validazione rilassato da 7000 a 6500 per coprire la copertura ridotta degli anni 2012-2013 (molti comuni in aggregazione)
+- Transition `max_row_drop_pct` portato a 20% per assorbire il drop fisiologico degli anni con comuni aggregati (`fail_on_row_drop_exceeded: false`)
+- Run `all` verde per tutti i 15 anni
+- `B` e `C` NON espansi: schema CSV cambiato tra 2011 e 2020 (colonne costo diverse), serve SQL condizionale per anno — rimandato a follow-up
+
 ## Architettura adottata
 
 Pattern multi-fonte:

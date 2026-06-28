@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "ispra_ru_base"
   source_id: "ispra_linked_data"
-  years: [2020, 2021, 2022, 2023, 2024]
+  years: [2010, 2011, 2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
 
 raw:
   sources:
@@ -52,7 +52,10 @@ clean:
       Totale RU (t): VARCHAR
       Percentuale RD (%): VARCHAR
   validate:
-    min_rows: 7000
+    min_rows: 6500
+    promotion:
+      max_row_drop_pct: 20
+      fail_on_row_drop_exceeded: false
 
 mart:
   tables:
@@ -61,7 +64,7 @@ mart:
   validate:
     table_rules:
       mart_comuni:
-        min_rows: 7000
+        min_rows: 6500
 
 validation:
   fail_on_error: true

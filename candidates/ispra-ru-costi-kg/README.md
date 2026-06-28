@@ -11,8 +11,8 @@ Nucleo multi-fonte ISPRA sui rifiuti urbani, costruito come estensione del vecch
 Fonti previste nel primo ciclo:
 
 | ID | Fonte | Ruolo previsto | Stato |
-|---|---|---|---|
-| A | ISPRA RU base | base territoriale con totale RU, RD e popolazione | run verde `2020-2024` |
+|---|---|---|---|---|
+| A | ISPRA RU base | base territoriale con totale RU, RD e popolazione | run verde `2010-2024` (espanso da 5 a 15 anni) |
 | B | ISPRA kg per abitante | metrica pro capite del volume di RU | run verde `2020-2024`, mart cross mancante nel `2022` sul clone corrente |
 | C | ISPRA costo per abitante | asse economico minimo del servizio | run verde `2020-2024`, mart cross mancante nel `2021` sul clone corrente |
 
@@ -58,7 +58,7 @@ Gli anni `2021` e `2022` non sono oggi presenti nel cross mart locale per un vin
 
 Stato attuale del candidate:
 
-- source dataset `A/B/C` eseguiti su `2020-2024`
+- source dataset `A` eseguito su `2010-2024` (15 anni), `B/C` su `2020-2024`
 - compose minimo chiuso sul join `codice_comune_istat x anno`
 - notebook `v1` disponibile sul perimetro joinato
 - per vincolo del toolkit, il SQL del cross resta anche in `sources/a_ru_base/sql/` come copia eseguibile
@@ -85,6 +85,10 @@ Promuovere il filone solo se:
 ## Provenienza
 
 Il filone nasce come estensione ordinata del vecchio `progetto-pilota` ISPRA RU, oggi classificato come `legacy closed` in `dataciviclab`.
+
+## Gap noti / follow-up
+
+- **B** e **C**: lo schema dei CSV dei costi è cambiato tra 2011 e 2020 (11 colonne costo nel 2011 → 6 nel 2020). Impossibile espandere linearmente come A. Serve analisi separata con SQL condizionale per anno o skip colonne adattivo.
 
 ## Prossimo passo
 
