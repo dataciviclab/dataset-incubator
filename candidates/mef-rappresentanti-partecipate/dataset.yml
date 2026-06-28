@@ -1,0 +1,56 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mef_rappresentanti_partecipate"
+  source_id: "mef_tesoro"
+  years: [2017, 2018, 2019, 2020, 2021, 2022, 2023]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "mef_rappresentanti_csv"
+      type: "http_file"
+      args:
+        url: "https://www.de.mef.gov.it/modules/documenti_it/attivo_patrimonio"
+        filename: "dati_rappresentanti_{year}.csv"
+        url_suffix_by_year:
+          2017: "/partecipazioni_2017/dati_rappresentanti_anno_2017.csv"
+          2018: "/partecipazioni_2018/dati_rappresentanti_anno_2018.csv"
+          2019: "/partecipazioni_2019/dati_rappresentanti_anno_2019.csv"
+          2020: "/partecipazioni_2020/dati_rappresentanti_anno_2020.csv"
+          2021: "/partecipazioni_2021/dati_rappresentanti_anno_2021.csv"
+          2022: "/2022/dati_rappresentanti_anno_2022.CSV"
+          2023: "/partecipazioni_2023/dati_rappresentanti_anno_2023.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ";"
+    encoding: "iso-8859-1"
+    header: true
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    min_rows: 5000
+    promotion:
+      max_row_drop_pct: 50
+      fail_on_row_drop_exceeded: false
+
+mart:
+  tables:
+    - name: "mart_rappresentanti"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_rappresentanti"
+  validate:
+    table_rules:
+      mart_rappresentanti:
+        min_rows: 5000
+
+validation:
+  fail_on_error: true
