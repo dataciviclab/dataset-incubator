@@ -455,9 +455,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26091030726",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26091030726",
-        "checked_at": "2026-05-19",
+        "run_id": "28322708552",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28322708552",
+        "checked_at": "2026-06-28",
         "years": [
           2020,
           2021,
@@ -465,7 +465,7 @@
           2023,
           2024
         ],
-        "config_path": "candidates/ispra-ru-costi-kg/sources/a_ru_base/dataset.yml"
+        "config_path": "candidates/ispra-ru-costi-kg/dataset.yml"
       }
     },
     {
