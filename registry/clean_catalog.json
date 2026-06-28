@@ -4283,9 +4283,9 @@
     },
     {
       "slug": "istat_occupazione_provinciale",
-      "name": "Istat Occupazione Provinciale",
-      "description": "",
-      "source": "",
+      "name": "ISTAT — Tasso di Occupazione Provinciale (2018-2025)",
+      "description": "Tasso di occupazione (EMP_R) per provincia italiana: serie annuale 2018-2025, per sesso e classe età. Fonte ISTAT SDMX flow 150_915. 105 province, 6 classi età.",
+      "source": "ISTAT — SDMX (DCCV_TAXOCCU1)",
       "source_id": "istat_sdmx",
       "period": {
         "start": 2018,
@@ -4296,55 +4296,55 @@
           "name": "ref_area",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS3 della provincia (es. ITC45 per Milano)"
         },
         {
           "name": "territorio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della provincia (es. Milano)"
         },
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento (2018-2025)"
         },
         {
           "name": "indicatore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di indicatore: EMP_R = tasso di occupazione"
         },
         {
           "name": "sesso_codice",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice sesso: 1=maschi, 2=femmine, 9=totale"
         },
         {
           "name": "sesso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sesso: maschi / femmine / totale"
         },
         {
           "name": "eta_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice classe età ISTAT (es. Y15-64)"
         },
         {
           "name": "eta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Classe età (es. \"15-64 years\")"
         },
         {
           "name": "valore",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Tasso di occupazione percentuale (0-100)"
         }
       ],
       "location": {
