@@ -4282,6 +4282,80 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "istat_occupazione_provinciale",
+      "name": "ISTAT — Tasso di Occupazione Provinciale (2018-2025)",
+      "description": "Tasso di occupazione (EMP_R) per provincia italiana: serie annuale 2018-2025, per sesso e classe età. Fonte ISTAT SDMX flow 150_915. 105 province, 6 classi età.",
+      "source": "ISTAT — SDMX (DCCV_TAXOCCU1)",
+      "source_id": "istat_sdmx",
+      "period": {
+        "start": 2018,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "ref_area",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice NUTS3 della provincia (es. ITC45 per Milano)"
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della provincia (es. Milano)"
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento (2018-2025)"
+        },
+        {
+          "name": "indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di indicatore: EMP_R = tasso di occupazione"
+        },
+        {
+          "name": "sesso_codice",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice sesso: 1=maschi, 2=femmine, 9=totale"
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sesso: maschi / femmine / totale"
+        },
+        {
+          "name": "eta_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice classe età ISTAT (es. Y15-64)"
+        },
+        {
+          "name": "eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Classe età (es. \"15-64 years\")"
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Tasso di occupazione percentuale (0-100)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_occupazione_provinciale/2025/istat_occupazione_provinciale_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "istat_pil_territoriale",
       "name": "PIL regionale e provinciale",
       "description": "PIL, Valore Aggiunto e Imposte nette per nazione, macro-aree, regioni e province. Fonte: ISTAT Conti economici territoriali (DCCN_PILT). Serie 1995-2024.",
