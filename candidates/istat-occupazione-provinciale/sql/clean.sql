@@ -1,10 +1,8 @@
 -- clean.sql — istat_occupazione_provinciale
 --
--- Input: SDMX-CSV dai dataflow ISTAT 150_915 (tasso occupazione) e 151_914
--- (tasso disoccupazione), concatenati dal reader SDMX.
+-- Input: SDMX-CSV dal dataflow ISTAT 150_915 (tasso occupazione).
 --
--- Output: formato long, una riga per provincia × anno × sesso × classe età
--- con due metriche: tasso occupazione EMP_R e tasso disoccupazione UNEM_R.
+-- Output: formato long, una riga per provincia × anno × sesso × classe età.
 
 SELECT
     "REF_AREA"                                              AS ref_area,
@@ -29,7 +27,8 @@ WHERE
     "FREQ" = 'A'
     -- Solo livelli territoriali provincia (codice NUTS3 a 5 caratteri)
     AND LENGTH("REF_AREA") = 5
-    AND "REF_AREA" NOT LIKE 'IT%0%'   -- esclude ITC10 etc (raggruppamenti)
+    -- Esclude ITC, ITD, ITE, ITF, ITG (regioni/macroaree a 3-4 caratteri) gia filtrate da LENGTH
+    -- NOTA: province con codice ITnnn (3 cifre, es. IT108 Monza) sono corrette a 5 caratteri
     -- Solo cittadinanza totale
     AND "CITIZENSHIP" = 'TOTAL'
     -- Solo istruzione totale (per v0; le singole classi available via EDU_LEV_HIGHEST)

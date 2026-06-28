@@ -6,7 +6,7 @@
 **Accesso:** Endpoint HVD ISTAT, SDMX-CSV diretto
 **Licenza:** CC BY (ISTAT)
 **Granularità:** provincia (NUTS3)
-**Copertura:** 2004–2025 (22 anni)
+**Copertura:** 2018–2025 (8 anni, serie provinciale completa)
 
 ## Schema clean (9 colonne)
 

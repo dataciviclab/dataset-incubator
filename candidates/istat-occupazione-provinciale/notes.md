@@ -3,7 +3,7 @@
 ## Stato
 
 Candidate v0 — solo tasso di occupazione (EMP_R) dal dataflow 150_915.
-Tasso di disoccupazione (UNEM_R, flow 151_914) da aggiungere in v1.
+Dati provinciali (NUTS3) disponibili dal 2018 (non dal 2004, che copre solo territorio nazionale/regionale).
 
 ## Fonte
 
