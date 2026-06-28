@@ -4282,6 +4282,80 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "istat_occupazione_provinciale",
+      "name": "Istat Occupazione Provinciale",
+      "description": "",
+      "source": "",
+      "source_id": "istat_sdmx",
+      "period": {
+        "start": 2018,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "ref_area",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sesso_codice",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "eta_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_occupazione_provinciale/2025/istat_occupazione_provinciale_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "istat_pil_territoriale",
       "name": "PIL regionale e provinciale",
       "description": "PIL, Valore Aggiunto e Imposte nette per nazione, macro-aree, regioni e province. Fonte: ISTAT Conti economici territoriali (DCCN_PILT). Serie 1995-2024.",
