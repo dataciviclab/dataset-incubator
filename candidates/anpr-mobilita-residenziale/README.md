@@ -4,8 +4,8 @@
 
 **Fonte:** ANPR — Anagrafe Nazionale della Popolazione Residente (Dipartimento per la Trasformazione Digitale, PCM)
 **URL:** https://github.com/italia/anpr-opendata
-**Formato:** CSV, 7 colonne, ~98 KB
-**Copertura:** aprile 2022 – settembre 2025
+**Formato:** CSV, 7 colonne, ~800 KB
+**Copertura:** aprile 2022 – giugno 2026
 **Licenza:** CC0
 
 ## Schema (7 colonne)

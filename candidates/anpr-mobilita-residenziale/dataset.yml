@@ -4,10 +4,10 @@ schema_version: 1
 dataset:
   name: "anpr_mobilita_residenziale"
   source_id: "anpr"
-  years: [2025]
+  years: [2026]
   time_coverage:
     start_year: 2022
-    end_year: 2025
+    end_year: 2026
 
 raw:
   output_policy: overwrite
