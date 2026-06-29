@@ -4492,6 +4492,80 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "iva_regionale",
+      "name": "MEF — IVA Regionale: Volume Affari e VA fiscale (2014-2023)",
+      "description": "Volume d'affari IVA, valore aggiunto fiscale e imposta per regione italiana. Serie 2014-2023 (10 anni). Fonte MEF Finanze. Valori in euro.",
+      "source": "MEF — Dipartimento delle Finanze (CIVATOT0201)",
+      "source_id": "mef_finanze",
+      "period": {
+        "start": 2015,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno d'imposta (URL anno - 1)"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione regione"
+        },
+        {
+          "name": "cod_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT regione (2 cifre)"
+        },
+        {
+          "name": "contribuenti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero di contribuenti IVA"
+        },
+        {
+          "name": "volume_affari_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Volume d'affari complessivo (euro)"
+        },
+        {
+          "name": "acquisti_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Acquisti e importazioni (euro)"
+        },
+        {
+          "name": "va_fiscale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Valore aggiunto fiscale (euro)"
+        },
+        {
+          "name": "imposta_dovuta_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Imposta IVA dovuta (euro)"
+        },
+        {
+          "name": "imposta_credito_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Imposta IVA a credito (euro)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/iva_regionale/*/iva_regionale_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "mef_irpef_regionale",
       "name": "MEF - Irpef Regionale",
       "description": "Redditi dichiarati per regione e classe, contribuenti e ammontare per tipo di reddito. Anni 2017-2025. Fonte: Ministero dell'Economia e delle Finanze.",
