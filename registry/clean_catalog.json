@@ -625,9 +625,9 @@
     },
     {
       "slug": "anpr_mobilita_residenziale",
-      "name": "Anpr Mobilita Residenziale",
-      "description": "",
-      "source": "",
+      "name": "ANPR — Mobilita Residenziale Interregionale (2022-2026)",
+      "description": "Flussi mensili di cambio residenza tra regioni italiane, da ANPR (Anagrafe Nazionale della Popolazione Residente). Serie mensile 2022-2026, aggiornata quasi in tempo reale via GitHub Actions.",
+      "source": "ANPR — Anagrafe Nazionale della Popolazione Residente (PCM)",
       "source_id": "anpr",
       "period": {
         "start": 2022,
@@ -637,44 +637,44 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno del trasferimento"
         },
         {
           "name": "mese",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Mese del trasferimento (1-12)"
         },
         {
           "name": "partenza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione di provenienza"
         },
         {
           "name": "cod_regione_partenza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT regione di provenienza (3 cifre)"
         },
         {
           "name": "arrivo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione di destinazione"
         },
         {
           "name": "cod_regione_arrivo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT regione di destinazione (3 cifre)"
         },
         {
           "name": "totale",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero di trasferimenti di residenza"
         }
       ],
       "location": {
