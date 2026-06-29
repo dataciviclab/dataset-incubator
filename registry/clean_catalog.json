@@ -624,6 +624,68 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "anpr_mobilita_residenziale",
+      "name": "ANPR — Mobilita Residenziale Interregionale (2022-2026)",
+      "description": "Flussi mensili di cambio residenza tra regioni italiane, da ANPR (Anagrafe Nazionale della Popolazione Residente). Serie mensile 2022-2026, aggiornata quasi in tempo reale via GitHub Actions.",
+      "source": "ANPR — Anagrafe Nazionale della Popolazione Residente (PCM)",
+      "source_id": "anpr",
+      "period": {
+        "start": 2022,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno del trasferimento"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Mese del trasferimento (1-12)"
+        },
+        {
+          "name": "partenza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione di provenienza"
+        },
+        {
+          "name": "cod_regione_partenza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT regione di provenienza (3 cifre)"
+        },
+        {
+          "name": "arrivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione di destinazione"
+        },
+        {
+          "name": "cod_regione_arrivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT regione di destinazione (3 cifre)"
+        },
+        {
+          "name": "totale",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di trasferimenti di residenza"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anpr_mobilita_residenziale/2026/anpr_mobilita_residenziale_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "bdap_anagrafe_enti",
       "name": "BDAP Anagrafe Enti Pubblici",
       "description": "Anagrafe completa degli enti pubblici italiani. 63 colonne, ~38k enti. Mappa codici IPA, SIOPE, ISTAT, MIUR, SSN, catastale. Usata come bridge table per join cross-dataset nel joinability scan.",
