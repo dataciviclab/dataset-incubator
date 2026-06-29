@@ -5243,6 +5243,12 @@
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
           "name": "amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
