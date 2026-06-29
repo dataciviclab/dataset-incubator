@@ -16,14 +16,15 @@ Candidate v0. Run passato con years: [2026]. 21.750 righe, 7 colonne.
 
 ## Saldi netti interregionali 2025 (escluso ESTERO)
 
-| Regione | Saldo |
-|---------|:-----:|
-| Campania | -20.814 |
-| Sicilia | -13.260 |
-| Calabria | -7.530 |
-| Puglia | -7.521 |
-| Lazio | +3.079 |
-| Lombardia | +2.482 |
+| Regione | Uscite | Entrate | Saldo |
+|---------|:------:|:-------:|:----:|
+| Campania | 45.417 | 24.603 | -20.814 |
+| Sicilia | 34.765 | 21.505 | -13.260 |
+| Puglia | 28.295 | 19.723 | -8.572 |
+| Calabria | 20.113 | 12.583 | -7.530 |
+| … | … | … | … |
+| Lombardia | 63.203 | 77.870 | **+14.667** |
+| Emilia Romagna | 33.750 | 44.646 | **+10.896** |
 
 ## Fonte
 
