@@ -4492,6 +4492,80 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "iva_regionale",
+      "name": "Iva Regionale",
+      "description": "",
+      "source": "",
+      "source_id": "mef_finanze",
+      "period": {
+        "start": 2015,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cod_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "contribuenti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "volume_affari_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "acquisti_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "va_fiscale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "imposta_dovuta_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "imposta_credito_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/iva_regionale/*/iva_regionale_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "mef_irpef_regionale",
       "name": "MEF - Irpef Regionale",
       "description": "Redditi dichiarati per regione e classe, contribuenti e ammontare per tipo di reddito. Anni 2017-2025. Fonte: Ministero dell'Economia e delle Finanze.",

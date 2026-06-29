@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 64,
+    "total": 65,
     "by_status": {
-      "ok": 64,
+      "ok": 65,
       "warn": 0,
       "error": 0
     }
@@ -585,6 +585,33 @@
           2025
         ],
         "config_path": "candidates/istat-occupazione-provinciale/dataset.yml"
+      }
+    },
+    {
+      "id": "iva-regionale",
+      "source_id": "mef_finanze",
+      "status": "ok",
+      "label": "iva-regionale",
+      "detail": "anni 2015-2024 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28398625551",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28398625551",
+        "checked_at": "2026-06-29",
+        "years": [
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "config_path": "candidates/iva-regionale/dataset.yml"
       }
     },
     {
