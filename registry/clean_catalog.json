@@ -5233,9 +5233,9 @@
     },
     {
       "slug": "mef_rappresentanti_partecipate",
-      "name": "Mef Rappresentanti Partecipate",
-      "description": "",
-      "source": "",
+      "name": "MEF — Compensi Rappresentanti PA nelle Partecipate (2018-2023)",
+      "description": "Compensi dei rappresentanti nominati dalle pubbliche amministrazioni nei consigli di amministrazione di societa partecipate. Include amministrazione, societa, rappresentante (nome e cognome), tipo incarico, importi. Fonte MEF Tesoro, 6 anni.",
+      "source": "MEF — Dipartimento del Tesoro (Open Data Partecipazioni)",
       "source_id": "mef_tesoro",
       "period": {
         "start": 2018,
@@ -5246,169 +5246,169 @@
           "name": "amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione dell'amministrazione nominante"
         },
         {
           "name": "amm_settore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Settore istituzionale dell'amministrazione"
         },
         {
           "name": "amm_macrocategoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Macrocategoria dell'amministrazione"
         },
         {
           "name": "amm_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Categoria dell'amministrazione"
         },
         {
           "name": "amm_cf",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale dell'amministrazione"
         },
         {
           "name": "amm_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione sede dell'amministrazione"
         },
         {
           "name": "amm_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia sede dell'amministrazione"
         },
         {
           "name": "amm_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune sede dell'amministrazione"
         },
         {
           "name": "societa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della societa partecipata"
         },
         {
           "name": "societa_cf",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale della societa"
         },
         {
           "name": "societa_anno_costituzione",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Anno di costituzione della societa"
         },
         {
           "name": "societa_forma_giuridica",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Forma giuridica della societa"
         },
         {
           "name": "societa_stato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Stato giuridico (attiva/liquidazione/ecc.)"
         },
         {
           "name": "societa_settore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Settore di attivita della societa"
         },
         {
           "name": "societa_ateco",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ATECO della societa"
         },
         {
           "name": "societa_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione sede della societa"
         },
         {
           "name": "societa_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia sede della societa"
         },
         {
           "name": "societa_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune sede della societa"
         },
         {
           "name": "rapp_id",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Identificativo unico del rappresentante"
         },
         {
           "name": "rapp_cognome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome del rappresentante"
         },
         {
           "name": "rapp_nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del rappresentante"
         },
         {
           "name": "rapp_genere",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Genere del rappresentante (M/F)"
         },
         {
           "name": "incarico_tipo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia di incarico (es. Consigliere di Amministrazione)"
         },
         {
           "name": "incarico_data_inizio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Data inizio incarico"
         },
         {
           "name": "incarico_data_fine",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Data fine incarico"
         },
         {
           "name": "incarico_gratuito",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indicatore se gratuito (SI/NO)"
         },
         {
           "name": "incarico_importo_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo del trattamento economico annuo (euro)"
         },
         {
           "name": "incarico_riversato_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo riversato all'amministrazione (euro)"
         }
       ],
       "location": {
