@@ -2,17 +2,16 @@
 
 ## Stato
 
-Candidate v0. Vista Regione (CIVATOT0201) per 5 anni (2020-2024).
+Candidate v0. Vista Regione (CIVATOT0201) per 10 anni (2014-2023).
 
 ## Copertura
 
-| Anno d'imposta | Anno presentazione | Righe |
-|:--------------:|:------------------:|:-----:|
-| 2019 | 2020 | 23 |
-| 2020 | 2021 | 23 |
-| 2021 | 2022 | 23 |
-| 2022 | 2023 | 23 |
-| 2023 | 2024 | 23 |
+| Anno d'imposta | URL presentazione | Righe |
+|:--------------:|:-----------------:|:-----:|
+| 2014 | 2015 | ~21 |
+| 2015 | 2016 | ~21 |
+| … | … | … |
+| 2023 | 2024 | ~21 |
 
 ## Anni disponibili (per espansione)
 

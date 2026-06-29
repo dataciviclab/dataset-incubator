@@ -4,7 +4,7 @@
 
 WITH raw_parsed AS (
     SELECT
-        {year}::INTEGER                                             AS anno,
+        ({year} - 1)::INTEGER                                       AS anno,
         TRIM(CAST("Regione" AS VARCHAR))                            AS regione,
         LPAD(TRIM(CAST("Codice" AS VARCHAR)), 2, '0')               AS cod_regione,
         TRY_CAST("Numero contribuenti IVA" AS BIGINT)               AS contribuenti,
@@ -15,6 +15,8 @@ WITH raw_parsed AS (
         TRY_CAST("Imposta a credito - Ammontare" AS DOUBLE)         AS _imp_cred
     FROM raw_input
     WHERE "Regione" IS NOT NULL AND "Codice" IS NOT NULL
+      AND TRIM(CAST("Regione" AS VARCHAR)) NOT IN ('TOTALE', 'Non indicata')
+      AND TRIM(CAST("Codice" AS VARCHAR)) != ''
 )
 SELECT
     anno, regione, cod_regione, contribuenti,

@@ -215,8 +215,18 @@ def test_column_search(monkeypatch):
             "period": {"start": 2020, "end": 2024},
             "columns": [
                 {"name": "anno", "type": "BIGINT", "role": "dimension"},
-                {"name": "regione", "type": "VARCHAR", "role": "dimension", "description": "Regione"},
-                {"name": "reddito_totale", "type": "DOUBLE", "role": "metric", "description": "Reddito totale"},
+                {
+                    "name": "regione",
+                    "type": "VARCHAR",
+                    "role": "dimension",
+                    "description": "Regione",
+                },
+                {
+                    "name": "reddito_totale",
+                    "type": "DOUBLE",
+                    "role": "metric",
+                    "description": "Reddito totale",
+                },
             ],
         },
         {
