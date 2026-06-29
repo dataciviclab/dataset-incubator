@@ -1,0 +1,45 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "anpr_mobilita_residenziale"
+  source_id: "anpr"
+  years: [2026]
+  time_coverage:
+    start_year: 2022
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "anpr_cambi_residenza_csv"
+      type: "http_file"
+      args:
+        url: "https://raw.githubusercontent.com/italia/anpr-opendata/main/data/cambi_residenza.csv"
+        filename: "cambi_residenza.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    trim_whitespace: true
+  validate:
+    min_rows: 1000
+
+mart:
+  tables:
+    - name: "mart_flussi_regionali"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_flussi_regionali"
+  validate:
+    table_rules:
+      mart_flussi_regionali:
+        min_rows: 1000
+
+validation:
+  fail_on_error: true
