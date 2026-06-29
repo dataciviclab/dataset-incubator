@@ -6,6 +6,7 @@
 
 WITH raw_clean AS (
     SELECT
+        {year}::INTEGER                                             AS anno,
         -- Amministrazione
         TRIM(CAST("Amministrazione Denominazione" AS VARCHAR))           AS amministrazione,
         TRIM(CAST("Amministrazione Settore Istituzionale" AS VARCHAR))  AS amm_settore,
@@ -54,7 +55,7 @@ WITH raw_clean AS (
 )
 
 SELECT
-    amministrazione, amm_settore, amm_macrocategoria, amm_categoria,
+    anno, amministrazione, amm_settore, amm_macrocategoria, amm_categoria,
     amm_cf, amm_regione, amm_provincia, amm_comune,
     societa, societa_cf, societa_anno_costituzione,
     societa_forma_giuridica, societa_stato, societa_settore, societa_ateco,

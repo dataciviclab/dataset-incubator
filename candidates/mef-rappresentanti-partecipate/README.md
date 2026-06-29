@@ -8,10 +8,11 @@
 **Copertura:** 2018–2023 (6 anni)
 **Licenza:** CC BY 4.0
 
-## Schema output (28 colonne)
+## Schema output (29 colonne)
 
 | Blocco | Colonne |
 |--------|---------|
+| 📅 **Anno** | `anno` |
 | 🏛️ **Amministrazione** | `amministrazione`, `amm_settore`, `amm_macrocategoria`, `amm_categoria`, `amm_cf`, `amm_regione`, `amm_provincia`, `amm_comune` |
 | 🏢 **Società** | `societa`, `societa_cf`, `societa_anno_costituzione`, `societa_forma_giuridica`, `societa_stato`, `societa_settore`, `societa_ateco`, `societa_regione`, `societa_provincia`, `societa_comune` |
 | 👤 **Rappresentante** | `rapp_id`, `rapp_cognome`, `rapp_nome`, `rapp_genere` |
