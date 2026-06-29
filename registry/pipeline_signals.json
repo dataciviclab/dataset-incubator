@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 63,
+    "total": 64,
     "by_status": {
-      "ok": 63,
+      "ok": 64,
       "warn": 0,
       "error": 0
     }
@@ -81,6 +81,24 @@
           2025
         ],
         "config_path": "candidates/anac-bandi-gara/dataset.yml"
+      }
+    },
+    {
+      "id": "anpr-mobilita-residenziale",
+      "source_id": "anpr",
+      "status": "ok",
+      "label": "anpr-mobilita-residenziale",
+      "detail": "anno 2026 — fonte: anpr_cambi_residenza_csv — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28370691002",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28370691002",
+        "checked_at": "2026-06-29",
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/anpr-mobilita-residenziale/dataset.yml"
       }
     },
     {

@@ -624,6 +624,68 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "anpr_mobilita_residenziale",
+      "name": "Anpr Mobilita Residenziale",
+      "description": "",
+      "source": "",
+      "source_id": "anpr",
+      "period": {
+        "start": 2022,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "partenza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cod_regione_partenza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "arrivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cod_regione_arrivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "totale",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anpr_mobilita_residenziale/2026/anpr_mobilita_residenziale_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "bdap_anagrafe_enti",
       "name": "BDAP Anagrafe Enti Pubblici",
       "description": "Anagrafe completa degli enti pubblici italiani. 63 colonne, ~38k enti. Mappa codici IPA, SIOPE, ISTAT, MIUR, SSN, catastale. Usata come bridge table per join cross-dataset nel joinability scan.",
