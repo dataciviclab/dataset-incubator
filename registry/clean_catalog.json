@@ -5243,6 +5243,12 @@
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento dell'incarico (2018-2023)"
+        },
+        {
           "name": "amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
@@ -5353,7 +5359,7 @@
         {
           "name": "rapp_id",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Identificativo unico del rappresentante"
         },
         {
