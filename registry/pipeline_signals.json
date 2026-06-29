@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-06-28",
+  "generated_at": "2026-06-29",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 62,
+    "total": 63,
     "by_status": {
-      "ok": 62,
+      "ok": 63,
       "warn": 0,
       "error": 0
     }
@@ -604,6 +604,29 @@
           2023
         ],
         "config_path": "candidates/mef-partecipazioni/dataset.yml"
+      }
+    },
+    {
+      "id": "mef-rappresentanti-partecipate",
+      "source_id": "mef_tesoro",
+      "status": "ok",
+      "label": "mef-rappresentanti-partecipate",
+      "detail": "anni 2018-2023 — fonte: mef_rappresentanti_csv — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28358517238",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28358517238",
+        "checked_at": "2026-06-29",
+        "years": [
+          2018,
+          2019,
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "config_path": "candidates/mef-rappresentanti-partecipate/dataset.yml"
       }
     },
     {
