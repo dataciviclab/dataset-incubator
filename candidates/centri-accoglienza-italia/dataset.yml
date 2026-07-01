@@ -30,6 +30,8 @@ clean:
     encoding: "utf-8"
     decimal: "."
     header: true
+    quote: '"'
+    escape: '"'
     # columns: auto-detected from header
   read_mode: robust
   required_columns: ["rilevazione_data", "centro_id", "centro_denominazione", "comune_id", "comune_denominazione"]
