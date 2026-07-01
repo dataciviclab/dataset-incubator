@@ -8646,6 +8646,410 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "ted_contract_notices",
+      "name": "Ted Contract Notices",
+      "description": "",
+      "source": "",
+      "source_id": "ted",
+      "period": {
+        "start": 2020,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "id_notice_cn",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "ted_notice_url",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "anno_pubblicazione",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "id_tipo_notice",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_invio",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "xsd_version",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_cancellato",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_correzioni",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "future_can_id",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_future_can_estimated",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_multipla_stazione",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "stazione_appaltante_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "stazione_appaltante_codice_nazionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "stazione_appaltante_indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "stazione_appaltante_citta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "stazione_appaltante_cap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "paese",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_multi_paese",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "paesi_coinvolti",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_stazione_appaltante",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_istituzione_ue",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "attivita_principale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_per_conto_terzi",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_appalto_congiunto",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_aggiudicato_centrale",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipo_contratto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nuts_luogo_esecuzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_accordo_quadro",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "accordo_quadro_stima",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_operatore_unico",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_operatori_accordo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_max_operatori_accordo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_sistema_dinamico",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "cpv_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "id_lotto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cpv_codici_aggiuntivi",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_gpa",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_lotti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "lotti_presentati",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_varianti",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "valore_euro",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "valore_euro_fin_1",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "valore_euro_fin_2",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_opzioni",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_fondi_ue",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_rinnovo",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "durata_mesi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_inizio_contratto",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_fine_contratto",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipo_procedura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_accelerata",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_operatori_inviati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_min_operatori",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_max_operatori",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_criterio_aggiudicazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "peso_prezzo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "criteri_qualitativi",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "pesi_criteri",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_asta_elettronica",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_scadenza_offerte",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_lingua_qualsiasi_ce",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "lingue_ammesse",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "altre_lingue_ammesse",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_appalto_ricorrente",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ted_contract_notices/*/ted_contract_notices_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "terna_capacita_rinnovabile",
       "name": "Terna Capacita Rinnovabile",
       "description": "Capacita rinnovabile installata per regione, fonte e anno (MW). Fonti: Fotovoltaico, Eolico, Idroelettrico, Geotermico, Biomasse. Dati Terna.",
