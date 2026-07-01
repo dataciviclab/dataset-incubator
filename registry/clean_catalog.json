@@ -2435,9 +2435,9 @@
     },
     {
       "slug": "elezioni_regionali",
-      "name": "Elezioni Regionali",
-      "description": "",
-      "source": "",
+      "name": "Elezioni Regionali 2018-2024",
+      "description": "Risultati delle elezioni regionali italiane per comune: voti al candidato presidente, voti alle liste di appoggio, affluenza. Fonte: Ministero dell'Interno — Eligendo.",
+      "source": "Ministero dell'Interno — DAIT (Eligendo)",
       "source_id": "eligendo",
       "period": {
         "start": 2018,
@@ -2447,74 +2447,74 @@
         {
           "name": "data_elezione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di svolgimento delle elezioni"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione in cui si sono svolte le elezioni"
         },
         {
           "name": "circoscrizione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Circoscrizione elettorale"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia del comune"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune"
         },
         {
           "name": "elettori",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero totale di elettori iscritti"
         },
         {
           "name": "votanti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero totale di votanti"
         },
         {
           "name": "schede_bianche",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di schede bianche"
         },
         {
           "name": "candidato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome e nome del candidato presidente"
         },
         {
           "name": "voti_candidato",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti ottenuti dal candidato presidente"
         },
         {
           "name": "lista",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della lista elettorale di appoggio"
         },
         {
           "name": "voti_lista",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti ottenuti dalla lista"
         }
       ],
       "location": {
@@ -2522,7 +2522,7 @@
         "path": "gs://dataciviclab-clean/elezioni_regionali/*/elezioni_regionali_*_clean.parquet",
         "multi_file": true
       },
-      "stage": "published",
+      "stage": "incubating",
       "registry_source": "derive_auto"
     },
     {
