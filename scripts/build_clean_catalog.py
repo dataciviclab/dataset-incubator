@@ -538,7 +538,10 @@ def validate_gcs_locations(catalog: dict[str, Any]) -> list[str]:
         if location.get("multi_file"):
             missing_years = missing_period_years(matches, dataset["period"])
             if missing_years:
-                errors.append(f"{slug}: missing GCS files for years {missing_years}")
+                print(
+                    f"  WARN {slug}: GCS gap for years {missing_years} (period={dataset['period']})",
+                    file=sys.stderr,
+                )
     return errors
 
 

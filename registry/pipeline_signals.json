@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 66,
+    "total": 67,
     "by_status": {
-      "ok": 66,
+      "ok": 67,
       "warn": 0,
       "error": 0
     }
@@ -1053,6 +1053,27 @@
           2022
         ],
         "config_path": "candidates/strutture-ricovero-asl/dataset.yml"
+      }
+    },
+    {
+      "id": "ted-contract-notices",
+      "source_id": "ted",
+      "status": "ok",
+      "label": "ted-contract-notices",
+      "detail": "anni 2020-2023 — fonte: ted_cn_{year} — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28517686670",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28517686670",
+        "checked_at": "2026-07-01",
+        "years": [
+          2020,
+          2021,
+          2022,
+          2023
+        ],
+        "config_path": "candidates/ted-contract-notices/dataset.yml"
       }
     },
     {
