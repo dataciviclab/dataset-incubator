@@ -22,4 +22,3 @@
 - Il file bandi ANAC non è accessibile (Access Denied)
 - `tipologia_centro` ha varianti testuali da normalizzare (es. "CAS ADULTI", "CAS ADULTI UOMINI")
 - `presenze_giornaliere` ha valori NULL possibili
-- I dati onData (sbarchi) sono fermi a settembre 2025 (gap per 2026)
