@@ -34,8 +34,8 @@ SELECT
     END AS categoria_programma,
     -- Classificazione beneficiario
     CASE
-        WHEN flag_no_profit = 'Yes' THEN 'Non-profit'
-        WHEN flag_ong = 'Yes' THEN 'ONG'
+        WHEN LOWER(flag_no_profit) IN ('true', 'yes') THEN 'Non-profit'
+        WHEN LOWER(flag_ong) IN ('true', 'yes') THEN 'ONG'
         WHEN tipo_beneficiario ILIKE '%university%' OR tipo_beneficiario ILIKE '%research%' OR tipo_beneficiario ILIKE '%higher%' THEN 'Ricerca/Università'
         WHEN tipo_beneficiario ILIKE '%SME%' OR tipo_beneficiario ILIKE '%enterprise%' OR tipo_beneficiario ILIKE '%company%' THEN 'Impresa'
         WHEN tipo_beneficiario ILIKE '%public%' OR tipo_beneficiario ILIKE '%government%' THEN 'Pubblica Amministrazione'

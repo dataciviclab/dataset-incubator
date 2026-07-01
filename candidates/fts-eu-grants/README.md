@@ -10,7 +10,7 @@ Chi riceve finanziamenti UE in Italia? Quanto, per quali programmi, e con quali 
 
 ## Contenuto
 
-Tutti i beneficiari di fondi UE con sede in Italia, dal 2007 a oggi. Per ogni grant:
+Tutti i beneficiari di fondi UE con sede in Italia, dal 2020 a oggi. Per ogni grant:
 
 - Beneficiario (nome, città, tipo: università, impresa, ONG, PA...)
 - Programma (Horizon Europe, Erasmus+, Digital Europe, LIFE, CERV...)
@@ -21,7 +21,7 @@ Tutti i beneficiari di fondi UE con sede in Italia, dal 2007 a oggi. Per ogni gr
 ## Perimetro iniziale
 
 - Tutti i grant UE erogati a beneficiari italiani
-- Anni: 2007–2024
+- Anni: 2020–2024
 - ~5.000-7.000 grant/anno
 
 ## Fonti collegate

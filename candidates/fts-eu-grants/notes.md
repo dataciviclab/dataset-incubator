@@ -4,15 +4,16 @@
 
 - **URL XLSX**: `https://ec.europa.eu/budget/financial-transparency-system/download/{YEAR}_FTS_dataset_en.xlsx`
 - **Formato**: XLSX, 38 colonne, primo sheet
-- **Anni**: 2007–2024 verificati funzionanti
+- **Anni**: 2020–2024 verificati funzionanti (2007–2019 disponibili su richiesta)
 - **HEAD richiesto**: il server Europa restituisce `Content-Length: 0` su HEAD ma il file è correttamente servito su GET (chunked encoding)
 - **Licenza**: EU Open Data
 
 ## Pipeline
 
-- `http_file` scarica XLSX direttamente (no ZIP)
-- La lettura XLSX è gestita da `pandas.read_excel` via openpyxl
-- `columns` in clean.read normalizza i nomi colonna (da inglese con caratteri speciali a italiano)
+- `type: script` esegue `scripts/convert_xlsx_to_csv.py` che scarica l'XLSX e produce un CSV normalizzato
+- Lo script usa `pandas.read_excel(dtype=str)` per leggere tutto come stringhe, evitando problemi di tipo tra anni
+- `clean.read` legge il CSV prodotto dallo script (non l'XLSX diretto)
+- Richiede `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` per abilitare lo script source
 
 ## Schema clean
 
