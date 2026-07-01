@@ -1,0 +1,40 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "fts_eu_grants"
+  source_id: "fts"
+  years: [2024, 2023, 2022, 2021, 2020]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python scripts/convert_xlsx_to_csv.py --year {year} --output fts_{year}.csv"
+        output: "fts_{year}.csv"
+        filename: "fts_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    header: true
+    delim: ","
+    encoding: "utf-8"
+    quote: '"'
+    escape: '"'
+  validate:
+    promotion:
+      max_row_drop_pct: 100.0
+      fail_on_row_drop_exceeded: false
+
+mart:
+  tables:
+    - name: "mart_grants_italia"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_grants_italia"
+
+validation:
+  fail_on_error: true
