@@ -8,7 +8,7 @@ dataset:
   name: "centri_accoglienza_italia"
   source_id: "centri_d_italia"
   # File unico multi-anno (2018-2024); years indica l'anno del source file iterato da toolkit
-  years: [2024]
+  years: [2026]
   time_coverage:
     start_year: 2018
     end_year: 2024
