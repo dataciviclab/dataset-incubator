@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 67,
+    "total": 68,
     "by_status": {
-      "ok": 67,
+      "ok": 68,
       "warn": 0,
       "error": 0
     }
@@ -347,6 +347,28 @@
           2026
         ],
         "config_path": "candidates/farmacie/dataset.yml"
+      }
+    },
+    {
+      "id": "fts-eu-grants",
+      "source_id": "fts",
+      "status": "ok",
+      "label": "fts-eu-grants",
+      "detail": "anni 2020-2024 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28519390869",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28519390869",
+        "checked_at": "2026-07-01",
+        "years": [
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "config_path": "candidates/fts-eu-grants/dataset.yml"
       }
     },
     {

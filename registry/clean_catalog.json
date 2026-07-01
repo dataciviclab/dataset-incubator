@@ -2678,6 +2678,254 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "fts_eu_grants",
+      "name": "Grant UE erogati in Italia (FTS EU Grants)",
+      "description": "Tutti i finanziamenti UE erogati a beneficiari italiani secondo il Financial Transparency System della Commissione Europea. Per ogni grant: beneficiario (nome, città, tipo), programma (Horizon Europe, Erasmus+, DEP, LIFE, CERV...), importo contrattato e consumato, dipartimento responsabile. Fonte: ec.europa.eu/budget, 2020-2024.",
+      "source": "Commissione Europea — Financial Transparency System (FTS)",
+      "source_id": "fts",
+      "period": {
+        "start": 2020,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno del grant"
+        },
+        {
+          "name": "budget",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Budget UE di riferimento"
+        },
+        {
+          "name": "rif_impegno_giuridico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Riferimento impegno giuridico"
+        },
+        {
+          "name": "rif_bilancio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Riferimento di bilancio"
+        },
+        {
+          "name": "beneficiario_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del beneficiario"
+        },
+        {
+          "name": "beneficiario_partita_iva",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Partita IVA/codice fiscale del beneficiario"
+        },
+        {
+          "name": "flag_no_profit",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Il beneficiario è un ente non profit"
+        },
+        {
+          "name": "flag_ong",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Il beneficiario è una ONG"
+        },
+        {
+          "name": "flag_coordinatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Il beneficiario è coordinatore del progetto"
+        },
+        {
+          "name": "beneficiario_indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo del beneficiario"
+        },
+        {
+          "name": "beneficiario_citta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Città del beneficiario"
+        },
+        {
+          "name": "beneficiario_cap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CAP del beneficiario"
+        },
+        {
+          "name": "paese_beneficiario",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Paese del beneficiario (Italy)"
+        },
+        {
+          "name": "nuts2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice NUTS2 del beneficiario"
+        },
+        {
+          "name": "zona_geografica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Zona geografica"
+        },
+        {
+          "name": "luogo_azione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Luogo di esecuzione dell'azione"
+        },
+        {
+          "name": "importo_contrattato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo contrattualizzato (EUR)"
+        },
+        {
+          "name": "importo_contrattato_stimato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo contrattualizzato stimato (EUR)"
+        },
+        {
+          "name": "importo_consumato_stimato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo consumato stimato (EUR)"
+        },
+        {
+          "name": "impegno_importo_a",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Impegno importo A (EUR)"
+        },
+        {
+          "name": "importo_aggiuntivo_ridotto_b",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo aggiuntivo/ridotto B (EUR)"
+        },
+        {
+          "name": "impegno_totale_a_plus_b",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Impegno totale A+B (EUR)"
+        },
+        {
+          "name": "impegno_consumato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Impegno consumato (EUR)"
+        },
+        {
+          "name": "fonte_dettaglio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Fonte del dettaglio importo"
+        },
+        {
+          "name": "tipo_spesa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di spesa"
+        },
+        {
+          "name": "oggetto_contributo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Oggetto del contributo / titolo progetto"
+        },
+        {
+          "name": "dipartimento_responsabile",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Dipartimento UE responsabile (DG)"
+        },
+        {
+          "name": "linea_bilancio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice linea di bilancio"
+        },
+        {
+          "name": "linea_bilancio_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome linea di bilancio"
+        },
+        {
+          "name": "nome_programma",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del programma UE (es. Horizon Europe, Erasmus+)"
+        },
+        {
+          "name": "tipo_finanziamento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di finanziamento (Grant/Procurement)"
+        },
+        {
+          "name": "codice_gruppo_beneficiario",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice gruppo beneficiario"
+        },
+        {
+          "name": "tipo_beneficiario",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo beneficiario (università, impresa, PA, ONG...)"
+        },
+        {
+          "name": "data_inizio_progetto",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data inizio progetto"
+        },
+        {
+          "name": "data_fine_progetto",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data fine progetto"
+        },
+        {
+          "name": "tipo_contratto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di contratto"
+        },
+        {
+          "name": "tipo_gestione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di gestione (diretta/indiretta)"
+        },
+        {
+          "name": "paese_beneficiante",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Paese beneficiario del contributo"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/fts_eu_grants/*/fts_eu_grants_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "giustizia_penale_indicatori",
       "name": "Giustizia Penale — Clearance Rate e Disposition Time",
       "description": "Indicatori di efficienza della giustizia penale: clearance rate (casi definiti/casi sopravvenuti) e disposition time (durata media in giorni) per distretto e tipo ufficio. Sheet Tribunali, anni 2014-2024. Fonte: Ministero della Giustizia — DG Statistica.",
