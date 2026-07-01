@@ -1,0 +1,44 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ted_contract_notices"
+  source_id: "ted"
+  years: [2023, 2022, 2021, 2020]
+
+raw:
+  extractor:
+    type: "unzip_first_csv"
+  sources:
+    - name: "ted_cn_{year}"
+      type: "http_file"
+      args:
+        url: "https://data.europa.eu/api/hub/store/data/ted-contract-notices-{year}.zip"
+        filename: "ted-contract-notices-{year}.zip"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    header: true
+    delim: ","
+    encoding: "utf-8"
+    quote: '"'
+    escape: '"'
+    dateformat: "%d/%m/%y"
+    trim_whitespace: true
+    sample_size: -1
+  validate:
+    promotion:
+      max_row_drop_pct: 100.0
+      fail_on_row_drop_exceeded: false
+
+mart:
+  tables:
+    - name: "mart_bandi_ue_italia"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_bandi_ue_italia"
+
+validation:
+  fail_on_error: true
