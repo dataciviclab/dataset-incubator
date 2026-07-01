@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 68,
+    "total": 69,
     "by_status": {
-      "ok": 68,
+      "ok": 69,
       "warn": 0,
       "error": 0
     }
@@ -201,6 +201,24 @@
           2025
         ],
         "config_path": "candidates/camera-votazioni-sparql/dataset.yml"
+      }
+    },
+    {
+      "id": "centri-accoglienza-italia",
+      "source_id": "centri_d_italia",
+      "status": "ok",
+      "label": "centri-accoglienza-italia",
+      "detail": "anno 2026 — fonte: centri-accoglienza-italia_source — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28542315999",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28542315999",
+        "checked_at": "2026-07-01",
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/centri-accoglienza-italia/dataset.yml"
       }
     },
     {
