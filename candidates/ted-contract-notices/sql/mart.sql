@@ -32,11 +32,15 @@ SELECT
     flag_appalto_ricorrente,
     flag_cancellato,
     n_correzioni,
-    -- Flag per bandi sopra soglia (valore > 140K per servizi/forniture, > 5.382M per lavori)
+    -- Soglie UE 2024-2025 (Direttive 2014/24/UE e 2014/25/UE)
+    -- S: servizi classici (€140K), U: forniture/servizi utilities (€431K),
+    -- W: lavori (€5.382M), C: concessioni lavori (€5.382M)
     CASE
-        WHEN tipo_contratto = 'W' AND valore_euro >= 5382000 THEN TRUE
-        WHEN tipo_contratto IN ('S', 'G') AND valore_euro >= 140000 THEN TRUE
-        WHEN tipo_contratto = 'C' AND valore_euro >= 5382000 THEN TRUE
+        WHEN valore_euro IS NULL THEN FALSE
+        WHEN tipo_contratto = 'W' THEN valore_euro >= 5382000
+        WHEN tipo_contratto = 'C' THEN valore_euro >= 5382000
+        WHEN tipo_contratto = 'U' THEN valore_euro >= 431000
+        WHEN tipo_contratto IN ('S', 'G') THEN valore_euro >= 140000
         ELSE FALSE
     END AS flag_soprasoglia_ue,
     -- Range di valore
@@ -49,13 +53,13 @@ SELECT
         WHEN valore_euro < 50000000 THEN 'molto grande (5M-50M)'
         ELSE 'strategico (> 50M)'
     END AS fascia_valore,
-    -- NUTS regione
+    -- Macroarea NUTS1 (prime 3 lettere del codice NUTS)
     CASE
-        WHEN LEFT(nuts_luogo_esecuzione, 4) = 'ITC' THEN 'Piemonte/ValleAosta/Lombardia'
-        WHEN LEFT(nuts_luogo_esecuzione, 4) = 'ITF' THEN 'Sud'
-        WHEN LEFT(nuts_luogo_esecuzione, 4) = 'ITH' THEN 'Nord-Est'
-        WHEN LEFT(nuts_luogo_esecuzione, 4) = 'ITI' THEN 'Centro'
-        WHEN LEFT(nuts_luogo_esecuzione, 4) = 'ITG' THEN 'Isole'
+        WHEN LEFT(nuts_luogo_esecuzione, 3) = 'ITC' THEN 'Nord-Ovest'
+        WHEN LEFT(nuts_luogo_esecuzione, 3) = 'ITF' THEN 'Sud'
+        WHEN LEFT(nuts_luogo_esecuzione, 3) = 'ITH' THEN 'Nord-Est'
+        WHEN LEFT(nuts_luogo_esecuzione, 3) = 'ITI' THEN 'Centro'
+        WHEN LEFT(nuts_luogo_esecuzione, 3) = 'ITG' THEN 'Isole'
         ELSE 'ND'
     END AS macroarea_nuts1
 FROM clean_input

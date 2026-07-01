@@ -10,7 +10,7 @@ Quali sono i bandi di gara pubblici europei in Italia? Chi bandisce, per cosa, c
 
 ## Contenuto
 
-Tutti i bandi di gara pubblicati su TED da stazioni appaltanti italiane (o con sede in Italia), dal 2012 a oggi. Per ogni bando:
+Tutti i bandi di gara pubblicati su TED da stazioni appaltanti italiane (o con sede in Italia), dal 2020 a oggi. Per ogni bando:
 
 - Stazione appaltante (nome, città, tipo, attività principale)
 - Oggetto del contratto (CPV, tipo contratto: servizi/lavori/forniture)
@@ -25,7 +25,7 @@ Tutti i bandi di gara pubblicati su TED da stazioni appaltanti italiane (o con s
 
 - Solo **Contract Notices** (bandi di gara, non aggiudicazioni)
 - Filtrato per **Italia** (ISO_COUNTRY_CODE = 'IT')
-- Anni: 2012–2023
+- Anni: 2020–2023
 - ~48.000 bandi/anno
 
 ## Output minimo atteso

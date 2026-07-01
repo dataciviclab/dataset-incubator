@@ -5,7 +5,7 @@
 - **URL ZIP**: `https://data.europa.eu/api/hub/store/data/ted-contract-notices-{YEAR}.zip`
 - **CSV interno**: `export_CFC_{YYYY}.csv` (1 file per ZIP)
 - **Formato**: UTF-8, delimitatore virgola, quoted fields
-- **Anni**: 2012–2023 verificati funzionanti
+- **Anni**: 2020–2023 verificati funzionanti (2012–2019 disponibili su richiesta)
 - **Licenza**: EU Open Data — riutilizzo libero
 
 ## Pipeline
