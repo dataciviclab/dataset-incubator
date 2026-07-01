@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-06-29",
+  "updated_at": "2026-07-01",
   "datasets": [
     {
       "slug": "ade_cinque_per_mille",
@@ -2429,6 +2429,98 @@
         "type": "gcs",
         "path": "gs://dataciviclab-clean/elezioni_politiche_2022/2022/elezioni_politiche_2022_2022_clean.parquet",
         "multi_file": false
+      },
+      "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "elezioni_regionali",
+      "name": "Elezioni Regionali 2018-2024",
+      "description": "Risultati delle elezioni regionali italiane per comune: voti al candidato presidente, voti alle liste di appoggio, affluenza. Fonte: Ministero dell'Interno — Eligendo.",
+      "source": "Ministero dell'Interno — DAIT (Eligendo)",
+      "source_id": "eligendo",
+      "period": {
+        "start": 2018,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "data_elezione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di svolgimento delle elezioni"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione in cui si sono svolte le elezioni"
+        },
+        {
+          "name": "circoscrizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Circoscrizione elettorale"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia del comune"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del comune"
+        },
+        {
+          "name": "elettori",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero totale di elettori iscritti"
+        },
+        {
+          "name": "votanti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero totale di votanti"
+        },
+        {
+          "name": "schede_bianche",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero di schede bianche"
+        },
+        {
+          "name": "candidato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome e nome del candidato presidente"
+        },
+        {
+          "name": "voti_candidato",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Voti ottenuti dal candidato presidente"
+        },
+        {
+          "name": "lista",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della lista elettorale di appoggio"
+        },
+        {
+          "name": "voti_lista",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Voti ottenuti dalla lista"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/elezioni_regionali/*/elezioni_regionali_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "incubating",
       "registry_source": "derive_auto"
