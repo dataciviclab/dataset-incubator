@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-01",
+  "generated_at": "2026-07-02",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 69,
+    "total": 70,
     "by_status": {
-      "ok": 69,
+      "ok": 70,
       "warn": 0,
       "error": 0
     }
@@ -1057,6 +1057,24 @@
           2023
         ],
         "config_path": "candidates/rna-misure/dataset.yml"
+      }
+    },
+    {
+      "id": "sai-progetti-italia",
+      "source_id": "centri_d_italia",
+      "status": "ok",
+      "label": "sai-progetti-italia",
+      "detail": "anno 2026 — fonte: sai_progetti_source — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28579359267",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28579359267",
+        "checked_at": "2026-07-02",
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/sai-progetti-italia/dataset.yml"
       }
     },
     {
