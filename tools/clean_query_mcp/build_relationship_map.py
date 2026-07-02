@@ -1,19 +1,19 @@
-"""Genera registry/relationship_map.json dalla join_map.yaml.
+"""Costruisce la mappa invertita delle relazioni tra dataset dalla join_map.yaml.
 
 Legge la join_map e produce una mappa inversa: per ogni chiave
 (codice_istat, denominazione, ...) elenca tutti i dataset che
 la condividono, con il normalizzatore e la granularità.
 
+Usata da dataset_graph() per navigare le relazioni live.
+
 Uso::
 
-    python -m clean_query_mcp.build_relationship_map
-
-Genera: registry/relationship_map.json
+    from clean_query_mcp.build_relationship_map import build
+    mappa = build()
 """
 
 from __future__ import annotations
 
-import json
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Any
@@ -22,7 +22,6 @@ import yaml
 
 DI_ROOT = Path(__file__).resolve().parents[2]
 JOIN_MAP_PATH = DI_ROOT / "registry" / "join_map.yaml"
-OUTPUT_PATH = DI_ROOT / "registry" / "relationship_map.json"
 
 
 def _load_join_map() -> dict[str, Any]:
@@ -144,23 +143,3 @@ def build() -> dict[str, Any]:
         "registries": registries,
         "unconnected_datasets": unconnected,
     }
-
-
-def main() -> None:
-    result = build()
-    OUTPUT_PATH.write_text(json.dumps(result, indent=2, ensure_ascii=False), encoding="utf-8")
-    print(f"✔ relationship_map.json generato ({OUTPUT_PATH})")
-    n_keys = sum(len(r["keys"]) for r in result["registries"].values())
-    n_ds = sum(
-        len(ds)
-        for r in result["registries"].values()
-        for k in r["keys"].values()
-        for ds in [k["datasets"]]
-    )
-    print(
-        f"   {n_keys} chiavi, {n_ds} dataset collegati, {len(result['unconnected_datasets'])} non collegati"
-    )
-
-
-if __name__ == "__main__":
-    main()

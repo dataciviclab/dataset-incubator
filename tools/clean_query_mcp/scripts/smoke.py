@@ -18,7 +18,8 @@ def main() -> int:
     parser.add_argument("--dataset", help="Limit smoke test to one dataset slug.")
     args = parser.parse_args()
 
-    datasets = server.list_datasets()
+    catalog = server.find("")
+    datasets = catalog.get("datasets", [])
     if args.dataset:
         datasets = [item for item in datasets if item["slug"] == args.dataset]
         if not datasets:
@@ -28,7 +29,7 @@ def main() -> int:
     failures = 0
     for item in datasets:
         slug = item["slug"]
-        details = server.describe_dataset(slug)
+        details = server.dataset_overview(slug, limit=0)
         year = details.get("period", {}).get("end")
         result = server.run_query(
             "SELECT COUNT(*) AS rows FROM clean_input",

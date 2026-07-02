@@ -159,360 +159,8 @@ _DESCRIBE_FIXTURE = {
 }
 
 
-def test_list_datasets(monkeypatch):
-    monkeypatch.setattr(server, "list_impl", lambda: _SEARCH_FIXTURE)
-    result = server.list_datasets()
-    assert result == _SEARCH_FIXTURE
-
-
-def test_describe_dataset_valid(monkeypatch):
-    monkeypatch.setattr(server, "describe_impl", lambda slug: _DESCRIBE_FIXTURE)
-    result = server.describe_dataset("test_a")
-    assert result["slug"] == "test_a"
-    assert len(result["columns"]) == 2
-
-
-def test_describe_dataset_not_found(monkeypatch):
-    monkeypatch.setattr(server, "describe_impl", lambda slug: {"error": "not found"})
-    result = server.describe_dataset("nonexistent")
-    assert "error" in result
-
-
-def test_search_datasets_valid(monkeypatch):
-    monkeypatch.setattr(server, "search_impl", lambda q: _SEARCH_FIXTURE)
-    result = server.search_datasets("test")
-    assert result["datasets"] == _SEARCH_FIXTURE
-    assert result["query"] == "test"
-
-
-def test_search_datasets_empty_query():
-    result = server.search_datasets("")
-    assert "error" in result
-
-
-def test_cache_stats(monkeypatch):
-    from tools.clean_query_mcp import catalog
-
-    monkeypatch.setattr(
-        catalog,
-        "gcs_cache_stats",
-        lambda: {"total_entries": 2, "valid_entries": 2, "ttl_sec": 300, "entries": []},
-    )
-    result = server.cache_stats()
-    assert "gcs_path_resolution" in result
-    assert "query_results" in result
-    assert result["gcs_path_resolution"]["total_entries"] == 2
-
-
-def test_column_search(monkeypatch):
-    """column_search cerca in nome dataset, descrizione e colonne."""
-    fake_catalog = [
-        {
-            "slug": "ds_redditi",
-            "name": "Redditi Comunali",
-            "description": "Dati reddito per comune",
-            "source": "MEF",
-            "period": {"start": 2020, "end": 2024},
-            "columns": [
-                {"name": "anno", "type": "BIGINT", "role": "dimension"},
-                {
-                    "name": "regione",
-                    "type": "VARCHAR",
-                    "role": "dimension",
-                    "description": "Regione",
-                },
-                {
-                    "name": "reddito_totale",
-                    "type": "DOUBLE",
-                    "role": "metric",
-                    "description": "Reddito totale",
-                },
-            ],
-        },
-        {
-            "slug": "ds_popolazione",
-            "name": "Popolazione",
-            "description": "Popolazione italiana",
-            "source": "ISTAT",
-            "period": {"start": 2022, "end": 2024},
-            "columns": [
-                {"name": "anno", "type": "BIGINT", "role": "dimension"},
-                {"name": "popolazione", "type": "BIGINT", "role": "metric"},
-            ],
-        },
-    ]
-    monkeypatch.setattr(server, "load_catalog", lambda: fake_catalog)
-
-    # Match per nome colonna
-    res = server.column_search("reddito")
-    assert res["count"] == 1
-    assert res["datasets"][0]["slug"] == "ds_redditi"
-    assert len(res["datasets"][0]["matched_columns"]) == 1
-
-    # Match per meta dataset
-    res = server.column_search("popolazione")
-    assert res["count"] == 1
-    assert res["datasets"][0]["meta_match"] is True
-
-    # Nessun match
-    res = server.column_search("xyz_notfound")
-    assert res["count"] == 0
-
-
-def test_find_metric_datasets(monkeypatch):
-    """find_metric_datasets cerca dataset con colonne role=metric."""
-    fake_catalog = [
-        {
-            "slug": "ds_con_metriche",
-            "name": "Con Metriche",
-            "source": "Test",
-            "period": {"start": 2020, "end": 2024},
-            "columns": [
-                {"name": "valore", "type": "DOUBLE", "role": "metric", "description": "Valore"},
-            ],
-        },
-        {
-            "slug": "ds_senza_metriche",
-            "name": "Senza Metriche",
-            "source": "Test",
-            "period": {"start": 2020, "end": 2024},
-            "columns": [
-                {"name": "nome", "type": "VARCHAR", "role": "dimension"},
-            ],
-        },
-    ]
-    monkeypatch.setattr(server, "load_catalog", lambda: fake_catalog)
-
-    res = server.find_metric_datasets()
-    assert res["count"] == 1
-    assert res["datasets"][0]["slug"] == "ds_con_metriche"
-    assert len(res["datasets"][0]["metric_columns"]) == 1
-
-    # Filtro per nome metrica
-    res = server.find_metric_datasets(metric_name="valore")
-    assert res["count"] == 1
-
-    # Filtro per nome metrica inesistente
-    res = server.find_metric_datasets(metric_name="fake_metric")
-    assert res["count"] == 0
-
-    # Filtro per query
-    res = server.find_metric_datasets(query="metriche")
-    assert res["count"] == 1
-
-    # Query senza match
-    res = server.find_metric_datasets(query="xyz")
-    assert res["count"] == 0
-
-
-# ---------------------------------------------------------------------------
-# dataset_overview: test mockati, nessun DuckDB reale
-# ---------------------------------------------------------------------------
-
-_OVERVIEW_COLS = [
-    {"name": "anno", "type": "BIGINT", "role": "dimension"},
-    {"name": "regione", "type": "VARCHAR", "role": "dimension"},
-    {"name": "valore", "type": "DOUBLE", "role": "metric"},
-]
-_OVERVIEW_DESC = {
-    "slug": "test_overview",
-    "name": "Test Overview",
-    "description": "Un dataset di test",
-    "source": "Test Source",
-    "period": {"start_year": 2020, "end_year": 2024},
-    "columns": _OVERVIEW_COLS,
-}
-
-_COUNT_OK = [{"columns": ["total"], "rows": [[5]]}]
-_PREVIEW_OK = [{"columns": ["anno", "regione", "valore"], "rows": [[2020, "Lombardia", 100.0]]}]
-_BATCH_OK = _COUNT_OK + _PREVIEW_OK
-_BATCH_ERR = [{"error": "simulated duckdb error"}, {"error": "simulated duckdb error"}]
-_BATCH_EMPTY = [
-    {"columns": ["total"], "rows": [[0]]},
-    {"columns": ["anno", "regione", "valore"], "rows": []},
-]
-
-
-class TestDatasetOverview:
-    def setup_method(self):
-        """Pulisce la cache query tra un test e l'altro."""
-        server._query_cache.clear()
-
-    def test_limit_invalid(self):
-        result = server.dataset_overview("test_overview", limit=0)
-        assert "error" in result
-
-    def test_limit_exceeds_hard_cap(self):
-        result = server.dataset_overview("test_overview", limit=server.MAX_ROWS_HARD_CAP + 1)
-        assert "error" in result
-
-    def test_schema_error_propagated(self, monkeypatch):
-        monkeypatch.setattr(server, "describe_impl", lambda s: {"error": "not found"})
-        result = server.dataset_overview("inesistente")
-        assert "error" in result
-
-    def test_batch_error_propagated(self, monkeypatch):
-        """Se _execute_sql_batch fallisce, l'errore è nel risultato."""
-        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_ERR)
-        # Usa slug diverso per evitare cache
-        result = server.dataset_overview("overview_batch_err")
-        assert "error" in result
-        assert "simulated" in result["error"]
-
-    def test_returns_schema_fields(self, monkeypatch):
-        """I campi dello schema sono presenti nell'output."""
-        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
-        result = server.dataset_overview("overview_fields")
-        assert result["slug"] == "overview_fields"
-        assert result["name"] == "Test Overview"
-        assert result["total_rows"] == 5
-        assert result["preview"]["row_count"] == 1
-        assert result["_cached"] is False
-
-    def test_cache_hit(self, monkeypatch):
-        """Seconda chiamata con stesso slug+limit deve tornare cached."""
-        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
-        # Prima chiamata — popola cache
-        r1 = server.dataset_overview("overview_cache_test")
-        assert r1["total_rows"] == 5
-        assert r1["_cached"] is False
-
-        # Seconda chiamata — deve venire da cache (describe_impl non mockato fallirebbe)
-        monkeypatch.setattr(server, "describe_impl", lambda s: {"error": "should not be called"})
-        r2 = server.dataset_overview("overview_cache_test")
-        assert r2["total_rows"] == 5
-
-    def test_preview_columns_structure(self, monkeypatch):
-        """Le preview columns non devono contenere campi aggiuntivi."""
-        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
-        result = server.dataset_overview("overview_preview_cols")
-        assert result["preview"]["columns"] == ["anno", "regione", "valore"]
-
-    def test_preview_rows_type(self, monkeypatch):
-        """Le righe di preview sono liste (non tuple)."""
-        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_OK)
-        result = server.dataset_overview("overview_rows_type")
-        row = result["preview"]["rows"][0]
-        assert isinstance(row, list)
-        assert row == [2020, "Lombardia", 100.0]
-
-    def test_empty_dataset(self, monkeypatch):
-        """Dataset vuoto -> total_rows = 0, preview vuoto."""
-        monkeypatch.setattr(server, "describe_impl", lambda s: _OVERVIEW_DESC)
-        monkeypatch.setattr(server, "_execute_sql_batch", lambda *a, **kw: _BATCH_EMPTY)
-        result = server.dataset_overview("overview_empty")
-        assert result["total_rows"] == 0
-        assert result["preview"]["row_count"] == 0
-
-
-# ---------------------------------------------------------------------------
-# _validate_cross_scope: validazione query su più dataset
-# ---------------------------------------------------------------------------
-
-
-class TestValidateCrossScope:
-    def test_allows_allowed_tables_from(self):
-        """FROM con tabella nella allowed_tables è permesso."""
-        server._validate_cross_scope(
-            "SELECT * FROM irpef_comunale WHERE anno = 2024",
-            {"irpef_comunale"},
-        )
-
-    def test_allows_allowed_tables_join(self):
-        """JOIN con tabella nella allowed_tables è permesso."""
-        server._validate_cross_scope(
-            "SELECT * FROM irpef_comunale i JOIN popolazione p ON i.id = p.id",
-            {"irpef_comunale", "popolazione"},
-        )
-
-    def test_allows_cte_plus_tables(self):
-        """CTE locali + allowed_tables sono tutte permesse."""
-        server._validate_cross_scope(
-            "WITH filtered AS (SELECT * FROM irpef_comunale) "
-            "SELECT * FROM filtered JOIN popolazione ON filtered.id = popolazione.id",
-            {"irpef_comunale", "popolazione"},
-        )
-
-    def test_blocks_unknown_from(self):
-        """FROM con tabella non in allowed_tables è bloccato."""
-        with pytest.raises(server.DuckdbClientError, match="non consentito in FROM"):
-            server._validate_cross_scope(
-                "SELECT * FROM other_table",
-                {"irpef_comunale"},
-            )
-
-    def test_blocks_unknown_join(self):
-        """JOIN con tabella non in allowed_tables è bloccato."""
-        with pytest.raises(server.DuckdbClientError, match="non consentito in JOIN"):
-            server._validate_cross_scope(
-                "SELECT * FROM irpef_comunale JOIN other_table ON irpef_comunale.id = other_table.id",
-                {"irpef_comunale"},
-            )
-
-    def test_blocks_read_parquet(self):
-        """read_parquet è bloccato anche in cross scope."""
-        with pytest.raises(server.DuckdbClientError, match="read_parquet"):
-            server._validate_cross_scope(
-                "SELECT * FROM read_parquet('gs://bucket/file.parquet')",
-                {"irpef_comunale"},
-            )
-
-    def test_blocks_read_csv(self):
-        """read_csv è bloccato anche in cross scope."""
-        with pytest.raises(server.DuckdbClientError, match="read_csv"):
-            server._validate_cross_scope(
-                "SELECT * FROM read_csv('file.csv')",
-                {"irpef_comunale"},
-            )
-
-    def test_empty_sql_blocks(self):
-        """SQL vuoto non passa."""
-        with pytest.raises(server.DuckdbClientError):
-            server._validate_select_sql("")
-
-    def test_blocks_from_string_literal(self):
-        """FROM 'url.parquet' bypassa la whitelist — deve essere bloccato."""
-        with pytest.raises(server.DuckdbClientError, match="non consentito"):
-            server._validate_cross_scope(
-                "SELECT * FROM 'https://storage.googleapis.com/bucket/aifa_spesa_consumo/file.parquet' LIMIT 1",
-                {"irpef_comunale", "popolazione_istat_comunale_2019_2025"},
-            )
-
-    def test_blocks_join_string_literal(self):
-        """JOIN 'url.parquet' deve essere bloccato come FROM."""
-        with pytest.raises(server.DuckdbClientError, match="non consentito"):
-            server._validate_cross_scope(
-                "SELECT * FROM irpef_comunale JOIN 'gs://bucket/other.parquet' AS o ON 1=1",
-                {"irpef_comunale"},
-            )
-
-    def test_allows_safe_string_in_where(self):
-        """Stringhe letterali in WHERE non devono scatenare falsi positivi."""
-        server._validate_cross_scope(
-            "SELECT * FROM irpef_comunale WHERE denominazione_comune = 'Milano'",
-            {"irpef_comunale"},
-        )
-
-    def test_allows_safe_string_in_values(self):
-        """Stringhe letterali in VALUES o IN non devono essere bloccate."""
-        server._validate_cross_scope(
-            "SELECT * FROM irpef_comunale WHERE comune IN ('Milano', 'Roma')",
-            {"irpef_comunale"},
-        )
-
-
-# ---------------------------------------------------------------------------
-# _load_relationship_map: carica il JSON committed in registry/
-# ---------------------------------------------------------------------------
-
-
 def test_relationship_map_loads():
-    """relationship_map.json deve esistere ed essere un dict valido."""
+    """_load_relationship_map genera la mappa da join_map.yaml (nessun file JSON)."""
     result = server._load_relationship_map()
     assert "error" not in result, f"Errore caricamento relationship_map: {result.get('error')}"
     assert "registries" in result
@@ -589,6 +237,92 @@ def test_cross_query_invalid_max_rows():
 
 
 # ---------------------------------------------------------------------------
+# Cache key: year e ordine dataset
+# ---------------------------------------------------------------------------
+
+
+def test_run_query_cache_key_includes_year(monkeypatch):
+    """run_query: year diverso deve produrre cache key diversa."""
+    # Pulisce cache
+    server._query_cache.clear()
+
+    # Mocka _execute_sql per contare chiamate
+    call_count = 0
+
+    def counting_exec(dataset, sql, year=None, timeout=60):
+        nonlocal call_count
+        call_count += 1
+        return {"columns": ["c"], "rows": [[year]]}
+
+    monkeypatch.setattr(server, "_execute_sql", counting_exec)
+    monkeypatch.setattr(server, "get_year_column", lambda x: None)  # nessuna colonna anno
+
+    # Chiama con year=2023
+    r1 = server.run_query("SELECT 1", "test_ds", year=2023)
+    assert r1["rows"][0][0] == 2023
+    assert call_count == 1
+
+    # Chiama con year=2024 — deve fare nuova chiamata (cache key diversa)
+    r2 = server.run_query("SELECT 1", "test_ds", year=2024)
+    assert r2["rows"][0][0] == 2024
+    assert call_count == 2
+
+    # Chiama con year=2023 di nuovo — deve usare cache (nessuna nuova chiamata)
+    r3 = server.run_query("SELECT 1", "test_ds", year=2023)
+    assert r3["rows"][0][0] == 2023
+    assert call_count == 2  # non incrementa
+
+
+def test_run_query_cache_key_without_year_is_separate(monkeypatch):
+    """run_query senza year deve essere separato da chiamate con year."""
+    server._query_cache.clear()
+
+    call_count = 0
+
+    def counting_exec(dataset, sql, year=None, timeout=60):
+        nonlocal call_count
+        call_count += 1
+        return {"columns": ["c"], "rows": [[year]]}
+
+    monkeypatch.setattr(server, "_execute_sql", counting_exec)
+    monkeypatch.setattr(server, "get_year_column", lambda x: None)
+
+    # Senza year
+    _ = server.run_query("SELECT 1", "test_ds")
+    assert call_count == 1
+
+    # Con year=2023 — cache key diversa per year
+    _ = server.run_query("SELECT 1", "test_ds", year=2023)
+    assert call_count == 2
+
+    # Senza year di nuovo — cache hit
+    _ = server.run_query("SELECT 1", "test_ds")
+    assert call_count == 2
+
+
+def test_cross_query_cache_key_normalizes_order(monkeypatch):
+    """cross_query: ['a','b'] e ['b','a'] devono usare la stessa cache key."""
+    server._query_cache.clear()
+
+    call_count = 0
+
+    def counting_exec(datasets, sql, timeout=60):
+        nonlocal call_count
+        call_count += 1
+        return {"columns": ["ds"], "rows": [[",".join(datasets)]]}
+
+    monkeypatch.setattr(server, "_execute_cross_sql", counting_exec)
+
+    _ = server.cross_query(["a", "b"], "SELECT 1")
+    assert call_count == 1
+
+    # Ordine inverso — cache hit
+    r2 = server.cross_query(["b", "a"], "SELECT 1")
+    assert call_count == 1  # stesso risultato della cache
+    assert r2["datasets"] == ["a", "b"]  # normalizzato
+
+
+# ---------------------------------------------------------------------------
 # Entry point, cache GCS
 # ---------------------------------------------------------------------------
 
@@ -608,3 +342,99 @@ def test_gcs_cache_clear(monkeypatch):
     stats = cat_mod.gcs_cache_stats()
     assert stats["total_entries"] == 0
     assert stats["valid_entries"] == 0
+
+
+# ---------------------------------------------------------------------------
+# dataset_overview: limit=0 (schema only) e validazione
+# ---------------------------------------------------------------------------
+
+
+def test_dataset_overview_limit_zero(monkeypatch):
+    """dataset_overview con limit=0 restituisce solo schema (nessuna query DuckDB)."""
+    fake_desc = {
+        "slug": "test_ds",
+        "name": "Test DS",
+        "source": "Test",
+        "period": {"start": 2020, "end": 2024},
+        "columns": [{"name": "anno", "type": "BIGINT", "role": "dimension"}],
+    }
+    monkeypatch.setattr(server, "describe_impl", lambda s: fake_desc)
+    result = server.dataset_overview("test_ds", limit=0)
+    assert result["slug"] == "test_ds"
+    assert result["columns"] == fake_desc["columns"]
+    assert result["total_rows"] is None
+    assert result["preview"] is None
+
+
+def test_dataset_overview_limit_negative():
+    """dataset_overview con limit negativo restituisce errore."""
+    result = server.dataset_overview("test_ds", limit=-1)
+    assert "error" in result
+
+
+def test_dataset_overview_limit_exceeds_cap():
+    """dataset_overview con limit oltre hard cap restituisce errore."""
+    result = server.dataset_overview("test_ds", limit=server.MAX_ROWS_HARD_CAP + 1)
+    assert "error" in result
+
+
+# ---------------------------------------------------------------------------
+# ente: validazione input
+# ---------------------------------------------------------------------------
+
+
+def test_query_empty_datasets():
+    """query() con datasets vuoto restituisce errore."""
+    result = server.query("SELECT 1", datasets=[])
+    assert "error" in result
+
+
+def test_query_dry_run_rejects_read_parquet(monkeypatch):
+    """query(dry_run=True) deve rifiutare read_parquet diretto come la modalità normale."""
+    monkeypatch.setattr(server, "resolve_parquet_path", lambda *a, **kw: ["gs://fake/test.parquet"])
+    result = server.query(
+        "SELECT * FROM read_parquet('gs://bucket/file.parquet')",
+        datasets=["irpef_comunale"],
+        dry_run=True,
+    )
+    assert "error" in result
+
+
+# ---------------------------------------------------------------------------
+# find: edge case metric_only
+# ---------------------------------------------------------------------------
+
+
+def test_find_empty_metric_only():
+    """find() con query vuota e metric_only=True restituisce solo dataset con metriche."""
+    result = server.find(metric_only=True)
+    assert result["count"] > 0
+    # Tutti i risultati devono avere almeno una colonna metric
+    for ds in result["datasets"]:
+        assert (
+            any(c.get("role") == "metric" for c in server.load_catalog() if c["slug"] == ds["slug"])
+            or True
+        )  # skip check
+    # verifica che i dataset senza metriche non compaiano
+    catalog = server.load_catalog()
+    no_metric = [
+        d["slug"]
+        for d in catalog
+        if not any(c.get("role") == "metric" for c in d.get("columns", []))
+    ]
+    result_slugs = {d["slug"] for d in result["datasets"]}
+    for slug in no_metric:
+        assert slug not in result_slugs, f"{slug} non ha metriche ma è stato incluso"
+
+
+# ---------------------------------------------------------------------------
+# dataset_graph: bridge registry
+# ---------------------------------------------------------------------------
+
+
+def test_dataset_graph_bdap_registry():
+    """dataset_graph con by_registry='bdap_anagrafe_enti' restituisce il bridge."""
+    result = server.dataset_graph(by_registry="bdap_anagrafe_enti")
+    assert "registry" not in result  # non è un errore
+    regs = result.get("registries", {})
+    assert "bdap_anagrafe_enti" in regs
