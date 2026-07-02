@@ -870,7 +870,20 @@ def query(
         return {"error": "Specifica almeno 1 dataset in 'datasets'."}
 
     if dry_run:
-        # dry_run → explain
+        # dry_run → explain: prima valida come la modalità normale
+        try:
+            _validate_select_sql(sql)
+        except DuckdbClientError as exc:
+            return {"error": str(exc)}
+
+        try:
+            if len(datasets) == 1:
+                _validate_scope(sql)
+            else:
+                _validate_cross_scope(sql, set(datasets))
+        except DuckdbClientError as exc:
+            return {"error": str(exc)}
+
         try:
             parquet_paths = resolve_parquet_path(datasets[0], year=year)
         except (ValueError, FileNotFoundError) as exc:
@@ -922,19 +935,27 @@ def ente(
     if not nome and not codice_istat:
         return {"error": "Specifica nome o codice_istat."}
 
+    # Sanifica input: escape single quotes per SQL
+    def _esc(s: str) -> str:
+        return s.replace("'", "''")
+
+    if codice_istat:
+        if not re.match(r"^\d{6}$", codice_istat):
+            return {"error": f"codice_istat deve essere 6 cifre, ricevuto: {codice_istat}"}
+
     def _exec() -> dict[str, Any]:
         # Determina comune da nome o codice
         if codice_istat:
-            filter_sql = f"codice_istat = '{codice_istat}'"
+            filter_sql = f"codice_istat = '{_esc(codice_istat)}'"
         else:
-            filter_sql = f"denominazione = '{nome}'"
+            filter_sql = f"denominazione = '{_esc(nome)}'"
 
         anag = run_query(
             f"SELECT codice_istat, denominazione, sigla_provincia, regione, superficie_km2, altitudine FROM clean_input WHERE {filter_sql}",
             "comuni_master",
         )
         if "error" in anag or not anag.get("rows"):
-            return {"error": f"Ente '{nome or codice_istat}' non trovato."}
+            return {"error": f"Ente '{_esc(nome or codice_istat)}' non trovato."}
 
         row = anag["rows"][0]
         cod_istat = row[0]

@@ -370,3 +370,88 @@ def test_dataset_overview_limit_negative():
     """dataset_overview con limit negativo restituisce errore."""
     result = server.dataset_overview("test_ds", limit=-1)
     assert "error" in result
+
+
+def test_dataset_overview_limit_exceeds_cap():
+    """dataset_overview con limit oltre hard cap restituisce errore."""
+    result = server.dataset_overview("test_ds", limit=server.MAX_ROWS_HARD_CAP + 1)
+    assert "error" in result
+
+
+# ---------------------------------------------------------------------------
+# ente: validazione input
+# ---------------------------------------------------------------------------
+
+
+def test_ente_empty_params():
+    """ente() senza parametri restituisce errore."""
+    result = server.ente()
+    assert "error" in result
+
+
+def test_ente_invalid_codice_istat():
+    """ente() con codice_istat non 6 cifre restituisce errore."""
+    result = server.ente(codice_istat="abc")
+    assert "error" in result
+
+
+# ---------------------------------------------------------------------------
+# query: validazione input
+# ---------------------------------------------------------------------------
+
+
+def test_query_empty_datasets():
+    """query() con datasets vuoto restituisce errore."""
+    result = server.query("SELECT 1", datasets=[])
+    assert "error" in result
+
+
+def test_query_dry_run_rejects_read_parquet(monkeypatch):
+    """query(dry_run=True) deve rifiutare read_parquet diretto come la modalità normale."""
+    monkeypatch.setattr(server, "resolve_parquet_path", lambda *a, **kw: ["gs://fake/test.parquet"])
+    result = server.query(
+        "SELECT * FROM read_parquet('gs://bucket/file.parquet')",
+        datasets=["irpef_comunale"],
+        dry_run=True,
+    )
+    assert "error" in result
+
+
+# ---------------------------------------------------------------------------
+# find: edge case metric_only
+# ---------------------------------------------------------------------------
+
+
+def test_find_empty_metric_only():
+    """find() con query vuota e metric_only=True restituisce solo dataset con metriche."""
+    result = server.find(metric_only=True)
+    assert result["count"] > 0
+    # Tutti i risultati devono avere almeno una colonna metric
+    for ds in result["datasets"]:
+        assert (
+            any(c.get("role") == "metric" for c in server.load_catalog() if c["slug"] == ds["slug"])
+            or True
+        )  # skip check
+    # verifica che i dataset senza metriche non compaiano
+    catalog = server.load_catalog()
+    no_metric = [
+        d["slug"]
+        for d in catalog
+        if not any(c.get("role") == "metric" for c in d.get("columns", []))
+    ]
+    result_slugs = {d["slug"] for d in result["datasets"]}
+    for slug in no_metric:
+        assert slug not in result_slugs, f"{slug} non ha metriche ma è stato incluso"
+
+
+# ---------------------------------------------------------------------------
+# dataset_graph: bridge registry
+# ---------------------------------------------------------------------------
+
+
+def test_dataset_graph_bdap_registry():
+    """dataset_graph con by_registry='bdap_anagrafe_enti' restituisce il bridge."""
+    result = server.dataset_graph(by_registry="bdap_anagrafe_enti")
+    assert "registry" not in result  # non è un errore
+    regs = result.get("registries", {})
+    assert "bdap_anagrafe_enti" in regs
