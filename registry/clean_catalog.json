@@ -8810,6 +8810,182 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "sai_strutture_italia",
+      "name": "SAI Strutture — Strutture del Sistema Accoglienza e Integrazione (2018-2024)",
+      "description": "Strutture del Sistema Accoglienza e Integrazione (SAI) per migranti in Italia: appartamenti, comunità alloggio e centri collettivi. Ogni riga è una rilevazione di una singola struttura, con capienza, presenze, tipologia e progetto SAI di appartenenza. Fonte: Centri d'Italia (ActionAid/Openpolis), CC-BY 4.0.",
+      "source": "Centri d'Italia — ActionAid Italia / Fondazione Openpolis",
+      "source_id": "centri_d_italia",
+      "period": {
+        "start": 2018,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di rilevazione (derivato da data_rilevazione)"
+        },
+        {
+          "name": "sai_struttura_id",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Identificativo della struttura SAI"
+        },
+        {
+          "name": "sai_struttura_denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della struttura"
+        },
+        {
+          "name": "comune_id",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID interno del comune sede"
+        },
+        {
+          "name": "comune_denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del comune sede"
+        },
+        {
+          "name": "comune_codice_istat",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 cifre, join con comuni_master)"
+        },
+        {
+          "name": "comune_abitanti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Popolazione residente del comune"
+        },
+        {
+          "name": "comune_codice_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale Belfiore del comune"
+        },
+        {
+          "name": "provincia_cm_id",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID interno della provincia"
+        },
+        {
+          "name": "provincia_cm_denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della provincia"
+        },
+        {
+          "name": "provincia_cm_codice_istat",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice ISTAT della provincia"
+        },
+        {
+          "name": "provincia_cm_abitanti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Popolazione residente della provincia"
+        },
+        {
+          "name": "provincia_cm_sigla",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla automobilistica della provincia"
+        },
+        {
+          "name": "regione_id",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID interno della regione"
+        },
+        {
+          "name": "regione_denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione della regione"
+        },
+        {
+          "name": "regione_codice_istat",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice ISTAT della regione (2 cifre)"
+        },
+        {
+          "name": "regione_abitanti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Popolazione residente della regione"
+        },
+        {
+          "name": "sai_struttura_tipologia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia struttura (APPARTAMENTO, COMUNITÀ ALLOGGIO, CENTRO COLLETTIVO, ecc.)"
+        },
+        {
+          "name": "sai_progetto_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice del progetto SAI di appartenenza (FK → sai_progetti_italia)"
+        },
+        {
+          "name": "sai_progetto_denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del progetto SAI di appartenenza"
+        },
+        {
+          "name": "sai_progetto_tipologia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia progetto: ORD (ordinario), MSNA (minori), DM-DS (dimissioni)"
+        },
+        {
+          "name": "data_inizio",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di inizio attività della struttura"
+        },
+        {
+          "name": "data_fine",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data di fine attività (vuota se ancora attiva)"
+        },
+        {
+          "name": "data_rilevazione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data della rilevazione"
+        },
+        {
+          "name": "capienza",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Posti disponibili nella struttura"
+        },
+        {
+          "name": "presenze_giornaliere",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Presenze registrate alla data di rilevazione"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/sai_strutture_italia/2026/sai_strutture_italia_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "strutture_asl",
       "name": "Strutture Asl",
       "description": "Strutture e attività delle ASL — medici di base, pediatri, popolazione residente, servizi territoriali e presidi per regione — Ministero della Salute 2022",
