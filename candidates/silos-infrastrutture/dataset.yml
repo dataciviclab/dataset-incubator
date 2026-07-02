@@ -8,18 +8,26 @@ schema_version: 1
 dataset:
   name: "silos_infrastrutture"
   source_id: "dati_camera"
+  # Il file contiene la fotografia al 31/08/2024 ma la serie storica parte dal 2004
   years: [2024]
+  time_coverage:
+    start_year: 2004
+    end_year: 2024
 
 raw:
   extractor:
     type: "unzip_first_csv"
   output_policy: overwrite
   sources:
-    - name: "silos_http_zip"
-      type: "http_file"
+    - name: "silos_download"
+      # Script di download: l'IP di GitHub Actions è bloccato da dati.camera.it.
+      # Il fallback proxy del toolkit (BLOCKED_SOURCE_PROXY) non basta perché la Camera
+      # risponde 200 con HTML invece di 403 — lo script forza il proxy via curl.
+      type: "script"
       args:
-        url: "https://dati.camera.it/ocd/dump/silos/PISRapportoCSV2024.zip"
+        command: "bash scripts/download_silos.sh"
         filename: "PISRapportoCSV2024.zip"
+        output: "PISRapportoCSV2024.zip"
       primary: true
 
 clean:
