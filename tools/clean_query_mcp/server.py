@@ -11,9 +11,7 @@ from lab_connectors.mcp.cache import TtlCache
 
 from .catalog import describe_dataset as describe_impl  # noqa: E402
 from .catalog import get_year_column  # noqa: E402
-from .catalog import list_datasets as list_impl  # noqa: E402
 from .catalog import resolve_parquet_path  # noqa: E402
-from .catalog import search_datasets as search_impl  # noqa: E402
 from .catalog import load_catalog  # noqa: E402
 
 # Path assoluto alla relationship map (generata da build_relationship_map.py)
@@ -434,18 +432,6 @@ mcp = create_mcp_server(
 )
 
 
-@mcp.tool(
-    description=(
-        "Esegue una query SQL che incrocia PIU' dataset clean. "
-        "I dataset specificati in 'datasets' diventano tabelle utilizzabili "
-        "nei FROM/JOIN della query. "
-        "Esempio: cross_query(datasets=['irpef_comunale','popolazione_istat_comunale_2019_2025'], "
-        'sql="SELECT i.denominazione_comune, i.reddito_imponibile_eur, p.popolazione_residente '
-        "FROM irpef_comunale i JOIN popolazione_istat_comunale_2019_2025 p "
-        "ON i.codice_istat_comune = p.codice_comune WHERE p.comune = 'Milano'\")"
-    ),
-    structured_output=True,
-)
 def cross_query(
     datasets: list[str],
     sql: str,
@@ -496,30 +482,6 @@ def cross_query(
     return result
 
 
-@mcp.tool(description="Lista dei dataset clean disponibili per query.", structured_output=True)
-def list_datasets() -> list[dict[str, Any]]:
-    return list_impl()
-
-
-@mcp.tool(
-    description="[DEPRECATO] Cerca nei dataset per nome/descrizione. Usa column_search(query, mode='dataset') invece.",
-    structured_output=True,
-)
-def search_datasets(query: str) -> dict[str, Any]:
-    """DEPRECATO: usa column_search(query, mode='dataset')."""
-
-    def _exec() -> dict[str, Any]:
-        if not (query or "").strip():
-            raise DuckdbClientError("query non può essere vuota", ErrorCode.EMPTY_PARAM)
-        return {
-            "datasets": search_impl(query.strip()),
-            "query": query.strip(),
-            "deprecated": "Usa column_search(query, mode='dataset') invece.",
-        }
-
-    return guard_timed(_exec, "search_datasets")
-
-
 @mcp.tool(
     description="Descrive lo schema di un dataset: colonne, tipi, ruolo (dimension/metric), periodo.",
     structured_output=True,
@@ -564,16 +526,6 @@ def _inject_year_filter(sql: str, year_col: str | None, year: int) -> str:
     return f"{base} {filter_sql}".strip()
 
 
-@mcp.tool(
-    description=(
-        "Esegue una query SQL read-only su un dataset clean tramite DuckDB. "
-        "Solo SELECT/WITH. Il SQL deve riferire SOLO 'FROM clean_input' o CTE locali. "
-        "I path ai parquet sono risolti automaticamente dal catalogo. "
-        "Hard cap: max 500 righe, timeout 60s. "
-        "Se year è specificato e il dataset ha una colonna anno, la WHERE viene iniettata automaticamente."
-    ),
-    structured_output=True,
-)
 def run_query(
     sql: str, dataset: str, max_rows: int = 100, year: int | None = None
 ) -> dict[str, Any]:
@@ -622,27 +574,6 @@ def run_query(
     result = guard_timed(_exec, "run_query")
     _query_cache.set(cache_key, result)
     return result
-
-
-@mcp.tool(
-    description=("[DEBUG] Statistiche cache query e GCS. Utile per debug, non per uso normale."),
-    structured_output=True,
-)
-def cache_stats() -> dict[str, Any]:
-    from .catalog import gcs_cache_stats
-
-    gcs_stats = gcs_cache_stats()
-    query_stats = _query_cache.stats
-
-    return {
-        "gcs_path_resolution": gcs_stats,
-        "query_results": {
-            "entries": query_stats.entries,
-            "oldest_age_seconds": round(query_stats.oldest_age_seconds, 1),
-            "ttl_seconds": query_stats.ttl_seconds,
-        },
-        "note": "query_results cache: dataset_overview, run_query e cross_query, TTL 120s. Solo debug.",
-    }
 
 
 @mcp.tool(
@@ -703,69 +634,6 @@ def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
         return result
 
     return guard_timed(_exec, "dataset_overview")
-
-
-@mcp.tool(
-    description=(
-        "[DEPRECATO] Cerca dataset con colonne metriche. "
-        "Usa column_search(query, metric_only=True) invece."
-    ),
-    structured_output=True,
-)
-def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20) -> dict[str, Any]:
-    def _exec() -> dict[str, Any]:
-        catalog = load_catalog()
-        results = []
-        for ds in catalog:
-            cols = ds.get("columns", [])
-            metric_cols = [
-                {"name": c["name"], "type": c.get("type"), "description": c.get("description")}
-                for c in cols
-                if c.get("role") == "metric"
-            ]
-            if not metric_cols:
-                continue
-
-            # Filter by query (search in name/description/source)
-            q_lower = query.lower()
-            if (
-                q_lower
-                and q_lower not in ds.get("name", "").lower()
-                and q_lower not in ds.get("description", "").lower()
-                and q_lower not in ds.get("source", "").lower()
-            ):
-                continue
-
-            # Filter by metric name
-            if metric_name:
-                mn_lower = metric_name.lower()
-                if not any(mn_lower in mc["name"].lower() for mc in metric_cols):
-                    continue
-
-            results.append(
-                {
-                    "slug": ds["slug"],
-                    "name": ds["name"],
-                    "source": ds.get("source"),
-                    "period": ds.get("period"),
-                    "metric_columns": metric_cols,
-                    "match_hint": metric_name or query,
-                }
-            )
-
-            if len(results) >= limit:
-                break
-
-        return {
-            "datasets": results,
-            "count": len(results),
-            "query": query,
-            "metric_name": metric_name,
-            "deprecated": "Usa column_search(query, metric_only=True) invece.",
-            "note": "Ritorna dataset che hanno colonne role=metric. Usa describe_dataset per lo schema completo.",
-        }
-
-    return guard_timed(_exec, "find_metric_datasets")
 
 
 @mcp.tool(
@@ -844,84 +712,6 @@ def find(
         }
 
     return guard_timed(_exec, "find")
-
-
-@mcp.tool(
-    description=("[DEPRECATO] Usa find(query) invece."),
-    structured_output=True,
-)
-def column_search(
-    query: str,
-    limit: int = 15,
-    metric_only: bool = False,
-    mode: str = "all",
-) -> dict[str, Any]:
-    """DEPRECATO: usa find(query, metric_only=...) invece."""
-    if mode == "dataset":
-        # comportamento search_datasets
-        from .catalog import search_datasets as _impl
-
-        return {"datasets": _impl(query), "query": query, "deprecated": "usa find(query) invece"}
-    return find(query, metric_only=metric_only, limit=limit)
-
-
-@mcp.tool(
-    description=(
-        "[DEBUG] Pre-check SQL senza eseguire. "
-        "Non esegue la query — usa EXPLAIN di DuckDB. "
-        "run_query() gia' riporta errori SQL in modo chiaro."
-    ),
-    structured_output=True,
-)
-def explain_query(sql: str, dataset: str) -> dict[str, Any]:
-    try:
-        parquet_paths = resolve_parquet_path(dataset, year=None)
-    except (ValueError, FileNotFoundError) as exc:
-        return {"error": str(exc)}
-
-    try:
-        _validate_scope(sql)
-    except DuckdbClientError as exc:
-        return {"validation_error": str(exc), "valid": False}
-
-    try:
-        _validate_select_sql(sql)
-    except DuckdbClientError as exc:
-        return {"validation_error": str(exc), "valid": False}
-
-    # Validate with actual DuckDB EXPLAIN on the wrapped query
-    escaped_paths = "', '".join(p.replace("'", "''") for p in parquet_paths)
-    if len(parquet_paths) == 1:
-        source_expr = f"'{escaped_paths}'"
-    else:
-        source_expr = f"['{escaped_paths}']"
-    wrapped_sql = f"WITH clean_input AS (SELECT * FROM read_parquet({source_expr})) {sql}"
-
-    def _exec() -> dict[str, Any]:
-        from lab_connectors.duckdb import gcs_connect
-        import concurrent.futures
-
-        with gcs_connect(parquet_paths[0]) as conn:
-            pool = concurrent.futures.ThreadPoolExecutor(max_workers=1)
-            try:
-                future = pool.submit(lambda: conn.execute(f"EXPLAIN {wrapped_sql}"))
-                explain_result = future.result(timeout=30)
-                row = explain_result.fetchone() if explain_result else None
-                plan_text = row[1] if row and len(row) > 1 else (row[0] if row else None)
-            finally:
-                pool.shutdown(wait=False)
-
-        return {
-            "valid": True,
-            "dataset": dataset,
-            "sql": sql,
-            "source_parquets": parquet_paths,
-            "plan_excerpt": plan_text[:200] if plan_text else None,
-            "note": "EXPLAIN eseguito con successo — query sintatticamente e semanticamente valida.",
-            "tip": "Usa preview() per verificare i dati reali prima di run_query().",
-        }
-
-    return guard_timed(_exec, "explain_query")
 
 
 # ── Relationship Map ──────────────────────────────────────────────────────────
