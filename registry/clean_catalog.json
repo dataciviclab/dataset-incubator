@@ -8665,9 +8665,9 @@
     },
     {
       "slug": "sai_progetti_italia",
-      "name": "Sai Progetti Italia",
-      "description": "",
-      "source": "",
+      "name": "SAI Progetti — Progetti del Sistema Accoglienza e Integrazione (2018-2024)",
+      "description": "Progetti del Sistema Accoglienza e Integrazione (SAI) per migranti in Italia. Ogni riga è un progetto finanziato a un ente locale, con tipologia (ordinario, minori, dimissioni), capienza, presenze e geografia. Fonte: Centri d'Italia (ActionAid/Openpolis), CC-BY 4.0.",
+      "source": "Centri d'Italia — ActionAid Italia / Fondazione Openpolis",
       "source_id": "centri_d_italia",
       "period": {
         "start": 2018,
@@ -8677,128 +8677,128 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di rilevazione (derivato da data_riferimento)"
         },
         {
           "name": "progetto_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice univoco del progetto SAI (es. PROG-383-PR-1)"
         },
         {
           "name": "data_riferimento",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data della rilevazione del progetto"
         },
         {
           "name": "ente_locale_progetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ente locale responsabile del progetto (comune/consorzio)"
         },
         {
           "name": "tipologia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia progetto: ORD (ordinario), MSNA (minori), DM-DS (dimissioni)"
         },
         {
           "name": "capienza",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di posti previsti dal progetto"
         },
         {
           "name": "presenze",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di persone presenti / accolte"
         },
         {
           "name": "comune_id",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "ID interno del comune capofila"
         },
         {
           "name": "comune_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune capofila"
         },
         {
           "name": "comune_codice_istat",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 cifre, join con comuni_master)"
         },
         {
           "name": "comune_abitanti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione residente del comune capofila"
         },
         {
           "name": "comune_codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice catastale Belfiore del comune"
         },
         {
           "name": "provincia_cm_id",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "ID interno della provincia"
         },
         {
           "name": "provincia_cm_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della provincia"
         },
         {
           "name": "provincia_cm_codice_istat",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT della provincia"
         },
         {
           "name": "provincia_cm_abitanti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione residente della provincia"
         },
         {
           "name": "provincia_cm_sigla",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sigla automobilistica della provincia"
         },
         {
           "name": "regione_id",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "ID interno della regione"
         },
         {
           "name": "regione_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della regione"
         },
         {
           "name": "regione_codice_istat",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ISTAT della regione (2 cifre)"
         },
         {
           "name": "regione_abitanti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione residente della regione"
         }
       ],
       "location": {
