@@ -1,7 +1,7 @@
-"""Test per build_relationship_map.py — genera relationship_map.json dalla join_map.
+"""Test per build_relationship_map.py — genera mappa relazioni da join_map.yaml.
 
 Legge join_map.yaml committed nel repo e verifica che la mappa generata
-abbia la struttura attesa.
+abbia la struttura attesa. Usata da dataset_graph() per navigazione live.
 """
 
 from __future__ import annotations

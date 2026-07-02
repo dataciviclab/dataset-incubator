@@ -1,14 +1,15 @@
-"""Genera registry/relationship_map.json dalla join_map.yaml.
+"""Costruisce la mappa invertita delle relazioni tra dataset dalla join_map.yaml.
 
 Legge la join_map e produce una mappa inversa: per ogni chiave
 (codice_istat, denominazione, ...) elenca tutti i dataset che
 la condividono, con il normalizzatore e la granularità.
 
+Usata da dataset_graph() per navigare le relazioni live.
+
 Uso::
 
-    python -m clean_query_mcp.build_relationship_map
-
-Genera: registry/relationship_map.json
+    from clean_query_mcp.build_relationship_map import build
+    mappa = build()
 """
 
 from __future__ import annotations

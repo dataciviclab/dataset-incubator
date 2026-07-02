@@ -160,7 +160,7 @@ _DESCRIBE_FIXTURE = {
 
 
 def test_relationship_map_loads():
-    """relationship_map.json deve esistere ed essere un dict valido."""
+    """_load_relationship_map genera la mappa da join_map.yaml (nessun file JSON)."""
     result = server._load_relationship_map()
     assert "error" not in result, f"Errore caricamento relationship_map: {result.get('error')}"
     assert "registries" in result
