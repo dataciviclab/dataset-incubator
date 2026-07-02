@@ -469,6 +469,11 @@ def cross_query(
     max_rows = _guard_max_rows(max_rows)
     capped_sql = f"SELECT * FROM ({sql}) AS q LIMIT {max_rows + 1}"
 
+    cache_key = ("cross_query", tuple(sorted(datasets)), capped_sql, max_rows)
+    cached = _query_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     def _exec() -> dict[str, Any]:
         result = _execute_cross_sql(datasets, capped_sql)
         if "error" in result:
@@ -484,7 +489,9 @@ def cross_query(
             "datasets": datasets,
         }
 
-    return guard_timed(_exec, "cross_query")
+    result = guard_timed(_exec, "cross_query")
+    _query_cache.set(cache_key, result)
+    return result
 
 
 @mcp.tool(description="Lista dei dataset clean disponibili per query.", structured_output=True)
@@ -493,14 +500,20 @@ def list_datasets() -> list[dict[str, Any]]:
 
 
 @mcp.tool(
-    description="Cerca nei dataset per nome, descrizione o fonte.",
+    description="[DEPRECATO] Cerca nei dataset per nome/descrizione. Usa column_search(query, mode='dataset') invece.",
     structured_output=True,
 )
 def search_datasets(query: str) -> dict[str, Any]:
+    """DEPRECATO: usa column_search(query, mode='dataset')."""
+
     def _exec() -> dict[str, Any]:
         if not (query or "").strip():
             raise DuckdbClientError("query non può essere vuota", ErrorCode.EMPTY_PARAM)
-        return {"datasets": search_impl(query.strip()), "query": query.strip()}
+        return {
+            "datasets": search_impl(query.strip()),
+            "query": query.strip(),
+            "deprecated": "Usa column_search(query, mode='dataset') invece.",
+        }
 
     return guard_timed(_exec, "search_datasets")
 
@@ -584,6 +597,11 @@ def run_query(
 
     wrapped_sql = f"SELECT * FROM ({sql_to_exec}) AS q LIMIT {max_rows + 1}"
 
+    cache_key = ("run_query", dataset, wrapped_sql, max_rows)
+    cached = _query_cache.get(cache_key)
+    if cached is not None:
+        return cached
+
     def _exec() -> dict[str, Any]:
         result = _execute_sql(dataset, wrapped_sql, year=year)
         if "error" in result:
@@ -599,14 +617,13 @@ def run_query(
             "dataset": dataset,
         }
 
-    return guard_timed(_exec, "run_query")
+    result = guard_timed(_exec, "run_query")
+    _query_cache.set(cache_key, result)
+    return result
 
 
 @mcp.tool(
-    description=(
-        "Restituisce statistiche sulle cache: GCS path resolution e risultati query. "
-        "Utile per monitorare efficienza cache e debug."
-    ),
+    description=("[DEBUG] Statistiche cache query e GCS. Utile per debug, non per uso normale."),
     structured_output=True,
 )
 def cache_stats() -> dict[str, Any]:
@@ -622,7 +639,7 @@ def cache_stats() -> dict[str, Any]:
             "oldest_age_seconds": round(query_stats.oldest_age_seconds, 1),
             "ttl_seconds": query_stats.ttl_seconds,
         },
-        "note": "query_results cache: dataset_overview e COUNT frequenti, TTL 120s",
+        "note": "query_results cache: dataset_overview, run_query e cross_query, TTL 120s. Solo debug.",
     }
 
 
@@ -688,8 +705,8 @@ def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
 
 @mcp.tool(
     description=(
-        "Cerca dataset che abbiano una colonna di tipo 'metric' (numerica). "
-        "Filtra per nome colonna o pattern, e ritorna il catalogo dei match con schema resumí."
+        "[DEPRECATO] Cerca dataset con colonne metriche. "
+        "Usa column_search(query, metric_only=True) invece."
     ),
     structured_output=True,
 )
@@ -742,6 +759,7 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
             "count": len(results),
             "query": query,
             "metric_name": metric_name,
+            "deprecated": "Usa column_search(query, metric_only=True) invece.",
             "note": "Ritorna dataset che hanno colonne role=metric. Usa describe_dataset per lo schema completo.",
         }
 
@@ -750,17 +768,64 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
 
 @mcp.tool(
     description=(
-        "Cerca dataset per nome o descrizione di colonna. "
-        "Cerca sia nelle meta dataset (nome, descrizione, source) che nei nomi colonna."
+        "Cerca dataset per nome, descrizione o colonna. "
+        "Cerca in nome dataset, descrizione, fonte e nomi colonna. "
+        "Con mode='dataset' cerca solo in nome/descrizione (come search_datasets). "
+        "Con metric_only=True mostra solo dataset con colonne numeriche."
     ),
     structured_output=True,
 )
-def column_search(query: str, limit: int = 15) -> dict[str, Any]:
+def column_search(
+    query: str,
+    limit: int = 15,
+    metric_only: bool = False,
+    mode: str = "all",
+) -> dict[str, Any]:
+    """Cerca dataset per nome, descrizione e colonne.
+
+    Args:
+        query: Testo da cercare.
+        limit: Max risultati (default 15).
+        metric_only: Se True, mostra solo dataset con colonne role=metric.
+        mode: 'all' (default, cerca ovunque) o 'dataset' (solo nome/descrizione).
+    """
+
     def _exec() -> dict[str, Any]:
         catalog = load_catalog()
         q = query.lower()
         results = []
+
         for ds in catalog:
+            # Mode: salta dataset senza colonne metriche se richiesto
+            if metric_only:
+                has_metric = any(c.get("role") == "metric" for c in ds.get("columns", []))
+                if not has_metric:
+                    continue
+
+            # Match in dataset metadata (nome, descrizione, source)
+            meta_match = (
+                q in ds.get("name", "").lower()
+                or q in ds.get("description", "").lower()
+                or q in ds.get("source", "").lower()
+            )
+
+            if mode == "dataset":
+                if meta_match:
+                    results.append(
+                        {
+                            "slug": ds["slug"],
+                            "name": ds["name"],
+                            "source": ds.get("source"),
+                            "period": ds.get("period"),
+                            "matched_columns": [],
+                            "meta_match": True,
+                        }
+                    )
+                    if len(results) >= limit:
+                        break
+                continue
+
+            # Mode 'all': cerca anche nelle colonne
             matched_cols = []
             for col in ds.get("columns", []):
                 if q in col.get("name", "").lower() or q in col.get("description", "").lower():
@@ -772,9 +837,6 @@ def column_search(query: str, limit: int = 15) -> dict[str, Any]:
                             "description": col.get("description"),
                         }
                     )
-
-            # Match in dataset metadata or in column names/descriptions
-            meta_match = q in ds.get("name", "").lower() or q in ds.get("description", "").lower()
 
             if matched_cols or meta_match:
                 results.append(
@@ -791,11 +853,20 @@ def column_search(query: str, limit: int = 15) -> dict[str, Any]:
             if len(results) >= limit:
                 break
 
+        note_parts = []
+        if mode == "dataset":
+            note_parts.append("mode=dataset: cerca solo in nome/descrizione")
+        if metric_only:
+            note_parts.append("metric_only: solo dataset con colonne numeriche")
+        if not note_parts:
+            note_parts.append("cerca in nome dataset, descrizione, fonte e colonne")
+
         return {
             "datasets": results,
             "count": len(results),
             "query": query,
-            "note": "Meta_match=True indica match su nome/descrizione dataset; matched_columns indica match su colonna.",
+            "note": ". ".join(note_parts)
+            + ". Meta_match=True indica match su nome/descrizione dataset.",
         }
 
     return guard_timed(_exec, "column_search")
@@ -803,9 +874,9 @@ def column_search(query: str, limit: int = 15) -> dict[str, Any]:
 
 @mcp.tool(
     description=(
-        "Pre-check di una query SQL: valida scope, sintassi e riferimenti a clean_input. "
-        "Non esegue la query — usa EXPLAIN di DuckDB per validazione semantica base. "
-        "Usa preview() per un campione reale dei dati."
+        "[DEBUG] Pre-check SQL senza eseguire. "
+        "Non esegue la query — usa EXPLAIN di DuckDB. "
+        "run_query() gia' riporta errori SQL in modo chiaro."
     ),
     structured_output=True,
 )
