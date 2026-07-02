@@ -1,0 +1,64 @@
+# SILOS — Infrastrutture strategiche e prioritarie (Camera dei Deputati)
+# Fonte: dati.camera.it — CC BY-SA 4.0
+# Report annuale 2024 del Servizio Studi
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "silos_infrastrutture"
+  source_id: "dati_camera"
+  # Il file contiene la fotografia al 31/08/2024 ma la serie storica parte dal 2004
+  years: [2024]
+  time_coverage:
+    start_year: 2004
+    end_year: 2024
+
+raw:
+  extractor:
+    type: "unzip_first_csv"
+  output_policy: overwrite
+  sources:
+    - name: "silos_download"
+      # Script di download: l'IP di GitHub Actions è bloccato da dati.camera.it.
+      # Il fallback proxy del toolkit (BLOCKED_SOURCE_PROXY) non basta perché la Camera
+      # risponde 200 con HTML invece di 403 — lo script forza il proxy via curl.
+      type: "script"
+      args:
+        command: "bash scripts/download_silos.sh"
+        filename: "PISRapportoCSV2024.zip"
+        output: "PISRapportoCSV2024.zip"
+      primary: true
+
+clean:
+  read:
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    strict_mode: false
+    ignore_errors: true
+    null_padding: true
+    sample_size: -1
+    columns:
+      "Link alla scheda": "VARCHAR"
+      "Progressivo": "VARCHAR"
+      "Livello": "VARCHAR"
+      "Commissariate o PNRR-PNC": "VARCHAR"
+      "Sistema infrastrutturale": "VARCHAR"
+      "Cup": "VARCHAR"
+      "Denominazione": "VARCHAR"
+      "Soggetto competente": "VARCHAR"
+      "Luogo lavori": "VARCHAR"
+      "Stato di attuazione": "VARCHAR"
+      "Ultimazione lavori al 31/08/2024": "VARCHAR"
+      "Costi al 31/08/2024": "VARCHAR"
+      "Disponibilità al 31/08/2024": "VARCHAR"
+      "Fabbisogno al 31/08/2024": "VARCHAR"
+  read_mode: strict
+  required_columns: ["progressivo", "sistema_infrastrutturale", "denominazione"]
+  sql: "sql/clean.sql"
+
+mart:
+  tables:
+    - name: "silos_infrastrutture"
+      sql: "sql/mart.sql"
