@@ -1,0 +1,42 @@
+# Candidate: SAI Strutture Italia — Strutture del Sistema Accoglienza e Integrazione
+# Fonte: Centri d'Italia (ActionAid Italia + Fondazione Openpolis)
+# Licenza: CC-BY 4.0
+# Issue: https://github.com/dataciviclab/dataset-incubator/issues/595
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "sai_strutture_italia"
+  source_id: "centri_d_italia"
+  years: [2026]
+  time_coverage:
+    start_year: 2018
+    end_year: 2024
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "sai_strutture_source"
+      type: "http_file"
+      args:
+        url: "https://migrantidb.s3.eu-central-1.amazonaws.com/opendata/sai_struttura_v2026.csv"
+        filename: "sai_struttura_v2026.csv"
+      primary: true
+
+clean:
+  read:
+    delim: ","
+    encoding: "utf-8"
+    decimal: "."
+    header: true
+    quote: '"'
+    escape: '"'
+  read_mode: robust
+  required_columns: ["sai_struttura_id", "sai_struttura_tipologia", "sai_progetto_codice", "comune_denominazione"]
+  sql: "sql/clean.sql"
+
+mart:
+  tables:
+    - name: "strutture_regione"
+      sql: "sql/mart.sql"
