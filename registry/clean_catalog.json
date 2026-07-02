@@ -8986,6 +8986,116 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "silos_infrastrutture",
+      "name": "Silos Infrastrutture",
+      "description": "",
+      "source": "",
+      "source_id": "dati_camera",
+      "period": {
+        "start": 2004,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "link_scheda",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "progressivo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_commissariato_pnrr",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sistema_infrastrutturale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cup",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "soggetto_competente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "luogo_lavori",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "stato_attuazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "anno_ultimazione_previsto",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "costi_mln_euro",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "disponibilita_mln_euro",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "fabbisogno_mln_euro",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/silos_infrastrutture/2024/silos_infrastrutture_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "strutture_asl",
       "name": "Strutture Asl",
       "description": "Strutture e attività delle ASL — medici di base, pediatri, popolazione residente, servizi territoriali e presidi per regione — Ministero della Salute 2022",
