@@ -15,6 +15,7 @@ Quanti progetti SAI ci sono in Italia, chi li gestisce, quanti posti hanno, per 
 - **Granularità**: singolo progetto per rilevazione annuale (~6.100 righe)
 - **Tipologie**: ORD (ordinario) ~73%, MSNA (minori) ~22%, DM-DS ~5%
 - **Metriche**: capienza, presenze, ente locale gestore
+- **Capienza media**: ORD ~50 posti, MSNA ~28, DM-DS ~17
 
 ## Output minimo atteso
 

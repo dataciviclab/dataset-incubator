@@ -1,15 +1,15 @@
 ## Tecnico
 
 - File unico CSV multi-anno (2018-2024)
-- ~6.100 righe, 20 colonne clean
+- ~6.100 righe, 21 colonne clean
 - Encoding: UTF-8, delim: virgola
 - Quote/escape configurati
 
 ## Analitico
 
-- ORD: ~4.400 progetti, media ~77 posti
-- MSNA: ~1.300 progetti, media ~62 posti
-- DM-DS: ~300 progetti, media ~44 posti
+- ORD: ~4.400 progetti, media ~50 posti
+- MSNA: ~1.300 progetti, media ~28 posti
+- DM-DS: ~300 progetti, media ~17 posti
 
 ## Cautele
 
