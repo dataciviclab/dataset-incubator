@@ -914,8 +914,8 @@ def query(
 @mcp.tool(
     description=(
         "Panoramica multi-dominio su un ente/comune italiano. "
-        "Restituisce anagrafica, popolazione, redditi, rifiuti, "
-        "suolo e FSC per un ente in un colpo solo."
+        "Restituisce anagrafica e serie storica di popolazione, redditi, "
+        "rifiuti, suolo e FSC in un colpo solo."
     ),
     structured_output=True,
 )
@@ -925,12 +925,15 @@ def ente(
 ) -> dict[str, Any]:
     """Panoramica completa su un ente/comune.
 
+    Usa unified_comuni per una singola query: popolazione, redditi,
+    raccolta differenziata, consumo suolo, FSC — per tutti gli anni.
+
     Args:
         nome: Denominazione (es. 'Milano', 'Abbiategrasso').
         codice_istat: Codice ISTAT 6 cifre (es. 015146).
 
     Returns:
-        Dict con anagrafica, popolazione, redditi, rifiuti, suolo, FSC.
+        Dict con 'ente' (anagrafica) e 'dati' (serie storica per anno).
     """
     if not nome and not codice_istat:
         return {"error": "Specifica nome o codice_istat."}
@@ -945,93 +948,46 @@ def ente(
 
     def _exec() -> dict[str, Any]:
         # Determina comune da nome o codice
-        if codice_istat:
-            filter_sql = f"codice_istat = '{_esc(codice_istat)}'"
-        else:
-            filter_sql = f"denominazione = '{_esc(nome)}'"
+        where = (
+            f"codice_istat = '{_esc(codice_istat)}'"
+            if codice_istat
+            else f"denominazione = '{_esc(nome)}'"
+        )
 
+        # Anagrafica da comuni_master
         anag = run_query(
-            f"SELECT codice_istat, denominazione, sigla_provincia, regione, superficie_km2, altitudine FROM clean_input WHERE {filter_sql}",
+            f"SELECT codice_istat, denominazione, sigla_provincia, regione, superficie_km2, altitudine FROM clean_input WHERE {where}",
             "comuni_master",
         )
         if "error" in anag or not anag.get("rows"):
             return {"error": f"Ente '{_esc(nome or codice_istat)}' non trovato."}
 
-        row = anag["rows"][0]
-        cod_istat = row[0]
-        denom = row[1]
+        a = anag["rows"][0]
+        cod_istat, denom = a[0], a[1]
 
-        # Popolazione
-        pop = run_query(
-            f"SELECT anno, SUM(popolazione_residente) as pop FROM clean_input WHERE comune = '{denom}' GROUP BY anno ORDER BY anno",
-            "popolazione_istat_comunale_2019_2025",
-            max_rows=10,
+        # Dati multi-dominio: unified_comuni, dinamico per colonne
+        unif = run_query(
+            f"SELECT * FROM clean_input WHERE denominazione = '{denom}' ORDER BY anno",
+            "unified_comuni",
+            max_rows=15,
         )
+        if "error" in unif:
+            return {"error": str(unif["error"])}
 
-        # IRPEF
-        irp = run_query(
-            f"SELECT anno_di_imposta, numero_contribuenti, reddito_imponibile_eur, imposta_netta_eur FROM clean_input WHERE denominazione_comune = UPPER('{denom}') ORDER BY anno_di_imposta",
-            "irpef_comunale",
-            max_rows=10,
-        )
-
-        # Rifiuti (ultimo anno)
-        ru = run_query(
-            f"SELECT anno, totale_ru_tonnellate, percentuale_rd FROM clean_input WHERE comune = UPPER('{denom}') ORDER BY anno DESC LIMIT 1",
-            "ispra_ru_base",
-            max_rows=1,
-        )
-
-        # Suolo (ultimo anno)
-        suolo = run_query(
-            f"SELECT anno, stock_ha, stock_pct FROM clean_input WHERE comune = '{denom}' ORDER BY anno DESC LIMIT 1",
-            "ispra_consumo_suolo",
-            max_rows=1,
-        )
-
-        # FSC (ultimo anno)
-        fsc = run_query(
-            f"SELECT anno, dotazione_finale_fsc FROM clean_input WHERE comune = UPPER('{denom}') ORDER BY anno DESC LIMIT 1",
-            "opencivitas_fsc_2025_rso",
-            max_rows=1,
-        )
+        # Costruisci dati dinamicamente dalle colonne (niente indici hardcodati)
+        cols = unif["columns"]
+        dati = [dict(zip(cols, list(row))) for row in unif["rows"]]
 
         return {
             "ente": {
                 "codice_istat": cod_istat,
                 "denominazione": denom,
-                "provincia": row[2],
-                "regione": row[3],
-                "superficie_km2": row[4],
-                "altitudine": row[5],
+                "provincia": a[2],
+                "regione": a[3],
+                "superficie_km2": a[4],
+                "altitudine": a[5],
             },
-            "popolazione": [{"anno": r[0], "residenti": r[1]} for r in pop.get("rows", [])],
-            "redditi": [
-                {
-                    "anno": r[0],
-                    "contribuenti": r[1],
-                    "imponibile_eur": r[2],
-                    "imposta_netta_eur": r[3],
-                }
-                for r in irp.get("rows", [])
-            ],
-            "rifiuti": {
-                "anno": ru["rows"][0][0],
-                "tonnellate": ru["rows"][0][1],
-                "rd_pct": ru["rows"][0][2],
-            }
-            if ru.get("rows")
-            else None,
-            "suolo": {
-                "anno": suolo["rows"][0][0],
-                "stock_ha": suolo["rows"][0][1],
-                "stock_pct": suolo["rows"][0][2],
-            }
-            if suolo.get("rows")
-            else None,
-            "fsc": {"anno": fsc["rows"][0][0], "dotazione_finale_fsc": fsc["rows"][0][1]}
-            if fsc.get("rows")
-            else None,
+            "dati": dati,
         }
 
     return guard_timed(_exec, "ente")
