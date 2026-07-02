@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 71,
+    "total": 72,
     "by_status": {
-      "ok": 71,
+      "ok": 72,
       "warn": 0,
       "error": 0
     }
@@ -1093,6 +1093,24 @@
           2026
         ],
         "config_path": "candidates/sai-strutture-italia/dataset.yml"
+      }
+    },
+    {
+      "id": "silos-infrastrutture",
+      "source_id": "dati_camera",
+      "status": "ok",
+      "label": "silos-infrastrutture",
+      "detail": "anno 2024 — fonte: silos_download — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28612611639",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28612611639",
+        "checked_at": "2026-07-02",
+        "years": [
+          2024
+        ],
+        "config_path": "candidates/silos-infrastrutture/dataset.yml"
       }
     },
     {
