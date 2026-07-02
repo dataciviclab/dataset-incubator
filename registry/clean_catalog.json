@@ -8987,9 +8987,9 @@
     },
     {
       "slug": "silos_infrastrutture",
-      "name": "Silos Infrastrutture",
-      "description": "",
-      "source": "",
+      "name": "Infrastrutture strategiche e prioritarie (SILOS)",
+      "description": "Censimento delle infrastrutture strategiche e prioritarie in Italia. Report annuale del Servizio Studi della Camera dei Deputati. Per ogni opera: CUP, denominazione, soggetto competente, localizzazione, stato di attuazione, costi, disponibilità finanziaria e fabbisogno residuo in milioni di euro.",
+      "source": "https://dati.camera.it/ocd/dump/silos/PISRapportoCSV2024.zip",
       "source_id": "dati_camera",
       "period": {
         "start": 2004,
@@ -8999,92 +8999,92 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento del report"
         },
         {
           "name": "link_scheda",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URL della scheda opera su silos.infrastrutturestrategiche.it"
         },
         {
           "name": "progressivo",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Numero progressivo dell'intervento nel report"
         },
         {
           "name": "livello",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Livello gerarchico nella struttura ad albero del report"
         },
         {
           "name": "flag_commissariato_pnrr",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indicatore se l'opera è commissariata o legata a PNRR/PNC"
         },
         {
           "name": "sistema_infrastrutturale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sistema infrastrutturale di appartenenza (Ferrovie, Strade, Porti, ecc.)"
         },
         {
           "name": "cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice Unico di Progetto (CUP) dell'intervento"
         },
         {
           "name": "denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione dell'intervento"
         },
         {
           "name": "soggetto_competente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Soggetto competente alla realizzazione (es. RFI, ANAS, TELT)"
         },
         {
           "name": "luogo_lavori",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Localizzazione geografica principale dell'opera"
         },
         {
           "name": "stato_attuazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Stato di attuazione (Lavori in corso, Conclusi, Progettazione, Bloccato, ecc.)"
         },
         {
           "name": "anno_ultimazione_previsto",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno previsto per l'ultimazione dei lavori"
         },
         {
           "name": "costi_mln_euro",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Costi totali dell'opera in milioni di euro"
         },
         {
           "name": "disponibilita_mln_euro",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Disponibilità finanziaria in milioni di euro"
         },
         {
           "name": "fabbisogno_mln_euro",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Fabbisogno residuo in milioni di euro"
         }
       ],
       "location": {
@@ -9093,7 +9093,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "manual"
     },
     {
       "slug": "strutture_asl",
