@@ -383,23 +383,6 @@ def test_dataset_overview_limit_exceeds_cap():
 # ---------------------------------------------------------------------------
 
 
-def test_ente_empty_params():
-    """ente() senza parametri restituisce errore."""
-    result = server.ente()
-    assert "error" in result
-
-
-def test_ente_invalid_codice_istat():
-    """ente() con codice_istat non 6 cifre restituisce errore."""
-    result = server.ente(codice_istat="abc")
-    assert "error" in result
-
-
-# ---------------------------------------------------------------------------
-# query: validazione input
-# ---------------------------------------------------------------------------
-
-
 def test_query_empty_datasets():
     """query() con datasets vuoto restituisce errore."""
     result = server.query("SELECT 1", datasets=[])

@@ -1,8 +1,6 @@
 from __future__ import annotations
 
-import json as _json
 import re
-from pathlib import Path as _Path
 from typing import Any
 
 from lab_connectors.mcp import create_mcp_server, guard_timed
@@ -13,9 +11,6 @@ from .catalog import describe_dataset as describe_impl  # noqa: E402
 from .catalog import get_year_column  # noqa: E402
 from .catalog import resolve_parquet_path  # noqa: E402
 from .catalog import load_catalog  # noqa: E402
-
-# Path assoluto alla relationship map (generata da build_relationship_map.py)
-_RELATIONSHIP_MAP_PATH = _Path(__file__).resolve().parents[2] / "registry" / "relationship_map.json"
 
 ALLOWED_FROM = {"clean_input"}
 MAX_ROWS_HARD_CAP = 500
@@ -728,11 +723,13 @@ def find(
 
 
 def _load_relationship_map() -> dict[str, Any]:
-    """Carica relationship_map.json (generato da build_relationship_map.py)."""
+    """Genera la mappa relazioni dalla join_map.yaml (live, nessun file JSON)."""
     try:
-        return _json.loads(_RELATIONSHIP_MAP_PATH.read_text(encoding="utf-8"))
-    except (FileNotFoundError, _json.JSONDecodeError) as exc:
-        return {"error": f"relationship_map.json non trovato o corrotto: {exc}"}
+        from .build_relationship_map import build as _build_rm
+
+        return _build_rm()
+    except Exception as exc:
+        return {"error": f"Errore generazione relationship map: {exc}"}
 
 
 @mcp.tool(
@@ -909,88 +906,6 @@ def query(
 
     # Multi → cross_query
     return cross_query(datasets, sql, max_rows=max_rows)
-
-
-@mcp.tool(
-    description=(
-        "Panoramica multi-dominio su un ente/comune italiano. "
-        "Restituisce anagrafica e serie storica di popolazione, redditi, "
-        "rifiuti, suolo e FSC in un colpo solo."
-    ),
-    structured_output=True,
-)
-def ente(
-    nome: str = "",
-    codice_istat: str = "",
-) -> dict[str, Any]:
-    """Panoramica completa su un ente/comune.
-
-    Usa unified_comuni per una singola query: popolazione, redditi,
-    raccolta differenziata, consumo suolo, FSC — per tutti gli anni.
-
-    Args:
-        nome: Denominazione (es. 'Milano', 'Abbiategrasso').
-        codice_istat: Codice ISTAT 6 cifre (es. 015146).
-
-    Returns:
-        Dict con 'ente' (anagrafica) e 'dati' (serie storica per anno).
-    """
-    if not nome and not codice_istat:
-        return {"error": "Specifica nome o codice_istat."}
-
-    # Sanifica input: escape single quotes per SQL
-    def _esc(s: str) -> str:
-        return s.replace("'", "''")
-
-    if codice_istat:
-        if not re.match(r"^\d{6}$", codice_istat):
-            return {"error": f"codice_istat deve essere 6 cifre, ricevuto: {codice_istat}"}
-
-    def _exec() -> dict[str, Any]:
-        # Determina comune da nome o codice
-        where = (
-            f"codice_istat = '{_esc(codice_istat)}'"
-            if codice_istat
-            else f"denominazione = '{_esc(nome)}'"
-        )
-
-        # Anagrafica da comuni_master
-        anag = run_query(
-            f"SELECT codice_istat, denominazione, sigla_provincia, regione, superficie_km2, altitudine FROM clean_input WHERE {where}",
-            "comuni_master",
-        )
-        if "error" in anag or not anag.get("rows"):
-            return {"error": f"Ente '{_esc(nome or codice_istat)}' non trovato."}
-
-        a = anag["rows"][0]
-        cod_istat, denom = a[0], a[1]
-
-        # Dati multi-dominio: unified_comuni, dinamico per colonne
-        unif = run_query(
-            f"SELECT * FROM clean_input WHERE denominazione = '{denom}' ORDER BY anno",
-            "unified_comuni",
-            max_rows=15,
-        )
-        if "error" in unif:
-            return {"error": str(unif["error"])}
-
-        # Costruisci dati dinamicamente dalle colonne (niente indici hardcodati)
-        cols = unif["columns"]
-        dati = [dict(zip(cols, list(row))) for row in unif["rows"]]
-
-        return {
-            "ente": {
-                "codice_istat": cod_istat,
-                "denominazione": denom,
-                "provincia": a[2],
-                "regione": a[3],
-                "superficie_km2": a[4],
-                "altitudine": a[5],
-            },
-            "dati": dati,
-        }
-
-    return guard_timed(_exec, "ente")
 
 
 def main() -> None:
