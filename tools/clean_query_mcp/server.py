@@ -324,7 +324,23 @@ def _validate_cross_scope(sql: str, allowed_tables: set[str]) -> None:
     # allowed: ALLOWED_FROM + CTE locali + dataset names
     allowed = ALLOWED_FROM | cte_names | allowed_tables
 
-    # Check FROM references
+    # DuckDB permette FROM 'url.parquet' (string literal come tabella).
+    # Le stringhe originali sono già state sostituite con '' dalla scrub,
+    # quindi cerchiamo FROM '' o JOIN ''.
+    if re.search(r"\bfrom\s+''", scrubbed_lower):
+        raise DuckdbClientError(
+            "Accesso diretto a file parquet via FROM '...' non consentito. "
+            "Usa i nomi dei dataset passati in 'datasets'.",
+            ErrorCode.QUERY_SCOPE_VIOLATION,
+        )
+    if re.search(r"\bjoin\s+''", scrubbed_lower):
+        raise DuckdbClientError(
+            "Accesso diretto a file parquet via JOIN '...' non consentito. "
+            "Usa i nomi dei dataset passati in 'datasets'.",
+            ErrorCode.QUERY_SCOPE_VIOLATION,
+        )
+
+    # Check FROM references (identificatori)
     from_pattern = re.compile(r"\bfrom\s+([a-z_][a-z0-9_]*)", re.IGNORECASE)
     for match in from_pattern.finditer(scrubbed):
         table_ref = match.group(1).lower()
@@ -337,7 +353,7 @@ def _validate_cross_scope(sql: str, allowed_tables: set[str]) -> None:
             ErrorCode.QUERY_SCOPE_VIOLATION,
         )
 
-    # Check JOIN references
+    # Check JOIN references (identificatori)
     join_pattern = re.compile(r"\bjoin\s+([a-z_][a-z0-9_]*)", re.IGNORECASE)
     for match in join_pattern.finditer(scrubbed):
         table_ref = match.group(1).lower()

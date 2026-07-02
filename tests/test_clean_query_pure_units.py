@@ -475,6 +475,36 @@ class TestValidateCrossScope:
         with pytest.raises(server.DuckdbClientError):
             server._validate_select_sql("")
 
+    def test_blocks_from_string_literal(self):
+        """FROM 'url.parquet' bypassa la whitelist — deve essere bloccato."""
+        with pytest.raises(server.DuckdbClientError, match="non consentito"):
+            server._validate_cross_scope(
+                "SELECT * FROM 'https://storage.googleapis.com/bucket/aifa_spesa_consumo/file.parquet' LIMIT 1",
+                {"irpef_comunale", "popolazione_istat_comunale_2019_2025"},
+            )
+
+    def test_blocks_join_string_literal(self):
+        """JOIN 'url.parquet' deve essere bloccato come FROM."""
+        with pytest.raises(server.DuckdbClientError, match="non consentito"):
+            server._validate_cross_scope(
+                "SELECT * FROM irpef_comunale JOIN 'gs://bucket/other.parquet' AS o ON 1=1",
+                {"irpef_comunale"},
+            )
+
+    def test_allows_safe_string_in_where(self):
+        """Stringhe letterali in WHERE non devono scatenare falsi positivi."""
+        server._validate_cross_scope(
+            "SELECT * FROM irpef_comunale WHERE denominazione_comune = 'Milano'",
+            {"irpef_comunale"},
+        )
+
+    def test_allows_safe_string_in_values(self):
+        """Stringhe letterali in VALUES o IN non devono essere bloccate."""
+        server._validate_cross_scope(
+            "SELECT * FROM irpef_comunale WHERE comune IN ('Milano', 'Roma')",
+            {"irpef_comunale"},
+        )
+
 
 # ---------------------------------------------------------------------------
 # _load_relationship_map: carica il JSON committed in registry/
