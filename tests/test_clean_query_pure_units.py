@@ -159,19 +159,6 @@ _DESCRIBE_FIXTURE = {
 }
 
 
-def test_describe_dataset_valid(monkeypatch):
-    monkeypatch.setattr(server, "describe_impl", lambda slug: _DESCRIBE_FIXTURE)
-    result = server.describe_dataset("test_a")
-    assert result["slug"] == "test_a"
-    assert len(result["columns"]) == 2
-
-
-def test_describe_dataset_not_found(monkeypatch):
-    monkeypatch.setattr(server, "describe_impl", lambda slug: {"error": "not found"})
-    result = server.describe_dataset("nonexistent")
-    assert "error" in result
-
-
 def test_relationship_map_loads():
     """relationship_map.json deve esistere ed essere un dict valido."""
     result = server._load_relationship_map()
@@ -355,3 +342,31 @@ def test_gcs_cache_clear(monkeypatch):
     stats = cat_mod.gcs_cache_stats()
     assert stats["total_entries"] == 0
     assert stats["valid_entries"] == 0
+
+
+# ---------------------------------------------------------------------------
+# dataset_overview: limit=0 (schema only) e validazione
+# ---------------------------------------------------------------------------
+
+
+def test_dataset_overview_limit_zero(monkeypatch):
+    """dataset_overview con limit=0 restituisce solo schema (nessuna query DuckDB)."""
+    fake_desc = {
+        "slug": "test_ds",
+        "name": "Test DS",
+        "source": "Test",
+        "period": {"start": 2020, "end": 2024},
+        "columns": [{"name": "anno", "type": "BIGINT", "role": "dimension"}],
+    }
+    monkeypatch.setattr(server, "describe_impl", lambda s: fake_desc)
+    result = server.dataset_overview("test_ds", limit=0)
+    assert result["slug"] == "test_ds"
+    assert result["columns"] == fake_desc["columns"]
+    assert result["total_rows"] is None
+    assert result["preview"] is None
+
+
+def test_dataset_overview_limit_negative():
+    """dataset_overview con limit negativo restituisce errore."""
+    result = server.dataset_overview("test_ds", limit=-1)
+    assert "error" in result

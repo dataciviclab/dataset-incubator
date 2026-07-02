@@ -482,14 +482,6 @@ def cross_query(
     return result
 
 
-@mcp.tool(
-    description="Descrive lo schema di un dataset: colonne, tipi, ruolo (dimension/metric), periodo.",
-    structured_output=True,
-)
-def describe_dataset(slug: str) -> dict[str, Any]:
-    return describe_impl(slug)
-
-
 def _inject_year_filter(sql: str, year_col: str | None, year: int) -> str:
     """Inietta WHERE {year_col}={year} subito dopo FROM clean_input, prima di GROUP BY/ORDER BY/LIMIT."""
     if not year_col or year is None:
@@ -587,10 +579,11 @@ def run_query(
     structured_output=True,
 )
 def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
-    if limit <= 0 or limit > MAX_ROWS_HARD_CAP:
-        return {"error": f"limit deve essere tra 1 e {MAX_ROWS_HARD_CAP}"}
+    """Schema + conteggio + preview dataset. Con limit=0 solo schema."""
+    if limit < 0 or limit > MAX_ROWS_HARD_CAP:
+        return {"error": f"limit deve essere tra 0 e {MAX_ROWS_HARD_CAP}"}
 
-    # Cache check
+    # Cache check (chiave diversa per limit=0)
     cache_key = ("dataset_overview", slug, limit)
     cached = _query_cache.get(cache_key)
     if cached is not None:
@@ -601,6 +594,23 @@ def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
         return schema
 
     def _exec() -> dict[str, Any]:
+        if limit == 0:
+            # Solo schema, nessuna query DuckDB
+            result = {
+                "slug": slug,
+                "name": schema.get("name"),
+                "description": schema.get("description"),
+                "source": schema.get("source"),
+                "period": schema.get("period"),
+                "columns": schema.get("columns", []),
+                "total_rows": None,
+                "preview": None,
+                "_cached": False,
+                "note": "Usa limit=N per preview e conteggio righe.",
+            }
+            _query_cache.set(cache_key, result)
+            return result
+
         # Due query nella stessa connessione: COUNT + preview
         sql_list = [
             "SELECT COUNT(*) AS total FROM clean_input",
