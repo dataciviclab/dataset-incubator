@@ -771,25 +771,23 @@ def find_metric_datasets(query: str = "", metric_name: str = "", limit: int = 20
 @mcp.tool(
     description=(
         "Cerca dataset per nome, descrizione o colonna. "
-        "Cerca in nome dataset, descrizione, fonte e nomi colonna. "
-        "Con mode='dataset' cerca solo in nome/descrizione (come search_datasets). "
-        "Con metric_only=True mostra solo dataset con colonne numeriche."
+        "Entry point unico per scoprire dataset. "
+        "Con metric_only=True mostra solo dataset con colonne numeriche. "
+        "Con query vuota restituisce tutti i dataset."
     ),
     structured_output=True,
 )
-def column_search(
-    query: str,
-    limit: int = 15,
+def find(
+    query: str = "",
     metric_only: bool = False,
-    mode: str = "all",
+    limit: int = 15,
 ) -> dict[str, Any]:
-    """Cerca dataset per nome, descrizione e colonne.
+    """Cerca dataset per nome, descrizione, fonte e colonne.
 
     Args:
-        query: Testo da cercare.
-        limit: Max risultati (default 15).
+        query: Testo da cercare. Vuoto = tutti i dataset.
         metric_only: Se True, mostra solo dataset con colonne role=metric.
-        mode: 'all' (default, cerca ovunque) o 'dataset' (solo nome/descrizione).
+        limit: Max risultati (default 15, max 100).
     """
 
     def _exec() -> dict[str, Any]:
@@ -798,47 +796,30 @@ def column_search(
         results = []
 
         for ds in catalog:
-            # Mode: salta dataset senza colonne metriche se richiesto
             if metric_only:
                 has_metric = any(c.get("role") == "metric" for c in ds.get("columns", []))
                 if not has_metric:
                     continue
 
-            # Match in dataset metadata (nome, descrizione, source)
             meta_match = (
-                q in ds.get("name", "").lower()
+                not q
+                or q in ds.get("name", "").lower()
                 or q in ds.get("description", "").lower()
                 or q in ds.get("source", "").lower()
             )
 
-            if mode == "dataset":
-                if meta_match:
-                    results.append(
-                        {
-                            "slug": ds["slug"],
-                            "name": ds["name"],
-                            "source": ds.get("source"),
-                            "period": ds.get("period"),
-                            "matched_columns": [],
-                            "meta_match": True,
-                        }
-                    )
-                    if len(results) >= limit:
-                        break
-                continue
-
-            # Mode 'all': cerca anche nelle colonne
             matched_cols = []
-            for col in ds.get("columns", []):
-                if q in col.get("name", "").lower() or q in col.get("description", "").lower():
-                    matched_cols.append(
-                        {
-                            "name": col["name"],
-                            "type": col.get("type"),
-                            "role": col.get("role"),
-                            "description": col.get("description"),
-                        }
-                    )
+            if q:
+                for col in ds.get("columns", []):
+                    if q in col.get("name", "").lower() or q in col.get("description", "").lower():
+                        matched_cols.append(
+                            {
+                                "name": col["name"],
+                                "type": col.get("type"),
+                                "role": col.get("role"),
+                                "description": col.get("description"),
+                            }
+                        )
 
             if matched_cols or meta_match:
                 results.append(
@@ -855,23 +836,33 @@ def column_search(
             if len(results) >= limit:
                 break
 
-        note_parts = []
-        if mode == "dataset":
-            note_parts.append("mode=dataset: cerca solo in nome/descrizione")
-        if metric_only:
-            note_parts.append("metric_only: solo dataset con colonne numeriche")
-        if not note_parts:
-            note_parts.append("cerca in nome dataset, descrizione, fonte e colonne")
-
         return {
             "datasets": results,
             "count": len(results),
-            "query": query,
-            "note": ". ".join(note_parts)
-            + ". Meta_match=True indica match su nome/descrizione dataset.",
+            "query": query or "(tutti)",
+            "note": "Usa schema(slug) per dettagli colonne. Usa graph() per relazioni tra dataset.",
         }
 
-    return guard_timed(_exec, "column_search")
+    return guard_timed(_exec, "find")
+
+
+@mcp.tool(
+    description=("[DEPRECATO] Usa find(query) invece."),
+    structured_output=True,
+)
+def column_search(
+    query: str,
+    limit: int = 15,
+    metric_only: bool = False,
+    mode: str = "all",
+) -> dict[str, Any]:
+    """DEPRECATO: usa find(query, metric_only=...) invece."""
+    if mode == "dataset":
+        # comportamento search_datasets
+        from .catalog import search_datasets as _impl
+
+        return {"datasets": _impl(query), "query": query, "deprecated": "usa find(query) invece"}
+    return find(query, metric_only=metric_only, limit=limit)
 
 
 @mcp.tool(
@@ -1047,6 +1038,182 @@ def dataset_graph(
         return result
 
     return guard_timed(_exec, "dataset_graph")
+
+
+@mcp.tool(
+    description=(
+        "Esegue query SQL su uno o piu' dataset. "
+        "Unico entry point per interrogare dati. "
+        "Per singolo dataset usa datasets=[slug]. "
+        "Per incrociare usa datasets=[slug1, slug2, ...]. "
+        "Con dry_run=True spiega il piano senza eseguire."
+    ),
+    structured_output=True,
+)
+def query(
+    sql: str,
+    datasets: list[str],
+    dry_run: bool = False,
+    max_rows: int = 100,
+    year: int | None = None,
+) -> dict[str, Any]:
+    """Esegue query su dati.
+
+    Args:
+        sql: SQL da eseguire. I dataset sono referenziabili per nome.
+        datasets: Slug dei dataset (1 per singolo, N per incrocio).
+        dry_run: Se True, spiega senza eseguire.
+        max_rows: Max righe (default 100, hard cap 500).
+        year: Anno per filtraggio automatico (solo singolo dataset).
+    """
+    if not datasets:
+        return {"error": "Specifica almeno 1 dataset in 'datasets'."}
+
+    if dry_run:
+        # dry_run → explain
+        try:
+            parquet_paths = resolve_parquet_path(datasets[0], year=year)
+        except (ValueError, FileNotFoundError) as exc:
+            return {"error": str(exc)}
+        from lab_connectors.duckdb import gcs_connect
+
+        escaped = "', '".join(p.replace("'", "''") for p in parquet_paths)
+        src = f"['{escaped}']" if len(parquet_paths) > 1 else f"'{escaped}'"
+        wrapped = f"WITH clean_input AS (SELECT * FROM read_parquet({src})) {sql}"
+        try:
+            with gcs_connect(parquet_paths[0]) as conn:
+                plan = conn.execute(f"EXPLAIN {wrapped}").fetchone()
+            return {
+                "valid": True,
+                "plan": (plan[1] if plan and len(plan) > 1 else plan[0])[:300] if plan else None,
+            }
+        except Exception as exc:
+            return {"valid": False, "error": str(exc)[:200]}
+
+    if len(datasets) == 1:
+        # Singolo → run_query
+        return run_query(sql, datasets[0], max_rows=max_rows, year=year)
+
+    # Multi → cross_query
+    return cross_query(datasets, sql, max_rows=max_rows)
+
+
+@mcp.tool(
+    description=(
+        "Panoramica multi-dominio su un ente/comune italiano. "
+        "Restituisce anagrafica, popolazione, redditi, rifiuti, "
+        "suolo e FSC per un ente in un colpo solo."
+    ),
+    structured_output=True,
+)
+def ente(
+    nome: str = "",
+    codice_istat: str = "",
+) -> dict[str, Any]:
+    """Panoramica completa su un ente/comune.
+
+    Args:
+        nome: Denominazione (es. 'Milano', 'Abbiategrasso').
+        codice_istat: Codice ISTAT 6 cifre (es. 015146).
+
+    Returns:
+        Dict con anagrafica, popolazione, redditi, rifiuti, suolo, FSC.
+    """
+    if not nome and not codice_istat:
+        return {"error": "Specifica nome o codice_istat."}
+
+    def _exec() -> dict[str, Any]:
+        # Determina comune da nome o codice
+        if codice_istat:
+            filter_sql = f"codice_istat = '{codice_istat}'"
+        else:
+            filter_sql = f"denominazione = '{nome}'"
+
+        anag = run_query(
+            f"SELECT codice_istat, denominazione, sigla_provincia, regione, superficie_km2, altitudine FROM clean_input WHERE {filter_sql}",
+            "comuni_master",
+        )
+        if "error" in anag or not anag.get("rows"):
+            return {"error": f"Ente '{nome or codice_istat}' non trovato."}
+
+        row = anag["rows"][0]
+        cod_istat = row[0]
+        denom = row[1]
+
+        # Popolazione
+        pop = run_query(
+            f"SELECT anno, SUM(popolazione_residente) as pop FROM clean_input WHERE comune = '{denom}' GROUP BY anno ORDER BY anno",
+            "popolazione_istat_comunale_2019_2025",
+            max_rows=10,
+        )
+
+        # IRPEF
+        irp = run_query(
+            f"SELECT anno_di_imposta, numero_contribuenti, reddito_imponibile_eur, imposta_netta_eur FROM clean_input WHERE denominazione_comune = UPPER('{denom}') ORDER BY anno_di_imposta",
+            "irpef_comunale",
+            max_rows=10,
+        )
+
+        # Rifiuti (ultimo anno)
+        ru = run_query(
+            f"SELECT anno, totale_ru_tonnellate, percentuale_rd FROM clean_input WHERE comune = UPPER('{denom}') ORDER BY anno DESC LIMIT 1",
+            "ispra_ru_base",
+            max_rows=1,
+        )
+
+        # Suolo (ultimo anno)
+        suolo = run_query(
+            f"SELECT anno, stock_ha, stock_pct FROM clean_input WHERE comune = '{denom}' ORDER BY anno DESC LIMIT 1",
+            "ispra_consumo_suolo",
+            max_rows=1,
+        )
+
+        # FSC (ultimo anno)
+        fsc = run_query(
+            f"SELECT anno, dotazione_finale_fsc FROM clean_input WHERE comune = UPPER('{denom}') ORDER BY anno DESC LIMIT 1",
+            "opencivitas_fsc_2025_rso",
+            max_rows=1,
+        )
+
+        return {
+            "ente": {
+                "codice_istat": cod_istat,
+                "denominazione": denom,
+                "provincia": row[2],
+                "regione": row[3],
+                "superficie_km2": row[4],
+                "altitudine": row[5],
+            },
+            "popolazione": [{"anno": r[0], "residenti": r[1]} for r in pop.get("rows", [])],
+            "redditi": [
+                {
+                    "anno": r[0],
+                    "contribuenti": r[1],
+                    "imponibile_eur": r[2],
+                    "imposta_netta_eur": r[3],
+                }
+                for r in irp.get("rows", [])
+            ],
+            "rifiuti": {
+                "anno": ru["rows"][0][0],
+                "tonnellate": ru["rows"][0][1],
+                "rd_pct": ru["rows"][0][2],
+            }
+            if ru.get("rows")
+            else None,
+            "suolo": {
+                "anno": suolo["rows"][0][0],
+                "stock_ha": suolo["rows"][0][1],
+                "stock_pct": suolo["rows"][0][2],
+            }
+            if suolo.get("rows")
+            else None,
+            "fsc": {"anno": fsc["rows"][0][0], "dotazione_finale_fsc": fsc["rows"][0][1]}
+            if fsc.get("rows")
+            else None,
+        }
+
+    return guard_timed(_exec, "ente")
 
 
 def main() -> None:
