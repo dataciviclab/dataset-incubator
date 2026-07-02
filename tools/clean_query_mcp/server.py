@@ -469,7 +469,9 @@ def cross_query(
     max_rows = _guard_max_rows(max_rows)
     capped_sql = f"SELECT * FROM ({sql}) AS q LIMIT {max_rows + 1}"
 
-    cache_key = ("cross_query", tuple(sorted(datasets)), capped_sql, max_rows)
+    # Normalizza ordine dataset per cache key coerente
+    datasets_sorted = sorted(datasets)
+    cache_key = ("cross_query", tuple(datasets_sorted), capped_sql, max_rows)
     cached = _query_cache.get(cache_key)
     if cached is not None:
         return cached
@@ -486,7 +488,7 @@ def cross_query(
             "rows": [list(row) for row in rows],
             "row_count": len(rows),
             "truncated": truncated,
-            "datasets": datasets,
+            "datasets": datasets_sorted,
         }
 
     result = guard_timed(_exec, "cross_query")
@@ -597,7 +599,7 @@ def run_query(
 
     wrapped_sql = f"SELECT * FROM ({sql_to_exec}) AS q LIMIT {max_rows + 1}"
 
-    cache_key = ("run_query", dataset, wrapped_sql, max_rows)
+    cache_key = ("run_query", dataset, wrapped_sql, max_rows, year)
     cached = _query_cache.get(cache_key)
     if cached is not None:
         return cached

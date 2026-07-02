@@ -589,6 +589,92 @@ def test_cross_query_invalid_max_rows():
 
 
 # ---------------------------------------------------------------------------
+# Cache key: year e ordine dataset
+# ---------------------------------------------------------------------------
+
+
+def test_run_query_cache_key_includes_year(monkeypatch):
+    """run_query: year diverso deve produrre cache key diversa."""
+    # Pulisce cache
+    server._query_cache.clear()
+
+    # Mocka _execute_sql per contare chiamate
+    call_count = 0
+
+    def counting_exec(dataset, sql, year=None, timeout=60):
+        nonlocal call_count
+        call_count += 1
+        return {"columns": ["c"], "rows": [[year]]}
+
+    monkeypatch.setattr(server, "_execute_sql", counting_exec)
+    monkeypatch.setattr(server, "get_year_column", lambda x: None)  # nessuna colonna anno
+
+    # Chiama con year=2023
+    r1 = server.run_query("SELECT 1", "test_ds", year=2023)
+    assert r1["rows"][0][0] == 2023
+    assert call_count == 1
+
+    # Chiama con year=2024 — deve fare nuova chiamata (cache key diversa)
+    r2 = server.run_query("SELECT 1", "test_ds", year=2024)
+    assert r2["rows"][0][0] == 2024
+    assert call_count == 2
+
+    # Chiama con year=2023 di nuovo — deve usare cache (nessuna nuova chiamata)
+    r3 = server.run_query("SELECT 1", "test_ds", year=2023)
+    assert r3["rows"][0][0] == 2023
+    assert call_count == 2  # non incrementa
+
+
+def test_run_query_cache_key_without_year_is_separate(monkeypatch):
+    """run_query senza year deve essere separato da chiamate con year."""
+    server._query_cache.clear()
+
+    call_count = 0
+
+    def counting_exec(dataset, sql, year=None, timeout=60):
+        nonlocal call_count
+        call_count += 1
+        return {"columns": ["c"], "rows": [[year]]}
+
+    monkeypatch.setattr(server, "_execute_sql", counting_exec)
+    monkeypatch.setattr(server, "get_year_column", lambda x: None)
+
+    # Senza year
+    _ = server.run_query("SELECT 1", "test_ds")
+    assert call_count == 1
+
+    # Con year=2023 — cache key diversa per year
+    _ = server.run_query("SELECT 1", "test_ds", year=2023)
+    assert call_count == 2
+
+    # Senza year di nuovo — cache hit
+    _ = server.run_query("SELECT 1", "test_ds")
+    assert call_count == 2
+
+
+def test_cross_query_cache_key_normalizes_order(monkeypatch):
+    """cross_query: ['a','b'] e ['b','a'] devono usare la stessa cache key."""
+    server._query_cache.clear()
+
+    call_count = 0
+
+    def counting_exec(datasets, sql, timeout=60):
+        nonlocal call_count
+        call_count += 1
+        return {"columns": ["ds"], "rows": [[",".join(datasets)]]}
+
+    monkeypatch.setattr(server, "_execute_cross_sql", counting_exec)
+
+    _ = server.cross_query(["a", "b"], "SELECT 1")
+    assert call_count == 1
+
+    # Ordine inverso — cache hit
+    r2 = server.cross_query(["b", "a"], "SELECT 1")
+    assert call_count == 1  # stesso risultato della cache
+    assert r2["datasets"] == ["a", "b"]  # normalizzato
+
+
+# ---------------------------------------------------------------------------
 # Entry point, cache GCS
 # ---------------------------------------------------------------------------
 
