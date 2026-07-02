@@ -1,0 +1,395 @@
+{
+  "schema_version": 1,
+  "generated_at": "2026-07-02T10:09:52Z",
+  "description": "Mappa delle relazioni tra dataset clean del DataCivicLab.",
+  "hub_hint": "comuni_master e' il golden record centrale. Ogni dataset si collega tramite una delle sue chiavi.",
+  "registries": {
+    "comuni_master": {
+      "description": "Golden record dei comuni italiani (ISTAT + IPA)",
+      "hub": true,
+      "keys": {
+        "codice_catastale": {
+          "description": "Codice catastale Belfiore (es. A010)",
+          "datasets": [
+            {
+              "slug": "inps_rdc_pdc",
+              "name": "INPS RdC/PdC per comune",
+              "via": "codice_istat",
+              "normalizer": "direct",
+              "granularity": "comune",
+              "year_column": null,
+              "note": "Il dataset chiama 'codice_istat' ma contiene il codice CATASTALE (es. A010)"
+            }
+          ]
+        },
+        "codice_istat": {
+          "description": "Codice ISTAT 6 cifre (es. 015002)",
+          "datasets": [
+            {
+              "slug": "anac_bandi_gara",
+              "name": "ANAC Bandi di Gara (CIG)",
+              "via": "codice_istat_luogo",
+              "normalizer": "direct",
+              "granularity": "comune (luogo esecuzione)",
+              "year_column": null,
+              "note": "codice_istat_luogo = luogo di esecuzione della gara. Può differire dal comune della SA."
+            },
+            {
+              "slug": "bdap_anagrafe_enti",
+              "name": "BDAP Anagrafe Enti Pubblici",
+              "via": "codice_istat_comune",
+              "normalizer": "direct",
+              "granularity": "ente",
+              "year_column": null,
+              "note": "Bridge table. Mappa IPA ↔ SIOPE ↔ ISTAT ↔ MIUR ↔ catastale. ~38k enti."
+            },
+            {
+              "slug": "dait_amministratori_locali",
+              "name": "Amministratori Locali DAIT",
+              "via": "codice_dait_completo",
+              "normalizer": "via_bridge",
+              "granularity": "comune",
+              "year_column": null,
+              "note": ""
+            },
+            {
+              "slug": "farmacie",
+              "name": "Farmacie italiane",
+              "via": "cod_comune",
+              "normalizer": "LPAD(CAST(cod_comune AS VARCHAR), 6, '0')",
+              "granularity": "comune",
+              "year_column": null,
+              "note": ""
+            },
+            {
+              "slug": "ipa_istat_mapping",
+              "name": "IPA↔ISTAT Mapping",
+              "via": "codice_istat",
+              "normalizer": "direct",
+              "granularity": "comune",
+              "year_column": null,
+              "note": "Fonte upstream di comuni_master. Mapping IPA ↔ ISTAT."
+            },
+            {
+              "slug": "irpef_comunale",
+              "name": "IRPEF Comunale",
+              "via": "codice_istat_comune",
+              "normalizer": "direct",
+              "granularity": "comune",
+              "year_column": null,
+              "note": "Anni d'imposta 2019-2023. Ha anche codice_catastale come colonna aggiuntiva"
+            },
+            {
+              "slug": "ispra_consumo_suolo",
+              "name": "ISPRA Consumo di Suolo",
+              "via": "pro_com",
+              "normalizer": "LPAD(CAST(pro_com AS VARCHAR), 6, '0')",
+              "granularity": "comune",
+              "year_column": null,
+              "note": ""
+            },
+            {
+              "slug": "ispra_ru_base",
+              "name": "ISPRA Rifiuti Urbani (dati base)",
+              "via": "codice_comune_istat",
+              "normalizer": "RIGHT(codice_comune_istat, 6)",
+              "granularity": "comune",
+              "year_column": null,
+              "note": ""
+            },
+            {
+              "slug": "ispra_ru_costi_kg",
+              "name": "ISPRA Costi rifiuti (EUR/kg)",
+              "via": "codice_comune_istat",
+              "normalizer": "RIGHT(codice_comune_istat, 6)",
+              "granularity": "comune",
+              "year_column": null,
+              "note": ""
+            },
+            {
+              "slug": "ispra_ru_costi_procapite",
+              "name": "ISPRA Costi rifiuti (EUR/abitante)",
+              "via": "codice_comune_istat",
+              "normalizer": "RIGHT(codice_comune_istat, 6)",
+              "granularity": "comune",
+              "year_column": null,
+              "note": ""
+            },
+            {
+              "slug": "istat_elenco_comuni",
+              "name": "Elenco comuni italiani",
+              "via": "codice_istat",
+              "normalizer": "direct",
+              "granularity": "comune",
+              "year_column": null,
+              "note": "Fonte upstream di comuni_master. Stessi dati ma senza codici IPA."
+            },
+            {
+              "slug": "mit_opere_incompiute_2020",
+              "name": "MIT Opere Pubbliche Incompiute",
+              "via": "localizzazione_codice_istat",
+              "normalizer": "direct",
+              "granularity": "comune",
+              "year_column": null,
+              "note": "405 opere totali. Codice ISTAT del comune dove è localizzata l'opera."
+            },
+            {
+              "slug": "popolazione_istat_comunale_2019_2025",
+              "name": "Popolazione ISTAT Comunale",
+              "via": "codice_comune",
+              "normalizer": "direct",
+              "granularity": "comune",
+              "year_column": null,
+              "note": "eta=999 se presente dà il totale comunale; altrimenti sommare per anno"
+            }
+          ]
+        },
+        "denominazione": {
+          "description": "Denominazione comune (es. Abbiategrasso)",
+          "datasets": [
+            {
+              "slug": "dipendenti_pubblici",
+              "name": "Dipendenti Pubblici",
+              "via": "ente",
+              "normalizer": "UPPER(TRIM(hub.denominazione))",
+              "granularity": "ente (comune per denominazione)",
+              "year_column": null,
+              "note": "join testuale sulla denominazione — attento a fusioni/omonimie"
+            },
+            {
+              "slug": "mef_partecipazioni",
+              "name": "MEF Partecipazioni Pubbliche",
+              "via": "amministrazione_comune_sede",
+              "normalizer": "text_match",
+              "granularity": "amministrazione / partecipata",
+              "year_column": null,
+              "note": "Sede amministrativa dell'ente. Join testuale sulla denominazione del comune. Attenzione a fusioni."
+            },
+            {
+              "slug": "mim_alunni_corso_eta",
+              "name": "Alunni per corso ed età",
+              "via": "comune",
+              "normalizer": "UPPER(TRIM(hub.denominazione))",
+              "granularity": "scuola (riconducibile a comune)",
+              "year_column": null,
+              "note": ""
+            },
+            {
+              "slug": "mim_anagrafica_scuole_statali",
+              "name": "Anagrafica scuole statali",
+              "via": "comune",
+              "normalizer": "UPPER(TRIM(hub.denominazione))",
+              "granularity": "scuola (riconducibile a comune)",
+              "year_column": null,
+              "note": ""
+            },
+            {
+              "slug": "opencivitas_fsc_2025_rso",
+              "name": "Fondo Solidarietà Comunale 2025",
+              "via": "comune",
+              "normalizer": "UPPER(TRIM(hub.denominazione))",
+              "granularity": "comune",
+              "year_column": null,
+              "note": ""
+            }
+          ]
+        }
+      }
+    },
+    "bdap_anagrafe_enti": {
+      "description": "Bridge table. Mappa IPA ↔ SIOPE ↔ ISTAT ↔ MIUR ↔ catastale. ~38k enti.",
+      "hub": true,
+      "bridge_keys": [
+        "codice_ente_siope",
+        "codice_ente_ipa",
+        "codice_catastale",
+        "codice_ente_miur"
+      ],
+      "keys": {
+        "codice_istat_comune": {
+          "description": "Codice ISTAT del comune",
+          "datasets": [
+            {
+              "slug": "bdap_anagrafe_enti",
+              "name": "BDAP Anagrafe Enti",
+              "via": "codice_istat_comune",
+              "normalizer": "direct",
+              "granularity": "ente",
+              "note": "Mappa 38k enti con codici IPA, SIOPE, ISTAT, MIUR, catastale"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "unconnected_datasets": [
+    {
+      "slug": "aifa_spesa_consumo",
+      "name": "aifa_spesa_consumo",
+      "granularity": "regione",
+      "note": ""
+    },
+    {
+      "slug": "bdap_entrate_stato",
+      "name": "bdap_entrate_stato",
+      "granularity": "stato",
+      "note": ""
+    },
+    {
+      "slug": "bdap_lea",
+      "name": "bdap_lea",
+      "granularity": "regione",
+      "note": ""
+    },
+    {
+      "slug": "bdap_spese_stato",
+      "name": "bdap_spese_stato",
+      "granularity": "stato",
+      "note": ""
+    },
+    {
+      "slug": "camera_votazioni_sparql",
+      "name": "camera_votazioni_sparql",
+      "granularity": "nazionale",
+      "note": ""
+    },
+    {
+      "slug": "camera_deputati_legislature",
+      "name": "camera_deputati_legislature",
+      "granularity": "nazionale",
+      "note": ""
+    },
+    {
+      "slug": "civile_flussi",
+      "name": "civile_flussi",
+      "granularity": "ufficio/distretto",
+      "note": ""
+    },
+    {
+      "slug": "giustizia_penale_indicatori",
+      "name": "giustizia_penale_indicatori",
+      "granularity": "distretto",
+      "note": ""
+    },
+    {
+      "slug": "consip_consumi_convenzione",
+      "name": "consip_consumi_convenzione",
+      "granularity": "provincia",
+      "note": "Ha provincia (sigla_provincia_pa). Joinabile a livello provinciale, non comunale."
+    },
+    {
+      "slug": "inps_pensioni_trimestrale",
+      "name": "inps_pensioni_trimestrale",
+      "granularity": "regione",
+      "note": ""
+    },
+    {
+      "slug": "ispra_emissioni_ghg",
+      "name": "ispra_emissioni_ghg",
+      "granularity": "nazionale/settore",
+      "note": ""
+    },
+    {
+      "slug": "istat_gini_regionale",
+      "name": "istat_gini_regionale",
+      "granularity": "regione",
+      "note": ""
+    },
+    {
+      "slug": "istat_housing_crowding",
+      "name": "istat_housing_crowding",
+      "granularity": "regione",
+      "note": ""
+    },
+    {
+      "slug": "istat_ipab_aree",
+      "name": "istat_ipab_aree",
+      "granularity": "area geografica",
+      "note": ""
+    },
+    {
+      "slug": "istat_pil_territoriale",
+      "name": "istat_pil_territoriale",
+      "granularity": "provincia/regione",
+      "note": "Ha provincia. Joinabile a livello provinciale."
+    },
+    {
+      "slug": "mef_irpef_regionale",
+      "name": "mef_irpef_regionale",
+      "granularity": "regione",
+      "note": ""
+    },
+    {
+      "slug": "mit_incidentalita_mensile",
+      "name": "mit_incidentalita_mensile",
+      "granularity": "nazionale",
+      "note": ""
+    },
+    {
+      "slug": "mur_contribuzione_universitaria",
+      "name": "mur_contribuzione_universitaria",
+      "granularity": "ateneo",
+      "note": ""
+    },
+    {
+      "slug": "openga_ricorsi_appalto",
+      "name": "openga_ricorsi_appalto",
+      "granularity": "CIG (ente)",
+      "note": "Ha codici ANAC (CIG). Joinabile via anac_bandi_gara se serve."
+    },
+    {
+      "slug": "openga_ricorsi_cds",
+      "name": "openga_ricorsi_cds",
+      "granularity": "sede giudiziaria",
+      "note": ""
+    },
+    {
+      "slug": "pensioni_pa_dag",
+      "name": "pensioni_pa_dag",
+      "granularity": "nazionale/categoria",
+      "note": ""
+    },
+    {
+      "slug": "posti_letto_stabilimento",
+      "name": "posti_letto_stabilimento",
+      "granularity": "stabilimento",
+      "note": ""
+    },
+    {
+      "slug": "reparti_ricovero",
+      "name": "reparti_ricovero",
+      "granularity": "reparto",
+      "note": ""
+    },
+    {
+      "slug": "strutture_asl",
+      "name": "strutture_asl",
+      "granularity": "ASL/regionale",
+      "note": ""
+    },
+    {
+      "slug": "strutture_ricovero_asl",
+      "name": "strutture_ricovero_asl",
+      "granularity": "ASL",
+      "note": ""
+    },
+    {
+      "slug": "terna_capacita_rinnovabile",
+      "name": "terna_capacita_rinnovabile",
+      "granularity": "regione",
+      "note": ""
+    },
+    {
+      "slug": "terna_electricity_by_source",
+      "name": "terna_electricity_by_source",
+      "granularity": "regione/provincia",
+      "note": "Ha provincia. Joinabile a livello provinciale."
+    },
+    {
+      "slug": "opencivitas_fsc_enti_rso",
+      "name": "opencivitas_fsc_enti_rso",
+      "granularity": "support (ente FSC)",
+      "note": "Support dataset per opencivitas_fsc_2025_rso, non pubblico."
+    }
+  ]
+}

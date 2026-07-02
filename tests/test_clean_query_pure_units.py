@@ -411,6 +411,184 @@ class TestDatasetOverview:
 
 
 # ---------------------------------------------------------------------------
+# _validate_cross_scope: validazione query su più dataset
+# ---------------------------------------------------------------------------
+
+
+class TestValidateCrossScope:
+    def test_allows_allowed_tables_from(self):
+        """FROM con tabella nella allowed_tables è permesso."""
+        server._validate_cross_scope(
+            "SELECT * FROM irpef_comunale WHERE anno = 2024",
+            {"irpef_comunale"},
+        )
+
+    def test_allows_allowed_tables_join(self):
+        """JOIN con tabella nella allowed_tables è permesso."""
+        server._validate_cross_scope(
+            "SELECT * FROM irpef_comunale i JOIN popolazione p ON i.id = p.id",
+            {"irpef_comunale", "popolazione"},
+        )
+
+    def test_allows_cte_plus_tables(self):
+        """CTE locali + allowed_tables sono tutte permesse."""
+        server._validate_cross_scope(
+            "WITH filtered AS (SELECT * FROM irpef_comunale) "
+            "SELECT * FROM filtered JOIN popolazione ON filtered.id = popolazione.id",
+            {"irpef_comunale", "popolazione"},
+        )
+
+    def test_blocks_unknown_from(self):
+        """FROM con tabella non in allowed_tables è bloccato."""
+        with pytest.raises(server.DuckdbClientError, match="non consentito in FROM"):
+            server._validate_cross_scope(
+                "SELECT * FROM other_table",
+                {"irpef_comunale"},
+            )
+
+    def test_blocks_unknown_join(self):
+        """JOIN con tabella non in allowed_tables è bloccato."""
+        with pytest.raises(server.DuckdbClientError, match="non consentito in JOIN"):
+            server._validate_cross_scope(
+                "SELECT * FROM irpef_comunale JOIN other_table ON irpef_comunale.id = other_table.id",
+                {"irpef_comunale"},
+            )
+
+    def test_blocks_read_parquet(self):
+        """read_parquet è bloccato anche in cross scope."""
+        with pytest.raises(server.DuckdbClientError, match="read_parquet"):
+            server._validate_cross_scope(
+                "SELECT * FROM read_parquet('gs://bucket/file.parquet')",
+                {"irpef_comunale"},
+            )
+
+    def test_blocks_read_csv(self):
+        """read_csv è bloccato anche in cross scope."""
+        with pytest.raises(server.DuckdbClientError, match="read_csv"):
+            server._validate_cross_scope(
+                "SELECT * FROM read_csv('file.csv')",
+                {"irpef_comunale"},
+            )
+
+    def test_empty_sql_blocks(self):
+        """SQL vuoto non passa."""
+        with pytest.raises(server.DuckdbClientError):
+            server._validate_select_sql("")
+
+    def test_blocks_from_string_literal(self):
+        """FROM 'url.parquet' bypassa la whitelist — deve essere bloccato."""
+        with pytest.raises(server.DuckdbClientError, match="non consentito"):
+            server._validate_cross_scope(
+                "SELECT * FROM 'https://storage.googleapis.com/bucket/aifa_spesa_consumo/file.parquet' LIMIT 1",
+                {"irpef_comunale", "popolazione_istat_comunale_2019_2025"},
+            )
+
+    def test_blocks_join_string_literal(self):
+        """JOIN 'url.parquet' deve essere bloccato come FROM."""
+        with pytest.raises(server.DuckdbClientError, match="non consentito"):
+            server._validate_cross_scope(
+                "SELECT * FROM irpef_comunale JOIN 'gs://bucket/other.parquet' AS o ON 1=1",
+                {"irpef_comunale"},
+            )
+
+    def test_allows_safe_string_in_where(self):
+        """Stringhe letterali in WHERE non devono scatenare falsi positivi."""
+        server._validate_cross_scope(
+            "SELECT * FROM irpef_comunale WHERE denominazione_comune = 'Milano'",
+            {"irpef_comunale"},
+        )
+
+    def test_allows_safe_string_in_values(self):
+        """Stringhe letterali in VALUES o IN non devono essere bloccate."""
+        server._validate_cross_scope(
+            "SELECT * FROM irpef_comunale WHERE comune IN ('Milano', 'Roma')",
+            {"irpef_comunale"},
+        )
+
+
+# ---------------------------------------------------------------------------
+# _load_relationship_map: carica il JSON committed in registry/
+# ---------------------------------------------------------------------------
+
+
+def test_relationship_map_loads():
+    """relationship_map.json deve esistere ed essere un dict valido."""
+    result = server._load_relationship_map()
+    assert "error" not in result, f"Errore caricamento relationship_map: {result.get('error')}"
+    assert "registries" in result
+    assert "comuni_master" in result["registries"]
+    assert "description" in result
+    assert "unconnected_datasets" in result
+
+
+def test_dataset_graph_full_map():
+    """dataset_graph() senza filtri restituisce la mappa completa."""
+    result = server.dataset_graph()
+    assert "summary" in result
+    assert result["summary"]["registries"] >= 1
+    assert result["summary"]["datasets"] >= 10
+    assert "tip" in result
+
+
+def test_dataset_graph_by_key():
+    """dataset_graph(by_key='codice_istat') filtra per chiave."""
+    result = server.dataset_graph(by_key="codice_istat")
+    reg = result.get("registries", {}).get("comuni_master", {}).get("keys", {})
+    assert "codice_istat" in reg
+    # Non devono apparire chiavi che non contengono 'codice_istat'
+    for key_name in reg:
+        assert "codice_istat" in key_name.lower()
+
+
+def test_dataset_graph_by_dataset():
+    """dataset_graph(by_dataset='irpef') trova il dataset."""
+    result = server.dataset_graph(by_dataset="irpef")
+    # Deve comparire in almeno una chiave
+    found = False
+    for reg in result.get("registries", {}).values():
+        for key in reg.get("keys", {}).values():
+            for ds in key.get("datasets", []):
+                if "irpef" in ds["slug"].lower():
+                    found = True
+    assert found, "irpef_comunale non trovato in nessuna chiave"
+
+
+def test_dataset_graph_unknown_key():
+    """dataset_graph(by_key='inesistente') restituisce mappa vuota."""
+    result = server.dataset_graph(by_key="xyz_notfound_123")
+    assert len(result.get("registries", {})) == 0
+    assert result.get("summary", {}).get("datasets", -1) == 0
+
+
+def test_dataset_graph_unknown_registry():
+    """dataset_graph(by_registry='inesistente') restituisce errore."""
+    result = server.dataset_graph(by_registry="fake_registry")
+    assert "error" in result
+
+
+# ---------------------------------------------------------------------------
+# cross_query: validazione input
+# ---------------------------------------------------------------------------
+
+
+def test_cross_query_requires_at_least_two_datasets():
+    """cross_query con <2 dataset deve fallire subito."""
+    result = server.cross_query(datasets=["irpef_comunale"], sql="SELECT 1")
+    assert "error" in result
+    assert "almeno 2" in result["error"].lower()
+
+
+def test_cross_query_invalid_max_rows():
+    """cross_query con max_rows fuori range deve sollevare DuckdbClientError."""
+    with pytest.raises(server.DuckdbClientError):
+        server.cross_query(
+            datasets=["irpef_comunale", "popolazione_istat_comunale_2019_2025"],
+            sql="SELECT 1",
+            max_rows=0,
+        )
+
+
+# ---------------------------------------------------------------------------
 # Entry point, cache GCS
 # ---------------------------------------------------------------------------
 
