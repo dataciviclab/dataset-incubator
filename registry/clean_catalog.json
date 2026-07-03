@@ -9110,139 +9110,139 @@
           "name": "lato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Lato contabile: entrate o uscite"
         },
         {
           "name": "codice_comparto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comparto SIOPE (PRO, REG, SAN, UNI, MON, CDC, ...)"
         },
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "periodo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Mese (01..12)"
         },
         {
           "name": "codice_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice SIOPE dell'ente"
         },
         {
           "name": "codice_voce",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice gestionale della voce contabile"
         },
         {
           "name": "denominazione_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione dell'ente"
         },
         {
           "name": "tipo_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia ente (COMUNE, ASL, REGIONE, ATENEO, ...)"
         },
         {
           "name": "codice_istat_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune sede dell'ente"
         },
         {
           "name": "codice_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice provincia (ISTAT 3 cifre)"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione provincia"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione regione"
         },
         {
           "name": "codice_sottocomparto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice sottocomparto SIOPE"
         },
         {
           "name": "descrizione_sottocomparto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione sottocomparto"
         },
         {
           "name": "descrizione_comparto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione comparto"
         },
         {
           "name": "is_titolo_9",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True per partite di giro (da escludere dai totali strutturali)"
         },
         {
           "name": "macro_categoria_v2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Macro-categoria entrate: Imposte proprie, Fondi perequativi, Trasferimenti correnti, Contributi investimenti"
         },
         {
           "name": "macro_area",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Macro-area uscite: Spese correnti, Spese conto capitale, Rimborso prestiti"
         },
         {
           "name": "macro_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Macro-categoria uscite: Personale, Acquisto beni, Investimenti, Interessi"
         },
         {
           "name": "descrizione_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione del codice gestionale"
         },
         {
           "name": "has_codgest_match",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True se il codice voce ha match con il dizionario SIOPE"
         },
         {
           "name": "importo",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Importo in centesimi di euro"
         },
         {
           "name": "importo_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo in euro"
         }
       ],
       "location": {
