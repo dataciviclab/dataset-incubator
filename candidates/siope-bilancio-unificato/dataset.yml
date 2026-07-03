@@ -1,0 +1,103 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "siope_bilancio_unificato"
+  source_id: "siope"
+  years: [2021, 2022, 2023, 2024, 2025, 2026]
+
+raw:
+  sources:
+    - name: "siope_bilancio_unificato_gcs"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-mart/siope/siope_cross_comparto/{year}/siope_bilancio_unificato.parquet"
+        filename: "siope_bilancio_unificato_{year}.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    mode: "latest"
+    header: true
+  required_columns:
+    - lato
+    - codice_comparto
+    - anno
+    - periodo
+    - codice_ente
+    - codice_voce
+    - denominazione_ente
+    - tipo_ente
+    - codice_istat_comune
+    - codice_provincia
+    - provincia
+    - regione
+    - codice_sottocomparto
+    - descrizione_sottocomparto
+    - descrizione_comparto
+    - is_titolo_9
+    - descrizione_codice
+    - has_codgest_match
+    - importo
+    - importo_eur
+  validate:
+    min_rows: 500000
+    primary_key:
+      [
+        "lato",
+        "codice_comparto",
+        "anno",
+        "periodo",
+        "codice_ente",
+        "codice_voce",
+      ]
+    not_null:
+      - lato
+      - codice_comparto
+      - anno
+      - periodo
+      - codice_ente
+      - importo
+
+mart:
+  tables:
+    - name: "siope_bilancio_unificato"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "siope_bilancio_unificato"
+  validate:
+    table_rules:
+      siope_bilancio_unificato:
+        min_rows: 500000
+        required_columns:
+          - lato
+          - codice_comparto
+          - anno
+          - periodo
+          - codice_ente
+          - codice_voce
+          - denominazione_ente
+          - tipo_ente
+          - codice_istat_comune
+          - codice_provincia
+          - provincia
+          - regione
+          - descrizione_comparto
+          - is_titolo_9
+          - descrizione_codice
+          - has_codgest_match
+          - importo
+          - importo_eur
+        primary_key:
+          [
+            "lato",
+            "codice_comparto",
+            "anno",
+            "periodo",
+            "codice_ente",
+            "codice_voce",
+          ]
+
+validation:
+  fail_on_error: true
