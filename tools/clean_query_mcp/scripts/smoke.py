@@ -18,8 +18,7 @@ def main() -> int:
     parser.add_argument("--dataset", help="Limit smoke test to one dataset slug.")
     args = parser.parse_args()
 
-    catalog = server.find("")
-    datasets = catalog.get("datasets", [])
+    datasets = server.load_catalog()
     if args.dataset:
         datasets = [item for item in datasets if item["slug"] == args.dataset]
         if not datasets:
