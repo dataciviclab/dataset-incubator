@@ -78,15 +78,15 @@ Verifica completata su file CSV ANAC 2025 (12 mesi).
 
 | CIG | Importo | Ente | Oggetto | Esito |
 |-----|---------|------|---------|-------|
-| `B77825C53E` | €17,37 Mld | Autorità Idrica Pugliese | Servizio idrico integrato Puglia 2026-2046 | ✅ **Reale** (20 anni) |
-| `B737822CB8` | €12,62 Mld | CCIAA Cagliari-Oristano | Formazione personale camerale | ❌ Errore |
-| `B98FB8A800` | €11,09 Mld | Corte dei Conti | Buoni pasto elettronici | ❌ Errore |
-| `B683A6EB40` | €9,24 Mld | A.O. G. Rummo Benevento | Lotto 13 | ❌ Errore |
-| `B7A484F39D` | €7,90 Mld | Liceo F. Silvestri | Materiale di consumo | ❌ Errore |
-| `B8B40BE774` | €6,14 Mld | ASP Agrigento | Emodinamica | ⚠️ Dubbio |
-| `B8F7CC264D` | €5,74 Mld | Marina Militare (Tesei) | PA 615 | ⚠️ Dubbio |
-| `B66A1238E3` | €5,41 Mld | ASL Salerno | Energia elettrica | ❌ Errore |
-| `B641EBD927` | €5,21 Mld | Comune Castelguglielmo | Pulizie immobili comunali | ❌ Errore |
+| `B77825C53E` | €17,37 Mld | Autorità Idrica Pugliese | Servizio idrico integrato Puglia 2026-2046 | **Reale** (20 anni) |
+| `B737822CB8` | €12,62 Mld | CCIAA Cagliari-Oristano | Formazione personale camerale | Errore |
+| `B98FB8A800` | €11,09 Mld | Corte dei Conti | Buoni pasto elettronici | Errore |
+| `B683A6EB40` | €9,24 Mld | A.O. G. Rummo Benevento | Lotto 13 | Errore |
+| `B7A484F39D` | €7,90 Mld | Liceo F. Silvestri | Materiale di consumo | Errore |
+| `B8B40BE774` | €6,14 Mld | ASP Agrigento | Emodinamica | Dubbio |
+| `B8F7CC264D` | €5,74 Mld | Marina Militare (Tesei) | PA 615 | Dubbio |
+| `B66A1238E3` | €5,41 Mld | ASL Salerno | Energia elettrica | Errore |
+| `B641EBD927` | €5,21 Mld | Comune Castelguglielmo | Pulizie immobili comunali | Errore |
 
 **Pattern**: 6 CIG su 8 non verificati mostrano enti piccoli (comune, liceo,
 CCIAA) con importi miliardari per servizi ordinari (pulizie, formazione,
