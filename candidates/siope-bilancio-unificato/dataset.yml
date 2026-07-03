@@ -54,7 +54,6 @@ clean:
       ]
     not_null:
       - lato
-      - codice_comparto
       - anno
       - periodo
       - codice_ente
