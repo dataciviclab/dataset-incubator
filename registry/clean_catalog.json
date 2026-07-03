@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-03T12:35:52Z",
+  "updated_at": "2026-07-03",
   "datasets": [
     {
       "slug": "ade_cinque_per_mille",
@@ -9097,9 +9097,9 @@
     },
     {
       "slug": "siope_bilancio_unificato",
-      "name": "Siope Bilancio Unificato",
-      "description": "",
-      "source": "",
+      "name": "SIOPE Bilancio Unificato",
+      "description": "Bilancio consolidato entrate/uscite di tutti gli enti pubblici italiani (comuni, ASL, regioni, universita'). Dato mensile 2021-2026, 16+ comparti, ~18.000 enti, arricchimento territoriale e classificazione per macro-categoria. Fonte: SIOPE tramite open-siope.",
+      "source": "SIOPE — Sistema Informativo sulle Operazioni degli Enti Pubblici",
       "source_id": "siope",
       "period": {
         "start": 2021,
@@ -9250,7 +9250,7 @@
         "path": "gs://dataciviclab-clean/siope_bilancio_unificato/*/siope_bilancio_unificato_*_clean.parquet",
         "multi_file": true
       },
-      "stage": "published",
+      "stage": "incubating",
       "registry_source": "derive_auto"
     },
     {
@@ -10397,164 +10397,6 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
-    },
-    {
-      "slug": "siope_bilancio_unificato",
-      "name": "SIOPE Bilancio Unificato",
-      "description": "Bilancio consolidato entrate/uscite di tutti gli enti pubblici italiani (comuni, ASL, regioni, universita'). Dato mensile 2021-2026, 16+ comparti, ~18.000 enti, arricchimento territoriale e classificazione per macro-categoria. Fonte: SIOPE tramite open-siope.",
-      "source": "SIOPE — Sistema Informativo sulle Operazioni degli Enti Pubblici",
-      "source_id": "siope",
-      "period": {
-        "start": 2021,
-        "end": 2026
-      },
-      "columns": [
-        {
-          "name": "lato",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Lato contabile: entrate o uscite"
-        },
-        {
-          "name": "codice_comparto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Comparto SIOPE (PRO, REG, SAN, UNI, MON, CDC, ...)"
-        },
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento"
-        },
-        {
-          "name": "periodo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Mese (01..12)"
-        },
-        {
-          "name": "codice_ente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice SIOPE dell'ente"
-        },
-        {
-          "name": "codice_voce",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice gestionale della voce contabile"
-        },
-        {
-          "name": "denominazione_ente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione dell'ente"
-        },
-        {
-          "name": "tipo_ente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia ente (COMUNE, ASL, REGIONE, ATENEO, ...)"
-        },
-        {
-          "name": "codice_istat_comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT del comune sede dell'ente"
-        },
-        {
-          "name": "codice_provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice provincia (ISTAT 3 cifre)"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione provincia"
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione regione"
-        },
-        {
-          "name": "codice_sottocomparto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice sottocomparto SIOPE"
-        },
-        {
-          "name": "descrizione_sottocomparto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione sottocomparto"
-        },
-        {
-          "name": "descrizione_comparto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione comparto"
-        },
-        {
-          "name": "is_titolo_9",
-          "type": "BOOLEAN",
-          "role": "flag",
-          "description": "True per partite di giro e rettifiche (da escludere dai totali strutturali)"
-        },
-        {
-          "name": "macro_categoria_v2",
-          "type": "VARCHAR",
-          "role": "classification",
-          "description": "Macro-categoria entrate: Imposte proprie, Fondi perequativi, Trasferimenti correnti, Contributi investimenti"
-        },
-        {
-          "name": "macro_area",
-          "type": "VARCHAR",
-          "role": "classification",
-          "description": "Macro-area uscite: Spese correnti, Spese conto capitale, Rimborso prestiti"
-        },
-        {
-          "name": "macro_categoria",
-          "type": "VARCHAR",
-          "role": "classification",
-          "description": "Macro-categoria uscite: Personale, Acquisto beni, Investimenti, Interessi"
-        },
-        {
-          "name": "descrizione_codice",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione del codice gestionale"
-        },
-        {
-          "name": "has_codgest_match",
-          "type": "BOOLEAN",
-          "role": "flag",
-          "description": "True se il codice voce ha match con il dizionario SIOPE"
-        },
-        {
-          "name": "importo",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": "Importo in centesimi di euro"
-        },
-        {
-          "name": "importo_eur",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo in euro"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/siope_bilancio_unificato/2025/siope_bilancio_unificato_2025_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "candidate",
       "registry_source": "derive_auto"
     }
   ]
