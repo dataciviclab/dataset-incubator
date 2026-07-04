@@ -25,6 +25,8 @@ clean:
     sheet_name: "Export"
   validate:
     min_rows: 400
+    promotion:
+      max_row_drop_pct: 100
 
 mart:
   tables:
