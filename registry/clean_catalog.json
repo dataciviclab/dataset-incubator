@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-03",
+  "updated_at": "2026-07-04",
   "datasets": [
     {
       "slug": "ade_cinque_per_mille",
@@ -10132,6 +10132,56 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/terna_capacita_rinnovabile/*/terna_capacita_rinnovabile_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "terna_electrical_energy_by_sector",
+      "name": "Terna Electrical Energy By Sector",
+      "description": "",
+      "source": "",
+      "source_id": "terna_opendata",
+      "period": {
+        "start": 2015,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "settore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "consumo_gwh",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/terna_electrical_energy_by_sector/*/terna_electrical_energy_by_sector_*_clean.parquet",
         "multi_file": true
       },
       "stage": "published",
