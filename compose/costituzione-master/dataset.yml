@@ -30,6 +30,10 @@ clean:
     - testo_preview
     - n_modifiche
     - n_giudizi
+    - n_accolte
+    - n_respinte
+    - n_inammissibili
+    - n_citazioni_legislative
     - n_indicatori
     - dataset_slugs
   sql: "sql/clean.sql"

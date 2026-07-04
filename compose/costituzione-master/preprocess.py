@@ -25,6 +25,8 @@ NOMI = {
     "revisioni": "revisioni.parquet",
     "atti": "atti-promovimento.parquet",
     "indicatori": "indicatori-costituzionali.parquet",
+    "massime": "massime.parquet",
+    "citazioni": "citazioni-legislative.parquet",
 }
 
 
@@ -96,6 +98,45 @@ def leggi_indicatori(data: bytes) -> dict[int, list[str]]:
     return result
 
 
+def leggi_massime(data: bytes) -> dict[int, dict[str, int]]:
+    """Legge massime.parquet: art → {accolte, respinte, inammissibili}."""
+    import pyarrow.parquet as pq
+    import io
+
+    t = pq.read_table(io.BytesIO(data))
+    art_col = t.column("parametro_articolo")
+    esito_col = t.column("esito")
+    result: dict[int, dict[str, int]] = {}
+    for i in range(t.num_rows):
+        art = art_col[i].as_py()
+        esito = esito_col[i].as_py()
+        if not art or not art.isdigit():
+            continue
+        a = int(art)
+        if a not in result:
+            result[a] = {"accolte": 0, "respinte": 0, "inammissibili": 0}
+        if esito == "illegittimo":
+            result[a]["accolte"] += 1
+        elif esito in ("non_fondata", "manifestamente_infondata"):
+            result[a]["respinte"] += 1
+        elif esito == "inammissibile":
+            result[a]["inammissibili"] += 1
+    return result
+
+
+def leggi_citazioni(data: bytes) -> Counter:
+    """Legge citazioni-legislative.parquet: art → conteggio."""
+    import pyarrow.parquet as pq
+    import io
+
+    t = pq.read_table(io.BytesIO(data))
+    c: Counter = Counter()
+    for v in t.column("articolo").to_pylist():
+        if v:
+            c[v] += 1
+    return c
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("output", nargs="?", default="raw_input.csv")
@@ -113,6 +154,8 @@ def main():
     revisioni = leggi_revisioni(raw["revisioni"])
     giudizi = leggi_giudizi(raw["atti"])
     indicatori = leggi_indicatori(raw["indicatori"])
+    massime = leggi_massime(raw["massime"])
+    citazioni = leggi_citazioni(raw["citazioni"])
 
     # Write
     campi = [
@@ -122,6 +165,10 @@ def main():
         "testo_preview",
         "n_modifiche",
         "n_giudizi",
+        "n_accolte",
+        "n_respinte",
+        "n_inammissibili",
+        "n_citazioni_legislative",
         "n_indicatori",
         "dataset_slugs",
     ]
@@ -131,6 +178,7 @@ def main():
         w.writeheader()
         for a in sorted(articoli):
             info = articoli[a]
+            m = massime.get(a, {})
             w.writerow(
                 {
                     "articolo": a,
@@ -139,6 +187,10 @@ def main():
                     "testo_preview": info["testo"],
                     "n_modifiche": revisioni.get(a, 0),
                     "n_giudizi": giudizi.get(a, 0),
+                    "n_accolte": m.get("accolte", 0),
+                    "n_respinte": m.get("respinte", 0),
+                    "n_inammissibili": m.get("inammissibili", 0),
+                    "n_citazioni_legislative": citazioni.get(a, 0),
                     "n_indicatori": len(indicatori.get(a, [])),
                     "dataset_slugs": ", ".join(indicatori.get(a, [])),
                 }
