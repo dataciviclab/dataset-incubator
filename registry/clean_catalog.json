@@ -10139,9 +10139,9 @@
     },
     {
       "slug": "terna_electrical_energy_by_sector",
-      "name": "Terna Electrical Energy By Sector",
-      "description": "",
-      "source": "",
+      "name": "Consumi elettrici per settore e provincia (GWh)",
+      "description": "Consumi di energia elettrica in Italia per settore economico (Domestico, Industria, Servizi, Agricoltura) e provincia. Dati annuali 2015-2024 da TERNA.",
+      "source": "TERNA S.p.A. — Download Center",
       "source_id": "terna_opendata",
       "period": {
         "start": 2015,
@@ -10151,32 +10151,32 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia"
         },
         {
           "name": "settore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Settore economico: Domestico, Industria, Servizi, Agricoltura"
         },
         {
           "name": "consumo_gwh",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Consumo di energia elettrica in GWh"
         }
       ],
       "location": {
