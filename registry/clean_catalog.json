@@ -2130,7 +2130,7 @@
     {
       "slug": "costituzione_master",
       "name": "Costituzione Master",
-      "description": "Metriche aggregate per ogni articolo della Costituzione: numero di modifiche costituzionali, giudizi di legittimità in Corte Costituzionale, e dataset del DataCivicLab che ne monitorano l'attuazione. Fonte: JOIN tra i 4 parquet di dataciviclab/costituzione-italiana.",
+      "description": "Metriche aggregate per ogni articolo della Costituzione: modifiche costituzionali, giudizi di legittimità, esiti delle pronunce (accolte/respinte/inammissibili), citazioni nella legislazione ordinaria, e dataset del DataCivicLab che ne monitorano l'attuazione. Fonte: JOIN tra i 6 parquet di dataciviclab/costituzione-italiana.",
       "source": "dataciviclab/costituzione-italiana",
       "source_id": "costituzione-italiana",
       "period": {
@@ -2174,30 +2174,30 @@
           "role": "metric",
           "description": "Numero di volte che l'articolo è stato evocato come parametro in giudizi di legittimità costituzionale"
         },
-        {
-          "name": "n_accolte",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": ""
-        },
-        {
-          "name": "n_respinte",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": ""
-        },
-        {
-          "name": "n_inammissibili",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": ""
-        },
-        {
-          "name": "n_citazioni_legislative",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": ""
-        },
+    {
+      "name": "n_accolte",
+      "type": "INTEGER",
+      "role": "metric",
+      "description": "Numero di pronunce della Corte Costituzionale che hanno dichiarato l'illegittimità costituzionale in cui l'articolo è stato evocato (da massime.parquet)"
+    },
+    {
+      "name": "n_respinte",
+      "type": "INTEGER",
+      "role": "metric",
+      "description": "Numero di pronunce in cui l'articolo è stato evocato ma la questione è stata dichiarata non fondata (da massime.parquet)"
+    },
+    {
+      "name": "n_inammissibili",
+      "type": "INTEGER",
+      "role": "metric",
+      "description": "Numero di pronunce in cui l'articolo è stato evocato ma la questione è stata dichiarata inammissibile (da massime.parquet)"
+    },
+    {
+      "name": "n_citazioni_legislative",
+      "type": "INTEGER",
+      "role": "metric",
+      "description": "Numero di volte che l'articolo è citato nella legislazione ordinaria italiana (da citazioni-legislative.parquet)"
+    },
         {
           "name": "n_indicatori",
           "type": "INTEGER",
