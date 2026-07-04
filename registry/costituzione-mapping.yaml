@@ -1,10 +1,9 @@
 # registry/costituzione-mapping.yaml
 # Mappa tra articoli della Costituzione italiana e dataset del DataCivicLab.
 # Fonte primaria per genera-indicatori-costituzionali.py in costituzione-italiana.
-#
-# schema_version: 1
-# updated_at: {{DATE}}
-#
+schema_version: 1
+updated_at: "2026-07-04"
+
 # Campi:
 #   articolo: int — numero articolo Costituzione
 #   dataset_slug: str — slug nel clean_catalog
