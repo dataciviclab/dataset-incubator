@@ -68,20 +68,31 @@ usare `importo_lotto`, non `importo_complessivo_gara`.
 
 **Importi elevati — verificare caso per caso**: alcuni importi sopra il
 miliardo sono reali (es. `B77825C53E` — €17.37Mld per servizio idrico Puglia
-2026-2046, confermato su ANAC), altri sono probabilmente errati
-(es. €12.6Mld per formazione Camera Commercio Cagliari). Il mart non filtra:
-usa mediana come metrica robusta e `importo_lotto_massimo` per tracciare i
-picchi.
+2026-2046, confermato su ANAC), altri sono probabilmente errati.
+Il mart non filtra: usa mediana come metrica robusta e
+`importo_lotto_massimo` per tracciare i picchi.
 
-CIG da verificare su portale ANAC (`dati.anticorruzione.it`):
-- `B737822CB8` — €12.6Mld — Formazione personale Camera Commercio Cagliari
-- `B98FB8A800` — €11.1Mld — Buoni pasto Corte dei Conti
-- `B683A6EB40` — €9.2Mld — A.O. Rummo Benevento (lotto 13)
-- `B7A484F39D` — €7.9Mld — Forniture Liceo Scientifico Silvestri
-- `B8B40BE774` — €6.1Mld — ASP Agrigento (emodinamica)
-- `B8F7CC264D` — €5.7Mld — Marina Militare (PA 615)
-- `B66A1238E3` — €5.4Mld — ASL Salerno (energia elettrica)
-- `B641EBD927` — €5.2Mld — Comune Castelguglielmo (pulizie)
+### CIG verificati su ANAC 2025 (issue #512)
+
+Verifica completata su file CSV ANAC 2025 (12 mesi).
+
+| CIG | Importo | Ente | Oggetto | Esito |
+|-----|---------|------|---------|-------|
+| `B77825C53E` | €17,37 Mld | Autorità Idrica Pugliese | Servizio idrico integrato Puglia 2026-2046 | **Reale** (20 anni) |
+| `B737822CB8` | €12,62 Mld | CCIAA Cagliari-Oristano | Formazione personale camerale | Errore |
+| `B98FB8A800` | €11,09 Mld | Corte dei Conti | Buoni pasto elettronici | Errore |
+| `B683A6EB40` | €9,24 Mld | A.O. G. Rummo Benevento | Lotto 13 | Errore |
+| `B7A484F39D` | €7,90 Mld | Liceo F. Silvestri | Materiale di consumo | Errore |
+| `B8B40BE774` | €6,14 Mld | ASP Agrigento | Emodinamica | Dubbio |
+| `B8F7CC264D` | €5,74 Mld | Marina Militare (Tesei) | PA 615 | Dubbio |
+| `B66A1238E3` | €5,41 Mld | ASL Salerno | Energia elettrica | Errore |
+| `B641EBD927` | €5,21 Mld | Comune Castelguglielmo | Pulizie immobili comunali | Errore |
+
+**Pattern**: 6 CIG su 8 non verificati mostrano enti piccoli (comune, liceo,
+CCIAA) con importi miliardari per servizi ordinari (pulizie, formazione,
+buoni pasto). Probabile errore di codifica ANAC (decimali/centesimi).
+I 2 CIG dubbi (ASP Agrigento e Marina Militare) andrebbero verificati
+visivamente sul portale ANAC prima di classificarli come errori.
 
 ## Limiti CI
 
