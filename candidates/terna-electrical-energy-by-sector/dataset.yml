@@ -1,0 +1,38 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "terna_electrical_energy_by_sector"
+  source_id: "terna_opendata"
+  years: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+
+raw:
+  sources:
+    - name: "terna_electrical_energy_xlsx"
+      type: "script"
+      args:
+        command: "python scripts/fetch_terna.py {year} terna_electrical_energy_{year}_12.xlsx"
+        output: "terna_electrical_energy_{year}_12.xlsx"
+        filename: "terna_electrical_energy_{year}_12.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+    sheet_name: "Export"
+  validate:
+    min_rows: 400
+
+mart:
+  tables:
+    - name: "mart_consumi_settore_regione"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_consumi_settore_regione"
+  validate: {}
+
+validation:
+  fail_on_error: true
