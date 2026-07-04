@@ -24,4 +24,9 @@ TERNA S.p.A. — Download Center
 ## MART
 
 `mart_consumi_settore_provincia`: consumi per anno, provincia e settore.
-Nota: 2015-2020 dati disaggregati (più righe per provincia/settore), 2021-2024 già aggregati. Il SUM nel mart normalizza — i totali sono comparabili tra tutti gli anni.
+
+Nota: gli anni 2015-2020 hanno dati disaggregati (fino a 106k righe/anno) mentre 2021-2024 sono pre-aggregati (428 righe/anno). Il SUM nel mart normalizza — i totali sono comparabili tra tutti gli anni (es. Bergamo/Industria: 4.771 GWh nel 2015 vs 4.886 GWh nel 2024).
+
+## Setup
+
+L'ambiente necessita `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` per lo script di fetch che rimuove il footer "Applied filters" dal XLSX di TERNA. Vedere `notes.md` per dettagli tecnici.
