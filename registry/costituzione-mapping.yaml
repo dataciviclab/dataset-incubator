@@ -1,0 +1,289 @@
+# registry/costituzione-mapping.yaml
+# Mappa tra articoli della Costituzione italiana e dataset del DataCivicLab.
+# Fonte primaria per genera-indicatori-costituzionali.py in costituzione-italiana.
+#
+# schema_version: 1
+# updated_at: {{DATE}}
+#
+# Campi:
+#   articolo: int — numero articolo Costituzione
+#   dataset_slug: str — slug nel clean_catalog
+#   dimensione: str — cosa misura l'indicatore
+#   tipo: outcome | strutturale | territoriale
+
+mapping:
+  # ── PRINCIPI FONDAMENTALI ──
+
+  - articolo: 3
+    dataset_slug: istat_gini_regionale
+    dimensione: disuguaglianza reddito
+    tipo: outcome
+  - articolo: 3
+    dataset_slug: irpef_comunale
+    dimensione: gap reddito territoriale
+    tipo: territoriale
+
+  - articolo: 5
+    dataset_slug: opencivitas_fsc_2025_rso
+    dimensione: Fondo Solidarietà Comunale
+    tipo: strutturale
+  # siope_uscite_comuni — da attivare quando sarà pubblicato in clean_catalog
+
+  - articolo: 9
+    dataset_slug: terna_capacita_rinnovabile
+    dimensione: capacità rinnovabile installata
+    tipo: strutturale
+  - articolo: 9
+    dataset_slug: terna_electricity_by_source
+    dimensione: mix elettrico per fonte
+    tipo: outcome
+  - articolo: 9
+    dataset_slug: ispra_ru_base
+    dimensione: produzione e differenziata rifiuti
+    tipo: outcome
+  - articolo: 9
+    dataset_slug: ispra_consumo_suolo
+    dimensione: consumo di suolo
+    tipo: outcome
+  - articolo: 9
+    dataset_slug: ispra_emissioni_ghg
+    dimensione: emissioni gas serra
+    tipo: outcome
+
+  # ── PARTE I — DIRITTI E DOVERI ──
+
+  - articolo: 32
+    dataset_slug: bdap_lea
+    dimensione: spesa sanitaria regionale
+    tipo: strutturale
+  - articolo: 32
+    dataset_slug: aifa_spesa_consumo
+    dimensione: consumo farmaceutico SSN
+    tipo: outcome
+  - articolo: 32
+    dataset_slug: strutture_asl
+    dimensione: medici di base e pediatri
+    tipo: strutturale
+  - articolo: 32
+    dataset_slug: strutture_ricovero_asl
+    dimensione: posti letto e ricoveri
+    tipo: strutturale
+  - articolo: 32
+    dataset_slug: farmacie
+    dimensione: farmacie sul territorio
+    tipo: strutturale
+
+  - articolo: 33
+    dataset_slug: mim_alunni_corso_eta
+    dimensione: alunni per corso ed età
+    tipo: strutturale
+  - articolo: 33
+    dataset_slug: mur_contribuzione_universitaria
+    dimensione: contribuzione studentesca
+    tipo: strutturale
+
+  - articolo: 34
+    dataset_slug: mim_alunni_corso_eta
+    dimensione: dispersione scolastica implicita
+    tipo: outcome
+
+  - articolo: 38
+    dataset_slug: inps_pensioni_trimestrale
+    dimensione: numero e importo pensioni
+    tipo: outcome
+  - articolo: 38
+    dataset_slug: inps_rdc_pdc
+    dimensione: RdC/PdC per comune
+    tipo: outcome
+
+  - articolo: 41
+    dataset_slug: anac_bandi_gara
+    dimensione: appalti pubblici
+    tipo: strutturale
+  - articolo: 41
+    dataset_slug: rna_aiuti_stato
+    dimensione: aiuti di Stato alle imprese
+    tipo: strutturale
+
+  - articolo: 48
+    dataset_slug: elezioni_politiche_2022
+    dimensione: affluenza e risultati elezioni
+    tipo: outcome
+
+  - articolo: 51
+    dataset_slug: dait_amministratori_locali
+    dimensione: anagrafe amministratori locali
+    tipo: strutturale
+
+  - articolo: 53
+    dataset_slug: irpef_comunale
+    dimensione: redditi e imposte per comune
+    tipo: territoriale
+  - articolo: 53
+    dataset_slug: mef_irpef_regionale
+    dimensione: redditi per classe e regione
+    tipo: territoriale
+  - articolo: 53
+    dataset_slug: istat_gini_regionale
+    dimensione: progressività sistema tributario
+    tipo: outcome
+
+  # ── PARTE II — ORDINAMENTO DELLA REPUBBLICA ──
+
+  - articolo: 81
+    dataset_slug: bdap_entrate_stato
+    dimensione: entrate statali
+    tipo: strutturale
+  - articolo: 81
+    dataset_slug: bdap_spese_stato
+    dimensione: spese statali
+    tipo: strutturale
+
+  - articolo: 97
+    dataset_slug: dipendenti_pubblici
+    dimensione: occupazione e turnover PA
+    tipo: strutturale
+  - articolo: 97
+    dataset_slug: anac_bandi_gara
+    dimensione: trasparenza appalti
+    tipo: outcome
+  - articolo: 97
+    dataset_slug: consip_consumi_convenzione
+    dimensione: spesa PA in convenzione
+    tipo: strutturale
+
+  - articolo: 111
+    dataset_slug: civile_flussi
+    dimensione: durata processi civili
+    tipo: outcome
+  - articolo: 111
+    dataset_slug: giustizia_penale_indicatori
+    dimensione: clearance rate penale
+    tipo: outcome
+
+  - articolo: 117
+    dataset_slug: opencoesione_progetti
+    dimensione: fondi coesione per regione
+    tipo: territoriale
+  - articolo: 117
+    dataset_slug: bdap_entrate_stato
+    dimensione: entrate statali vs regionali
+    tipo: territoriale
+
+  - articolo: 118
+    dataset_slug: opencivitas_fsc_2025_rso
+    dimensione: FSC per comune
+    tipo: territoriale
+  - articolo: 118
+    dataset_slug: opencoesione_progetti
+    dimensione: progetti coesione territoriale
+    tipo: territoriale
+
+  - articolo: 119
+    dataset_slug: opencivitas_fsc_2025_rso
+    dimensione: Fondo Solidarietà Comunale
+    tipo: strutturale
+  - articolo: 119
+    dataset_slug: irpef_comunale
+    dimensione: autonomia finanziaria comuni
+    tipo: territoriale
+
+  # ── NUOVI MAPPATI ──
+
+  - articolo: 4
+    dataset_slug: istat_occupazione_provinciale
+    dimensione: tasso di occupazione provinciale
+    tipo: outcome
+
+  - articolo: 9
+    dataset_slug: ispra_ru_costi_kg
+    dimensione: costo gestione rifiuti per kg
+    tipo: outcome
+  - articolo: 9
+    dataset_slug: ispra_ru_costi_procapite
+    dimensione: costo gestione rifiuti pro-capite
+    tipo: outcome
+  - articolo: 9
+    dataset_slug: silos_infrastrutture
+    dimensione: infrastrutture strategiche
+    tipo: strutturale
+
+  - articolo: 10
+    dataset_slug: centri_accoglienza_italia
+    dimensione: centri di accoglienza migranti
+    tipo: strutturale
+  - articolo: 10
+    dataset_slug: sai_progetti_italia
+    dimensione: progetti SAI accoglienza
+    tipo: strutturale
+  - articolo: 10
+    dataset_slug: sai_strutture_italia
+    dimensione: strutture SAI accoglienza
+    tipo: strutturale
+
+  - articolo: 16
+    dataset_slug: anpr_mobilita_residenziale
+    dimensione: mobilità residenziale interregionale
+    tipo: outcome
+
+  - articolo: 21
+    dataset_slug: camera_votazioni_sparql
+    dimensione: votazioni Camera dei Deputati
+    tipo: outcome
+
+  - articolo: 32
+    dataset_slug: posti_letto_stabilimento
+    dimensione: posti letto per stabilimento
+    tipo: strutturale
+  - articolo: 32
+    dataset_slug: reparti_ricovero
+    dimensione: reparti di ricovero ASL
+    tipo: strutturale
+
+  - articolo: 33
+    dataset_slug: mim_anagrafica_scuole_statali
+    dimensione: anagrafica scuole statali
+    tipo: strutturale
+
+  - articolo: 38
+    dataset_slug: pensioni_pa_dag
+    dimensione: pensioni PA per gestione
+    tipo: outcome
+
+  - articolo: 41
+    dataset_slug: openga_ricorsi_appalto
+    dimensione: ricorsi appalto Consiglio di Stato
+    tipo: outcome
+
+  - articolo: 48
+    dataset_slug: elezioni_regionali
+    dimensione: risultati elezioni regionali
+    tipo: outcome
+
+  - articolo: 53
+    dataset_slug: ade_cinque_per_mille
+    dimensione: 5x1000 per ente beneficiario
+    tipo: territoriale
+  - articolo: 53
+    dataset_slug: iva_regionale
+    dimensione: volume affari e VA fiscale per regione
+    tipo: territoriale
+
+  - articolo: 81
+    dataset_slug: siope_bilancio_unificato
+    dimensione: bilancio enti pubblici
+    tipo: strutturale
+  - articolo: 81
+    dataset_slug: pnrr_progetti
+    dimensione: progetti PNRR
+    tipo: strutturale
+
+  - articolo: 97
+    dataset_slug: anpr_mobilita_residenziale
+    dimensione: mobilità residenziale (efficienza PA)
+    tipo: outcome
+
+  - articolo: 117
+    dataset_slug: fts_eu_grants
+    dimensione: grant UE erogati in Italia
+    tipo: territoriale
