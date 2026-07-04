@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-04",
+  "generated_at": "2026-07-03",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 74,
+    "total": 73,
     "by_status": {
-      "ok": 74,
+      "ok": 73,
       "warn": 0,
       "error": 0
     }
@@ -1218,33 +1218,6 @@
           2024
         ],
         "config_path": "candidates/terna-capacita-rinnovabile/dataset.yml"
-      }
-    },
-    {
-      "id": "terna-electrical-energy-by-sector",
-      "source_id": "terna_opendata",
-      "status": "ok",
-      "label": "terna-electrical-energy-by-sector",
-      "detail": "anni 2015-2024 — fonte: terna_electrical_energy_xlsx — mart: sì",
-      "action": "",
-      "sample_run": {
-        "status": "passed",
-        "run_id": "28709665937",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28709665937",
-        "checked_at": "2026-07-04",
-        "years": [
-          2015,
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/terna-electrical-energy-by-sector/dataset.yml"
       }
     },
     {
