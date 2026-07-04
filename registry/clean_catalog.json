@@ -2174,30 +2174,30 @@
           "role": "metric",
           "description": "Numero di volte che l'articolo è stato evocato come parametro in giudizi di legittimità costituzionale"
         },
-    {
-      "name": "n_accolte",
-      "type": "INTEGER",
-      "role": "metric",
-      "description": "Numero di pronunce della Corte Costituzionale che hanno dichiarato l'illegittimità costituzionale in cui l'articolo è stato evocato (da massime.parquet)"
-    },
-    {
-      "name": "n_respinte",
-      "type": "INTEGER",
-      "role": "metric",
-      "description": "Numero di pronunce in cui l'articolo è stato evocato ma la questione è stata dichiarata non fondata (da massime.parquet)"
-    },
-    {
-      "name": "n_inammissibili",
-      "type": "INTEGER",
-      "role": "metric",
-      "description": "Numero di pronunce in cui l'articolo è stato evocato ma la questione è stata dichiarata inammissibile (da massime.parquet)"
-    },
-    {
-      "name": "n_citazioni_legislative",
-      "type": "INTEGER",
-      "role": "metric",
-      "description": "Numero di volte che l'articolo è citato nella legislazione ordinaria italiana (da citazioni-legislative.parquet)"
-    },
+        {
+          "name": "n_accolte",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di pronunce della Corte Costituzionale che hanno dichiarato l'illegittimità costituzionale in cui l'articolo è stato evocato (da massime.parquet)"
+        },
+        {
+          "name": "n_respinte",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di pronunce in cui l'articolo è stato evocato ma la questione è stata dichiarata non fondata (da massime.parquet)"
+        },
+        {
+          "name": "n_inammissibili",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di pronunce in cui l'articolo è stato evocato ma la questione è stata dichiarata inammissibile (da massime.parquet)"
+        },
+        {
+          "name": "n_citazioni_legislative",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di volte che l'articolo è citato nella legislazione ordinaria italiana (da citazioni-legislative.parquet)"
+        },
         {
           "name": "n_indicatori",
           "type": "INTEGER",
