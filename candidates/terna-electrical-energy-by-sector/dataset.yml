@@ -28,10 +28,10 @@ clean:
 
 mart:
   tables:
-    - name: "mart_consumi_settore_regione"
+    - name: "mart_consumi_settore_provincia"
       sql: "sql/mart.sql"
   required_tables:
-    - "mart_consumi_settore_regione"
+    - "mart_consumi_settore_provincia"
   validate: {}
 
 validation:
