@@ -2175,6 +2175,30 @@
           "description": "Numero di volte che l'articolo è stato evocato come parametro in giudizi di legittimità costituzionale"
         },
         {
+          "name": "n_accolte",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_respinte",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_inammissibili",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "n_citazioni_legislative",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
           "name": "n_indicatori",
           "type": "INTEGER",
           "role": "metric",
