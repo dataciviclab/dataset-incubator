@@ -19,7 +19,7 @@ import xml.etree.ElementTree as ET
 URL_TEMPLATE = (
     "https://dati.terna.it/api/sitecore/dati/downloadcenter/records"
     "?f=xlsx&filterDataset=ElectricalEnergy&filterYear={year}"
-    "&filterMonth=12&orderByColumn=Anno&orderByDir=desc&db=dati&pageSize=20000"
+    "&filterMonth=12&orderByColumn=Anno&orderByDir=desc&db=dati&pageSize=500000"
 )
 
 
