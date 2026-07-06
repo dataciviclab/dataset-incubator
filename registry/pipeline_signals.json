@@ -4,14 +4,32 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 75,
+    "total": 76,
     "by_status": {
-      "ok": 75,
+      "ok": 76,
       "warn": 0,
       "error": 0
     }
   },
   "signals": [
+    {
+      "id": "aci-prime-iscrizioni-autovetture",
+      "source_id": "",
+      "status": "ok",
+      "label": "aci-prime-iscrizioni-autovetture",
+      "detail": "anno 2024 — fonti: aci_2017, aci_2018 — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28817993929",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28817993929",
+        "checked_at": "2026-07-06",
+        "years": [
+          2024
+        ],
+        "config_path": "candidates/aci-prime-iscrizioni-autovetture/dataset.yml"
+      }
+    },
     {
       "id": "ade-cinque-per-mille",
       "source_id": "",

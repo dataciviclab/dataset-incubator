@@ -6,6 +6,56 @@
   "updated_at": "2026-07-06",
   "datasets": [
     {
+      "slug": "aci_prime_iscrizioni_autovetture",
+      "name": "Aci Prime Iscrizioni Autovetture",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2017,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "alimentazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "prime_iscrizioni",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/aci_prime_iscrizioni_autovetture/2024/aci_prime_iscrizioni_autovetture_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "ade_cinque_per_mille",
       "name": "5x1000 — Beneficiari e importi per ente",
       "description": "Elenco enti beneficiari del 5x1000 dell'Agenzia delle Entrate, con importi erogabili, flag categoria (ETS, ASD, ricerca, comune, beni culturali, area protetta) e ripartizione territoriale per regione.",
