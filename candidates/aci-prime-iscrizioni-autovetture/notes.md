@@ -7,8 +7,11 @@ DataCivicLab/dataset-incubator#494
 ACI - Automobile Club Italia via dati.gov.it e lod.aci.it
 http://lod.aci.it/
 
-## Schema
+## Schema raw
 5 colonne: tipoEnteTerritoriale, enteTerritoriale, provincia, alimentazione, primeIscrizioni
+
+## Schema clean
+5 colonne: anno, comune, provincia, alimentazione, prime_iscrizioni (solo Comuni)
 
 ## Note
 - CSV gia' in formato tidy, encoding UTF-8

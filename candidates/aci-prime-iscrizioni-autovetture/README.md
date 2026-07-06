@@ -7,12 +7,12 @@ Prime iscrizioni di autovetture nuove in Italia per comune e tipo alimentazione 
 
 ## Domanda guida
 
-Come sta cambiando il parco auto italiano? Quante auto nuove elettriche/ibride vengono immatricolate ogni anno per comune?
+Come sta cambiando il parco auto italiano? Quante auto nuove elettriche/ibride vengono immatricolate ogni anno per comune? La transizione energetica nei trasporti è omogenea sul territorio?
 
 ## Dataset
 
 - **Copertura**: 2017-2024 (8 anni)
 - **Granularità**: comunale per tipo alimentazione
 - **Righe**: ~301.000
-- **Colonne**: 6 (anno, tipoEnteTerritoriale, enteTerritoriale, provincia, alimentazione, prime_iscrizioni)
+- **Colonne**: 5 (anno, comune, provincia, alimentazione, prime_iscrizioni)
 - **Immatricolazioni totali**: ~53,4 milioni
