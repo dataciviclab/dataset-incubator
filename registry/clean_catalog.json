@@ -9012,8 +9012,8 @@
     {
       "slug": "sbarchi_migranti_italia",
       "name": "Sbarchi Migranti Italia",
-      "description": "",
-      "source": "",
+      "description": "Arrivi giornalieri di migranti via mare in Italia (2019-2025). Dati estratti da PDF del Ministero dell'Interno.",
+      "source": "onData — liberiamoli-tutti",
       "source_id": "",
       "period": {
         "start": 2019,
@@ -9023,26 +9023,26 @@
         {
           "name": "data_sbarchi",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data dell'arrivo"
         },
         {
           "name": "valore",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di arrivi registrati nel giorno"
         },
         {
           "name": "note",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Note sull'evento di sbarco"
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Fonte del dato (Ministero dell'Interno / onData)"
         }
       ],
       "location": {
