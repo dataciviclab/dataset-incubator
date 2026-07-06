@@ -1,0 +1,34 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "sbarchi_migranti_italia"
+  years: [2025]
+  time_coverage:
+    mode: "full_series"
+    start_year: 2019
+    end_year: 2025
+
+raw:
+  sources:
+    - name: "sbarchi_per_giorno"
+      type: "http_file"
+      args:
+        url: "https://raw.githubusercontent.com/ondata/liberiamoli-tutti/main/sbarchi-migranti/dati/sbarchi-per-giorno.csv"
+        filename: "sbarchi-per-giorno.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    trim_whitespace: true
+    mode: all
+  validate: {}
+
+mart:
+  tables:
+    - name: "mart_sbarchi_mensili"
+      sql: "sql/mart_sbarchi.sql"
