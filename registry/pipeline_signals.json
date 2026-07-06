@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-04",
+  "generated_at": "2026-07-06",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 74,
+    "total": 75,
     "by_status": {
-      "ok": 74,
+      "ok": 75,
       "warn": 0,
       "error": 0
     }
@@ -1093,6 +1093,24 @@
           2026
         ],
         "config_path": "candidates/sai-strutture-italia/dataset.yml"
+      }
+    },
+    {
+      "id": "sbarchi-migranti-italia",
+      "source_id": "",
+      "status": "ok",
+      "label": "sbarchi-migranti-italia",
+      "detail": "anno 2025 — fonte: sbarchi_per_giorno — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28816214267",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28816214267",
+        "checked_at": "2026-07-06",
+        "years": [
+          2025
+        ],
+        "config_path": "candidates/sbarchi-migranti-italia/dataset.yml"
       }
     },
     {

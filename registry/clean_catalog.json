@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-04",
+  "updated_at": "2026-07-06",
   "datasets": [
     {
       "slug": "ade_cinque_per_mille",
@@ -9004,6 +9004,50 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/sai_strutture_italia/2026/sai_strutture_italia_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "sbarchi_migranti_italia",
+      "name": "Sbarchi Migranti Italia",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2019,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "data_sbarchi",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "valore",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "note",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "fonte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/sbarchi_migranti_italia/2025/sbarchi_migranti_italia_2025_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
