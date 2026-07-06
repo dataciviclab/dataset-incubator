@@ -1,0 +1,71 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "aci_prime_iscrizioni_autovetture"
+  years: [2024]
+  time_coverage:
+    mode: "full_series"
+    start_year: 2017
+    end_year: 2024
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "aci_2017"
+      type: "http_file"
+      primary: true
+      args:
+        url: "http://lod.aci.it/sites/default/files/Prime_iscrizioni_veicoli_nuovi_nel_2017-autovetture_per_ente_territoriale_e_alimentazione_1.csv"
+        filename: "aci_2017.csv"
+    - name: "aci_2018"
+      type: "http_file"
+      args:
+        url: "http://lod.aci.it/sites/default/files/Prime_iscrizioni_veicoli_nuovi_nel_2018-autovetture_per_ente_territoriale_e_alimentazione%20.csv"
+        filename: "aci_2018.csv"
+    - name: "aci_2019"
+      type: "http_file"
+      args:
+        url: "http://lod.aci.it/sites/default/files/Prime%20iscrizioni%20veicoli%20nuovi%20nel%202019%20-%20autovetture%20per%20ente%20territoriale%20e%20alimentazione.csv"
+        filename: "aci_2019.csv"
+    - name: "aci_2020"
+      type: "http_file"
+      args:
+        url: "http://lod.aci.it/sites/default/files/Prime%20iscrizioni%20veicoli%20nuovi%20nel%202020%20%E2%80%93%20autovetture%20per%20ente%20territoriale%20e%20alimentazione.csv"
+        filename: "aci_2020.csv"
+    - name: "aci_2021"
+      type: "http_file"
+      args:
+        url: "http://lod.aci.it/sites/default/files/Prime%20iscrizioni%20veicoli%20nuovi%20nel%202021%20%E2%80%93%20autovetture%20per%20ente%20territoriale%20e%20alimentazione.csv"
+        filename: "aci_2021.csv"
+    - name: "aci_2022"
+      type: "http_file"
+      args:
+        url: "http://lod.aci.it/sites/default/files/Prime%20iscrizioni%20veicoli%20nuovi%20nel%202022%20%E2%80%93%20autovetture%20per%20ente%20territoriale%20e%20alimentazione.csv"
+        filename: "aci_2022.csv"
+    - name: "aci_2023"
+      type: "http_file"
+      args:
+        url: "http://lod.aci.it/sites/default/files/Prime%20iscrizioni%20veicoli%20nuovi%20nel%202023%20%E2%80%93%20autovetture%20per%20ente%20territoriale%20e%20alimentazione.csv"
+        filename: "aci_2023.csv"
+    - name: "aci_2024"
+      type: "http_file"
+      args:
+        url: "http://lod.aci.it/sites/default/files/statistiche_prime_iscrizioni_2024.csv"
+        filename: "aci_2024.csv"
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: all
+    header: true
+    delim: ","
+    encoding: "utf-8"
+    trim_whitespace: true
+  validate: {}
+
+mart:
+  tables:
+    - name: "mart_anno_alimentazione"
+      sql: "sql/mart.sql"
