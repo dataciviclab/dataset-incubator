@@ -54,7 +54,7 @@ jobs:
       - name: Detect changed candidate/support roots
         id: detect
         env:
-          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+          GH_TOKEN: ${{ github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           SLUG_INPUT: ${{ inputs.slug }}
         run: |
@@ -226,7 +226,7 @@ jobs:
 
       - name: Create draft registry PR
         env:
-          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
+          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN || github.token }}
           PR_NUMBER: ${{ github.event.pull_request.number }}
           PIPELINE_SIGNALS_CHANGED: ${{ steps.diff.outputs.changed }}
         run: |
