@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "elezioni_europee"
+  source_id: "eligendo"
   years: [1979, 1984, 1989, 1994, 1999, 2004, 2009, 2014, 2019, 2024]
 
 raw:
