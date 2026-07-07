@@ -253,7 +253,7 @@ def main():
         "comune",
         "sezione",
         "num_quesito",
-        "quesito",
+        "descrizione_quesito",
         "elettori",
         "elettori_uomini",
         "votanti",
