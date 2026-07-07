@@ -2,8 +2,8 @@ root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "elezioni_regionali"
-  years: [2018, 2019, 2020, 2021, 2023, 2024]
+  name: "elezioni_referendum"
+  years: [1995, 1999, 2000, 2003, 2006, 2016, 2020, 2022]
 
 raw:
   output_policy: overwrite
@@ -30,11 +30,11 @@ clean:
 
 mart:
   tables:
-    - name: "mart_voti_lista_comune"
+    - name: "mart_voti_quesito_comune"
       sql: "sql/mart.sql"
   validate:
     table_rules:
-      mart_voti_lista_comune:
+      mart_voti_quesito_comune:
         min_rows: 100
 
 validation:
