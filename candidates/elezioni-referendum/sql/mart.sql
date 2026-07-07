@@ -11,5 +11,5 @@ SELECT
     SUM(COALESCE(schede_nulle, 0)) AS schede_nulle,
     SUM(COALESCE(schede_bianche, 0)) AS schede_bianche,
     SUM(COALESCE(schede_contestate, 0)) AS schede_contestate
-FROM clean
+FROM clean_input
 GROUP BY data_elezione, regione, provincia, comune, num_quesito

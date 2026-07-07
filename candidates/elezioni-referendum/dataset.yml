@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "elezioni_referendum"
-  years: [1995, 1999, 2000, 2003, 2006, 2016, 2020, 2022]
+  years: [1995, 1997, 1999, 2000, 2001, 2003, 2005, 2006, 2011, 2016, 2020, 2022]
 
 raw:
   output_policy: overwrite

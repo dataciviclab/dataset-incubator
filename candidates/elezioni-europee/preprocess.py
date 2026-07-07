@@ -13,16 +13,76 @@ import zipfile
 import urllib.request
 
 SOURCES: dict[int, list[tuple[str, str, bool]]] = {
-    1979: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-19790610.zip", "1979-06-10", True)],
-    1984: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-19840617.zip", "1984-06-17", True)],
-    1989: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-19890618.zip", "1989-06-18", True)],
-    1994: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-19940612.zip", "1994-06-12", True)],
-    1999: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-19990613.zip", "1999-06-13", True)],
-    2004: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-20040612.zip", "2004-06-13", True)],
-    2009: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-20090607.zip", "2009-06-07", True)],
-    2014: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-20140525.zip", "2014-05-25", True)],
-    2019: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-20190526.zip", "2019-05-26", True)],
-    2024: [("https://dait.interno.gov.it/documenti/opendata/europee/europee-20240609.zip", "2024-06-09", True)],
+    1979: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-19790610.zip",
+            "1979-06-10",
+            True,
+        )
+    ],
+    1984: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-19840617.zip",
+            "1984-06-17",
+            True,
+        )
+    ],
+    1989: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-19890618.zip",
+            "1989-06-18",
+            True,
+        )
+    ],
+    1994: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-19940612.zip",
+            "1994-06-12",
+            True,
+        )
+    ],
+    1999: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-19990613.zip",
+            "1999-06-13",
+            True,
+        )
+    ],
+    2004: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-20040612.zip",
+            "2004-06-13",
+            True,
+        )
+    ],
+    2009: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-20090607.zip",
+            "2009-06-07",
+            True,
+        )
+    ],
+    2014: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-20140525.zip",
+            "2014-05-25",
+            True,
+        )
+    ],
+    2019: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-20190526.zip",
+            "2019-05-26",
+            True,
+        )
+    ],
+    2024: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/europee/europee-20240609.zip",
+            "2024-06-09",
+            True,
+        )
+    ],
 }
 
 COL_MAP: list[tuple[re.Pattern, str]] = [
@@ -35,10 +95,19 @@ COL_MAP: list[tuple[re.Pattern, str]] = [
     (re.compile(r"^(LISTA|DESCR_LISTA|DESCRLISTA|DESCLISTA)$", re.I), "lista"),
     (re.compile(r"^(VOTI_LISTA|VOTILISTA|NUMVOTI)$", re.I), "voti_lista"),
     (re.compile(r"^(ELETTORI(TOT)?|ELETTORITOTALI)$", re.I), "elettori"),
-    (re.compile(r"^(ELETTORI_MASCHI|ELETTORIMASCHI|ELETTORI UOMINI|ELETTORI_M)$", re.I), "elettori_maschi"),
+    (
+        re.compile(r"^(ELETTORI_MASCHI|ELETTORIMASCHI|ELETTORI UOMINI|ELETTORI_M)$", re.I),
+        "elettori_maschi",
+    ),
     (re.compile(r"^(VOTANTI(TOT)?|NUMVOTANTITOTALI)$", re.I), "votanti"),
-    (re.compile(r"^(VOTANTI_MASCHI|VOTANTIMASCHI|VOTANTI UOMINI|VOTANTI_M)$", re.I), "votanti_maschi"),
-    (re.compile(r"^(SCHEDEBIANCHE|SKBIANCHE|SCHEDE_BIANCHE|NUMSCHEDEBIANCHE)$", re.I), "schede_bianche"),
+    (
+        re.compile(r"^(VOTANTI_MASCHI|VOTANTIMASCHI|VOTANTI UOMINI|VOTANTI_M)$", re.I),
+        "votanti_maschi",
+    ),
+    (
+        re.compile(r"^(SCHEDEBIANCHE|SKBIANCHE|SCHEDE_BIANCHE|NUMSCHEDEBIANCHE)$", re.I),
+        "schede_bianche",
+    ),
     (re.compile(r"^DATA_ELEZIONE$", re.I), "data_elezione_raw"),
     (re.compile(r"^TIPO_ELEZIONE$", re.I), "tipo_elezione"),
 ]
@@ -99,7 +168,13 @@ def extract_scrutini(zf: zipfile.ZipFile) -> list[list[str]]:
         base = os.path.basename(name)
         if base.startswith("~") or base.startswith("."):
             continue
-        if "preferenze" in base.lower() or "fuorisede" in base.lower() or "fuori" in base.lower():
+        if (
+            "preferenze" in base.lower()
+            or base.lower().startswith("_pref")
+            or base.lower().startswith("pref")
+            or "fuorisede" in base.lower()
+            or "fuori" in base.lower()
+        ):
             continue
         if base.lower().endswith(".xlsx") or base.lower().endswith(".xls"):
             continue
@@ -141,9 +216,16 @@ def process_url(url: str, election_date: str, is_zip: bool) -> list[dict]:
         for name, idx in zip(col_names, col_indices):
             if idx < len(row):
                 val = row[idx].strip().strip('"')
-                if name in ("voti_lista", "elettori", "elettori_maschi",
-                            "votanti", "votanti_maschi", "schede_bianche",
-                            "num_lista", "sezione"):
+                if name in (
+                    "voti_lista",
+                    "elettori",
+                    "elettori_maschi",
+                    "votanti",
+                    "votanti_maschi",
+                    "schede_bianche",
+                    "num_lista",
+                    "sezione",
+                ):
                     val = normalize_number(val)
                 rec[name] = val
         records.append(rec)
@@ -172,10 +254,21 @@ def main():
         sys.exit(1)
 
     canonical_cols = [
-        "data_elezione", "data_elezione_raw", "tipo_elezione",
-        "circoscrizione", "regione", "provincia", "comune", "sezione",
-        "num_lista", "lista", "voti_lista",
-        "elettori", "elettori_maschi", "votanti", "votanti_maschi",
+        "data_elezione",
+        "data_elezione_raw",
+        "tipo_elezione",
+        "circoscrizione",
+        "regione",
+        "provincia",
+        "comune",
+        "sezione",
+        "num_lista",
+        "lista",
+        "voti_lista",
+        "elettori",
+        "elettori_maschi",
+        "votanti",
+        "votanti_maschi",
         "schede_bianche",
     ]
     for rec in all_records:

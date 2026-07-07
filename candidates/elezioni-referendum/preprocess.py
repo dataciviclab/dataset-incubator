@@ -13,23 +13,110 @@ import zipfile
 import urllib.request
 
 SOURCES: dict[int, list[tuple[str, str, bool]]] = {
-    1995: [("https://dait.interno.gov.it/documenti/opendata/referendum/referendum-19950611.zip", "1995-06-11", True)],
-    1999: [("https://dait.interno.gov.it/documenti/opendata/referendum/referendum-19990418.zip", "1999-04-18", True)],
-    2000: [("https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20000521.zip", "2000-05-21", True)],
-    2003: [("https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20030615.zip", "2003-06-15", True)],
-    2006: [("https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20060625.zip", "2006-06-25", True)],
-    2016: [("https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20161204.zip", "2016-12-04", True)],
-    2020: [("https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20200920.zip", "2020-09-20", True)],
-    2022: [("https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20220612.zip", "2022-06-12", True)],
+    1995: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-19950611.zip",
+            "1995-06-11",
+            True,
+        )
+    ],
+    1997: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-19970615.zip",
+            "1997-06-15",
+            True,
+        )
+    ],
+    1999: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-19990418.zip",
+            "1999-04-18",
+            True,
+        )
+    ],
+    2000: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20000521.zip",
+            "2000-05-21",
+            True,
+        )
+    ],
+    2001: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20011007.zip",
+            "2001-10-07",
+            True,
+        )
+    ],
+    2003: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20030615.zip",
+            "2003-06-15",
+            True,
+        )
+    ],
+    2005: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20050612.zip",
+            "2005-06-12",
+            True,
+        )
+    ],
+    2006: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20060625.zip",
+            "2006-06-25",
+            True,
+        )
+    ],
+    2011: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20110612.zip",
+            "2011-06-12",
+            True,
+        )
+    ],
+    2016: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20160417.zip",
+            "2016-04-17",
+            True,
+        ),
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20161204.zip",
+            "2016-12-04",
+            True,
+        ),
+    ],
+    2020: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20200920.zip",
+            "2020-09-20",
+            True,
+        )
+    ],
+    2022: [
+        (
+            "https://dait.interno.gov.it/documenti/opendata/referendum/referendum-20220612.zip",
+            "2022-06-12",
+            True,
+        )
+    ],
 }
 
 COL_MAP: list[tuple[re.Pattern, str]] = [
     (re.compile(r"^REGIONE$", re.I), "regione"),
     (re.compile(r"^PROV(INCIA)?$", re.I), "provincia"),
     (re.compile(r"^COMUNE$", re.I), "comune"),
-    (re.compile(r"^(ELETTORI_UOMINI|ELETTORI_MASCHI|ELETTORIMASCHI|ELETTORI MASCHI)$", re.I), "elettori_uomini"),
+    (
+        re.compile(r"^(ELETTORI_UOMINI|ELETTORI_MASCHI|ELETTORIMASCHI|ELETTORI MASCHI)$", re.I),
+        "elettori_uomini",
+    ),
     (re.compile(r"^(ELETTORI(TOT)?|ELETTORITOTALI)$", re.I), "elettori"),
-    (re.compile(r"^(VOTANTI_UOMINI|VOTANTI_MASCHI|VOTANTIMASCHI|VOTANTI MASCHI)$", re.I), "votanti_uomini"),
+    (
+        re.compile(r"^(VOTANTI_UOMINI|VOTANTI_MASCHI|VOTANTIMASCHI|VOTANTI MASCHI)$", re.I),
+        "votanti_uomini",
+    ),
     (re.compile(r"^(VOTANTI(TOT)?|NUMVOTANTITOTALI)$", re.I), "votanti"),
     (re.compile(r"^(VOTI_SI|VOTISI|NUMVOTISI)$", re.I), "voti_si"),
     (re.compile(r"^(VOTI_NO|VOTINO|NUMVOTINO)$", re.I), "voti_no"),
@@ -40,6 +127,7 @@ COL_MAP: list[tuple[re.Pattern, str]] = [
     (re.compile(r"^QUESITO$", re.I), "descrizione_quesito"),
     (re.compile(r"^DESCR_REFERENDUM$", re.I), "descrizione_quesito"),
 ]
+
 
 def download(url: str) -> bytes:
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -118,9 +206,18 @@ def process_zip(url: str, election_date: str) -> list[dict]:
                 for cname, idx in zip(col_names, col_indices):
                     if idx < len(row):
                         val = row[idx].strip().strip('"')
-                        if cname in ("elettori", "elettori_uomini", "votanti", "votanti_uomini",
-                                      "voti_si", "voti_no", "schede_nulle", "schede_bianche",
-                                      "schede_contestate", "num_quesito"):
+                        if cname in (
+                            "elettori",
+                            "elettori_uomini",
+                            "votanti",
+                            "votanti_uomini",
+                            "voti_si",
+                            "voti_no",
+                            "schede_nulle",
+                            "schede_bianche",
+                            "schede_contestate",
+                            "num_quesito",
+                        ):
                             val = normalize_number(val)
                         rec[cname] = val
                 records.append(rec)
@@ -148,13 +245,24 @@ def main():
         sys.exit(1)
 
     canonical_cols = [
-        "data_elezione", "data_elezione_raw", "tipo_elezione",
-        "regione", "provincia", "comune", "sezione",
-        "num_quesito", "quesito",
-        "elettori", "elettori_uomini",
-        "votanti", "votanti_uomini",
-        "voti_si", "voti_no",
-        "schede_nulle", "schede_bianche", "schede_contestate",
+        "data_elezione",
+        "data_elezione_raw",
+        "tipo_elezione",
+        "regione",
+        "provincia",
+        "comune",
+        "sezione",
+        "num_quesito",
+        "quesito",
+        "elettori",
+        "elettori_uomini",
+        "votanti",
+        "votanti_uomini",
+        "voti_si",
+        "voti_no",
+        "schede_nulle",
+        "schede_bianche",
+        "schede_contestate",
     ]
     for rec in all_records:
         for col in canonical_cols:
