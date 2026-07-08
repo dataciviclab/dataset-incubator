@@ -2680,8 +2680,8 @@
     {
       "slug": "elezioni_europee",
       "name": "Elezioni Europee",
-      "description": "",
-      "source": "",
+      "description": "Risultati delle elezioni del Parlamento Europeo in Italia per comune e lista (1979-2024). Fonte: Eligendo — Archivio storico elettorale del DAIT (Ministero dell'Interno).",
+      "source": "Eligendo — DAIT Ministero dell'Interno",
       "source_id": "eligendo",
       "period": {
         "start": 1979,
@@ -2691,62 +2691,62 @@
         {
           "name": "data_elezione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data dell'elezione"
         },
         {
           "name": "circoscrizione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Circoscrizione elettorale"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione del comune"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia del comune"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune di votazione"
         },
         {
           "name": "lista",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Lista elettorale"
         },
         {
           "name": "voti_lista",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti ottenuti dalla lista"
         },
         {
           "name": "elettori",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Elettori aventi diritto"
         },
         {
           "name": "votanti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Votanti totali"
         },
         {
           "name": "schede_bianche",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Schede bianche"
         }
       ],
       "location": {
