@@ -2678,6 +2678,86 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "elezioni_europee",
+      "name": "Elezioni Europee",
+      "description": "Risultati delle elezioni del Parlamento Europeo in Italia per comune e lista (1979-2024). Fonte: Eligendo — Archivio storico elettorale del DAIT (Ministero dell'Interno).",
+      "source": "Eligendo — DAIT Ministero dell'Interno",
+      "source_id": "eligendo",
+      "period": {
+        "start": 1979,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "data_elezione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data dell'elezione"
+        },
+        {
+          "name": "circoscrizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Circoscrizione elettorale"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione del comune"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia del comune"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune di votazione"
+        },
+        {
+          "name": "lista",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Lista elettorale"
+        },
+        {
+          "name": "voti_lista",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Voti ottenuti dalla lista"
+        },
+        {
+          "name": "elettori",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Elettori aventi diritto"
+        },
+        {
+          "name": "votanti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Votanti totali"
+        },
+        {
+          "name": "schede_bianche",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Schede bianche"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/elezioni_europee/*/elezioni_europee_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "elezioni_politiche_2022",
       "name": "Elezioni Politiche 2022 — Camera e Senato",
       "description": "Risultati elezioni politiche 2022 (Camera e Senato) per comune: voti di lista, candidati, affluenza. Fonte: Ministero dell'Interno — DAIT.",
