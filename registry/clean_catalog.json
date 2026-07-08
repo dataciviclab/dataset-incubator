@@ -2570,8 +2570,8 @@
     {
       "slug": "elezioni_comunali",
       "name": "Elezioni Comunali",
-      "description": "",
-      "source": "",
+      "description": "Risultati delle elezioni comunali in Italia per comune, candidato e lista (2016-2024). Fonte: Eligendo — Archivio storico elettorale del DAIT (Ministero dell'Interno).",
+      "source": "Eligendo — DAIT Ministero dell'Interno",
       "source_id": "eligendo",
       "period": {
         "start": 2016,
@@ -2581,8 +2581,8 @@
         {
           "name": "data_elezione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data dell'elezione"
         },
         {
           "name": "regione",
@@ -2605,14 +2605,14 @@
         {
           "name": "turno",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Turno di votazione (1=primo, 2=secondo/ballottaggio)"
         },
         {
           "name": "candidato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del candidato sindaco"
         },
         {
           "name": "lista",
@@ -2624,49 +2624,49 @@
           "name": "voti_candidato",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti ottenuti dal candidato"
         },
         {
           "name": "voti_lista",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti ottenuti dalla lista"
         },
         {
           "name": "seggi_lista",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Seggi assegnati alla lista"
         },
         {
           "name": "elettori",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Elettori aventi diritto"
         },
         {
           "name": "elettori_maschi",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Elettori di sesso maschile"
         },
         {
           "name": "votanti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Votanti totali"
         },
         {
           "name": "votanti_maschi",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Votanti di sesso maschile"
         },
         {
           "name": "schede_bianche",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Schede bianche"
         }
       ],
       "location": {
