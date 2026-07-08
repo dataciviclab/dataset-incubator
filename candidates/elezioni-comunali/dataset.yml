@@ -2,9 +2,9 @@ root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "elezioni_regionali"
+  name: "elezioni_comunali"
   source_id: "eligendo"
-  years: [2018, 2019, 2020, 2021, 2023, 2024]
+  years: [2016, 2017, 2018, 2019, 2020, 2021, 2024]
 
 raw:
   output_policy: overwrite
