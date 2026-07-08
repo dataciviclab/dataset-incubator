@@ -401,7 +401,28 @@
       "status": "ok",
       "label": "elezioni-referendum",
       "detail": "anni 1995-2022 — fonte: ? — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28938898117",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28938898117",
+        "checked_at": "2026-07-08",
+        "years": [
+          1995,
+          1997,
+          1999,
+          2000,
+          2001,
+          2003,
+          2005,
+          2006,
+          2011,
+          2016,
+          2020,
+          2022
+        ],
+        "config_path": "candidates/elezioni-referendum/dataset.yml"
+      }
     },
     {
       "id": "elezioni-regionali",

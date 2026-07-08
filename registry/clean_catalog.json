@@ -2892,6 +2892,110 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "elezioni_referendum",
+      "name": "Elezioni Referendum",
+      "description": "",
+      "source": "",
+      "source_id": "eligendo",
+      "period": {
+        "start": 1995,
+        "end": 2022
+      },
+      "columns": [
+        {
+          "name": "data_elezione",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "elettori_uomini",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "elettori",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "votanti_uomini",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "votanti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "voti_si",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "voti_no",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "schede_nulle",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "schede_bianche",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "schede_contestate",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "num_quesito",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/elezioni_referendum/*/elezioni_referendum_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "elezioni_regionali",
       "name": "Elezioni Regionali 2018-2024",
       "description": "Risultati delle elezioni regionali italiane per comune: voti al candidato presidente, voti alle liste di appoggio, affluenza. Fonte: Ministero dell'Interno — Eligendo.",
