@@ -2894,8 +2894,8 @@
     {
       "slug": "elezioni_referendum",
       "name": "Elezioni Referendum",
-      "description": "",
-      "source": "",
+      "description": "Risultati dei referendum abrogativi e costituzionali in Italia per comune e quesito (1995-2022). Fonte: Eligendo — Archivio storico elettorale del DAIT (Ministero dell'Interno).",
+      "source": "Eligendo — DAIT Ministero dell'Interno",
       "source_id": "eligendo",
       "period": {
         "start": 1995,
@@ -2905,86 +2905,86 @@
         {
           "name": "data_elezione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data del referendum"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione del comune"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia del comune"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune di votazione (solo 2011-2022)"
         },
         {
           "name": "elettori_uomini",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Elettori di sesso maschile"
         },
         {
           "name": "elettori",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Elettori aventi diritto"
         },
         {
           "name": "votanti_uomini",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Votanti di sesso maschile"
         },
         {
           "name": "votanti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Votanti totali"
         },
         {
           "name": "voti_si",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti favorevoli (SI)"
         },
         {
           "name": "voti_no",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti contrari (NO)"
         },
         {
           "name": "schede_nulle",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Schede nulle"
         },
         {
           "name": "schede_bianche",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Schede bianche"
         },
         {
           "name": "schede_contestate",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Schede contestate"
         },
         {
           "name": "num_quesito",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Numero del quesito referendario"
         }
       ],
       "location": {
