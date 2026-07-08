@@ -356,7 +356,26 @@
       "status": "ok",
       "label": "elezioni-europee",
       "detail": "anni 1979-2024 — fonte: ? — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28931923147",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28931923147",
+        "checked_at": "2026-07-08",
+        "years": [
+          1979,
+          1984,
+          1989,
+          1994,
+          1999,
+          2004,
+          2009,
+          2014,
+          2019,
+          2024
+        ],
+        "config_path": "candidates/elezioni-europee/dataset.yml"
+      }
     },
     {
       "id": "elezioni-politiche-2022",

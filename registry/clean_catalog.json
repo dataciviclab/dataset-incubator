@@ -2678,6 +2678,86 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "elezioni_europee",
+      "name": "Elezioni Europee",
+      "description": "",
+      "source": "",
+      "source_id": "eligendo",
+      "period": {
+        "start": 1979,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "data_elezione",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "circoscrizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "lista",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "voti_lista",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "elettori",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "votanti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "schede_bianche",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/elezioni_europee/*/elezioni_europee_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "elezioni_politiche_2022",
       "name": "Elezioni Politiche 2022 — Camera e Senato",
       "description": "Risultati elezioni politiche 2022 (Camera e Senato) per comune: voti di lista, candidati, affluenza. Fonte: Ministero dell'Interno — DAIT.",
