@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-06",
+  "generated_at": "2026-07-08",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 76,
+    "total": 79,
     "by_status": {
-      "ok": 76,
+      "ok": 79,
       "warn": 0,
       "error": 0
     }
@@ -327,6 +327,38 @@
       }
     },
     {
+      "id": "elezioni-comunali",
+      "source_id": "eligendo",
+      "status": "ok",
+      "label": "elezioni-comunali",
+      "detail": "anni 2016-2024 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "28931381611",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28931381611",
+        "checked_at": "2026-07-08",
+        "years": [
+          2016,
+          2017,
+          2018,
+          2019,
+          2020,
+          2021,
+          2024
+        ],
+        "config_path": "candidates/elezioni-comunali/dataset.yml"
+      }
+    },
+    {
+      "id": "elezioni-europee",
+      "source_id": "eligendo",
+      "status": "ok",
+      "label": "elezioni-europee",
+      "detail": "anni 1979-2024 — fonte: ? — mart: sì",
+      "action": ""
+    },
+    {
       "id": "elezioni-politiche-2022",
       "source_id": "eligendo",
       "status": "ok",
@@ -343,6 +375,14 @@
         ],
         "config_path": "candidates/elezioni-politiche-2022/dataset.yml"
       }
+    },
+    {
+      "id": "elezioni-referendum",
+      "source_id": "eligendo",
+      "status": "ok",
+      "label": "elezioni-referendum",
+      "detail": "anni 1995-2022 — fonte: ? — mart: sì",
+      "action": ""
     },
     {
       "id": "elezioni-regionali",
