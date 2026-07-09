@@ -201,8 +201,9 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             json.dump(payload, pf, indent=2)
         print(f"  {status}")
 
-        # --- GCS push ---
-        if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
+        # --- GCS push (solo per candidate, non per compose) ---
+        is_compose = config_path.startswith("compose/")
+        if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS") and not is_compose:
             print(f"  GCS push per {slug}...")
             push_slug = cfg.get("push_slug", slug)
             if _push_clean_to_gcs(push_slug, root):
@@ -211,6 +212,8 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             else:
                 print(f"  GCS push FAILED for {slug}")
                 failed_configs.append(slug)
+        elif is_compose:
+            print(f"  SKIP GCS push: compose dataset (solo mart, no clean)")
 
     # --- Clean catalog rebuild ---
     if gcs_push_ok:
