@@ -1,0 +1,46 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_asia_ul"
+  source_id: "istat_dbnomics"
+  years: [2020]
+  time_coverage:
+    mode: full_series
+    start_year: 2018
+    end_year: 2020
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python preprocess.py {year} raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    min_rows: 100000
+
+mart:
+  tables:
+    - name: "mart_asia_ul_comuni"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_asia_ul_comuni"
+  validate:
+    table_rules:
+      mart_asia_ul_comuni:
+        min_rows: 100000
+
+validation:
+  fail_on_error: true
