@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-08",
+  "updated_at": "2026-07-12",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -4839,6 +4839,50 @@
         "multi_file": true
       },
       "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "istat_asia_ul",
+      "name": "Istat Asia Ul",
+      "description": "UnitÃ  Locali delle imprese attive (ASIA UL) per comune e sezione ATECO (2018-2020). Fonte: ISTAT via DBnomics.",
+      "source": "ISTAT — ASIA UL (Archivio Statistico Imprese Attive - UnitÃ  Locali)",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 2018,
+        "end": 2020
+      },
+      "columns": [
+        {
+          "name": "codice_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 cifre)"
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "ateco_sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sezione ATECO 2007 (lettera o codice aggregato)"
+        },
+        {
+          "name": "unita_locali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero di unitÃ  locali"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_asia_ul/2020/istat_asia_ul_2020_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
