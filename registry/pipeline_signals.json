@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-08",
+  "generated_at": "2026-07-12",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 79,
+    "total": 80,
     "by_status": {
-      "ok": 79,
+      "ok": 80,
       "warn": 0,
       "error": 0
     }
@@ -674,6 +674,24 @@
           2024
         ],
         "config_path": "candidates/ispra-ru-costi-procapite/dataset.yml"
+      }
+    },
+    {
+      "id": "istat-asia-ul",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat-asia-ul",
+      "detail": "anno 2020 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29199035023",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29199035023",
+        "checked_at": "2026-07-12",
+        "years": [
+          2020
+        ],
+        "config_path": "candidates/istat-asia-ul/dataset.yml"
       }
     },
     {
