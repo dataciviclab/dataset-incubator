@@ -4844,8 +4844,8 @@
     {
       "slug": "istat_asia_ul",
       "name": "Istat Asia Ul",
-      "description": "",
-      "source": "",
+      "description": "UnitÃ  Locali delle imprese attive (ASIA UL) per comune e sezione ATECO (2018-2020). Fonte: ISTAT via DBnomics.",
+      "source": "ISTAT — ASIA UL (Archivio Statistico Imprese Attive - UnitÃ  Locali)",
       "source_id": "istat_dbnomics",
       "period": {
         "start": 2018,
@@ -4856,25 +4856,25 @@
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune (6 cifre)"
         },
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "ateco_sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sezione ATECO 2007 (lettera o codice aggregato)"
         },
         {
           "name": "unita_locali",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Numero di unitÃ  locali"
         }
       ],
       "location": {
