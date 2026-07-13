@@ -1,0 +1,11 @@
+SELECT
+    CAST(SUBSTR(AnnoA, 1, 4) AS INTEGER) AS anno,
+    CAST(AteneoCOD AS VARCHAR) AS ateneo_cod,
+    CAST(AteneoNOME AS VARCHAR) AS ateneo_nome,
+    CAST(SESSO AS VARCHAR) AS sesso,
+    TRY_CAST(Isc AS INTEGER) AS iscritti
+FROM raw_input
+WHERE
+    TRY_CAST(SUBSTR(AnnoA, 1, 4) AS INTEGER) IS NOT NULL
+    AND TRY_CAST(Isc AS INTEGER) IS NOT NULL
+    AND Isc >= 0
