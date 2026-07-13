@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-12",
+  "generated_at": "2026-07-13",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 80,
+    "total": 81,
     "by_status": {
-      "ok": 80,
+      "ok": 81,
       "warn": 0,
       "error": 0
     }
@@ -1071,6 +1071,24 @@
           2024
         ],
         "config_path": "candidates/pensioni-pa-dag/dataset.yml"
+      }
+    },
+    {
+      "id": "personale-ssn",
+      "source_id": "ministero_salute",
+      "status": "ok",
+      "label": "personale-ssn",
+      "detail": "anno 2021 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29244922420",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29244922420",
+        "checked_at": "2026-07-13",
+        "years": [
+          2021
+        ],
+        "config_path": "candidates/personale-ssn/dataset.yml"
       }
     },
     {
