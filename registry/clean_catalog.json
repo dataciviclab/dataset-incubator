@@ -7853,9 +7853,9 @@
     },
     {
       "slug": "personale_ssn",
-      "name": "Personale Ssn",
-      "description": "",
-      "source": "",
+      "name": "Personale del Servizio Sanitario Nazionale",
+      "description": "Personale dipendente a tempo indeterminato del SSN (ASL/AO/IRCCS pubblici) per regione, ruolo, genere e regime orario (2010-2021). Fonte: Ministero della Salute.",
+      "source": "Ministero della Salute — Dati del Personale SSN",
       "source_id": "ministero_salute",
       "period": {
         "start": 2010,
@@ -7866,91 +7866,91 @@
           "name": "prospetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Prospetto di riferimento (TAB1 = totale ruoli, MEDICI_E_INFERMIERI = dettaglio sanitario)"
         },
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento del dato"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT regione"
         },
         {
           "name": "denominazione_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione regione"
         },
         {
           "name": "codice_azienda",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice identificativo azienda SSN (ASL/AO/IRCCS)"
         },
         {
           "name": "ruolo_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ruolo/categoria del personale (S=Sanitario, T=Tecnico, A=Amministrativo, P=Professionale, ND=non definito)"
         },
         {
           "name": "dotazioni_organiche",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Dotazioni organiche previste (posta organica)"
         },
         {
           "name": "tempo_pieno_u",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Tempo pieno — uomini"
         },
         {
           "name": "tempo_pieno_d",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Tempo pieno — donne"
         },
         {
           "name": "part_time_inf_50_u",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Part-time inferiore al 50% — uomini"
         },
         {
           "name": "part_time_inf_50_d",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Part-time inferiore al 50% — donne"
         },
         {
           "name": "part_time_sup_50_u",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Part-time superiore al 50% — uomini"
         },
         {
           "name": "part_time_sup_50_d",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Part-time superiore al 50% — donne"
         },
         {
           "name": "pers_anno_rif_u",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Personale in servizio al 31/12 dell'anno di riferimento — uomini"
         },
         {
           "name": "pers_anno_rif_d",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Personale in servizio al 31/12 dell'anno di riferimento — donne"
         }
       ],
       "location": {
