@@ -2758,13 +2758,13 @@
       "registry_source": "derive_auto"
     },
     {
-      "slug": "elezioni_politiche_2022",
-      "name": "Elezioni Politiche 2022 — Camera e Senato",
-      "description": "Risultati elezioni politiche 2022 (Camera e Senato) per comune: voti di lista, candidati, affluenza. Fonte: Ministero dell'Interno — DAIT.",
-      "source": "Ministero dell'Interno — DAIT (Dipartimento per gli Affari Interni e Territoriali)",
+      "slug": "elezioni_politiche",
+      "name": "Elezioni Politiche 1948-2022",
+      "description": "Risultati elezioni politiche (Camera e Senato) a livello comunale per tutte le tornate dal 1948 al 2022. Fonte: Eligendo/DAIT.",
+      "source": "Eligendo — Archivio storico elettorale del DAIT (Ministero dell'Interno)",
       "source_id": "ministero_interno_dait",
       "period": {
-        "start": 2022,
+        "start": 1948,
         "end": 2022
       },
       "columns": [
@@ -2772,19 +2772,31 @@
           "name": "data_elezione",
           "type": "DATE",
           "role": "dimension",
-          "description": "Data di svolgimento delle elezioni"
+          "description": "Data del voto"
         },
         {
-          "name": "cod_tipo_elezione",
+          "name": "camera_senato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice del tipo di elezione (Camera/Senato)"
+          "description": "Camera (C) o Senato (S)"
         },
         {
           "name": "circoscrizione",
           "type": "VARCHAR",
           "role": "dimension",
           "description": "Circoscrizione elettorale"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione comune"
         },
         {
           "name": "collegio_plurinominale",
@@ -2799,96 +2811,96 @@
           "description": "Collegio uninominale"
         },
         {
-          "name": "comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione del comune"
-        },
-        {
           "name": "elettori_totali",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Numero totale di elettori iscritti"
+          "description": "Elettori iscritti totali"
         },
         {
           "name": "elettori_maschi",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Numero di elettori maschi iscritti"
+          "description": "Elettori iscritti maschi"
         },
         {
           "name": "votanti_totali",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Numero totale di votanti"
+          "description": "Votanti totali"
         },
         {
           "name": "votanti_maschi",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Numero di votanti maschi"
+          "description": "Votanti maschi"
         },
         {
-          "name": "schede_bianche",
+          "name": "schede_biache",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Numero di schede bianche"
+          "description": "Schede bianche"
+        },
+        {
+          "name": "lista",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Lista elettorale o coalizione"
         },
         {
           "name": "voti_lista",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Voti ottenuti dalla lista"
+          "description": "Voti alla lista"
         },
         {
           "name": "descr_lista",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Descrizione/nome della lista elettorale"
+          "description": "Descrizione estesa lista"
         },
         {
-          "name": "cognome_candidato",
+          "name": "cognome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Cognome del candidato"
+          "description": "Cognome candidato uninominale"
         },
         {
-          "name": "nome_candidato",
+          "name": "nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Nome del candidato"
+          "description": "Nome candidato uninominale"
         },
         {
-          "name": "luogo_nascita_candidato",
+          "name": "luogo_nascita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Luogo di nascita del candidato"
+          "description": "Luogo di nascita candidato"
         },
         {
-          "name": "data_nascita_candidato",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di nascita del candidato"
-        },
-        {
-          "name": "sesso_candidato",
+          "name": "data_nascita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sesso del candidato"
+          "description": "Data di nascita candidato"
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sesso candidato (M/F)"
         },
         {
           "name": "voti_candidato",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Voti preferenza ottenuti dal candidato"
+          "description": "Voti al candidato uninominale"
         }
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/elezioni_politiche_2022/2022/elezioni_politiche_2022_2022_clean.parquet",
+        "path": "gs://dataciviclab-clean/elezioni_politiche/2022/elezioni_politiche_2022_clean.parquet",
         "multi_file": false
       },
-      "stage": "incubating",
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {

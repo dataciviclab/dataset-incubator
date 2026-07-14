@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 82,
+    "total": 83,
     "by_status": {
-      "ok": 82,
+      "ok": 83,
       "warn": 0,
       "error": 0
     }
@@ -375,6 +375,24 @@
           2024
         ],
         "config_path": "candidates/elezioni-europee/dataset.yml"
+      }
+    },
+    {
+      "id": "elezioni-politiche",
+      "source_id": "ministero_interno_dait",
+      "status": "ok",
+      "label": "elezioni-politiche",
+      "detail": "anno 2022 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29334544005",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29334544005",
+        "checked_at": "2026-07-14",
+        "years": [
+          2022
+        ],
+        "config_path": "candidates/elezioni-politiche/dataset.yml"
       }
     },
     {
