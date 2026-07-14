@@ -28,6 +28,7 @@ clean:
     delim: ","
     encoding: "utf-8"
     header: true
+    quote: '"'
   validate:
     min_rows: 50000
 
