@@ -9,4 +9,3 @@ WHERE
     TRY_CAST(SUBSTR(AnnoA, 1, 4) AS INTEGER) IS NOT NULL
     AND TRY_CAST(Immatricolati AS INTEGER) IS NOT NULL
     AND Immatricolati >= 0
--- DROP _id: CKAN internal row id, non utile
