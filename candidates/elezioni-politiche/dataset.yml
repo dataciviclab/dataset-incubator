@@ -1,0 +1,47 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "elezioni_politiche"
+  source_id: "ministero_interno_dait"
+  years: [2022]
+  time_coverage:
+    mode: full_series
+    start_year: 1948
+    end_year: 2022
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python preprocess.py {year} raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    mode: latest
+    source: auto
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    quote: '"'
+  validate:
+    min_rows: 50000
+
+mart:
+  tables:
+    - name: "mart_voti_elezioni_politiche"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_voti_elezioni_politiche"
+  validate:
+    table_rules:
+      mart_voti_elezioni_politiche:
+        min_rows: 10000
+
+validation:
+  fail_on_error: true
