@@ -1,7 +1,7 @@
 # lab-connectors[gcs] per script che usano GCS direttamente (toolkit porta solo [duckdb])
 
 # dataciviclab-toolkit — motore RAW->CLEAN->MART. Usato da CI e localmente.
-dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.44.3
+dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.44.4
 
 # jsonschema — validazione registry schemas (pipeline_signals, clean_catalog)
 jsonschema>=4.0
