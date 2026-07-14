@@ -7248,6 +7248,56 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "mur_iscritti",
+      "name": "Mur Iscritti",
+      "description": "",
+      "source": "",
+      "source_id": "mur_ustat",
+      "period": {
+        "start": 2000,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "ateneo_cod",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "ateneo_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "iscritti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mur_iscritti/2025/mur_iscritti_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "opencivitas_fsc_2025_rso",
       "name": "Opencivitas Fsc 2025 Rso",
       "description": "Fondo di Solidarietà Comunale 2022-2025 — 6 componenti FSC per comune RSO con geografia. Multi-anno: 2022-2025.",

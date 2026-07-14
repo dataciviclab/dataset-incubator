@@ -396,24 +396,6 @@
       }
     },
     {
-      "id": "elezioni-politiche-2022",
-      "source_id": "eligendo",
-      "status": "ok",
-      "label": "elezioni-politiche-2022",
-      "detail": "anno 2022 — fonti: camera_livcomune, senato_livcomune — mart: sì",
-      "action": "",
-      "sample_run": {
-        "status": "passed",
-        "run_id": "27900677822",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27900677822",
-        "checked_at": "2026-06-21",
-        "years": [
-          2022
-        ],
-        "config_path": "candidates/elezioni-politiche-2022/dataset.yml"
-      }
-    },
-    {
       "id": "elezioni-referendum",
       "source_id": "eligendo",
       "status": "ok",
@@ -1008,6 +990,24 @@
           2025
         ],
         "config_path": "candidates/mur-immatricolati/dataset.yml"
+      }
+    },
+    {
+      "id": "mur-iscritti",
+      "source_id": "mur_ustat",
+      "status": "ok",
+      "label": "mur-iscritti",
+      "detail": "anno 2025 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29348191635",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29348191635",
+        "checked_at": "2026-07-14",
+        "years": [
+          2025
+        ],
+        "config_path": "candidates/mur-iscritti/dataset.yml"
       }
     },
     {
