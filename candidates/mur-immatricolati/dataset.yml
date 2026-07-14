@@ -13,11 +13,11 @@ dataset:
 raw:
   output_policy: overwrite
   sources:
-    - type: ckan
+    - type: script
       args:
-        portal_url: "https://dati-ustat.mur.gov.it"
-        resource_id: "9bb0cf6d-1d4e-47f3-8ae9-0c665617b158"
-        filename: "input.csv"
+        command: "python preprocess.py {year} raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
       primary: true
 
 clean:
