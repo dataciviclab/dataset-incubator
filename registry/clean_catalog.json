@@ -7187,9 +7187,9 @@
     },
     {
       "slug": "mur_immatricolati",
-      "name": "Mur Immatricolati",
-      "description": "",
-      "source": "",
+      "name": "Immatricolati Universitari",
+      "description": "Immatricolati nelle università italiane per classe di laurea, sesso e anno accademico (1998-2025). Fonte: MUR USTAT.",
+      "source": "MUR — USTAT (Ufficio Statistica e Studi)",
       "source_id": "mur_ustat",
       "period": {
         "start": 1998,
@@ -7199,32 +7199,32 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno accademico normalizzato (es. 2025 per 2025/2026)"
         },
         {
           "name": "classe_cod",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice classe di laurea (es. L-36, LM-56)"
         },
         {
           "name": "classe_nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione classe di laurea"
         },
         {
           "name": "sesso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sesso (M=maschi, F=femmine)"
         },
         {
           "name": "immatricolati",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero di immatricolati"
         }
       ],
       "location": {
