@@ -1,0 +1,44 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mur_iscritti"
+  source_id: "mur_ustat"
+  years: [2025]
+  time_coverage:
+    mode: full_series
+    start_year: 2000
+    end_year: 2025
+
+raw:
+  sources:
+    - type: http_file
+      args:
+        url: "https://dati-ustat.mur.gov.it/dataset/3dd9ca7f-9cc9-4a1a-915c-e569b181dbd5/resource/32d26e28-a0b5-45f3-9152-6072164f3e63/download/02_iscrittixateneo.csv"
+        filename: "input.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    mode: latest
+    source: auto
+    delim: ";"
+    encoding: "latin-1"
+    header: true
+  validate:
+    min_rows: 3000
+
+mart:
+  tables:
+    - name: "mart_iscritti"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_iscritti"
+  validate:
+    table_rules:
+      mart_iscritti:
+        min_rows: 500
+
+validation:
+  fail_on_error: true
