@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-13",
+  "generated_at": "2026-07-14",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 81,
+    "total": 82,
     "by_status": {
-      "ok": 81,
+      "ok": 82,
       "warn": 0,
       "error": 0
     }
@@ -972,6 +972,24 @@
           2024
         ],
         "config_path": "candidates/mur-contribuzione-universitaria/dataset.yml"
+      }
+    },
+    {
+      "id": "mur-immatricolati",
+      "source_id": "mur_ustat",
+      "status": "ok",
+      "label": "mur-immatricolati",
+      "detail": "anno 2025 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29332061786",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29332061786",
+        "checked_at": "2026-07-14",
+        "years": [
+          2025
+        ],
+        "config_path": "candidates/mur-immatricolati/dataset.yml"
       }
     },
     {

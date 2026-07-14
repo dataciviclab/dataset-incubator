@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-13",
+  "updated_at": "2026-07-14",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -7183,6 +7183,56 @@
         "multi_file": true
       },
       "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "mur_immatricolati",
+      "name": "Immatricolati Universitari",
+      "description": "Immatricolati nelle università italiane per classe di laurea, sesso e anno accademico (1998-2025). Fonte: MUR USTAT.",
+      "source": "MUR — USTAT (Ufficio Statistica e Studi)",
+      "source_id": "mur_ustat",
+      "period": {
+        "start": 1998,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno accademico normalizzato (es. 2025 per 2025/2026)"
+        },
+        {
+          "name": "classe_cod",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice classe di laurea (es. L-36, LM-56)"
+        },
+        {
+          "name": "classe_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione classe di laurea"
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sesso (M=maschi, F=femmine)"
+        },
+        {
+          "name": "immatricolati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di immatricolati"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mur_immatricolati/2025/mur_immatricolati_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
