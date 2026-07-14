@@ -7249,9 +7249,9 @@
     },
     {
       "slug": "mur_iscritti",
-      "name": "Mur Iscritti",
-      "description": "",
-      "source": "",
+      "name": "Iscritti Universitari per Ateneo",
+      "description": "Iscritti nelle università italiane per ateneo, sesso e anno accademico (2000-2025). Fonte: MUR USTAT.",
+      "source": "MUR — USTAT (Ufficio Statistica e Studi)",
       "source_id": "mur_ustat",
       "period": {
         "start": 2000,
@@ -7261,32 +7261,32 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno accademico normalizzato"
         },
         {
           "name": "ateneo_cod",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice identificativo ateneo"
         },
         {
           "name": "ateneo_nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione ateneo"
         },
         {
           "name": "sesso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sesso (M=maschi, F=femmine)"
         },
         {
           "name": "iscritti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero iscritti"
         }
       ],
       "location": {
