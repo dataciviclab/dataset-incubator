@@ -11277,7 +11277,7 @@
       "slug": "unified_comuni",
       "name": "Unified Comuni — metriche multi-dominio",
       "description": "Dataset composito che unisce popolazione, redditi IRPEF, rifiuti urbani, consumo suolo e Fondo Solidarietà Comunale per comune italiano. Ogni riga = comune × anno. Fonte: JOIN tra dataset clean del DataCivicLab via comuni_master.",
-      "source": "DataCivicLab — dataset composito",
+      "source": "DataCivICLab — dataset composito (ISTAT, MEF, ISPRA, OpenCivitas)",
       "source_id": "dataciviclab_composite",
       "period": {
         "start": 2026,
@@ -11474,79 +11474,79 @@
           "name": "siope_entrate",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Entrate correnti SIOPE (€)"
         },
         {
           "name": "siope_uscite",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Uscite correnti SIOPE (€)"
         },
         {
           "name": "siope_avanzo",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Avanzo/disavanzo SIOPE entrate - uscite (€)"
         },
         {
           "name": "siope_personale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Spese per personale SIOPE (€)"
         },
         {
           "name": "siope_investimenti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Spese per investimenti SIOPE (€)"
         },
         {
           "name": "siope_imposte_proprie",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Entrate da imposte proprie SIOPE (€)"
         },
         {
           "name": "siope_fondi_perequativi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Entrate da fondi perequativi SIOPE (€)"
         },
         {
           "name": "dipendenti_totali",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Dipendenti PA totali"
         },
         {
           "name": "dipendenti_assunti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Dipendenti PA assunti nell'anno"
         },
         {
           "name": "dipendenti_cessati",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Dipendenti PA cessati nell'anno"
         },
         {
           "name": "dipendenti_saldo",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Saldo dipendenti PA assunti - cessati"
         },
         {
           "name": "pnrr_progetti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero progetti PNRR"
         },
         {
           "name": "pnrr_fin_totale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento totale PNRR (€)"
         }
       ],
       "location": {
