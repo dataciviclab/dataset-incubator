@@ -300,13 +300,13 @@
       "source_id": "openbdap",
       "status": "ok",
       "label": "dipendenti-pubblici",
-      "detail": "anni 2010-2023 — fonte: bdap_csv — mart: sì",
+      "detail": "anni 2010-2024 — fonte: bdap_csv — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26909765054",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26909765054",
-        "checked_at": "2026-06-03",
+        "run_id": "29419456370",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29419456370",
+        "checked_at": "2026-07-15",
         "years": [
           2010,
           2011,
@@ -321,7 +321,8 @@
           2020,
           2021,
           2022,
-          2023
+          2023,
+          2024
         ],
         "config_path": "candidates/dipendenti-pubblici/dataset.yml"
       }
