@@ -1,0 +1,40 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ipa_unita_organizzative"
+  source_id: "agid"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "ipa_unita_organizzative"
+      type: "http_file"
+      args:
+        url: "https://indicepa.gov.it/ipa-dati/dataset/c8d2e2b3-a9f1-4123-bc8b-26315ed20fce/resource/b0aa1f6c-f135-4c8a-b416-396fed4e1a5d/download/unita-organizzative.xlsx"
+        filename: "unita-organizzative.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+  validate:
+    min_rows: 100000
+
+mart:
+  tables:
+    - name: "ipa_unita_organizzative"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "ipa_unita_organizzative"
+  validate:
+    table_rules:
+      ipa_unita_organizzative:
+        min_rows: 100000
+
+validation:
+  fail_on_error: true
