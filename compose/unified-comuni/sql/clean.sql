@@ -133,7 +133,7 @@ siope AS (
 ),
 
 -- Dipendenti PA: join via bdap_anagrafe_enti.id_ente
--- Dati disponibili solo fino al 2023. Per anni > 2023 sarà NULL.
+-- Dati disponibili fino al 2024.
 dipendenti AS (
     SELECT b.codice_istat_comune AS cod_istat, d.anno,
         SUM(d.donne_tempo_pieno + d.uomini_tempo_pieno
@@ -146,7 +146,8 @@ dipendenti AS (
         'https://storage.googleapis.com/dataciviclab-clean/dipendenti_pubblici/2020/dipendenti_pubblici_2020_clean.parquet',
         'https://storage.googleapis.com/dataciviclab-clean/dipendenti_pubblici/2021/dipendenti_pubblici_2021_clean.parquet',
         'https://storage.googleapis.com/dataciviclab-clean/dipendenti_pubblici/2022/dipendenti_pubblici_2022_clean.parquet',
-        'https://storage.googleapis.com/dataciviclab-clean/dipendenti_pubblici/2023/dipendenti_pubblici_2023_clean.parquet'
+        'https://storage.googleapis.com/dataciviclab-clean/dipendenti_pubblici/2023/dipendenti_pubblici_2023_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/dipendenti_pubblici/2024/dipendenti_pubblici_2024_clean.parquet'
     ], union_by_name=true) d
     INNER JOIN bridge b ON CAST(d.codice_ente_bdap AS VARCHAR) = CAST(b.id_ente AS VARCHAR)
     GROUP BY b.codice_istat_comune, d.anno
