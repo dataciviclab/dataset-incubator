@@ -167,15 +167,16 @@ datasets:
 
   - slug: dipendenti_pubblici
     name: Dipendenti Pubblici
-    granularity: ente (comune per denominazione)
+    granularity: comune (via bridge BDAP)
     comuni_key:
-      column: ente
-      format: denominazione_upper
-    hub_key: denominazione
-    normalizer: "UPPER(TRIM(hub.denominazione))"
+      column: codice_ente_bdap
+      format: bdap_id_18
+    hub_key: codice_istat
+    normalizer: via_bridge  # codice_ente_bdap → bdap_anagrafe_enti.id_ente → codice_istat_comune
+    bridge_required: bdap_anagrafe_enti
     verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
-    note: join testuale sulla denominazione — attento a fusioni/omonimie
+    verified_by: 2026-07-15, data-researcher
+    note: Join via bridge BDAP (non più testuale). Usato in unified_comuni.
 
   # ==========================================================================
   # FINANZA PUBBLICA
@@ -191,6 +192,20 @@ datasets:
     normalizer: "UPPER(TRIM(hub.denominazione))"
     verified_on: Abbiategrasso
     verified_by: 2026-06-21, data-researcher
+    note: join testuale denominazione+regione. Cross-validato con regione.
+
+  - slug: siope_bilancio_unificato
+    name: SIOPE Bilancio Unificato
+    granularity: comune (via bridge BDAP)
+    comuni_key:
+      column: codice_ente
+      format: siope_9
+    hub_key: codice_istat
+    normalizer: via_bridge  # codice_ente → bdap_anagrafe_enti.codice_ente_siope → codice_istat_comune
+    bridge_required: bdap_anagrafe_enti
+    verified_on: Abbiategrasso
+    verified_by: 2026-07-15, data-researcher
+    note: 6 metriche SIOPE aggregate nel compose unified_comuni. Anni 2021-2025.
 
   # ==========================================================================
   # ISTRUZIONE
@@ -275,6 +290,22 @@ datasets:
     note: "Sede amministrativa dell'ente. Join testuale sulla denominazione del comune. Attenzione a fusioni."
 
   # ==========================================================================
+  # PNRR
+  # ==========================================================================
+
+  - slug: pnrr_progetti
+    name: PNRR Progetti
+    granularity: comune (via codice fiscale)
+    comuni_key:
+      column: cf_soggetto_attuatore
+      format: fiscal_code_11
+    hub_key: codice_fiscale
+    normalizer: direct
+    verified_on: Abbiategrasso
+    verified_by: 2026-07-15, data-researcher
+    note: Match via cf_soggetto_attuatore → comuni_master.codice_fiscale. ~3.700 comuni su 7.500.
+
+  # ==========================================================================
   # DATABASE ANAGRAFICI (bridge / lookup)
   # ==========================================================================
 
@@ -318,6 +349,21 @@ datasets:
     hub_key: codice_istat
     normalizer: direct
     note: Fonte upstream di comuni_master. Mapping IPA ↔ ISTAT.
+
+  # ==========================================================================
+  # COMPOSITE
+  # ==========================================================================
+
+  - slug: unified_comuni
+    name: Unified Comuni — metriche multi-dominio
+    granularity: comune
+    comuni_key:
+      column: codice_istat
+      format: istat_6
+    hub_key: codice_istat
+    normalizer: direct
+    is_composite: true
+    note: Compose multi-fonte. Include hub, popolazione, IRPEF, rifiuti, consumo suolo, FSC, SIOPE, dipendenti (via BDAP), PNRR.
 
   # ==========================================================================
   # DATASET NON JOINABILI PER COMUNE (solo nota)

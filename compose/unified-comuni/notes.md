@@ -45,14 +45,16 @@ Cross-validato con `regione` per ridurre i falsi positivi.
 | 2019 | 7.479 | ✅ | ✅ | — | ✅ | — | — | ✅ | ✅ |
 | 2020 | 7.504 | ✅ | ✅ | ✅ | ✅ | — | — | ✅ | ✅ |
 | 2021 | 7.507 | ✅ | ✅ | ✅ | ✅ | — | ✅ | ✅ | ✅ |
-| 2022 | 7.511 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 2023 | 7.513 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 2024 | 7.513 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| 2025 | 7.517 | ✅ | — | — | ✅ | ✅ | ✅ | — | ✅ |
+| 2022 | 7.510 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 2023 | 7.512 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 2024 | 7.512 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 2025 | 7.516 | ✅ | — | — | — | ✅ | ✅ | — | ✅ |
 
-- Dipendenti: fonte MEF-BDAP arriva al 2023. Anni successivi NULL.
+- Suolo: dataset ISPRA consumo suolo disponibile solo fino al 2024. Anno 2025 = NULL.
+- Dipendenti: fonte MEF-BDAP arriva al 2024. Anno 2025 = NULL.
 - SIOPE: fonte parte dal 2021. Anni precedenti NULL.
 - PNRR: match solo via CF (~3.700 comuni su 7.500).
+- FSC: copertura ~85% (escluse righe regionali con provincia vuota).
 
 ## Aggiungere una nuova fonte
 

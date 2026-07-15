@@ -40,16 +40,17 @@ Legge i parquet già pubblicati su GCS via HTTPS diretto.
 | 2019 | 7.479 | ✅ | ✅ | — | ✅ | — | — | ✅ | ✅ |
 | 2020 | 7.504 | ✅ | ✅ | ✅ | ✅ | — | — | ✅ | ✅ |
 | 2021 | 7.507 | ✅ | ✅ | ✅ | ✅ | — | ✅ | ✅ | ✅ |
-| 2022 | 7.511 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 2023 | 7.513 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
-| 2024 | 7.513 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | — | ✅ |
-| 2025 | 7.517 | ✅ | — | — | ✅ | ✅ | ✅ | — | ✅ |
+| 2022 | 7.510 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 2023 | 7.512 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 2024 | 7.512 | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ | ✅ |
+| 2025 | 7.516 | ✅ | — | — | — | ✅ | ✅ | — | ✅ |
 
 Note:
-- **Dipendenti**: fonte arriva solo al 2023. Anni >2023 = NULL.
+- **Suolo**: dataset ISPRA consumo suolo disponibile solo fino al 2024. Anno 2025 = NULL.
+- **Dipendenti**: fonte MEF-BDAP arriva al 2024. Anno 2025 = NULL.
 - **SIOPE**: fonte parte dal 2021. Anni <2021 = NULL.
 - **PNRR**: match via codice fiscale, ~3.700 comuni con progetti intestati direttamente al comune.
-- **FSC**: join testuale su denominazione + regione. Fragile per fusioni/omonimie.
+- **FSC**: join testuale su denominazione + regione. Copertura ~85% (escluse righe regionali).
 
 ## Run
 
