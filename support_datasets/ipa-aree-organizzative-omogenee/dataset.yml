@@ -1,0 +1,40 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ipa_aree_organizzative_omogenee"
+  source_id: "agid"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "ipa_aree_organizzative_omogenee"
+      type: "http_file"
+      args:
+        url: "https://indicepa.gov.it/ipa-dati/dataset/15c8cc52-749a-4f64-9bd1-9c3bb4f6f3df/resource/cdaded04-f84e-4193-a720-47d6d5f422aa/download/aree-organizzative-omogenee.xlsx"
+        filename: "aree-organizzative-omogenee.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+  validate:
+    min_rows: 30000
+
+mart:
+  tables:
+    - name: "ipa_aree_organizzative_omogenee"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "ipa_aree_organizzative_omogenee"
+  validate:
+    table_rules:
+      ipa_aree_organizzative_omogenee:
+        min_rows: 30000
+
+validation:
+  fail_on_error: true
