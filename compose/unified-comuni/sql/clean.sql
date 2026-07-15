@@ -107,6 +107,8 @@ fsc AS (
         'https://storage.googleapis.com/dataciviclab-clean/opencivitas_fsc_2025_rso/2024/opencivitas_fsc_2025_rso_2024_clean.parquet',
         'https://storage.googleapis.com/dataciviclab-clean/opencivitas_fsc_2025_rso/2025/opencivitas_fsc_2025_rso_2025_clean.parquet'
     ], union_by_name=true)
+    -- Esclude righe aggregate regionali (provincia vuota)
+    WHERE provincia IS NOT NULL AND provincia != ''
 ),
 
 -- SIOPE: join via bdap_anagrafe_enti.codice_ente_siope
