@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-14",
+  "updated_at": "2026-07-15",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -3782,6 +3782,182 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "ipa_aree_organizzative_omogenee",
+      "name": "Aree Organizzative Omogenee (IPA)",
+      "description": "Aree Organizzative Omogenee (AOO) degli enti PA da IndicePA (AgID). Ogni AOO corrisponde a un registro di protocollo e raggruppa le Unità Organizzative per area omogenea. CC-BY-4.0.",
+      "source": "AgID — IndicePA (ipa-dati)",
+      "source_id": "agid",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice IPA dell'ente (FK verso ipa_enti)"
+        },
+        {
+          "name": "denominazione_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ufficiale dell'ente"
+        },
+        {
+          "name": "codice_fiscale_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'ente"
+        },
+        {
+          "name": "codice_uni_aoo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice univoco AOO in IPA (chiave primaria)"
+        },
+        {
+          "name": "denominazione_aoo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione dell'Area Organizzativa Omogenea"
+        },
+        {
+          "name": "data_istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data di istituzione dell'AOO (formato yyyy-mm-dd)"
+        },
+        {
+          "name": "nome_responsabile",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del responsabile dell'AOO"
+        },
+        {
+          "name": "cognome_responsabile",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome del responsabile dell'AOO"
+        },
+        {
+          "name": "mail_responsabile",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email del responsabile dell'AOO"
+        },
+        {
+          "name": "telefono_responsabile",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Telefono del responsabile dell'AOO"
+        },
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune sede dell'AOO"
+        },
+        {
+          "name": "codice_catastale_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale (Belfiore) del comune sede"
+        },
+        {
+          "name": "cap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CAP della sede dell'AOO"
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo della sede dell'AOO"
+        },
+        {
+          "name": "telefono",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero di telefono dell'AOO"
+        },
+        {
+          "name": "fax",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero di fax dell'AOO"
+        },
+        {
+          "name": "mail1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo email principale dell'AOO"
+        },
+        {
+          "name": "tipo_mail1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia mail1 (Pec/Altro)"
+        },
+        {
+          "name": "mail2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo email secondario dell'AOO"
+        },
+        {
+          "name": "tipo_mail2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia mail2 (Pec/Altro)"
+        },
+        {
+          "name": "mail3",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo email terziario dell'AOO"
+        },
+        {
+          "name": "tipo_mail3",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia mail3 (Pec/Altro)"
+        },
+        {
+          "name": "protocollo_informatico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Presenza protocollo informatico (S/N)"
+        },
+        {
+          "name": "uri_protocollo_informatico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI del servizio di protocollo informatico"
+        },
+        {
+          "name": "data_aggiornamento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data ultimo aggiornamento (formato yyyy-mm-dd)"
+        },
+        {
+          "name": "cod_aoo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice AOO assegnato dall'ente"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ipa_aree_organizzative_omogenee/2026/ipa_aree_organizzative_omogenee_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "ipa_enti",
       "name": "Anagrafica Enti PA (IndicePA)",
       "description": "Anagrafica completa delle pubbliche amministrazioni e gestori di pubblici servizi dall'Indice dei domicili digitali della PA (IPA). Fonte AgID, CC-BY-4.0, aggiornamento giornaliero. 23.709 enti con PEC, indirizzi, responsabili.",
@@ -4092,6 +4268,182 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/ipa_istat_mapping/2026/ipa_istat_mapping_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "ipa_unita_organizzative",
+      "name": "Unità Organizzative (IPA)",
+      "description": "Unità Organizzative (UO) degli enti PA da IndicePA (AgID). Ogni UO può dipendere gerarchicamente da un'altra UO tramite codice_uni_uo_padre, consentendo la ricostruzione di alberi organizzativi fino a 9 livelli. CC-BY-4.0.",
+      "source": "AgID — IndicePA (ipa-dati)",
+      "source_id": "agid",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice IPA dell'ente (FK verso ipa_enti)"
+        },
+        {
+          "name": "denominazione_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ufficiale dell'ente"
+        },
+        {
+          "name": "codice_fiscale_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'ente"
+        },
+        {
+          "name": "codice_uni_uo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice univoco UO in IPA (chiave primaria)"
+        },
+        {
+          "name": "codice_uni_aoo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice univoco AOO di appartenenza (FK verso AOO)"
+        },
+        {
+          "name": "codice_uni_uo_padre",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice UO superiore gerarchicamente (FK verso sé stessa)"
+        },
+        {
+          "name": "descrizione_uo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome/descrizione dell'unità organizzativa"
+        },
+        {
+          "name": "data_istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data di istituzione dell'UO (formato yyyy-mm-dd)"
+        },
+        {
+          "name": "nome_responsabile",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del responsabile dell'UO"
+        },
+        {
+          "name": "cognome_responsabile",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome del responsabile dell'UO"
+        },
+        {
+          "name": "mail_responsabile",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email del responsabile dell'UO"
+        },
+        {
+          "name": "telefono_responsabile",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Telefono del responsabile dell'UO"
+        },
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune sede dell'UO"
+        },
+        {
+          "name": "codice_catastale_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale (Belfiore) del comune sede"
+        },
+        {
+          "name": "cap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CAP della sede dell'UO"
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo della sede dell'UO"
+        },
+        {
+          "name": "telefono",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero di telefono dell'UO"
+        },
+        {
+          "name": "fax",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero di fax dell'UO"
+        },
+        {
+          "name": "mail1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo email principale dell'UO"
+        },
+        {
+          "name": "tipo_mail1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia mail1 (Pec/Altro)"
+        },
+        {
+          "name": "mail2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo email secondario dell'UO"
+        },
+        {
+          "name": "tipo_mail2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia mail2 (Pec/Altro)"
+        },
+        {
+          "name": "mail3",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo email terziario dell'UO"
+        },
+        {
+          "name": "tipo_mail3",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia mail3 (Pec/Altro)"
+        },
+        {
+          "name": "data_aggiornamento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data ultimo aggiornamento (formato yyyy-mm-dd)"
+        },
+        {
+          "name": "url",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URL della pagina web dell'UO"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ipa_unita_organizzative/2026/ipa_unita_organizzative_2026_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
