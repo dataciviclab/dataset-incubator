@@ -4,8 +4,8 @@
 
 - caso derivato da `datasets-testing/preprojects/multi_year_schema/case_15_dipendenti_pubblici_2021_2023`
 - il caso originale nasceva come test per `inspect schema-diff`, non come progetto analitico
-- il feed pubblico BDAP/RGS risponde su tutti gli anni `2010-2023` con pattern URL stabile
-- nessun drift di schema rilevato tra 2010 e 2023: stesse colonne, stesso encoding `cp1252`
+- il feed pubblico BDAP/RGS risponde su tutti gli anni `2010-2024` con pattern URL stabile
+- nessun drift di schema rilevato tra 2010 e 2024: stesse colonne, stesso encoding `cp1252`
 - i CSV non sono UTF-8 puliti: per alcune letture locali serve `cp1252`
 
 ## Analitico
@@ -23,7 +23,8 @@
 
 ## Stato branch
 
-- `run all` completato con esito positivo su tutti i 14 anni `2010-2023`
+- `run all` completato con esito positivo su tutti i 15 anni `2010-2024`
+- anno 2024 aggiunto il 15/07/2026 (40.521 righe upstream, stessa struttura)
 - notebook `v0` pronto come primo pacchetto analitico
 
 ## Handoff

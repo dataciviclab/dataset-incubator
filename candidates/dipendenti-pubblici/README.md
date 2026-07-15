@@ -1,4 +1,4 @@
-# Dipendenti pubblici 2010-2023
+# Dipendenti pubblici 2010-2024
 
 ## Stato
 
