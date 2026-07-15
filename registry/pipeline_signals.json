@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-14",
+  "generated_at": "2026-07-15",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 83,
+    "total": 85,
     "by_status": {
-      "ok": 83,
+      "ok": 85,
       "warn": 0,
       "error": 0
     }
@@ -1517,6 +1517,24 @@
       }
     },
     {
+      "id": "ipa-aree-organizzative-omogenee",
+      "source_id": "agid",
+      "status": "ok",
+      "label": "ipa-aree-organizzative-omogenee",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29403654282",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29403654282",
+        "checked_at": "2026-07-15",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/ipa-aree-organizzative-omogenee/dataset.yml"
+      }
+    },
+    {
       "id": "ipa-enti",
       "source_id": "agid",
       "status": "ok",
@@ -1550,6 +1568,24 @@
           2026
         ],
         "config_path": "support_datasets/ipa-istat-mapping/dataset.yml"
+      }
+    },
+    {
+      "id": "ipa-unita-organizzative",
+      "source_id": "agid",
+      "status": "ok",
+      "label": "ipa-unita-organizzative",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29403654282",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29403654282",
+        "checked_at": "2026-07-15",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/ipa-unita-organizzative/dataset.yml"
       }
     },
     {
