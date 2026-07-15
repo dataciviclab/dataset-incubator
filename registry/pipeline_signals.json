@@ -1464,24 +1464,6 @@
       }
     },
     {
-      "id": "unified-comuni",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "unified-comuni",
-      "detail": "anno 2026 — fonte: comuni_master — mart: sì",
-      "action": "",
-      "sample_run": {
-        "status": "passed",
-        "run_id": "27906300471",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27906300471",
-        "checked_at": "2026-06-21",
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/unified-comuni/dataset.yml"
-      }
-    },
-    {
       "id": "bdap-anagrafe-enti",
       "source_id": "openbdap",
       "status": "ok",
@@ -1732,6 +1714,24 @@
       "label": "compose:malasanita-compose",
       "detail": "anno 2022 — fonti: a, c — mart: sì",
       "action": ""
+    },
+    {
+      "id": "compose:unified-comuni",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "compose:unified-comuni",
+      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29422446973",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29422446973",
+        "checked_at": "2026-07-15",
+        "years": [
+          2026
+        ],
+        "config_path": "compose/unified-comuni/dataset.yml"
+      }
     }
   ]
 }
