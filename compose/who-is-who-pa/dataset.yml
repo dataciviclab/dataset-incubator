@@ -1,0 +1,37 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "who_is_who_pa"
+  source_id: "dataciviclab_composite"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "ipa_enti_ref"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/ipa_enti/2026/ipa_enti_2026_clean.parquet"
+        filename: "ipa_enti_ref.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "config_only"
+    mode: "latest"
+  validate:
+    min_rows: 100000
+
+mart:
+  tables:
+    - name: "who_is_who_pa"
+      sql: "sql/mart.sql"
+  validate:
+    table_rules:
+      who_is_who_pa:
+        min_rows: 100000
+
+validation:
+  fail_on_error: true
