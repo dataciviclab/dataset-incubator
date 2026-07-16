@@ -198,6 +198,13 @@ def main():
             print("ERRORE: nessun metadato scaricato", file=sys.stderr)
             sys.exit(1)
 
+        if total_downloaded < len(AMBITI):
+            print(
+                f"ERRORE: solo {total_downloaded}/{len(AMBITI)} ambiti scaricati, richiesti tutti e {len(AMBITI)}",
+                file=sys.stderr,
+            )
+            sys.exit(1)
+
         fieldnames = [
             "codice_indicatore",
             "descrizione",

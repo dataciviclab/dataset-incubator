@@ -55,6 +55,18 @@ mart:
     table_rules:
       mart_indicatori:
         min_rows: 100000
+        required_columns:
+          - "username"
+          - "anno"
+          - "ambito"
+          - "indicatore"
+          - "valore_num"
+          - "codice_istat"
+        not_null:
+          - "username"
+          - "anno"
+          - "ambito"
+          - "indicatore"
 
 validation:
   fail_on_error: true

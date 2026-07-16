@@ -11,7 +11,7 @@ Formato EAV (Entity-Attribute-Value) arricchito con geografia e descrizioni.
 | Colonna | Tipo | Note |
 |---|---|---|
 | `username` | VARCHAR | Codice ente Sogei (chiave) |
-| `anno` | INTEGER | 2018, 2019, 2021, 2022 |
+| `anno` | INTEGER | 2015-2022 (escluso 2020) |
 | `ambito` | VARCHAR | Servizio: `amministrazione`, `istruzione`, `polizia_locale`, `rifiuti`, `sociale_asili_nido`, `viabilita_territorio`, `servizi_totali` |
 | `indicatore` | VARCHAR | Nome indicatore (es. `COPERTURA_NID_NEW`) |
 | `valore_num` | DOUBLE | Valore numerico |
@@ -46,6 +46,6 @@ Formato EAV (Entity-Attribute-Value) arricchito con geografia e descrizioni.
 
 ## Qualità
 
-- Drop 10-12%: valori testuali attesi (es. motivi di non valutabilità)
+- Drop 9-14%: valori testuali attesi (descrizioni, codici anomalia)
 - Enti riconosciuti: 99%+
 - Metadati trovati: ~100%

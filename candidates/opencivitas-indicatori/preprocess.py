@@ -158,9 +158,9 @@ def main():
             f"Scaricati {downloaded}/{len(AMBITI)} ambiti, {len(all_rows)} righe totali", flush=True
         )
 
-        if downloaded < 5:
+        if downloaded < len(AMBITI):
             print(
-                f"ERRORE: solo {downloaded}/{len(AMBITI)} ambiti scaricati, soglia minima 5",
+                f"ERRORE: solo {downloaded}/{len(AMBITI)} ambiti scaricati, richiesti tutti e {len(AMBITI)}",
                 file=sys.stderr,
             )
             sys.exit(1)
