@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "opencivitas_indicatori"
   source_id: "opencivitas"
-  years: [2018, 2019, 2021, 2022]
+  years: [2015, 2016, 2017, 2018, 2019, 2021, 2022]
 
 support:
   - name: "opencivitas_fsc_enti_rso"
@@ -12,7 +12,7 @@ support:
     years: [2025]
   - name: "opencivitas_glossario"
     config: "../../support_datasets/opencivitas-glossario/dataset.yml"
-  years: [2015, 2016, 2017, 2018, 2019, 2021, 2022]
+    years: [2015, 2016, 2017, 2018, 2019, 2021, 2022]
   - name: "comuni_master"
     config: "../../support_datasets/comuni-master/dataset.yml"
     years: [2026]

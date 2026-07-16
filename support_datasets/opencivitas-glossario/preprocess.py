@@ -22,7 +22,7 @@ BASE_URL = "https://docs.opencivitas.it"
 
 # Mappa anno → prefisso funzione
 YEAR_MAP = {
-    2015: {"prefix": "20", "no_year": True},
+    2015: {"prefix": "20", "no_year": True, "suffix": "2"},
     2016: {"prefix": "30"},
     2017: {"prefix": "40"},
     2018: {"prefix": "50"},
@@ -181,10 +181,11 @@ def main():
         total_downloaded = 0
 
         for sigla, ambito_nome in AMBITI:
+            suffix = YEAR_MAP[year].get("suffix", "1")
             if YEAR_MAP[year].get("no_year"):
-                url = f"{BASE_URL}/Metadati_Ind_FC{prefix}{sigla}_1_xlsx.zip"
+                url = f"{BASE_URL}/Metadati_Ind_FC{prefix}{sigla}_{suffix}_xlsx.zip"
             else:
-                url = f"{BASE_URL}/{year}_Metadati_Ind_FC{prefix}{sigla}_1_xlsx.zip"
+                url = f"{BASE_URL}/{year}_Metadati_Ind_FC{prefix}{sigla}_{suffix}_xlsx.zip"
             rows = download_and_read_metadata(url, tmp_dir, ambito_nome, year)
             if rows:
                 all_rows.extend(rows)

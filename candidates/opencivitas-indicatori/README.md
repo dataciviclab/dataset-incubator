@@ -24,10 +24,10 @@ Formato EAV (Entity-Attribute-Value) arricchito con geografia e descrizioni.
 
 ## Copertura
 
-- **4 anni**: 2018, 2019, 2021, 2022
+- **7 anni**: 2015, 2016, 2017, 2018, 2019, 2021, 2022 (2020 assente)
 - **7 ambiti** tematici per anno
 - **~280 indicatori** per anno (media)
-- **10,6M righe** clean
+- **19,4M righe** clean (7 anni)
 - **~90% comuni italiani** coperti (RSO)
 
 ## Support dataset

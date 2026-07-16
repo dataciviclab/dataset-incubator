@@ -43,7 +43,7 @@ mart.sql
 - Drop 10-12%: valori testuali attesi (descrizioni, codici anomalia)
 - Enti riconosciuti: 99,8%
 - Glossario coperto: ~100%
-- Match ISTAT: 97,9%
+- Match ISTAT: 95-98% (crescente da 2015 a 2022, media ~96,5%)
 - Duplicati: 0 (sulla chiave username+anno+ambito+indicatore)
 
 ## Placeholder toolkit
