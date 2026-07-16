@@ -11559,10 +11559,10 @@
     },
     {
       "slug": "who_is_who_pa",
-      "name": "Who Is Who Pa",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
+      "description": "Anagrafica completa della Pubblica Amministrazione italiana: enti, vertici, unità organizzative, AOO, contatti e protocollo informatico. Fonte: IPA IndicePA.",
+      "source": "AgID — Indice della Pubblica Amministrazione (indicepa.gov.it)",
+      "source_id": "ipa",
       "period": {
         "start": 2026,
         "end": 2026
@@ -11572,217 +11572,217 @@
           "name": "codice_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice IPA dell'ente"
         },
         {
           "name": "denominazione_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione ufficiale dell'ente"
         },
         {
           "name": "codice_fiscale_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale dell'ente"
         },
         {
           "name": "codice_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Categoria IPA (L6=comune, L4=regione, ...)"
         },
         {
           "name": "tipologia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia IPA (PA=PA, GPS=gestore pubblico servizi)"
         },
         {
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune (6 cifre)"
         },
         {
           "name": "acronimo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Acronimo dell'ente"
         },
         {
           "name": "vertice_ente_titolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Titolo del vertice dell'ente (Sindaco, Presidente, ...)"
         },
         {
           "name": "vertice_ente_nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del vertice dell'ente"
         },
         {
           "name": "vertice_ente_cognome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome del vertice dell'ente"
         },
         {
           "name": "sito_istituzionale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sito web istituzionale"
         },
         {
           "name": "codice_uni_uo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice unità organizzativa (UNI)"
         },
         {
           "name": "descrizione_uo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione unità organizzativa"
         },
         {
           "name": "codice_uni_uo_padre",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice unità organizzativa padre"
         },
         {
           "name": "uo_data_istituzione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Data istituzione unità organizzativa"
         },
         {
           "name": "uo_resp_nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del responsabile UO"
         },
         {
           "name": "uo_resp_cognome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome del responsabile UO"
         },
         {
           "name": "uo_resp_email",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Email del responsabile UO"
         },
         {
           "name": "uo_resp_telefono",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Telefono del responsabile UO"
         },
         {
           "name": "uo_mail",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Email istituzionale UO"
         },
         {
           "name": "uo_tipo_mail",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo email UO (certificata/ordinaria)"
         },
         {
           "name": "uo_mail2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Email secondaria UO"
         },
         {
           "name": "uo_tipo_mail2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo email secondaria UO"
         },
         {
           "name": "codice_uni_aoo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice Area Organizzativa Omogenea (AOO)"
         },
         {
           "name": "denominazione_aoo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione AOO"
         },
         {
           "name": "aoo_resp_nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del responsabile AOO"
         },
         {
           "name": "aoo_resp_cognome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome del responsabile AOO"
         },
         {
           "name": "aoo_mail",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Email istituzionale AOO"
         },
         {
           "name": "aoo_tipo_mail",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo email AOO (certificata/ordinaria)"
         },
         {
           "name": "protocollo_informatico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indicatore presenza protocollo informatico"
         },
         {
           "name": "uri_protocollo_informatico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI del protocollo informatico"
         },
         {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune (dati IPA)"
         },
         {
           "name": "codice_catastale_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice catastale del comune"
         },
         {
           "name": "cap",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CAP della sede"
         },
         {
           "name": "indirizzo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo della sede"
         },
         {
           "name": "ente_codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune dell'ente"
         }
       ],
       "location": {
