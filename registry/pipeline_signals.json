@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-15",
+  "generated_at": "2026-07-16",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 85,
+    "total": 86,
     "by_status": {
-      "ok": 85,
+      "ok": 86,
       "warn": 0,
       "error": 0
     }
@@ -1731,6 +1731,24 @@
           2026
         ],
         "config_path": "compose/unified-comuni/dataset.yml"
+      }
+    },
+    {
+      "id": "compose:who-is-who-pa",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "compose:who-is-who-pa",
+      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29491723328",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29491723328",
+        "checked_at": "2026-07-16",
+        "years": [
+          2026
+        ],
+        "config_path": "compose/who-is-who-pa/dataset.yml"
       }
     }
   ]
