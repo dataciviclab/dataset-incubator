@@ -10,6 +10,15 @@
 
 Anagrafica degli operatori economici che si sono aggiudicati appalti ordinari pubblicati su dati.anticorruzione.it. Ogni riga rappresenta un operatore economico associato a un'aggiudicazione.
 
+## Copertura
+
+| Metrica | Valore |
+|---|---|
+| Righe (full dump) | ~5,4M |
+| Operatori economici distinti | ~505K |
+| Copertura temporale | 2000-2026 |
+| Aggiornamento | Mensile (full dump sostituito periodicamente) |
+
 ## Schema (6 colonne)
 
 | Colonna | Tipo | Descrizione |
