@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 90,
+    "total": 91,
     "by_status": {
-      "ok": 90,
+      "ok": 91,
       "warn": 0,
       "error": 0
     }
@@ -1521,6 +1521,24 @@
           2026
         ],
         "config_path": "support_datasets/anac-aggiudicatari/dataset.yml"
+      }
+    },
+    {
+      "id": "anac-partecipanti",
+      "source_id": "anac",
+      "status": "ok",
+      "label": "anac-partecipanti",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29655870229",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29655870229",
+        "checked_at": "2026-07-18",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/anac-partecipanti/dataset.yml"
       }
     },
     {

@@ -918,6 +918,56 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "anac_partecipanti",
+      "name": "Anac Partecipanti",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "ruolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_soggetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anac_partecipanti/2026/anac_partecipanti_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "anpr_mobilita_residenziale",
       "name": "ANPR — Mobilita Residenziale Interregionale (2022-2026)",
       "description": "Flussi mensili di cambio residenza tra regioni italiane, da ANPR (Anagrafe Nazionale della Popolazione Residente). Serie mensile 2022-2026, aggiornata quasi in tempo reale via GitHub Actions.",
