@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 89,
+    "total": 90,
     "by_status": {
-      "ok": 89,
+      "ok": 90,
       "warn": 0,
       "error": 0
     }
@@ -1503,6 +1503,24 @@
           2024
         ],
         "config_path": "candidates/terna-electricity-by-source/dataset.yml"
+      }
+    },
+    {
+      "id": "anac-aggiudicatari",
+      "source_id": "anac",
+      "status": "ok",
+      "label": "anac-aggiudicatari",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29639927658",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29639927658",
+        "checked_at": "2026-07-18",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/anac-aggiudicatari/dataset.yml"
       }
     },
     {

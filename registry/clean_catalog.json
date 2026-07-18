@@ -312,6 +312,62 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "anac_aggiudicatari",
+      "name": "ANAC Aggiudicatari",
+      "description": "Anagrafica degli operatori economici aggiudicatari di appalti ordinari pubblicati: denominazione, codice fiscale, ruolo e tipo soggetto. Fonte ANAC, dump cumulativo. Join via id_aggiudicazione con anac_aggiudicazioni.",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
+      "source_id": "anac",
+      "period": {
+        "start": 2000,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CIG — join con anac_bandi_gara e anac_aggiudicazioni"
+        },
+        {
+          "name": "ruolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ruolo dell'operatore (OPERATORE ECONOMICO MONOSOGGETTIVO, IMPRESA AUSILIARIA, ecc.)"
+        },
+        {
+          "name": "codice_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale / partita IVA dell'operatore economico"
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ragione sociale dell'operatore economico"
+        },
+        {
+          "name": "tipo_soggetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo soggetto (IMPRESA, DITTA INDIVIDUALE, STAZIONE APPALTANTE, ecc.)"
+        },
+        {
+          "name": "id_aggiudicazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID aggiudicazione — join con anac_aggiudicazioni"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anac_aggiudicatari/2026/anac_aggiudicatari_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "anac_aggiudicazioni",
       "name": "ANAC Aggiudicazioni",
       "description": "Aggiudicazioni degli appalti ordinari pubblicati dalle stazioni appaltanti italiane: importo, esito, criteri di aggiudicazione, partecipazione (offerte ammesse/escluse, imprese offerenti), flag subappalto e asta elettronica. Fonte ANAC, dump cumulativo 2000-2026.",
