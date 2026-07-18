@@ -1,0 +1,72 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "opencivitas_indicatori"
+  source_id: "opencivitas"
+  years: [2015, 2016, 2017, 2018, 2019, 2021, 2022]
+
+support:
+  - name: "opencivitas_fsc_enti_rso"
+    config: "../../support_datasets/opencivitas-fsc-enti-rso/dataset.yml"
+    years: [2025]
+  - name: "opencivitas_glossario"
+    config: "../../support_datasets/opencivitas-glossario/dataset.yml"
+    years: [2015, 2016, 2017, 2018, 2019, 2021, 2022]
+  - name: "comuni_master"
+    config: "../../support_datasets/comuni-master/dataset.yml"
+    years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python preprocess.py {year} raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    mode: latest
+    source: auto
+    delim: ";"
+    encoding: "utf-8"
+    decimal: ","
+    header: true
+  validate:
+    min_rows: 100000
+    not_null:
+      - "username"
+      - "anno"
+      - "ambito"
+      - "indicatore"
+      - "valore_num"
+
+mart:
+  tables:
+    - name: "mart_indicatori"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_indicatori"
+  validate:
+    table_rules:
+      mart_indicatori:
+        min_rows: 100000
+        required_columns:
+          - "username"
+          - "anno"
+          - "ambito"
+          - "indicatore"
+          - "valore_num"
+          - "codice_istat"
+        not_null:
+          - "username"
+          - "anno"
+          - "ambito"
+          - "indicatore"
+
+validation:
+  fail_on_error: true

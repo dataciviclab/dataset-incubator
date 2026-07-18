@@ -1,0 +1,45 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "opencivitas_glossario"
+  source_id: "opencivitas"
+  years: [2015, 2016, 2017, 2018, 2019, 2021, 2022]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python preprocess.py {year} raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    mode: latest
+    source: auto
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+  validate:
+    min_rows: 100
+    not_null:
+      - "codice_indicatore"
+      - "descrizione"
+
+mart:
+  tables:
+    - name: "mart_metadati"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_metadati"
+  validate:
+    table_rules:
+      mart_metadati:
+        min_rows: 100
+
+validation:
+  fail_on_error: true
