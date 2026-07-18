@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-16",
+  "updated_at": "2026-07-18",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -7795,6 +7795,184 @@
         "multi_file": false
       },
       "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "opencivitas_glossario",
+      "name": "Glossario indicatori OpenCivitas",
+      "description": "Dizionario degli indicatori (IND), determinanti (DET) e codici anomalia (COD) OpenCivitas. 3 fogli XLSX uniti: nome, descrizione, tipo e funzione per ogni codice.",
+      "source": "OpenCivitas / Sogei",
+      "source_id": "opencivitas",
+      "period": {
+        "start": 2015,
+        "end": 2022
+      },
+      "columns": [
+        {
+          "name": "codice_indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice dell'indicatore/determinante/codice (es. COPERTURA_NID_NEW, F_DEPRIVAZIONE_MEAN, COD_SPS_QUEST)"
+        },
+        {
+          "name": "descrizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione leggibile del codice"
+        },
+        {
+          "name": "tipo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia: IND (indicatore), DET (determinante), COD (codice anomalia)"
+        },
+        {
+          "name": "categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Categoria (es. FS, LQP, NAVIGA, INDICATORI per IND; DEMOGRAFIA per DET)"
+        },
+        {
+          "name": "funzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Funzione di appartenenza"
+        },
+        {
+          "name": "ordine",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Ordine di presentazione nel questionario"
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento del metadato"
+        },
+        {
+          "name": "ambito",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ambito tematico (es. amministrazione, sociale_asili_nido)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/opencivitas_glossario/*/opencivitas_glossario_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "opencivitas_indicatori",
+      "name": "Indicatori di performance dei comuni",
+      "description": "Indicatori di performance dei comuni italiani (2015-2022): copertura asili nido, spesa sociale, efficienza polizia locale, raccolta rifiuti, istruzione. 7 ambiti tematici, ~280 indicatori per anno. Fonte: OpenCivitas (ANCI/Sogei).",
+      "source": "OpenCivitas / Sogei",
+      "source_id": "opencivitas",
+      "period": {
+        "start": 2015,
+        "end": 2022
+      },
+      "columns": [
+        {
+          "name": "username",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento (2015-2022, escluso 2020)"
+        },
+        {
+          "name": "ambito",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ambito tematico: amministrazione, istruzione, polizia_locale, rifiuti, sociale_asili_nido, viabilita_territorio, servizi_totali"
+        },
+        {
+          "name": "indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice indicatore (es. COPERTURA_NID_NEW, SPESA_STORICA_PROAB)"
+        },
+        {
+          "name": "valore_num",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Valore numerico dell'indicatore"
+        },
+        {
+          "name": "descrizione_indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione leggibile dell'indicatore (dal glossario)"
+        },
+        {
+          "name": "tipo_indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia: IND (indicatore), DET (determinante), COD (codice anomalia)"
+        },
+        {
+          "name": "categoria_indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Categoria dell'indicatore (es. FS, LQP, NAVIGA, INDICATORI)"
+        },
+        {
+          "name": "funzione_indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Funzione di riferimento dell'indicatore"
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del comune"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT provincia (3 cifre)"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della regione"
+        },
+        {
+          "name": "regione_istat_cod",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice ISTAT regione"
+        },
+        {
+          "name": "join_enti_ok",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Indica se il join con l'anagrafica enti è riuscito"
+        },
+        {
+          "name": "join_metadati_ok",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Indica se il join con il glossario è riuscito"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/opencivitas_indicatori/*/opencivitas_indicatori_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {

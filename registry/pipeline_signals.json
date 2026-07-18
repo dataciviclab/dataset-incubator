@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-16",
+  "generated_at": "2026-07-18",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 86,
+    "total": 88,
     "by_status": {
-      "ok": 86,
+      "ok": 88,
       "warn": 0,
       "error": 0
     }
@@ -1033,6 +1033,30 @@
       }
     },
     {
+      "id": "opencivitas-indicatori",
+      "source_id": "opencivitas",
+      "status": "ok",
+      "label": "opencivitas-indicatori",
+      "detail": "anni 2015-2022 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29637176868",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29637176868",
+        "checked_at": "2026-07-18",
+        "years": [
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2021,
+          2022
+        ],
+        "config_path": "candidates/opencivitas-indicatori/dataset.yml"
+      }
+    },
+    {
       "id": "opencoesione-progetti",
       "source_id": "opencoesione",
       "status": "ok",
@@ -1641,6 +1665,30 @@
           2025
         ],
         "config_path": "support_datasets/opencivitas-fsc-enti-rso/dataset.yml"
+      }
+    },
+    {
+      "id": "opencivitas-glossario",
+      "source_id": "opencivitas",
+      "status": "ok",
+      "label": "opencivitas-glossario",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29637176868",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29637176868",
+        "checked_at": "2026-07-18",
+        "years": [
+          2015,
+          2016,
+          2017,
+          2018,
+          2019,
+          2021,
+          2022
+        ],
+        "config_path": "support_datasets/opencivitas-glossario/dataset.yml"
       }
     },
     {
