@@ -919,12 +919,12 @@
     },
     {
       "slug": "anac_partecipanti",
-      "name": "Anac Partecipanti",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "ANAC Partecipanti",
+      "description": "Anagrafica dei partecipanti alle gare pubbliche (non solo vincitori): denominazione, codice fiscale, ruolo e tipo soggetto. Fonte ANAC. Join via cig con anac_bandi_gara e anac_aggiudicazioni, via codice_fiscale con anac_aggiudicatari.",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
+      "source_id": "anac",
       "period": {
-        "start": 2026,
+        "start": 2023,
         "end": 2026
       },
       "columns": [
@@ -932,31 +932,31 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CIG della gara — join con anac_bandi_gara e anac_aggiudicazioni"
         },
         {
           "name": "ruolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ruolo del partecipante"
         },
         {
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale / partita IVA del partecipante"
         },
         {
           "name": "denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ragione sociale del partecipante"
         },
         {
           "name": "tipo_soggetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo soggetto (IMPRESA, DITTA INDIVIDUALE, ecc.)"
         }
       ],
       "location": {
