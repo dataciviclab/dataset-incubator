@@ -32,8 +32,10 @@ anac_aggiudicazioni (id_aggiudicazione) → anac_aggiudicatari (id_aggiudicazion
 | Metrica | Valore |
 |---|---|
 | Righe totali | 5.437.334 |
-| Join con anac_aggiudicazioni via id_aggiudicazione | 9.424.624 match |
+| id_aggiudicazione distinti | 4.764.335 |
+| id_aggiudicazione con più righe | 265.354 |
 | Operatori economici distinti (denominazione) | ~505K |
+| Join con anac_aggiudicazioni via id_aggiudicazione | 9.424.624 righe risultanti (molti-a-molti) |
 
 **Anomalie note (non bloccanti):**
 - `codice_fiscale` nullo per operatori non censiti in anagrafe o esteri
