@@ -5,17 +5,22 @@ dataset:
   name: "anac_aggiudicazioni"
   source_id: "anac"
   years: [2026]
+  time_coverage:
+    start_year: 2000
+    end_year: 2026
 
 raw:
   sources:
     - name: "aggiudicazioni"
       type: "ckan"
+      extractor:
+        type: "unzip_first_csv"
       client:
         user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       args:
         portal_url: "https://dati.anticorruzione.it/opendata"
         dataset_id: "aggiudicazioni"
-        download_all: true
+        resource_name: "aggiudicazioni_csv"
       primary: true
 
 clean:
@@ -32,5 +37,24 @@ clean:
     trim_whitespace: true
     sample_size: -1
 
+mart:
+  tables:
+    - name: "mart_aggiudicazioni_annuale"
+      sql: "sql/mart.sql"
+    - name: "mart_aggiudicazioni_dettaglio"
+      sql: "sql/mart_dettaglio.sql"
+  required_tables:
+    - "mart_aggiudicazioni_annuale"
+    - "mart_aggiudicazioni_dettaglio"
+
 validation:
   fail_on_error: true
+  required_columns:
+    - "cig"
+    - "id_aggiudicazione"
+  min_rows: 100000
+  table_rules:
+    mart_aggiudicazioni_annuale:
+      min_rows: 100
+    mart_aggiudicazioni_dettaglio:
+      min_rows: 100000

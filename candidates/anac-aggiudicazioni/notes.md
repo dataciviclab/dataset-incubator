@@ -38,8 +38,24 @@ aggiudicazioni senza corrispondenza in anagrafica aggiudicatari.
 Il portale dati.anticorruzione.it blocca richieste senza User-Agent browser.
 Già risolto in anac-bandi-gara con `client.user_agent` config.
 
-## Da verificare
+## Qualità dati (run 2026-07-18)
 
-- [ ] Il full dump ha stesso schema del delta? Verificare con schema_diff.
-- [ ] Separatore decimale: "." nel delta — confermare nel full dump.
-- [ ] Flag booleani: "true"/"false" stringa o "1"/"0"?
+| Metrica | Valore |
+|---|---|
+| Righe totali | 6.015.309 |
+| CIG distinti | 5.510.729 |
+| Con importo | 5.925.677 (98,5%) |
+| Con data valida | 5.916.782 (98,4%) |
+| Importo totale | €4.897 Mld |
+| Importo mediano | €45.000 |
+| CIG nulli | 0 ✅ |
+
+**Anomalie note (non bloccanti):**
+- 2.221 date fuori range (anno < 2000 o > 2026) — date malformate nel sorgente
+- 369 importi negativi — probabili storni/rettifiche
+- 34.314 importi zero con esito "AGGIUDICATA" — aggiudicazioni senza importo comunicato
+- 504.580 CIG con più righe (8,4%) — uno stesso CIG può avere più lotti/aggiudicazioni
+- 69% dei record senza criterio di aggiudicazione (NULL)
+- Discontinuità 2024+: esplosione volumi (382K → 1,2M), crollo subappalti dichiarati — probabile cambio normativo (D.Lgs 36/2023) o metodologia ANAC
+
+**Schema verificato**: full dump conforme al delta osservato. Separatore decimale "." (già processabile da DuckDB). Flag booleani in formato stringa "true"/"false".

@@ -21,18 +21,21 @@ Informazioni di aggiudicazione relative agli appalti ordinari pubblicati dalle s
 
 Dataset cumulativo full — storico completo delle aggiudicazioni fino alla data di pubblicazione del dump.
 
+**Copertura temporale**: 2000-2026 (dati consistenti da 2007, pre-2007 sporadici)
+
 | Metrica | Valore |
 |---|---|
-| Righe (full 2026-01) | ~4.86M |
+| Righe (full 2026-07) | ~6.0M |
 | Peso CSV zippato | ~759 MB |
-| Peso CSV scomposto (stimato) | ~2-3 GB |
+| Peso CSV scomposto | ~2-3 GB |
 | Aggiornamento | Mensile (delta) |
+| Anni con copertura solida | 2007-2026 |
 
 ## Schema clean (28 colonne)
 
 | Colonna | Tipo | Descrizione |
 |---|---|---|
-| `cig` | VARCHAR | Codice Identificativo Gara (PK) |
+| `cig` | VARCHAR | Codice Identificativo Gara (chiave di join con `anac_bandi_gara`; non univoco — uno stesso CIG può avere più lotti/aggiudicazioni) |
 | `data_aggiudicazione_definitiva` | DATE | Data aggiudicazione definitiva |
 | `esito` | VARCHAR | Esito aggiudicazione |
 | `criterio_aggiudicazione` | VARCHAR | Criterio di aggiudicazione |
