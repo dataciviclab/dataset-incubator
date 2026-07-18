@@ -1,0 +1,54 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "anac_partecipanti"
+  source_id: "anac"
+  years: [2026]
+  time_coverage:
+    start_year: 2023
+    end_year: 2026
+
+raw:
+  sources:
+    - name: "partecipanti"
+      type: "ckan"
+      extractor:
+        type: "unzip_first_csv"
+      client:
+        user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      args:
+        portal_url: "https://dati.anticorruzione.it/opendata"
+        dataset_id: "partecipanti"
+        resource_name: "partecipanti_csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: all
+    header: true
+    delim: ";"
+    encoding: "utf-8"
+    quote: '"'
+    escape: '"'
+    null_padding: true
+    trim_whitespace: true
+    sample_size: -1
+  required_columns:
+    - "cig"
+  validate:
+    not_null:
+      - "cig"
+    min_rows: 100000
+
+mart:
+  tables:
+    - name: "mart_partecipanti"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_partecipanti"
+
+validation:
+  fail_on_error: true
