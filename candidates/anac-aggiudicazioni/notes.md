@@ -1,0 +1,45 @@
+# Note tecniche — anac-aggiudicazioni
+
+## Struttura fonte
+
+CKAN dataset `aggiudicazioni` su dati.anticorruzione.it:
+- Full dump: risorsa `aggiudicazioni_csv` (~759MB ZIP)
+- Delta mensili: risorse `YYYYMMDD-aggiudicazioni_csv` (XXX MB)
+- Senza DataStore — download diretto CSV via filesystem API
+
+Config scelta: solo full dump via `resource_name: "aggiudicazioni_csv"`.
+Delta mensili da gestire in fase di manutenzione (scaricare delta + append).
+
+## Schema osservato
+
+Dal delta CSV `20260701-aggiudicazioni_csv.csv` (190.829 righe):
+
+Colonne raw (CSV, delim `;`, quoted `"`):
+cig, data_aggiudicazione_definitiva, esito, criterio_aggiudicazione,
+data_comunicazione_esito, numero_offerte_ammesse, numero_offerte_escluse,
+importo_aggiudicazione, ribasso_aggiudicazione, num_imprese_offerenti,
+flag_subappalto, id_aggiudicazione, cod_esito, num_imprese_richiedenti,
+asta_elettronica, num_imprese_invitate, massimo_ribasso, minimo_ribasso,
+FLAG_SCOMPUTO, COD_PRESTAZIONI_COMPRESE, PRESTAZIONI_COMPRESE,
+CIG_PROG_ESTERNA, DATA_INCARICO_PROG, DATA_CONS_PROG,
+COD_MODO_RIAGGIUDICAZIONE, MODO_RIAGGIUDICAZIONE,
+FLAG_PROC_ACCELERATA, N_MANIF_INTERESSE
+
+## Join chain
+
+anac_bandi_gara (cig) ←→ anac_aggiudicazioni (cig)
+anac_aggiudicazioni (id_aggiudicazione) ←→ aggiudicatari (id_aggiudicazione)
+
+Note: id_aggiudicazione con valori negativi (-1, -2xxxx) indica
+aggiudicazioni senza corrispondenza in anagrafica aggiudicatari.
+
+## Warning ANAC WAF
+
+Il portale dati.anticorruzione.it blocca richieste senza User-Agent browser.
+Già risolto in anac-bandi-gara con `client.user_agent` config.
+
+## Da verificare
+
+- [ ] Il full dump ha stesso schema del delta? Verificare con schema_diff.
+- [ ] Separatore decimale: "." nel delta — confermare nel full dump.
+- [ ] Flag booleani: "true"/"false" stringa o "1"/"0"?

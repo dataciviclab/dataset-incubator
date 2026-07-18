@@ -1,0 +1,36 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "anac_aggiudicazioni"
+  source_id: "anac"
+  years: [2026]
+
+raw:
+  sources:
+    - name: "aggiudicazioni"
+      type: "ckan"
+      client:
+        user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+      args:
+        portal_url: "https://dati.anticorruzione.it/opendata"
+        dataset_id: "aggiudicazioni"
+        download_all: true
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: config_only
+    mode: all
+    header: true
+    delim: ";"
+    encoding: "utf-8"
+    quote: '"'
+    escape: '"'
+    null_padding: true
+    trim_whitespace: true
+    sample_size: -1
+
+validation:
+  fail_on_error: true
