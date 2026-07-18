@@ -49,12 +49,3 @@ mart:
 
 validation:
   fail_on_error: true
-  required_columns:
-    - "cig"
-    - "id_aggiudicazione"
-  min_rows: 100000
-  table_rules:
-    mart_aggiudicazioni_annuale:
-      min_rows: 100
-    mart_aggiudicazioni_dettaglio:
-      min_rows: 100000

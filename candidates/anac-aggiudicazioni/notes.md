@@ -7,8 +7,8 @@ CKAN dataset `aggiudicazioni` su dati.anticorruzione.it:
 - Delta mensili: risorse `YYYYMMDD-aggiudicazioni_csv` (XXX MB)
 - Senza DataStore — download diretto CSV via filesystem API
 
-Config scelta: solo full dump via `resource_name: "aggiudicazioni_csv"`.
-Delta mensili da gestire in fase di manutenzione (scaricare delta + append).
+Config scelta: solo full dump via `resource_name: "aggiudicazioni_csv"` + extractor `unzip_first_csv`.
+Delta mensili esclusi: il full dump è cumulativo, scaricando anche i delta si avrebbero duplicati.
 
 ## Schema osservato
 
@@ -42,19 +42,21 @@ Già risolto in anac-bandi-gara con `client.user_agent` config.
 
 | Metrica | Valore |
 |---|---|
-| Righe totali | 6.015.309 |
-| CIG distinti | 5.510.729 |
-| Con importo | 5.925.677 (98,5%) |
-| Con data valida | 5.916.782 (98,4%) |
-| Importo totale | €4.897 Mld |
-| Importo mediano | €45.000 |
-| CIG nulli | 0 ✅ |
+| Metrica | Valore |
+|---|---|
+| Righe totali | 4.862.077 |
+| CIG distinti | 4.849.388 |
+| Con importo | 4.838.224 (99,5%) |
+| Con data valida | 4.819.598 (99,1%) |
+| Importo totale (aggiudicato) | €3.934 Mld |
+| Importo mediano | €50.000 |
+| CIG / id_aggiudicazione nulli | 0 ✅ |
 
 **Anomalie note (non bloccanti):**
 - 2.221 date fuori range (anno < 2000 o > 2026) — date malformate nel sorgente
 - 369 importi negativi — probabili storni/rettifiche
 - 34.314 importi zero con esito "AGGIUDICATA" — aggiudicazioni senza importo comunicato
-- 504.580 CIG con più righe (8,4%) — uno stesso CIG può avere più lotti/aggiudicazioni
+- 12.689 CIG con più righe (0,3%) — uno stesso CIG può avere più lotti/aggiudicazioni
 - 69% dei record senza criterio di aggiudicazione (NULL)
 - Discontinuità 2024+: esplosione volumi (382K → 1,2M), crollo subappalti dichiarati — probabile cambio normativo (D.Lgs 36/2023) o metodologia ANAC
 

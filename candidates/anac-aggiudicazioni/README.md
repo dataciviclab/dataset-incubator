@@ -25,10 +25,10 @@ Dataset cumulativo full — storico completo delle aggiudicazioni fino alla data
 
 | Metrica | Valore |
 |---|---|
-| Righe (full 2026-07) | ~6.0M |
-| Peso CSV zippato | ~759 MB |
+| Righe (full dump 2026-01) | ~4.86M |
+| Peso CSV zippato (full) | ~759 MB |
 | Peso CSV scomposto | ~2-3 GB |
-| Aggiornamento | Mensile (delta) |
+| Aggiornamento | Mensile (full dump sostituito, delta non inclusi) |
 | Anni con copertura solida | 2007-2026 |
 
 ## Schema clean (28 colonne)
@@ -56,6 +56,16 @@ Dataset cumulativo full — storico completo delle aggiudicazioni fino alla data
 |---|---|---|
 | `anac_bandi_gara` | `cig` | Bando di gara → aggiudicazione |
 | `anac_aggiudicatari` (futuro) | `id_aggiudicazione` | Aggiudicazione → vincitore |
+
+## Mart
+
+Due tabelle mart disponibili:
+
+- **`mart_aggiudicazioni_annuale`** — aggregazione per anno/mese/esito/criterio/flag (analisi trend)
+  - Colonna: importo_totale, importo_medio/mediano, n_aggiudicazioni, ribasso_medio, offerte
+- **`mart_aggiudicazioni_dettaglio`** — row-level con chiavi per join
+  - Preserva `cig`, `id_aggiudicazione`, `importo_aggiudicazione`, `data`, `esito`, `flag_subappalto`
+  - Join diretto con `anac_bandi_gara` via `cig`
 
 ## Limiti
 
