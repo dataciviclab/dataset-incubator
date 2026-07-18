@@ -42,8 +42,6 @@ Già risolto in anac-bandi-gara con `client.user_agent` config.
 
 | Metrica | Valore |
 |---|---|
-| Metrica | Valore |
-|---|---|
 | Righe totali | 4.862.077 |
 | CIG distinti | 4.849.388 |
 | Con importo | 4.838.224 (99,5%) |

@@ -25,6 +25,9 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns:
+    - "cig"
+    - "id_aggiudicazione"
   read:
     source: config_only
     mode: all
@@ -36,6 +39,11 @@ clean:
     null_padding: true
     trim_whitespace: true
     sample_size: -1
+  validate:
+    not_null:
+      - "cig"
+      - "id_aggiudicazione"
+    min_rows: 100000
 
 mart:
   tables:
@@ -46,6 +54,19 @@ mart:
   required_tables:
     - "mart_aggiudicazioni_annuale"
     - "mart_aggiudicazioni_dettaglio"
+  validate:
+    table_rules:
+      mart_aggiudicazioni_annuale:
+        required_columns:
+          - "anno_aggiudicazione"
+          - "importo_totale"
+        min_rows: 100
+      mart_aggiudicazioni_dettaglio:
+        required_columns:
+          - "cig"
+          - "id_aggiudicazione"
+          - "importo_aggiudicazione"
+        min_rows: 100000
 
 validation:
   fail_on_error: true
