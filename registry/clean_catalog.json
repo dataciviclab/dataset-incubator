@@ -312,6 +312,194 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "anac_aggiudicazioni",
+      "name": "Anac Aggiudicazioni",
+      "description": "",
+      "source": "",
+      "source_id": "anac",
+      "period": {
+        "start": 2000,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_aggiudicazione_definitiva",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "esito",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "criterio_aggiudicazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_comunicazione_esito",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_offerte_ammesse",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_offerte_escluse",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "importo_aggiudicazione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "ribasso_aggiudicazione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "num_imprese_offerenti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "flag_subappalto",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "id_aggiudicazione",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "cod_esito",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "num_imprese_richiedenti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "asta_elettronica",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "num_imprese_invitate",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "massimo_ribasso",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "minimo_ribasso",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "FLAG_SCOMPUTO",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "COD_PRESTAZIONI_COMPRESE",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "PRESTAZIONI_COMPRESE",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "CIG_PROG_ESTERNA",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "DATA_INCARICO_PROG",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "DATA_CONS_PROG",
+          "type": "DATE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "COD_MODO_RIAGGIUDICAZIONE",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "MODO_RIAGGIUDICAZIONE",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "FLAG_PROC_ACCELERATA",
+          "type": "BOOLEAN",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "N_MANIF_INTERESSE",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anac_aggiudicazioni/2026/anac_aggiudicazioni_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "anac_bandi_gara",
       "name": "ANAC Bandi di Gara (CIG)",
       "description": "Bandi di gara pubblici italiani (CIG): oggetto, importi, stazione appaltante, territorio, CPV, esito e flag PNRR/urgenza/delega. Fonte ANAC, serie annuale 2025+.",

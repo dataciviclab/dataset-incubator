@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 88,
+    "total": 89,
     "by_status": {
-      "ok": 88,
+      "ok": 89,
       "warn": 0,
       "error": 0
     }
@@ -72,6 +72,24 @@
           2024
         ],
         "config_path": "candidates/aifa-spesa-consumo/dataset.yml"
+      }
+    },
+    {
+      "id": "anac-aggiudicazioni",
+      "source_id": "anac",
+      "status": "ok",
+      "label": "anac-aggiudicazioni",
+      "detail": "anno 2026 — fonte: aggiudicazioni — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29639215447",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29639215447",
+        "checked_at": "2026-07-18",
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/anac-aggiudicazioni/dataset.yml"
       }
     },
     {
