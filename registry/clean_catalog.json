@@ -313,12 +313,12 @@
     },
     {
       "slug": "anac_aggiudicatari",
-      "name": "Anac Aggiudicatari",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "ANAC Aggiudicatari",
+      "description": "Anagrafica degli operatori economici aggiudicatari di appalti ordinari pubblicati: denominazione, codice fiscale, ruolo e tipo soggetto. Fonte ANAC, dump cumulativo. Join via id_aggiudicazione con anac_aggiudicazioni.",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
+      "source_id": "anac",
       "period": {
-        "start": 2026,
+        "start": 2000,
         "end": 2026
       },
       "columns": [
@@ -326,37 +326,37 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CIG — join con anac_bandi_gara e anac_aggiudicazioni"
         },
         {
           "name": "ruolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ruolo dell'operatore (OPERATORE ECONOMICO MONOSOGGETTIVO, IMPRESA AUSILIARIA, ecc.)"
         },
         {
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale / partita IVA dell'operatore economico"
         },
         {
           "name": "denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ragione sociale dell'operatore economico"
         },
         {
           "name": "tipo_soggetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo soggetto (IMPRESA, DITTA INDIVIDUALE, STAZIONE APPALTANTE, ecc.)"
         },
         {
           "name": "id_aggiudicazione",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "ID aggiudicazione — join con anac_aggiudicazioni"
         }
       ],
       "location": {
