@@ -312,6 +312,194 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "anac_aggiudicazioni",
+      "name": "ANAC Aggiudicazioni",
+      "description": "Aggiudicazioni degli appalti ordinari pubblicati dalle stazioni appaltanti italiane: importo, esito, criteri di aggiudicazione, partecipazione (offerte ammesse/escluse, imprese offerenti), flag subappalto e asta elettronica. Fonte ANAC, dump cumulativo 2000-2026.",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
+      "source_id": "anac",
+      "period": {
+        "start": 2000,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Identificativo Gara — chiave di join con anac_bandi_gara"
+        },
+        {
+          "name": "data_aggiudicazione_definitiva",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di aggiudicazione definitiva"
+        },
+        {
+          "name": "esito",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Esito dell'aggiudicazione (AGGIUDICATA, NON AGGIUDICATA, ANNULLATA, ecc.)"
+        },
+        {
+          "name": "criterio_aggiudicazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Criterio di aggiudicazione (minor prezzo, OEPV, qualità, ecc.)"
+        },
+        {
+          "name": "data_comunicazione_esito",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di comunicazione dell'esito"
+        },
+        {
+          "name": "numero_offerte_ammesse",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di offerte ammesse alla gara"
+        },
+        {
+          "name": "numero_offerte_escluse",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di offerte escluse dalla gara"
+        },
+        {
+          "name": "importo_aggiudicazione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo di aggiudicazione in euro"
+        },
+        {
+          "name": "ribasso_aggiudicazione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ribasso percentuale offerto in sede di aggiudicazione"
+        },
+        {
+          "name": "num_imprese_offerenti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di imprese che hanno presentato offerta"
+        },
+        {
+          "name": "flag_subappalto",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Indicatore di subappalto autorizzato"
+        },
+        {
+          "name": "id_aggiudicazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Identificativo univoco dell'aggiudicazione — join con aggiudicatari"
+        },
+        {
+          "name": "cod_esito",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice numerico dell'esito"
+        },
+        {
+          "name": "num_imprese_richiedenti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di imprese richiedenti (per procedure ristrette)"
+        },
+        {
+          "name": "asta_elettronica",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Flag asta elettronica"
+        },
+        {
+          "name": "num_imprese_invitate",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di imprese invitate (per procedure ristrette/negoziate)"
+        },
+        {
+          "name": "massimo_ribasso",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Massimo ribasso offerto"
+        },
+        {
+          "name": "minimo_ribasso",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Minimo ribasso offerto"
+        },
+        {
+          "name": "FLAG_SCOMPUTO",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Flag scomputo degli oneri di sicurezza"
+        },
+        {
+          "name": "COD_PRESTAZIONI_COMPRESE",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Codice delle prestazioni comprese nell'aggiudicazione"
+        },
+        {
+          "name": "PRESTAZIONI_COMPRESE",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione delle prestazioni comprese (es. SOLA ESECUZIONE)"
+        },
+        {
+          "name": "CIG_PROG_ESTERNA",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CIG di programmazione esterna"
+        },
+        {
+          "name": "DATA_INCARICO_PROG",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di incarico di programmazione"
+        },
+        {
+          "name": "DATA_CONS_PROG",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di consegna della programmazione"
+        },
+        {
+          "name": "COD_MODO_RIAGGIUDICAZIONE",
+          "type": "DOUBLE",
+          "role": "dimension",
+          "description": "Codice della modalità di riaggiudicazione"
+        },
+        {
+          "name": "MODO_RIAGGIUDICAZIONE",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Modalità di riaggiudicazione"
+        },
+        {
+          "name": "FLAG_PROC_ACCELERATA",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Flag procedura accelerata"
+        },
+        {
+          "name": "N_MANIF_INTERESSE",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di manifestazioni di interesse ricevute"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anac_aggiudicazioni/2026/anac_aggiudicazioni_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "anac_bandi_gara",
       "name": "ANAC Bandi di Gara (CIG)",
       "description": "Bandi di gara pubblici italiani (CIG): oggetto, importi, stazione appaltante, territorio, CPV, esito e flag PNRR/urgenza/delega. Fonte ANAC, serie annuale 2025+.",
