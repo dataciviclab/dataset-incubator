@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-19",
+  "updated_at": "2026-07-18",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -12134,6 +12134,242 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/unified_comuni/2026/unified_comuni_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "who_is_who_pa",
+      "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
+      "description": "Anagrafica completa della Pubblica Amministrazione italiana: enti, vertici, unità organizzative, AOO, contatti e protocollo informatico. Fonte: IPA IndicePA.",
+      "source": "AgID — Indice della Pubblica Amministrazione (indicepa.gov.it)",
+      "source_id": "ipa",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice IPA dell'ente"
+        },
+        {
+          "name": "denominazione_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ufficiale dell'ente"
+        },
+        {
+          "name": "codice_fiscale_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'ente"
+        },
+        {
+          "name": "codice_categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Categoria IPA (L6=comune, L4=regione, ...)"
+        },
+        {
+          "name": "tipologia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia IPA (PA=PA, GPS=gestore pubblico servizi)"
+        },
+        {
+          "name": "codice_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 cifre)"
+        },
+        {
+          "name": "acronimo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Acronimo dell'ente"
+        },
+        {
+          "name": "vertice_ente_titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo del vertice dell'ente (Sindaco, Presidente, ...)"
+        },
+        {
+          "name": "vertice_ente_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del vertice dell'ente"
+        },
+        {
+          "name": "vertice_ente_cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome del vertice dell'ente"
+        },
+        {
+          "name": "sito_istituzionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sito web istituzionale"
+        },
+        {
+          "name": "codice_uni_uo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice unità organizzativa (UNI)"
+        },
+        {
+          "name": "descrizione_uo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione unità organizzativa"
+        },
+        {
+          "name": "codice_uni_uo_padre",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice unità organizzativa padre"
+        },
+        {
+          "name": "uo_data_istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data istituzione unità organizzativa"
+        },
+        {
+          "name": "uo_resp_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del responsabile UO"
+        },
+        {
+          "name": "uo_resp_cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome del responsabile UO"
+        },
+        {
+          "name": "uo_resp_email",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email del responsabile UO"
+        },
+        {
+          "name": "uo_resp_telefono",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Telefono del responsabile UO"
+        },
+        {
+          "name": "uo_mail",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email istituzionale UO"
+        },
+        {
+          "name": "uo_tipo_mail",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo email UO (certificata/ordinaria)"
+        },
+        {
+          "name": "uo_mail2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email secondaria UO"
+        },
+        {
+          "name": "uo_tipo_mail2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo email secondaria UO"
+        },
+        {
+          "name": "codice_uni_aoo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Area Organizzativa Omogenea (AOO)"
+        },
+        {
+          "name": "denominazione_aoo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione AOO"
+        },
+        {
+          "name": "aoo_resp_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del responsabile AOO"
+        },
+        {
+          "name": "aoo_resp_cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome del responsabile AOO"
+        },
+        {
+          "name": "aoo_mail",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email istituzionale AOO"
+        },
+        {
+          "name": "aoo_tipo_mail",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo email AOO (certificata/ordinaria)"
+        },
+        {
+          "name": "protocollo_informatico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indicatore presenza protocollo informatico"
+        },
+        {
+          "name": "uri_protocollo_informatico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI del protocollo informatico"
+        },
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (dati IPA)"
+        },
+        {
+          "name": "codice_catastale_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale del comune"
+        },
+        {
+          "name": "cap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CAP della sede"
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo della sede"
+        },
+        {
+          "name": "ente_codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune dell'ente"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/who_is_who_pa/2026/who_is_who_pa_2026_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
