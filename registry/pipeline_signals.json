@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-18",
+  "generated_at": "2026-07-19",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 91,
+    "total": 92,
     "by_status": {
-      "ok": 91,
+      "ok": 92,
       "warn": 0,
       "error": 0
     }
@@ -1539,6 +1539,24 @@
           2026
         ],
         "config_path": "support_datasets/anac-partecipanti/dataset.yml"
+      }
+    },
+    {
+      "id": "anac-subappalti",
+      "source_id": "anac",
+      "status": "ok",
+      "label": "anac-subappalti",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29692046822",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29692046822",
+        "checked_at": "2026-07-19",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/anac-subappalti/dataset.yml"
       }
     },
     {
