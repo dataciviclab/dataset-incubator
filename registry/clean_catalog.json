@@ -969,12 +969,12 @@
     },
     {
       "slug": "anac_subappalti",
-      "name": "Anac Subappalti",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "ANAC Subappalti",
+      "description": "Autorizzazioni al subappalto negli appalti ordinari pubblicati: chi subappalta a chi, per quali lavori, in quali categorie e CPV. Fonte ANAC. Join via cig con anac_bandi_gara e anac_aggiudicazioni, via codice_fiscale con anac_aggiudicatari.",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
+      "source_id": "anac",
       "period": {
-        "start": 2026,
+        "start": 2020,
         "end": 2026
       },
       "columns": [
@@ -982,91 +982,91 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CIG del contratto principale — join con bandi e aggiudicazioni"
         },
         {
           "name": "id_subappalto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "ID univoco del subappalto"
         },
         {
           "name": "cf_subappaltante",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CF dell'aggiudicatario che subappalta (join con aggiudicatari)"
         },
         {
           "name": "data_autorizzazione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di autorizzazione del subappalto"
         },
         {
           "name": "oggetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Oggetto del subappalto"
         },
         {
           "name": "cod_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice categoria lavori del subappalto"
         },
         {
           "name": "descrizione_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione della categoria lavori"
         },
         {
           "name": "classe_importo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Classe di importo del subappalto"
         },
         {
           "name": "descrizione_tipo_categoria",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo categoria (PREVALENTE, ecc.)"
         },
         {
           "name": "cod_cpv",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice CPV del subappalto"
         },
         {
           "name": "descrizione_cpv",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione del CPV"
         },
         {
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "CF dell'operatore che esegue il subappalto"
         },
         {
           "name": "denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ragione sociale dell'esecutore del subappalto"
         },
         {
           "name": "ruolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ruolo dell'operatore nel subappalto"
         },
         {
           "name": "tipo_soggetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo soggetto dell'esecutore"
         }
       ],
       "location": {
