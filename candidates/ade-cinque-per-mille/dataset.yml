@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "ade_cinque_per_mille"
+  source_id: "ade"
   years: [2023, 2024, 2025]
 
 raw:
@@ -24,15 +25,28 @@ clean:
     skip: 0
     ignore_errors: true
   read_mode: strict
-  required_columns:
-    - "progressivo"
-    - "codice_fiscale"
-    - "denominazione"
-    - "regione"
-    - "importo_totale_erogabile"
   sql: "sql/clean.sql"
+  required_columns:
+    - progressivo
+    - codice_fiscale
+    - denominazione
+    - regione
+    - importo_totale_erogabile
+  validate:
+    min_rows: 10000
+    not_null:
+      - progressivo
+      - codice_fiscale
+      - denominazione
+      - anno
 
 mart:
   tables:
     - name: "ade_cinque_per_mille"
       sql: "sql/mart.sql"
+  required_tables:
+    - "ade_cinque_per_mille"
+  validate:
+    table_rules:
+      ade_cinque_per_mille:
+        min_rows: 1
