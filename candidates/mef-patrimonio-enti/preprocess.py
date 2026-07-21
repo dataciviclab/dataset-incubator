@@ -8,7 +8,8 @@ import csv
 import io
 import sys
 from pathlib import Path
-from urllib.request import urlopen
+
+from lab_connectors.http import download
 
 URL_TEMPLATE = "https://www.de.mef.gov.it/modules/documenti_it/attivo_patrimonio/immobili_{year}/Dati_Adempimento_Anno_{year}.csv"
 
@@ -63,8 +64,7 @@ def main():
 
     url = URL_TEMPLATE.format(year=year)
     print(f"[preprocess enti] Download {url}", file=sys.stderr)
-    with urlopen(url) as resp:
-        raw = resp.read()
+    raw = download(url)
 
     encoding = detect_encoding(raw)
     print(f"[preprocess enti] Encoding rilevato: {encoding}", file=sys.stderr)

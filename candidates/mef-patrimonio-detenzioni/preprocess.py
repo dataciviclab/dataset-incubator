@@ -7,7 +7,8 @@ import sys
 import zipfile
 from pathlib import Path
 from urllib.parse import quote
-from urllib.request import urlopen
+
+from lab_connectors.http import download
 
 MEF_BASE = (
     "https://www.de.mef.gov.it/modules/documenti_it/attivo_patrimonio/immobili_{year}/opendata_det/"
@@ -56,8 +57,7 @@ def _try_download(zip_name: str, year: str, dest: Path) -> bool:
     for variant in _zip_variants(zip_name.replace(".csv", ".zip")):
         url = MEF_BASE.format(year=year) + quote(variant)
         try:
-            with urlopen(url, timeout=120) as resp:
-                dest.write_bytes(resp.read())
+            dest.write_bytes(download(url, timeout=120))
             return True
         except Exception:
             continue
@@ -76,8 +76,7 @@ def main():
 
     ademp_url = ADEMPIMENTI_URL.format(year=year)
     print(f"[preprocess] Download adempimenti: {ademp_url}", file=sys.stderr)
-    with urlopen(ademp_url) as resp:
-        raw = resp.read()
+    raw = download(ademp_url)
     try:
         ademp_raw = raw.decode("utf-8-sig")
     except UnicodeDecodeError:
