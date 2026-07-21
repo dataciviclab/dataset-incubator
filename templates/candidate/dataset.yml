@@ -27,9 +27,14 @@ clean:
   #   delim: ";"
   #   encoding: "utf-8"
 
+  required_columns:
+    - anno
+    - chiave_principale
   validate:
-    min_rows: 1       # almeno una riga
-    # not_null: ["colonna1", "colonna2"]  # colonne che non devono essere NULL
+    min_rows: 1
+    not_null:
+      - anno
+      - chiave_principale
 
 # --- MART LAYER ---
 mart:
