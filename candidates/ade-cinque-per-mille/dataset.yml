@@ -25,6 +25,7 @@ clean:
     skip: 0
     ignore_errors: true
   read_mode: strict
+  sql: "sql/clean.sql"
   required_columns:
     - progressivo
     - codice_fiscale
