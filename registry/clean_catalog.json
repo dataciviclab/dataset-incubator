@@ -3911,7 +3911,7 @@
       "source_id": "giustizia_statistiche",
       "period": {
         "start": 2014,
-        "end": 2024
+        "end": 2025
       },
       "columns": [
         {
@@ -3959,8 +3959,8 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/2024/giustizia_penale_indicatori_2024_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/*/giustizia_penale_indicatori_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "incubating",
       "registry_source": "derive_auto"
@@ -4180,6 +4180,56 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/inps_rdc_pdc/2020/inps_rdc_pdc_2020_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "intercettazioni",
+      "name": "Intercettazioni",
+      "description": "Bersagli intercettazioni per tipologia (telefoniche, ambientali, informatiche, trojan), distretto e tipo ufficio. Fonte: Ministero della Giustizia — DG Statistica.",
+      "source": "Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)",
+      "source_id": "giustizia_statistiche",
+      "period": {
+        "start": 2014,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di procura (ordinaria, minorenni, generale)"
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Distretto di Corte d'Appello"
+        },
+        {
+          "name": "tipologia_intercettazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia di intercettazione (Telefoniche, Ambientali, Informatiche, Trojan)"
+        },
+        {
+          "name": "n_bersagli",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di bersagli intercettati"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/intercettazioni/2025/intercettazioni_2025_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
@@ -8540,6 +8590,92 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "monitoraggio_mensile_civile",
+      "name": "Monitoraggio Mensile Civile",
+      "description": "Iscritti e definiti civili per mese, sede e materia. Monitoraggio mensile dei tribunali. Fonte: Ministero della Giustizia — DG Statistica.",
+      "source": "Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)",
+      "source_id": "giustizia_statistiche",
+      "period": {
+        "start": 2019,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Mese (01-12)"
+        },
+        {
+          "name": "fonte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sistema fonte (SICID/SIECIC)"
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di ufficio (Tribunale)"
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Distretto di Corte d'Appello"
+        },
+        {
+          "name": "sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sede dell'ufficio giudiziario"
+        },
+        {
+          "name": "materia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Materia del contendere"
+        },
+        {
+          "name": "iscritti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Procedimenti iscritti (nuovi)"
+        },
+        {
+          "name": "definiti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Procedimenti definiti (chiusi)"
+        },
+        {
+          "name": "area",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Area geografica (Nord-ovest, Nord-est, Centro, Sud, Isole)"
+        },
+        {
+          "name": "flag_dato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia dato (Consolidati/Provvisori)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/monitoraggio_mensile_civile/2025/monitoraggio_mensile_civile_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "mur_contribuzione_universitaria",
       "name": "MUR - Gettito della contribuzione universitaria",
       "description": "Gettito della contribuzione studentesca per ateneo e tipologia di entrata (2017-2024).",
@@ -9407,6 +9543,74 @@
         "type": "gcs",
         "path": "gs://dataciviclab-clean/openga_ricorsi_cds/*/openga_ricorsi_cds_*_clean.parquet",
         "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "penale_flussi",
+      "name": "Penale Flussi",
+      "description": "Flussi dei procedimenti penali: sopravvenuti, definiti e pendenti per ufficio giudiziario. Fonte: Ministero della Giustizia — DG Statistica.",
+      "source": "Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)",
+      "source_id": "giustizia_statistiche",
+      "period": {
+        "start": 2014,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di ufficio giudiziario"
+        },
+        {
+          "name": "sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sezione/attività dell'ufficio"
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Distretto di Corte d'Appello"
+        },
+        {
+          "name": "sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Circondario/sede dell'ufficio"
+        },
+        {
+          "name": "sopravvenuti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Procedimenti sopravvenuti (iscritti)"
+        },
+        {
+          "name": "definiti_totale",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Procedimenti definiti (chiusi)"
+        },
+        {
+          "name": "pendenti_finali",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Procedimenti pendenti a fine periodo"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/penale_flussi/2025/penale_flussi_2025_clean.parquet",
+        "multi_file": false
       },
       "stage": "published",
       "registry_source": "derive_auto"
