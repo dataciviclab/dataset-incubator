@@ -248,7 +248,8 @@ clean:
     not_null:
       - "numero_ricorso"
       - "data_pubblicazione"
-    primary_key: ["numero_provvedimento", "anno"]
+    primary_key: ["codice_sede", "numero_provvedimento", "numero_ricorso"]
+
 
 mart:
   tables:
