@@ -4,12 +4,12 @@
 -- Periodo: 1990-2023
 
 SELECT
-    TRY_CAST("anno" AS INTEGER) AS anno,
-    TRY_CAST("industrie_energetiche" AS DOUBLE) AS industrie_energetiche,
-    TRY_CAST("industrie_manifatturiere" AS DOUBLE) AS industrie_manifatturiere,
-    TRY_CAST("residenziale_e_servizi" AS DOUBLE) AS residenziale_e_servizi,
-    TRY_CAST("trasporti" AS DOUBLE) AS trasporti,
-    TRY_CAST("totale" AS DOUBLE) AS totale
+    cast_int("anno") AS anno,
+    cast_double("industrie_energetiche") AS industrie_energetiche,
+    cast_double("industrie_manifatturiere") AS industrie_manifatturiere,
+    cast_double("residenziale_e_servizi") AS residenziale_e_servizi,
+    cast_double("trasporti") AS trasporti,
+    cast_double("totale") AS totale
 FROM raw_input
-WHERE TRY_CAST("anno" AS INTEGER) IS NOT NULL
+WHERE cast_int("anno") IS NOT NULL
 ORDER BY anno

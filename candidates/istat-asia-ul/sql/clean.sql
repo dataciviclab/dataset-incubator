@@ -1,12 +1,12 @@
 SELECT
-    CAST(ref_area AS VARCHAR(6))            AS codice_comune,
-    CAST(anno AS INTEGER)                   AS anno,
-    CAST(ateco_sezione AS VARCHAR(5))       AS ateco_sezione,
-    CAST(valore AS DOUBLE)                  AS unita_locali
+    normalize_string(ref_area)            AS codice_comune,
+    cast_int(anno)                   AS anno,
+    normalize_string(ateco_sezione)       AS ateco_sezione,
+    cast_double(valore)                  AS unita_locali
 FROM raw_input
 WHERE
     LENGTH(ref_area) = 6
-    AND TRY_CAST(ref_area AS INTEGER) IS NOT NULL
+    AND TRY_cast_int(ref_area) IS NOT NULL
     AND anno IS NOT NULL
     AND anno BETWEEN 2018 AND 2020
     AND valore >= 0

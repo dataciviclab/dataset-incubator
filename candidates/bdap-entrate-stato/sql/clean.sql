@@ -1,5 +1,5 @@
 select
-  try_cast(column00 as integer) as esercizio_finanziario,
+  cast_int(column00) as esercizio_finanziario,
   nullif(trim(column01), '') as codice_titolo,
   nullif(trim(column02), '') as titolo,
   nullif(trim(column03), '') as codice_natura,
@@ -8,7 +8,7 @@ select
   nullif(trim(column06), '') as tipologia,
   nullif(trim(column07), '') as codice_provento,
   nullif(trim(column08), '') as provento,
-  try_cast(column09 as double) as previsioni_definitive_cp,
-  try_cast(column10 as double) as previsioni_definitive_cs
+  cast_double(column09) as previsioni_definitive_cp,
+  cast_double(column10) as previsioni_definitive_cs
 from raw_input
-where try_cast(column00 as integer) is not null
+where cast_int(column00) is not null

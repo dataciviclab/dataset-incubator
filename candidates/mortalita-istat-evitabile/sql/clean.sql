@@ -14,20 +14,20 @@
 
 SELECT
     CAST(anno AS INTEGER)                              AS anno,
-    TRIM(CAST("Cod_Territorio" AS VARCHAR))            AS cod_territorio,
-    TRIM("Territorio")                                 AS territorio,
-    CAST("Cod_Sesso" AS INTEGER)                       AS cod_sesso,
-    TRIM("Sesso")                                      AS sesso,
-    CAST("Cod_Classe età" AS INTEGER)                  AS cod_classe_eta,
-    TRIM("Classe età")                                 AS classe_eta,
-    CAST("Cod_Titolo di studio" AS INTEGER)            AS cod_titolo_studio,
-    TRIM("Titolo di studio")                           AS titolo_studio,
-    CAST("Cod_Causa" AS INTEGER)                       AS cod_causa,
-    TRIM("Causa")                                      AS causa,
-    CAST("pop media" AS DOUBLE)                        AS pop_media,
-    CAST("decessi" AS INTEGER)                         AS decessi,
-    CAST("tassi_standardizzati per 10.000" AS DOUBLE)  AS tasso_std_10000
+    normalize_string("Cod_Territorio")            AS cod_territorio,
+    normalize_string("Territorio")                                 AS territorio,
+    cast_int("Cod_Sesso")                       AS cod_sesso,
+    normalize_string("Sesso")                                      AS sesso,
+    cast_int("Cod_Classe età")                  AS cod_classe_eta,
+    normalize_string("Classe età")                                 AS classe_eta,
+    cast_int("Cod_Titolo di studio")            AS cod_titolo_studio,
+    normalize_string("Titolo di studio")                           AS titolo_studio,
+    cast_int("Cod_Causa")                       AS cod_causa,
+    normalize_string("Causa")                                      AS causa,
+    cast_double("pop media")                        AS pop_media,
+    cast_int("decessi")                         AS decessi,
+    cast_double("tassi_standardizzati per 10.000")  AS tasso_std_10000
 FROM raw_input
 WHERE CAST(anno AS INTEGER) = {year}
-  AND CAST("Cod_Territorio" AS INTEGER) BETWEEN 1 AND 22
-  AND CAST("Cod_Territorio" AS INTEGER) <> 4
+  AND cast_int("Cod_Territorio") BETWEEN 1 AND 22
+  AND cast_int("Cod_Territorio") <> 4

@@ -2,12 +2,12 @@
 -- Sheet: Tribunali
 -- Fonte: Ministero della Giustizia
 SELECT
-    TRY_CAST("Anno" AS INTEGER)         AS anno,
-    TRIM("Tipo ufficio")                AS tipo_ufficio,
-    TRIM("Distretto")                   AS distretto,
-    TRIM("Sede")                        AS sede,
-    TRIM("Sezione")                     AS sezione,
-    TRY_CAST("Clearance rate" AS DOUBLE)    AS clearance_rate,
-    TRY_CAST("Disposition time" AS DOUBLE) AS disposition_time_gg
+    cast_int("Anno")         AS anno,
+    normalize_string("Tipo ufficio")                AS tipo_ufficio,
+    normalize_string("Distretto")                   AS distretto,
+    normalize_string("Sede")                        AS sede,
+    normalize_string("Sezione")                     AS sezione,
+    cast_double("Clearance rate")    AS clearance_rate,
+    cast_double("Disposition time") AS disposition_time_gg
 FROM raw_input
-WHERE TRY_CAST("Anno" AS INTEGER) IS NOT NULL;
+WHERE cast_int("Anno") IS NOT NULL;

@@ -1,16 +1,16 @@
 select
-  try_cast("Anno" as integer) as anno,
-  trim("Fonte") as fonte,
+  cast_int("Anno") as anno,
+  normalize_string("Fonte") as fonte,
   trim("Tipo ufficio") as tipo_ufficio,
-  trim("Distretto") as distretto,
-  trim("Sede") as sede,
-  trim("Macromateria") as macromateria,
-  trim("Materia") as materia,
-  trim("Dettaglio") as dettaglio,
-  try_cast("Sopravvenuti" as double) as sopravvenuti,
+  normalize_string("Distretto") as distretto,
+  normalize_string("Sede") as sede,
+  normalize_string("Macromateria") as macromateria,
+  normalize_string("Materia") as materia,
+  normalize_string("Dettaglio") as dettaglio,
+  cast_double("Sopravvenuti") as sopravvenuti,
   try_cast("Definiti - totale" as double) as definiti_totale,
   try_cast("Definiti con sentenza" as double) as definiti_con_sentenza,
   try_cast("Pendenti finali" as double) as pendenti_finali
 from raw_input
-where try_cast("Anno" as integer) is not null
+where cast_int("Anno") is not null
   and trim(coalesce("Fonte", '')) <> ''
