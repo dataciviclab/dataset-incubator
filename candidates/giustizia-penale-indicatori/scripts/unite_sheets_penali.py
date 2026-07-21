@@ -2,21 +2,24 @@
 """
 Unisce i 4 sheet del file Indicatori_Penali.xlsx in un unico CSV.
 
-Sheet:
-- Tribunali        (7 colonne)
-- Corti d'Appello  (7 colonne)
-- Giudici di Pace  (9 colonne — ultime 2 vuote, da scartare)
-- Tribunale per i Minorenni (7 colonne)
+Scarica il file XLSX dal portale del Ministero della Giustizia usando
+lab_connectors.http.download (retry, SSL fallback, circuit breaker),
+legge i 4 sheet (Tribunali, Corti d'Appello, Giudici di Pace, Minorenni)
+e produce un CSV con schema unificato.
 
-Tutti hanno schema comune: Anno, Tipo ufficio, Distretto, Sede, Sezione,
-Clearance rate, Disposition time.
+Sheet schema comune:
+  Anno, Tipo ufficio, Distretto, Sede, Sezione, Clearance rate, Disposition time
 
-Output: CSV con header standardizzato e colonne pulite.
+Usage:
+  python unite_sheets_penali.py [--url URL] [--output OUTPUT]
 """
 
-import pandas as pd
+import argparse
 import sys
 from pathlib import Path
+
+import pandas as pd
+from lab_connectors.http import download as http_download
 
 SHEETS = [
     "Tribunali",
@@ -35,29 +38,40 @@ COLUMNS_STANDARD = [
     "Disposition time",
 ]
 
-INPUT = Path("raw_input.xlsx")
-OUTPUT = Path("raw_input.csv")
+DEFAULT_URL = (
+    "https://datiestatistiche.giustizia.it/"
+    "cmsresources/cms/documents/Indicatori_Penali.xlsx"
+)
 
 
 def main():
-    if not INPUT.exists():
-        print(f"ERRORE: {INPUT} non trovato", file=sys.stderr)
-        sys.exit(1)
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--url", default=DEFAULT_URL)
+    parser.add_argument("--output", default="raw_input.csv")
+    args = parser.parse_args()
 
+    xlsx_path = Path("raw_input.xlsx")
+    output_path = Path(args.output)
+
+    # Scarica il file XLSX via lab_connectors (retry + SSL fallback automatici)
+    print(f"Download {args.url} ...")
+    data = http_download(args.url)
+    xlsx_path.write_bytes(data)
+    print(f"  OK ({len(data)} bytes)")
+
+    # Leggi e unisci i 4 sheet
     frames = []
     for sheet in SHEETS:
         try:
-            df = pd.read_excel(INPUT, sheet_name=sheet)
+            df = pd.read_excel(xlsx_path, sheet_name=sheet)
             print(
-                f"  LETTO {sheet}: {len(df)} righe × {len(df.columns)} colonne → {list(df.columns)}"
+                f"  LETTO {sheet}: {len(df)} righe × {len(df.columns)} "
+                f"colonne → {list(df.columns)}"
             )
-            # Seleziona solo le colonne standard (scarta extra vuote)
             cols_presenti = [c for c in COLUMNS_STANDARD if c in df.columns]
             df = df[cols_presenti]
-            # Forza Tipo ufficio dal nome sheet (alcuni sheet non lo hanno popolato)
             if "Tipo ufficio" not in df.columns or df["Tipo ufficio"].isna().all():
                 df["Tipo ufficio"] = sheet
-            # Tipizza Anno
             if "Anno" in df.columns:
                 df["Anno"] = pd.to_numeric(df["Anno"], errors="coerce")
             frames.append(df)
@@ -74,10 +88,13 @@ def main():
     united = united.dropna(subset=["Anno"])
     print(f"  Filtrate {before - len(united)} righe senza Anno")
 
-    united.to_csv(OUTPUT, index=False)
-    print(f"\nOutput: {OUTPUT} ({len(united)} righe, {len(united.columns)} colonne)")
+    united.to_csv(output_path, index=False)
+    print(f"\nOutput: {output_path} ({len(united)} righe, {len(united.columns)} colonne)")
     print(f"Colonne: {list(united.columns)}")
-    print(f"Tipo ufficio distinti: {sorted(united['Tipo ufficio'].dropna().unique())}")
+    tipo_uffici = sorted(united["Tipo ufficio"].dropna().unique())
+    print(f"Tipo ufficio distinti: {tipo_uffici}")
+
+    xlsx_path.unlink(missing_ok=True)
 
 
 if __name__ == "__main__":

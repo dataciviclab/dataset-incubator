@@ -3,7 +3,7 @@
 # Fonte: Ministero della Giustizia - Direzione Generale di Statistica e Analisi Organizzativa
 # URL: https://datiestatistiche.giustizia.it/page/it/clearance-rate-e-disposition-time-penale
 # File XLSX: Indicatori_Penali.xlsx (4 sheet: Tribunali, Corti d'Appello, Giudici di Pace, Minorenni)
-# V0 update: sheet "Tribunali" (come v0 precedente). Gli altri 3 sheet vanno aggiunti via script.
+# Script: unite_sheets_penali.py — scarica XLSX e unisce i 4 sheet in un unico CSV
 
 root: "../../out"
 schema_version: 1
@@ -19,22 +19,23 @@ dataset:
 raw:
   output_policy: overwrite
   sources:
-    - name: "tribunali_xlsx"
-      type: "http_file"
+    - type: script
       args:
-        url: "https://datiestatistiche.giustizia.it/cmsresources/cms/documents/Indicatori_Penali.xlsx"
-        filename: "Indicatori_Penali.xlsx"
+        command: "python scripts/unite_sheets_penali.py --output raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
       primary: true
 
 clean:
   read:
-    source: auto
-    mode: latest
+    delim: ","
+    encoding: "utf-8"
     header: true
-    sheet_name: "Tribunali"
+    skip: 0
+  read_mode: strict
   sql: "sql/clean.sql"
   validate:
-    min_rows: 500
+    min_rows: 10000
     not_null:
       - anno
 
