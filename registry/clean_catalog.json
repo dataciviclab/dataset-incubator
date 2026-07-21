@@ -7083,9 +7083,9 @@
     },
     {
       "slug": "mef_patrimonio_detenzioni",
-      "name": "Mef Patrimonio Detenzioni",
-      "description": "",
-      "source": "",
+      "name": "MEF — Detenzioni a favore di terzi di immobili pubblici",
+      "description": "Detenzioni a favore di terzi di immobili pubblici dichiarate dalle PA. Include tipo detenzione, canone annuo, decorrenza/scadenza, soggetto ricevente. Fonte: MEF Dipartimento Economia, censimento immobili pubblici (art.2 c.222 L.191/2009).",
+      "source": "MEF — Dipartimento dell'Economia (Open Data Immobili PA)",
       "source_id": "mef_de",
       "period": {
         "start": 2022,
@@ -7095,152 +7095,152 @@
         {
           "name": "id_variazione",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Identificativo univoco della variazione/detenzione"
         },
         {
           "name": "settore_istituzionale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Settore istituzionale dell'ente dichiarante (S13/NON S13)"
         },
         {
           "name": "macrocategoria_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Macrocategoria dell'ente dichiarante"
         },
         {
           "name": "tipologia_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia dell'ente dichiarante (Comuni, Regioni, ASL, ...)"
         },
         {
           "name": "amministrazione_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione dell'ente che cede in detenzione"
         },
         {
           "name": "amministrazione_codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale dell'ente cedente"
         },
         {
           "name": "reg_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione dell'ente cedente"
         },
         {
           "name": "prov_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia dell'ente cedente"
         },
         {
           "name": "comune_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune dell'ente cedente"
         },
         {
           "name": "codice_comune_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune dell'ente cedente"
         },
         {
           "name": "tipo_detenzione_terzi",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo detenzione: in locazione, uso gratuito, concessione, gestione per conto di"
         },
         {
           "name": "detenzione_intera_ui",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indica se la detenzione riguarda l'intera unità immobiliare (Sì/No)"
         },
         {
           "name": "superficie_detenzione_mq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie in detenzione in metri quadri"
         },
         {
           "name": "canone_annuale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Canone annuo in euro"
         },
         {
           "name": "data_decorrenza",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di decorrenza della detenzione"
         },
         {
           "name": "data_scadenza",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di scadenza della detenzione (null se aperta)"
         },
         {
           "name": "soggetto_ricevente_tipo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo soggetto ricevente: PF (persona fisica) o PG (persona giuridica)"
         },
         {
           "name": "soggetto_ricevente_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del soggetto che beneficia della detenzione"
         },
         {
           "name": "soggetto_ricevente_cf",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale del soggetto ricevente"
         },
         {
           "name": "soggetto_ricevente_pa",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True se il soggetto ricevente è una pubblica amministrazione"
         },
         {
           "name": "finalita_pf",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Finalità della detenzione per persona fisica"
         },
         {
           "name": "id_bene",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Identificativo del bene immobile (FK → mef_patrimonio_immobili)"
         },
         {
           "name": "natura_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Natura del bene: FABBRICATO o TERRENO"
         },
         {
           "name": "tipologia_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia del bene immobile (ufficio, abitazione, terreno agricolo, ...)"
         },
         {
           "name": "superficie_riferimento_mq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie di riferimento del bene in metri quadri"
         }
       ],
       "location": {
@@ -7253,9 +7253,9 @@
     },
     {
       "slug": "mef_patrimonio_enti",
-      "name": "Mef Patrimonio Enti",
-      "description": "",
-      "source": "",
+      "name": "MEF — Enti adempienti e non adempienti censimento immobili",
+      "description": "Anagrafe degli enti pubblici con stato di adempimento al censimento immobiliare MEF. Include obbligo di comunicazione, invio, dichiarazione negativa, e numero di beni dichiarati. Fonte: MEF Dipartimento Economia.",
+      "source": "MEF — Dipartimento dell'Economia (Open Data Immobili PA)",
       "source_id": "mef_de",
       "period": {
         "start": 2022,
@@ -7266,109 +7266,109 @@
           "name": "settore_istituzionale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Settore istituzionale dell'ente (S13/NON S13)"
         },
         {
           "name": "macrocategoria_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Macrocategoria: Amministrazioni Locali, Centrali, ..."
         },
         {
           "name": "tipologia_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia ente: Comuni, Regioni, ASL, Università, ..."
         },
         {
           "name": "amministrazione_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione dell'amministrazione"
         },
         {
           "name": "amministrazione_codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale dell'amministrazione"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione dell'amministrazione"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia dell'amministrazione"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune dell'amministrazione"
         },
         {
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune"
         },
         {
           "name": "num_beni_proprieta",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di beni immobili in proprietà dichiarati"
         },
         {
           "name": "num_beni_detenzione",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di beni immobili in detenzione dichiarati"
         },
         {
           "name": "dichiarazione_negativa",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True se l'ente ha dichiarato di non possedere beni"
         },
         {
           "name": "dichiarazione_completezza",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True se l'ente ha dichiarato completezza dei dati"
         },
         {
           "name": "invio_comunicazione",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True se l'ente ha inviato la comunicazione"
         },
         {
           "name": "obbligo_comunicazione",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True se l'ente aveva obbligo di comunicazione"
         },
         {
           "name": "nome_sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della sezione di appartenenza"
         },
         {
           "name": "nome_file_immobili",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del file ZIP contenente i dati immobiliari"
         },
         {
           "name": "nome_file_detenzioni",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del file ZIP contenente le detenzioni"
         }
       ],
       "location": {
@@ -7381,9 +7381,9 @@
     },
     {
       "slug": "mef_patrimonio_immobili",
-      "name": "Mef Patrimonio Immobili",
-      "description": "",
-      "source": "",
+      "name": "MEF — Catalogo immobili pubblici italiani",
+      "description": "Catalogo completo degli immobili pubblici italiani dichiarati dalle PA. 51 colonne: anagrafica ente, dati catastali, coordinate geografiche (100% georeferenziato), superficie, destinazione d'uso, stato d'uso, vincoli. Fonte: MEF Dipartimento Economia, censimento immobili pubblici.",
+      "source": "MEF — Dipartimento dell'Economia (Open Data Immobili PA)",
       "source_id": "mef_de",
       "period": {
         "start": 2022,
@@ -7394,307 +7394,307 @@
           "name": "settore_istituzionale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Settore istituzionale dell'ente proprietario/detentore"
         },
         {
           "name": "macrocategoria_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Macrocategoria dell'ente proprietario/detentore"
         },
         {
           "name": "tipologia_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia dell'ente proprietario/detentore"
         },
         {
           "name": "amministrazione_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione dell'ente proprietario/detentore"
         },
         {
           "name": "amministrazione_codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale dell'ente"
         },
         {
           "name": "reg_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione dell'ente"
         },
         {
           "name": "prov_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia dell'ente"
         },
         {
           "name": "comune_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune dell'ente"
         },
         {
           "name": "codice_comune_amministrazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune dell'ente"
         },
         {
           "name": "titolo_proprieta",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Titolo di proprietà del bene"
         },
         {
           "name": "quota_proprieta",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Quota di proprietà in percentuale"
         },
         {
           "name": "titolo_detenzione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Titolo di detenzione del bene"
         },
         {
           "name": "detenzione_intera_ui",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Detenzione sull'intera unità immobiliare (Sì/No)"
         },
         {
           "name": "superficie_detenzione_mq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie in detenzione in metri quadri"
         },
         {
           "name": "canone_annuale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Canone annuale in euro"
         },
         {
           "name": "soggetto_cedente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del soggetto cedente"
         },
         {
           "name": "soggetto_cedente_cf",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice fiscale del soggetto cedente"
         },
         {
           "name": "id_bene",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Identificativo univoco del bene (PK, FK → mef_patrimonio_detenzioni)"
         },
         {
           "name": "natura_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Natura del bene: FABBRICATO o TERRENO"
         },
         {
           "name": "stato_accatastamento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Stato di accatastamento del bene"
         },
         {
           "name": "sistema_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sistema catastale di riferimento"
         },
         {
           "name": "regione_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione in cui si trova il bene"
         },
         {
           "name": "provincia_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia in cui si trova il bene"
         },
         {
           "name": "comune_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune in cui si trova il bene"
         },
         {
           "name": "codice_comune_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT del comune del bene"
         },
         {
           "name": "indirizzo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indirizzo del bene"
         },
         {
           "name": "numero_civico",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Numero civico del bene"
         },
         {
           "name": "fonte_georef",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Fonte della georeferenziazione"
         },
         {
           "name": "precisione_georef",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Precisione della georeferenziazione"
         },
         {
           "name": "immobile_georef",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indica se l'immobile è georeferenziato (Sì/No)"
         },
         {
           "name": "latitudine",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Latitudine del bene (WGS84)"
         },
         {
           "name": "longitudine",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Longitudine del bene (WGS84)"
         },
         {
           "name": "identificativo_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Identificativo catastale del bene"
         },
         {
           "name": "codice_bene_non_accatastato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice del bene se non accatastato"
         },
         {
           "name": "tipologia_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia del bene (ufficio, abitazione, terreno, ...)"
         },
         {
           "name": "superficie_mq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie in metri quadri"
         },
         {
           "name": "cubatura_mc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Cubatura in metri cubi"
         },
         {
           "name": "sup_aree_pertinenziali_mq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie delle aree pertinenziali in metri quadri"
         },
         {
           "name": "superficie_riferimento_mq",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie di riferimento in metri quadri"
         },
         {
           "name": "epoca_costruzione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Epoca di costruzione del bene"
         },
         {
           "name": "vincoli",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Vincoli culturali/paesaggistici presenti"
         },
         {
           "name": "natura_giuridica_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Natura giuridica del bene"
         },
         {
           "name": "diritto_gravante_terreno",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Diritto gravante sul terreno"
         },
         {
           "name": "id_compendio",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Identificativo del compendio immobiliare"
         },
         {
           "name": "descrizione_compendio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione del compendio immobiliare"
         },
         {
           "name": "tipologia_compendio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia del compendio immobiliare"
         },
         {
           "name": "utilizzo_bene",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Stato d'uso del bene (Utilizzato, Non utilizzato, Inutilizzabile, ...)"
         },
         {
           "name": "finalita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Finalità d'uso del bene (attività amministrativa, didattica, culturale, ...)"
         },
         {
           "name": "altra_finalita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Altra finalità d'uso del bene"
         },
         {
           "name": "ui_data_interamente_terzi",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "UI data interamente a terzi (Sì/No)"
         },
         {
           "name": "ui_data_parzialmente_terzi",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "UI data parzialmente a terzi (Sì/No)"
         }
       ],
       "location": {
@@ -12475,6 +12475,526 @@
         "type": "gcs",
         "path": "gs://dataciviclab-clean/terna_electricity_by_source/*/terna_electricity_by_source_*_clean.parquet",
         "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "unified_comuni",
+      "name": "Unified Comuni — metriche multi-dominio",
+      "description": "Dataset composito che unisce popolazione, redditi IRPEF, rifiuti urbani, consumo suolo e Fondo Solidarietà Comunale per comune italiano. Ogni riga = comune × anno. Fonte: JOIN tra dataset clean del DataCivicLab via comuni_master.",
+      "source": "DataCivICLab — dataset composito (ISTAT, MEF, ISPRA, OpenCivitas)",
+      "source_id": "dataciviclab_composite",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 cifre)"
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del comune"
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla della provincia"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione di appartenenza"
+        },
+        {
+          "name": "superficie_km2",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Superficie territoriale in km²"
+        },
+        {
+          "name": "altitudine",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Altitudine in metri"
+        },
+        {
+          "name": "popolazione_residente",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Popolazione residente totale"
+        },
+        {
+          "name": "maschi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Popolazione maschile"
+        },
+        {
+          "name": "femmine",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Popolazione femminile"
+        },
+        {
+          "name": "contribuenti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di contribuenti IRPEF"
+        },
+        {
+          "name": "reddito_imponibile_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Reddito imponibile IRPEF (€)"
+        },
+        {
+          "name": "reddito_complessivo_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Reddito complessivo IRPEF (€) — solo 2023+"
+        },
+        {
+          "name": "reddito_procapite",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Reddito procapite (imponibile/popolazione)"
+        },
+        {
+          "name": "reddito_lav_dip_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Reddito da lavoro dipendente (€)"
+        },
+        {
+          "name": "reddito_pensione_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Reddito da pensione (€)"
+        },
+        {
+          "name": "imposta_netta_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Imposta netta IRPEF (€)"
+        },
+        {
+          "name": "addizionale_comunale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Addizionale comunale all'IRPEF (€)"
+        },
+        {
+          "name": "addizionale_regionale_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Addizionale regionale all'IRPEF (€)"
+        },
+        {
+          "name": "ru_tonnellate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Rifiuti urbani totali (tonnellate)"
+        },
+        {
+          "name": "rd_tonnellate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Rifiuti urbani raccolta differenziata (tonnellate)"
+        },
+        {
+          "name": "rd_pct",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Percentuale di raccolta differenziata"
+        },
+        {
+          "name": "rd_procapite_kg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "RD procapite (kg/abitante)"
+        },
+        {
+          "name": "suolo_consumato_ha",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Stock suolo consumato (ettari) — 2024"
+        },
+        {
+          "name": "suolo_consumato_pct",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Percentuale di suolo consumato sul totale"
+        },
+        {
+          "name": "suolo_incremento_ha",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Incremento netto suolo consumato (ha) — 2023→2024"
+        },
+        {
+          "name": "popolazione_fsc",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Popolazione FSC (fonte OpenCivitas)"
+        },
+        {
+          "name": "capacita_fiscale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Capacità fiscale FSC (€)"
+        },
+        {
+          "name": "dotazione_finale_fsc",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Dotazione finale FSC (€)"
+        },
+        {
+          "name": "fondo_perequativo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Fondo perequativo FSC (€)"
+        },
+        {
+          "name": "imu_tasi_standard",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "IMU/TASI standard FSC (€)"
+        },
+        {
+          "name": "siope_entrate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Entrate correnti SIOPE (€)"
+        },
+        {
+          "name": "siope_uscite",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Uscite correnti SIOPE (€)"
+        },
+        {
+          "name": "siope_avanzo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Avanzo/disavanzo SIOPE entrate - uscite (€)"
+        },
+        {
+          "name": "siope_personale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Spese per personale SIOPE (€)"
+        },
+        {
+          "name": "siope_investimenti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Spese per investimenti SIOPE (€)"
+        },
+        {
+          "name": "siope_imposte_proprie",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Entrate da imposte proprie SIOPE (€)"
+        },
+        {
+          "name": "siope_fondi_perequativi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Entrate da fondi perequativi SIOPE (€)"
+        },
+        {
+          "name": "dipendenti_totali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Dipendenti PA totali"
+        },
+        {
+          "name": "dipendenti_assunti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Dipendenti PA assunti nell'anno"
+        },
+        {
+          "name": "dipendenti_cessati",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Dipendenti PA cessati nell'anno"
+        },
+        {
+          "name": "dipendenti_saldo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Saldo dipendenti PA assunti - cessati"
+        },
+        {
+          "name": "pnrr_progetti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero progetti PNRR"
+        },
+        {
+          "name": "pnrr_fin_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Finanziamento totale PNRR (€)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/unified_comuni/2026/unified_comuni_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "who_is_who_pa",
+      "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
+      "description": "Anagrafica completa della Pubblica Amministrazione italiana: enti, vertici, unità organizzative, AOO, contatti e protocollo informatico. Fonte: IPA IndicePA.",
+      "source": "AgID — Indice della Pubblica Amministrazione (indicepa.gov.it)",
+      "source_id": "ipa",
+      "period": {
+        "start": 2026,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_ipa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice IPA dell'ente"
+        },
+        {
+          "name": "denominazione_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ufficiale dell'ente"
+        },
+        {
+          "name": "codice_fiscale_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'ente"
+        },
+        {
+          "name": "codice_categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Categoria IPA (L6=comune, L4=regione, ...)"
+        },
+        {
+          "name": "tipologia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia IPA (PA=PA, GPS=gestore pubblico servizi)"
+        },
+        {
+          "name": "codice_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 cifre)"
+        },
+        {
+          "name": "acronimo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Acronimo dell'ente"
+        },
+        {
+          "name": "vertice_ente_titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo del vertice dell'ente (Sindaco, Presidente, ...)"
+        },
+        {
+          "name": "vertice_ente_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del vertice dell'ente"
+        },
+        {
+          "name": "vertice_ente_cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome del vertice dell'ente"
+        },
+        {
+          "name": "sito_istituzionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sito web istituzionale"
+        },
+        {
+          "name": "codice_uni_uo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice unità organizzativa (UNI)"
+        },
+        {
+          "name": "descrizione_uo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione unità organizzativa"
+        },
+        {
+          "name": "codice_uni_uo_padre",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice unità organizzativa padre"
+        },
+        {
+          "name": "uo_data_istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Data istituzione unità organizzativa"
+        },
+        {
+          "name": "uo_resp_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del responsabile UO"
+        },
+        {
+          "name": "uo_resp_cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome del responsabile UO"
+        },
+        {
+          "name": "uo_resp_email",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email del responsabile UO"
+        },
+        {
+          "name": "uo_resp_telefono",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Telefono del responsabile UO"
+        },
+        {
+          "name": "uo_mail",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email istituzionale UO"
+        },
+        {
+          "name": "uo_tipo_mail",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo email UO (certificata/ordinaria)"
+        },
+        {
+          "name": "uo_mail2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email secondaria UO"
+        },
+        {
+          "name": "uo_tipo_mail2",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo email secondaria UO"
+        },
+        {
+          "name": "codice_uni_aoo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Area Organizzativa Omogenea (AOO)"
+        },
+        {
+          "name": "denominazione_aoo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione AOO"
+        },
+        {
+          "name": "aoo_resp_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del responsabile AOO"
+        },
+        {
+          "name": "aoo_resp_cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome del responsabile AOO"
+        },
+        {
+          "name": "aoo_mail",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Email istituzionale AOO"
+        },
+        {
+          "name": "aoo_tipo_mail",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo email AOO (certificata/ordinaria)"
+        },
+        {
+          "name": "protocollo_informatico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indicatore presenza protocollo informatico"
+        },
+        {
+          "name": "uri_protocollo_informatico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI del protocollo informatico"
+        },
+        {
+          "name": "codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (dati IPA)"
+        },
+        {
+          "name": "codice_catastale_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale del comune"
+        },
+        {
+          "name": "cap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CAP della sede"
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo della sede"
+        },
+        {
+          "name": "ente_codice_comune_istat",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune dell'ente"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/who_is_who_pa/2026/who_is_who_pa_2026_clean.parquet",
+        "multi_file": false
       },
       "stage": "published",
       "registry_source": "derive_auto"
