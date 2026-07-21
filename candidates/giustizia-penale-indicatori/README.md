@@ -10,20 +10,19 @@ Il clearance rate (rapporto tra definiti e iscritti) e il disposition time (temp
 
 - **Ente**: Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa
 - **URL**: https://datiestatistiche.giustizia.it/page/it/clearance-rate-e-disposition-time-penale
-- **File**: https://datiestatistiche.giustizia.it/cmsresources/cms/documents/Indicatori_Penali_1.xlsx
+- **File**: https://datiestatistiche.giustizia.it/cmsresources/cms/documents/Indicatori_Penali.xlsx
 
 ## Perimetro
 
-Sheet "Tribunali" — Tribunali Ordinari, anni 2014–2024.
-
-Il file XLSX contiene 4 sheet (Tribunali, Corti d'Appello, Giudici di Pace, Tribunale per i Minorenni). Questo candidate copre solo il sheet Tribunali come v0.
+4 sheet unificati: **Tribunali**, **Corti d'Appello**, **Giudici di Pace**, **Tribunale per i Minorenni**.
+Serie completa 2014–2025.
 
 ## Schema
 
 | Colonna | Tipo | Descrizione |
 |---------|------|-------------|
 | anno | INTEGER | Anno di riferimento |
-| tipo_ufficio | VARCHAR | "Tribunale" |
+| tipo_ufficio | VARCHAR | Tipo ufficio (Tribunale, Corte d'Appello, Giudice di Pace, Minorenni) |
 | distretto | VARCHAR | Distretto di corte d'appello |
 | sede | VARCHAR | Comune della sede |
 | sezione | VARCHAR | Tipologia sezione (Dibattimento, GIP/GUP, ecc.) |
@@ -36,7 +35,7 @@ Mart aggregato per anno / distretto / tipo_ufficio con medie, min, max.
 
 ## Stato
 
-- incubating
+- incubating (update: 4 sheet unificati, anni 2014–2025)
 
 ## Prossimo passo
 

@@ -1,0 +1,45 @@
+# Candidate: intercettazioni
+# Issue: https://github.com/dataciviclab/dataset-incubator/issues/692
+# Fonte: Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa
+# URL: https://datiestatistiche.giustizia.it/it/intercettazioni.page
+# File XLSX: Intercettazioni.xlsx (2 sheet: Tutti gli uffici + Tipologia di reato)
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "intercettazioni"
+  source_id: "giustizia_statistiche"
+  years: [2025]
+  time_coverage:
+    start_year: 2014
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "intercettazioni_xlsx"
+      type: "http_file"
+      args:
+        url: "https://datiestatistiche.giustizia.it/cmsresources/cms/documents/Intercettazioni.xlsx"
+        filename: "Intercettazioni.xlsx"
+      primary: true
+
+clean:
+  read:
+    source: auto
+    mode: latest
+    header: true
+    sheet_name: "Tutti gli uffici"
+  sql: "sql/clean.sql"
+  validate:
+    min_rows: 3000
+
+mart:
+  tables:
+    - name: "intercettazioni"
+      sql: "sql/mart.sql"
+  validate: {}
+
+validation:
+  fail_on_error: true

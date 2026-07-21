@@ -1,0 +1,45 @@
+# Candidate: monitoraggio-mensile-civile
+# Issue: https://github.com/dataciviclab/dataset-incubator/issues/691
+# Fonte: Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa
+# URL: https://datiestatistiche.giustizia.it/page/it/monitoraggio-mensile-dei-tribunal
+# File XLSX: Monitoraggio_mensile.xlsx
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "monitoraggio_mensile_civile"
+  source_id: "giustizia_statistiche"
+  years: [2025]
+  time_coverage:
+    start_year: 2019
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "monitoraggio_mensile_xlsx"
+      type: "http_file"
+      args:
+        url: "https://datiestatistiche.giustizia.it/cmsresources/cms/documents/Monitoraggio_mensile.xlsx"
+        filename: "Monitoraggio_mensile.xlsx"
+      primary: true
+
+clean:
+  read:
+    source: auto
+    mode: latest
+    header: true
+    sheet_name: "DATA"
+  sql: "sql/clean.sql"
+  validate:
+    min_rows: 100000
+
+mart:
+  tables:
+    - name: "monitoraggio_mensile_civile"
+      sql: "sql/mart.sql"
+  validate: {}
+
+validation:
+  fail_on_error: true
