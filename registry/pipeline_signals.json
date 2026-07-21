@@ -32,16 +32,16 @@
     },
     {
       "id": "ade-cinque-per-mille",
-      "source_id": "",
+      "source_id": "ade",
       "status": "ok",
       "label": "ade-cinque-per-mille",
       "detail": "anni 2023-2025 — fonte: ? — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "28093698479",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28093698479",
-        "checked_at": "2026-06-24",
+        "run_id": "29826248891",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29826248891",
+        "checked_at": "2026-07-21",
         "years": [
           2023,
           2024,
