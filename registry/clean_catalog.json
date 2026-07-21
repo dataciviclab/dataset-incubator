@@ -4188,8 +4188,8 @@
     {
       "slug": "intercettazioni",
       "name": "Intercettazioni",
-      "description": "",
-      "source": "",
+      "description": "Bersagli intercettazioni per tipologia (telefoniche, ambientali, informatiche, trojan), distretto e tipo ufficio. Fonte: Ministero della Giustizia — DG Statistica.",
+      "source": "Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)",
       "source_id": "giustizia_statistiche",
       "period": {
         "start": 2014,
@@ -4199,32 +4199,32 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "tipo_ufficio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di procura (ordinaria, minorenni, generale)"
         },
         {
           "name": "distretto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Distretto di Corte d'Appello"
         },
         {
           "name": "tipologia_intercettazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia di intercettazione (Telefoniche, Ambientali, Informatiche, Trojan)"
         },
         {
           "name": "n_bersagli",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Numero di bersagli intercettati"
         }
       ],
       "location": {
@@ -8592,8 +8592,8 @@
     {
       "slug": "monitoraggio_mensile_civile",
       "name": "Monitoraggio Mensile Civile",
-      "description": "",
-      "source": "",
+      "description": "Iscritti e definiti civili per mese, sede e materia. Monitoraggio mensile dei tribunali. Fonte: Ministero della Giustizia — DG Statistica.",
+      "source": "Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)",
       "source_id": "giustizia_statistiche",
       "period": {
         "start": 2019,
@@ -8603,68 +8603,68 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "mese",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Mese (01-12)"
         },
         {
           "name": "fonte",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sistema fonte (SICID/SIECIC)"
         },
         {
           "name": "tipo_ufficio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di ufficio (Tribunale)"
         },
         {
           "name": "distretto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Distretto di Corte d'Appello"
         },
         {
           "name": "sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sede dell'ufficio giudiziario"
         },
         {
           "name": "materia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Materia del contendere"
         },
         {
           "name": "iscritti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Procedimenti iscritti (nuovi)"
         },
         {
           "name": "definiti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Procedimenti definiti (chiusi)"
         },
         {
           "name": "area",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Area geografica (Nord-ovest, Nord-est, Centro, Sud, Isole)"
         },
         {
           "name": "flag_dato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia dato (Consolidati/Provvisori)"
         }
       ],
       "location": {
@@ -9550,8 +9550,8 @@
     {
       "slug": "penale_flussi",
       "name": "Penale Flussi",
-      "description": "",
-      "source": "",
+      "description": "Flussi dei procedimenti penali: sopravvenuti, definiti e pendenti per ufficio giudiziario. Fonte: Ministero della Giustizia — DG Statistica.",
+      "source": "Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)",
       "source_id": "giustizia_statistiche",
       "period": {
         "start": 2014,
@@ -9561,50 +9561,50 @@
         {
           "name": "anno",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "tipo_ufficio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di ufficio giudiziario"
         },
         {
           "name": "sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Sezione/attività dell'ufficio"
         },
         {
           "name": "distretto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Distretto di Corte d'Appello"
         },
         {
           "name": "sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Circondario/sede dell'ufficio"
         },
         {
           "name": "sopravvenuti",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Procedimenti sopravvenuti (iscritti)"
         },
         {
           "name": "definiti_totale",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Procedimenti definiti (chiusi)"
         },
         {
           "name": "pendenti_finali",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Procedimenti pendenti a fine periodo"
         }
       ],
       "location": {
