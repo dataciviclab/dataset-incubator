@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 95,
+    "total": 98,
     "by_status": {
-      "ok": 95,
+      "ok": 98,
       "warn": 0,
       "error": 0
     }
@@ -511,15 +511,15 @@
       "source_id": "giustizia_statistiche",
       "status": "ok",
       "label": "giustizia-penale-indicatori",
-      "detail": "anno 2024 — fonte: tribunali_xlsx — mart: sì",
+      "detail": "anno 2025 — fonte: ? — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "26036106012",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26036106012",
-        "checked_at": "2026-05-18",
+        "run_id": "29842353692",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
+        "checked_at": "2026-07-21",
         "years": [
-          2024
+          2025
         ],
         "config_path": "candidates/giustizia-penale-indicatori/dataset.yml"
       }
@@ -558,6 +558,24 @@
           2020
         ],
         "config_path": "candidates/inps-rdc-pdc/dataset.yml"
+      }
+    },
+    {
+      "id": "intercettazioni",
+      "source_id": "giustizia_statistiche",
+      "status": "ok",
+      "label": "intercettazioni",
+      "detail": "anno 2025 — fonte: intercettazioni_xlsx — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29842353692",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
+        "checked_at": "2026-07-21",
+        "years": [
+          2025
+        ],
+        "config_path": "candidates/intercettazioni/dataset.yml"
       }
     },
     {
@@ -1018,6 +1036,24 @@
       }
     },
     {
+      "id": "monitoraggio-mensile-civile",
+      "source_id": "giustizia_statistiche",
+      "status": "ok",
+      "label": "monitoraggio-mensile-civile",
+      "detail": "anno 2025 — fonte: monitoraggio_mensile_xlsx — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29842353692",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
+        "checked_at": "2026-07-21",
+        "years": [
+          2025
+        ],
+        "config_path": "candidates/monitoraggio-mensile-civile/dataset.yml"
+      }
+    },
+    {
       "id": "mortalita-istat-evitabile",
       "source_id": "",
       "status": "ok",
@@ -1189,6 +1225,24 @@
           2026
         ],
         "config_path": "candidates/openga-ricorsi-cds/dataset.yml"
+      }
+    },
+    {
+      "id": "penale-flussi",
+      "source_id": "giustizia_statistiche",
+      "status": "ok",
+      "label": "penale-flussi",
+      "detail": "anno 2025 — fonte: flussi_penali_principale — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29842353692",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
+        "checked_at": "2026-07-21",
+        "years": [
+          2025
+        ],
+        "config_path": "candidates/penale-flussi/dataset.yml"
       }
     },
     {

@@ -3911,7 +3911,7 @@
       "source_id": "giustizia_statistiche",
       "period": {
         "start": 2014,
-        "end": 2024
+        "end": 2025
       },
       "columns": [
         {
@@ -3959,8 +3959,8 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/2024/giustizia_penale_indicatori_2024_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/*/giustizia_penale_indicatori_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "incubating",
       "registry_source": "derive_auto"
@@ -4180,6 +4180,56 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/inps_rdc_pdc/2020/inps_rdc_pdc_2020_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "intercettazioni",
+      "name": "Intercettazioni",
+      "description": "",
+      "source": "",
+      "source_id": "giustizia_statistiche",
+      "period": {
+        "start": 2014,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_intercettazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "n_bersagli",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/intercettazioni/2025/intercettazioni_2025_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
@@ -8540,6 +8590,92 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "monitoraggio_mensile_civile",
+      "name": "Monitoraggio Mensile Civile",
+      "description": "",
+      "source": "",
+      "source_id": "giustizia_statistiche",
+      "period": {
+        "start": 2019,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "fonte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "materia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "iscritti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "definiti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "area",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "flag_dato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/monitoraggio_mensile_civile/2025/monitoraggio_mensile_civile_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "mur_contribuzione_universitaria",
       "name": "MUR - Gettito della contribuzione universitaria",
       "description": "Gettito della contribuzione studentesca per ateneo e tipologia di entrata (2017-2024).",
@@ -9407,6 +9543,74 @@
         "type": "gcs",
         "path": "gs://dataciviclab-clean/openga_ricorsi_cds/*/openga_ricorsi_cds_*_clean.parquet",
         "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "penale_flussi",
+      "name": "Penale Flussi",
+      "description": "",
+      "source": "",
+      "source_id": "giustizia_statistiche",
+      "period": {
+        "start": 2014,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipo_ufficio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "distretto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sopravvenuti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "definiti_totale",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pendenti_finali",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/penale_flussi/2025/penale_flussi_2025_clean.parquet",
+        "multi_file": false
       },
       "stage": "published",
       "registry_source": "derive_auto"
