@@ -260,12 +260,14 @@ clean:
   - nome_sede
   - classificazione_ricorso
   - provincia
+  - codice_cig
   sql: sql/clean.sql
   validate:
     min_rows: 5
     not_null:
     - numero_ricorso
     - data_deposito_ricorso
+    - codice_cig
 mart:
   tables:
   - name: mart_ricorsi_sede_classificazione

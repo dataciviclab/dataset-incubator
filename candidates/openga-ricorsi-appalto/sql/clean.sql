@@ -23,8 +23,4 @@ SELECT
     TRY_CAST("DATA_SCADENZA_OFFERTA" AS DATE) AS data_scadenza_offerta,
     normalize_string("CF_AMMINISTRAZIONE_APPALTANTE") AS cf_amministrazione_appaltante,
     normalize_string("DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE") AS denominazione_amministrazione_appaltante
-FROM read_csv_auto(
-    '{root}/data/raw/openga_ricorsi_appalto/{year}/*.csv',
-    union_by_name=true,
-    header=true
-)
+FROM raw_input
