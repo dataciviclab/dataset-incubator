@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "template_dataset"
+  source_id: "ente_fonte"     # opzionale — per tracciabilità source-observatory
   years: [2024]
 
 # --- RAW LAYER ---
@@ -20,13 +21,24 @@ raw:
 # Poi revisiona sql/clean.sql e clean.read prima del run completo.
 clean:
   sql: "sql/clean.sql"
+  read_mode: "fallback"  # strict | fallback | robust
   # Parametri non-default: delim, encoding, decimal, columns, skip, ecc.
   # read:
   #   delim: ";"
   #   encoding: "utf-8"
+
+  validate:
+    min_rows: 1       # almeno una riga
+    # not_null: ["colonna1", "colonna2"]  # colonne che non devono essere NULL
 
 # --- MART LAYER ---
 mart:
   tables:
     - name: "mart_template"
       sql: "sql/mart.sql"
+  required_tables:
+    - "mart_template"
+  validate:
+    table_rules:
+      mart_template:
+        min_rows: 1
