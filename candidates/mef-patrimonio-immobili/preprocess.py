@@ -104,7 +104,11 @@ def main():
     ademp_url = ADEMPIMENTI_URL.format(year=year)
     print(f"[preprocess] Download adempimenti: {ademp_url}", file=sys.stderr)
     with urlopen(ademp_url) as resp:
-        ademp_raw = resp.read().decode("utf-8-sig")
+        raw = resp.read()
+    try:
+        ademp_raw = raw.decode("utf-8-sig")
+    except UnicodeDecodeError:
+        ademp_raw = raw.decode("latin-1")
 
     reader = csv.DictReader(io.StringIO(ademp_raw), delimiter=";")
     csv_names = set()
