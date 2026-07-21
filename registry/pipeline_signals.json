@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 98,
+    "total": 99,
     "by_status": {
-      "ok": 98,
+      "ok": 99,
       "warn": 0,
       "error": 0
     }
@@ -504,6 +504,27 @@
           2024
         ],
         "config_path": "candidates/fts-eu-grants/dataset.yml"
+      }
+    },
+    {
+      "id": "ga-sentenze",
+      "source_id": "openga",
+      "status": "ok",
+      "label": "ga-sentenze",
+      "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29850059857",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29850059857",
+        "checked_at": "2026-07-21",
+        "years": [
+          2023,
+          2024,
+          2025,
+          2026
+        ],
+        "config_path": "candidates/ga-sentenze/dataset.yml"
       }
     },
     {
