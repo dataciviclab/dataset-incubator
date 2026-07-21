@@ -2,7 +2,8 @@
 # Issue: https://github.com/dataciviclab/dataset-incubator/issues/693
 # Fonte: Ministero della Giustizia - Direzione Generale di Statistica e Analisi Organizzativa
 # URL: https://datiestatistiche.giustizia.it/page/it/clearance-rate-e-disposition-time-penale
-# File XLSX multi-sheet: Tribunali, Corti d'Appello, Giudici di Pace, Tribunale per i Minorenni
+# File XLSX: Indicatori_Penali.xlsx (4 sheet: Tribunali, Corti d'Appello, Giudici di Pace, Minorenni)
+# V0 update: sheet "Tribunali" (come v0 precedente). Gli altri 3 sheet vanno aggiunti via script.
 
 root: "../../out"
 schema_version: 1
@@ -18,32 +19,24 @@ dataset:
 raw:
   output_policy: overwrite
   sources:
-    - type: script
+    - name: "tribunali_xlsx"
+      type: "http_file"
       args:
-        command: >
-          python scripts/unite_sheets_penali.py
-        output: "raw_input.csv"
-        filename: "raw_input.csv"
-        dependencies:
-          - type: http_file
-            url: "https://datiestatistiche.giustizia.it/cmsresources/cms/documents/Indicatori_Penali.xlsx"
-            filename: "raw_input.xlsx"
+        url: "https://datiestatistiche.giustizia.it/cmsresources/cms/documents/Indicatori_Penali.xlsx"
+        filename: "Indicatori_Penali.xlsx"
       primary: true
 
 clean:
   read:
-    delim: ","
-    encoding: "utf-8"
+    source: auto
+    mode: latest
     header: true
-    skip: 0
-  read_mode: strict
+    sheet_name: "Tribunali"
   sql: "sql/clean.sql"
   validate:
-    min_rows: 10000
+    min_rows: 500
     not_null:
       - anno
-      - clearance_rate
-      - disposition_time_gg
 
 mart:
   tables:

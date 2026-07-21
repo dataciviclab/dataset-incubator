@@ -5,7 +5,7 @@ SELECT
     tipo_ufficio,
     distretto,
     COUNT(*) AS n_combinazioni,
-    SUM(iscritti) AS tot_iscritti,
+    SUM(sopravvenuti) AS tot_sopravvenuti,
     SUM(definiti_totale) AS tot_definiti,
     SUM(pendenti_finali) AS tot_pendenti
 FROM clean_input
