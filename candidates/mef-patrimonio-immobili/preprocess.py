@@ -117,7 +117,9 @@ def main():
         if fname:
             csv_names.add(fname)
 
-    print(f"[preprocess] Trovati {len(csv_names)} file da scaricare", file=sys.stderr)
+    total_expected = len(csv_names)
+    total_ok = 0
+    print(f"[preprocess] Trovati {total_expected} file da scaricare", file=sys.stderr)
 
     total_rows = 0
     with open(output_path, "w", newline="", encoding="utf-8") as fout:
@@ -148,6 +150,7 @@ def main():
                 print(f"[preprocess] ERRORE lettura {base_zip}: {e}", file=sys.stderr)
                 continue
 
+            total_ok += 1
             rows_this = 0
             reader = csv.DictReader(io.StringIO(content), delimiter=";")
             for row in reader:
@@ -157,6 +160,10 @@ def main():
             print(
                 f"[preprocess] {base_zip}: +{rows_this} righe (tot {total_rows})", file=sys.stderr
             )
+
+    if total_ok < total_expected:
+        print(f"[preprocess] FATAL: processati {total_ok}/{total_expected} file", file=sys.stderr)
+        sys.exit(1)
 
     print(f"[preprocess] Fatto: {total_rows} righe scritte in {output_path}", file=sys.stderr)
 

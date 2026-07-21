@@ -8,8 +8,8 @@ Detenzioni a favore di terzi di immobili pubblici: chi usa beni pubblici e a qua
 
 ## Copertura
 
-- 2023: ~630K detenzioni (non processato)
-- 2022: ~600K (non processato)
+- 2023: ~630K detenzioni, 31 file mergiati
+- 2022: ~600K (stimato)
 
 ## Granularità
 

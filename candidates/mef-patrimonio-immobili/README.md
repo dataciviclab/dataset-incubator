@@ -8,8 +8,8 @@ Catalogo completo degli immobili pubblici italiani dichiarati dalle PA (censimen
 
 ## Copertura
 
-- 2023: 3.257.044 immobili (100% georeferenziati)
-- 2022: ~3M (non processato)
+- 2023: 3.257.044 immobili (100% georeferenziati), 31 file mergiati
+- 2022: ~3M (stimato), 12 file mergiati
 
 ## Granularità
 
