@@ -1,7 +1,7 @@
 -- Clean layer: Giustizia penale - clearance rate e disposition time
 -- 4 sheet unificati: Tribunali, Corti d'Appello, Giudici di Pace, Minorenni
 -- Fonte: Ministero della Giustizia (Indicatori_Penali.xlsx)
--- V0: solo sheet "Tribunali"
+-- Script: unite_sheets_penali.py scarica XLSX e unisce i 4 sheet in CSV
 
 SELECT
     cast_int("Anno") AS anno,

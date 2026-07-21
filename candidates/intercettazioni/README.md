@@ -8,7 +8,7 @@ Bersagli intercettazioni per tipologia, ufficio e distretto.
 - **File**: `Intercettazioni.xlsx`, sheet "Tutti gli uffici"
 - **Copertura**: 2014–2025 (+ anni isolati 1994, 2011)
 - **Sheet**:
-  - **Tutti gli uffici** (v0): anno, tipo ufficio, distretto, tipologia intercettazione, n. bersagli — 3.953 righe
+  - **Tutti gli uffici** (v0): anno, tipo ufficio, distretto, tipologia intercettazione, n. bersagli — 3.952 righe
   - **Tipologia di reato** (v1): aggiunge tipo di reato (ordinaria, DDA/mafia, terrorismo) — 3.589 righe
 - **Tipologie intercettazione**: Telefoniche, Ambientali, Informatiche, Trojan
 - **Uffici**: Procura ordinaria, Procura Minorenni, Procura Generale

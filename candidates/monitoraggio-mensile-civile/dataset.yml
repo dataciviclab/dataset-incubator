@@ -34,12 +34,29 @@ clean:
   sql: "sql/clean.sql"
   validate:
     min_rows: 100000
+    not_null:
+      - anno
+      - mese
+      - distretto
+  required_columns:
+    - anno
+    - mese
+    - distretto
+    - sede
+    - materia
+    - iscritti
+    - definiti
 
 mart:
   tables:
     - name: "monitoraggio_mensile_civile"
       sql: "sql/mart.sql"
-  validate: {}
+  required_tables:
+    - "monitoraggio_mensile_civile"
+  validate:
+    table_rules:
+      monitoraggio_mensile_civile:
+        min_rows: 1
 
 validation:
   fail_on_error: true

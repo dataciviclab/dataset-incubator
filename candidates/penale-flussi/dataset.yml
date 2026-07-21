@@ -35,12 +35,28 @@ clean:
   sql: "sql/clean.sql"
   validate:
     min_rows: 15000
+    not_null:
+      - anno
+      - tipo_ufficio
+      - sopravvenuti
+  required_columns:
+    - anno
+    - tipo_ufficio
+    - distretto
+    - sopravvenuti
+    - definiti_totale
+    - pendenti_finali
 
 mart:
   tables:
     - name: "penale_flussi"
       sql: "sql/mart.sql"
-  validate: {}
+  required_tables:
+    - "penale_flussi"
+  validate:
+    table_rules:
+      penale_flussi:
+        min_rows: 1
 
 validation:
   fail_on_error: true

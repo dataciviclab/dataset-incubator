@@ -10,7 +10,7 @@ Monitoraggio mensile dei tribunali: iscritti e definiti civili per mese, sede e 
 - **Granularità**: sede/mese — 26 distretti, 5 macro-aree (Nord, Centro, Sud, Isole)
 - **Materie**: Affari contenziosi, Lavoro, Previdenza, Procedimenti speciali sommari, Volontaria giurisdizione
 - **Metriche**: iscritti, definiti (con flag consolidati/provvisori)
-- **Righe**: 139.114
+- **Righe**: 139.113
 - **Run**: `toolkit run all --config candidates/monitoraggio-mensile-civile/dataset.yml --years 2025` ✅
 - **Licenza**: dati pubblici (Italian Open Data License v2.0)
 

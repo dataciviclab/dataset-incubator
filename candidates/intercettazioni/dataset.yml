@@ -34,12 +34,26 @@ clean:
   sql: "sql/clean.sql"
   validate:
     min_rows: 3000
+    not_null:
+      - anno
+      - distretto
+      - tipologia_intercettazione
+  required_columns:
+    - anno
+    - distretto
+    - tipologia_intercettazione
+    - n_bersagli
 
 mart:
   tables:
     - name: "intercettazioni"
       sql: "sql/mart.sql"
-  validate: {}
+  required_tables:
+    - "intercettazioni"
+  validate:
+    table_rules:
+      intercettazioni:
+        min_rows: 1
 
 validation:
   fail_on_error: true
