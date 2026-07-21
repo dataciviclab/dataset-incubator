@@ -5,12 +5,13 @@ Monitoraggio mensile dei tribunali: iscritti e definiti civili per mese, sede e 
 ## Dati
 
 - **Fonte**: Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)
-- **File**: `Monitoraggio_mensile.xlsx`
+- **File**: `Monitoraggio_mensile.xlsx`, sheet "DATA"
 - **Copertura**: 2019–2025 (dati mensili)
 - **Granularità**: sede/mese — 26 distretti, 5 macro-aree (Nord, Centro, Sud, Isole)
 - **Materie**: Affari contenziosi, Lavoro, Previdenza, Procedimenti speciali sommari, Volontaria giurisdizione
 - **Metriche**: iscritti, definiti (con flag consolidati/provvisori)
-- **Righe**: ~139K
+- **Righe**: 139.114
+- **Run**: `toolkit run all --config candidates/monitoraggio-mensile-civile/dataset.yml --years 2025` ✅
 - **Licenza**: dati pubblici (Italian Open Data License v2.0)
 
 ## Join possibili

@@ -1,20 +1,19 @@
 # Note tecniche — intercettazioni
 
 ## Raw
-- File XLSX unico multi-anno
-- 3 sheet: "Read me" (metadati), "Tutti gli uffici" (v0), "Tipologia di reato" (v1)
-- v0: 3.953 righe, v1: 3.589 righe
+- File XLSX unico multi-anno (2014-2025 + anni isolati 1994, 2011)
+- 3 sheet: "Read me" (metadati), "Tutti gli uffici" (v0, 3.953 righe), "Tipologia di reato" (v1, 3.589 righe)
+- Sheet "Tutti gli uffici": colonne verificate — Anno, Tipo ufficio, Distretto, Tipologia di intercettazione, Numero di bersagli
 
 ## Clean
-- Sheet "Tutti gli uffici": colonne Anno, Tipo ufficio, Distretto, Tipologia di intercettazione, Numero di bersagli
-- Sheet "Tipologia di reato": aggiunge la colonna "Tipologia di reato"
-- Procure: ordinaria + minorenni + generale
+- Clean v0: solo sheet "Tutti gli uffici"
+- "Tipologia di intercettazione" ha valori: "Bersagli Intercettazioni Telefoniche", "Bersagli Intercettazioni Ambientali", "Bersagli Intercettazioni Informatiche", "Bersagli Intercettazioni Trojan"
+- Procure: ordinaria + minorenni + generale (26 distretti)
 
 ## Mart
 - Aggregazione per distretto e tipologia
 
 ## Da fare
-- [ ] Verificare sheet_name esatto (spazi? accenti?)
-- [ ] Run v0 su anno campione (solo "Tutti gli uffici")
-- [ ] v1: unire anche sheet "Tipologia di reato"
+- [x] Run v0 su anno campione (2025) — 3.953 righe OK
+- [ ] v1: unire anche sheet "Tipologia di reato" (distinzione DDA/ordinaria/terrorismo)
 - [ ] Notebook esplorativo: trend nazionale, mappa per distretto
