@@ -60,7 +60,7 @@
       "name": "5x1000 — Beneficiari e importi per ente",
       "description": "Elenco enti beneficiari del 5x1000 dell'Agenzia delle Entrate, con importi erogabili, flag categoria (ETS, ASD, ricerca, comune, beni culturali, area protetta) e ripartizione territoriale per regione.",
       "source": "Agenzia delle Entrate",
-      "source_id": "",
+      "source_id": "ade",
       "period": {
         "start": 2023,
         "end": 2025
