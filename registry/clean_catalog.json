@@ -3905,9 +3905,9 @@
     },
     {
       "slug": "ga_sentenze",
-      "name": "Ga Sentenze",
-      "description": "",
-      "source": "",
+      "name": "Sentenze Giustizia Amministrativa (OpenGA)",
+      "description": "Sentenze del Consiglio di Stato e dei Tribunali Amministrativi Regionali, unificate da 31 sedi giudiziarie. Include esito del provvedimento, tipo ricorso, oggetto e data. Fonte: portale OpenGA della Giustizia Amministrativa.",
+      "source": "Giustizia Amministrativa — OpenGA",
       "source_id": "openga",
       "period": {
         "start": 2023,
@@ -3917,104 +3917,104 @@
         {
           "name": "anno",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di pubblicazione della sentenza"
         },
         {
           "name": "codice_sede",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice identificativo della sede giudiziaria"
         },
         {
           "name": "nome_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della sede (es. TAR LAZIO - ROMA, CdS GIURISDIZIONALE - ROMA)"
         },
         {
           "name": "codice_sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice della sezione interna"
         },
         {
           "name": "nome_sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della sezione interna"
         },
         {
           "name": "numero_provvedimento",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Numero identificativo del provvedimento"
         },
         {
           "name": "numero_ricorso",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Numero del ricorso — chiave di join con altri dataset GA"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di pubblicazione della sentenza"
         },
         {
           "name": "mese_pubblicazione",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Mese di pubblicazione (formato YYYYMM)"
         },
         {
           "name": "esito_provvedimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Esito della sentenza (ACCOGLIE, RESPINGE, ecc.)"
         },
         {
           "name": "flg_definisce",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indica se il provvedimento definisce il ricorso (D) o meno"
         },
         {
           "name": "data_deposito_ricorso",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di deposito del ricorso"
         },
         {
           "name": "oggetto_ricorso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione testuale dell'oggetto del ricorso"
         },
         {
           "name": "tipo_ricorso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia del ricorso (ORDINARIO, RITO APPALTI, APPELLO, ecc.)"
         },
         {
           "name": "tipo_udienza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di udienza (UDIENZA PUBBLICA, CAMERA DI CONSIGLIO)"
         },
         {
           "name": "num_membri_collegio",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di membri del collegio giudicante"
         },
         {
           "name": "tipo_provvedimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di provvedimento (SENTENZA)"
         }
       ],
       "location": {
@@ -4023,7 +4023,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "manual"
     },
     {
       "slug": "giustizia_penale_indicatori",
