@@ -1,0 +1,280 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ga_sentenze"
+  source_id: "openga"
+  years: [2023, 2024, 2025, 2026]
+  time_coverage:
+    start_year: 2023
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: cds
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "cds-sentenze"
+        resource_name: "CDS - Sentenze - {year}"
+        filename: "cds-sentenze-{year}.csv"
+      primary: true
+    - name: cga_sicilia
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "cga-sicilia-sentenze"
+        resource_name: "CGA Sicilia - Sentenze - {year}"
+        filename: "cga-sicilia-sentenze-{year}.csv"
+    - name: tar_abruzzo_l_aquila
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-abruzzo-l-aquila-sentenze"
+        resource_name: "TAR Abruzzo - L’Aquila - Sentenze - {year}"
+        filename: "tar-abruzzo-l-aquila-sentenze-{year}.csv"
+    - name: tar_abruzzo_pescara
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-abruzzo-pescara-sentenze"
+        resource_name: "TAR Abruzzo - Pescara - Sentenze - {year}"
+        filename: "tar-abruzzo-pescara-sentenze-{year}.csv"
+    - name: tar_basilicata
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-basilicata-sentenze"
+        resource_name: "TAR Basilicata - Sentenze - {year}"
+        filename: "tar-basilicata-sentenze-{year}.csv"
+    - name: tar_calabria_catanzaro
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-calabria-catanzaro-sentenze"
+        resource_name: "TAR Calabria - Catanzaro - Sentenze - {year}"
+        filename: "tar-calabria-catanzaro-sentenze-{year}.csv"
+    - name: tar_calabria_reggio_calabria
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-calabria-reggio-calabria-sentenze"
+        resource_name: "TAR Calabria - Reggio Calabria - Sentenze - {year}"
+        filename: "tar-calabria-reggio-calabria-sentenze-{year}.csv"
+    - name: tar_campania_napoli
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-campania-napoli-sentenze"
+        resource_name: "TAR Campania - Napoli - Sentenze - {year}"
+        filename: "tar-campania-napoli-sentenze-{year}.csv"
+    - name: tar_campania_salerno
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-campania-salerno-sentenze"
+        resource_name: "TAR Campania - Salerno - Sentenze - {year}"
+        filename: "tar-campania-salerno-sentenze-{year}.csv"
+    - name: tar_emilia_romagna_bologna
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-emilia-romagna-bologna-sentenze"
+        resource_name: "TAR Emilia Romagna - Bologna - Sentenze - {year}"
+        filename: "tar-emilia-romagna-bologna-sentenze-{year}.csv"
+    - name: tar_emilia_romagna_parma
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-emilia-romagna-parma-sentenze"
+        resource_name: "TAR Emilia Romagna - Parma - Sentenze - {year}"
+        filename: "tar-emilia-romagna-parma-sentenze-{year}.csv"
+    - name: tar_friuli_venezia_giulia
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-friuli-venezia-giulia-sentenze"
+        resource_name: "TAR Friuli Venezia Giulia - Sentenze - {year}"
+        filename: "tar-friuli-venezia-giulia-sentenze-{year}.csv"
+    - name: tar_lazio_latina
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-lazio-latina-sentenze"
+        resource_name: "TAR Lazio - Latina - Sentenze - {year}"
+        filename: "tar-lazio-latina-sentenze-{year}.csv"
+    - name: tar_lazio_roma
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-lazio-roma-sentenze"
+        resource_name: "TAR Lazio - Roma - Sentenze - {year}"
+        filename: "tar-lazio-roma-sentenze-{year}.csv"
+    - name: tar_liguria
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-liguria-sentenze"
+        resource_name: "TAR Liguria - Sentenze - {year}"
+        filename: "tar-liguria-sentenze-{year}.csv"
+    - name: tar_lombardia_brescia
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-lombardia-brescia-sentenze"
+        resource_name: "TAR Lombardia - Brescia - Sentenze - {year}"
+        filename: "tar-lombardia-brescia-sentenze-{year}.csv"
+    - name: tar_lombardia_milano
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-lombardia-milano-sentenze"
+        resource_name: "TAR Lombardia - Milano - Sentenze - {year}"
+        filename: "tar-lombardia-milano-sentenze-{year}.csv"
+    - name: tar_marche
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-marche-sentenze"
+        resource_name: "TAR Marche - Sentenze - {year}"
+        filename: "tar-marche-sentenze-{year}.csv"
+    - name: tar_molise
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-molise-sentenze"
+        resource_name: "TAR Molise - Sentenze - {year}"
+        filename: "tar-molise-sentenze-{year}.csv"
+    - name: tar_piemonte
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-piemonte-sentenze"
+        resource_name: "TAR Piemonte - Sentenze - {year}"
+        filename: "tar-piemonte-sentenze-{year}.csv"
+    - name: tar_puglia_bari
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-puglia-bari-sentenze"
+        resource_name: "TAR Puglia - Bari - Sentenze - {year}"
+        filename: "tar-puglia-bari-sentenze-{year}.csv"
+    - name: tar_puglia_lecce
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-puglia-lecce-sentenze"
+        resource_name: "TAR Puglia - Lecce - Sentenze - {year}"
+        filename: "tar-puglia-lecce-sentenze-{year}.csv"
+    - name: tar_sardegna
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-sardegna-sentenze"
+        resource_name: "TAR Sardegna - Sentenze - {year}"
+        filename: "tar-sardegna-sentenze-{year}.csv"
+    - name: tar_sicilia_catania
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-sicilia-catania-sentenze"
+        resource_name: "TAR Sicilia - Catania - Sentenze - {year}"
+        filename: "tar-sicilia-catania-sentenze-{year}.csv"
+    - name: tar_sicilia_palermo
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-sicilia-palermo-sentenze"
+        resource_name: "TAR Sicilia - Palermo - Sentenze - {year}"
+        filename: "tar-sicilia-palermo-sentenze-{year}.csv"
+    - name: tar_toscana
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-toscana-sentenze"
+        resource_name: "TAR Toscana - Sentenze - {year}"
+        filename: "tar-toscana-sentenze-{year}.csv"
+    - name: tar_umbria
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-umbria-sentenze"
+        resource_name: "TAR Umbria - Sentenze - {year}"
+        filename: "tar-umbria-sentenze-{year}.csv"
+    - name: tar_valle_d_aosta
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-valle-d-aosta-sentenze"
+        resource_name: "TAR Valle d’Aosta - Sentenze - {year}"
+        filename: "tar-valle-d-aosta-sentenze-{year}.csv"
+    - name: tar_veneto
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "tar-veneto-sentenze"
+        resource_name: "TAR Veneto - Sentenze - {year}"
+        filename: "tar-veneto-sentenze-{year}.csv"
+    - name: trga_bolzano
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "trga-bolzano-sentenze"
+        resource_name: "TRGA - Bolzano - Sentenze - {year}"
+        filename: "trga-bolzano-sentenze-{year}.csv"
+    - name: trga_trento
+      type: ckan
+      args:
+        portal_url: "https://openga.giustizia-amministrativa.it"
+        dataset_id: "trga-trento-sentenze"
+        resource_name: "TRGA - Trento - Sentenze - {year}"
+        filename: "trga-trento-sentenze-{year}.csv"
+
+clean:
+  read:
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  required_columns:
+    - "anno"
+    - "codice_sede"
+    - "nome_sede"
+    - "numero_ricorso"
+    - "esito_provvedimento"
+  sql: "sql/clean.sql"
+  validate:
+    min_rows: 100
+    not_null:
+      - "numero_ricorso"
+      - "data_pubblicazione"
+    primary_key: ["numero_provvedimento", "anno"]
+
+mart:
+  tables:
+    - name: "mart_esiti_per_sede"
+      sql: "sql/mart_esiti_sede.sql"
+    - name: "mart_esiti_per_tipo"
+      sql: "sql/mart_esiti_tipo.sql"
+  required_tables:
+    - "mart_esiti_per_sede"
+  validate:
+    table_rules:
+      mart_esiti_per_sede:
+        required_columns:
+          - anno
+          - codice_sede
+          - nome_sede
+          - esito_provvedimento
+          - totale
+        min_rows: 5
+      mart_esiti_per_tipo:
+        required_columns:
+          - anno
+          - tipo_ricorso
+          - esito_provvedimento
+          - totale
+        min_rows: 5
+
+validation:
+  fail_on_error: true
