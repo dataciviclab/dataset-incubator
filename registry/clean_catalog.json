@@ -4023,7 +4023,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "manual"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "giustizia_penale_indicatori",

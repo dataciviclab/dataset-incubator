@@ -1211,13 +1211,13 @@
       "source_id": "openga",
       "status": "ok",
       "label": "openga-ricorsi-appalto",
-      "detail": "anni 2023-2026 — fonte: ga_ricorsi_appalto_ckan — mart: sì",
+      "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "27473807844",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27473807844",
-        "checked_at": "2026-06-13",
+        "run_id": "29862613823",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29862613823",
+        "checked_at": "2026-07-21",
         "years": [
           2023,
           2024,
