@@ -1,0 +1,46 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mef_patrimonio_detenzioni"
+  source_id: "mef_de"
+  years: [2022, 2023]
+  time_coverage:
+    mode: full_series
+    start_year: 2022
+    end_year: 2023
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python preprocess.py {year} raw_detenzioni_{year}.csv"
+        output: "raw_detenzioni_{year}.csv"
+        filename: "raw_detenzioni_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    mode: latest
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    quote: '"'
+  validate:
+    min_rows: 100000
+
+mart:
+  tables:
+    - name: "mef_patrimonio_detenzioni"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mef_patrimonio_detenzioni"
+  validate:
+    table_rules:
+      mef_patrimonio_detenzioni:
+        min_rows: 100000
+
+validation:
+  fail_on_error: true

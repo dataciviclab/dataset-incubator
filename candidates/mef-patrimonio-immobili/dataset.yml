@@ -1,0 +1,46 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mef_patrimonio_immobili"
+  source_id: "mef_de"
+  years: [2022, 2023]
+  time_coverage:
+    mode: full_series
+    start_year: 2022
+    end_year: 2023
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python preprocess.py {year} raw_immobili_{year}.csv"
+        output: "raw_immobili_{year}.csv"
+        filename: "raw_immobili_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    mode: latest
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    quote: '"'
+  validate:
+    min_rows: 1000000
+
+mart:
+  tables:
+    - name: "mef_patrimonio_immobili"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mef_patrimonio_immobili"
+  validate:
+    table_rules:
+      mef_patrimonio_immobili:
+        min_rows: 1000000
+
+validation:
+  fail_on_error: true
