@@ -35,6 +35,7 @@ Se tocchi `candidates/`:
 - [ ] output immagini cleared dal notebook (rimuovere `image/png`)
 - [ ] notebook nominato `{slug}_v0.ipynb`, nessun path assoluto di macchina
 - [ ] issue di intake collegata
+- [ ] `sql/clean.sql` usa le **macro standard del toolkit** dove applicabile (`normalize_string`, `cast_int`, `cast_double`, `normalize_italian_number`, `decode_flag` — vedi toolkit/docs/standard-macros.md)
 
 ## Verifica
 
