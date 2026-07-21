@@ -1,8 +1,9 @@
 # Candidate: Giustizia penale - clearance rate e disposition time
-# Issue: https://github.com/dataciviclab/dataset-incubator/issues/266
+# Issue: https://github.com/dataciviclab/dataset-incubator/issues/693
 # Fonte: Ministero della Giustizia - Direzione Generale di Statistica e Analisi Organizzativa
 # URL: https://datiestatistiche.giustizia.it/page/it/clearance-rate-e-disposition-time-penale
-# File XLSX multi-sheet: Tribunali, Corti d'Appello, Giudici di Pace, Tribunale per i Minorenni
+# File XLSX: Indicatori_Penali.xlsx (4 sheet: Tribunali, Corti d'Appello, Giudici di Pace, Minorenni)
+# Script: unite_sheets_penali.py — scarica XLSX e unisce i 4 sheet in un unico CSV
 
 root: "../../out"
 schema_version: 1
@@ -10,31 +11,41 @@ schema_version: 1
 dataset:
   name: "giustizia_penale_indicatori"
   source_id: "giustizia_statistiche"
-  # File unico multi-anno (2014-2024); years indica l'anno del source file iterato da toolkit
-  years: [2024]
+  years: [2025]
   time_coverage:
     start_year: 2014
-    end_year: 2024
+    end_year: 2025
 
 raw:
   output_policy: overwrite
   sources:
-    - name: "tribunali_xlsx"
-      type: "http_file"
+    - type: script
       args:
-        url: "https://datiestatistiche.giustizia.it/cmsresources/cms/documents/Indicatori_Penali_1.xlsx"
-        filename: "Indicatori_Penali_1.xlsx"
+        command: "python scripts/unite_sheets_penali.py --output raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
       primary: true
 
 clean:
   read:
-    source: auto
-    mode: latest
+    delim: ","
+    encoding: "utf-8"
     header: true
-    sheet_name: "Tribunali"
+    skip: 0
+  read_mode: strict
   sql: "sql/clean.sql"
+  validate:
+    min_rows: 10000
+    not_null:
+      - anno
 
 mart:
   tables:
     - name: "giustizia_penale_indicatori"
       sql: "sql/mart.sql"
+  required_tables:
+    - "giustizia_penale_indicatori"
+  validate:
+    table_rules:
+      giustizia_penale_indicatori:
+        min_rows: 1

@@ -1,0 +1,62 @@
+# Candidate: penale-flussi
+# Issue: https://github.com/dataciviclab/dataset-incubator/issues/690
+# Fonte: Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa
+# URL: https://datiestatistiche.giustizia.it/page/it/giustizia-flussi-per-ufficio-penale
+# File XLSX: PenaleFlussi20142025.xlsx (sheet "Data")
+# V0: solo file principale 2014-2025. Storico 2005-2013 ha struttura multi-sheet diversa.
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "penale_flussi"
+  source_id: "giustizia_statistiche"
+  years: [2025]
+  time_coverage:
+    start_year: 2014
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "flussi_penali_principale"
+      type: "http_file"
+      args:
+        url: "https://datiestatistiche.giustizia.it/cmsresources/cms/documents/PenaleFlussi20142025.xlsx"
+        filename: "PenaleFlussi20142025.xlsx"
+      primary: true
+
+clean:
+  read:
+    source: auto
+    mode: latest
+    header: true
+    sheet_name: "Data"
+  sql: "sql/clean.sql"
+  validate:
+    min_rows: 15000
+    not_null:
+      - anno
+      - tipo_ufficio
+      - sopravvenuti
+  required_columns:
+    - anno
+    - tipo_ufficio
+    - distretto
+    - sopravvenuti
+    - definiti_totale
+    - pendenti_finali
+
+mart:
+  tables:
+    - name: "penale_flussi"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "penale_flussi"
+  validate:
+    table_rules:
+      penale_flussi:
+        min_rows: 1
+
+validation:
+  fail_on_error: true
