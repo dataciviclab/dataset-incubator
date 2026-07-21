@@ -7093,6 +7093,12 @@
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento del censimento"
+        },
+        {
           "name": "id_variazione",
           "type": "BIGINT",
           "role": "dimension",
@@ -7263,6 +7269,12 @@
       },
       "columns": [
         {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento del censimento"
+        },
+        {
           "name": "settore_istituzionale",
           "type": "VARCHAR",
           "role": "dimension",
@@ -7390,6 +7402,12 @@
         "end": 2023
       },
       "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento del censimento"
+        },
         {
           "name": "settore_istituzionale",
           "type": "VARCHAR",
