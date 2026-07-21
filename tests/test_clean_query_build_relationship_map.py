@@ -36,12 +36,13 @@ class TestBuildRelationshipMap:
         assert expected_keys.issubset(keys.keys())
 
     def test_codice_istat_has_population(self):
-        """codice_istat deve contenere popolazione tra i suoi dataset."""
+        """codice_istat deve contenere popolazione e dipendenti_pubblici (via bridge BDAP)."""
         result = build_relationship_map.build()
         keys = result["registries"]["comuni_master"]["keys"]
         istat_slugs = {d["slug"] for d in keys["codice_istat"]["datasets"]}
         assert "popolazione_istat_comunale_2019_2025" in istat_slugs
         assert "irpef_comunale" in istat_slugs
+        assert "dipendenti_pubblici" in istat_slugs  # via bridge BDAP
 
     def test_codice_catastale_has_rdc(self):
         """codice_catastale deve contenere RdC/PdC."""
@@ -57,7 +58,6 @@ class TestBuildRelationshipMap:
         denom_slugs = {d["slug"] for d in keys["denominazione"]["datasets"]}
         assert "opencivitas_fsc_2025_rso" in denom_slugs
         assert "mim_anagrafica_scuole_statali" in denom_slugs
-        assert "dipendenti_pubblici" in denom_slugs
 
     def test_unconnected_datasets_is_list(self):
         """unconnected_datasets deve essere una lista."""
