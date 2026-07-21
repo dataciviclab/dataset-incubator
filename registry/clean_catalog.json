@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-18",
+  "updated_at": "2026-07-21",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -7079,6 +7079,630 @@
         "multi_file": true
       },
       "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "mef_patrimonio_detenzioni",
+      "name": "MEF — Detenzioni a favore di terzi di immobili pubblici",
+      "description": "Detenzioni a favore di terzi di immobili pubblici dichiarate dalle PA. Include tipo detenzione, canone annuo, decorrenza/scadenza, soggetto ricevente. Fonte: MEF Dipartimento Economia, censimento immobili pubblici (art.2 c.222 L.191/2009).",
+      "source": "MEF — Dipartimento dell'Economia (Open Data Immobili PA)",
+      "source_id": "mef_de",
+      "period": {
+        "start": 2022,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "id_variazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Identificativo univoco della variazione/detenzione"
+        },
+        {
+          "name": "settore_istituzionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Settore istituzionale dell'ente dichiarante (S13/NON S13)"
+        },
+        {
+          "name": "macrocategoria_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Macrocategoria dell'ente dichiarante"
+        },
+        {
+          "name": "tipologia_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia dell'ente dichiarante (Comuni, Regioni, ASL, ...)"
+        },
+        {
+          "name": "amministrazione_denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione dell'ente che cede in detenzione"
+        },
+        {
+          "name": "amministrazione_codice_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'ente cedente"
+        },
+        {
+          "name": "reg_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione dell'ente cedente"
+        },
+        {
+          "name": "prov_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia dell'ente cedente"
+        },
+        {
+          "name": "comune_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune dell'ente cedente"
+        },
+        {
+          "name": "codice_comune_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune dell'ente cedente"
+        },
+        {
+          "name": "tipo_detenzione_terzi",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo detenzione: in locazione, uso gratuito, concessione, gestione per conto di"
+        },
+        {
+          "name": "detenzione_intera_ui",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indica se la detenzione riguarda l'intera unità immobiliare (Sì/No)"
+        },
+        {
+          "name": "superficie_detenzione_mq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Superficie in detenzione in metri quadri"
+        },
+        {
+          "name": "canone_annuale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Canone annuo in euro"
+        },
+        {
+          "name": "data_decorrenza",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di decorrenza della detenzione"
+        },
+        {
+          "name": "data_scadenza",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di scadenza della detenzione (null se aperta)"
+        },
+        {
+          "name": "soggetto_ricevente_tipo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo soggetto ricevente: PF (persona fisica) o PG (persona giuridica)"
+        },
+        {
+          "name": "soggetto_ricevente_denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del soggetto che beneficia della detenzione"
+        },
+        {
+          "name": "soggetto_ricevente_cf",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale del soggetto ricevente"
+        },
+        {
+          "name": "soggetto_ricevente_pa",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "True se il soggetto ricevente è una pubblica amministrazione"
+        },
+        {
+          "name": "finalita_pf",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Finalità della detenzione per persona fisica"
+        },
+        {
+          "name": "id_bene",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Identificativo del bene immobile (FK → mef_patrimonio_immobili)"
+        },
+        {
+          "name": "natura_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Natura del bene: FABBRICATO o TERRENO"
+        },
+        {
+          "name": "tipologia_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia del bene immobile (ufficio, abitazione, terreno agricolo, ...)"
+        },
+        {
+          "name": "superficie_riferimento_mq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Superficie di riferimento del bene in metri quadri"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mef_patrimonio_detenzioni/*/mef_patrimonio_detenzioni_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "mef_patrimonio_enti",
+      "name": "MEF — Enti adempienti e non adempienti censimento immobili",
+      "description": "Anagrafe degli enti pubblici con stato di adempimento al censimento immobiliare MEF. Include obbligo di comunicazione, invio, dichiarazione negativa, e numero di beni dichiarati. Fonte: MEF Dipartimento Economia.",
+      "source": "MEF — Dipartimento dell'Economia (Open Data Immobili PA)",
+      "source_id": "mef_de",
+      "period": {
+        "start": 2022,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "settore_istituzionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Settore istituzionale dell'ente (S13/NON S13)"
+        },
+        {
+          "name": "macrocategoria_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Macrocategoria: Amministrazioni Locali, Centrali, ..."
+        },
+        {
+          "name": "tipologia_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia ente: Comuni, Regioni, ASL, Università, ..."
+        },
+        {
+          "name": "amministrazione_denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione dell'amministrazione"
+        },
+        {
+          "name": "amministrazione_codice_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'amministrazione"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione dell'amministrazione"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia dell'amministrazione"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune dell'amministrazione"
+        },
+        {
+          "name": "codice_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune"
+        },
+        {
+          "name": "num_beni_proprieta",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero di beni immobili in proprietà dichiarati"
+        },
+        {
+          "name": "num_beni_detenzione",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero di beni immobili in detenzione dichiarati"
+        },
+        {
+          "name": "dichiarazione_negativa",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "True se l'ente ha dichiarato di non possedere beni"
+        },
+        {
+          "name": "dichiarazione_completezza",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "True se l'ente ha dichiarato completezza dei dati"
+        },
+        {
+          "name": "invio_comunicazione",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "True se l'ente ha inviato la comunicazione"
+        },
+        {
+          "name": "obbligo_comunicazione",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "True se l'ente aveva obbligo di comunicazione"
+        },
+        {
+          "name": "nome_sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della sezione di appartenenza"
+        },
+        {
+          "name": "nome_file_immobili",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del file ZIP contenente i dati immobiliari"
+        },
+        {
+          "name": "nome_file_detenzioni",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del file ZIP contenente le detenzioni"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mef_patrimonio_enti/*/mef_patrimonio_enti_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "mef_patrimonio_immobili",
+      "name": "MEF — Catalogo immobili pubblici italiani",
+      "description": "Catalogo completo degli immobili pubblici italiani dichiarati dalle PA. 51 colonne: anagrafica ente, dati catastali, coordinate geografiche (100% georeferenziato), superficie, destinazione d'uso, stato d'uso, vincoli. Fonte: MEF Dipartimento Economia, censimento immobili pubblici.",
+      "source": "MEF — Dipartimento dell'Economia (Open Data Immobili PA)",
+      "source_id": "mef_de",
+      "period": {
+        "start": 2022,
+        "end": 2023
+      },
+      "columns": [
+        {
+          "name": "settore_istituzionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Settore istituzionale dell'ente proprietario/detentore"
+        },
+        {
+          "name": "macrocategoria_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Macrocategoria dell'ente proprietario/detentore"
+        },
+        {
+          "name": "tipologia_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia dell'ente proprietario/detentore"
+        },
+        {
+          "name": "amministrazione_denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione dell'ente proprietario/detentore"
+        },
+        {
+          "name": "amministrazione_codice_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale dell'ente"
+        },
+        {
+          "name": "reg_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione dell'ente"
+        },
+        {
+          "name": "prov_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia dell'ente"
+        },
+        {
+          "name": "comune_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune dell'ente"
+        },
+        {
+          "name": "codice_comune_amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune dell'ente"
+        },
+        {
+          "name": "titolo_proprieta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo di proprietà del bene"
+        },
+        {
+          "name": "quota_proprieta",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Quota di proprietà in percentuale"
+        },
+        {
+          "name": "titolo_detenzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo di detenzione del bene"
+        },
+        {
+          "name": "detenzione_intera_ui",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Detenzione sull'intera unità immobiliare (Sì/No)"
+        },
+        {
+          "name": "superficie_detenzione_mq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Superficie in detenzione in metri quadri"
+        },
+        {
+          "name": "canone_annuale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Canone annuale in euro"
+        },
+        {
+          "name": "soggetto_cedente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione del soggetto cedente"
+        },
+        {
+          "name": "soggetto_cedente_cf",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale del soggetto cedente"
+        },
+        {
+          "name": "id_bene",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Identificativo univoco del bene (PK, FK → mef_patrimonio_detenzioni)"
+        },
+        {
+          "name": "natura_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Natura del bene: FABBRICATO o TERRENO"
+        },
+        {
+          "name": "stato_accatastamento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato di accatastamento del bene"
+        },
+        {
+          "name": "sistema_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sistema catastale di riferimento"
+        },
+        {
+          "name": "regione_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione in cui si trova il bene"
+        },
+        {
+          "name": "provincia_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia in cui si trova il bene"
+        },
+        {
+          "name": "comune_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune in cui si trova il bene"
+        },
+        {
+          "name": "codice_comune_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ISTAT del comune del bene"
+        },
+        {
+          "name": "indirizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indirizzo del bene"
+        },
+        {
+          "name": "numero_civico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Numero civico del bene"
+        },
+        {
+          "name": "fonte_georef",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Fonte della georeferenziazione"
+        },
+        {
+          "name": "precisione_georef",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Precisione della georeferenziazione"
+        },
+        {
+          "name": "immobile_georef",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indica se l'immobile è georeferenziato (Sì/No)"
+        },
+        {
+          "name": "latitudine",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Latitudine del bene (WGS84)"
+        },
+        {
+          "name": "longitudine",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Longitudine del bene (WGS84)"
+        },
+        {
+          "name": "identificativo_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Identificativo catastale del bene"
+        },
+        {
+          "name": "codice_bene_non_accatastato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice del bene se non accatastato"
+        },
+        {
+          "name": "tipologia_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia del bene (ufficio, abitazione, terreno, ...)"
+        },
+        {
+          "name": "superficie_mq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Superficie in metri quadri"
+        },
+        {
+          "name": "cubatura_mc",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Cubatura in metri cubi"
+        },
+        {
+          "name": "sup_aree_pertinenziali_mq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Superficie delle aree pertinenziali in metri quadri"
+        },
+        {
+          "name": "superficie_riferimento_mq",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Superficie di riferimento in metri quadri"
+        },
+        {
+          "name": "epoca_costruzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Epoca di costruzione del bene"
+        },
+        {
+          "name": "vincoli",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Vincoli culturali/paesaggistici presenti"
+        },
+        {
+          "name": "natura_giuridica_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Natura giuridica del bene"
+        },
+        {
+          "name": "diritto_gravante_terreno",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Diritto gravante sul terreno"
+        },
+        {
+          "name": "id_compendio",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Identificativo del compendio immobiliare"
+        },
+        {
+          "name": "descrizione_compendio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione del compendio immobiliare"
+        },
+        {
+          "name": "tipologia_compendio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia del compendio immobiliare"
+        },
+        {
+          "name": "utilizzo_bene",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato d'uso del bene (Utilizzato, Non utilizzato, Inutilizzabile, ...)"
+        },
+        {
+          "name": "finalita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Finalità d'uso del bene (attività amministrativa, didattica, culturale, ...)"
+        },
+        {
+          "name": "altra_finalita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Altra finalità d'uso del bene"
+        },
+        {
+          "name": "ui_data_interamente_terzi",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "UI data interamente a terzi (Sì/No)"
+        },
+        {
+          "name": "ui_data_parzialmente_terzi",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "UI data parzialmente a terzi (Sì/No)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mef_patrimonio_immobili/*/mef_patrimonio_immobili_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {

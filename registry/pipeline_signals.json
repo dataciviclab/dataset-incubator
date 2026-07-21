@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-19",
+  "generated_at": "2026-07-21",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 92,
+    "total": 95,
     "by_status": {
-      "ok": 92,
+      "ok": 95,
       "warn": 0,
       "error": 0
     }
@@ -847,6 +847,63 @@
           2023
         ],
         "config_path": "candidates/mef-partecipazioni/dataset.yml"
+      }
+    },
+    {
+      "id": "mef-patrimonio-detenzioni",
+      "source_id": "mef_de",
+      "status": "ok",
+      "label": "mef-patrimonio-detenzioni",
+      "detail": "anni 2022-2023 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29813695592",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29813695592",
+        "checked_at": "2026-07-21",
+        "years": [
+          2022,
+          2023
+        ],
+        "config_path": "candidates/mef-patrimonio-detenzioni/dataset.yml"
+      }
+    },
+    {
+      "id": "mef-patrimonio-enti",
+      "source_id": "mef_de",
+      "status": "ok",
+      "label": "mef-patrimonio-enti",
+      "detail": "anni 2022-2023 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29813695592",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29813695592",
+        "checked_at": "2026-07-21",
+        "years": [
+          2022,
+          2023
+        ],
+        "config_path": "candidates/mef-patrimonio-enti/dataset.yml"
+      }
+    },
+    {
+      "id": "mef-patrimonio-immobili",
+      "source_id": "mef_de",
+      "status": "ok",
+      "label": "mef-patrimonio-immobili",
+      "detail": "anni 2022-2023 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "29813695592",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29813695592",
+        "checked_at": "2026-07-21",
+        "years": [
+          2022,
+          2023
+        ],
+        "config_path": "candidates/mef-patrimonio-immobili/dataset.yml"
       }
     },
     {

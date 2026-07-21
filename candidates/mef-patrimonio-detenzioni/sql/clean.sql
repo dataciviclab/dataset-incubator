@@ -1,4 +1,5 @@
 SELECT
+    {year}::INTEGER AS anno,
     TRY_CAST("ID variazione" AS BIGINT) AS id_variazione,
     TRIM("Settore Istituzionale") AS settore_istituzionale,
     TRIM("Macrocategoria Amministrazione") AS macrocategoria_amministrazione,
