@@ -4023,7 +4023,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "manual"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "giustizia_penale_indicatori",
@@ -9451,9 +9451,9 @@
     },
     {
       "slug": "openga_ricorsi_appalto",
-      "name": "Ricorsi Appalto Consiglio di Stato",
-      "description": "Ricorsi pervenuti in materia di appalto al Consiglio di Stato (OpenGA). Dati integrati con ANAC (CIG, importi gara, stazione appaltante, settore). Ogni riga e un ricorso con 24 colonne.",
-      "source": "OpenGA — Giustizia Amministrativa (Consiglio di Stato)",
+      "name": "Ricorsi Appalto (OpenGA — 31 sedi)",
+      "description": "Ricorsi pervenuti in materia di appalto presso tutte le 31 sedi della Giustizia Amministrativa (CdS, CGA Sicilia, 27 TAR, 2 TRGA). Integrati con CODICE_CIG ANAC.",
+      "source": "OpenGA — Giustizia Amministrativa",
       "source_id": "openga",
       "period": {
         "start": 2023,
@@ -9470,13 +9470,13 @@
           "name": "codice_sede",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice della sede giudiziaria (CdS)"
+          "description": "Codice della sede giudiziaria"
         },
         {
           "name": "nome_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione della sede giudiziaria"
+          "description": "Denominazione della sede giudiziaria (CdS, TAR, TRGA, CGA)"
         },
         {
           "name": "codice_sezione",
