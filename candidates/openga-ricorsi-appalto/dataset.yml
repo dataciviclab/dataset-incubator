@@ -1,81 +1,305 @@
-root: "../../out"
+root: ../../out
 schema_version: 1
-
 dataset:
-  name: "openga_ricorsi_appalto"
-  source_id: "openga"
-  years: [2023, 2024, 2025, 2026]
+  name: openga_ricorsi_appalto
+  source_id: openga
+  years:
+  - 2023
+  - 2024
+  - 2025
+  - 2026
   time_coverage:
     start_year: 2023
     end_year: 2026
-
 raw:
   output_policy: overwrite
   sources:
-    - name: "ga_ricorsi_appalto_ckan"
-      type: "ckan"
-      args:
-        portal_url: "https://openga.giustizia-amministrativa.it"
-        dataset_id: "cds-ricorsi-pervenuti-in-materia-d-appalto"
-        resource_name: "CDS - Ricorsi pervenuti in materia d'appalto - {year}"
-        filename: "cds-ricorsi-appalto-{year}.csv"
-      primary: true
-
+  - name: cds
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: cds-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: CDS - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-cds-{year}.csv
+    primary: true
+  - name: cga_sicilia
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: cga-sicilia-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: CGA Sicilia - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-cga_sicilia-{year}.csv
+  - name: tar_abruzzo_l_aquila
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-abruzzo-l-aquila-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Abruzzo - L’Aquila - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_abruzzo_l_aquila-{year}.csv
+  - name: tar_abruzzo_pescara
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-abruzzo-pescara-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Abruzzo - Pescara - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_abruzzo_pescara-{year}.csv
+  - name: tar_basilicata
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-basilicata-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Basilicata - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_basilicata-{year}.csv
+  - name: tar_calabria_catanzaro
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-calabria-catanzaro-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Calabria - Catanzaro - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_calabria_catanzaro-{year}.csv
+  - name: tar_calabria_reggio_calabria
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-calabria-reggio-calabria-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Calabria - Reggio Calabria - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_calabria_reggio_calabria-{year}.csv
+  - name: tar_campania_napoli
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-campania-napoli-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Campania - Napoli - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_campania_napoli-{year}.csv
+  - name: tar_campania_salerno
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-campania-salerno-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Campania - Salerno - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_campania_salerno-{year}.csv
+  - name: tar_emilia_romagna_bologna
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-emilia-romagna-bologna-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Emilia Romagna - Bologna - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_emilia_romagna_bologna-{year}.csv
+  - name: tar_emilia_romagna_parma
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-emilia-romagna-parma-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Emilia Romagna - Parma - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_emilia_romagna_parma-{year}.csv
+  - name: tar_friuli_venezia_giulia
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-friuli-venezia-giulia-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Friuli Venezia Giulia - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_friuli_venezia_giulia-{year}.csv
+  - name: tar_lazio_latina
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-lazio-latina-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Lazio - Latina - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_lazio_latina-{year}.csv
+  - name: tar_lazio_roma
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-lazio-roma-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Lazio - Roma - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_lazio_roma-{year}.csv
+  - name: tar_liguria
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-liguria-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Liguria - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_liguria-{year}.csv
+  - name: tar_lombardia_brescia
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-lombardia-brescia-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Lombardia - Brescia - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_lombardia_brescia-{year}.csv
+  - name: tar_lombardia_milano
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-lombardia-milano-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Lombardia - Milano - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_lombardia_milano-{year}.csv
+  - name: tar_marche
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-marche-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Marche - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_marche-{year}.csv
+  - name: tar_molise
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-molise-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Molise - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_molise-{year}.csv
+  - name: tar_piemonte
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-piemonte-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Piemonte - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_piemonte-{year}.csv
+  - name: tar_puglia_bari
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-puglia-bari-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Puglia - Bari - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_puglia_bari-{year}.csv
+  - name: tar_puglia_lecce
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-puglia-lecce-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Puglia - Lecce - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_puglia_lecce-{year}.csv
+  - name: tar_sardegna
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-sardegna-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Sardegna - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_sardegna-{year}.csv
+  - name: tar_sicilia_catania
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-sicilia-catania-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Sicilia - Catania - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_sicilia_catania-{year}.csv
+  - name: tar_sicilia_palermo
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-sicilia-palermo-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Sicilia - Palermo - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_sicilia_palermo-{year}.csv
+  - name: tar_toscana
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-toscana-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Toscana - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_toscana-{year}.csv
+  - name: tar_umbria
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-umbria-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Umbria - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_umbria-{year}.csv
+  - name: tar_veneto
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-veneto-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Veneto - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-tar_veneto-{year}.csv
+  - name: trga_bolzano
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: trga-bolzano-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TRGA - Bolzano - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-trga_bolzano-{year}.csv
+  - name: trga_trento
+    type: ckan
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: trga-trento-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TRGA - Trento - Ricorsi pervenuti in materia d'appalto - {year}
+      filename: appalto-trga_trento-{year}.csv
+  - name: tar_valle_d_aosta_2024
+    type: ckan
+    year: 2024
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-valle-d-aosta-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Valle d’Aosta - Ricorsi pervenuti in materia d'appalto - 2024
+      filename: appalto-tar-valle-d-aosta-2024.csv
+  - name: tar_valle_d_aosta_2025
+    type: ckan
+    year: 2025
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-valle-d-aosta-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Valle d’Aosta - Ricorsi pervenuti in materia d'appalto - 2025
+      filename: appalto-tar-valle-d-aosta-2025.csv
+  - name: tar_valle_d_aosta_2026
+    type: ckan
+    year: 2026
+    args:
+      portal_url: https://openga.giustizia-amministrativa.it
+      dataset_id: tar-valle-d-aosta-ricorsi-pervenuti-in-materia-d-appalto
+      resource_name: TAR Valle d’Aosta - Ricorsi pervenuti in materia d'appalto - 2026
+      filename: appalto-tar-valle-d-aosta-2026.csv
 clean:
   read:
-    delim: ","
-    encoding: "utf-8"
+    delim: ','
+    encoding: utf-8
     header: true
   required_columns:
-    - "anno"
-    - "codice_sede"
-    - "nome_sede"
-    - "classificazione_ricorso"
-    - "provincia"
-  sql: "sql/clean.sql"
+  - anno
+  - codice_sede
+  - nome_sede
+  - classificazione_ricorso
+  - provincia
+  sql: sql/clean.sql
   validate:
     min_rows: 5
     not_null:
-      - "numero_ricorso"
-      - "data_deposito_ricorso"
-
+    - numero_ricorso
+    - data_deposito_ricorso
 mart:
   tables:
-    - name: "mart_ricorsi_sede_classificazione"
-      sql: "sql/mart_sede_classificazione.sql"
-    - name: "mart_ricorsi_territorio_settore"
-      sql: "sql/mart_territorio_settore.sql"
+  - name: mart_ricorsi_sede_classificazione
+    sql: sql/mart_sede_classificazione.sql
+  - name: mart_ricorsi_territorio_settore
+    sql: sql/mart_territorio_settore.sql
   required_tables:
-    - "mart_ricorsi_sede_classificazione"
+  - mart_ricorsi_sede_classificazione
   validate:
-    # Cardinalità attesa: SUM(totale_ricorsi) = COUNT(DISTINCT numero_ricorso)
-    # nel clean. Es. 2024: 763 ricorsi su 905 righe.
     table_rules:
       mart_ricorsi_sede_classificazione:
         required_columns:
-          - anno
-          - codice_sede
-          - nome_sede
-          - classificazione_ricorso
-          - totale_ricorsi
-          - gare_distinte
+        - anno
+        - codice_sede
+        - nome_sede
+        - classificazione_ricorso
+        - totale_ricorsi
+        - gare_distinte
         not_null:
-          - anno
-          - codice_sede
-          - totale_ricorsi
+        - anno
+        - codice_sede
+        - totale_ricorsi
         min_rows: 5
       mart_ricorsi_territorio_settore:
         required_columns:
-          - anno
-          - provincia
-          - settore
-          - totale_ricorsi
-          - gare_distinte
+        - anno
+        - provincia
+        - settore
+        - totale_ricorsi
+        - gare_distinte
         not_null:
-          - anno
-          - provincia
-          - totale_ricorsi
+        - anno
+        - provincia
+        - totale_ricorsi
         min_rows: 0
-
 validation:
   fail_on_error: true
