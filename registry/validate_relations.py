@@ -83,7 +83,6 @@ def validate_relation(con: duckdb.DuckDBPyConnection, rel: dict, verbose: bool =
     to_slug = rel["to"]
     via = rel["via"]
     as_col = rel.get("as", via)
-    card = rel.get("cardinality", "1:N")
 
     # Relazioni con normalizer complesso o bridge non verificabili via JOIN diretto
     normalized_by = rel.get("normalized_by")
@@ -118,43 +117,30 @@ def validate_relation(con: duckdb.DuckDBPyConnection, rel: dict, verbose: bool =
         return result
 
     try:
-        if card.startswith("1:") or card.startswith("N:"):
-            # LEFT JOIN + COUNT
-            query = f"""
-                SELECT
-                    COUNT(*) as tot_from,
-                    COUNT(t.{as_col}) as match,
-                    ROUND(100.0 * COUNT(t.{as_col}) / NULLIF(COUNT(*), 0), 1) as pct
-                FROM read_parquet('{from_path}') s
-                LEFT JOIN '{to_path}' t ON s.{via} = t.{as_col}
-            """
-        else:
-            # INNER JOIN count
-            query = f"""
-                SELECT
-                    (SELECT COUNT(DISTINCT {via}) FROM read_parquet('{from_path}')) as distinct_from,
-                    (SELECT COUNT(DISTINCT {as_col}) FROM read_parquet('{to_path}')) as distinct_to,
-                    (SELECT COUNT(*) FROM (
-                        SELECT DISTINCT s.{via} FROM read_parquet('{from_path}') s
-                        INTERSECT
-                        SELECT DISTINCT t.{as_col} FROM read_parquet('{to_path}') t
-                    )) as common
-            """
+        # Per qualsiasi cardinalità (1:1, 1:N, N:1), la metrica è:
+        # "quante chiavi sorgente distinte hanno almeno un match sul target"
+        query = f"""
+            WITH from_keys AS (
+                SELECT DISTINCT {via} AS k
+                FROM read_parquet('{from_path}')
+                WHERE {via} IS NOT NULL
+            )
+            SELECT
+                (SELECT COUNT(*) FROM from_keys) AS tot,
+                (SELECT COUNT(*) FROM from_keys WHERE k IN (
+                    SELECT DISTINCT {as_col}
+                    FROM read_parquet('{to_path}')
+                    WHERE {as_col} IS NOT NULL
+                )) AS match
+        """
 
         if verbose:
             print(f"  Query: {query[:120]}...")
 
         row = con.execute(query).fetchone()
-
-        if card.startswith("1:") or card.startswith("N:"):
-            result["tot_from"] = row[0]
-            result["match"] = row[1]
-            result["match_pct"] = float(row[2]) if row[2] else 0.0
-        else:
-            result["distinct_from"] = row[0]
-            result["distinct_to"] = row[1]
-            result["common"] = row[2]
-            result["match_pct"] = round(100.0 * row[2] / max(row[0], 1), 1) if row[0] else 0.0
+        result["tot_from"] = row[0]
+        result["match"] = row[1]
+        result["match_pct"] = round(100.0 * row[1] / max(row[0], 1), 1) if row[0] else 0.0
 
         # Determina status
         prev = rel.get("validated_match")
@@ -170,9 +156,7 @@ def validate_relation(con: duckdb.DuckDBPyConnection, rel: dict, verbose: bool =
         else:
             result["status"] = "📐"  # prima validazione
 
-        result["details"] = (
-            f"{result['match'] if 'match' in result else result.get('common', 0)} match su {result.get('tot_from', result.get('distinct_from', 0))}"
-        )
+        result["details"] = f"{result['match']} chiavi su {result['tot_from']}"
 
     except Exception as e:
         result["status"] = "❌"
