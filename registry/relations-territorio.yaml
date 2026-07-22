@@ -1,0 +1,243 @@
+# registry/relations-territorio.yaml
+# Relazioni territoriali: tutti i dataset che si collegano a comuni_master
+# via codice_istat (o varianti normalizzabili).
+#
+# Chiave primaria: codice_istat (6 cifre zero-padded)
+# Hub: comuni_master
+#
+# Versione: 1
+# Aggiornato: 2026-07-21
+
+schema_version: 1
+domain: territorio
+description: "Tutti i dataset che hanno una chiave territoriale (codice ISTAT) e si collegano a comuni_master"
+updated_at: "2026-07-21"
+
+relations:
+
+  # ==========================================================================
+  # HUB → COMUNI_MASTER
+  # ==========================================================================
+  # Ogni entry collega un dataset a comuni_master. Il normalizer dice come
+  # trasformare la colonna del dataset nel formato ISTAT 6 cifre.
+
+  - from: anac_bandi_gara
+    via: codice_istat_luogo
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: direct
+    validated_match: 0.922
+    validated_on: "2026-07-21"
+    validated_by: scanner
+    note: "codice_istat_luogo = luogo di esecuzione della gara. Può differire dal comune della SA."
+
+  - from: comuni_master
+    via: codice_istat
+    to: ipa_aree_organizzative_omogenee
+    as: codice_comune_istat
+    key_type: territorial
+    cardinality: "1:N"
+    normalized_by: direct
+    validated_match: 0.995
+    validated_on: "2026-07-21"
+    validated_by: scanner
+
+  - from: comuni_master
+    via: codice_istat
+    to: ipa_unita_organizzative
+    as: codice_comune_istat
+    key_type: territorial
+    cardinality: "1:N"
+    normalized_by: direct
+    validated_match: 1.0
+    validated_on: "2026-07-21"
+    validated_by: scanner
+
+  - from: comuni_master
+    via: codice_istat
+    to: ipa_istat_mapping
+    as: codice_istat
+    key_type: territorial
+    cardinality: "1:1"
+    normalized_by: direct
+    validated_match: 0.900
+    validated_on: "2026-07-21"
+    validated_by: scanner
+
+  - from: comuni_master
+    via: codice_istat
+    to: istat_asia_ul
+    as: codice_comune
+    key_type: territorial
+    cardinality: "1:N"
+    normalized_by: direct
+    validated_match: 0.959
+    validated_on: "2026-07-21"
+    validated_by: scanner
+
+  - from: comuni_master
+    via: codice_istat
+    to: istat_elenco_comuni
+    as: codice_istat
+    key_type: territorial
+    cardinality: "1:1"
+    normalized_by: direct
+    validated_match: 1.0
+    validated_on: "2026-07-21"
+    validated_by: scanner
+
+  - from: comuni_master
+    via: codice_istat
+    to: unified_comuni
+    as: codice_istat
+    key_type: territorial
+    cardinality: "1:1"
+    normalized_by: direct
+    validated_match: 0.985
+    validated_on: "2026-07-21"
+    validated_by: scanner
+
+  # ==========================================================================
+  # DATASET SPOKE → HUB (via normalizer)
+  # ==========================================================================
+
+  - from: ispra_ru_base
+    via: codice_comune_istat
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: "RIGHT(codice_comune_istat, 6)"
+    validated_match: 0.848
+    validated_on: "2026-07-21"
+    validated_by: scanner
+
+  - from: ispra_ru_costi_kg
+    via: codice_comune_istat
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: "RIGHT(codice_comune_istat, 6)"
+    validated_match: 0.848
+    validated_on: "2026-07-21"
+    validated_by: scanner
+
+  - from: ispra_ru_costi_procapite
+    via: codice_comune_istat
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: "RIGHT(codice_comune_istat, 6)"
+    validated_match: 0.848
+    validated_on: "2026-07-21"
+    validated_by: scanner
+
+  - from: irpef_comunale
+    via: codice_istat_comune
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: direct
+    validated_match: 0.999
+    validated_on: "2026-07-21"
+    validated_by: scanner
+    note: "Ha anche codice_catastale come colonna aggiuntiva. Anni d'imposta 2019-2023."
+
+  - from: farmacie
+    via: cod_comune
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: "LPAD(CAST(cod_comune AS VARCHAR), 6, '0')"
+    validated_on: "2026-06-21"
+    validated_by: data-researcher
+
+  - from: ispra_consumo_suolo
+    via: pro_com
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: "LPAD(CAST(pro_com AS VARCHAR), 6, '0')"
+    validated_match: 0.080
+    validated_on: "2026-07-21"
+    validated_by: scanner
+    note: "Match basso (8%) — pro_com è 5 cifre left-padded. Verificare se serve pre-trattamento diverso."
+
+  - from: popolazione_istat_comunale_2019_2025
+    via: codice_comune
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: direct
+    validated_on: "2026-06-21"
+    validated_by: data-researcher
+
+  - from: dait_amministratori_locali
+    via: codice_dait_completo
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: via_bridge
+    bridge_required: bdap_anagrafe_enti
+    validated_on: "2026-06-21"
+    validated_by: data-researcher
+    note: "Usa bdap_anagrafe_enti per mapping DAIT → ISTAT."
+
+  - from: dipendenti_pubblici
+    via: codice_ente_bdap
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: via_bridge
+    bridge_required: bdap_anagrafe_enti
+    validated_on: "2026-07-15"
+    validated_by: data-researcher
+
+  - from: siope_bilancio_unificato
+    via: codice_ente
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: via_bridge
+    bridge_required: bdap_anagrafe_enti
+    validated_on: "2026-07-15"
+    validated_by: data-researcher
+
+  - from: inps_rdc_pdc
+    via: codice_istat
+    to: comuni_master
+    as: codice_catastale
+    key_type: territorial
+    cardinality: "N:1"
+    normalized_by: direct
+    validated_on: "2026-06-21"
+    validated_by: data-researcher
+    note: "La colonna si chiama codice_istat ma contiene codice CATASTALE (es. A010)."
+
+  # ==========================================================================
+  # PONTE: irpef_comunale ↔ mef_patrimonio_enti (via codice_catastale)
+  # ==========================================================================
+  # Scoperto dallo scanner. Il codice catastale funge da ponte tra IRPEF
+  # e il patrimonio enti.
+
+  - from: irpef_comunale
+    via: codice_catastale
+    to: mef_patrimonio_enti
+    as: codice_comune
+    key_type: territorial
+    cardinality: "1:1"
+    normalized_by: direct
+    validated_match: 0.999
+    validated_on: "2026-07-21"
+    validated_by: scanner

@@ -1,0 +1,95 @@
+# registry/relations-giustizia.yaml
+# Relazioni nel dominio della giustizia amministrativa.
+# Chiave: numero_ricorso (identifica univocamente un ricorso,
+# sia in primo grado TAR che in appello CdS).
+#
+# Dataset coinvolti:
+#   - openga_ricorsi_appalto: ricorsi in materia d'appalto (31 sedi)
+#   - ga_sentenze: sentenze con esito (31 sedi)
+#
+# Versione: 1
+# Aggiornato: 2026-07-21
+
+schema_version: 1
+domain: giustizia
+description: "Relazioni tra ricorsi e sentenze della giustizia amministrativa (TAR + CdS)"
+updated_at: "2026-07-21"
+
+relations:
+
+  # ==========================================================================
+  # RICORSO → SENTENZA (via numero_ricorso)
+  # ==========================================================================
+  # Ogni ricorso depositato ha una o più sentenze associate.
+  # La sentenza contiene l'esito del giudizio (RESPINGE, ACCOGLIE, ecc.)
+  # e la data di pubblicazione.
+
+  - from: openga_ricorsi_appalto
+    via: numero_ricorso
+    to: ga_sentenze
+    as: NUMERO_RICORSO
+    key_type: domain
+    domain: giustizia
+    cardinality: "1:N"
+    note: >
+      93,4% dei ricorsi ha almeno una sentenza associata (934 su 1000).
+      La sentenza aggiunge ESITO_PROVVEDIMENTO (RESPINGE, ACCOGLIE, ecc.)
+      e data di pubblicazione. Copertura su tutte le 31 sedi (TAR + CdS).
+
+  # ==========================================================================
+  # SENTENZA → RICORSO (inversa)
+  # ==========================================================================
+  # Ogni sentenza si riferisce a un ricorso specifico.
+  # Relazione inversa della precedente.
+
+  - from: ga_sentenze
+    via: NUMERO_RICORSO
+    to: openga_ricorsi_appalto
+    as: numero_ricorso
+    key_type: domain
+    domain: giustizia
+    cardinality: "N:1"
+    note: >
+      Relazione inversa. Ogni sentenza ha un numero_ricorso che
+      identifica il ricorso originario.
+
+  # ==========================================================================
+  # RICORSO → ORDINANZE / DECRETI
+  # ==========================================================================
+  # Stessa logica delle sentenze: ordinanze e decreti sono provvedimenti
+  # con esito, collegati al ricorso via numero_ricorso.
+
+  - from: openga_ricorsi_appalto
+    via: numero_ricorso
+    to: ga_ordinanze
+    as: numero_ricorso
+    key_type: domain
+    domain: giustizia
+    cardinality: "1:N"
+    note: "Ordinanze. Schema identico a ga_sentenze. 15.054 record, 31 sedi."
+
+  - from: openga_ricorsi_appalto
+    via: numero_ricorso
+    to: ga_decreti
+    as: numero_ricorso
+    key_type: domain
+    domain: giustizia
+    cardinality: "1:N"
+    note: "Decreti. Schema identico a ga_sentenze. 7.484 record, 31 sedi."
+
+  # ==========================================================================
+  # RICORSO → CIG (ANAC)
+  # ==========================================================================
+  # I ricorsi in materia d'appalto contengono il CIG della gara contestata.
+  # Già documentato in relations-appalti.yaml.
+
+  - from: openga_ricorsi_appalto
+    via: codice_cig
+    to: anac_aggiudicazioni
+    as: cig
+    key_type: domain
+    domain: appalti
+    cardinality: "N:1"
+    note: >
+      Match 0,02%: 437 CIG su 2.203 ricorsi. Poche gare finiscono in
+      contenzioso. Relazione debole ma importante per analisi forense.

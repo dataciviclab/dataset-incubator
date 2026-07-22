@@ -737,7 +737,8 @@ def _load_relationship_map() -> dict[str, Any]:
         "Mostra la mappa delle relazioni tra dataset del Lab. "
         "Ogni dataset si collega a un registro anagrafico (comuni_master, bdap_anagrafe_enti) "
         "tramite una chiave (codice_istat, denominazione, ...). "
-        "Filtra per chiave, dataset o registro per esplorare le connessioni."
+        "In piu' mostra le relazioni cross-dataset per dominio (appalti, enti, giustizia, territorio). "
+        "Filtra per chiave, dataset, registro o dominio per esplorare le connessioni."
     ),
     structured_output=True,
 )
@@ -745,13 +746,15 @@ def dataset_graph(
     by_key: str = "",
     by_dataset: str = "",
     by_registry: str = "",
+    by_domain: str = "",
 ) -> dict[str, Any]:
     """Esplora la mappa delle relazioni tra dataset.
 
     Args:
-        by_key: Filtra per chiave (es. 'codice_istat', 'denominazione').
+        by_key: Filtra per chiave territoriale (es. 'codice_istat', 'denominazione').
         by_dataset: Filtra per dataset slug (es. 'irpef_comunale').
         by_registry: Filtra per registro (es. 'comuni_master').
+        by_domain: Filtra per dominio cross-dataset (es. 'appalti', 'enti', 'giustizia', 'territorio').
 
     Returns:
         Dict con le relazioni trovate, o l'intera mappa se nessun filtro.
@@ -765,10 +768,26 @@ def dataset_graph(
         result: dict[str, Any] = {
             "description": graph.get("description"),
             "hub_hint": graph.get("hub_hint"),
-            "registries": {},
         }
 
-        # Filtra per registro
+        # ── Se filtra per dominio cross-dataset ──
+        if by_domain:
+            cross = graph.get("cross_relations", [])
+            by_domain_lower = by_domain.lower()
+            filtered = [r for r in cross if by_domain_lower in r["domain"].lower()]
+            if not filtered:
+                domains = set(r["domain"] for r in cross)
+                return {
+                    "error": f"Dominio '{by_domain}' non trovato. Disponibili: {sorted(domains)}"
+                }
+            result["domain"] = by_domain
+            result["relations"] = filtered
+            result["count"] = len(filtered)
+            return result
+
+        # ── Altrimenti, mostra la mappa territoriale (come prima) ──
+        result["registries"] = {}
+
         registries_to_show = graph.get("registries", {})
         if by_registry:
             reg = registries_to_show.get(by_registry)
@@ -782,11 +801,9 @@ def dataset_graph(
         for reg_name, reg_data in registries_to_show.items():
             keys_filtered = {}
             for key_name, key_data in reg_data.get("keys", {}).items():
-                # Filtra per chiave — se specificata, mostra solo quella
                 if by_key and by_key.lower() not in key_name.lower():
                     continue
 
-                # Filtra dataset
                 datasets = key_data.get("datasets", [])
                 if by_dataset:
                     datasets = [
@@ -810,7 +827,6 @@ def dataset_graph(
                     "keys": keys_filtered,
                 }
 
-        # Conta
         n_keys = sum(len(r["keys"]) for r in result["registries"].values())
         n_ds = sum(
             len(k["datasets"]) for r in result["registries"].values() for k in r["keys"].values()
@@ -822,14 +838,17 @@ def dataset_graph(
             "registries": len(result["registries"]),
         }
 
-        # Suggerimenti se nessun filtro
         if not by_key and not by_dataset and not by_registry:
+            # Mostra disponibilità cross-domain
+            summary = graph.get("cross_relations_summary", {})
+            if summary:
+                result["available_domains"] = summary
             result["tip"] = (
                 "Usa by_key='codice_istat' per vedere tutti i dataset collegati via ISTAT, "
                 "by_dataset='irpef_comunale' per vedere come si collega, "
-                "o by_registry='comuni_master' per esplorare un registro."
+                "by_registry='comuni_master' per esplorare un registro, "
+                "o by_domain='appalti' per le relazioni cross-dataset sugli appalti."
             )
-            # Mostra anche i non collegati
             result["unconnected_datasets"] = graph.get("unconnected_datasets", [])
 
         return result

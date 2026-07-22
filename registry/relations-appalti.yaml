@@ -1,0 +1,232 @@
+# registry/relations-appalti.yaml
+# Relazioni tra dataset del dominio APPALTI PUBBLICI.
+# Chiave primaria: CIG (Codice Identificativo Gara).
+#
+# Come leggere:
+#   from: dataset sorgente
+#   via: colonna nel dataset sorgente
+#   to: dataset destinazione
+#   as: colonna nel dataset destinazione (se diversa da via)
+#   key_type: domain | territorial | anagrafica
+#   cardinality: "1:1" | "1:N" | "N:1"
+#   validated_match: percentuale di match verificata su dati reali
+#   validated_on: data ultima verifica
+#   note: avvertenze sulla relazione
+#
+# Versione: 2
+# Aggiornato: 2026-07-21
+
+schema_version: 1
+domain: appalti
+description: "Relazioni tra dataset del dominio appalti pubblici italiani (ANAC + OpenGA)"
+updated_at: "2026-07-21"
+
+relations:
+
+  # ==========================================================================
+  # BANDO → AGGIUDICAZIONE
+  # ==========================================================================
+  # La relazione principale: ogni bando (lotto/gara) ha una corrispondente
+  # aggiudicazione. Il CIG è la chiave univoca.
+  # Nota: bandi copre 2016-2025, aggiudicazioni 2000-2026 (dump cumulativo).
+  # Il match non è 100% perché alcuni bandi non vengono aggiudicati
+  # e alcune aggiudicazioni pre-2016 non hanno bando corrispondente.
+
+  - from: anac_bandi_gara
+    via: cig
+    to: anac_aggiudicazioni
+    key_type: domain
+    domain: appalti
+    cardinality: "1:1"
+    note: >
+      Match su tutti gli anni (2016-2025 bandi, 2000-2026 agg.).
+      65,1%: bandi non aggiudicati, annullati, o pre-2016.
+
+  # ==========================================================================
+  # AGGIUDICAZIONE → AGGIUDICATARI (via id_aggiudicazione)
+  # ==========================================================================
+  # Via id_aggiudicazione dà match migliori che via CIG (ogni aggiudicazione
+  # può avere più aggiudicatari, e id_aggiudicazione è più granulare).
+
+  - from: anac_aggiudicazioni
+    via: id_aggiudicazione
+    to: anac_aggiudicatari
+    as: id_aggiudicazione
+    key_type: domain
+    domain: appalti
+    cardinality: "1:N"
+    note: >
+      Un'aggiudicazione può avere più aggiudicatari (ATI/RTI).
+      Match quasi perfetto (99,7%): 9.424.624 id su 9.457.009.
+      Join via id_aggiudicazione è più preciso che via CIG.
+
+  # ==========================================================================
+  # AGGIUDICAZIONE → AGGIUDICATARI (via CIG, alternativa)
+  # ==========================================================================
+  # Meno precisa di id_aggiudicazione ma utile quando quel campo non è
+  # disponibile. Può dare falsi positivi su gare multi-lotto.
+
+  - from: anac_aggiudicazioni
+    via: cig
+    to: anac_aggiudicatari
+    key_type: domain
+    domain: appalti
+    cardinality: "1:N"
+    note: >
+      Alternativa via CIG. Preferire id_aggiudicazione per maggiore
+      precisione. Usare cig solo se id_aggiudicazione non è disponibile.
+
+  # ==========================================================================
+  # AGGIUDICAZIONE → PARTECIPANTI
+  # ==========================================================================
+  # Tutte le imprese che hanno partecipato alla gara (non solo il vincitore).
+  # I partecipanti sono per CIG, non per id_aggiudicazione.
+  # Dataset anac_partecipanti parte dal 2023 (CIG pre-2023 non hanno match).
+
+  - from: anac_aggiudicazioni
+    via: cig
+    to: anac_partecipanti
+    key_type: domain
+    domain: appalti
+    cardinality: "1:N"
+    note: >
+      Ogni CIG può avere più partecipanti (anche 50+).
+      Match 97,4%: 7.673.210 match su 7.875.428 aggiudicazioni.
+      I CIG pre-2023 non hanno partecipanti (anac_partecipanti inizia
+      dal 2023), quindi il match è parziale per gli anni precedenti.
+
+  # ==========================================================================
+  # AGGIUDICAZIONE → SUBAPPALTI
+  # ==========================================================================
+  # Subappalti autorizzati dall'aggiudicatario a terzi.
+  # Pochissimi CIG hanno subappalti dichiarati (~0,1%).
+
+  - from: anac_aggiudicazioni
+    via: cig
+    to: anac_subappalti
+    key_type: domain
+    domain: appalti
+    cardinality: "1:N"
+    note: >
+      Solo 6,9% delle aggiudicazioni ha subappalti dichiarati (351.619
+      match su 5.088.515). Il dato cresce su più anni (2020-2026) ma
+      resta basso: non tutti i subappalti vengono comunicati all'ANAC
+      al momento dell'aggiudicazione.
+
+  # ==========================================================================
+  # AGGIUDICAZIONE → RICORSI CdS (OpenGA)
+  # ==========================================================================
+  # Ricorsi al Consiglio di Stato in materia di appalto.
+  # Il CIG collega la gara al contenzioso.
+
+  - from: anac_aggiudicazioni
+    via: cig
+    to: openga_ricorsi_appalto
+    as: codice_cig
+    key_type: domain
+    domain: appalti
+    cardinality: "1:N"
+    note: >
+      937 CIG su 4.862.077 aggiudicazioni hanno ricorsi
+      (0,02%). Dato aggiornato con openga 31 sedi (TAR + CdS).
+      Resta fisiologico: solo una minima parte delle gare
+      viene contestata in sede giurisdizionale.
+
+  # ==========================================================================
+  # BANDO → COMUNE (territorio)
+  # ==========================================================================
+  # Ogni bando ha un luogo di esecuzione (codice ISTAT).
+  # Già documentato in registry/join_map.yaml, qui per completezza.
+
+  - from: anac_bandi_gara
+    via: codice_istat_luogo
+    to: comuni_master
+    as: codice_istat
+    key_type: territorial
+    domain: territorio
+    cardinality: "N:1"
+    normalized_by: direct
+    note: >
+      Match su TUTTI gli anni (2016-2025). 77%: alcuni codici
+      ISTAT nei bandi non sono comuni italiani o sono variati.
+      Può differire dal comune della Stazione Appaltante.
+
+  # ==========================================================================
+  # BANDO → CUI_PROGRAMMA (OpenCoesione) — NON VERIFICATA
+  # ==========================================================================
+  # Il CUI (Codice Unico di Programma) è presente in anac_bandi_gara.
+  # Verifica su opencoesione_progetti: colonna OC_COD_CUI inesistente.
+  # opencoesione_progetti ha CUP e COD_LOCALE_PROGETTO — chiave diversa.
+  # Relazione sospesa.
+
+  # - from: anac_bandi_gara
+  #   via: CUI_PROGRAMMA
+  #   to: opencoesione_progetti
+  #   # as: da_verificare — OC_COD_CUI non esiste
+
+  # ==========================================================================
+  # BANDO → SMART CIG (via codice_ausa) — CANDIDATA
+  # ==========================================================================
+  # anac_smartcig è un dataset locale non ancora pubblicato.
+  # La relazione via codice_ausa è verificata al 100% sui dati locali.
+  # Da attivare quando anac_smartcig sarà promosso a dataset pubblico.
+  #
+  # - from: anac_bandi_gara
+  #   via: codice_ausa
+  #   to: anac_smartcig
+  #   as: codice_ausa
+  #   validated_match: 1.0
+
+  # ==========================================================================
+  # BANDO → SUBAPPALTI (via cod_cpv)
+  # ==========================================================================
+  # Il codice CPV (Vocabolario comune degli appalti) classifica l'oggetto
+  # della gara. Matcha perfettamente con i subappalti che usano lo stesso
+  # codice per descrivere i lavori subappaltati.
+
+  - from: anac_bandi_gara
+    via: cod_cpv
+    to: anac_subappalti
+    as: cod_cpv
+    key_type: domain
+    domain: appalti
+    cardinality: "1:N"
+    note: >
+      Match 99,9%. Il CPV non identifica una specifica gara ma la
+      categoria merceologica. Utile per analisi settoriali
+      (es. "quali CPV hanno più subappalti?").
+
+  # ==========================================================================
+  # SUBAPPALTI → AGGIUDICATARI (via codice_fiscale)
+  # ==========================================================================
+  # L'esecutore del subappalto è quasi sempre anche un aggiudicatario
+  # in altre gare. Match 99,5%.
+
+  - from: anac_subappalti
+    via: codice_fiscale
+    to: anac_aggiudicatari
+    as: codice_fiscale
+    key_type: anagrafica
+    domain: appalti
+    cardinality: "1:N"
+    note: >
+      Il CF dell'esecutore del subappalto matcha al 99,5% con
+      gli aggiudicatari. Chi fa subappalti è quasi sempre anche
+      aggiudicatario diretto in altre gare. Utile per analisi
+      di rete tra imprese.
+
+# ==========================================================================
+# PROSSIME RELAZIONI DA VERIFICARE
+# ==========================================================================
+# Queste relazioni sono candidate: la chiave esiste ma non è stato ancora
+# fatto un test di match su dati reali.
+#
+# - anac_aggiudicazioni.cig → anac_bandi_gara.cig_accordo_quadro
+#   (CIG derivati da accordi quadro. Match 3,4% su sample. Basso ma reale.)
+#
+# - openga_ricorsi_appalto.cf_amministrazione_appaltante
+#   → comuni_master.codice_fiscale
+#   (CF della SA che ha subito il ricorso. Solo 1,3% SA sono comuni.)
+#
+# - bdap_mop_gare_nazionale.codice_cup → opencoesione_progetti.CUP
+#   (Ponte CUP↔CIG. bdap_mop ha 44K righe, 175 CUP, 10K CIG. Locale.)

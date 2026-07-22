@@ -1,0 +1,33 @@
+name: Validate Relations
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "registry/relations-*.yaml"
+      - "registry/join_map.yaml"
+      - "registry/validate_relations.py"
+      - "registry/clean_catalog.json"
+      - ".github/workflows/validate-relations.yml"
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+
+      - name: Python setup
+        uses: dataciviclab/.github/actions/python-setup@main
+        with:
+          extra-packages: pyyaml duckdb==1.5.1
+
+      - name: Validate relations
+        run: |
+          set -e
+          for f in registry/relations-*.yaml; do
+            [ -f "$f" ] || continue
+            echo "=== Validando: $f ==="
+            python registry/validate_relations.py "$f" || exit 1
+            echo ""
+          done

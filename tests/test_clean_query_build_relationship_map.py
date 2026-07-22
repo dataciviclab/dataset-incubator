@@ -86,3 +86,46 @@ class TestBuildRelationshipMap:
         bridge = result["registries"]["bdap_anagrafe_enti"]
         assert "bridge_keys" in bridge
         assert len(bridge["bridge_keys"]) >= 4
+
+    # ── cross_relations ─────────────────────────────────────────────────────
+
+    def test_cross_relations_present(self):
+        """build() deve includere la sezione cross_relations."""
+        result = build_relationship_map.build()
+        assert "cross_relations" in result
+        assert isinstance(result["cross_relations"], list)
+
+    def test_cross_relations_non_empty(self):
+        """Devono esserci relazioni cross-dataset dai file relations-*.yaml."""
+        result = build_relationship_map.build()
+        assert len(result["cross_relations"]) > 10, (
+            f"Troppe poche cross_relations: {len(result['cross_relations'])}"
+        )
+
+    def test_cross_relations_have_domain(self):
+        """Ogni cross_relation deve avere un domain."""
+        result = build_relationship_map.build()
+        domains = set()
+        for r in result["cross_relations"]:
+            assert "domain" in r, f"Relazione senza domain: {r.get('from')}→{r.get('to')}"
+            domains.add(r["domain"])
+        # Almeno appalti ed enti devono essere presenti
+        assert "appalti" in domains
+        assert "enti" in domains
+
+    def test_cross_relations_summary(self):
+        """cross_relations_summary deve elencare i domini con conteggi."""
+        result = build_relationship_map.build()
+        summary = result.get("cross_relations_summary", {})
+        assert isinstance(summary, dict)
+        assert len(summary) >= 3  # almeno appalti, territorio, enti
+
+    def test_cross_relations_have_required_fields(self):
+        """Ogni relazione deve avere from, via, to, as, cardinality."""
+        result = build_relationship_map.build()
+        for r in result["cross_relations"]:
+            assert r.get("from"), f"Campo 'from' mancante: {r}"
+            assert r.get("via"), f"Campo 'via' mancante: {r}"
+            assert r.get("to"), f"Campo 'to' mancante: {r}"
+            assert r.get("as"), f"Campo 'as' mancante: {r}"
+            assert r.get("cardinality"), f"Campo 'cardinality' mancante: {r}"
