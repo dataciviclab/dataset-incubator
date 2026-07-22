@@ -3906,8 +3906,8 @@
     {
       "slug": "ga_decreti",
       "name": "Ga Decreti",
-      "description": "",
-      "source": "",
+      "description": "Provvedimenti del Consiglio di Stato e dei TAR, unificati da 31 sedi giudiziarie. Include esito, tipo ricorso e oggetto. Fonte: OpenGA.",
+      "source": "Giustizia Amministrativa — OpenGA",
       "source_id": "openga",
       "period": {
         "start": 2023,
@@ -3917,13 +3917,13 @@
         {
           "name": "anno",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di pubblicazione"
         },
         {
           "name": "codice_sede",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": ""
         },
         {
@@ -3947,19 +3947,19 @@
         {
           "name": "numero_provvedimento",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "numero_ricorso",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Numero ricorso — chiave di join"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
-          "role": "metric",
+          "role": "dimension",
           "description": ""
         },
         {
@@ -3983,7 +3983,7 @@
         {
           "name": "data_deposito_ricorso",
           "type": "DATE",
-          "role": "metric",
+          "role": "dimension",
           "description": ""
         },
         {
@@ -4028,8 +4028,8 @@
     {
       "slug": "ga_ordinanze",
       "name": "Ga Ordinanze",
-      "description": "",
-      "source": "",
+      "description": "Provvedimenti del Consiglio di Stato e dei TAR, unificati da 31 sedi giudiziarie. Include esito, tipo ricorso e oggetto. Fonte: OpenGA.",
+      "source": "Giustizia Amministrativa — OpenGA",
       "source_id": "openga",
       "period": {
         "start": 2023,
@@ -4039,13 +4039,13 @@
         {
           "name": "anno",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di pubblicazione"
         },
         {
           "name": "codice_sede",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": ""
         },
         {
@@ -4069,19 +4069,19 @@
         {
           "name": "numero_provvedimento",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": ""
         },
         {
           "name": "numero_ricorso",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Numero ricorso — chiave di join"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
-          "role": "metric",
+          "role": "dimension",
           "description": ""
         },
         {
@@ -4105,7 +4105,7 @@
         {
           "name": "data_deposito_ricorso",
           "type": "DATE",
-          "role": "metric",
+          "role": "dimension",
           "description": ""
         },
         {
