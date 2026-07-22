@@ -1,0 +1,280 @@
+root: ../../out
+schema_version: 1
+
+dataset:
+  name: ga_decreti
+  source_id: openga
+  years: [2023, 2024, 2025, 2026]
+  time_coverage:
+    start_year: 2023
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: cds
+      type: ckan
+      primary: true
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: cds-decreti
+        resource_name: "CDS - Decreti - {year}"
+        filename: "cds-decreti-{year}.csv"
+    - name: cga_sicilia
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: cga-sicilia-decreti
+        resource_name: "CGA Sicilia - Decreti - {year}"
+        filename: "cga-sicilia-decreti-{year}.csv"
+    - name: tar_abruzzo_l_aquila
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-abruzzo-l-aquila-decreti
+        resource_name: "TAR Abruzzo - L’Aquila - Decreti - {year}"
+        filename: "tar-abruzzo-l-aquila-decreti-{year}.csv"
+    - name: tar_abruzzo_pescara
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-abruzzo-pescara-decreti
+        resource_name: "TAR Abruzzo - Pescara - Decreti - {year}"
+        filename: "tar-abruzzo-pescara-decreti-{year}.csv"
+    - name: tar_basilicata
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-basilicata-decreti
+        resource_name: "TAR Basilicata - Decreti - {year}"
+        filename: "tar-basilicata-decreti-{year}.csv"
+    - name: tar_calabria_catanzaro
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-calabria-catanzaro-decreti
+        resource_name: "TAR Calabria - Catanzaro - Decreti - {year}"
+        filename: "tar-calabria-catanzaro-decreti-{year}.csv"
+    - name: tar_calabria_reggio_calabria
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-calabria-reggio-calabria-decreti
+        resource_name: "TAR Calabria - Reggio Calabria - Decreti - {year}"
+        filename: "tar-calabria-reggio-calabria-decreti-{year}.csv"
+    - name: tar_campania_napoli
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-campania-napoli-decreti
+        resource_name: "TAR Campania - Napoli - Decreti - {year}"
+        filename: "tar-campania-napoli-decreti-{year}.csv"
+    - name: tar_campania_salerno
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-campania-salerno-decreti
+        resource_name: "TAR Campania - Salerno - Decreti - {year}"
+        filename: "tar-campania-salerno-decreti-{year}.csv"
+    - name: tar_emilia_romagna_bologna
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-emilia-romagna-bologna-decreti
+        resource_name: "TAR Emilia Romagna - Bologna - Decreti - {year}"
+        filename: "tar-emilia-romagna-bologna-decreti-{year}.csv"
+    - name: tar_emilia_romagna_parma
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-emilia-romagna-parma-decreti
+        resource_name: "TAR Emilia Romagna - Parma - Decreti - {year}"
+        filename: "tar-emilia-romagna-parma-decreti-{year}.csv"
+    - name: tar_friuli_venezia_giulia
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-friuli-venezia-giulia-decreti
+        resource_name: "TAR Friuli Venezia Giulia - Decreti - {year}"
+        filename: "tar-friuli-venezia-giulia-decreti-{year}.csv"
+    - name: tar_lazio_latina
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-lazio-latina-decreti
+        resource_name: "TAR Lazio - Latina - Decreti - {year}"
+        filename: "tar-lazio-latina-decreti-{year}.csv"
+    - name: tar_lazio_roma
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-lazio-roma-decreti
+        resource_name: "TAR Lazio - Roma - Decreti - {year}"
+        filename: "tar-lazio-roma-decreti-{year}.csv"
+    - name: tar_liguria
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-liguria-decreti
+        resource_name: "TAR Liguria - Decreti - {year}"
+        filename: "tar-liguria-decreti-{year}.csv"
+    - name: tar_lombardia_brescia
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-lombardia-brescia-decreti
+        resource_name: "TAR Lombardia - Brescia - Decreti - {year}"
+        filename: "tar-lombardia-brescia-decreti-{year}.csv"
+    - name: tar_lombardia_milano
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-lombardia-milano-decreti
+        resource_name: "TAR Lombardia - Milano - Decreti - {year}"
+        filename: "tar-lombardia-milano-decreti-{year}.csv"
+    - name: tar_marche
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-marche-decreti
+        resource_name: "TAR Marche - Decreti - {year}"
+        filename: "tar-marche-decreti-{year}.csv"
+    - name: tar_molise
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-molise-decreti
+        resource_name: "TAR Molise - Decreti - {year}"
+        filename: "tar-molise-decreti-{year}.csv"
+    - name: tar_piemonte
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-piemonte-decreti
+        resource_name: "TAR Piemonte - Decreti - {year}"
+        filename: "tar-piemonte-decreti-{year}.csv"
+    - name: tar_puglia_bari
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-puglia-bari-decreti
+        resource_name: "TAR Puglia - Bari - Decreti - {year}"
+        filename: "tar-puglia-bari-decreti-{year}.csv"
+    - name: tar_puglia_lecce
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-puglia-lecce-decreti
+        resource_name: "TAR Puglia - Lecce - Decreti - {year}"
+        filename: "tar-puglia-lecce-decreti-{year}.csv"
+    - name: tar_sardegna
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-sardegna-decreti
+        resource_name: "TAR Sardegna - Decreti - {year}"
+        filename: "tar-sardegna-decreti-{year}.csv"
+    - name: tar_sicilia_catania
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-sicilia-catania-decreti
+        resource_name: "TAR Sicilia - Catania - Decreti - {year}"
+        filename: "tar-sicilia-catania-decreti-{year}.csv"
+    - name: tar_sicilia_palermo
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-sicilia-palermo-decreti
+        resource_name: "TAR Sicilia - Palermo - Decreti - {year}"
+        filename: "tar-sicilia-palermo-decreti-{year}.csv"
+    - name: tar_toscana
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-toscana-decreti
+        resource_name: "TAR Toscana - Decreti - {year}"
+        filename: "tar-toscana-decreti-{year}.csv"
+    - name: tar_umbria
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-umbria-decreti
+        resource_name: "TAR Umbria - Decreti - {year}"
+        filename: "tar-umbria-decreti-{year}.csv"
+    - name: tar_valle_d_aosta
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-valle-d-aosta-decreti
+        resource_name: "TAR Valle d’Aosta - Decreti - {year}"
+        filename: "tar-valle-d-aosta-decreti-{year}.csv"
+    - name: tar_veneto
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-veneto-decreti
+        resource_name: "TAR Veneto - Decreti - {year}"
+        filename: "tar-veneto-decreti-{year}.csv"
+    - name: trga_bolzano
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: trga-bolzano-decreti
+        resource_name: "TRGA - Bolzano - Decreti - {year}"
+        filename: "trga-bolzano-decreti-{year}.csv"
+    - name: trga_trento
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: trga-trento-decreti
+        resource_name: "TRGA - Trento - Decreti - {year}"
+        filename: "trga-trento-decreti-{year}.csv"
+
+clean:
+  read:
+    delim: ","
+    encoding: utf-8
+    header: true
+  required_columns:
+    - anno
+    - codice_sede
+    - nome_sede
+    - numero_ricorso
+    - esito_provvedimento
+  sql: sql/clean.sql
+  validate:
+    min_rows: 100
+    not_null:
+      - numero_ricorso
+      - data_pubblicazione
+    primary_key: [codice_sede, numero_provvedimento, numero_ricorso]
+
+mart:
+  tables:
+    - name: mart_esiti_per_sede
+      sql: sql/mart_esiti_sede.sql
+    - name: mart_esiti_per_tipo
+      sql: sql/mart_esiti_tipo.sql
+  required_tables:
+    - mart_esiti_per_sede
+  validate:
+    table_rules:
+      mart_esiti_per_sede:
+        required_columns:
+          - anno
+          - codice_sede
+          - nome_sede
+          - esito_provvedimento
+          - totale
+        min_rows: 5
+      mart_esiti_per_tipo:
+        required_columns:
+          - anno
+          - tipo_ricorso
+          - esito_provvedimento
+          - totale
+        min_rows: 5
+
+validation:
+  fail_on_error: true

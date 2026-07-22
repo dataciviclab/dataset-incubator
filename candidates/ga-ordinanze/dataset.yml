@@ -1,0 +1,280 @@
+root: ../../out
+schema_version: 1
+
+dataset:
+  name: ga_ordinanze
+  source_id: openga
+  years: [2023, 2024, 2025, 2026]
+  time_coverage:
+    start_year: 2023
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: cds
+      type: ckan
+      primary: true
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: cds-ordinanze
+        resource_name: "CDS - Ordinanze - {year}"
+        filename: "cds-ordinanze-{year}.csv"
+    - name: cga_sicilia
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: cga-sicilia-ordinanze
+        resource_name: "CGA Sicilia - Ordinanze - {year}"
+        filename: "cga-sicilia-ordinanze-{year}.csv"
+    - name: tar_abruzzo_l_aquila
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-abruzzo-l-aquila-ordinanze
+        resource_name: "TAR Abruzzo - L’Aquila - Ordinanze - {year}"
+        filename: "tar-abruzzo-l-aquila-ordinanze-{year}.csv"
+    - name: tar_abruzzo_pescara
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-abruzzo-pescara-ordinanze
+        resource_name: "TAR Abruzzo - Pescara - Ordinanze - {year}"
+        filename: "tar-abruzzo-pescara-ordinanze-{year}.csv"
+    - name: tar_basilicata
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-basilicata-ordinanze
+        resource_name: "TAR Basilicata - Ordinanze - {year}"
+        filename: "tar-basilicata-ordinanze-{year}.csv"
+    - name: tar_calabria_catanzaro
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-calabria-catanzaro-ordinanze
+        resource_name: "TAR Calabria - Catanzaro - Ordinanze - {year}"
+        filename: "tar-calabria-catanzaro-ordinanze-{year}.csv"
+    - name: tar_calabria_reggio_calabria
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-calabria-reggio-calabria-ordinanze
+        resource_name: "TAR Calabria - Reggio Calabria - Ordinanze - {year}"
+        filename: "tar-calabria-reggio-calabria-ordinanze-{year}.csv"
+    - name: tar_campania_napoli
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-campania-napoli-ordinanze
+        resource_name: "TAR Campania - Napoli - Ordinanze - {year}"
+        filename: "tar-campania-napoli-ordinanze-{year}.csv"
+    - name: tar_campania_salerno
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-campania-salerno-ordinanze
+        resource_name: "TAR Campania - Salerno - Ordinanze - {year}"
+        filename: "tar-campania-salerno-ordinanze-{year}.csv"
+    - name: tar_emilia_romagna_bologna
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-emilia-romagna-bologna-ordinanze
+        resource_name: "TAR Emilia Romagna - Bologna - Ordinanze - {year}"
+        filename: "tar-emilia-romagna-bologna-ordinanze-{year}.csv"
+    - name: tar_emilia_romagna_parma
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-emilia-romagna-parma-ordinanze
+        resource_name: "TAR Emilia Romagna - Parma - Ordinanze - {year}"
+        filename: "tar-emilia-romagna-parma-ordinanze-{year}.csv"
+    - name: tar_friuli_venezia_giulia
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-friuli-venezia-giulia-ordinanze
+        resource_name: "TAR Friuli Venezia Giulia - Ordinanze - {year}"
+        filename: "tar-friuli-venezia-giulia-ordinanze-{year}.csv"
+    - name: tar_lazio_latina
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-lazio-latina-ordinanze
+        resource_name: "TAR Lazio - Latina - Ordinanze - {year}"
+        filename: "tar-lazio-latina-ordinanze-{year}.csv"
+    - name: tar_lazio_roma
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-lazio-roma-ordinanze
+        resource_name: "TAR Lazio - Roma - Ordinanze - {year}"
+        filename: "tar-lazio-roma-ordinanze-{year}.csv"
+    - name: tar_liguria
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-liguria-ordinanze
+        resource_name: "TAR Liguria - Ordinanze - {year}"
+        filename: "tar-liguria-ordinanze-{year}.csv"
+    - name: tar_lombardia_brescia
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-lombardia-brescia-ordinanze
+        resource_name: "TAR Lombardia - Brescia - Ordinanze - {year}"
+        filename: "tar-lombardia-brescia-ordinanze-{year}.csv"
+    - name: tar_lombardia_milano
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-lombardia-milano-ordinanze
+        resource_name: "TAR Lombardia - Milano - Ordinanze - {year}"
+        filename: "tar-lombardia-milano-ordinanze-{year}.csv"
+    - name: tar_marche
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-marche-ordinanze
+        resource_name: "TAR Marche - Ordinanze - {year}"
+        filename: "tar-marche-ordinanze-{year}.csv"
+    - name: tar_molise
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-molise-ordinanze
+        resource_name: "TAR Molise - Ordinanze - {year}"
+        filename: "tar-molise-ordinanze-{year}.csv"
+    - name: tar_piemonte
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-piemonte-ordinanze
+        resource_name: "TAR Piemonte - Ordinanze - {year}"
+        filename: "tar-piemonte-ordinanze-{year}.csv"
+    - name: tar_puglia_bari
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-puglia-bari-ordinanze
+        resource_name: "TAR Puglia - Bari - Ordinanze - {year}"
+        filename: "tar-puglia-bari-ordinanze-{year}.csv"
+    - name: tar_puglia_lecce
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-puglia-lecce-ordinanze
+        resource_name: "TAR Puglia - Lecce - Ordinanze - {year}"
+        filename: "tar-puglia-lecce-ordinanze-{year}.csv"
+    - name: tar_sardegna
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-sardegna-ordinanze
+        resource_name: "TAR Sardegna - Ordinanze - {year}"
+        filename: "tar-sardegna-ordinanze-{year}.csv"
+    - name: tar_sicilia_catania
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-sicilia-catania-ordinanze
+        resource_name: "TAR Sicilia - Catania - Ordinanze - {year}"
+        filename: "tar-sicilia-catania-ordinanze-{year}.csv"
+    - name: tar_sicilia_palermo
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-sicilia-palermo-ordinanze
+        resource_name: "TAR Sicilia - Palermo - Ordinanze - {year}"
+        filename: "tar-sicilia-palermo-ordinanze-{year}.csv"
+    - name: tar_toscana
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-toscana-ordinanze
+        resource_name: "TAR Toscana - Ordinanze - {year}"
+        filename: "tar-toscana-ordinanze-{year}.csv"
+    - name: tar_umbria
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-umbria-ordinanze
+        resource_name: "TAR Umbria - Ordinanze - {year}"
+        filename: "tar-umbria-ordinanze-{year}.csv"
+    - name: tar_valle_d_aosta
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-valle-d-aosta-ordinanze
+        resource_name: "TAR Valle d’Aosta - Ordinanze - {year}"
+        filename: "tar-valle-d-aosta-ordinanze-{year}.csv"
+    - name: tar_veneto
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: tar-veneto-ordinanze
+        resource_name: "TAR Veneto - Ordinanze - {year}"
+        filename: "tar-veneto-ordinanze-{year}.csv"
+    - name: trga_bolzano
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: trga-bolzano-ordinanze
+        resource_name: "TRGA - Bolzano - Ordinanze - {year}"
+        filename: "trga-bolzano-ordinanze-{year}.csv"
+    - name: trga_trento
+      type: ckan
+      args:
+        portal_url: https://openga.giustizia-amministrativa.it
+        dataset_id: trga-trento-ordinanze
+        resource_name: "TRGA - Trento - Ordinanze - {year}"
+        filename: "trga-trento-ordinanze-{year}.csv"
+
+clean:
+  read:
+    delim: ","
+    encoding: utf-8
+    header: true
+  required_columns:
+    - anno
+    - codice_sede
+    - nome_sede
+    - numero_ricorso
+    - esito_provvedimento
+  sql: sql/clean.sql
+  validate:
+    min_rows: 100
+    not_null:
+      - numero_ricorso
+      - data_pubblicazione
+    primary_key: [codice_sede, numero_provvedimento, numero_ricorso]
+
+mart:
+  tables:
+    - name: mart_esiti_per_sede
+      sql: sql/mart_esiti_sede.sql
+    - name: mart_esiti_per_tipo
+      sql: sql/mart_esiti_tipo.sql
+  required_tables:
+    - mart_esiti_per_sede
+  validate:
+    table_rules:
+      mart_esiti_per_sede:
+        required_columns:
+          - anno
+          - codice_sede
+          - nome_sede
+          - esito_provvedimento
+          - totale
+        min_rows: 5
+      mart_esiti_per_tipo:
+        required_columns:
+          - anno
+          - tipo_ricorso
+          - esito_provvedimento
+          - totale
+        min_rows: 5
+
+validation:
+  fail_on_error: true
