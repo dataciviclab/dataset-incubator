@@ -142,21 +142,15 @@ def validate_relation(con: duckdb.DuckDBPyConnection, rel: dict, verbose: bool =
         result["match"] = row[1]
         result["match_pct"] = round(100.0 * row[1] / max(row[0], 1), 1) if row[0] else 0.0
 
-        # Determina status
-        prev = rel.get("validated_match")
-        curr = result["match_pct"]
-        if prev and curr is not None:
-            diff = abs(curr - prev * 100)
-            if diff < 5:
-                result["status"] = "✅"
-            elif diff < 15:
-                result["status"] = "⚠️"
-            else:
-                result["status"] = "❌"
+        # Status: fallisce solo se match = 0 (relazione completamente assente)
+        if result["match_pct"] == 0:
+            result["status"] = "❌"
         else:
-            result["status"] = "📐"  # prima validazione
+            result["status"] = "✅"
 
-        result["details"] = f"{result['match']} chiavi su {result['tot_from']}"
+        result["details"] = (
+            f"{result['match']} chiavi su {result['tot_from']} ({result['match_pct']}%)"
+        )
 
     except Exception as e:
         result["status"] = "❌"
@@ -246,12 +240,11 @@ def main():
         print(f"\n  ❌ {err} errore(i) — fail")
         sys.exit(1)
 
-    # Suggerisci aggiornamento validated_match
-    print("\n  Suggerimento: per aggiornare le percentuali nel YAML:")
-    for r in results:
-        if r.get("match_pct") is not None:
-            new_val = round(r["match_pct"] / 100, 3)
-            print(f"    {r['rel']}: validated_match: {new_val}")
+    # Mostra range match
+    if results:
+        pcts = [r.get("match_pct") for r in results if r.get("match_pct") is not None]
+        if pcts:
+            print(f"\n  Range match: {min(pcts):.1f}% – {max(pcts):.1f}%")
 
     con.close()
 

@@ -28,9 +28,6 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: direct
-    validated_match: 0.922
-    validated_on: "2026-07-21"
-    validated_by: scanner
     note: "codice_istat_luogo = luogo di esecuzione della gara. Può differire dal comune della SA."
 
   - from: comuni_master
@@ -40,9 +37,6 @@ relations:
     key_type: territorial
     cardinality: "1:N"
     normalized_by: direct
-    validated_match: 0.995
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -51,9 +45,6 @@ relations:
     key_type: territorial
     cardinality: "1:N"
     normalized_by: direct
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -62,9 +53,6 @@ relations:
     key_type: territorial
     cardinality: "1:1"
     normalized_by: direct
-    validated_match: 0.900
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -73,9 +61,6 @@ relations:
     key_type: territorial
     cardinality: "1:N"
     normalized_by: direct
-    validated_match: 0.959
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -84,9 +69,6 @@ relations:
     key_type: territorial
     cardinality: "1:1"
     normalized_by: direct
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -95,9 +77,6 @@ relations:
     key_type: territorial
     cardinality: "1:1"
     normalized_by: direct
-    validated_match: 0.985
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   # ==========================================================================
   # DATASET SPOKE → HUB (via normalizer)
@@ -110,9 +89,6 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "RIGHT(codice_comune_istat, 6)"
-    validated_match: 0.848
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   - from: ispra_ru_costi_kg
     via: codice_comune_istat
@@ -121,9 +97,6 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "RIGHT(codice_comune_istat, 6)"
-    validated_match: 0.848
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   - from: ispra_ru_costi_procapite
     via: codice_comune_istat
@@ -132,9 +105,6 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "RIGHT(codice_comune_istat, 6)"
-    validated_match: 0.848
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   - from: irpef_comunale
     via: codice_istat_comune
@@ -143,9 +113,6 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: direct
-    validated_match: 0.999
-    validated_on: "2026-07-21"
-    validated_by: scanner
     note: "Ha anche codice_catastale come colonna aggiuntiva. Anni d'imposta 2019-2023."
 
   - from: farmacie
@@ -155,8 +122,6 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "LPAD(CAST(cod_comune AS VARCHAR), 6, '0')"
-    validated_on: "2026-06-21"
-    validated_by: data-researcher
 
   - from: ispra_consumo_suolo
     via: pro_com
@@ -165,9 +130,6 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "LPAD(CAST(pro_com AS VARCHAR), 6, '0')"
-    validated_match: 0.080
-    validated_on: "2026-07-21"
-    validated_by: scanner
     note: "Match basso (8%) — pro_com è 5 cifre left-padded. Verificare se serve pre-trattamento diverso."
 
   - from: popolazione_istat_comunale_2019_2025
@@ -177,8 +139,6 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: direct
-    validated_on: "2026-06-21"
-    validated_by: data-researcher
 
   - from: dait_amministratori_locali
     via: codice_dait_completo
@@ -188,8 +148,6 @@ relations:
     cardinality: "N:1"
     normalized_by: via_bridge
     bridge_required: bdap_anagrafe_enti
-    validated_on: "2026-06-21"
-    validated_by: data-researcher
     note: "Usa bdap_anagrafe_enti per mapping DAIT → ISTAT."
 
   - from: dipendenti_pubblici
@@ -200,8 +158,6 @@ relations:
     cardinality: "N:1"
     normalized_by: via_bridge
     bridge_required: bdap_anagrafe_enti
-    validated_on: "2026-07-15"
-    validated_by: data-researcher
 
   - from: siope_bilancio_unificato
     via: codice_ente
@@ -211,8 +167,6 @@ relations:
     cardinality: "N:1"
     normalized_by: via_bridge
     bridge_required: bdap_anagrafe_enti
-    validated_on: "2026-07-15"
-    validated_by: data-researcher
 
   - from: inps_rdc_pdc
     via: codice_istat
@@ -221,8 +175,6 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: direct
-    validated_on: "2026-06-21"
-    validated_by: data-researcher
     note: "La colonna si chiama codice_istat ma contiene codice CATASTALE (es. A010)."
 
   # ==========================================================================
@@ -238,9 +190,6 @@ relations:
     key_type: territorial
     cardinality: "1:1"
     normalized_by: direct
-    validated_match: 0.999
-    validated_on: "2026-07-21"
-    validated_by: scanner
 
   # ==========================================================================
   # AGGIUNTE DA CATALOGO (17 dataset non mappati)

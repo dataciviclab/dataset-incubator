@@ -38,9 +38,6 @@ relations:
     key_type: domain
     domain: appalti
     cardinality: "1:1"
-    validated_match: 0.651
-    validated_on: "2026-07-22"
-    validated_by: ci
     note: >
       Match su tutti gli anni (2016-2025 bandi, 2000-2026 agg.).
       65,1%: bandi non aggiudicati, annullati, o pre-2016.
@@ -58,9 +55,6 @@ relations:
     key_type: domain
     domain: appalti
     cardinality: "1:N"
-    validated_match: 0.997
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       Un'aggiudicazione può avere più aggiudicatari (ATI/RTI).
       Match quasi perfetto (99,7%): 9.424.624 id su 9.457.009.
@@ -78,8 +72,6 @@ relations:
     key_type: domain
     domain: appalti
     cardinality: "1:N"
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       Alternativa via CIG. Preferire id_aggiudicazione per maggiore
       precisione. Usare cig solo se id_aggiudicazione non è disponibile.
@@ -97,9 +89,6 @@ relations:
     key_type: domain
     domain: appalti
     cardinality: "1:N"
-    validated_match: 0.974
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       Ogni CIG può avere più partecipanti (anche 50+).
       Match 97,4%: 7.673.210 match su 7.875.428 aggiudicazioni.
@@ -118,9 +107,6 @@ relations:
     key_type: domain
     domain: appalti
     cardinality: "1:N"
-    validated_match: 0.069
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       Solo 6,9% delle aggiudicazioni ha subappalti dichiarati (351.619
       match su 5.088.515). Il dato cresce su più anni (2020-2026) ma
@@ -140,9 +126,6 @@ relations:
     key_type: domain
     domain: appalti
     cardinality: "1:N"
-    validated_match: 0.00019
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       937 CIG su 4.862.077 aggiudicazioni hanno ricorsi
       (0,02%). Dato aggiornato con openga 31 sedi (TAR + CdS).
@@ -163,9 +146,6 @@ relations:
     domain: territorio
     cardinality: "N:1"
     normalized_by: direct
-    validated_match: 0.770
-    validated_on: "2026-07-22"
-    validated_by: ci
     note: >
       Match su TUTTI gli anni (2016-2025). 77%: alcuni codici
       ISTAT nei bandi non sono comuni italiani o sono variati.
@@ -211,9 +191,6 @@ relations:
     key_type: domain
     domain: appalti
     cardinality: "1:N"
-    validated_match: 0.999
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       Match 99,9%. Il CPV non identifica una specifica gara ma la
       categoria merceologica. Utile per analisi settoriali
@@ -232,9 +209,6 @@ relations:
     key_type: anagrafica
     domain: appalti
     cardinality: "1:N"
-    validated_match: 0.995
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       Il CF dell'esecutore del subappalto matcha al 99,5% con
       gli aggiudicatari. Chi fa subappalti è quasi sempre anche

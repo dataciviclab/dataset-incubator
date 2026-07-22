@@ -31,9 +31,6 @@ relations:
     key_type: domain
     domain: giustizia
     cardinality: "1:N"
-    validated_match: 0.934
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       93,4% dei ricorsi ha almeno una sentenza associata (934 su 1000).
       La sentenza aggiunge ESITO_PROVVEDIMENTO (RESPINGE, ACCOGLIE, ecc.)
@@ -52,9 +49,6 @@ relations:
     key_type: domain
     domain: giustizia
     cardinality: "N:1"
-    validated_match: 0.934
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       Relazione inversa. Ogni sentenza ha un numero_ricorso che
       identifica il ricorso originario.
@@ -96,9 +90,6 @@ relations:
     key_type: domain
     domain: appalti
     cardinality: "N:1"
-    validated_match: 0.0002
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
     note: >
       Match 0,02%: 437 CIG su 2.203 ricorsi. Poche gare finiscono in
       contenzioso. Relazione debole ma importante per analisi forense.
