@@ -3918,103 +3918,103 @@
           "name": "anno",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Anno di pubblicazione"
+          "description": "Anno di pubblicazione del provvedimento"
         },
         {
           "name": "codice_sede",
           "type": "BIGINT",
           "role": "dimension",
-          "description": ""
+          "description": "Codice identificativo della sede giudiziaria"
         },
         {
           "name": "nome_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della sede (es. TAR LAZIO - ROMA, CdS GIURISDIZIONALE - ROMA)"
         },
         {
           "name": "codice_sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice della sezione interna"
         },
         {
           "name": "nome_sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della sezione interna"
         },
         {
           "name": "numero_provvedimento",
           "type": "BIGINT",
           "role": "dimension",
-          "description": ""
+          "description": "Numero identificativo del provvedimento"
         },
         {
           "name": "numero_ricorso",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Numero ricorso — chiave di join"
+          "description": "Numero del ricorso — chiave di join con altri dataset GA"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data di pubblicazione del provvedimento"
         },
         {
           "name": "mese_pubblicazione",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Mese di pubblicazione (formato YYYYMM)"
         },
         {
           "name": "esito_provvedimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Esito del provvedimento (ACCOGLIE, RESPINGE, ecc.)"
         },
         {
           "name": "flg_definisce",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indica se il provvedimento definisce il ricorso (D) o meno"
         },
         {
           "name": "data_deposito_ricorso",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data di deposito del ricorso"
         },
         {
           "name": "oggetto_ricorso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione testuale dell'oggetto del ricorso"
         },
         {
           "name": "tipo_ricorso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia del ricorso (ORDINARIO, RITO APPALTI, APPELLO, ecc.)"
         },
         {
           "name": "tipo_udienza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di udienza (UDIENZA PUBBLICA, CAMERA DI CONSIGLIO)"
         },
         {
           "name": "num_membri_collegio",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di membri del collegio giudicante"
         },
         {
           "name": "tipo_provvedimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di provvedimento (SENTENZA, ORDINANZA, DECRETO)"
         }
       ],
       "location": {
@@ -4040,103 +4040,103 @@
           "name": "anno",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Anno di pubblicazione"
+          "description": "Anno di pubblicazione del provvedimento"
         },
         {
           "name": "codice_sede",
           "type": "BIGINT",
           "role": "dimension",
-          "description": ""
+          "description": "Codice identificativo della sede giudiziaria"
         },
         {
           "name": "nome_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della sede (es. TAR LAZIO - ROMA, CdS GIURISDIZIONALE - ROMA)"
         },
         {
           "name": "codice_sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice della sezione interna"
         },
         {
           "name": "nome_sezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della sezione interna"
         },
         {
           "name": "numero_provvedimento",
           "type": "BIGINT",
           "role": "dimension",
-          "description": ""
+          "description": "Numero identificativo del provvedimento"
         },
         {
           "name": "numero_ricorso",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Numero ricorso — chiave di join"
+          "description": "Numero del ricorso — chiave di join con altri dataset GA"
         },
         {
           "name": "data_pubblicazione",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data di pubblicazione del provvedimento"
         },
         {
           "name": "mese_pubblicazione",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Mese di pubblicazione (formato YYYYMM)"
         },
         {
           "name": "esito_provvedimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Esito del provvedimento (ACCOGLIE, RESPINGE, ecc.)"
         },
         {
           "name": "flg_definisce",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indica se il provvedimento definisce il ricorso (D) o meno"
         },
         {
           "name": "data_deposito_ricorso",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data di deposito del ricorso"
         },
         {
           "name": "oggetto_ricorso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione testuale dell'oggetto del ricorso"
         },
         {
           "name": "tipo_ricorso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipologia del ricorso (ORDINARIO, RITO APPALTI, APPELLO, ecc.)"
         },
         {
           "name": "tipo_udienza",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di udienza (UDIENZA PUBBLICA, CAMERA DI CONSIGLIO)"
         },
         {
           "name": "num_membri_collegio",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero di membri del collegio giudicante"
         },
         {
           "name": "tipo_provvedimento",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di provvedimento (SENTENZA, ORDINANZA, DECRETO)"
         }
       ],
       "location": {
