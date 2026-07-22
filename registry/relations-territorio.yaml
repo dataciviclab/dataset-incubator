@@ -5,7 +5,7 @@
 # Chiave primaria: codice_istat (6 cifre zero-padded)
 # Hub: comuni_master
 #
-# Versione: 2
+# Versione: 1
 # Aggiornato: 2026-07-21
 
 schema_version: 1
@@ -28,6 +28,9 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: direct
+    validated_match: 0.922
+    validated_on: "2026-07-21"
+    validated_by: scanner
     note: "codice_istat_luogo = luogo di esecuzione della gara. Può differire dal comune della SA."
 
   - from: comuni_master
@@ -37,6 +40,9 @@ relations:
     key_type: territorial
     cardinality: "1:N"
     normalized_by: direct
+    validated_match: 0.995
+    validated_on: "2026-07-21"
+    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -45,6 +51,9 @@ relations:
     key_type: territorial
     cardinality: "1:N"
     normalized_by: direct
+    validated_match: 1.0
+    validated_on: "2026-07-21"
+    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -53,6 +62,9 @@ relations:
     key_type: territorial
     cardinality: "1:1"
     normalized_by: direct
+    validated_match: 0.900
+    validated_on: "2026-07-21"
+    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -61,6 +73,9 @@ relations:
     key_type: territorial
     cardinality: "1:N"
     normalized_by: direct
+    validated_match: 0.959
+    validated_on: "2026-07-21"
+    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -69,6 +84,9 @@ relations:
     key_type: territorial
     cardinality: "1:1"
     normalized_by: direct
+    validated_match: 1.0
+    validated_on: "2026-07-21"
+    validated_by: scanner
 
   - from: comuni_master
     via: codice_istat
@@ -77,6 +95,9 @@ relations:
     key_type: territorial
     cardinality: "1:1"
     normalized_by: direct
+    validated_match: 0.985
+    validated_on: "2026-07-21"
+    validated_by: scanner
 
   # ==========================================================================
   # DATASET SPOKE → HUB (via normalizer)
@@ -89,6 +110,9 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "RIGHT(codice_comune_istat, 6)"
+    validated_match: 0.848
+    validated_on: "2026-07-21"
+    validated_by: scanner
 
   - from: ispra_ru_costi_kg
     via: codice_comune_istat
@@ -97,6 +121,9 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "RIGHT(codice_comune_istat, 6)"
+    validated_match: 0.848
+    validated_on: "2026-07-21"
+    validated_by: scanner
 
   - from: ispra_ru_costi_procapite
     via: codice_comune_istat
@@ -105,6 +132,9 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "RIGHT(codice_comune_istat, 6)"
+    validated_match: 0.848
+    validated_on: "2026-07-21"
+    validated_by: scanner
 
   - from: irpef_comunale
     via: codice_istat_comune
@@ -113,6 +143,9 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: direct
+    validated_match: 0.999
+    validated_on: "2026-07-21"
+    validated_by: scanner
     note: "Ha anche codice_catastale come colonna aggiuntiva. Anni d'imposta 2019-2023."
 
   - from: farmacie
@@ -122,6 +155,8 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "LPAD(CAST(cod_comune AS VARCHAR), 6, '0')"
+    validated_on: "2026-06-21"
+    validated_by: data-researcher
 
   - from: ispra_consumo_suolo
     via: pro_com
@@ -130,6 +165,9 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: "LPAD(CAST(pro_com AS VARCHAR), 6, '0')"
+    validated_match: 0.080
+    validated_on: "2026-07-21"
+    validated_by: scanner
     note: "Match basso (8%) — pro_com è 5 cifre left-padded. Verificare se serve pre-trattamento diverso."
 
   - from: popolazione_istat_comunale_2019_2025
@@ -139,6 +177,8 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: direct
+    validated_on: "2026-06-21"
+    validated_by: data-researcher
 
   - from: dait_amministratori_locali
     via: codice_dait_completo
@@ -148,6 +188,8 @@ relations:
     cardinality: "N:1"
     normalized_by: via_bridge
     bridge_required: bdap_anagrafe_enti
+    validated_on: "2026-06-21"
+    validated_by: data-researcher
     note: "Usa bdap_anagrafe_enti per mapping DAIT → ISTAT."
 
   - from: dipendenti_pubblici
@@ -158,6 +200,8 @@ relations:
     cardinality: "N:1"
     normalized_by: via_bridge
     bridge_required: bdap_anagrafe_enti
+    validated_on: "2026-07-15"
+    validated_by: data-researcher
 
   - from: siope_bilancio_unificato
     via: codice_ente
@@ -167,6 +211,8 @@ relations:
     cardinality: "N:1"
     normalized_by: via_bridge
     bridge_required: bdap_anagrafe_enti
+    validated_on: "2026-07-15"
+    validated_by: data-researcher
 
   - from: inps_rdc_pdc
     via: codice_istat
@@ -175,6 +221,8 @@ relations:
     key_type: territorial
     cardinality: "N:1"
     normalized_by: direct
+    validated_on: "2026-06-21"
+    validated_by: data-researcher
     note: "La colonna si chiama codice_istat ma contiene codice CATASTALE (es. A010)."
 
   # ==========================================================================
@@ -190,118 +238,6 @@ relations:
     key_type: territorial
     cardinality: "1:1"
     normalized_by: direct
-
-  # ==========================================================================
-  # AGGIUNTE DA CATALOGO (17 dataset non mappati)
-  # ==========================================================================
-
-  - from: centri_accoglienza_italia
-    via: comune_codice_istat
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-    normalized_by: "CAST(comune_codice_istat AS VARCHAR)"
-    note: "Centri accoglienza. comune_codice_istat è BIGINT."
-
-  - from: sai_progetti_italia
-    via: comune_codice_istat
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-    normalized_by: "CAST(comune_codice_istat AS VARCHAR)"
-
-  - from: sai_strutture_italia
-    via: comune_codice_istat
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-    normalized_by: "CAST(comune_codice_istat AS VARCHAR)"
-
-  - from: mef_patrimonio_detenzioni
-    via: codice_comune_amministrazione
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-
-  - from: mef_patrimonio_immobili
-    via: codice_comune_amministrazione
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-
-  - from: mim_anagrafica_scuole_statali
-    via: codice_comune_scuola
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-
-  - from: mim_scuola_infanzia
-    via: codice_comune_scuola
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-
-  - from: openga_ricorsi_appalto
-    via: luogo_istat
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-
-  - from: who_is_who_pa
-    via: codice_istat
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-    note: "già in relations-enti.yaml via CF. Qui per completezza territoriale."
-
-  - from: mit_opere_incompiute_2020
-    via: localizzazione_codice_istat
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-
-  - from: bdap_anagrafe_enti
-    via: codice_istat_comune
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-
-  - from: opencivitas_fsc_2025_rso
-    via: regione_istat_cod
-    to: comuni_master
-    as: codice_regione
-    key_type: territorial
-    cardinality: "N:1"
-    note: "regione_istat_cod è codice ISTAT regione (2 cifre), non comune."
-
-  - from: posti_letto_stabilimento
-    via: codice_comune
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-
-  - from: ipa_enti
-    via: codice_istat
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
-
-  - from: mim_alunni_corso_eta
-    via: codice_comune_scuola
-    to: comuni_master
-    as: codice_istat
-    key_type: territorial
-    cardinality: "N:1"
+    validated_match: 0.999
+    validated_on: "2026-07-21"
+    validated_by: scanner
