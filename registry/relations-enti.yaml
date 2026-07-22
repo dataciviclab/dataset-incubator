@@ -1,310 +1,246 @@
-# registry/relations-enti.yaml
-# Relazioni tra enti della Pubblica Amministrazione.
-# Chiavi: codice_fiscale / partita IVA (anagrafica), codice_IPA (amministrativa)
-#
-# Hub centrale: comuni_master per i comuni, who_is_who_pa per tutti gli enti.
-#
-# Versione: 1
-# Aggiornato: 2026-07-21
-
 schema_version: 1
 domain: enti
-description: "Relazioni tra dataset basate su codice fiscale / P.IVA e codice IPA"
-updated_at: "2026-07-21"
-
+description: Relazioni tra dataset basate su codice fiscale / P.IVA e codice IPA
+updated_at: '2026-07-21'
 relations:
-
-  # ==========================================================================
-  # CODICE FISCALE / PARTITA IVA
-  # ==========================================================================
-
-  # --- who_is_who_pa (anagrafe enti PA) ←→ comuni_master ---
-  - from: comuni_master
-    via: codice_fiscale
-    to: who_is_who_pa
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "1:1"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-    note: "comuni_master.codice_fiscale → who_is_who_pa.codice_fiscale_ente. I comuni sono un sottoinsieme di who_is_who_pa."
-
-  - from: comuni_master
-    via: codice_fiscale
-    to: ipa_istat_mapping
-    as: codice_fiscale
-    key_type: anagrafica
-    cardinality: "1:1"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: comuni_master
-    via: codice_fiscale
-    to: ipa_aree_organizzative_omogenee
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: comuni_master
-    via: codice_fiscale
-    to: ipa_unita_organizzative
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  # --- IPA (Indice PA) — rete di relazioni tra dataset IPA ---
-  - from: ipa_istat_mapping
-    via: codice_fiscale
-    to: ipa_unita_organizzative
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_istat_mapping
-    via: codice_fiscale
-    to: who_is_who_pa
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "1:1"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_unita_organizzative
-    via: codice_fiscale_ente
-    to: who_is_who_pa
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 0.999
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_aree_organizzative_omogenee
-    via: codice_fiscale_ente
-    to: ipa_unita_organizzative
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 0.994
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_aree_organizzative_omogenee
-    via: codice_fiscale_ente
-    to: who_is_who_pa
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 0.992
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_aree_organizzative_omogenee
-    via: codice_fiscale_ente
-    to: ipa_istat_mapping
-    as: codice_fiscale
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 0.451
-    validated_on: "2026-07-21"
-    validated_by: scanner
-    note: "Match medio — alcuni enti IPA non hanno corrispondenza nel mapping ISTAT."
-
-  # --- ANAC — codice fiscale delle stazioni appaltanti ---
-  - from: anac_aggiudicatari
-    via: codice_fiscale
-    to: anac_partecipanti
-    as: codice_fiscale
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 0.996
-    validated_on: "2026-07-21"
-    validated_by: scanner
-    note: "Le imprese che vincono sono anche partecipanti. Match quasi perfetto."
-
-  - from: anac_bandi_gara
-    via: cf_amministrazione_appaltante
-    to: ipa_unita_organizzative
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "N:1"
-    validated_match: 0.851
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: anac_bandi_gara
-    via: cf_amministrazione_appaltante
-    to: who_is_who_pa
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "N:1"
-    validated_match: 0.848
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: anac_bandi_gara
-    via: cf_amministrazione_appaltante
-    to: ipa_aree_organizzative_omogenee
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "N:1"
-    validated_match: 0.788
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  # --- PNRR — soggetti attuatori ---
-  - from: pnrr_progetti
-    via: cf_soggetto_attuatore
-    to: who_is_who_pa
-    as: codice_fiscale_ente
-    key_type: anagrafica
-    cardinality: "N:1"
-    validated_match: 0.652
-    validated_on: "2026-07-21"
-    validated_by: scanner
-    note: "65% — il resto sono soggetti privati non in who_is_who_pa."
-
-  - from: comuni_master
-    via: codice_fiscale
-    to: pnrr_progetti
-    as: cf_soggetto_attuatore
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 0.522
-    validated_on: "2026-07-21"
-    validated_by: scanner
-    note: "52% — circa 3.700 comuni su 7.500 hanno progetti PNRR."
-
-  # ==========================================================================
-  # CODICE IPA
-  # ==========================================================================
-
-  - from: comuni_master
-    via: codice_ipa
-    to: ipa_aree_organizzative_omogenee
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: comuni_master
-    via: codice_ipa
-    to: ipa_istat_mapping
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "1:1"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: comuni_master
-    via: codice_ipa
-    to: ipa_unita_organizzative
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: comuni_master
-    via: codice_ipa
-    to: who_is_who_pa
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "1:1"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_istat_mapping
-    via: codice_ipa
-    to: ipa_unita_organizzative
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_istat_mapping
-    via: codice_ipa
-    to: who_is_who_pa
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "1:1"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_unita_organizzative
-    via: codice_ipa
-    to: who_is_who_pa
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "N:1"
-    validated_match: 1.0
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_aree_organizzative_omogenee
-    via: codice_ipa
-    to: ipa_unita_organizzative
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 0.989
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_aree_organizzative_omogenee
-    via: codice_ipa
-    to: who_is_who_pa
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 0.989
-    validated_on: "2026-07-21"
-    validated_by: scanner
-
-  - from: ipa_aree_organizzative_omogenee
-    via: codice_ipa
-    to: ipa_istat_mapping
-    as: codice_ipa
-    key_type: anagrafica
-    cardinality: "1:N"
-    validated_match: 0.452
-    validated_on: "2026-07-21"
-    validated_by: scanner
-    note: "Le aree omogenee sono una partizione diversa dal mapping IPA↔ISTAT."
-
-# ==========================================================================
-# CANDIDATE (da validare in CI — dataset non in locale)
-# ==========================================================================
-#
-# Queste relazioni sono state identificate dallo scanner ma non possono
-# essere validate in locale perché i dataset non sono presenti su disco.
-# La validazione avverrà in CI (tutti i parquet sono su GCS).
-#
-# - ade_cinque_per_mille.codice_fiscale → comuni_master.codice_fiscale
-#   (5x1000, CF beneficiari. Dataset su GCS.)
-#
-# - farmacie.p_iva → comuni_master.codice_fiscale
-#   (Farmacie, partita IVA. Dataset locale ma da verificare.)
-#
-# - anac_subappalti.codice_fiscale → anac_aggiudicatari.codice_fiscale
-#   (CF dell'esecutore subappalto matcha CF aggiudicatari. ~12% scanner.)
+- from: comuni_master
+  via: codice_fiscale
+  to: who_is_who_pa
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: '1:1'
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+  note: comuni_master.codice_fiscale → who_is_who_pa.codice_fiscale_ente. I comuni
+    sono un sottoinsieme di who_is_who_pa.
+- from: comuni_master
+  via: codice_fiscale
+  to: ipa_istat_mapping
+  as: codice_fiscale
+  key_type: anagrafica
+  cardinality: '1:1'
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: comuni_master
+  via: codice_fiscale
+  to: ipa_aree_organizzative_omogenee
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: comuni_master
+  via: codice_fiscale
+  to: ipa_unita_organizzative
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_istat_mapping
+  via: codice_fiscale
+  to: ipa_unita_organizzative
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_istat_mapping
+  via: codice_fiscale
+  to: who_is_who_pa
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: '1:1'
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_unita_organizzative
+  via: codice_fiscale_ente
+  to: who_is_who_pa
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_aree_organizzative_omogenee
+  via: codice_fiscale_ente
+  to: ipa_unita_organizzative
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 0.991
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_aree_organizzative_omogenee
+  via: codice_fiscale_ente
+  to: who_is_who_pa
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 0.991
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_aree_organizzative_omogenee
+  via: codice_fiscale_ente
+  to: ipa_istat_mapping
+  as: codice_fiscale
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 0.34
+  validated_on: '2026-07-21'
+  validated_by: scanner
+  note: Match medio — alcuni enti IPA non hanno corrispondenza nel mapping ISTAT.
+- from: anac_aggiudicatari
+  via: codice_fiscale
+  to: anac_partecipanti
+  as: codice_fiscale
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 0.983
+  validated_on: '2026-07-21'
+  validated_by: scanner
+  note: Le imprese che vincono sono anche partecipanti. Match quasi perfetto.
+- from: anac_bandi_gara
+  via: cf_amministrazione_appaltante
+  to: ipa_unita_organizzative
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: N:1
+  validated_match: 0.704
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: anac_bandi_gara
+  via: cf_amministrazione_appaltante
+  to: who_is_who_pa
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: N:1
+  validated_match: 0.703
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: anac_bandi_gara
+  via: cf_amministrazione_appaltante
+  to: ipa_aree_organizzative_omogenee
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: N:1
+  validated_match: 0.663
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: pnrr_progetti
+  via: cf_soggetto_attuatore
+  to: who_is_who_pa
+  as: codice_fiscale_ente
+  key_type: anagrafica
+  cardinality: N:1
+  validated_match: 0.613
+  validated_on: '2026-07-21'
+  validated_by: scanner
+  note: 65% — il resto sono soggetti privati non in who_is_who_pa.
+- from: comuni_master
+  via: codice_fiscale
+  to: pnrr_progetti
+  as: cf_soggetto_attuatore
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 0.518
+  validated_on: '2026-07-21'
+  validated_by: scanner
+  note: 52% — circa 3.700 comuni su 7.500 hanno progetti PNRR.
+- from: comuni_master
+  via: codice_ipa
+  to: ipa_aree_organizzative_omogenee
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: comuni_master
+  via: codice_ipa
+  to: ipa_istat_mapping
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: '1:1'
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: comuni_master
+  via: codice_ipa
+  to: ipa_unita_organizzative
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: comuni_master
+  via: codice_ipa
+  to: who_is_who_pa
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: '1:1'
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_istat_mapping
+  via: codice_ipa
+  to: ipa_unita_organizzative
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_istat_mapping
+  via: codice_ipa
+  to: who_is_who_pa
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: '1:1'
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_unita_organizzative
+  via: codice_ipa
+  to: who_is_who_pa
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: N:1
+  validated_match: 1.0
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_aree_organizzative_omogenee
+  via: codice_ipa
+  to: ipa_unita_organizzative
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 0.991
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_aree_organizzative_omogenee
+  via: codice_ipa
+  to: who_is_who_pa
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 0.991
+  validated_on: '2026-07-21'
+  validated_by: scanner
+- from: ipa_aree_organizzative_omogenee
+  via: codice_ipa
+  to: ipa_istat_mapping
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
+  validated_match: 0.34
+  validated_on: '2026-07-21'
+  validated_by: scanner
+  note: Le aree omogenee sono una partizione diversa dal mapping IPA↔ISTAT.
