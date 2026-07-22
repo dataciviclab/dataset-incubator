@@ -38,15 +38,12 @@ relations:
     key_type: domain
     domain: appalti
     cardinality: "1:1"
-    validated_match: 0.883
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
+    validated_match: 0.651
+    validated_on: "2026-07-22"
+    validated_by: ci
     note: >
-      Il CIG è univoco sia in bandi che in aggiudicazioni.
-      Match verificato su tutti gli anni disponibili (2016-2025 per bandi,
-      2000-2026 per aggiudicazioni). 1.302.580 match su 1.475.596 bandi.
-      Il restante 12% sono bandi non aggiudicati, annullati, o che non
-      hanno ancora completato l'iter di aggiudicazione.
+      Match su tutti gli anni (2016-2025 bandi, 2000-2026 agg.).
+      65,1%: bandi non aggiudicati, annullati, o pre-2016.
 
   # ==========================================================================
   # AGGIUDICAZIONE → AGGIUDICATARI (via id_aggiudicazione)
@@ -166,15 +163,13 @@ relations:
     domain: territorio
     cardinality: "N:1"
     normalized_by: direct
-    validated_match: 0.957
-    validated_on: "2026-07-21"
-    validated_by: data-researcher
+    validated_match: 0.770
+    validated_on: "2026-07-22"
+    validated_by: ci
     note: >
-      codice_istat_luogo = luogo di esecuzione della gara.
-      Match 95,7%: 1.412.423 su 1.475.581 bandi.
-      Il 4,3% mancante è probabilmente comuni variati per fusione.
+      Match su TUTTI gli anni (2016-2025). 77%: alcuni codici
+      ISTAT nei bandi non sono comuni italiani o sono variati.
       Può differire dal comune della Stazione Appaltante.
-      Già documentato in join_map.yaml.
 
   # ==========================================================================
   # BANDO → CUI_PROGRAMMA (OpenCoesione) — NON VERIFICATA
