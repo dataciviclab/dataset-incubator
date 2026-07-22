@@ -168,8 +168,8 @@ def _build_cross_relations(relations_data: dict[str, Any]) -> list[dict[str, Any
                     "as": rel.get("as", rel.get("via")),
                     "cardinality": rel.get("cardinality", "?"),
                     "key_type": rel.get("key_type", "domain"),
-                    "validated_match": rel.get("validated_match"),
-                    "validated_on": rel.get("validated_on"),
+                    "normalized_by": rel.get("normalized_by"),
+                    "bridge_required": rel.get("bridge_required"),
                     "note": rel.get("note", ""),
                 }
             )
