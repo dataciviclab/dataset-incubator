@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-21",
+  "updated_at": "2026-07-22",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -3898,6 +3898,250 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/fts_eu_grants/*/fts_eu_grants_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "ga_decreti",
+      "name": "Ga Decreti",
+      "description": "Provvedimenti del Consiglio di Stato e dei TAR, unificati da 31 sedi giudiziarie. Include esito, tipo ricorso e oggetto. Fonte: OpenGA.",
+      "source": "Giustizia Amministrativa — OpenGA",
+      "source_id": "openga",
+      "period": {
+        "start": 2023,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Anno di pubblicazione del provvedimento"
+        },
+        {
+          "name": "codice_sede",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice identificativo della sede giudiziaria"
+        },
+        {
+          "name": "nome_sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della sede (es. TAR LAZIO - ROMA, CdS GIURISDIZIONALE - ROMA)"
+        },
+        {
+          "name": "codice_sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice della sezione interna"
+        },
+        {
+          "name": "nome_sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della sezione interna"
+        },
+        {
+          "name": "numero_provvedimento",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Numero identificativo del provvedimento"
+        },
+        {
+          "name": "numero_ricorso",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Numero del ricorso — chiave di join con altri dataset GA"
+        },
+        {
+          "name": "data_pubblicazione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di pubblicazione del provvedimento"
+        },
+        {
+          "name": "mese_pubblicazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Mese di pubblicazione (formato YYYYMM)"
+        },
+        {
+          "name": "esito_provvedimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Esito del provvedimento (ACCOGLIE, RESPINGE, ecc.)"
+        },
+        {
+          "name": "flg_definisce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indica se il provvedimento definisce il ricorso (D) o meno"
+        },
+        {
+          "name": "data_deposito_ricorso",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di deposito del ricorso"
+        },
+        {
+          "name": "oggetto_ricorso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione testuale dell'oggetto del ricorso"
+        },
+        {
+          "name": "tipo_ricorso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia del ricorso (ORDINARIO, RITO APPALTI, APPELLO, ecc.)"
+        },
+        {
+          "name": "tipo_udienza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di udienza (UDIENZA PUBBLICA, CAMERA DI CONSIGLIO)"
+        },
+        {
+          "name": "num_membri_collegio",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero di membri del collegio giudicante"
+        },
+        {
+          "name": "tipo_provvedimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di provvedimento (SENTENZA, ORDINANZA, DECRETO)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ga_decreti/*/ga_decreti_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "ga_ordinanze",
+      "name": "Ga Ordinanze",
+      "description": "Provvedimenti del Consiglio di Stato e dei TAR, unificati da 31 sedi giudiziarie. Include esito, tipo ricorso e oggetto. Fonte: OpenGA.",
+      "source": "Giustizia Amministrativa — OpenGA",
+      "source_id": "openga",
+      "period": {
+        "start": 2023,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Anno di pubblicazione del provvedimento"
+        },
+        {
+          "name": "codice_sede",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Codice identificativo della sede giudiziaria"
+        },
+        {
+          "name": "nome_sede",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della sede (es. TAR LAZIO - ROMA, CdS GIURISDIZIONALE - ROMA)"
+        },
+        {
+          "name": "codice_sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice della sezione interna"
+        },
+        {
+          "name": "nome_sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della sezione interna"
+        },
+        {
+          "name": "numero_provvedimento",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Numero identificativo del provvedimento"
+        },
+        {
+          "name": "numero_ricorso",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Numero del ricorso — chiave di join con altri dataset GA"
+        },
+        {
+          "name": "data_pubblicazione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di pubblicazione del provvedimento"
+        },
+        {
+          "name": "mese_pubblicazione",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Mese di pubblicazione (formato YYYYMM)"
+        },
+        {
+          "name": "esito_provvedimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Esito del provvedimento (ACCOGLIE, RESPINGE, ecc.)"
+        },
+        {
+          "name": "flg_definisce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Indica se il provvedimento definisce il ricorso (D) o meno"
+        },
+        {
+          "name": "data_deposito_ricorso",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di deposito del ricorso"
+        },
+        {
+          "name": "oggetto_ricorso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione testuale dell'oggetto del ricorso"
+        },
+        {
+          "name": "tipo_ricorso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipologia del ricorso (ORDINARIO, RITO APPALTI, APPELLO, ecc.)"
+        },
+        {
+          "name": "tipo_udienza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di udienza (UDIENZA PUBBLICA, CAMERA DI CONSIGLIO)"
+        },
+        {
+          "name": "num_membri_collegio",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Numero di membri del collegio giudicante"
+        },
+        {
+          "name": "tipo_provvedimento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di provvedimento (SENTENZA, ORDINANZA, DECRETO)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ga_ordinanze/*/ga_ordinanze_*_clean.parquet",
         "multi_file": true
       },
       "stage": "published",
