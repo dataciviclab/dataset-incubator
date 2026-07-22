@@ -142,8 +142,8 @@ def validate_relation(con: duckdb.DuckDBPyConnection, rel: dict, verbose: bool =
         result["match"] = row[1]
         result["match_pct"] = round(100.0 * row[1] / max(row[0], 1), 1) if row[0] else 0.0
 
-        # Status: fallisce solo se match = 0 (relazione completamente assente)
-        if result["match_pct"] == 0:
+        # Status: fallisce solo se nessuna chiave matcha (match = 0)
+        if result["match"] == 0:
             result["status"] = "❌"
         else:
             result["status"] = "✅"
