@@ -2537,10 +2537,10 @@
     },
     {
       "slug": "comuni_master",
-      "name": "Comuni Master",
-      "description": "Raccordo completo dei comuni italiani: codici ISTAT, catastale (Belfiore), IPA, fiscale, superficie, popolazione, altitudine, indirizzo e contatti. Fusione di istat-elenco-comuni e ipa-istat-mapping.",
-      "source": "ISTAT SITUAS + AgID IPA",
-      "source_id": "istat_situas",
+      "name": "Comuni Master — hub territoriale completo",
+      "description": "Golden record dei comuni italiani: codici ISTAT, catastale (Belfiore), IPA, fiscale, superficie, popolazione, NUTS 2021/2024, ripartizione geografica, flag capoluogo, tipologia UTS, codici storici 103/107/110 province, indirizzo e contatti. Fusione di istat-elenco-comuni (ISTAT SITUAS), ISTAT CSV (codici amministrativi) e ipa-enti (AgID IPA).",
+      "source": "ISTAT SITUAS + ISTAT (Elenco codici unità amministrative) + AgID IPA",
+      "source_id": "dataciviclab_composite",
       "period": {
         "start": 2026,
         "end": 2026
@@ -2628,91 +2628,91 @@
           "name": "nuts1_2021",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS1 2021 (ripartizione europea)"
         },
         {
           "name": "nuts2_2021",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS2 2021 (regione europea)"
         },
         {
           "name": "nuts3_2021",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS3 2021 (provincia europea)"
         },
         {
           "name": "nuts1_2024",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS1 2024 (ripartizione europea)"
         },
         {
           "name": "nuts2_2024",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS2 2024 (regione europea)"
         },
         {
           "name": "nuts3_2024",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS3 2024 (provincia europea)"
         },
         {
           "name": "codice_ripartizione",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Codice ripartizione geografica ISTAT (1=Nord-ovest, 2=Nord-est, 3=Centro, 4=Sud, 5=Isole)"
         },
         {
           "name": "ripartizione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ripartizione geografica (Nord-ovest, Nord-est, Centro, Sud, Isole)"
         },
         {
           "name": "flag_capoluogo",
           "type": "BOOLEAN",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "True se il comune è capoluogo di provincia/città metropolitana"
         },
         {
           "name": "codice_tipologia_uts",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Tipologia unità territoriale sovracomunale: 1=Provincia, 2=Provincia autonoma, 3=Città Metropolitana, 4=Libero Consorzio, 5=EDR"
         },
         {
           "name": "denominazione_uts",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione della provincia/Città Metropolitana/Libero Consorzio"
         },
         {
           "name": "denominazione_altra_lingua",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Denominazione del comune in altra lingua (per comuni bilingui)"
         },
         {
           "name": "codice_110_province",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT nel sistema a 110 province (2010-2016), zero-padded 6 cifre"
         },
         {
           "name": "codice_107_province",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT nel sistema a 107 province (2006-2009 e 2017-2025), zero-padded 6 cifre"
         },
         {
           "name": "codice_103_province",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISTAT nel sistema a 103 province (1995-2005), zero-padded 6 cifre"
         },
         {
           "name": "codice_ipa",
@@ -5266,122 +5266,6 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/ipa_enti/2026/ipa_enti_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published",
-      "registry_source": "derive_auto"
-    },
-    {
-      "slug": "ipa_istat_mapping",
-      "name": "Ipa Istat Mapping",
-      "description": "",
-      "source": "",
-      "source_id": "",
-      "period": {
-        "start": 2026,
-        "end": 2026
-      },
-      "columns": [
-        {
-          "name": "codice_istat",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "denominazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "sigla_provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "codice_regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "codice_catastale_istat",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "codice_ipa",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "codice_fiscale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "denominazione_ipa",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "codice_categoria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "codice_catastale_comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "codice_istat_ipa",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "acronimo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "indirizzo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "cap",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "sito_istituzionale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/ipa_istat_mapping/2026/ipa_istat_mapping_2026_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
