@@ -31,13 +31,36 @@ clean:
     null_padding: true
     trim_whitespace: true
     sample_size: -1
+  required_columns:
+    - "cig"
+    - "anno_pubblicazione"
+    - "importo_lotto"
+    - "stato"
+  validate:
+    not_null:
+      - "cig"
+      - "anno_pubblicazione"
 
 mart:
   tables:
     - name: "mart_bandi_annuale"
       sql: "sql/mart.sql"
+    # Nuovi (2026-07-24)
+    - name: "mart_trend_pnrr"
+      sql: "sql/mart_trend_pnrr.sql"
+    - name: "mart_top_stazioni"
+      sql: "sql/mart_top_stazioni.sql"
+    - name: "mart_esiti_per_procedura"
+      sql: "sql/mart_esiti_per_procedura.sql"
+    - name: "mart_trend_settore"
+      sql: "sql/mart_trend_settore.sql"
   required_tables:
     - "mart_bandi_annuale"
+    - "mart_trend_pnrr"
+  validate:
+    table_rules:
+      mart_trend_pnrr:
+        min_rows: 10
 
 validation:
   fail_on_error: true

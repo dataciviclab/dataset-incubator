@@ -51,20 +51,42 @@ clean:
       Indifferenziato (t): VARCHAR
       Totale RU (t): VARCHAR
       Percentuale RD (%): VARCHAR
+  required_columns:
+    - "anno"
+    - "codice_comune_istat"
+    - "totale_ru_tonnellate"
+    - "percentuale_rd"
   validate:
     min_rows: 6500
     promotion:
       max_row_drop_pct: 20
       fail_on_row_drop_exceeded: false
+    not_null:
+      - "anno"
+      - "codice_comune_istat"
 
 mart:
   tables:
     - name: "mart_comuni"
       sql: "sql/mart.sql"
+    # Nuovi (2026-07-24)
+    - name: "mart_rd_provincia"
+      sql: "sql/mart_rd_provincia.sql"
+    - name: "mart_ranking_comuni"
+      sql: "sql/mart_ranking_comuni.sql"
+    - name: "mart_trend_regionale"
+      sql: "sql/mart_trend_regionale.sql"
+    - name: "mart_kg_procapite"
+      sql: "sql/mart_kg_procapite.sql"
+  required_tables:
+    - "mart_comuni"
+    - "mart_rd_provincia"
   validate:
     table_rules:
       mart_comuni:
         min_rows: 6500
+      mart_rd_provincia:
+        min_rows: 10
 
 validation:
   fail_on_error: true

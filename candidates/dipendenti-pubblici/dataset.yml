@@ -26,19 +26,39 @@ clean:
     encoding: "cp1252"
     quote: "\""
     strict_mode: false
+  required_columns:
+    - "anno"
+    - "ente"
+    - "comparto"
   validate:
     min_rows: 1000
+    not_null:
+      - "anno"
+      - "ente"
+      - "comparto"
 
 mart:
   tables:
     - name: "mart_comparti_anno"
       sql: "sql/mart.sql"
+    # Nuovi (2026-07-24)
+    - name: "mart_genere_categoria"
+      sql: "sql/mart_genere_categoria.sql"
+    - name: "mart_turnover_enti"
+      sql: "sql/mart_turnover_enti.sql"
+    - name: "mart_part_time"
+      sql: "sql/mart_part_time.sql"
+    - name: "mart_tipo_istituzione"
+      sql: "sql/mart_tipo_istituzione.sql"
   required_tables:
     - "mart_comparti_anno"
+    - "mart_genere_categoria"
   validate:
     table_rules:
       mart_comparti_anno:
         min_rows: 6
+      mart_genere_categoria:
+        min_rows: 5
 
 validation:
   fail_on_error: true
