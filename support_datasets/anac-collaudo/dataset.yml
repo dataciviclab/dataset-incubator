@@ -18,7 +18,7 @@ raw:
       client:
         user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36"
       args:
-        portal_url: "https://dati.gov.it/opendata"
+        portal_url: "https://dati.anticorruzione.it/opendata"
         dataset_id: "collaudo"
         resource_name: "collaudo_csv"
       primary: true

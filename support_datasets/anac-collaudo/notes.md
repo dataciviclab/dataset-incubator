@@ -2,9 +2,7 @@
 
 ## Intake
 
-Fonte ANAC su dati.gov.it. CKAN con resource_name "collaudo_csv" + extractor unzip_first_csv.
-**WAF**: l'API diretta di dati.anticorruzione.it blocca la risorsa "collaudo" (nome triggerante).
-Usare portal_url dati.gov.it.
+Fonte ANAC. CKAN con resource_name "collaudo_csv" + extractor unzip_first_csv.
 
 ## Qualità (run 2026-07-25)
 
