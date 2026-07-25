@@ -13,13 +13,13 @@
 #   validated_on: data ultima verifica
 #   note: avvertenze sulla relazione
 #
-# Versione: 2
-# Aggiornato: 2026-07-21
+# Versione: 3
+# Aggiornato: 2026-07-25
 
 schema_version: 1
 domain: appalti
 description: "Relazioni tra dataset del dominio appalti pubblici italiani (ANAC + OpenGA)"
-updated_at: "2026-07-21"
+updated_at: "2026-07-25"
 
 relations:
 
@@ -214,6 +214,55 @@ relations:
       gli aggiudicatari. Chi fa subappalti è quasi sempre anche
       aggiudicatario diretto in altre gare. Utile per analisi
       di rete tra imprese.
+
+  # ==========================================================================
+  # CUP → TUTTI I DATASET ANAC (via CIG)
+  # ==========================================================================
+  # Bridge table: associa ogni CIG al suo CUP. Permette di collegare
+  # l'universo appalti con l'universo progetti (PNRR, OpenCUP, MOP).
+
+  - from: anac_cup
+    via: cig
+    to: anac_aggiudicazioni
+    key_type: domain
+    domain: appalti
+    cardinality: "1:1"
+    note: >
+      Bridge CIG→CUP. Un CUP ha ~4,6 CIG in media (7,12M CIG per
+      1,54M CUP). Join via cig con tutti i dataset ANAC.
+
+  # ==========================================================================
+  # COLLAUDO → AGGIUDICAZIONI
+  # ==========================================================================
+  # Certificazione finale che chiude il ciclo di vita del contratto.
+  # Join via cig + id_aggiudicazione.
+
+  - from: anac_collaudo
+    via: cig
+    to: anac_aggiudicazioni
+    key_type: domain
+    domain: appalti
+    cardinality: "1:1"
+    note: >
+      Certificazione collaudo finale. 649K righe, ~100% match con
+      aggiudicazioni. Chiude il ciclo: bando → agg → SAL → collaudo.
+      Usare anche id_aggiudicazione per match più preciso.
+
+  # ==========================================================================
+  # SAL → AGGIUDICAZIONI
+  # ==========================================================================
+  # Stati di Avanzamento Lavori: pagamenti in corso d'opera.
+  # Join via cig + id_aggiudicazione. Un CIG ha ~3,7 SAL in media.
+
+  - from: anac_stati_avanzamento
+    via: cig
+    to: anac_aggiudicazioni
+    key_type: domain
+    domain: appalti
+    cardinality: "1:N"
+    note: >
+      1,27M SAL, ~3,7 per CIG. Join via cig + id_aggiudicazione.
+      96,9% SAL in linea, 2,6% in ritardo.
 
 # ==========================================================================
 # PROSSIME RELAZIONI DA VERIFICARE
