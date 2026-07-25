@@ -45,6 +45,10 @@ mart:
       sql: "sql/mart.sql"
     - name: "popolazione_by_eta"
       sql: "sql/mart_by_eta.sql"
+    - name: "popolazione_by_regione"
+      sql: "sql/mart_by_regione.sql"
+    - name: "popolazione_by_provincia"
+      sql: "sql/mart_by_provincia.sql"
     - name: "popolazione_indicatori"
       sql: "sql/mart_indicatori.sql"
   hierarchy:

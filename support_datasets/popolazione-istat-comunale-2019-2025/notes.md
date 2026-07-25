@@ -22,6 +22,8 @@ Tutti e 7 gli anni: raw ✅ clean ✅ mart ✅
 - Clean: 22 colonne, colonna calcolata `fascia_eta`, filtrato ETA=999 (totali ridondanti). Migrato alle macro toolkit standard (cast_int, normalize_string) il 2026-07-25.
 - `popolazione_by_comune`: 1 riga per comune, SUM GROUP BY
 - `popolazione_by_eta`: 1 riga per comune per classe di età (ETA 0-100)
+- `popolazione_by_regione`: aggregazione regionale con densità (JOIN comuni-master per codice + denominazione)
+- `popolazione_by_provincia`: aggregazione provinciale con densità (JOIN comuni-master per codice + denominazione)
 - `popolazione_indicatori`: indicatori demografici per comune (indice vecchiaia, rapporto dipendenza, % under_18, % over_65, % over_75)
 - `h_fascia` (hierarchy): 1 riga per comune per fascia d'età, 17 metriche — generato automaticamente dal toolkit
 
