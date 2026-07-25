@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-22",
+  "updated_at": "2026-07-25",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -918,6 +918,130 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "anac_collaudo",
+      "name": "ANAC Collaudo",
+      "description": "Certificazioni di collaudo (o regolare esecuzione) degli appalti ordinari: esito, date, riserve e contenzioso. Fonte ANAC. Join via cig + id_aggiudicazione con anac_aggiudicazioni. Chiude il ciclo di vita del contratto.",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
+      "source_id": "anac",
+      "period": {
+        "start": 2000,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CIG del contratto — join con anac_bandi_gara e anac_aggiudicazioni"
+        },
+        {
+          "name": "data_delibera",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data delibera collaudo"
+        },
+        {
+          "name": "data_cert_collaudo",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data certificato collaudo"
+        },
+        {
+          "name": "esito_collaudo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Esito collaudo (POSITIVO / NEGATIVO)"
+        },
+        {
+          "name": "data_inizio_oper",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data inizio operatività"
+        },
+        {
+          "name": "data_regolare_esec",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data regolare esecuzione"
+        },
+        {
+          "name": "data_nomina_coll",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data nomina collaudatore"
+        },
+        {
+          "name": "data_collaudo_stat",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data collaudo statico"
+        },
+        {
+          "name": "id_aggiudicazione",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "ID aggiudicazione — join con anac_aggiudicazioni"
+        },
+        {
+          "name": "riserve_avanzate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Riserve avanzate (€)"
+        },
+        {
+          "name": "riserve_definite",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Riserve definite (€)"
+        },
+        {
+          "name": "importo_contenz_risolto",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo contenzioso risolto (€)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anac_collaudo/2026/anac_collaudo_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "anac_cup",
+      "name": "ANAC CUP",
+      "description": "Bridge table CIG→CUP: associa ogni CIG (Codice Identificativo Gara) al suo CUP (Codice Unico di Progetto). Collega l'universo ANAC (appalti) ai progetti (OpenCUP, PNRR, BDAP MOP). 7,12M righe.",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
+      "source_id": "anac",
+      "period": {
+        "start": 2000,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CIG — join con tutti i dataset ANAC"
+        },
+        {
+          "name": "cup",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CUP — join con PNRR, OpenCUP, BDAP MOP"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anac_cup/2026/anac_cup_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "anac_partecipanti",
       "name": "ANAC Partecipanti",
       "description": "Anagrafica dei partecipanti alle gare pubbliche (non solo vincitori): denominazione, codice fiscale, ruolo e tipo soggetto. Fonte ANAC. Join via cig con anac_bandi_gara e anac_aggiudicazioni, via codice_fiscale con anac_aggiudicatari.",
@@ -962,6 +1086,92 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/anac_partecipanti/2026/anac_partecipanti_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "anac_stati_avanzamento",
+      "name": "ANAC Stati Avanzamento",
+      "description": "Stati di Avanzamento Lavori (SAL) degli appalti ordinari: importi, date, ritardi e scostamenti dal cronoprogramma. Fonte ANAC. 1,27M righe, ~3,7 SAL per CIG. Join via cig + id_aggiudicazione con anac_aggiudicazioni.",
+      "source": "ANAC - Autorità Nazionale Anticorruzione",
+      "source_id": "anac",
+      "period": {
+        "start": 2000,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CIG del contratto — join con anac_bandi_gara e anac_aggiudicazioni"
+        },
+        {
+          "name": "denominazione_sal",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione SAL"
+        },
+        {
+          "name": "flag_ritardo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "IN LINEA / IN RITARDO / IN ANTICIPO"
+        },
+        {
+          "name": "data_emissione_sal",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data emissione SAL"
+        },
+        {
+          "name": "importo_sal",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo del SAL (€)"
+        },
+        {
+          "name": "n_giorni_scostamento",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Giorni di scostamento dal cronoprogramma"
+        },
+        {
+          "name": "progressivo_sal",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero progressivo del SAL"
+        },
+        {
+          "name": "id_aggiudicazione",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "ID aggiudicazione — join con anac_aggiudicazioni"
+        },
+        {
+          "name": "data_cert_pagamento",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data certificato di pagamento"
+        },
+        {
+          "name": "importo_cert_pagamento",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo certificato di pagamento (€)"
+        },
+        {
+          "name": "giorni_proroga",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Giorni di proroga concessi"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anac_stati_avanzamento/2026/anac_stati_avanzamento_2026_clean.parquet",
         "multi_file": false
       },
       "stage": "published",

@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-22",
+  "generated_at": "2026-07-25",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 101,
+    "total": 104,
     "by_status": {
-      "ok": 101,
+      "ok": 104,
       "warn": 0,
       "error": 0
     }
@@ -1698,6 +1698,42 @@
       }
     },
     {
+      "id": "anac-collaudo",
+      "source_id": "anac",
+      "status": "ok",
+      "label": "anac-collaudo",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30156522396",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30156522396",
+        "checked_at": "2026-07-25",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/anac-collaudo/dataset.yml"
+      }
+    },
+    {
+      "id": "anac-cup",
+      "source_id": "anac",
+      "status": "ok",
+      "label": "anac-cup",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30156522396",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30156522396",
+        "checked_at": "2026-07-25",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/anac-cup/dataset.yml"
+      }
+    },
+    {
       "id": "anac-partecipanti",
       "source_id": "anac",
       "status": "ok",
@@ -1713,6 +1749,24 @@
           2026
         ],
         "config_path": "support_datasets/anac-partecipanti/dataset.yml"
+      }
+    },
+    {
+      "id": "anac-stati-avanzamento",
+      "source_id": "anac",
+      "status": "ok",
+      "label": "anac-stati-avanzamento",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30156522396",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30156522396",
+        "checked_at": "2026-07-25",
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/anac-stati-avanzamento/dataset.yml"
       }
     },
     {
