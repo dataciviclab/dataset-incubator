@@ -7,38 +7,48 @@
 
 Vista completa del ciclo di vita degli appalti pubblici italiani: da bando a collaudo, passando per aggiudicazione, vincitore, partecipazione, subappalti, SAL e CUP.
 
-10.4M righe su 10 anni (2016-2025), 8 dataset ANAC unificati.
+**Grana**: 1 riga per CIG (6.1M righe, 10 anni 2016-2025).
 
-## Schema (34 colonne)
+## Copertura
+
+| Metrica | Valore |
+|---|---|
+| Righe | 6.125.177 |
+| CIG distinti | 6.080.637 |
+| Con vincitore | 3.986.096 (65%) |
+| Con collaudo | 450.581 |
+| Con CUP | 1.397.284 |
+
+## Schema (35 colonne)
 
 | Gruppo | Colonne |
 |---|---|
-| Bando | `cig`, `anno`, `oggetto_gara`, `importo_complessivo_gara`, `oggetto_principale`, `flag_pnrr`, `cod_cpv` |
+| Bando | `cig`, `anno`, `oggetto_gara`, `importo_complessivo_gara`, `flag_pnrr`, `cod_cpv` |
 | SA | `amministrazione`, `provincia`, `sezione_regionale` |
-| Aggiudicazione | `importo_agg`, `data_agg`, `ribasso`, `offerte_ammesse`, `flag_subappalto`, `criterio_agg` |
-| Vincitore | `operatore`, `cf`, `tipo_soggetto` |
+| Aggiudicazione | `importo_agg`, `data_agg`, `ribasso`, `offerte_ammesse`, `flag_subappalto` |
+| Vincitore | `operatore`, `cf`, `tipo_soggetto`, `n_operatori` |
 | Partecipazione | `n_partecipanti`, `n_imprese_partecipanti` |
 | Subappalto | `n_subappalti`, `n_subappaltatori` |
-| Collaudo | `esito_collaudo`, `data_collaudo`, `riserve_avanzate`, `contenzioso` |
+| Collaudo | `esito_collaudo`, `data_collaudo`, `riserve_avanzate` |
 | SAL | `n_sal`, `importo_totale_sal`, `scostamento_medio` |
 | CUP | `cup` |
 
 ## Mart analitici
 
-| Mart | Cosa | Righe |
-|---|---|---|
-| `mart_trend_annuale` | Bandi/importi/PNRR/collaudi per anno e settore | 32 |
-| `mart_top_sa` | Top 100 SA per importo bandito | 100 |
+| Mart | Cosa |
+|---|---|
+| `mart_trend_annuale` | Bandi/importi/PNRR/collaudi per anno e settore |
+| `mart_top_sa` | Top 100 SA per importo bandito |
 
 ## Join model
 
 ```
-bandi (2016-2025)
- ├──cig──→ aggiudicazioni
- │           └──id_aggiudicazione──→ aggiudicatari
+bandi (2016-2025) — 1 riga per CIG
+ ├──cig──→ aggiudicazioni  (1:1)
+ │           └──id_aggiudicazione──→ aggiudicatari (agg a 1 per CIG)
  ├──cig──→ partecipanti (agg)
  ├──cig──→ subappalti (agg)
- ├──cig──→ collaudo
+ ├──cig──→ collaudo (agg a 1 per CIG)
  ├──cig──→ SAL (agg)
- └──cig──→ CUP (bridge)
+ └──cig──→ CUP (agg a 1 per CIG)
 ```

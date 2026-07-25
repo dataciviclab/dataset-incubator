@@ -1,12 +1,10 @@
 #!/usr/bin/env python3
 """Preprocess: anac_appalti_master — 8 dataset, anno per anno.
 
-Usage: TOOLKIT_ALLOW_SCRIPT_SOURCE=1 toolkit run raw ...
-   or: python preprocess.py <year> <output.parquet>
+Grana: 1 riga per CIG. Aggiudicatari, collaudo e cup aggregati a livello CIG.
 """
 
 import sys
-import shutil
 import duckdb
 from pathlib import Path
 
@@ -24,29 +22,48 @@ def main():
     con.execute("SET threads = 2")
     con.execute("SET preserve_insertion_order = false")
 
-    # Materializza tabelle dimensionali (una volta)
     print("Caricamento tabelle dimensionali...", flush=True)
 
-    agg = {}
+    # Tabelle 1:1 con CIG (no aggregazione necessaria)
     for tbl, url, label in [
         (
             "agg",
             f"{GCS}/anac_aggiudicazioni/2026/anac_aggiudicazioni_2026_clean.parquet",
             "aggiudicazioni",
         ),
-        (
-            "aggte",
-            f"{GCS}/anac_aggiudicatari/2026/anac_aggiudicatari_2026_clean.parquet",
-            "aggiudicatari",
-        ),
         ("coll", f"{GCS}/anac_collaudo/2026/anac_collaudo_2026_clean.parquet", "collaudo"),
-        ("cup", f"{GCS}/anac_cup/2026/anac_cup_2026_clean.parquet", "cup"),
     ]:
         con.execute(f"CREATE TEMP TABLE {tbl} AS SELECT * FROM read_parquet('{url}')")
         r = con.execute(f"SELECT count(*) FROM {tbl}").fetchone()
         print(f"  {label}: {r[0]:,}", flush=True)
-        agg[tbl] = r[0]
 
+    # Aggiudicatari: aggrega a 1 riga per CIG (un CIG può avere più operatori ATI/RTI)
+    con.execute(f"""
+        CREATE TEMP TABLE aggte_agg AS
+        SELECT cig,
+            any_value(denominazione) AS operatore,
+            any_value(codice_fiscale) AS cf,
+            any_value(tipo_soggetto) AS tipo_soggetto,
+            count(*) AS n_operatori
+        FROM read_parquet('{GCS}/anac_aggiudicatari/2026/anac_aggiudicatari_2026_clean.parquet')
+        WHERE cig IS NOT NULL
+        GROUP BY cig
+    """)
+    r = con.execute("SELECT count(*) FROM aggte_agg").fetchone()
+    print(f"  aggiudicatari (agg): {r[0]:,} gruppi", flush=True)
+
+    # CUP: aggrega a 1 riga per CIG
+    con.execute(f"""
+        CREATE TEMP TABLE cup_agg AS
+        SELECT cig, any_value(cup) AS cup
+        FROM read_parquet('{GCS}/anac_cup/2026/anac_cup_2026_clean.parquet')
+        WHERE cig IS NOT NULL
+        GROUP BY cig
+    """)
+    r = con.execute("SELECT count(*) FROM cup_agg").fetchone()
+    print(f"  cup (agg): {r[0]:,} gruppi", flush=True)
+
+    # Tabelle aggregate (già pronte)
     for tbl, url, sql, label in [
         (
             "part_agg",
@@ -71,7 +88,7 @@ def main():
         r = con.execute(f"SELECT count(*) FROM {tbl}").fetchone()
         print(f"  {label}: {r[0]:,} gruppi", flush=True)
 
-    # Crea tabella finale
+    # Crea tabella finale (1 riga per CIG)
     con.execute("""
         CREATE TEMP TABLE final (
             cig VARCHAR, anno INT, oggetto_gara VARCHAR,
@@ -82,6 +99,7 @@ def main():
             importo_agg DOUBLE, data_agg DATE, ribasso DOUBLE,
             offerte_ammesse INT, flag_subappalto BOOLEAN, criterio_agg VARCHAR,
             operatore VARCHAR, cf VARCHAR, tipo_soggetto VARCHAR,
+            n_operatori INT,
             n_partecipanti INT, n_imprese_partecipanti INT,
             n_subappalti INT, n_subappaltatori INT,
             esito_collaudo VARCHAR, data_collaudo DATE,
@@ -91,7 +109,6 @@ def main():
         )
     """)
 
-    # Processa un anno per volta
     print(f"Processo {len(BANDI_ANNI)} anni di bandi...", flush=True)
     for anno in BANDI_ANNI:
         print(f"  {anno}...", end=" ", flush=True)
@@ -105,7 +122,8 @@ def main():
                 a.importo_aggiudicazione, a.data_aggiudicazione_definitiva,
                 a.ribasso_aggiudicazione, a.numero_offerte_ammesse,
                 a.flag_subappalto, a.criterio_aggiudicazione,
-                t.denominazione, t.codice_fiscale, t.tipo_soggetto,
+                t.operatore, t.cf, t.tipo_soggetto,
+                coalesce(t.n_operatori, 0) AS n_operatori,
                 coalesce(p.n, 0), coalesce(p.n_imprese, 0),
                 coalesce(s.n, 0), coalesce(s.n_sub, 0),
                 col.esito_collaudo, col.data_delibera,
@@ -114,12 +132,12 @@ def main():
                 cu.cup
             FROM read_parquet('{GCS}/anac_bandi_gara/{anno}/anac_bandi_gara_{anno}_clean.parquet') b
             LEFT JOIN agg a ON b.cig = a.cig
-            LEFT JOIN aggte t ON a.id_aggiudicazione = t.id_aggiudicazione
+            LEFT JOIN aggte_agg t ON b.cig = t.cig
             LEFT JOIN part_agg p ON b.cig = p.cig
             LEFT JOIN sub_agg s ON b.cig = s.cig
             LEFT JOIN coll col ON b.cig = col.cig
             LEFT JOIN sal_agg sa ON b.cig = sa.cig
-            LEFT JOIN cup cu ON b.cig = cu.cig
+            LEFT JOIN cup_agg cu ON b.cig = cu.cig
         """)
         r = con.execute("SELECT count(*) FROM final").fetchone()
         print(f"{r[0]:,}", flush=True)
@@ -127,13 +145,6 @@ def main():
     r = con.execute("SELECT count(*) FROM final").fetchone()
     print(f"\nScrittura {r[0]:,} righe → {output_path}", flush=True)
     con.execute(f"COPY final TO '{output_path}' (FORMAT PARQUET)")
-
-    # Copia in clean (per validazione toolkit)
-    clean_dir = output_path.parent.parent.parent / "clean" / output_path.parent.name
-    clean_dir.mkdir(parents=True, exist_ok=True)
-    clean_file = clean_dir / f"anac_appalti_master_{output_path.parent.name}_clean.parquet"
-    shutil.copy2(output_path, clean_file)
-    print(f"  Copiato in {clean_file}", flush=True)
     print("✅ Fatto!", flush=True)
 
 
