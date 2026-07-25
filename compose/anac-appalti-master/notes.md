@@ -3,9 +3,10 @@
 ## Struttura
 
 Preprocess.py con DuckDB:
-1. Materializza tutte le tabelle dimensionali (agg, aggte, coll, cup, part_agg, sub_agg, sal_agg)
-2. Processa ogni anno di bandi con INSERT INTO (evita OOM)
-3. Copia il risultato in raw + clean
+1. Materializza tutte le tabelle dimensionali aggregate a livello CIG
+2. Bandi deduplicati via QUALIFY ROW_NUMBER() (picking max importo_lotto per CIG)
+3. Aggiudicazioni, collaudo aggregati via any_value() a 1 riga per CIG
+4. Processa ogni anno di bandi con INSERT INTO (evita OOM)
 
 ## Join model validato
 
@@ -32,11 +33,18 @@ Preprocess.py con DuckDB:
 | `anac_stati_avanzamento` | 2000-2026 | SAL (agg) |
 | `anac_cup` | 2000-2026 | Bridge CUP |
 
+## Qualità (run 2026-07-25)
+
+| Metrica | Valore |
+|---|---|
+| Righe clean | 6.080.637 |
+| CIG distinti | 6.080.637 |
+| Con vincitore | 3.947.250 (65%) |
+| Collaudi | da popolare |
+
 ## Performance
 
 | Macchina | RAM | Tempo |
 |---|---|---|
-| Locale (7.5GB, swap pieno) | 4GB config | ~10 min (raw+clean) |
+| Locale (7.5GB, swap pieno) | 4GB config | ~8 min (raw+clean+mart) |
 | CI (GitHub Actions 7GB) | — | ~5 min stimato |
-
-Il collo di bottiglia è DuckDB che carica i parquet da GCS via HTTP. I join sono veloci.

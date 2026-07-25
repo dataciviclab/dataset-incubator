@@ -7,17 +7,17 @@
 
 Vista completa del ciclo di vita degli appalti pubblici italiani: da bando a collaudo, passando per aggiudicazione, vincitore, partecipazione, subappalti, SAL e CUP.
 
-**Grana**: 1 riga per CIG (6.1M righe, 10 anni 2016-2025).
+**Grana**: 1 riga per CIG (6.08M righe = 6.08M CIG, 10 anni 2016-2025).
 
 ## Copertura
 
 | Metrica | Valore |
 |---|---|
-| Righe | 6.125.177 |
+| Righe | 6.080.637 |
 | CIG distinti | 6.080.637 |
-| Con vincitore | 3.986.096 (65%) |
-| Con collaudo | 450.581 |
-| Con CUP | 1.397.284 |
+| Con vincitore | 3.947.250 (65%) |
+| Con collaudo | ~450K |
+| Con CUP | ~1.4M |
 
 ## Schema (35 colonne)
 

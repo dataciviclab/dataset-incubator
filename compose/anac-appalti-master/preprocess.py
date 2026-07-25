@@ -24,18 +24,40 @@ def main():
 
     print("Caricamento tabelle dimensionali...", flush=True)
 
-    # Tabelle 1:1 con CIG (no aggregazione necessaria)
-    for tbl, url, label in [
-        (
-            "agg",
-            f"{GCS}/anac_aggiudicazioni/2026/anac_aggiudicazioni_2026_clean.parquet",
-            "aggiudicazioni",
-        ),
-        ("coll", f"{GCS}/anac_collaudo/2026/anac_collaudo_2026_clean.parquet", "collaudo"),
-    ]:
-        con.execute(f"CREATE TEMP TABLE {tbl} AS SELECT * FROM read_parquet('{url}')")
-        r = con.execute(f"SELECT count(*) FROM {tbl}").fetchone()
-        print(f"  {label}: {r[0]:,}", flush=True)
+    # Aggiudicazioni: aggrega a 1 riga per CIG (ci sono ~13K CIG con più righe)
+    con.execute(f"""
+        CREATE TEMP TABLE agg AS
+        SELECT cig,
+            any_value(importo_aggiudicazione) AS importo_aggiudicazione,
+            any_value(data_aggiudicazione_definitiva) AS data_aggiudicazione_definitiva,
+            any_value(ribasso_aggiudicazione) AS ribasso_aggiudicazione,
+            any_value(numero_offerte_ammesse) AS numero_offerte_ammesse,
+            any_value(flag_subappalto) AS flag_subappalto,
+            any_value(criterio_aggiudicazione) AS criterio_aggiudicazione,
+            any_value(asta_elettronica) AS asta_elettronica,
+            any_value(id_aggiudicazione) AS id_aggiudicazione,
+            count(*) AS n_righe_agg
+        FROM read_parquet('{GCS}/anac_aggiudicazioni/2026/anac_aggiudicazioni_2026_clean.parquet')
+        WHERE cig IS NOT NULL
+        GROUP BY cig
+    """)
+    r = con.execute("SELECT count(*) FROM agg").fetchone()
+    print(f"  aggiudicazioni (agg): {r[0]:,} gruppi", flush=True)
+
+    # Collaudo: aggrega a 1 riga per CIG (188 CIG con più righe)
+    con.execute(f"""
+        CREATE TEMP TABLE coll AS
+        SELECT cig,
+            any_value(esito_collaudo) AS esito_collaudo,
+            any_value(data_delibera) AS data_delibera,
+            any_value(riserve_avanzate) AS riserve_avanzate,
+            any_value(importo_contenz_risolto) AS importo_contenz_risolto
+        FROM read_parquet('{GCS}/anac_collaudo/2026/anac_collaudo_2026_clean.parquet')
+        WHERE cig IS NOT NULL
+        GROUP BY cig
+    """)
+    r = con.execute("SELECT count(*) FROM coll").fetchone()
+    print(f"  collaudo (agg): {r[0]:,} gruppi", flush=True)
 
     # Aggiudicatari: aggrega a 1 riga per CIG (un CIG può avere più operatori ATI/RTI)
     con.execute(f"""
@@ -130,7 +152,10 @@ def main():
                 col.riserve_avanzate, col.importo_contenz_risolto,
                 coalesce(sa.n_sal, 0), coalesce(sa.tot_sal, 0), sa.scost,
                 cu.cup
-            FROM read_parquet('{GCS}/anac_bandi_gara/{anno}/anac_bandi_gara_{anno}_clean.parquet') b
+            FROM (
+                SELECT * FROM read_parquet('{GCS}/anac_bandi_gara/{anno}/anac_bandi_gara_{anno}_clean.parquet')
+                QUALIFY ROW_NUMBER() OVER (PARTITION BY cig ORDER BY importo_lotto DESC) = 1
+            ) b
             LEFT JOIN agg a ON b.cig = a.cig
             LEFT JOIN aggte_agg t ON b.cig = t.cig
             LEFT JOIN part_agg p ON b.cig = p.cig
