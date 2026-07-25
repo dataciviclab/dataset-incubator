@@ -12,11 +12,13 @@ Formato: ZIP → CSV, `;` delim, `utf-8` con BOM. Skip 1 riga (header doppio).
 
 ## Schema
 
-**Clean**: 22 colonne — rinomine a snake_case, più colonna calcolata `fascia_eta`. Escluse le righe con ETA=999 (totali pre-aggregati — somma ridondante delle età 0-100).
+**Clean**: 22 colonne — rinomine a snake_case, più colonna calcolata `fascia_eta`. Escluse le righe con ETA=999 (totali pre-aggregati — somma ridondante delle età 0-100). Utilizza le macro standard del toolkit (`cast_int`, `normalize_string`).
 
-**Mart `popolazione_by_comune`**: `[anno_riferimento, codice_comune, comune, popolazione_residente, popolazione_maschile, popolazione_femminile]` — un record per comune (SUM GROUP BY, non più dipendente dalla riga ETA=999).
+**Mart `popolazione_by_comune`**: `[anno_riferimento, codice_comune, comune, popolazione_residente, popolazione_maschile, popolazione_femminile]` — un record per comune (SUM GROUP BY).
 
 **Mart `popolazione_by_eta`**: `[anno_riferimento, codice_comune, comune, eta, popolazione_residente, popolazione_maschile, popolazione_femminile]` — un record per comune per classe di età (0-100).
+
+**Mart `popolazione_indicatori`**: `[anno_riferimento, codice_comune, comune, popolazione_totale, pop_0_14, pop_15_64, pop_65_plus, pop_under_18, pop_75_plus, indice_vecchiaia, rapporto_dipendenza, pct_under_18, pct_over_65, pct_over_75]` — indicatori demografici per comune.
 
 **Hierarchy `h_fascia`**: `[codice_comune, comune, fascia_eta]` + 17 metriche demografiche — un record per comune per fascia d'età (0-14, 15-29, 30-44, 45-59, 60-74, 75+). Generato automaticamente dalla mart hierarchy del toolkit.
 

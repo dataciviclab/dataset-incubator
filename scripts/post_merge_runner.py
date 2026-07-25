@@ -105,6 +105,15 @@ def _push_clean_to_gcs(slug: str, root: str) -> bool:
     return r.returncode == 0
 
 
+def _push_mart_to_gcs(slug: str, root: str) -> bool:
+    """Push mart parquet to GCS. Returns True on success."""
+    r = subprocess.run(
+        ["python", "scripts/push_archive.py", "--layer", "mart", "--slug", slug, "--no-bq"],
+        cwd=root,
+    )
+    return r.returncode == 0
+
+
 def _rebuild_clean_catalog(root: str) -> None:
     """Rebuild clean_catalog.json after GCS push."""
     r = subprocess.run(
@@ -205,12 +214,21 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
         if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
             print(f"  GCS push per {slug}...")
             push_slug = cfg.get("push_slug", slug)
+
+            # Push clean parquet (obbligatorio)
             if _push_clean_to_gcs(push_slug, root):
-                print(f"  GCS push completato per {slug} (push_slug={push_slug})")
+                print(f"  GCS clean push completato per {slug} (push_slug={push_slug})")
                 gcs_push_ok = True
             else:
-                print(f"  GCS push FAILED for {slug}")
+                print(f"  GCS clean push FAILED for {slug}")
                 failed_configs.append(slug)
+                continue
+
+            # Push mart parquet (additivo — warning se fallisce)
+            if _push_mart_to_gcs(push_slug, root):
+                print(f"  GCS mart push completato per {slug}")
+            else:
+                print(f"  WARN: GCS mart push fallito per {slug} — procedo comunque")
 
     # --- Clean catalog rebuild ---
     if gcs_push_ok:
@@ -264,6 +282,7 @@ def cmd_build_pr_body(args: argparse.Namespace) -> None:
             "",
             "- [x] Full run toolkit (tutti gli anni)",
             f"- [{'x' if gcp_available else ' '}] Clean parquet pushato su GCS",
+            f"- [{'x' if gcp_available else ' '}] Mart parquet pushato su GCS",
             "- [x] `registry/pipeline_signals.json` aggiornato",
             f"- [{'x' if gcp_available else ' '}] `registry/clean_catalog.json` auto-derivato",
             "",
