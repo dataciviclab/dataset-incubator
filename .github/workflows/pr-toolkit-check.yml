@@ -115,7 +115,7 @@ jobs:
           toolkit run preflight --config "${{ matrix.config.config_path }}" --json 2>&1 \
             || echo "::warning::Preflight issues detected for ${{ matrix.config.config_path }}"
 
-      - name: "Toolkit run full (smoke: sample-bytes + sample-rows, skip min_rows) [retry x2]"
+      - name: "Toolkit run full (smoke: sample-rows, skip min_rows) [retry x2]"
         id: run_full
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
@@ -126,7 +126,6 @@ jobs:
               --config "${{ matrix.config.config_path }}" \
               --json \
               --sample-rows 10000 \
-              --sample-bytes 15728640 \
               > run_full.json 2>run_full_err.log; ec=$?
             if [ $ec -eq 0 ]; then
               echo "exit_code=0" >> "$GITHUB_OUTPUT"
