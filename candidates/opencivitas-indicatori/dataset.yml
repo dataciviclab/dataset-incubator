@@ -14,7 +14,7 @@ support:
     config: "../../support_datasets/opencivitas-glossario/dataset.yml"
     years: [2015, 2016, 2017, 2018, 2019, 2021, 2022]
   - name: "comuni_master"
-    config: "../../support_datasets/comuni-master/dataset.yml"
+    config: "../../compose/comuni-master/dataset.yml"
     years: [2026]
 
 raw:
