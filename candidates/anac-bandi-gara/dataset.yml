@@ -56,6 +56,11 @@ mart:
       sql: "sql/mart_trend_settore.sql"
   required_tables:
     - "mart_bandi_annuale"
+    - "mart_trend_pnrr"
+  validate:
+    table_rules:
+      mart_trend_pnrr:
+        min_rows: 10
 
 validation:
   fail_on_error: true

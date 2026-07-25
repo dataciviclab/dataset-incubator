@@ -53,4 +53,8 @@ mart:
       sql: "sql/mart_settore_regione.sql"
   required_tables:
     - "mart_aiuti_per_regione"
-  validate: {}
+    - "mart_aiuti_per_obiettivo"
+  validate:
+    table_rules:
+      mart_aiuti_per_obiettivo:
+        min_rows: 10
