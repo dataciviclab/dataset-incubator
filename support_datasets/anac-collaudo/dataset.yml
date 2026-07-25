@@ -42,6 +42,7 @@ clean:
   validate:
     not_null:
       - "cig"
+      - "id_aggiudicazione"
     min_rows: 100000
 
 mart:

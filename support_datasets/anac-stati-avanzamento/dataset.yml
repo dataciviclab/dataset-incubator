@@ -18,7 +18,7 @@ raw:
       client:
         user_agent: "Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
       args:
-        portal_url: "https://dati.anticorruzione.it/opendata"
+        portal_url: "https://dati.gov.it/opendata"
         dataset_id: "stati-avanzamento"
         resource_name: "stati-avanzamento_csv"
       primary: true
@@ -42,6 +42,7 @@ clean:
   validate:
     not_null:
       - "cig"
+      - "id_aggiudicazione"
     min_rows: 100000
 
 mart:
