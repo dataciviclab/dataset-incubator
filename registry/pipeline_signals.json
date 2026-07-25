@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 104,
+    "total": 103,
     "by_status": {
-      "ok": 104,
+      "ok": 103,
       "warn": 0,
       "error": 0
     }
@@ -1215,9 +1215,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "29637176868",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29637176868",
-        "checked_at": "2026-07-18",
+        "run_id": "30175442735",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30175442735",
+        "checked_at": "2026-07-25",
         "years": [
           2015,
           2016,
@@ -1806,24 +1806,6 @@
       }
     },
     {
-      "id": "comuni-master",
-      "source_id": "istat_situas",
-      "status": "ok",
-      "label": "comuni-master",
-      "detail": "anni: ? — fonte: ? — mart: sì",
-      "action": "",
-      "sample_run": {
-        "status": "passed",
-        "run_id": "27646152426",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27646152426",
-        "checked_at": "2026-06-16",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/comuni-master/dataset.yml"
-      }
-    },
-    {
       "id": "ipa-aree-organizzative-omogenee",
       "source_id": "agid",
       "status": "ok",
@@ -1857,24 +1839,6 @@
           2026
         ],
         "config_path": "support_datasets/ipa-enti/dataset.yml"
-      }
-    },
-    {
-      "id": "ipa-istat-mapping",
-      "source_id": "agid",
-      "status": "ok",
-      "label": "ipa-istat-mapping",
-      "detail": "anni: ? — fonte: ? — mart: sì",
-      "action": "",
-      "sample_run": {
-        "status": "passed",
-        "run_id": "27644975517",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27644975517",
-        "checked_at": "2026-06-16",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/ipa-istat-mapping/dataset.yml"
       }
     },
     {
@@ -2013,6 +1977,24 @@
           2025
         ],
         "config_path": "support_datasets/popolazione-istat-comunale-2019-2025/dataset.yml"
+      }
+    },
+    {
+      "id": "compose:comuni-master",
+      "source_id": "istat_situas",
+      "status": "ok",
+      "label": "compose:comuni-master",
+      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30175442735",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30175442735",
+        "checked_at": "2026-07-25",
+        "years": [
+          2026
+        ],
+        "config_path": "compose/comuni-master/dataset.yml"
       }
     },
     {
