@@ -340,16 +340,6 @@ datasets:
     normalizer: direct
     note: Fonte upstream di comuni_master. Stessi dati ma senza codici IPA.
 
-  - slug: ipa_istat_mapping
-    name: IPA↔ISTAT Mapping
-    granularity: comune
-    comuni_key:
-      column: codice_istat
-      format: istat_6
-    hub_key: codice_istat
-    normalizer: direct
-    note: Fonte upstream di comuni_master. Mapping IPA ↔ ISTAT.
-
   # ==========================================================================
   # COMPOSITE
   # ==========================================================================

@@ -55,16 +55,7 @@ relations:
     validated_on: "2026-07-21"
     validated_by: scanner
 
-  - from: comuni_master
-    via: codice_istat
-    to: ipa_istat_mapping
-    as: codice_istat
-    key_type: territorial
-    cardinality: "1:1"
-    normalized_by: direct
-    validated_match: 0.900
-    validated_on: "2026-07-21"
-    validated_by: scanner
+  # rimossa: ipa_istat_mapping (incorporato in comuni_master)
 
   - from: comuni_master
     via: codice_istat

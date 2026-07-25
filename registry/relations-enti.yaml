@@ -1,7 +1,7 @@
 schema_version: 1
 domain: enti
 description: Relazioni tra dataset basate su codice fiscale / P.IVA e codice IPA
-updated_at: '2026-07-21'
+updated_at: '2026-07-25'
 relations:
 - from: comuni_master
   via: codice_fiscale
@@ -11,12 +11,6 @@ relations:
   cardinality: '1:1'
   note: comuni_master.codice_fiscale → who_is_who_pa.codice_fiscale_ente. I comuni
     sono un sottoinsieme di who_is_who_pa.
-- from: comuni_master
-  via: codice_fiscale
-  to: ipa_istat_mapping
-  as: codice_fiscale
-  key_type: anagrafica
-  cardinality: '1:1'
 - from: comuni_master
   via: codice_fiscale
   to: ipa_aree_organizzative_omogenee
@@ -29,43 +23,74 @@ relations:
   as: codice_fiscale_ente
   key_type: anagrafica
   cardinality: 1:N
-- from: ipa_istat_mapping
+- from: comuni_master
   via: codice_fiscale
+  to: pnrr_progetti
+  as: cf_soggetto_attuatore
+  key_type: anagrafica
+  cardinality: 1:N
+  note: 52% — circa 3.700 comuni su 7.500 hanno progetti PNRR.
+- from: comuni_master
+  via: codice_ipa
+  to: ipa_aree_organizzative_omogenee
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
+- from: comuni_master
+  via: codice_ipa
+  to: ipa_unita_organizzative
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
+- from: comuni_master
+  via: codice_ipa
+  to: who_is_who_pa
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: '1:1'
+- from: ipa_aree_organizzative_omogenee
+  via: codice_fiscale_ente
+  to: comuni_master
+  as: codice_fiscale
+  key_type: anagrafica
+  cardinality: 1:N
+  note: Match medio — alcuni enti IPA non hanno corrispondenza in comuni_master.
+- from: ipa_aree_organizzative_omogenee
+  via: codice_fiscale_ente
   to: ipa_unita_organizzative
   as: codice_fiscale_ente
   key_type: anagrafica
   cardinality: 1:N
-- from: ipa_istat_mapping
-  via: codice_fiscale
+- from: ipa_aree_organizzative_omogenee
+  via: codice_fiscale_ente
   to: who_is_who_pa
   as: codice_fiscale_ente
   key_type: anagrafica
-  cardinality: '1:1'
+  cardinality: 1:N
+- from: ipa_aree_organizzative_omogenee
+  via: codice_ipa
+  to: ipa_unita_organizzative
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
+- from: ipa_aree_organizzative_omogenee
+  via: codice_ipa
+  to: who_is_who_pa
+  as: codice_ipa
+  key_type: anagrafica
+  cardinality: 1:N
 - from: ipa_unita_organizzative
   via: codice_fiscale_ente
   to: who_is_who_pa
   as: codice_fiscale_ente
   key_type: anagrafica
   cardinality: 1:N
-- from: ipa_aree_organizzative_omogenee
-  via: codice_fiscale_ente
-  to: ipa_unita_organizzative
-  as: codice_fiscale_ente
-  key_type: anagrafica
-  cardinality: 1:N
-- from: ipa_aree_organizzative_omogenee
-  via: codice_fiscale_ente
+- from: ipa_unita_organizzative
+  via: codice_ipa
   to: who_is_who_pa
-  as: codice_fiscale_ente
+  as: codice_ipa
   key_type: anagrafica
-  cardinality: 1:N
-- from: ipa_aree_organizzative_omogenee
-  via: codice_fiscale_ente
-  to: ipa_istat_mapping
-  as: codice_fiscale
-  key_type: anagrafica
-  cardinality: 1:N
-  note: Match medio — alcuni enti IPA non hanno corrispondenza nel mapping ISTAT.
+  cardinality: N:1
 - from: anac_aggiudicatari
   via: codice_fiscale
   to: anac_partecipanti
@@ -98,71 +123,3 @@ relations:
   key_type: anagrafica
   cardinality: N:1
   note: 65% — il resto sono soggetti privati non in who_is_who_pa.
-- from: comuni_master
-  via: codice_fiscale
-  to: pnrr_progetti
-  as: cf_soggetto_attuatore
-  key_type: anagrafica
-  cardinality: 1:N
-  note: 52% — circa 3.700 comuni su 7.500 hanno progetti PNRR.
-- from: comuni_master
-  via: codice_ipa
-  to: ipa_aree_organizzative_omogenee
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: 1:N
-- from: comuni_master
-  via: codice_ipa
-  to: ipa_istat_mapping
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: '1:1'
-- from: comuni_master
-  via: codice_ipa
-  to: ipa_unita_organizzative
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: 1:N
-- from: comuni_master
-  via: codice_ipa
-  to: who_is_who_pa
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: '1:1'
-- from: ipa_istat_mapping
-  via: codice_ipa
-  to: ipa_unita_organizzative
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: 1:N
-- from: ipa_istat_mapping
-  via: codice_ipa
-  to: who_is_who_pa
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: '1:1'
-- from: ipa_unita_organizzative
-  via: codice_ipa
-  to: who_is_who_pa
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: N:1
-- from: ipa_aree_organizzative_omogenee
-  via: codice_ipa
-  to: ipa_unita_organizzative
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: 1:N
-- from: ipa_aree_organizzative_omogenee
-  via: codice_ipa
-  to: who_is_who_pa
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: 1:N
-- from: ipa_aree_organizzative_omogenee
-  via: codice_ipa
-  to: ipa_istat_mapping
-  as: codice_ipa
-  key_type: anagrafica
-  cardinality: 1:N
-  note: Le aree omogenee sono una partizione diversa dal mapping IPA↔ISTAT.

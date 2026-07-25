@@ -1820,7 +1820,7 @@
         "years": [
           2026
         ],
-        "config_path": "support_datasets/comuni-master/dataset.yml"
+        "config_path": "compose/comuni-master/dataset.yml"
       }
     },
     {
