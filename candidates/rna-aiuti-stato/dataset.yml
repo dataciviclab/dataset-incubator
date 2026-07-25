@@ -21,17 +21,36 @@ clean:
   read:
     source: auto
     mode: latest
+  required_columns:
+    - "anno"
+    - "elemento_aiuto"
+    - "regione_beneficiario"
+    - "codice_fiscale_beneficiario"
   validate:
     min_rows: 100000
+    not_null:
+      - "anno"
+      - "elemento_aiuto"
+      - "codice_fiscale_beneficiario"
 
 mart:
   tables:
+    # ── Esistenti ──────────────────────────────────────
     - name: "mart_aiuti_per_regione"
       sql: "sql/mart_per_regione.sql"
     - name: "mart_aiuti_per_procedimento"
       sql: "sql/mart_per_procedimento.sql"
     - name: "mart_aiuti_top_beneficiari"
       sql: "sql/mart_top_beneficiari.sql"
+    # ── Nuovi (2026-07-24) ─────────────────────────────
+    - name: "mart_aiuti_per_obiettivo"
+      sql: "sql/mart_per_obiettivo.sql"
+    - name: "mart_aiuti_per_strumento"
+      sql: "sql/mart_per_strumento.sql"
+    - name: "mart_aiuti_tipo_beneficiario"
+      sql: "sql/mart_tipo_beneficiario.sql"
+    - name: "mart_aiuti_settore_regione"
+      sql: "sql/mart_settore_regione.sql"
   required_tables:
     - "mart_aiuti_per_regione"
   validate: {}

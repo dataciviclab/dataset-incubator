@@ -85,7 +85,16 @@ clean:
     null_padding: true
     sample_size: -1
     trim_whitespace: true
-  validate: {}
+  required_columns:
+    - "anno_di_imposta"
+    - "codice_istat_comune"
+    - "numero_contribuenti"
+    - "reddito_imponibile_eur"
+  validate:
+    not_null:
+      - "anno_di_imposta"
+      - "codice_istat_comune"
+      - "numero_contribuenti"
 
 mart:
   tables:
@@ -97,6 +106,15 @@ mart:
       sql: "sql/mart_multi_anno.sql"
       years: [2019, 2020, 2021, 2022, 2023, 2024]
       source_layer: "clean"
+    # Nuovi (2026-07-24)
+    - name: "mart_fonti_reddito"
+      sql: "sql/mart_fonti_reddito.sql"
+    - name: "mart_fasce_reddito"
+      sql: "sql/mart_fasce_reddito.sql"
+    - name: "mart_pressione_fiscale"
+      sql: "sql/mart_pressione_fiscale.sql"
+    - name: "mart_diseguaglianza"
+      sql: "sql/mart_diseguaglianza.sql"
   required_tables: ["irpef_by_regione", "irpef_by_comune"]
   validate: {}
 
