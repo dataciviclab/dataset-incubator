@@ -7,7 +7,6 @@ on:
       - "registry/relations-*.yaml"
       - "registry/join_map.yaml"
       - "registry/validate_relations.py"
-      - "registry/clean_catalog.json"
       - ".github/workflows/validate-relations.yml"
 
 jobs:
