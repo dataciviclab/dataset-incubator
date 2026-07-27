@@ -57,6 +57,7 @@ titoli AS (
 retribuzione AS (
     SELECT
         anno, istituzione, codi_comparto,
+        MAX(codi_fiscale) AS codi_fiscale,
         ROUND(SUM(importo), 0) AS retribuzione_totale
     FROM read_parquet('https://storage.googleapis.com/dataciviclab-clean/conto-annuale/composizione_retribuzione/{year}/composizione_retribuzione_{year}_clean.parquet')
     GROUP BY 1, 2, 3
@@ -79,7 +80,7 @@ assenze AS (
 )
 
 SELECT
-    o.anno, o.istituzione, o.desc_istituzione, o.codi_comparto, o.desc_comparto, o.codi_tipo_istituzione,
+    o.anno, o.istituzione, o.desc_istituzione, r.codi_fiscale, o.codi_comparto, o.desc_comparto, o.codi_tipo_istituzione,
     o.dipendenti, o.donne,
     -- NULL = dato non disponibile (nessun match nel dataset personale)
     ROUND(e.somma_eta / NULLIF(e.tot_persone, 0), 1) AS eta_media,
