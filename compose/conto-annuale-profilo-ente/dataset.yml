@@ -1,0 +1,52 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "conto_annuale_profilo_ente"
+  source_id: "rgs_conto_annuale"
+  years: [2020, 2021, 2022, 2023, 2024]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "occupazione_ref"
+      type: "http_file"
+      args:
+        url: "https://storage.googleapis.com/dataciviclab-clean/conto-annuale/occupazione/{year}/occupazione_{year}_clean.parquet"
+        filename: "occupazione_{year}.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "config_only"
+    mode: "latest"
+  validate:
+    min_rows: 1000
+    promotion:
+      max_row_drop_pct: 60
+      fail_on_row_drop_exceeded: false
+
+mart:
+  tables:
+    # Per ente — preserva la granularità del dato originale
+    - name: "profilo_ente"
+      sql: "sql/mart_profilo_ente.sql"
+    # Aggregato per comparto — vista sintetica
+    - name: "profilo_comparti"
+      sql: "sql/mart_profilo_comparti.sql"
+    # Assenze scomposte per causale
+    - name: "assenze_causali"
+      sql: "sql/mart_assenze_causali.sql"
+  required_tables:
+    - "profilo_ente"
+    - "profilo_comparti"
+  validate:
+    table_rules:
+      profilo_ente:
+        min_rows: 100
+      profilo_comparti:
+        min_rows: 5
+
+validation:
+  fail_on_error: true
