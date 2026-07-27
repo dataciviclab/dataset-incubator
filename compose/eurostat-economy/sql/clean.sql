@@ -18,7 +18,11 @@ hub AS (
             'https://storage.googleapis.com/dataciviclab-clean/eurostat/eurostat_area_nuts3/eurostat_area_nuts3_2026_clean.parquet',
             union_by_name=true
         )
-        WHERE unit = 'KM2' AND landuse = 'TOTAL' AND year = 2024
+        WHERE unit = 'KM2' AND landuse = 'TOTAL'
+            AND year = (SELECT MAX(year) FROM read_parquet(
+                'https://storage.googleapis.com/dataciviclab-clean/eurostat/eurostat_area_nuts3/eurostat_area_nuts3_2026_clean.parquet',
+                union_by_name=true
+            ) WHERE unit = 'KM2' AND landuse = 'TOTAL')
             AND nuts_level IS NOT NULL
     ) g
     JOIN (
