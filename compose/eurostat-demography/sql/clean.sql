@@ -4,34 +4,40 @@
 
 WITH
 
--- ── Hub: all (geo × year) combinations EU-wide ────────────────────
+-- ── Geo anchor: area_nuts3, anno piu' recente disponibile ────────
+area_data AS (
+    SELECT * FROM read_parquet(
+        'https://storage.googleapis.com/dataciviclab-clean/eurostat/eurostat_area_nuts3/eurostat_area_nuts3_2026_clean.parquet',
+        union_by_name=true
+    )
+    WHERE unit = 'KM2' AND landuse = 'TOTAL'
+),
+geo_anchor AS (
+    SELECT DISTINCT geo, geo_label_en, nuts_level,
+        nuts_parent_code, nuts_parent_label_en
+    FROM area_data
+    WHERE year = (SELECT MAX(year) FROM area_data)
+        AND nuts_level IS NOT NULL
+),
+
+-- ── Years: da demo_r_pjangrp3 (copertura 2014-2025) ─────────────
+years AS (
+    SELECT DISTINCT year FROM read_parquet(
+        'https://storage.googleapis.com/dataciviclab-clean/eurostat/eurostat_demo_r_pjangrp3_nuts3/eurostat_demo_r_pjangrp3_nuts3_2026_clean.parquet',
+        union_by_name=true
+    )
+    WHERE unit = 'NR' AND sex = 'T' AND age = 'TOTAL'
+),
+
+-- ── Hub: all (geo × year) combinations EU-wide ──────────────────
 hub AS (
     SELECT
         g.geo, g.geo_label_en, g.nuts_level,
         g.nuts_parent_code, g.nuts_parent_label_en,
         SUBSTRING(g.geo, 1, 2) AS country_code,
-        a.year
-    FROM (
-        SELECT DISTINCT geo, geo_label_en, nuts_level,
-            nuts_parent_code, nuts_parent_label_en
-        FROM read_parquet(
-            'https://storage.googleapis.com/dataciviclab-clean/eurostat/eurostat_area_nuts3/eurostat_area_nuts3_2026_clean.parquet',
-            union_by_name=true
-        )
-        WHERE unit = 'KM2' AND landuse = 'TOTAL'
-            AND year = (SELECT MAX(year) FROM read_parquet(
-                'https://storage.googleapis.com/dataciviclab-clean/eurostat/eurostat_area_nuts3/eurostat_area_nuts3_2026_clean.parquet',
-                union_by_name=true
-            ) WHERE unit = 'KM2' AND landuse = 'TOTAL')
-            AND nuts_level IS NOT NULL
-    ) g
-    JOIN (
-        SELECT DISTINCT year FROM read_parquet(
-            'https://storage.googleapis.com/dataciviclab-clean/eurostat/eurostat_demo_r_pjangrp3_nuts3/eurostat_demo_r_pjangrp3_nuts3_2026_clean.parquet',
-            union_by_name=true
-        )
-        WHERE unit = 'NR' AND sex = 'T' AND age = 'TOTAL'
-    ) a ON (1=1)
+        y.year
+    FROM geo_anchor g
+    CROSS JOIN years y
 ),
 
 -- 1. Total population (from demo_r_pjangrp3 for NUTS3 coverage)
