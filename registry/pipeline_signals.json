@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 104,
+    "total": 107,
     "by_status": {
-      "ok": 104,
+      "ok": 107,
       "warn": 0,
       "error": 0
     }
@@ -2031,6 +2031,60 @@
           2026
         ],
         "config_path": "compose/costituzione-master/dataset.yml"
+      }
+    },
+    {
+      "id": "compose:eurostat-demography",
+      "source_id": "eurostat",
+      "status": "ok",
+      "label": "compose:eurostat-demography",
+      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30257825297",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30257825297",
+        "checked_at": "2026-07-27",
+        "years": [
+          2026
+        ],
+        "config_path": "compose/eurostat-demography/dataset.yml"
+      }
+    },
+    {
+      "id": "compose:eurostat-economy",
+      "source_id": "eurostat",
+      "status": "ok",
+      "label": "compose:eurostat-economy",
+      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30257825297",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30257825297",
+        "checked_at": "2026-07-27",
+        "years": [
+          2026
+        ],
+        "config_path": "compose/eurostat-economy/dataset.yml"
+      }
+    },
+    {
+      "id": "compose:eurostat-territory",
+      "source_id": "eurostat",
+      "status": "ok",
+      "label": "compose:eurostat-territory",
+      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30257825297",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30257825297",
+        "checked_at": "2026-07-27",
+        "years": [
+          2026
+        ],
+        "config_path": "compose/eurostat-territory/dataset.yml"
       }
     },
     {
