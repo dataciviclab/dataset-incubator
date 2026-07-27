@@ -1,0 +1,44 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "anac_appalti_master"
+  source_id: "dataciviclab_composite"
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - type: script
+      args:
+        command: "python preprocess.py {year} output.parquet"
+        output: "output.parquet"
+        filename: "output.parquet"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    mode: latest
+    source: auto
+  validate:
+    min_rows: 100000
+    promotion:
+      max_row_drop_pct: 100
+      warn_removed_columns: false
+
+mart:
+  tables:
+    - name: "mart_trend_annuale"
+      sql: "sql/mart_trend_annuale.sql"
+    - name: "mart_top_sa"
+      sql: "sql/mart_top_sa.sql"
+  validate:
+    table_rules:
+      mart_trend_annuale:
+        min_rows: 10
+      mart_top_sa:
+        min_rows: 10
+
+validation:
+  fail_on_error: true
