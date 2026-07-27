@@ -3106,6 +3106,116 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "conto_annuale_profilo_ente",
+      "name": "Conto Annuale Profilo Ente",
+      "description": "",
+      "source": "",
+      "source_id": "",
+      "period": {
+        "start": 2020,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "desc_istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codi_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codi_comparto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "desc_comparto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codi_tipo_istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "dipendenti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "donne",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "eta_media",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "anzianita_media",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pct_laureati",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "retribuzione_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "costo_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "assenze_totali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/conto_annuale_profilo_ente/*/conto_annuale_profilo_ente_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "costituzione_master",
       "name": "Costituzione Master",
       "description": "Metriche aggregate per ogni articolo della Costituzione: modifiche costituzionali, giudizi di legittimità, esiti delle pronunce (accolte/respinte/inammissibili), citazioni nella legislazione ordinaria, e dataset del DataCivicLab che ne monitorano l'attuazione. Fonte: JOIN tra i 6 parquet di dataciviclab/costituzione-italiana.",
