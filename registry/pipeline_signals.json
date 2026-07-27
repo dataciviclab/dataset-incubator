@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-26",
+  "generated_at": "2026-07-27",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 103,
+    "total": 104,
     "by_status": {
-      "ok": 103,
+      "ok": 104,
       "warn": 0,
       "error": 0
     }
@@ -1977,6 +1977,24 @@
           2025
         ],
         "config_path": "support_datasets/popolazione-istat-comunale-2019-2025/dataset.yml"
+      }
+    },
+    {
+      "id": "compose:anac-appalti-master",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "compose:anac-appalti-master",
+      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30248169062",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30248169062",
+        "checked_at": "2026-07-27",
+        "years": [
+          2026
+        ],
+        "config_path": "compose/anac-appalti-master/dataset.yml"
       }
     },
     {

@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-25",
+  "updated_at": "2026-07-27",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -550,6 +550,236 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-clean/anac_aggiudicazioni/2026/anac_aggiudicazioni_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "anac_appalti_master",
+      "name": "ANAC Appalti Master",
+      "description": "Compose di 8 dataset ANAC: bando → aggiudicazione → vincitore → collaudo, con partecipazione, subappalti, SAL e CUP. 6,08M CIG (2016-2025), grana 1 riga per CIG.",
+      "source": "DataCivicLab (composite: ANAC, 8 dataset)",
+      "source_id": "dataciviclab_composite",
+      "period": {
+        "start": 2016,
+        "end": 2025
+      },
+      "columns": [
+        {
+          "name": "cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CIG — chiave primaria"
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di pubblicazione del bando"
+        },
+        {
+          "name": "oggetto_gara",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Oggetto della gara"
+        },
+        {
+          "name": "importo_complessivo_gara",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo complessivo del bando (include accordi quadro!)"
+        },
+        {
+          "name": "oggetto_principale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Settore: LAVORI / SERVIZI / FORNITURE"
+        },
+        {
+          "name": "stato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Stato del bando (ATTIVO, ANNULLATO, ecc.)"
+        },
+        {
+          "name": "esito_bando",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Esito del bando"
+        },
+        {
+          "name": "flag_pnrr",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Bando legato al PNRR/PNC"
+        },
+        {
+          "name": "cod_cpv",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice CPV"
+        },
+        {
+          "name": "descr_cpv",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione CPV"
+        },
+        {
+          "name": "amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione stazione appaltante"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia del luogo di esecuzione"
+        },
+        {
+          "name": "sezione_regionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sezione regionale ANAC"
+        },
+        {
+          "name": "importo_agg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo di aggiudicazione (€)"
+        },
+        {
+          "name": "data_agg",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data di aggiudicazione"
+        },
+        {
+          "name": "ribasso",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Ribasso percentuale di aggiudicazione"
+        },
+        {
+          "name": "offerte_ammesse",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di offerte ammesse"
+        },
+        {
+          "name": "flag_subappalto",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Subappalto autorizzato"
+        },
+        {
+          "name": "criterio_agg",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Criterio di aggiudicazione"
+        },
+        {
+          "name": "operatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione operatore economico vincitore"
+        },
+        {
+          "name": "cf",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CF/P.IVA operatore vincitore"
+        },
+        {
+          "name": "tipo_soggetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo soggetto vincitore"
+        },
+        {
+          "name": "n_operatori",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero operatori per CIG (ATI/RTI)"
+        },
+        {
+          "name": "n_partecipanti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero partecipanti alla gara"
+        },
+        {
+          "name": "n_imprese_partecipanti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero imprese distinte partecipanti"
+        },
+        {
+          "name": "n_subappalti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero subappalti autorizzati"
+        },
+        {
+          "name": "n_subappaltatori",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero subappaltatori distinti"
+        },
+        {
+          "name": "esito_collaudo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Esito collaudo (POSITIVO / NEGATIVO)"
+        },
+        {
+          "name": "data_collaudo",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data collaudo"
+        },
+        {
+          "name": "riserve_avanzate",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Riserve avanzate (€)"
+        },
+        {
+          "name": "contenzioso",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo contenzioso risolto (€)"
+        },
+        {
+          "name": "n_sal",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero SAL registrati"
+        },
+        {
+          "name": "importo_totale_sal",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Importo totale SAL (€)"
+        },
+        {
+          "name": "scostamento_medio",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Scostamento medio giorni dal cronoprogramma"
+        },
+        {
+          "name": "cup",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "CUP — bridge verso PNRR/OpenCUP"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/anac_appalti_master/2026/anac_appalti_master_2026_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
