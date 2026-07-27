@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 107,
+    "total": 108,
     "by_status": {
-      "ok": 107,
+      "ok": 108,
       "warn": 0,
       "error": 0
     }
@@ -2013,6 +2013,28 @@
           2026
         ],
         "config_path": "compose/comuni-master/dataset.yml"
+      }
+    },
+    {
+      "id": "compose:conto-annuale-profilo-ente",
+      "source_id": "rgs_conto_annuale",
+      "status": "ok",
+      "label": "compose:conto-annuale-profilo-ente",
+      "detail": "anni 2020-2024 — fonte: ? — mart: sì",
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30294866907",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30294866907",
+        "checked_at": "2026-07-27",
+        "years": [
+          2020,
+          2021,
+          2022,
+          2023,
+          2024
+        ],
+        "config_path": "compose/conto-annuale-profilo-ente/dataset.yml"
       }
     },
     {

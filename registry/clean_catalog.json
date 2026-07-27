@@ -3106,6 +3106,116 @@
       "registry_source": "derive_auto"
     },
     {
+      "slug": "conto_annuale_profilo_ente",
+      "name": "Conto Annuale — Profilo Ente PA",
+      "description": "Profilo completo di ogni ente della PA: dipendenti, % donne, età media, anzianità media, % laureati, retribuzione totale, costo totale, assenze totali. Dati dal Conto Annuale RGS (2020-2024). ~10.800 enti.",
+      "source": "Conto Annuale RGS — Ragioneria Generale dello Stato (MEF)",
+      "source_id": "rgs_conto_annuale",
+      "period": {
+        "start": 2020,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento"
+        },
+        {
+          "name": "istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ente BDAP (es. C3363 per comune)"
+        },
+        {
+          "name": "desc_istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione ente (es. COMUNE DI MILANO)"
+        },
+        {
+          "name": "codi_fiscale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice fiscale / partita IVA dell'ente"
+        },
+        {
+          "name": "codi_comparto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice comparto (FL, FC, SA, IR, DP, AF)"
+        },
+        {
+          "name": "desc_comparto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione comparto (Funzioni Locali, Sanità, ...)"
+        },
+        {
+          "name": "codi_tipo_istituzione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo istituzione (C=Comune, U=ASL, IP=... )"
+        },
+        {
+          "name": "dipendenti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero totale dipendenti (tempo pieno + part-time)"
+        },
+        {
+          "name": "donne",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Numero dipendenti donne"
+        },
+        {
+          "name": "eta_media",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Età media dei dipendenti (media pesata per fascia)"
+        },
+        {
+          "name": "anzianita_media",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Anni medi di servizio (media pesata per fascia)"
+        },
+        {
+          "name": "pct_laureati",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Percentuale dipendenti con laurea o titolo superiore"
+        },
+        {
+          "name": "retribuzione_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale retribuzioni lorde annue (€)"
+        },
+        {
+          "name": "costo_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale costo del lavoro annuo (€, inclusi oneri)"
+        },
+        {
+          "name": "assenze_totali",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale giornate di assenza"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/conto_annuale_profilo_ente/*/conto_annuale_profilo_ente_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "published",
+      "registry_source": "derive_auto"
+    },
+    {
       "slug": "costituzione_master",
       "name": "Costituzione Master",
       "description": "Metriche aggregate per ogni articolo della Costituzione: modifiche costituzionali, giudizi di legittimità, esiti delle pronunce (accolte/respinte/inammissibili), citazioni nella legislazione ordinaria, e dataset del DataCivicLab che ne monitorano l'attuazione. Fonte: JOIN tra i 6 parquet di dataciviclab/costituzione-italiana.",
