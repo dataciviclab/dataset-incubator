@@ -1,4 +1,6 @@
 -- Profilo Ente — aggregato per comparto e tipo istituzione
+-- Allineato con profilo_ente: esclude micro-enti (<5 dipendenti)
+-- Nota: eta_media e anzianita_media sono medie non pesate (ogni ente pesa 1)
 SELECT
     anno,
     codi_comparto,
@@ -14,6 +16,6 @@ SELECT
     ROUND(SUM(costo_totale) / NULLIF(SUM(dipendenti), 0), 0) AS costo_medio_procapite,
     ROUND(SUM(assenze_totali) / NULLIF(SUM(dipendenti), 0), 1) AS assenze_giorni_procapite
 FROM clean_input
-WHERE dipendenti > 0
+WHERE dipendenti >= 5
 GROUP BY 1, 2, 3, 4
 ORDER BY anno DESC, tot_dipendenti DESC

@@ -15,14 +15,14 @@ SELECT
     pct_laureati,
     retribuzione_totale,
     costo_totale,
-    CASE WHEN dipendenti > 0 AND retribuzione_totale IS NOT NULL
+    CASE WHEN retribuzione_totale IS NOT NULL
         THEN ROUND(retribuzione_totale / dipendenti, 0)
         ELSE NULL END AS retribuzione_procapite,
-    CASE WHEN dipendenti > 0 AND costo_totale IS NOT NULL AND costo_totale > 0
+    CASE WHEN costo_totale IS NOT NULL AND costo_totale > 0
         THEN ROUND(costo_totale / dipendenti, 0)
         ELSE NULL END AS costo_procapite,
     assenze_totali,
-    CASE WHEN dipendenti > 0 AND assenze_totali IS NOT NULL
+    CASE WHEN assenze_totali IS NOT NULL
         THEN ROUND(assenze_totali / dipendenti, 1)
         ELSE NULL END AS assenze_procapite
 FROM clean_input

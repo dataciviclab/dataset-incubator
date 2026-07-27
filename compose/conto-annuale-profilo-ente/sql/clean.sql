@@ -31,7 +31,7 @@ eta AS (
 anzianita AS (
     SELECT
         anno, istituzione, codi_comparto,
-        SUM(COALESCE(uomini, 0) + COALESCE(donne, 0)) AS tot_anziani,
+        SUM(COALESCE(uomini, 0) + COALESCE(donne, 0)) AS tot_persone_anzianita,
         SUM((COALESCE(uomini, 0) + COALESCE(donne, 0)) *
             CASE fascia
                 WHEN 'A0'  THEN 2.5 WHEN 'A6'  THEN 8  WHEN 'A11' THEN 13
@@ -66,6 +66,7 @@ retribuzione AS (
 costo AS (
     SELECT
         anno, istituzione, codi_comparto,
+        MAX(codi_fiscale) AS codi_fiscale,
         ROUND(SUM(totale_spesa), 0) AS costo_totale
     FROM read_parquet('https://storage.googleapis.com/dataciviclab-clean/conto-annuale/costo_lavoro/{year}/costo_lavoro_{year}_clean.parquet')
     GROUP BY 1, 2, 3
@@ -74,17 +75,20 @@ costo AS (
 assenze AS (
     SELECT
         anno, istituzione, codi_comparto,
+        MAX(codi_fiscale) AS codi_fiscale,
         ROUND(SUM(COALESCE(assenze_uomini, 0) + COALESCE(assenze_donne, 0)), 0) AS assenze_totali
     FROM read_parquet('https://storage.googleapis.com/dataciviclab-clean/conto-annuale/assenze/{year}/assenze_{year}_clean.parquet')
     GROUP BY 1, 2, 3
 )
 
 SELECT
-    o.anno, o.istituzione, o.desc_istituzione, r.codi_fiscale, o.codi_comparto, o.desc_comparto, o.codi_tipo_istituzione,
+    o.anno, o.istituzione, o.desc_istituzione,
+    COALESCE(r.codi_fiscale, c.codi_fiscale, az.codi_fiscale) AS codi_fiscale,
+    o.codi_comparto, o.desc_comparto, o.codi_tipo_istituzione,
     o.dipendenti, o.donne,
     -- NULL = dato non disponibile (nessun match nel dataset personale)
     ROUND(e.somma_eta / NULLIF(e.tot_persone, 0), 1) AS eta_media,
-    ROUND(a.somma_anzianita / NULLIF(a.tot_anziani, 0), 1) AS anzianita_media,
+    ROUND(a.somma_anzianita / NULLIF(a.tot_persone_anzianita, 0), 1) AS anzianita_media,
     ROUND(t.laureati * 100.0 / NULLIF(t.tot_con_titolo, 0), 1) AS pct_laureati,
     r.retribuzione_totale,
     c.costo_totale,
