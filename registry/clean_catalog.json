@@ -4029,122 +4029,122 @@
     },
     {
       "slug": "eurostat_demography",
-      "name": "Eurostat Demography",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "Indicatori demografici regionali EU (popolazione, densità, struttura età, bilancio)",
+      "description": "Popolazione, densità, età mediana, dipendenza anziani, giovani under 14, over65/75, saldo naturale e migratorio. Dati Eurostat per tutti i paesi EU/EEA. Fonte: Eurostat (DEMO_R_PJANGRP3, DEMO_R_D3DENS, DEMO_R_PJANIND3, DEMO_R_GIND3).",
+      "source": "Eurostat",
+      "source_id": "eurostat",
       "period": {
-        "start": 2026,
-        "end": 2026
+        "start": 2014,
+        "end": 2025
       },
       "columns": [
         {
           "name": "geo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS territorio"
         },
         {
           "name": "year",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "nuts_level",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Livello NUTS"
         },
         {
           "name": "country_code",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISO 3166-1 alpha-2 del paese"
         },
         {
           "name": "geo_label_en",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del territorio in inglese"
         },
         {
           "name": "nuts_parent_code",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS del livello superiore"
         },
         {
           "name": "nuts_parent_label_en",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del livello NUTS superiore in inglese"
         },
         {
           "name": "population",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione totale"
         },
         {
           "name": "pop_density_km2",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Densità abitativa (abitanti/km²)"
         },
         {
           "name": "median_age",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Età mediana della popolazione (NULL per IT NUTS3)"
         },
         {
           "name": "old_age_dependency_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Indice di dipendenza degli anziani"
         },
         {
           "name": "youth_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Percentuale di giovani (0-14 anni)"
         },
         {
           "name": "total_dependency_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Indice di dipendenza totale"
         },
         {
           "name": "over65_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Percentuale over 65 (NULL per IT NUTS3)"
         },
         {
           "name": "over75_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Percentuale over 75 (NULL per IT NUTS3)"
         },
         {
           "name": "natural_change",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Saldo naturale (per 1000 abitanti)"
         },
         {
           "name": "net_migration",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Saldo migratorio netto (per 1000 abitanti)"
         },
         {
           "name": "total_change",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Variazione totale (per 1000 abitanti)"
         }
       ],
       "location": {
@@ -4157,170 +4157,170 @@
     },
     {
       "slug": "eurostat_economy",
-      "name": "Eurostat Economy",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "Indicatori economici regionali EU (PIL, GVA, occupazione, produttività)",
+      "description": "PIL pro-capite, PIL totale, GVA per 7 settori NACE, occupati, produttività nominale e PIL per occupato. Dati Eurostat NUTS3 per tutti i paesi EU/EEA. Fonte: Eurostat (NAMA_10R_3GDP, NAMA_10R_3GVA, NAMA_10R_3EMPERS, NAMA_10R_3NLP).",
+      "source": "Eurostat",
+      "source_id": "eurostat",
       "period": {
-        "start": 2026,
-        "end": 2026
+        "start": 2000,
+        "end": 2024
       },
       "columns": [
         {
           "name": "geo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS territorio"
         },
         {
           "name": "year",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "nuts_level",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Livello NUTS (0=paese, 1, 2, 3=provincia)"
         },
         {
           "name": "country_code",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISO 3166-1 alpha-2 del paese"
         },
         {
           "name": "geo_label_en",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del territorio in inglese"
         },
         {
           "name": "nuts_parent_code",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS del livello superiore"
         },
         {
           "name": "nuts_parent_label_en",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del livello NUTS superiore in inglese"
         },
         {
           "name": "gdp_per_capita",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "PIL pro-capite a prezzi correnti (EUR)"
         },
         {
           "name": "gdp_million_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "PIL totale a prezzi correnti (milioni EUR)"
         },
         {
           "name": "gdp_pps_hab",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "PIL pro-capite in PPS (EU27_2020=100)"
         },
         {
           "name": "gva_total_million",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Valore Aggiunto Lordo totale (milioni EUR)"
         },
         {
           "name": "gva_industry_million",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA industria (NACE B-E) (milioni EUR)"
         },
         {
           "name": "gva_construction_million",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA costruzioni (NACE F) (milioni EUR)"
         },
         {
           "name": "gva_trade_million",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA commercio e turismo (NACE G-I) (milioni EUR)"
         },
         {
           "name": "gva_ict_million",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA ICT (NACE J) (milioni EUR)"
         },
         {
           "name": "gva_financial_services_million",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA servizi finanziari e assicurativi (NACE K-N) (milioni EUR)"
         },
         {
           "name": "gva_public_admin_million",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA pubblica amministrazione (NACE O-U) (milioni EUR)"
         },
         {
           "name": "gva_industry_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA industria (% del totale)"
         },
         {
           "name": "gva_construction_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA costruzioni (% del totale)"
         },
         {
           "name": "gva_trade_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA commercio (% del totale)"
         },
         {
           "name": "gva_ict_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA ICT (% del totale)"
         },
         {
           "name": "gva_financial_services_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA servizi finanziari (% del totale)"
         },
         {
           "name": "gva_public_admin_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "GVA pubblica amministrazione (% del totale)"
         },
         {
           "name": "employment_thousands",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Occupati totali (migliaia)"
         },
         {
           "name": "nominal_labour_productivity_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Produttività nominale per occupato (EUR)"
         },
         {
           "name": "gdp_per_employed_eur",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "PIL per occupato (EUR)"
         }
       ],
       "location": {
@@ -4333,80 +4333,80 @@
     },
     {
       "slug": "eurostat_territory",
-      "name": "Eurostat Territory",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "Indicatori territoriali regionali EU (superficie, turismo, criminalità, incidenti)",
+      "description": "Superficie, pernottamenti turistici, reati registrati, incidenti stradali. Dati Eurostat NUTS3 per paesi EU/EEA con copertura variabile. Fonte: Eurostat (REG_AREA3, TOUR_OCC_NIN2, CRIM_GEN_REG, TRAN_SF_ROADNU).",
+      "source": "Eurostat",
+      "source_id": "eurostat",
       "period": {
-        "start": 2026,
-        "end": 2026
+        "start": 2000,
+        "end": 2024
       },
       "columns": [
         {
           "name": "geo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS territorio"
         },
         {
           "name": "year",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di riferimento"
         },
         {
           "name": "nuts_level",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Livello NUTS"
         },
         {
           "name": "country_code",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice ISO 3166-1 alpha-2 del paese"
         },
         {
           "name": "geo_label_en",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del territorio in inglese"
         },
         {
           "name": "nuts_parent_code",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice NUTS del livello superiore"
         },
         {
           "name": "nuts_parent_label_en",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del livello NUTS superiore in inglese"
         },
         {
           "name": "area_km2",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie territoriale (km²)"
         },
         {
           "name": "total_nights_spent",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pernottamenti turistici totali"
         },
         {
           "name": "total_crimes",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Reati registrati totali"
         },
         {
           "name": "road_accidents",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Incidenti stradali totali"
         }
       ],
       "location": {
