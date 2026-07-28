@@ -1410,9 +1410,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "28290057933",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28290057933",
-        "checked_at": "2026-06-27",
+        "run_id": "30383075205",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30383075205",
+        "checked_at": "2026-07-28",
         "years": [
           2017,
           2018,
