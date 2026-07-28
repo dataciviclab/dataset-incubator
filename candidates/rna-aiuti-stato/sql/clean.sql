@@ -35,3 +35,4 @@ SELECT
     anno,
     mese
 FROM raw_input
+WHERE elemento_aiuto IS NOT NULL
