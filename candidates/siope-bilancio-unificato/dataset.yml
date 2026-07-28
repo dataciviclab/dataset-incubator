@@ -13,15 +13,7 @@ raw:
       args:
         url: "https://storage.googleapis.com/dataciviclab-clean/siope/siope_entrate/{year}/siope_entrate_{year}_clean.parquet"
         filename: "siope_entrate_{year}.parquet"
-      inject_column:
-        lato: "entrate"
-    - name: "siope_uscite"
-      type: "http_file"
-      args:
-        url: "https://storage.googleapis.com/dataciviclab-clean/siope/siope_uscite/{year}/siope_uscite_{year}_clean.parquet"
-        filename: "siope_uscite_{year}.parquet"
-      inject_column:
-        lato: "uscite"
+      primary: true
 
 clean:
   sql: "sql/clean.sql"
