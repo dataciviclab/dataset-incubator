@@ -1523,13 +1523,13 @@
       "source_id": "siope",
       "status": "ok",
       "label": "siope-bilancio-unificato",
-      "detail": "anni 2021-2026 — fonte: siope_bilancio_unificato_gcs — mart: sì",
+      "detail": "anni 2021-2026 — fonte: siope_entrate — mart: sì",
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "28660435830",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28660435830",
-        "checked_at": "2026-07-03",
+        "run_id": "30353110961",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30353110961",
+        "checked_at": "2026-07-28",
         "years": [
           2021,
           2022,
