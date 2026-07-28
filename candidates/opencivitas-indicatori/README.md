@@ -42,7 +42,10 @@ Formato EAV (Entity-Attribute-Value) arricchito con geografia e descrizioni.
 
 1. `preprocess.py {year} raw_input.csv` — scarica 7 ZIP, estrae CSV, unisce in EAV
 2. `sql/clean.sql` — normalizza valori, join enti + glossario
-3. `sql/mart.sql` — arricchisce con comuni_master
+3. Mart:
+   - **`mart_comuni`**: arricchimento + benchmark (media nazionale/regionale, percentile, fascia, distanza %) — fonde i vecchi `mart.sql` + `mart_benchmark`
+   - **`mart_sintesi`**: statistiche per provincia/regione/nazionale — ex `mart_sintesi_territoriale`
+   - **`mart_trend`** (opzionale): CAGR indicatori su 7 anni — run lungo (~18M righe)
 
 ## Qualità
 
