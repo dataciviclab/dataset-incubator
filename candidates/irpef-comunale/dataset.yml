@@ -96,32 +96,35 @@ clean:
       - "codice_istat_comune"
       - "numero_contribuenti"
 
+support:
+  - name: "popolazione_istat_comunale_2019_2025"
+    config: "../../support_datasets/popolazione-istat-comunale-2019-2025/dataset.yml"
+    years: [2019, 2020, 2021, 2022, 2023, 2024, 2025]
+
 mart:
   tables:
-    - name: "irpef_by_regione"
-      sql: "sql/mart.sql"
-    - name: "irpef_by_comune"
+    # Arricchimento comunale + benchmark reddituale (unifica i vecchi
+    # irpef_by_comune + mart_pressione_fiscale + benchmark)
+    - name: "mart_comuni"
       sql: "sql/mart_comuni.sql"
-    - name: "irpef_capacita_fiscale_multi_anno"
-      sql: "sql/mart_multi_anno.sql"
-      years: [2019, 2020, 2021, 2022, 2023, 2024]
-      source_layer: "clean"
-    # Nuovi (2026-07-24)
-    - name: "mart_fonti_reddito"
-      sql: "sql/mart_fonti_reddito.sql"
-    - name: "mart_fasce_reddito"
-      sql: "sql/mart_fasce_reddito.sql"
-    - name: "mart_pressione_fiscale"
-      sql: "sql/mart_pressione_fiscale.sql"
-    - name: "mart_diseguaglianza"
-      sql: "sql/mart_diseguaglianza.sql"
+    # Statistiche regionali + fonti reddito + diseguaglianza (unifica
+    # irpef_by_regione + mart_fonti_reddito + mart_diseguaglianza)
+    - name: "mart_sintesi"
+      sql: "sql/mart_sintesi.sql"
+    # Trend e CAGR multi-anno (rimpiazza irpef_capacita_fiscale_multi_anno)
+    - name: "mart_trend"
+      sql: "sql/mart_trend.sql"
+    # Distribuzione per fasce di reddito (rimpiazza mart_fasce_reddito)
+    - name: "mart_fasce"
+      sql: "sql/mart_fasce.sql"
   required_tables:
-    - "irpef_by_regione"
-    - "irpef_by_comune"
-    - "mart_fonti_reddito"
+    - "mart_comuni"
+    - "mart_sintesi"
   validate:
     table_rules:
-      mart_fonti_reddito:
+      mart_comuni:
+        min_rows: 1000
+      mart_sintesi:
         min_rows: 10
 
 validation:

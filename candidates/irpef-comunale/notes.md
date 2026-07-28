@@ -89,9 +89,11 @@ Il clean è raw-faithful: nessuna logica interpretativa, nessun case/when, nessu
 - Il raw usa `normalize_rows_to_columns: true` + `skip: 1` per estrarre la riga header come nomecolonne, poi `header: false` per leggere i dati. Le colonne vengono poi rinominate esplicitamente nel clean.sql.
 - Il CSV usa `;` come delimitatore e `;` finale su ogni riga (che genera una colonna vuota added). Il `trim_whitespace: true` gestisce gli spazi extra.
 
-## Note analitiche iniziali
+## Mart (rifattorizzati 2026-07-28)
 
-- Il dataset è la base più completa per confrontare la capacità fiscale comunale e regionale in Italia.
-- Le tabelle mart (`irpef_by_regione`, `irpef_by_comune`) offrono una vista già aggregata pronta per analisi.
-- Il `mart_multi_anno` include rank nazionali/regionali e delta vs anno precedente.
-- `popolazione_comune` è assente dal clean (era nel vecchio clean come placeholder per join futuro — il join con `support_datasets/popolazione-istat-comunale-2019-2025` è l'anello mancante per arricchire le analisi pro-capite).
+| Mart | Cosa fa | Unisce i vecchi |
+|---|---|---|
+| `mart_comuni` | Arricchimento + benchmark reddituale. Join con popolazione per reddito pro-capite. Media nazionale/regionale, percentile, fascia, rank regionale per reddito e aliquota | `irpef_by_comune` + `mart_pressione_fiscale` |
+| `mart_sintesi` | Statistiche regionali: redditi, imposte, composizione fonti (lavoro, pensione, autonomo), disuguaglianza intra-regionale (CV, delta max-min) | `irpef_by_regione` + `mart_fonti_reddito` + `mart_diseguaglianza` |
+| `mart_trend` | CAGR reddito per comune e regione (multi-anno via glob) | `irpef_capacita_fiscale_multi_anno` |
+| `mart_fasce` | Distribuzione contribuenti per fascia di reddito per provincia, con rapporto alta/bassa | `mart_fasce_reddito` |
