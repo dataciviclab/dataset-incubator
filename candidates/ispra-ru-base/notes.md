@@ -18,14 +18,14 @@ totale RU (t), totale RD (t), percentuale RD.
 - Popolazione: fonte ISPRA, non ISTAT. Può differire da dati anagrafici ufficiali.
 - Valori null in popolazione, tonnellate o RD% vengono esclusi dal mart.
 
-## Mart
+## Mart (rifattorizzati 2026-07-27)
 
-5 tabelle:
-- `mart_comuni` — dettaglio comunale con kg/abitante calcolati
-- `mart_rd_provincia` — RD% medio pesato per provincia
-- `mart_ranking_comuni` — ranking comuni per RD% con classe di popolazione
-- `mart_trend_regionale` — trend 2010-2024 con CAGR e pendenza
-- `mart_kg_procapite` — kg RU e RD pro-capite per provincia
+3 tabelle (da 5):
+- `mart_comuni` — arricchimento kg/abitante + benchmark RD% (media nazionale/regionale, percentile, fascia, classe demografica, rank classe). Unifica i vecchi `mart.sql`, `mart_ranking_comuni`.
+- `mart_sintesi` — statistiche provinciali (RD% medio pesato, kg procapite, std, min, max). Unifica i vecchi `mart_rd_provincia`, `mart_kg_procapite`.
+- `mart_trend` — trend e CAGR per provincia e regione, con segnale di tendenza. Rimpiazza `mart_trend_regionale` estendendolo a livello provinciale.
+
+Rimosse: `mart_rd_provincia.sql`, `mart_ranking_comuni.sql`, `mart_kg_procapite.sql`, `mart_trend_regionale.sql`, `mart.sql`.
 
 ## Stato
 - Dati raw: download diretto HTTP CSV

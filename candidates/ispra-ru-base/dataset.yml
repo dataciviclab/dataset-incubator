@@ -51,6 +51,7 @@ clean:
       Indifferenziato (t): VARCHAR
       Totale RU (t): VARCHAR
       Percentuale RD (%): VARCHAR
+      _dummy: VARCHAR
   required_columns:
     - "anno"
     - "codice_comune_istat"
@@ -67,26 +68,27 @@ clean:
 
 mart:
   tables:
+    # Arricchimento comunale + benchmark RD% (unifica i vecchi mart_comuni,
+    # mart_ranking_comuni e parti di mart_rd_provincia/mart_kg_procapite)
     - name: "mart_comuni"
-      sql: "sql/mart.sql"
-    # Nuovi (2026-07-24)
-    - name: "mart_rd_provincia"
-      sql: "sql/mart_rd_provincia.sql"
-    - name: "mart_ranking_comuni"
-      sql: "sql/mart_ranking_comuni.sql"
-    - name: "mart_trend_regionale"
-      sql: "sql/mart_trend_regionale.sql"
-    - name: "mart_kg_procapite"
-      sql: "sql/mart_kg_procapite.sql"
+      sql: "sql/mart_comuni.sql"
+    # Statistiche provinciali (unifica i vecchi mart_rd_provincia + mart_kg_procapite)
+    - name: "mart_sintesi"
+      sql: "sql/mart_sintesi.sql"
+    # Trend e CAGR per provincia e regione (rimpiazza mart_trend_regionale)
+    - name: "mart_trend"
+      sql: "sql/mart_trend.sql"
   required_tables:
     - "mart_comuni"
-    - "mart_rd_provincia"
+    - "mart_sintesi"
   validate:
     table_rules:
       mart_comuni:
         min_rows: 6500
-      mart_rd_provincia:
+      mart_sintesi:
         min_rows: 10
+      mart_trend:
+        min_rows: 5
 
 validation:
   fail_on_error: true

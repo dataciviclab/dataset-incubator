@@ -10,7 +10,8 @@ SELECT
     normalize_string("Dato riferito a") AS dato_riferito_a,
     normalize_italian_number("Totale RU (t)") AS totale_ru_tonnellate,
     normalize_italian_number("Totale RD (t)") AS totale_rd_tonnellate,
-    normalize_italian_number("Percentuale RD (%)") AS percentuale_rd
+    -- Il campo ISPRA contiene "  64,79%" (con spazi e % finale)
+    normalize_italian_number(replace("Percentuale RD (%)", '%', '')) AS percentuale_rd
 FROM raw_input
 WHERE normalize_string(replace("IstatComune", chr(9), '')) IS NOT NULL
   AND normalize_string("Dato riferito a") = 'Comune'
