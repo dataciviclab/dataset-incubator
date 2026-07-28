@@ -35,13 +35,24 @@ clean:
 mart:
   tables:
     - name: "mart_voti_elezioni_politiche"
-      sql: "sql/mart.sql"
+      sql: "sql/mart_voti_elezioni_politiche.sql"
+    - name: "mart_candidati"
+      sql: "sql/mart_candidati.sql"
+    - name: "mart_trend"
+      sql: "sql/mart_trend.sql"
   required_tables:
     - "mart_voti_elezioni_politiche"
   validate:
     table_rules:
       mart_voti_elezioni_politiche:
         min_rows: 10000
+      mart_candidati:
+        min_rows: 50
+        # Nota: candidati uninominali disponibili solo per 2018 e 2022
+        # (sistema Rosatellum). Tornate precedenti non hanno cognome/nome
+        # nei dati Eligendo processati dal preprocess.py.
+      mart_trend:
+        min_rows: 100
 
 validation:
   fail_on_error: true

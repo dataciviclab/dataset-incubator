@@ -32,11 +32,15 @@ clean:
 mart:
   tables:
     - name: "mart_voti_quesito_comune"
-      sql: "sql/mart.sql"
+      sql: "sql/mart_voti_quesito_comune.sql"
+    - name: "mart_trend"
+      sql: "sql/mart_trend.sql"
   validate:
     table_rules:
       mart_voti_quesito_comune:
         min_rows: 100
+      mart_trend:
+        min_rows: 10
 
 validation:
   fail_on_error: true
