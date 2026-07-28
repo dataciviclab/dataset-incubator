@@ -59,11 +59,12 @@ Usato in `candidates/unified-comuni/` per la colonna `reddito_imponibile_eur`
 
 ## Mart disponibili
 
-| Mart | Descrizione |
-|------|-------------|
-| `irpef_by_regione` | Aggregazione per regione |
-| `irpef_by_comune` | Vista per comune con indicatori |
-| `irpef_capacita_fiscale_multi_anno` | Serie storica con rank nazionale/regionale e delta YoY |
+| Mart | Descrizione | Cardinalità |
+|------|-------------|-------------|
+| `mart_comuni` | Arricchimento + benchmark reddituale: reddito medio/contribuente, reddito pro-capite (join popolazione), aliquota effettiva, media nazionale/regionale, percentile, fascia, rank regionale | ~7.900 righe/anno |
+| `mart_sintesi` | Statistiche regionali: contribuenti, redditi, imposte, composizione fonti (lavoro, pensione, autonomo), disuguaglianza intra-regionale (CV, delta max-min) | ~120 righe/anno |
+| `mart_trend` | CAGR reddito per comune e regione (multi-anno via glob) | ~8.000 comuni + 20 regioni |
+| `mart_fasce` | Distribuzione contribuenti per fascia di reddito (0-10k, …, oltre 120k) per provincia, con rapporto alta/bassa | ~600 righe/anno |
 
 ## Limiti
 
