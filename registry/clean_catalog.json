@@ -12839,12 +12839,6 @@
       },
       "columns": [
         {
-          "name": "lato",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Lato contabile: entrate o uscite"
-        },
-        {
           "name": "codice_comparto",
           "type": "VARCHAR",
           "role": "dimension",
@@ -12975,6 +12969,12 @@
           "type": "DOUBLE",
           "role": "metric",
           "description": "Importo in euro"
+        },
+        {
+          "name": "lato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Lato contabile: entrate o uscite"
         }
       ],
       "location": {
