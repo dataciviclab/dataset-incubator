@@ -25,9 +25,16 @@ clean.sql
   → LEFT JOIN enti su username (denominazione, provincia, regione)
   → LEFT JOIN glossario su (codice_indicatore, anno, ambito)
   
-mart.sql
-  → LEFT JOIN comuni_master su (denominazione, provincia)
-  → aggiunge codice_istat, codice_catastale
+mart_comuni
+  → unisce i vecchi mart.sql (join comuni_master) + mart_benchmark
+  → aggiunge codice_istat + benchmark (media nazionale/regionale, percentile, fascia)
+
+mart_sintesi
+  → ex mart_sintesi_territoriale (rinominato)
+  → statistiche per provincia/regione/nazionale
+
+mart_trend (opzionale)
+  → CAGR indicatori su 7 anni (glob multi-anno)
 ```
 
 ## Support dataset
