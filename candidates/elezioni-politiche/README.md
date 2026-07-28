@@ -37,7 +37,7 @@ Risultati delle elezioni politiche (Camera dei Deputati e Senato della Repubblic
 | Mart | Granularità | Righe | Cosa produce |
 |---|---|---|---|
 | `mart_voti_elezioni_politiche` | comune × lista × Camera/Senato × anno | 3.65M | Voti lista, affluenza%, % lista sul comune |
-| `mart_candidati` | circoscrizione × Camera × anno | 93 | Demografia candidati uninominali (2018-2022) |
+| `mart_candidati` | circoscrizione × Camera × anno | 7 epoche | Demografia candidati uninominali (1994-2001, 2018-2022) |
 | `mart_trend` | circoscrizione × Camera × anno | 929 | Trend affluenza 1948-2022, CAGR, var. assoluta |
 
 ## Epoche elettorali
@@ -53,12 +53,13 @@ Risultati delle elezioni politiche (Camera dei Deputati e Senato della Repubblic
 
 - **Affluenza**: 92.8% (1953) → 62.8% (2022) — crollo di 30 punti percentuali in 74 anni
 - **Calo più marcato**: Camera dal 92.4% (1948) al 63.8% (2022)
-- **Candidati uninominali**: disponibili per Mattarellum (1994-2001) e Rosatellum (2018-2022). Nei dati clean solo 2018-2022 (preprocess.py non estrae cognome/nome per le tornate 1994-2001)
+- **Candidati uninominali**: disponibili per Mattarellum (1994-2001, solo Camera) e Rosatellum (2018-2022, Camera+Senato)
 - **Quote genere 2022**: Camera 41.4% donne, età media 50.2; Senato 40.9% donne, età media 56.8
+- **Quote genere 1994**: Camera 0% donne (nessuna candidata uninominale registrata)
 
 ## Limiti noti
 
-- `mart_candidati`: formato data_nascita variabile — il 2018 non è parsato correttamente (età N/D). Per il 2022 funziona.
+- `mart_candidati`: formato data_nascita variabile tra tornate. 1994 e 2001 funzionano (età disponibile). 1996 non ha data_nascita nei CSV storici (età N/D). 2018 Camera funziona (età 48.4), Senato 2018 no. 2022 funziona per entrambi.
 - `mart_trend`: usa la media semplice dell'affluenza per circoscrizione (non pesata per elettori).
 
 ## Fonte

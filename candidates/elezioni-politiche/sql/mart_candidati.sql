@@ -1,35 +1,38 @@
 -- Mart: demografia candidati uninominali (Camera/Senato)
 -- Ogni riga: circoscrizione × camera × anno
--- Solo candidati uninominali (collegio_uninominale valorizzato)
--- NOTA: dati uninominali per Mattarellum (1994-2001) e Rosatellum (2018-2022)
+-- Copertura: Mattarellum (1994-2001, Camera) e Rosatellum (2018-2022, Camera+Senato)
+--
+-- Filtro composito per identificare righe uninominali:
+--   - Rosatellum: collegio_uninominale valorizzato
+--   - Mattarellum: cognome popolato su anno <= 2001
+--     (in quelle tornate le righe proporzionali non hanno cognome)
 
 WITH candidati_unici AS (
-    -- Deduplica: stesso candidato in piu' comuni (stesso collegio)
     SELECT DISTINCT
         data_elezione,
+        EXTRACT(YEAR FROM data_elezione) AS anno,
         camera_senato,
         circoscrizione,
-        collegio_uninominale,
         cognome,
         nome,
         sesso,
         luogo_nascita,
         data_nascita
     FROM clean_input
-    WHERE collegio_uninominale IS NOT NULL AND collegio_uninominale != ''
-      AND cognome IS NOT NULL AND cognome != ''
+    WHERE cognome IS NOT NULL AND cognome != ''
+      AND (
+          (collegio_uninominale IS NOT NULL AND collegio_uninominale != '')
+          OR (EXTRACT(YEAR FROM data_elezione) BETWEEN 1994 AND 2001)
+      )
 ),
 
--- Estrazione eta' dalla data_nascita (formato variabile)
 candidati_con_eta AS (
-    SELECT
-        *,
-        EXTRACT(YEAR FROM data_elezione) AS anno,
+    SELECT *,
         CASE
-            WHEN REGEXP_MATCHES(data_nascita, '^\d{4}-\d{2}-\d{2}$')
+            WHEN REGEXP_MATCHES(data_nascita, '^\d{4}-\d{2}-\d{2}')
             THEN EXTRACT(YEAR FROM CAST(data_nascita AS DATE))
-            WHEN REGEXP_MATCHES(data_nascita, '^\d{2}/\d{2}/\d{4}$')
-            THEN CAST(SUBSTRING(data_nascita, 7, 4) AS INTEGER)
+            WHEN REGEXP_MATCHES(data_nascita, '^\d{2}/\d{2}/\d{4}')
+            THEN CAST(SUBSTRING(data_nascita, 7, 4) AS BIGINT)
         END AS anno_nascita
     FROM candidati_unici
 ),
@@ -42,13 +45,9 @@ candidati_eta AS (
     FROM candidati_con_eta
 ),
 
--- Statistiche per tornata × camera × circoscrizione
 stats AS (
     SELECT
-        data_elezione,
-        anno,
-        camera_senato,
-        circoscrizione,
+        data_elezione, anno, camera_senato, circoscrizione,
         COUNT(*) AS n_candidati,
         COUNT(DISTINCT CASE WHEN sesso = 'M' THEN cognome || nome END) AS candidati_m,
         COUNT(DISTINCT CASE WHEN sesso = 'F' THEN cognome || nome END) AS candidati_f,
@@ -65,8 +64,7 @@ stats AS (
     GROUP BY data_elezione, anno, camera_senato, circoscrizione
 )
 
-SELECT
-    s.*,
+SELECT s.*,
     ROUND(s.candidati_f * 100.0 / NULLIF(s.n_candidati, 0), 1) AS quota_femminile_pct
 FROM stats s
 ORDER BY s.anno DESC, s.camera_senato, s.circoscrizione
