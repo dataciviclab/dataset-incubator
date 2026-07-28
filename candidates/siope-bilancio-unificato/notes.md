@@ -20,7 +20,7 @@ Il dato upstream proviene dai download open di [SIOPE](https://www.siope.it).
 
 Tutti i join (territorio, comparto, classificazione voci) sono già stati
 eseguiti a monte in open-siope. Il dato downstream è già arricchito.
-La colonna `lato` viene aggiunta all'ingresso tramite inject_column.
+La colonna `lato` viene aggiunta nel clean.sql durante la UNION ALL.
 
 ## Output
 
@@ -43,5 +43,5 @@ full si usa il clean (via clean-query MCP o direttamente da GCS).
 - I dati SIOPE vengono aggiornati mensilmente dalla fonte. Il candidate va
   rieseguito periodicamente per avere i dati freschi.
 - Le colonne divergenti tra entrate e uscite (`macro_categoria_v2` vs
-  `macro_area`/`macro_categoria`) vengono allineate automaticamente da
-  read_parquet(union_by_name=true).
+  `macro_area`/`macro_categoria`) vengono allineate esplicitamente con
+  CAST(NULL) nel clean.sql.
