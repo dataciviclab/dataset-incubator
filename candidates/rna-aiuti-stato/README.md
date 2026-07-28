@@ -14,5 +14,5 @@ Questo candidate esiste per registrare il dataset nel catalogo Lab e per le quer
 - **10 anni completati**: 2017-2026, ~17M righe, 704 MB parquet
 - I parquet RAW sono su GCS (`gs://dataciviclab-clean/rna-aiuti-stato/`)
 - Il deploy su GCS avviene tramite CI di dataset-incubator (post-merge)
-- I MART offrono aggregazioni per regione, procedimento e top beneficiari
+- **Mart (4)**: `mart_territorio` (ESL per regione×anno + benchmark), `mart_policy` (obiettivo×strumento), `mart_settori` (NACE×regione), `mart_top` (top beneficiari + procedimenti)
 - La pipeline con flush periodico (50k chunk) mantiene RAM sotto controllo
