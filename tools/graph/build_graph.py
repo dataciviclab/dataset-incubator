@@ -19,7 +19,7 @@ from pathlib import Path
 import yaml
 
 DI_ROOT = Path(__file__).resolve().parents[2]
-ANNOTATED_PATH = DI_ROOT / "registry" / "catalog_annotated.json"
+CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
 SEMTYPES_PATH = DI_ROOT / "registry" / "semantic_types.yaml"
 OUTPUT_PATH = DI_ROOT / "registry" / "entity_graph.json"
 
@@ -44,7 +44,7 @@ ENTITY_LABELS = {
 
 
 def load_annotated() -> list[dict]:
-    data = json.loads(ANNOTATED_PATH.read_text())
+    data = json.loads(CATALOG_PATH.read_text())
     return data.get("datasets", data if isinstance(data, list) else [])
 
 

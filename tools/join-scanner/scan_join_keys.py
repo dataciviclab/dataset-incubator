@@ -23,10 +23,11 @@ import json
 from pathlib import Path
 
 import duckdb
+import yaml
 
 # ── Paths ─────────────────────────────────────────────────────────────────
 DI_ROOT = Path(__file__).resolve().parents[2]
-SYNONYMS_PATH = DI_ROOT / "registry" / "_key_synonyms.py"
+SEMTYPES_PATH = DI_ROOT / "registry" / "semantic_types.yaml"
 CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
 
 GCS_BASE = "https://storage.googleapis.com/dataciviclab-clean"
@@ -179,10 +180,13 @@ HUBS = [
 
 
 def load_synonyms() -> dict[str, list[str]]:
-    """Carica KEY_SYNONYMS da _key_synonyms.py."""
-    ns: dict = {}
-    exec(SYNONYMS_PATH.read_text(), ns)
-    return ns.get("KEY_SYNONYMS", {})
+    """Carica aliases da semantic_types.yaml."""
+    data = yaml.safe_load(SEMTYPES_PATH.read_text())
+    types = data.get("types", {})
+    synonyms = {}
+    for stype, info in types.items():
+        synonyms[stype] = info.get("aliases", [])
+    return synonyms
 
 
 def load_catalog() -> list[dict]:
