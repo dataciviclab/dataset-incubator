@@ -366,15 +366,216 @@ datasets:
     note: Compose multi-fonte. Include hub, popolazione, IRPEF, rifiuti, consumo suolo, FSC, SIOPE, dipendenti (via BDAP), PNRR.
 
   # ==========================================================================
+  # ANAGRAFICA ENTI (IPA)
+  # ==========================================================================
+
+  - slug: ipa_enti
+    name: Anagrafica Enti PA (IndicePA)
+    granularity: ente
+    comuni_key:
+      column: codice_comune_istat
+      format: istat_6
+    hub_key: codice_istat
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner (match 100%)"
+    note: "La colonna 'codice_comune_istat' è codice ISTAT a 6 cifre."
+
+  - slug: ipa_unita_organizzative
+    name: Unità Organizzative (IPA)
+    granularity: ente
+    comuni_key:
+      column: codice_comune_istat
+      format: istat_6
+    hub_key: codice_istat
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner (match 99.9%)"
+    note: "Join via codice_comune_istat → comuni_master.codice_istat."
+
+  - slug: ipa_aree_organizzative_omogenee
+    name: Aree Organizzative Omogenee (IPA)
+    granularity: ente
+    comuni_key:
+      column: codice_comune_istat
+      format: istat_6
+    hub_key: codice_istat
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner (match 99.5%)"
+
+  - slug: who_is_who_pa
+    name: Who is Who PA
+    granularity: ente
+    comuni_key:
+      column: ente_codice_comune_istat
+      format: istat_6
+    hub_key: codice_istat
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner (match 100%)"
+
+  # ==========================================================================
+  # ISTRUZIONE (MIM) — altri
+  # ==========================================================================
+
+  - slug: mim_scuola_infanzia
+    name: MIM Scuola Infanzia
+    granularity: scuola (riconducibile a comune)
+    comuni_key:
+      column: codice_comune_scuola
+      format: catastale_belfiore
+    hub_key: codice_catastale
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner (match 100%)"
+    note: "Stesso pattern di mim_anagrafica_scuole_statali: codice_comune_scuola contiene codice CATASTALE."
+
+  # ==========================================================================
+  # IMPRESE E ASIA
+  # ==========================================================================
+
+  - slug: istat_asia_ul
+    name: ASIA — Unità Locali
+    granularity: comune
+    comuni_key:
+      column: codice_comune
+      format: istat_6
+    hub_key: codice_istat
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner (match 95.1%)"
+    note: "codice_comune è ISTAT 6 cifre. Stesso formato di popolazione_istat."
+
+  # ==========================================================================
+  # PARTECIPAZIONI MEF (serie)
+  # ==========================================================================
+
+  - slug: mef_patrimonio_detenzioni
+    name: MEF Patrimonio Detenzioni
+    granularity: amministrazione
+    comuni_key:
+      column: amministrazione_codice_fiscale
+      format: fiscal_code_11
+    hub_key: codice_fiscale
+    normalizer: "REPLACE(REPLACE(amministrazione_codice_fiscale, '[', ''), ']', '')"
+    verified_by: "2026-07-29, join-scanner (match 59.1% su tutto, ~99% su soli Comuni)"
+    note: "Stesso pattern di mef_partecipazioni. CF con parentesi []. Match su soli enti categoria Comuni."
+
+  - slug: mef_patrimonio_enti
+    name: MEF Patrimonio Enti
+    granularity: amministrazione
+    comuni_key:
+      column: amministrazione_codice_fiscale
+      format: fiscal_code_11
+    hub_key: codice_fiscale
+    normalizer: "REPLACE(REPLACE(amministrazione_codice_fiscale, '[', ''), ']', '')"
+    verified_by: "2026-07-29, join-scanner (match 69.6%)"
+
+  - slug: mef_patrimonio_immobili
+    name: MEF Patrimonio Immobili
+    granularity: amministrazione
+    comuni_key:
+      column: amministrazione_codice_fiscale
+      format: fiscal_code_11
+    hub_key: codice_fiscale
+    normalizer: "REPLACE(REPLACE(amministrazione_codice_fiscale, '[', ''), ']', '')"
+    verified_by: "2026-07-29, join-scanner (match 67.0%)"
+
+  # ==========================================================================
+  # CONTO ANNUALE
+  # ==========================================================================
+
+  - slug: conto_annuale_profilo_ente
+    name: Conto Annuale — Profilo Ente PA
+    granularity: ente
+    comuni_key:
+      column: codi_fiscale
+      format: fiscal_code_11
+    hub_key: codice_fiscale
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner (match 30.5%)"
+    note: "Il match è basso perché include tutte le PA, non solo comuni. Per i soli comuni il rate è più alto."
+
+  # ==========================================================================
+  # ELEZIONI (denominazione testuale)
+  # ==========================================================================
+
+  - slug: elezioni_politiche
+    name: Elezioni Politiche 1948-2022
+    granularity: comune
+    comuni_key:
+      column: comune
+      format: denominazione_upper
+    hub_key: denominazione
+    normalizer: "UPPER(TRIM(comune))"
+    verified_by: "2026-07-29, join-scanner (match 93.5%)"
+    note: "Join testuale via denominazione. Cross-validato con provincia (non ancora implementato). I no-match sono probabilmente comuni fusi/rinominati."
+
+  - slug: elezioni_comunali
+    name: Elezioni Comunali
+    granularity: comune
+    comuni_key:
+      column: comune
+      format: denominazione_upper
+    hub_key: denominazione
+    normalizer: "UPPER(TRIM(comune))"
+    verified_by: "2026-07-29, join-scanner (match presumibile >90%, da verificare)"
+
+  - slug: elezioni_regionali
+    name: Elezioni Regionali
+    granularity: comune
+    comuni_key:
+      column: comune
+      format: denominazione_upper
+    hub_key: denominazione
+    normalizer: "UPPER(TRIM(comune))"
+    verified_by: "2026-07-29, join-scanner (match presumibile >90%, da verificare)"
+
+  - slug: elezioni_europee
+    name: Elezioni Europee
+    granularity: comune
+    comuni_key:
+      column: comune
+      format: denominazione_upper
+    hub_key: denominazione
+    normalizer: "UPPER(TRIM(comune))"
+    verified_by: "2026-07-29, join-scanner (match presumibile >90%, da verificare)"
+
+  - slug: elezioni_referendum
+    name: Elezioni Referendum
+    granularity: comune
+    comuni_key:
+      column: comune
+      format: denominazione_upper
+    hub_key: denominazione
+    normalizer: "UPPER(TRIM(comune))"
+    verified_by: "2026-07-29, join-scanner (match presumibile >90%, da verificare)"
+
+  # ==========================================================================
   # DATASET NON JOINABILI PER COMUNE (solo nota)
   # ==========================================================================
 
   # Questi dataset hanno granularità regionale/provinciale/nazionale
   # e NON hanno join diretto con comuni_master.
 
+  - slug: ade_cinque_per_mille
+    granularity: provincia
+    joinable_by_comune: false
+    note: Ha sigla_provincia. Joinabile a livello provinciale, non comunale.
+
   - slug: aifa_spesa_consumo
     granularity: regione
     joinable_by_comune: false
+
+  - slug: anac_aggiudicatari
+    granularity: impresa/operatore
+    joinable_by_comune: false
+    note: "Il CF in questo dataset è di imprese/operatori economici, non di enti pubblici. Match 0% con comuni_master."
+
+  - slug: anac_partecipanti
+    granularity: impresa/operatore
+    joinable_by_comune: false
+    note: "Stesso pattern di anac_aggiudicatari: CF di imprese, non enti."
+
+  - slug: anac_subappalti
+    granularity: subappalto
+    joinable_by_comune: false
+    note: "CF subappaltante è di imprese, non enti."
 
   - slug: bdap_entrate_stato
     granularity: stato
@@ -488,3 +689,8 @@ datasets:
     granularity: support (ente FSC)
     joinable_by_comune: false
     note: Support dataset per opencivitas_fsc_2025_rso, non pubblico.
+
+  - slug: rna_aiuti_stato
+    granularity: nazionale/aiuto
+    joinable_by_comune: false
+    note: "codice_fiscale_beneficiario è di imprese, non enti pubblici. Match 0.1% con comuni_master (solo errori/coincidenze)."

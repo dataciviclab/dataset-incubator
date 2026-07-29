@@ -30,19 +30,24 @@ SYNONYMS_PATH = DI_ROOT / "registry" / "_key_synonyms.py"
 CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
 
 GCS_BASE = "https://storage.googleapis.com/dataciviclab-clean"
+# Path ai parquet locali (se già processati)
+LOCAL_CLEAN = DI_ROOT / "out" / "data" / "clean"
+LOCAL_MART = DI_ROOT / "out" / "data" / "mart"
 
 # ── Hubs: elenco di hub su cui fare scan, in ordine di priorità ────────
 # Ogni hub ha:
 #   slug: identificativo
-#   url: GCS URL del clean parquet (year = 2026 per i registry)
+#   year: anno di riferimento
 #   label: nome leggibile
 #   key_map: mappa famiglia di chiave → hub_column + normalizer
 #     (stessa struttura del vecchio KEY_MAP)
+#   bridge_to_hub: se presente, indica come risalire a comuni_master
+# Il path viene risolto da resolve_parquet_path() — prima locale, mai GCS.
 
 HUBS = [
     {
         "slug": "comuni_master",
-        "url": f"{GCS_BASE}/comuni_master/2026/comuni_master_2026_clean.parquet",
+        "year": 2026,
         "label": "comuni_master (hub comuni)",
         "key_map": {
             "codice_istat": {
@@ -107,7 +112,7 @@ HUBS = [
     },
     {
         "slug": "bdap_anagrafe_enti",
-        "url": f"{GCS_BASE}/bdap_anagrafe_enti/2026/bdap_anagrafe_enti_2026_clean.parquet",
+        "year": 2026,
         "label": "bdap_anagrafe_enti (bridge enti → comune)",
         "key_map": {
             "id_ente": {
@@ -184,8 +189,21 @@ def find_dataset_in_catalog(slug: str, catalog: list[dict]) -> dict | None:
     return None
 
 
-def resolve_gcs_url(slug: str, year: int) -> str:
-    """Costruisce URL GCS per il clean parquet."""
+def resolve_parquet_path(slug: str, year: int) -> str:
+    """Cerca il parquet prima in locale, poi su GCS.
+
+    Locale: out/data/clean/{slug}/{year}/{slug}_{year}_clean.parquet
+    GCS:    gcs_base/{slug}/{year}/{slug}_{year}_clean.parquet
+    """
+    local = LOCAL_CLEAN / slug / str(year) / f"{slug}_{year}_clean.parquet"
+    if local.exists():
+        return str(local)
+    # Fallback: prova mart (per support dataset)
+    mart = LOCAL_MART / slug / str(year)
+    if mart.exists():
+        for f in mart.iterdir():
+            if f.suffix == ".parquet":
+                return str(f)
     return f"{GCS_BASE}/{slug}/{year}/{slug}_{year}_clean.parquet"
 
 
@@ -204,7 +222,7 @@ def probe_year(slug: str, catalog_ds: dict | None) -> int | None:
     for year in [2025, 2024, 2023, 2026]:
         import urllib.request
 
-        url = resolve_gcs_url(slug, year)
+        url = f"{GCS_BASE}/{slug}/{year}/{slug}_{year}_clean.parquet"
         try:
             req = urllib.request.Request(url, method="HEAD")
             with urllib.request.urlopen(req, timeout=5) as resp:
@@ -310,8 +328,15 @@ def try_join(
         return 0, 0, 0
 
 
-def scan(slug: str, year: int | None = None) -> None:
-    """Esegue la scansione delle chiavi di join per un dataset su tutti gli hub configurati."""
+def scan(
+    slug: str, year: int | None = None, json_output: bool = False, quiet: bool = False
+) -> dict | None:
+    """Esegue la scansione delle chiavi di join per un dataset su tutti gli hub configurati.
+
+    Restituisce dict con risultati (o None se errore).
+    Se json_output=True, stampa solo JSON su stdout.
+    Se quiet=True, non stampa output testuale.
+    """
 
     synonyms = load_synonyms()
     catalog = load_catalog()
@@ -321,54 +346,46 @@ def scan(slug: str, year: int | None = None) -> None:
         year = probe_year(slug, catalog_ds)
 
     if year is None:
-        print(f"❌ Impossibile determinare l'anno per {slug}. Usa --year.")
-        return
+        if not quiet and not json_output:
+            print(f"❌ Impossibile determinare l'anno per {slug}. Usa --year.")
+        return None
 
-    # Carica dataset
-    ds_url = resolve_gcs_url(slug, year)
+    ds_url = f"{GCS_BASE}/{slug}/{year}/{slug}_{year}_clean.parquet"
 
-    print(f"Dataset: {slug}")
-    print(f"Anno:    {year}")
-    print(f"URL:     {ds_url}")
-    print()
+    if not quiet and not json_output:
+        print(f"Dataset: {slug}")
+        print(f"Anno:    {year}")
+        print()
 
     con = duckdb.connect()
 
     try:
         ds_rel = load_parquet(ds_url, con)
     except Exception as e:
-        print(f"❌ Impossibile caricare {ds_url}: {e}")
+        if not quiet and not json_output:
+            print(f"  ❌ {e}")
         con.close()
-        return
+        return None
 
     ds_columns = get_columns(ds_rel)
     con.register("ds_view_tmp", ds_rel)
 
-    print(
-        f"Colonne dataset ({len(ds_columns)}): {', '.join(ds_columns[:15])}{'...' if len(ds_columns) > 15 else ''}"
-    )
-    print()
+    if not quiet and not json_output:
+        print(f"  Colonne: {len(ds_columns)}")
 
-    # Scan su ogni hub
     all_results: list[dict] = []
 
     for hub_info in HUBS:
         hub_slug = hub_info["slug"]
         hub_url = hub_info["url"]
-        hub_label = hub_info["label"]
         key_map = hub_info["key_map"]
-
-        print(f"── Scan su {hub_label} ──")
 
         try:
             hub_rel = load_parquet(hub_url, con)
-        except Exception as e:
-            print(f"  ❌ Impossibile caricare {hub_url}: {e}")
+        except Exception:
             continue
 
         con.register("hub_view_tmp", hub_rel)
-        hub_columns = get_columns(hub_rel)
-        print(f"  Hub: {len(hub_columns)} colonne")
 
         for col in ds_columns:
             matches = match_column_to_family(col, synonyms)
@@ -393,94 +410,283 @@ def scan(slug: str, year: int | None = None) -> None:
                     all_results.append(
                         {
                             "hub": hub_slug,
-                            "hub_label": hub_label,
                             "colonna": col,
                             "famiglia": family,
-                            "synonym": synonym,
                             "hub_col": hub_col,
                             "normalizer": norm_name,
                             "totale": total,
                             "match": match,
                             "no_match": no_match,
-                            "rate": rate,
+                            "rate": round(rate, 1),
                         }
                     )
 
-        hub_matched = [r for r in all_results if r["hub"] == hub_slug and r["match"] > 0]
-        if hub_matched:
-            print(f"  ✅ {len(hub_matched)} combinazioni con match > 0")
-        else:
-            print("  ⚠️  Nessun match su questo hub")
-        print()
-
     con.close()
 
-    # ── Report ─────────────────────────────────────────────────────────
-    if not all_results:
-        print("❌ Nessun join candidate trovato per questo dataset.")
-        return
-
-    # Tabella risultati
+    # Best result
     matched = [r for r in all_results if r["match"] > 0]
-    failed = [r for r in all_results if r["match"] == 0]
-
-    print(
-        f"{'Hub':<28} {'Colonna':<32} {'Famiglia':<18} {'Hub key':<14} {'Normalizer':<22} {'Match':>8} {'Su':>8} {'Rate':>8}"
-    )
-    print("-" * 140)
-    for r in matched:
-        rate_str = f"{r['rate']:.1f}%"
-        print(
-            f"{r['hub_label']:<28} {r['colonna']:<32} {r['famiglia']:<18} {r['hub_col']:<14} {r['normalizer']:<22} {r['match']:>8} {r['totale']:>8} {rate_str:>8}"
-        )
-
-    if failed and not matched:
-        print("--- Tentativi falliti (match=0) ---")
-        for r in failed[:5]:
-            print(
-                f"  {r['hub_label']}: {r['colonna']} → {r['hub_col']} via {r['normalizer']}: {r['match']}/{r['totale']}"
-            )
-
-    # Raccomandazione
+    best = None
     if matched:
         matched.sort(key=lambda r: r["rate"], reverse=True)
         best = matched[0]
-        print()
-        print(
-            f"🏆 Miglior chiave: [{best['hub_label']}] {best['colonna']} → {best['hub_col']} (via {best['normalizer']}: {best['rate']:.1f}%)"
-        )
-        print(f"   Totale: {best['match']}/{best['totale']} (no-match: {best['no_match']})")
 
-        bridge_note = ""
-        for hub_info in HUBS:
-            if hub_info["slug"] == best["hub"] and hub_info.get("bridge_to_hub"):
-                bt = hub_info["bridge_to_hub"]
-                bridge_note = f" → risale a {bt['hub_slug']} via {bt['via']}"
+    result = {
+        "slug": slug,
+        "year": year,
+        "rows": len(ds_columns),
+        "best": best,
+        "all": all_results,
+    }
 
-        print()
-        print("Suggerimento join_map.yaml:")
-        print(f"  hub: {best['hub']}{bridge_note}")
-        print("  comuni_key:")
-        print(f"    column: {best['colonna']}")
-        print(f"  hub_key: {best['hub_col']}")
-        print(f"  normalizer: ... (scegli in base al normalizer '{best['normalizer']}')")
-    else:
-        print()
-        print("⚠️  Nessuna chiave matcha con gli hub configurati.")
-        print("   Possibili cause:")
-        print("   - Il dataset usa un bridge esterno (es. Sogei, codice meccanografico)")
-        print("   - Encoding diverso (apostrofi, accenti) non coperto dai normalizer")
-        print("   - Granularità diversa (provincia/regione/NUTS, non comune/ente)")
-        print("   - Servono normalizer o hub aggiuntivi")
+    if json_output:
+        # Solo JSON, niente testo
+        print(json.dumps(result, indent=2, ensure_ascii=False))
+    elif not quiet:
+        print(f"  Colonne: {len(ds_columns)}")
+        if best:
+            print(
+                f"  ✅ {best['colonna']} → {best['hub_col']} [{best['hub']}] via {best['normalizer']}: {best['rate']:.1f}% ({best['match']}/{best['totale']})"
+            )
+        else:
+            print("  ⚠️  Nessuna chiave trovata")
+
+    return result
+
+
+def scan_batch(slugs: list[str], json_output: bool = False):
+    """Scansiona una lista di slug IN UNA SOLA CONNESSIONE.
+
+    Gli hub (comuni_master, bdap) vengono caricati UNA VOLTA SOLA
+    e riusati per tutti i dataset. Molto più veloce.
+    """
+    synonyms = load_synonyms()
+
+    con = duckdb.connect()
+
+    # Carica hub una volta sola — solo da locale
+    hub_views = {}
+    for hub_info in HUBS:
+        hub_slug = hub_info["slug"]
+        hub_year = hub_info.get("year", 2026)
+        hub_path = resolve_parquet_path(hub_slug, hub_year)
+        view_name = f"hub_{hub_slug}"
+
+        # Verifica che sia locale
+        if hub_path.startswith("http"):
+            print(f"  ❌ Hub {hub_slug} non disponibile in locale. Buildalo prima con toolkit run.")
+            continue
+
+        try:
+            hub_rel = load_parquet(hub_path, con)
+            con.register(view_name, hub_rel)
+            hub_views[hub_slug] = {
+                "view": view_name,
+                "label": hub_info["label"],
+                "key_map": hub_info["key_map"],
+                "bridge": hub_info.get("bridge_to_hub"),
+            }
+        except Exception as e:
+            print(f"  ❌ Hub {hub_slug} non caricabile: {e}")
+
+    print()
+    results = []
+
+    for slug in slugs:
+        # Determina anno dal catalogo o fallback
+        catalog = load_catalog()
+        catalog_ds = find_dataset_in_catalog(slug, catalog)
+        year = probe_year(slug, catalog_ds)
+
+        if year is None:
+            print(f"  ⚠️  {slug:<35} anno sconosciuto")
+            continue
+
+        # Legge da GCS via DuckDB (HTTP range request, solo colonne serve)
+        ds_path = resolve_parquet_path(slug, year)
+
+        try:
+            ds_rel = load_parquet(ds_path, con)
+        except Exception as e:
+            print(f"  ❌  {slug:<35} {e}")
+            continue
+
+        ds_columns = get_columns(ds_rel)
+        con.register("ds_view", ds_rel)
+
+        all_hub_results = []
+
+        for hub_slug, hub_view in hub_views.items():
+            key_map = hub_view["key_map"]
+
+            for col in ds_columns:
+                matches = match_column_to_family(col, synonyms)
+
+                for family, synonym in matches:
+                    if family not in key_map:
+                        continue
+
+                    key_info = key_map[family]
+                    hub_col = key_info["hub_column"]
+
+                    for norm_name, norm_expr in key_info["normalizers"]:
+                        total, match, no_match = try_join(
+                            "ds_view", hub_view["view"], col, hub_col, norm_expr, con
+                        )
+
+                        if total == 0:
+                            continue
+
+                        rate = (match / total * 100) if total > 0 else 0
+                        all_hub_results.append(
+                            {
+                                "hub": hub_slug,
+                                "colonna": col,
+                                "famiglia": family,
+                                "hub_col": hub_col,
+                                "normalizer": norm_name,
+                                "totale": total,
+                                "match": match,
+                                "no_match": no_match,
+                                "rate": round(rate, 1),
+                            }
+                        )
+
+        con.execute("DROP VIEW IF EXISTS ds_view")
+
+        matched = [r for r in all_hub_results if r["match"] > 0]
+        best = None
+        if matched:
+            matched.sort(key=lambda r: r["rate"], reverse=True)
+            best = matched[0]
+
+        result = {
+            "slug": slug,
+            "year": year,
+            "best": best,
+            "all": all_hub_results,
+        }
+        results.append(result)
+
+        if best:
+            print(
+                f"  ✅ {slug:<35} {best['colonna']:<30} → {best['hub_col']:<20} [{best['hub']}] {best['rate']:>5.1f}%"
+            )
+        else:
+            print(f"  ⚠️  {slug:<35} nessuna chiave")
+
+    con.close()
+
+    if json_output:
+        print(json.dumps(results, indent=2, ensure_ascii=False))
+
+
+def _list_catalog_slugs() -> list[str]:
+    """Restituisce gli slug dei dataset nel catalogo (con colonne territoriali candidate)."""
+    datasets = load_catalog()
+    skip = {
+        "comuni_master",
+        "bdap_anagrafe_enti",
+        "istat_elenco_comuni",
+        "costituzione_master",
+        "opencivitas_glossario",
+        "opencivitas_indicatori",
+    }
+    candidates = []
+    for d in datasets:
+        slug = d["slug"]
+        if slug in skip:
+            continue
+        cols = [c["name"] for c in d.get("columns", [])]
+        col_str = " ".join(cols).lower()
+        keywords = [
+            "codice_istat",
+            "codice_catastale",
+            "codice_fiscale",
+            "codice_comune",
+            "pro_com",
+            "cod_comune",
+            "codice_ente",
+            "id_ente",
+            "comune",
+            "provincia",
+            "regione",
+            "sigla_provincia",
+            "codice_ipa",
+            "cf_soggetto",
+            "codice_scuola",
+        ]
+        if any(k in col_str for k in keywords):
+            candidates.append(slug)
+    return sorted(candidates)
+
+    # Salta hub e support
+    skip = {
+        "comuni_master",
+        "bdap_anagrafe_enti",
+        "istat_elenco_comuni",
+        "costituzione_master",
+        "opencivitas_glossario",
+        "opencivitas_indicatori",
+    }
+
+    candidates = []
+    for d in datasets:
+        slug = d["slug"]
+        if slug in skip:
+            continue
+        cols = [c["name"] for c in d.get("columns", [])]
+        col_str = " ".join(cols).lower()
+
+        # Ha almeno una colonna candidate?
+        keywords = [
+            "codice_istat",
+            "codice_catastale",
+            "codice_fiscale",
+            "codice_comune",
+            "pro_com",
+            "cod_comune",
+            "codice_ente",
+            "id_ente",
+            "comune",
+            "provincia",
+            "regione",
+            "sigla_provincia",
+            "codice_ipa",
+            "cf_soggetto",
+            "codice_scuola",
+        ]
+        if any(k in col_str for k in keywords):
+            candidates.append(slug)
+
+    return sorted(candidates)
 
 
 def main():
     parser = argparse.ArgumentParser(description="Scopri chiavi di join territoriali di un dataset")
-    parser.add_argument("slug", help="Slug del dataset (es. mim_anagrafica_scuole_statali)")
+    parser.add_argument(
+        "slug", nargs="?", help="Slug del dataset (es. mim_anagrafica_scuole_statali)"
+    )
     parser.add_argument("--year", type=int, default=None, help="Anno (default: auto-detect)")
+    parser.add_argument("--json", action="store_true", help="Output JSON invece di testo")
+    parser.add_argument("--all", action="store_true", help="Scansiona tutti i dataset del catalogo")
+    parser.add_argument("--batch", nargs="*", help="Lista di slug da scansionare")
     args = parser.parse_args()
 
-    scan(args.slug, args.year)
+    if args.all:
+        slugs = _list_catalog_slugs()
+        print(f"Scanning {len(slugs)} dataset...")
+        print(
+            "Hub caricati una volta: comuni_master (locale) + bdap_anagrafe_enti (se disponibile)"
+        )
+        print("Dati letti da GCS via DuckDB (range request, solo colonne serve)")
+        print()
+        scan_batch(slugs, json_output=args.json)
+    elif args.batch is not None:
+        scan_batch(args.batch, json_output=args.json)
+    elif args.slug:
+        scan(args.slug, args.year, json_output=args.json)
+    else:
+        parser.print_help()
 
 
 if __name__ == "__main__":
