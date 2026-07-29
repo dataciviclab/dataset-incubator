@@ -7,6 +7,9 @@ on:
       - "registry/clean_catalog.schema.json"
       - "scripts/build_clean_catalog.py"
       - "tools/clean_query_mcp/**"
+      - "tools/graph/build_graph.py"
+      - "registry/semantic_types.yaml"
+      - "registry/entity_graph.json"
   push:
     branches:
       - main
@@ -32,6 +35,19 @@ jobs:
 
       - name: Validate catalog and public GCS paths
         run: python scripts/build_clean_catalog.py --check-gcs
+
+      - name: Generate entity graph from catalog
+        run: python tools/graph/build_graph.py
+
+      - name: Check entity_graph.json is up to date
+        run: |
+          if ! git diff --quiet registry/entity_graph.json; then
+            echo "❌ entity_graph.json non aggiornato. Esegui localmente:"
+            echo "   python tools/graph/build_graph.py"
+            git diff registry/entity_graph.json
+            exit 1
+          fi
+          echo "✅ entity_graph.json aggiornato"
 
       - name: Smoke test clean-query MCP
         run: python -m tools.clean_query_mcp.scripts.smoke
