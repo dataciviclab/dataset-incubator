@@ -285,13 +285,15 @@ class TestMain:
 
     @pytest.mark.pure_unit
     def test_run_with_retry_first_attempt_succeeds(self):
-        """_run_with_retry ritorna True se il comando ha successo al primo tentativo."""
+        """_run_with_retry ritorna (True, stdout) se il comando ha successo."""
         result = pmr._run_with_retry(
             ["python", "-c", "exit(0)"],
             cwd=".",
             attempts=2,
         )
-        assert result is True
+        ok, stdout = result
+        assert ok is True
+        assert isinstance(stdout, str)
 
     @pytest.mark.pure_unit
     def test_run_with_retry_second_attempt_succeeds(self):
@@ -308,8 +310,9 @@ class TestMain:
 
         monkeypatch = pytest.MonkeyPatch()
         monkeypatch.setattr(subprocess, "run", _run_fail_once)
+        monkeypatch.setattr("time.sleep", lambda s: None)
         try:
-            result = pmr._run_with_retry(["true"], cwd=".", attempts=2)
-            assert result is True
+            ok, _stdout = pmr._run_with_retry(["true"], cwd=".", attempts=2)
+            assert ok is True
         finally:
             monkeypatch.undo()
