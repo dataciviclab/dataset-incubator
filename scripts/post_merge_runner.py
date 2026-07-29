@@ -85,6 +85,68 @@ def _resolve_years(config_path: str, root: str) -> list[int]:
     return params.get("all_years", [])
 
 
+def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, Any]:
+    """Legge metriche di run dai run_report.json prodotti dal toolkit.
+
+    I report sono scritti da toolkit run full in:
+      {root}/data/_reports/{slug}/{year}_run_report.json
+    Contengono duration_seconds, readiness, row_counts, quality_scores.
+    """
+    metrics: dict[str, Any] = {}
+    root_path = Path(root)
+    latest_duration = None
+    total_row_counts: dict[str, int] = {}
+    latest_readiness = None
+    latest_checks = None
+    all_qs: dict[str, float] = {}
+
+    for year in years:
+        report_path = root_path / "data" / "_reports" / slug / f"{year}_run_report.json"
+        if not report_path.exists():
+            continue
+        try:
+            report = json.loads(report_path.read_text(encoding="utf-8"))
+        except (json.JSONDecodeError, OSError):
+            continue
+
+        dur = report.get("duration_seconds")
+        if dur is not None:
+            latest_duration = dur
+        rd = report.get("readiness")
+        if rd:
+            latest_readiness = rd
+        rc = report.get("readiness_checks")
+        if rc:
+            latest_checks = rc
+
+        layers = report.get("layers", {})
+        for layer_name in ("raw", "clean", "mart"):
+            ln = layers.get(layer_name) or {}
+            lv = ln.get("validation") or {}
+            row_count = lv.get("row_count") or ln.get("row_count")
+            if row_count is not None:
+                total_row_counts[layer_name] = total_row_counts.get(layer_name, 0) + int(row_count)
+
+        pf = report.get("preflight", {})
+        for src in pf.get("sources", []):
+            name = src.get("name", "")
+            score = src.get("quality_score")
+            if name and score is not None:
+                all_qs[name] = float(score)
+
+    if latest_duration is not None:
+        metrics["duration_seconds"] = latest_duration
+    if latest_readiness:
+        metrics["readiness"] = latest_readiness
+    if latest_checks:
+        metrics["readiness_checks"] = latest_checks
+    if total_row_counts:
+        metrics["row_counts"] = total_row_counts
+    if all_qs:
+        metrics["quality_scores"] = all_qs
+    return metrics
+
+
 def _run_with_retry(cmd: list[str], cwd: str, attempts: int = 3) -> tuple[bool, str]:
     for i in range(1, attempts + 1):
         r = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
@@ -186,53 +248,8 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             attempts=args.retry,
         )
 
-        # Estrai metriche dall'output JSON del toolkit
-        run_metrics: dict[str, Any] = {}
-        if run_stdout:
-            try:
-                run_data = json.loads(run_stdout)
-                # Leggi readiness dal primo anno disponibile
-                steps = run_data.get("steps", {})
-                if steps:
-                    first_step = next(iter(steps.values()))
-                    readiness = first_step.get("readiness")
-                    if readiness:
-                        run_metrics["readiness"] = readiness
-                    checks = first_step.get("checks")
-                    checks_ok = first_step.get("checks_ok")
-                    checks_fail = first_step.get("checks_fail")
-                    if checks is not None:
-                        run_metrics["readiness_checks"] = {
-                            "total": checks,
-                            "ok": checks_ok or 0,
-                            "fail": checks_fail or 0,
-                        }
-                    layers = first_step.get("layers", {})
-                    row_counts: dict[str, int] = {}
-                    for layer_name in ("raw", "clean", "mart"):
-                        ln = layers.get(layer_name) or {}
-                        lv = ln.get("validation") or {}
-                        rc = lv.get("row_count") or ln.get("row_count")
-                        if rc is not None:
-                            row_counts[layer_name] = int(rc)
-                    if row_counts:
-                        run_metrics["row_counts"] = row_counts
-                # Durata: usa l'ultimo step o calcola dal run_data
-                if "duration_seconds" in run_data:
-                    run_metrics["duration_seconds"] = run_data["duration_seconds"]
-                # Quality scores dal preflight
-                preflight = run_data.get("preflight", {})
-                sources = preflight.get("sources", [])
-                qs = {}
-                for src in sources:
-                    name = src.get("name", "")
-                    score = src.get("quality_score")
-                    if name and score is not None:
-                        qs[name] = score
-                if qs:
-                    run_metrics["quality_scores"] = qs
-            except (json.JSONDecodeError, KeyError, TypeError):
-                pass  # metriche non disponibili — non blocca
+        # Estrai metriche dal run_report.json su disco (prodotto dal toolkit)
+        run_metrics = _extract_run_metrics(root, slug, all_years)
 
         status = "passed" if run_ok else "failed"
         if status == "failed":

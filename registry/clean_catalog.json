@@ -14283,7 +14283,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "energia",
+        "elettricità",
+        "fonti-rinnovabili"
+      ],
+      "category": "energia"
     },
     {
       "slug": "terna_electrical_energy_by_sector",
@@ -14336,7 +14342,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "energia",
+        "elettricità",
+        "fonti-rinnovabili"
+      ],
+      "category": "energia"
     },
     {
       "slug": "terna_electricity_by_source",
