@@ -366,6 +366,45 @@ datasets:
     note: Compose multi-fonte. Include hub, popolazione, IRPEF, rifiuti, consumo suolo, FSC, SIOPE, dipendenti (via BDAP), PNRR.
 
   # ==========================================================================
+  # DATI EUROSTAT (NUTS3 → cross-grano provincia→comune)
+  # ==========================================================================
+  # Questi dataset hanno granularità NUTS3 (provincia). Non hanno join diretto
+  # per comune, ma via comuni_master.nuts3_2021/2024 si può risalire al comune.
+  # Attenzione: 1 provincia → N comuni (fino a 311). Il dato provinciale viene
+  # replicato su tutti i comuni della stessa provincia.
+
+  - slug: eurostat_economy
+    name: Indicatori economici regionali EU (PIL, GVA, occupazione)
+    granularity: NUTS3 (provincia) → comune via cross-grano
+    comuni_key:
+      column: geo
+      format: nuts3
+    hub_key: nuts3_2021
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner (105/107 NUTS3 italiani matchano)"
+    note: "Join cross-grano via comuni_master.nuts3_2021. 2 NUTS3 non matchano per cambio versione NUTS."
+
+  - slug: eurostat_demography
+    name: Indicatori demografici regionali EU
+    granularity: NUTS3 (provincia) → comune via cross-grano
+    comuni_key:
+      column: geo
+      format: nuts3
+    hub_key: nuts3_2021
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner"
+
+  - slug: eurostat_territory
+    name: Indicatori territoriali regionali EU
+    granularity: NUTS3 (provincia) → comune via cross-grano
+    comuni_key:
+      column: geo
+      format: nuts3
+    hub_key: nuts3_2021
+    normalizer: direct
+    verified_by: "2026-07-29, join-scanner"
+
+  # ==========================================================================
   # ANAGRAFICA ENTI (IPA)
   # ==========================================================================
 
@@ -565,12 +604,16 @@ datasets:
   - slug: anac_aggiudicatari
     granularity: impresa/operatore
     joinable_by_comune: false
-    note: "Il CF in questo dataset è di imprese/operatori economici, non di enti pubblici. Match 0% con comuni_master."
+    note: >
+      Il CF è di imprese (match 0% con comuni_master). MA è joinabile indirettamente
+      via CIG → anac_bandi_gara.cig → codice_istat_luogo.
+      Match: 1.04M CIG su 4.8M (21.6% — bandi_gara ha solo dati recenti).
+      Di quelli matchati, 99.1% ha territorio. Bridge: anac_bandi_gara.
 
   - slug: anac_partecipanti
     granularity: impresa/operatore
     joinable_by_comune: false
-    note: "Stesso pattern di anac_aggiudicatari: CF di imprese, non enti."
+    note: "CF di imprese, non enti. Stesso bridge CIG di anac_aggiudicatari."
 
   - slug: anac_subappalti
     granularity: subappalto
@@ -693,4 +736,7 @@ datasets:
   - slug: rna_aiuti_stato
     granularity: nazionale/aiuto
     joinable_by_comune: false
-    note: "codice_fiscale_beneficiario è di imprese, non enti pubblici. Match 0.1% con comuni_master (solo errori/coincidenze)."
+    note: >
+      CF beneficiario è di imprese (match 0.1%). Joinabile per regione
+      via regione_beneficiario → comuni_master.regione (UPPER TRIM).
+      Ha anche cup che può fare da bridge verso ANAC CUP.
