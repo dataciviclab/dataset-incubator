@@ -4139,110 +4139,110 @@
     },
     {
       "slug": "elezioni_voto",
-      "name": "Elezioni Voto",
-      "description": "",
-      "source": "",
-      "source_id": "",
+      "name": "Elezioni Voto — risultati comunali, europee e regionali",
+      "description": "Vista unificata del voto in Italia per elezioni comunali, europee e regionali. 23 tornate (1979-2024), 1.35M righe. Schema normalizzato con tipo_elezione come dimensione. Fonte: Eligendo — DAIT Ministero dell'Interno.",
+      "source": "Eligendo — DAIT Ministero dell'Interno",
+      "source_id": "dataciviclab_composite",
       "period": {
-        "start": 2026,
-        "end": 2026
+        "start": 1979,
+        "end": 2024
       },
       "columns": [
         {
           "name": "data_elezione",
           "type": "DATE",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data dell'elezione"
         },
         {
           "name": "tipo_elezione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di elezione: comunali, europee, regionali"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Regione"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Provincia"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Comune"
         },
         {
           "name": "circoscrizione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Circoscrizione elettorale (solo europee e regionali)"
         },
         {
           "name": "elettori",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Elettori aventi diritto"
         },
         {
           "name": "votanti",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Votanti totali"
         },
         {
           "name": "schede_bianche",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Schede bianche"
         },
         {
           "name": "affluenza_pct",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Percentuale di affluenza (votanti/elettori * 100)"
         },
         {
           "name": "lista",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Lista elettorale o coalizione"
         },
         {
           "name": "voti_lista",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti ottenuti dalla lista"
         },
         {
           "name": "candidato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del candidato (solo comunali e regionali)"
         },
         {
           "name": "voti_candidato",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Voti ottenuti dal candidato (solo comunali e regionali)"
         },
         {
           "name": "turno",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Turno di votazione: 1=primo, 2=ballottaggio (solo comunali)"
         },
         {
           "name": "seggi_lista",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Seggi assegnati alla lista (solo comunali)"
         }
       ],
       "location": {
