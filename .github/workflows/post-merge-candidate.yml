@@ -202,6 +202,10 @@ jobs:
           fi
           python scripts/update_pipeline_sample_runs.py --samples-dir sample_run_artifacts
 
+      - name: Enrich clean_catalog from dataset.yml (source_id, period, tags, category)
+        if: needs.detect.outputs.has_configs == 'true' && needs.sample_run.result != 'skipped'
+        run: python scripts/build_clean_catalog.py --write
+
       - name: Generate entity graph from updated catalog
         run: python tools/graph/build_graph.py
 
