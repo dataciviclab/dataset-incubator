@@ -21,14 +21,15 @@ DEFAULT_SCHEMA = ROOT / "registry" / "clean_catalog.schema.json"
 SEMTYPES_PATH = ROOT / "registry" / "semantic_types.yaml"
 
 
-def _load_semantic_type_map() -> dict[str, str]:
-    """Carica semantic_types.yaml e restituisce mappa alias → semantic_type.
+def _load_semantic_type_map() -> tuple[dict[str, str], list[tuple[str, str, int]]]:
+    """Carica semantic_types.yaml e restituisce (alias_map, partial_rules).
 
-    Match esatto per tutti gli alias. Partial match solo per alias ≥6 caratteri
-    (evita falsi positivi: "prov" in "provvedimento", "ipa" in "partecipazione").
+    alias_map: match esatto per tutti gli alias.
+    partial_rules: (alias_lower, stype, len) per alias ≥6 (partial match).
+    Alias <6 caratteri solo match esatto (evita falsi positivi).
     """
     if not SEMTYPES_PATH.exists():
-        return {}
+        return {}, []
     data = yaml.safe_load(SEMTYPES_PATH.read_text())
     types = data.get("types", {})
     alias_map: dict[str, str] = {}
