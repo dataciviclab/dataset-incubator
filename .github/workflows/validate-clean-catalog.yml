@@ -101,7 +101,8 @@ jobs:
           PR_NUMBER: ""
           PR_TITLE: "merge in main@${{ github.sha }}"
           ITEMS_JSON: ${{ steps.detect.outputs.new_slugs }}
-        run: python scripts/create_de_followup_issue.py
+          REPO: "dataciviclab/data-explorer"
+        run: python scripts/create_issue.py
 
       - name: Open analysis issue in dataciviclab
         if: always() && steps.detect.outputs.new_slugs != '' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
@@ -110,4 +111,5 @@ jobs:
           PR_NUMBER: ""
           PR_TITLE: "merge in main@${{ github.sha }}"
           ITEMS_JSON: ${{ steps.detect.outputs.new_slugs }}
-        run: python scripts/create_dcl_analysis_issue.py
+          REPO: "dataciviclab/dataciviclab"
+        run: python scripts/create_issue.py
