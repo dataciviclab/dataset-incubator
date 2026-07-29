@@ -39,11 +39,25 @@ jobs:
       - name: Generate entity graph from catalog
         run: python tools/graph/build_graph.py
 
-      - name: Check entity_graph.json is up to date
+      - name: Commit updated entity_graph.json (push a main)
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: |
           if ! git diff --quiet registry/entity_graph.json; then
-            echo "❌ entity_graph.json non aggiornato. Esegui localmente:"
-            echo "   python tools/graph/build_graph.py"
+            git config user.name "github-actions[bot]"
+            git config user.email "github-actions[bot]@users.noreply.github.com"
+            git add registry/entity_graph.json
+            git commit -m "chore(post-merge): aggiorna entity_graph.json per PR #"
+            git push
+            echo "✅ entity_graph.json aggiornato e committato"
+          else:
+            echo "✅ entity_graph.json già aggiornato"
+          fi
+
+      - name: Check entity_graph.json is up to date (PR)
+        if: github.event_name == 'pull_request'
+        run: |
+          if ! git diff --quiet registry/entity_graph.json; then
+            echo "❌ entity_graph.json non aggiornato. Esegui: python tools/graph/build_graph.py"
             git diff registry/entity_graph.json
             exit 1
           fi
