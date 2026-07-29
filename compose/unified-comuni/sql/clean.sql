@@ -9,14 +9,16 @@
 -- Domini integrati:
 --   hub (comuni_master) + popolazione + IRPEF + rifiuti
 --   + consumo suolo (solo 2024, cross-anno)
---   + Fondo Solidarietà Comunale (join testuale denominazione+regione)
+--   + Fondo Solidarietà Comunale (join testuale denominazione+regione, normalizzato apostrofo→accento)
 --   + SIOPE (via bridge bdap_anagrafe_enti.codice_ente_siope)
 --   + Dipendenti PA (via bridge bdap_anagrafe_enti.id_ente, dati fino 2023)
 --   + PNRR (via comuni_master.codice_fiscale)
 --
 -- Note sui join testuali (denominazione):
 --   - FSC non ha codice_istat, join su denominazione+regione.
---     Fragile per fusioni/omonimie. Cross-validato con regione.
+--     Gli apostrofi finali (es. CANTU' → Cantù) sono normalizzati a monte
+--     nel support dataset opencivitas-fsc-enti-rso. Join testuale ora stabile ~99.9%.
+--     Cross-validato con regione per disambiguare omonimie.
 
 WITH hub AS (
     SELECT * FROM read_parquet('https://storage.googleapis.com/dataciviclab-clean/comuni_master/2026/comuni_master_2026_clean.parquet', union_by_name=true)
