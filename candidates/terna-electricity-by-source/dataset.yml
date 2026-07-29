@@ -1,37 +1,47 @@
-root: "../../out"
+root: ../../out
 schema_version: 1
-
 dataset:
-  name: "terna_electricity_by_source"
-  source_id: "terna_opendata"
-  years: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
-
+  name: terna_electricity_by_source
+  source_id: terna_opendata
+  years:
+  - 2015
+  - 2016
+  - 2017
+  - 2018
+  - 2019
+  - 2020
+  - 2021
+  - 2022
+  - 2023
+  - 2024
+  tags:
+  - energia
+  - elettricità
+  - fonti-rinnovabili
+  category: energia
 raw:
   sources:
-    - name: "terna_electricity_by_source_xlsx"
-      type: "http_file"
-      args:
-        url: "https://dati.terna.it/api/sitecore/dati/downloadcenter/records?f=xlsx&filterDataset=ElectricityBySource&filterYear={year}&filterMonth=12&orderByColumn=Anno&orderByDir=desc&db=dati&pageSize=5000"
-        filename: "terna_electricity_by_source_{year}_12.xlsx"
-      primary: true
-
+  - name: terna_electricity_by_source_xlsx
+    type: http_file
+    args:
+      url: https://dati.terna.it/api/sitecore/dati/downloadcenter/records?f=xlsx&filterDataset=ElectricityBySource&filterYear={year}&filterMonth=12&orderByColumn=Anno&orderByDir=desc&db=dati&pageSize=5000
+      filename: terna_electricity_by_source_{year}_12.xlsx
+    primary: true
 clean:
-  sql: "sql/clean.sql"
+  sql: sql/clean.sql
   read:
     source: auto
     mode: latest
     header: true
-    sheet_name: "Export"
+    sheet_name: Export
   validate:
     min_rows: 600
-
 mart:
   tables:
-    - name: "mart_mix_regioni"
-      sql: "sql/mart.sql"
+  - name: mart_mix_regioni
+    sql: sql/mart.sql
   required_tables:
-    - "mart_mix_regioni"
+  - mart_mix_regioni
   validate: {}
-
 validation:
   fail_on_error: true
