@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-28",
+  "generated_at": "2026-07-29",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 108,
+    "total": 109,
     "by_status": {
-      "ok": 108,
+      "ok": 109,
       "warn": 0,
       "error": 0
     }
@@ -423,9 +423,9 @@
       "action": "",
       "sample_run": {
         "status": "passed",
-        "run_id": "28938898117",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28938898117",
-        "checked_at": "2026-07-08",
+        "run_id": "30454985257",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30454985257",
+        "checked_at": "2026-07-29",
         "years": [
           1995,
           1997,
@@ -2054,6 +2054,14 @@
         ],
         "config_path": "compose/costituzione-master/dataset.yml"
       }
+    },
+    {
+      "id": "compose:elezioni-voto",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "compose:elezioni-voto",
+      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "action": ""
     },
     {
       "id": "compose:eurostat-demography",
