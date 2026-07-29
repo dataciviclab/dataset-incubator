@@ -1634,9 +1634,9 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "28709665937",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28709665937",
-        "checked_at": "2026-07-04",
+        "run_id": "30498924084",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30498924084",
+        "checked_at": "2026-07-29",
         "years": [
           2015,
           2016,
