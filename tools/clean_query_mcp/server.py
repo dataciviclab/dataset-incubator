@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import re
+from pathlib import Path
 from typing import Any
 
 from lab_connectors.mcp import create_mcp_server, guard_timed
@@ -721,15 +723,20 @@ def find(
 
 # ── Relationship Map ──────────────────────────────────────────────────────────
 
+DI_ROOT = Path(__file__).resolve().parents[1]
+ENTITY_GRAPH_PATH = DI_ROOT / "registry" / "entity_graph.json"
+
 
 def _load_relationship_map() -> dict[str, Any]:
-    """Genera la mappa relazioni dalla join_map.yaml (live, nessun file JSON)."""
+    """Carica il grafo entità da entity_graph.json (generato da build_graph.py)."""
     try:
-        from .build_relationship_map import build as _build_rm
-
-        return _build_rm()
+        if not ENTITY_GRAPH_PATH.exists():
+            return {
+                "error": "entity_graph.json non trovato. Esegui: python tools/graph/build_graph.py"
+            }
+        return json.loads(ENTITY_GRAPH_PATH.read_text())
     except Exception as exc:
-        return {"error": f"Errore generazione relationship map: {exc}"}
+        return {"error": f"Errore caricamento entity_graph.json: {exc}"}
 
 
 @mcp.tool(
