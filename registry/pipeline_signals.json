@@ -19,7 +19,7 @@
       "label": "aci-prime-iscrizioni-autovetture",
       "detail": "anno 2024 — fonti: aci_2017, aci_2018 — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28817993929",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28817993929",
@@ -37,7 +37,7 @@
       "label": "ade-cinque-per-mille",
       "detail": "anni 2023-2025 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29826248891",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29826248891",
@@ -57,7 +57,7 @@
       "label": "aifa-spesa-consumo",
       "detail": "anni 2018-2024 — fonte: aifa_spesa_consumo_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26462812456",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
@@ -81,7 +81,7 @@
       "label": "anac-aggiudicazioni",
       "detail": "anno 2026 — fonte: aggiudicazioni — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29639215447",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29639215447",
@@ -99,7 +99,7 @@
       "label": "anac-bandi-gara",
       "detail": "anni 2016-2025 — fonte: cig_{year} — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28327708156",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28327708156",
@@ -126,7 +126,7 @@
       "label": "anpr-mobilita-residenziale",
       "detail": "anno 2026 — fonte: anpr_cambi_residenza_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28370691002",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28370691002",
@@ -144,7 +144,7 @@
       "label": "bdap-entrate-stato",
       "detail": "anno 2024 — fonte: openbdap_entrate_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26637016060",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26637016060",
@@ -162,7 +162,7 @@
       "label": "bdap-lea",
       "detail": "anni 2019-2024 — fonte: bdap_lea_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27040177316",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27040177316",
@@ -185,7 +185,7 @@
       "label": "bdap-spese-stato",
       "detail": "anno 2024 — fonte: openbdap_spese_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27060712871",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27060712871",
@@ -203,7 +203,7 @@
       "label": "camera-deputati-legislature",
       "detail": "anno 2024 — fonte: camera_deputati_sparql — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26682747895",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26682747895",
@@ -221,7 +221,7 @@
       "label": "camera-votazioni-sparql",
       "detail": "anni 2018-2025 — fonte: sparql — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26683799852",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26683799852",
@@ -246,7 +246,7 @@
       "label": "centri-accoglienza-italia",
       "detail": "anno 2026 — fonte: centri-accoglienza-italia_source — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28542315999",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28542315999",
@@ -264,7 +264,7 @@
       "label": "civile-flussi",
       "detail": "anno 2025 — fonte: ministero_giustizia_xlsx — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26036106012",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26036106012",
@@ -282,7 +282,7 @@
       "label": "consip-consumi-convenzione",
       "detail": "anni 2023-2025 — fonti: consip_consumi_convenzione_2023, consip_consumi_convenzione_2024 — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26456578571",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26456578571",
@@ -302,7 +302,7 @@
       "label": "dait-amministratori-locali",
       "detail": "anno 2026 — fonte: dait_ammcom — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27638710012",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27638710012",
@@ -320,7 +320,7 @@
       "label": "dipendenti-pubblici",
       "detail": "anni 2010-2024 — fonte: bdap_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29419456370",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29419456370",
@@ -352,7 +352,7 @@
       "label": "elezioni-comunali",
       "detail": "anni 2016-2024 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28931381611",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28931381611",
@@ -376,7 +376,7 @@
       "label": "elezioni-europee",
       "detail": "anni 1979-2024 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28931923147",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28931923147",
@@ -403,7 +403,7 @@
       "label": "elezioni-politiche",
       "detail": "anno 2022 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29334544005",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29334544005",
@@ -421,7 +421,7 @@
       "label": "elezioni-referendum",
       "detail": "anni 1995-2022 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30454985257",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30454985257",
@@ -450,7 +450,7 @@
       "label": "elezioni-regionali",
       "detail": "anni 2018-2024 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28939377890",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28939377890",
@@ -473,7 +473,7 @@
       "label": "farmacie",
       "detail": "anno 2026 — fonte: farmacie_source — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27872594347",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27872594347",
@@ -491,7 +491,7 @@
       "label": "fts-eu-grants",
       "detail": "anni 2020-2024 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28519390869",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28519390869",
@@ -513,7 +513,7 @@
       "label": "ga-decreti",
       "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29916534336",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29916534336",
@@ -534,7 +534,7 @@
       "label": "ga-ordinanze",
       "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29916534336",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29916534336",
@@ -555,7 +555,7 @@
       "label": "ga-sentenze",
       "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29850059857",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29850059857",
@@ -576,7 +576,7 @@
       "label": "giustizia-penale-indicatori",
       "detail": "anno 2025 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29842353692",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
@@ -594,7 +594,7 @@
       "label": "inps-pensioni",
       "detail": "anno 2024 — fonte: inps_pensioni_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26462812456",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
@@ -612,7 +612,7 @@
       "label": "inps-rdc-pdc",
       "detail": "anno 2020 — fonte: inps-rdc-pdc_source — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27872392672",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27872392672",
@@ -630,7 +630,7 @@
       "label": "intercettazioni",
       "detail": "anno 2025 — fonte: intercettazioni_xlsx — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29842353692",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
@@ -648,7 +648,7 @@
       "label": "irpef-comunale",
       "detail": "anni 2019-2024 — fonte: finanze_http_zip — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30347354104",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30347354104",
@@ -671,7 +671,7 @@
       "label": "ispra-consumo-suolo",
       "detail": "anno 2024 — fonte: ispra_consumo_suolo_xlsx — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30345539085",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30345539085",
@@ -689,7 +689,7 @@
       "label": "ispra-emissioni-ghg",
       "detail": "anno 2023 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27819243061",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27819243061",
@@ -707,7 +707,7 @@
       "label": "ispra-ru-base",
       "detail": "anni 2010-2024 — fonte: ispra_ru_base_http_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30345539085",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30345539085",
@@ -739,7 +739,7 @@
       "label": "ispra-ru-costi-kg",
       "detail": "anni 2020-2024 — fonte: ispra_ru_costi_kg_http_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28322708552",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28322708552",
@@ -761,7 +761,7 @@
       "label": "ispra-ru-costi-procapite",
       "detail": "anni 2020-2024 — fonte: ispra_ru_costi_procapite_http_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28322709699",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28322709699",
@@ -783,7 +783,7 @@
       "label": "istat-asia-ul",
       "detail": "anno 2020 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29199035023",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29199035023",
@@ -801,7 +801,7 @@
       "label": "istat-gini-regionale",
       "detail": "anno 2023 — fonte: istat_sdmx_gini — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26088201871",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26088201871",
@@ -819,7 +819,7 @@
       "label": "istat-housing-crowding",
       "detail": "anno 2024 — fonte: istat_sdmx_housing_crowding — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26462812456",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
@@ -837,7 +837,7 @@
       "label": "istat-ipab-aree",
       "detail": "anno 2024 — fonte: istat_sdmx_ipab_aree — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26088201871",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26088201871",
@@ -855,7 +855,7 @@
       "label": "istat-occupazione-provinciale",
       "detail": "anno 2025 — fonte: istat_sdmx_occupazione — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28329727205",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28329727205",
@@ -873,7 +873,7 @@
       "label": "iva-regionale",
       "detail": "anni 2015-2024 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28398625551",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28398625551",
@@ -900,7 +900,7 @@
       "label": "mef-irpef-regionale",
       "detail": "anni 2017-2025 — fonte: reg_tipo_reddito — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "25606109984",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25606109984",
@@ -916,7 +916,7 @@
       "label": "mef-partecipazioni",
       "detail": "anni 2020-2023 — fonti: mef_partecipazioni_2020, mef_partecipazioni_2021 — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "25865950424",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25865950424",
@@ -937,7 +937,7 @@
       "label": "mef-patrimonio-detenzioni",
       "detail": "anni 2022-2023 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29813695592",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29813695592",
@@ -956,7 +956,7 @@
       "label": "mef-patrimonio-enti",
       "detail": "anni 2022-2023 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29813695592",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29813695592",
@@ -975,7 +975,7 @@
       "label": "mef-patrimonio-immobili",
       "detail": "anni 2022-2023 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29813695592",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29813695592",
@@ -994,7 +994,7 @@
       "label": "mef-rappresentanti-partecipate",
       "detail": "anni 2018-2023 — fonte: mef_rappresentanti_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28359395238",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28359395238",
@@ -1017,7 +1017,7 @@
       "label": "mim-alunni-corso-eta",
       "detail": "anni 2016-2025 — fonte: mim_alunni_corso_eta_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26683614225",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26683614225",
@@ -1044,7 +1044,7 @@
       "label": "mim-scuola-infanzia",
       "detail": "anni 2018-2025 — fonte: mim_scuola_infanzia_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28333078359",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28333078359",
@@ -1069,7 +1069,7 @@
       "label": "mit-incidentalita-mensile-2001-2018",
       "detail": "anno 2001 — fonte: mit_incidentalita_mensile_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26505556706",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26505556706",
@@ -1087,7 +1087,7 @@
       "label": "mit-opere-incompiute-2020",
       "detail": "anno 2020 — fonte: mit_opere_incompiute_csv — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26091471735",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26091471735",
@@ -1105,7 +1105,7 @@
       "label": "monitoraggio-mensile-civile",
       "detail": "anno 2025 — fonte: monitoraggio_mensile_xlsx — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29842353692",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
@@ -1131,7 +1131,7 @@
       "label": "mur-contribuzione-universitaria",
       "detail": "anni 2017-2024 — fonte: mur_gettito_ckan — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27104450361",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27104450361",
@@ -1156,7 +1156,7 @@
       "label": "mur-immatricolati",
       "detail": "anno 2025 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29332061786",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29332061786",
@@ -1174,7 +1174,7 @@
       "label": "mur-iscritti",
       "detail": "anno 2025 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29348191635",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29348191635",
@@ -1192,7 +1192,7 @@
       "label": "opencivitas-fsc-rso",
       "detail": "anni 2022-2025 — fonte: opencivitas_fsc_zip — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27903144369",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27903144369",
@@ -1213,7 +1213,7 @@
       "label": "opencivitas-indicatori",
       "detail": "anni 2015-2022 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30354805590",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30354805590",
@@ -1237,7 +1237,7 @@
       "label": "opencoesione-progetti",
       "detail": "anno 2026 — fonte: progetti_parquet — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26940428132",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26940428132",
@@ -1255,7 +1255,7 @@
       "label": "openga-ricorsi-appalto",
       "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29862613823",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29862613823",
@@ -1276,7 +1276,7 @@
       "label": "openga-ricorsi-cds",
       "detail": "anni 2023-2026 — fonte: cds_ricorsi_pendenti — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27878799069",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27878799069",
@@ -1297,7 +1297,7 @@
       "label": "penale-flussi",
       "detail": "anno 2025 — fonte: flussi_penali_principale — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29842353692",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
@@ -1315,7 +1315,7 @@
       "label": "pensioni-pa-dag",
       "detail": "anno 2024 — fonte: dag_pensioni_totale — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26107821546",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26107821546",
@@ -1333,7 +1333,7 @@
       "label": "personale-ssn",
       "detail": "anno 2021 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29244922420",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29244922420",
@@ -1351,7 +1351,7 @@
       "label": "pnrr-progetti",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27903429536",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27903429536",
@@ -1369,7 +1369,7 @@
       "label": "posti-letto-stabilimento",
       "detail": "anni 2020-2023 — fonte: posti_letto — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27209348374",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27209348374",
@@ -1390,7 +1390,7 @@
       "label": "reparti-ricovero",
       "detail": "anno 2022 — fonte: reparti_ricovero — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27019783972",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27019783972",
@@ -1408,7 +1408,7 @@
       "label": "rna-aiuti-stato",
       "detail": "anni 2017-2026 — fonte: rna_aiuti_parquet — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30383075205",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30383075205",
@@ -1435,7 +1435,7 @@
       "label": "rna-misure",
       "detail": "anno 2023 — fonte: rna_misure_parquet — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28290057933",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28290057933",
@@ -1453,7 +1453,7 @@
       "label": "sai-progetti-italia",
       "detail": "anno 2026 — fonte: sai_progetti_source — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28579359267",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28579359267",
@@ -1471,7 +1471,7 @@
       "label": "sai-strutture-italia",
       "detail": "anno 2026 — fonte: sai_strutture_source — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28587205069",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28587205069",
@@ -1489,7 +1489,7 @@
       "label": "sbarchi-migranti-italia",
       "detail": "anno 2025 — fonte: sbarchi_per_giorno — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28816214267",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28816214267",
@@ -1507,7 +1507,7 @@
       "label": "silos-infrastrutture",
       "detail": "anno 2024 — fonte: silos_download — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28612611639",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28612611639",
@@ -1525,7 +1525,7 @@
       "label": "siope-bilancio-unificato",
       "detail": "anni 2021-2026 — fonte: siope_entrate — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30353110961",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30353110961",
@@ -1548,7 +1548,7 @@
       "label": "strutture-asl",
       "detail": "anno 2022 — fonte: strutture_asl — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27014606312",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27014606312",
@@ -1566,7 +1566,7 @@
       "label": "strutture-ricovero-asl",
       "detail": "anno 2022 — fonte: strutture_ricovero_asl — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27019783972",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27019783972",
@@ -1584,7 +1584,7 @@
       "label": "ted-contract-notices",
       "detail": "anni 2020-2023 — fonte: ted_cn_{year} — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28517686670",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28517686670",
@@ -1605,7 +1605,7 @@
       "label": "terna-capacita-rinnovabile",
       "detail": "anni 2015-2024 — fonte: terna_capacity_renewable_sources_xlsx — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27063027962",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27063027962",
@@ -1632,7 +1632,7 @@
       "label": "terna-electrical-energy-by-sector",
       "detail": "anni 2015-2024 — fonte: terna_electrical_energy_xlsx — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28709665937",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28709665937",
@@ -1659,7 +1659,7 @@
       "label": "terna-electricity-by-source",
       "detail": "anni 2015-2024 — fonte: terna_electricity_by_source_xlsx — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30491824029",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30491824029",
@@ -1686,7 +1686,7 @@
       "label": "anac-aggiudicatari",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29639927658",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29639927658",
@@ -1704,7 +1704,7 @@
       "label": "anac-collaudo",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30156522396",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30156522396",
@@ -1722,7 +1722,7 @@
       "label": "anac-cup",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30156522396",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30156522396",
@@ -1740,7 +1740,7 @@
       "label": "anac-partecipanti",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29655870229",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29655870229",
@@ -1758,7 +1758,7 @@
       "label": "anac-stati-avanzamento",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30156522396",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30156522396",
@@ -1776,7 +1776,7 @@
       "label": "anac-subappalti",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29692046822",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29692046822",
@@ -1794,7 +1794,7 @@
       "label": "bdap-anagrafe-enti",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26845796510",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26845796510",
@@ -1812,7 +1812,7 @@
       "label": "ipa-aree-organizzative-omogenee",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29403654282",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29403654282",
@@ -1830,7 +1830,7 @@
       "label": "ipa-enti",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28023791270",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28023791270",
@@ -1848,7 +1848,7 @@
       "label": "ipa-unita-organizzative",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29403654282",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29403654282",
@@ -1866,7 +1866,7 @@
       "label": "istat-elenco-comuni",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27298960373",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27298960373",
@@ -1884,7 +1884,7 @@
       "label": "istat-pil-territoriale",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27136216949",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27136216949",
@@ -1902,7 +1902,7 @@
       "label": "mim-anagrafica-scuole-statali",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "27878799069",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27878799069",
@@ -1920,7 +1920,7 @@
       "label": "opencivitas-fsc-enti-rso",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "26562225396",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26562225396",
@@ -1938,7 +1938,7 @@
       "label": "opencivitas-glossario",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29637176868",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29637176868",
@@ -1962,7 +1962,7 @@
       "label": "popolazione-istat-comunale-2019-2025",
       "detail": "anni: ? — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30195122989",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30195122989",
@@ -1986,7 +1986,7 @@
       "label": "compose:anac-appalti-master",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30248169062",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30248169062",
@@ -2004,7 +2004,7 @@
       "label": "compose:comuni-master",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30175442735",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30175442735",
@@ -2022,7 +2022,7 @@
       "label": "compose:conto-annuale-profilo-ente",
       "detail": "anni 2020-2024 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30294866907",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30294866907",
@@ -2044,7 +2044,7 @@
       "label": "compose:costituzione-master",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28715432836",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28715432836",
@@ -2062,7 +2062,7 @@
       "label": "compose:elezioni-voto",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30456214276",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30456214276",
@@ -2080,7 +2080,7 @@
       "label": "compose:eurostat-demography",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30257825297",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30257825297",
@@ -2098,7 +2098,7 @@
       "label": "compose:eurostat-economy",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30257825297",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30257825297",
@@ -2116,7 +2116,7 @@
       "label": "compose:eurostat-territory",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "30257825297",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30257825297",
@@ -2134,7 +2134,7 @@
       "label": "compose:ispra-ru-costi-kg",
       "detail": "anni 2020-2024 — fonti: a, b — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "28322708552",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28322708552",
@@ -2164,7 +2164,7 @@
       "label": "compose:unified-comuni",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29422446973",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29422446973",
@@ -2182,7 +2182,7 @@
       "label": "compose:who-is-who-pa",
       "detail": "anno 2026 — fonte: ? — mart: sì",
       "action": "",
-      "sample_run": {
+      "latest_run": {
         "status": "passed",
         "run_id": "29491723328",
         "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29491723328",

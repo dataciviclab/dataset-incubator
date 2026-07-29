@@ -35,14 +35,14 @@ def main() -> int:
         "--samples-dir",
         type=Path,
         required=True,
-        help="Directory containing sample_run_result.json artifacts.",
+        help="Directory containing latest_run_result.json artifacts.",
     )
     args = parser.parse_args()
 
     catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
     results = read_sample_results(args.samples_dir)
     if not results:
-        print(f"no sample_run_result.json files found in {args.samples_dir}", file=sys.stderr)
+        print(f"no latest_run_result.json files found in {args.samples_dir}", file=sys.stderr)
         return 1
 
     errors = apply_sample_results(catalog, results)
@@ -63,7 +63,7 @@ def main() -> int:
 
 def read_sample_results(samples_dir: Path) -> list[dict[str, Any]]:
     results = []
-    for path in sorted(samples_dir.rglob("sample_run_result.json")):
+    for path in sorted(samples_dir.rglob("latest_run_result.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
         payload["_artifact_path"] = str(path)
         results.append(payload)
@@ -93,7 +93,7 @@ def apply_sample_results(
         return errors
 
     for signal_id, signal_results in grouped.items():
-        by_id[signal_id]["sample_run"] = summarize_sample_results(signal_results)
+        by_id[signal_id]["latest_run"] = summarize_sample_results(signal_results)
     return []
 
 
@@ -102,12 +102,26 @@ def summarize_sample_results(results: list[dict[str, Any]]) -> dict[str, Any]:
     failed = any(item.get("status") != "passed" for item in ordered)
     latest = ordered[-1]
 
+    # Prendi le metriche dal primo risultato passed (o dall'ultimo se tutti failed)
+    metrics_source = next((r for r in reversed(ordered) if r.get("status") == "passed"), latest)
+
     summary: dict[str, Any] = {
         "status": "failed" if failed else "passed",
         "run_id": str(latest.get("run_id", "")),
         "run_url": latest.get("run_url", ""),
         "checked_at": latest.get("checked_at", ""),
     }
+
+    # Propaga metriche di run (duration, row_counts, readiness, quality_scores)
+    for metric_key in (
+        "duration_seconds",
+        "row_counts",
+        "readiness",
+        "readiness_checks",
+        "quality_scores",
+    ):
+        if metric_key in metrics_source:
+            summary[metric_key] = metrics_source[metric_key]
 
     if len(ordered) == 1:
         only = ordered[0]
