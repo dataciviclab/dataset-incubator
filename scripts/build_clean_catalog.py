@@ -9,6 +9,7 @@ from fnmatch import fnmatchcase
 from pathlib import Path
 from typing import Any
 
+import yaml
 from lab_connectors.gcs import list_objects, object_exists
 from lab_connectors.gcs.paths import gs_url
 from toolkit.core.dataset_loader import load_dataset_manifest
@@ -17,6 +18,35 @@ from toolkit.core.dataset_loader import load_dataset_manifest
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CATALOG = ROOT / "registry" / "clean_catalog.json"
 DEFAULT_SCHEMA = ROOT / "registry" / "clean_catalog.schema.json"
+SEMTYPES_PATH = ROOT / "registry" / "semantic_types.yaml"
+
+
+def _load_semantic_type_map() -> dict[str, str]:
+    """Carica semantic_types.yaml e restituisce alias_map.
+
+    alias_map: alias.lower() → semantic_type (match esatto).
+    Niente partial/substring match — evita falsi positivi.
+    Gli alias vanno tenuti specifici in semantic_types.yaml.
+    """
+    if not SEMTYPES_PATH.exists():
+        return {}
+    data = yaml.safe_load(SEMTYPES_PATH.read_text())
+    types = data.get("types", {})
+    alias_map: dict[str, str] = {}
+
+    for stype, info in types.items():
+        for alias in info.get("aliases", []):
+            alias_lower = alias.lower()
+            if alias_lower not in alias_map:
+                alias_map[alias_lower] = stype
+
+    return alias_map
+
+
+def _assign_semantic_type(col_name: str, alias_map: dict[str, str]) -> str | None:
+    """Assegna semantic_type a un nome colonna — solo match esatto."""
+    col_lower = col_name.lower()
+    return alias_map.get(col_lower)
 
 
 def main() -> int:
@@ -287,6 +317,7 @@ def derive_catalog_from_gcs(
         )
 
         # Leggi schema dal parquet più recente su GCS (via DuckDB read_parquet)
+        alias_map = _load_semantic_type_map()
         columns: list[dict[str, str]] = []
         latest_year = years[-1]
         parquet_url = _https("clean", "clean_parquet", slug=slug, year=latest_year)
@@ -324,8 +355,15 @@ def derive_catalog_from_gcs(
                     "bool": "BOOLEAN",
                 }
                 bq_type = duckdb_to_catalog.get(raw_type, "VARCHAR")
-                role = "dimension" if bq_type == "VARCHAR" else "metric"
-                columns.append({"name": col_name, "type": bq_type, "role": role, "description": ""})
+                # DATE e BOOLEAN sono sempre dimensioni; numeri sono metric di default
+                # (il merge editoriale preserva i role corretti)
+                role = "dimension" if bq_type in ("VARCHAR", "DATE", "BOOLEAN") else "metric"
+                # Assegna tipo semantico se riconoscibile (solo match esatto)
+                semantic_type = _assign_semantic_type(col_name, alias_map)
+                col_entry = {"name": col_name, "type": bq_type, "role": role, "description": ""}
+                if semantic_type:
+                    col_entry["semantic_type"] = semantic_type
+                columns.append(col_entry)
         except Exception as exc:
             errors.append(f"{slug}: cannot read schema from {parquet_url}: {exc}")
             continue
@@ -350,7 +388,7 @@ def derive_catalog_from_gcs(
             for field in ("name", "description", "source", "source_id", "stage", "period"):
                 if old.get(field):
                     entry[field] = old[field]
-            # Preserva descrizione e role delle colonne dall'editoriale
+            # Preserva descrizione, role e semantic_type delle colonne dall'editoriale
             old_cols = {c["name"]: c for c in old.get("columns", [])}
             for col in entry["columns"]:
                 oc = old_cols.get(col["name"])
@@ -359,10 +397,21 @@ def derive_catalog_from_gcs(
                         col["description"] = oc["description"]
                     if oc.get("role"):
                         col["role"] = oc["role"]
+                    # Preserva semantic_type manuale se diverso da quello derivato
+                    oc_st = oc.get("semantic_type")
+                    if oc_st:
+                        col["semantic_type"] = oc_st
 
         datasets.append(entry)
 
-    # 4. Assembla catalogo
+    # 4. Preserva dataset editoriali non trovati su GCS (es. compositi)
+    derived_slugs = {d["slug"] for d in datasets}
+    for slug, ds in editorial.items():
+        if slug not in derived_slugs:
+            datasets.append(ds)
+            print(f"[derive] Preservato dataset editoriale non su GCS: {slug}", file=sys.stderr)
+
+    # 5. Assembla catalogo
     catalog: dict[str, Any] = {
         "schema_version": 1,
         "name": "Lab Clean Registry",

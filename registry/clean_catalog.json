@@ -20,19 +20,22 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di immatricolazione"
+          "description": "Anno di immatricolazione",
+          "semantic_type": "year"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune di immatricolazione"
+          "description": "Comune di immatricolazione",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia del comune"
+          "description": "Provincia del comune",
+          "semantic_type": "province_code"
         },
         {
           "name": "alimentazione",
@@ -70,7 +73,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno finanziario"
+          "description": "Anno finanziario",
+          "semantic_type": "year"
         },
         {
           "name": "progressivo",
@@ -82,7 +86,8 @@
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale ente beneficiario"
+          "description": "Codice fiscale ente beneficiario",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "denominazione",
@@ -94,19 +99,22 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione sede ente"
+          "description": "Regione sede ente",
+          "semantic_type": "region_code"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla provincia sede"
+          "description": "Sigla provincia sede",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune sede"
+          "description": "Comune sede",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "flag_ets_onlus",
@@ -204,13 +212,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Mese di riferimento (1-12)"
+          "description": "Mese di riferimento (1-12)",
+          "semantic_type": "month"
         },
         {
           "name": "codreg",
@@ -222,7 +232,8 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione regione"
+          "description": "Denominazione regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "classe",
@@ -326,7 +337,8 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG — join con anac_bandi_gara e anac_aggiudicazioni"
+          "description": "CIG — join con anac_bandi_gara e anac_aggiudicazioni",
+          "semantic_type": "cig_code"
         },
         {
           "name": "ruolo",
@@ -338,7 +350,8 @@
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale / partita IVA dell'operatore economico"
+          "description": "Codice fiscale / partita IVA dell'operatore economico",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "denominazione",
@@ -382,7 +395,8 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Identificativo Gara — chiave di join con anac_bandi_gara"
+          "description": "Codice Identificativo Gara — chiave di join con anac_bandi_gara",
+          "semantic_type": "cig_code"
         },
         {
           "name": "data_aggiudicazione_definitiva",
@@ -508,7 +522,8 @@
           "name": "CIG_PROG_ESTERNA",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG di programmazione esterna"
+          "description": "CIG di programmazione esterna",
+          "semantic_type": "cig_code"
         },
         {
           "name": "DATA_INCARICO_PROG",
@@ -570,13 +585,15 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG — chiave primaria"
+          "description": "CIG — chiave primaria",
+          "semantic_type": "cig_code"
         },
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di pubblicazione del bando"
+          "description": "Anno di pubblicazione del bando",
+          "semantic_type": "year"
         },
         {
           "name": "oggetto_gara",
@@ -600,7 +617,8 @@
           "name": "stato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Stato del bando (ATTIVO, ANNULLATO, ecc.)"
+          "description": "Stato del bando (ATTIVO, ANNULLATO, ecc.)",
+          "semantic_type": "country_code"
         },
         {
           "name": "esito_bando",
@@ -618,7 +636,8 @@
           "name": "cod_cpv",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice CPV"
+          "description": "Codice CPV",
+          "semantic_type": "cpv_code"
         },
         {
           "name": "descr_cpv",
@@ -636,7 +655,8 @@
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia del luogo di esecuzione"
+          "description": "Provincia del luogo di esecuzione",
+          "semantic_type": "province_code"
         },
         {
           "name": "sezione_regionale",
@@ -690,7 +710,8 @@
           "name": "cf",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CF/P.IVA operatore vincitore"
+          "description": "CF/P.IVA operatore vincitore",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "tipo_soggetto",
@@ -774,7 +795,8 @@
           "name": "cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CUP — bridge verso PNRR/OpenCUP"
+          "description": "CUP — bridge verso PNRR/OpenCUP",
+          "semantic_type": "cup_code"
         }
       ],
       "location": {
@@ -800,19 +822,22 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Identificativo Gara"
+          "description": "Codice Identificativo Gara",
+          "semantic_type": "cig_code"
         },
         {
           "name": "cig_accordo_quadro",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG dell'accordo quadro di riferimento"
+          "description": "CIG dell'accordo quadro di riferimento",
+          "semantic_type": "cig_code"
         },
         {
           "name": "CIG_COLLEGAMENTO",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG originario in caso di varianti/modifiche"
+          "description": "CIG originario in caso di varianti/modifiche",
+          "semantic_type": "cig_code"
         },
         {
           "name": "CUI_PROGRAMMA",
@@ -866,7 +891,8 @@
           "name": "stato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Stato della gara (ATTIVO, ANNULLATO, ecc.)"
+          "description": "Stato della gara (ATTIVO, ANNULLATO, ecc.)",
+          "semantic_type": "country_code"
         },
         {
           "name": "settore",
@@ -878,13 +904,15 @@
           "name": "codice_istat_luogo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del luogo di esecuzione"
+          "description": "Codice ISTAT del luogo di esecuzione",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia del luogo di esecuzione"
+          "description": "Provincia del luogo di esecuzione",
+          "semantic_type": "province_code"
         },
         {
           "name": "data_pubblicazione",
@@ -926,13 +954,15 @@
           "name": "codice_ausa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice AUSA (Anagrafe Unica Stazioni Appaltanti)"
+          "description": "Codice AUSA (Anagrafe Unica Stazioni Appaltanti)",
+          "semantic_type": "ausa_code"
         },
         {
           "name": "cf_amministrazione_appaltante",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale della stazione appaltante"
+          "description": "Codice fiscale della stazione appaltante",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "denominazione_amministrazione_appaltante",
@@ -974,7 +1004,8 @@
           "name": "cod_cpv",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice CPV (Vocabolario comune per gli appalti pubblici)"
+          "description": "Codice CPV (Vocabolario comune per gli appalti pubblici)",
+          "semantic_type": "cpv_code"
         },
         {
           "name": "descrizione_cpv",
@@ -1162,7 +1193,8 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG del contratto — join con anac_bandi_gara e anac_aggiudicazioni"
+          "description": "CIG del contratto — join con anac_bandi_gara e anac_aggiudicazioni",
+          "semantic_type": "cig_code"
         },
         {
           "name": "data_delibera",
@@ -1254,13 +1286,15 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG — join con tutti i dataset ANAC"
+          "description": "CIG — join con tutti i dataset ANAC",
+          "semantic_type": "cig_code"
         },
         {
           "name": "cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CUP — join con PNRR, OpenCUP, BDAP MOP"
+          "description": "CUP — join con PNRR, OpenCUP, BDAP MOP",
+          "semantic_type": "cup_code"
         }
       ],
       "location": {
@@ -1286,7 +1320,8 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG della gara — join con anac_bandi_gara e anac_aggiudicazioni"
+          "description": "CIG della gara — join con anac_bandi_gara e anac_aggiudicazioni",
+          "semantic_type": "cig_code"
         },
         {
           "name": "ruolo",
@@ -1298,7 +1333,8 @@
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale / partita IVA del partecipante"
+          "description": "Codice fiscale / partita IVA del partecipante",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "denominazione",
@@ -1336,7 +1372,8 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG del contratto — join con anac_bandi_gara e anac_aggiudicazioni"
+          "description": "CIG del contratto — join con anac_bandi_gara e anac_aggiudicazioni",
+          "semantic_type": "cig_code"
         },
         {
           "name": "denominazione_sal",
@@ -1422,7 +1459,8 @@
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CIG del contratto principale — join con bandi e aggiudicazioni"
+          "description": "CIG del contratto principale — join con bandi e aggiudicazioni",
+          "semantic_type": "cig_code"
         },
         {
           "name": "id_subappalto",
@@ -1434,7 +1472,8 @@
           "name": "cf_subappaltante",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CF dell'aggiudicatario che subappalta (join con aggiudicatari)"
+          "description": "CF dell'aggiudicatario che subappalta (join con aggiudicatari)",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "data_autorizzazione",
@@ -1476,7 +1515,8 @@
           "name": "cod_cpv",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice CPV del subappalto"
+          "description": "Codice CPV del subappalto",
+          "semantic_type": "cpv_code"
         },
         {
           "name": "descrizione_cpv",
@@ -1488,7 +1528,8 @@
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "CF dell'operatore che esegue il subappalto"
+          "description": "CF dell'operatore che esegue il subappalto",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "denominazione",
@@ -1532,13 +1573,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno del trasferimento"
+          "description": "Anno del trasferimento",
+          "semantic_type": "year"
         },
         {
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Mese del trasferimento (1-12)"
+          "description": "Mese del trasferimento (1-12)",
+          "semantic_type": "month"
         },
         {
           "name": "partenza",
@@ -1606,13 +1649,15 @@
           "name": "cf",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale ente"
+          "description": "Codice fiscale ente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "piva",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Partita IVA ente"
+          "description": "Partita IVA ente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "data_istituzione",
@@ -1630,7 +1675,8 @@
           "name": "codice_ateco",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ATECO attività economica"
+          "description": "Codice ATECO attività economica",
+          "semantic_type": "ateco_code"
         },
         {
           "name": "descr_codice_ateco",
@@ -1702,13 +1748,15 @@
           "name": "codice_istat_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT comune (chiave join)"
+          "description": "Codice ISTAT comune (chiave join)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice comune interno BDAP"
+          "description": "Codice comune interno BDAP",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "dizione_comune",
@@ -1720,13 +1768,15 @@
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale comune (chiave join IRPEF)"
+          "description": "Codice catastale comune (chiave join IRPEF)",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "codice_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice provincia"
+          "description": "Codice provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "dizione_provincia",
@@ -1738,13 +1788,15 @@
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla provincia (chiave join)"
+          "description": "Sigla provincia (chiave join)",
+          "semantic_type": "province_code"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT regione (chiave join)"
+          "description": "Codice ISTAT regione (chiave join)",
+          "semantic_type": "region_code"
         },
         {
           "name": "dizione_regione",
@@ -1858,7 +1910,8 @@
           "name": "codice_ente_miur",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice MIUR ente (chiave join MIM scuola)"
+          "description": "Codice MIUR ente (chiave join MIM scuola)",
+          "semantic_type": "miur_code"
         },
         {
           "name": "id_tipologia_miur",
@@ -1900,7 +1953,8 @@
           "name": "codice_ente_ssn",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice SSN ente (chiave join sanità)"
+          "description": "Codice SSN ente (chiave join sanità)",
+          "semantic_type": "ssn_code"
         },
         {
           "name": "codice_ente_istat_s13",
@@ -2078,13 +2132,15 @@
           "name": "anno_riferimento",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del dato"
+          "description": "Anno di riferimento del dato",
+          "semantic_type": "year"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT regione"
+          "description": "Codice ISTAT regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "descrizione_regione",
@@ -2096,7 +2152,8 @@
           "name": "codice_ente_ssn",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice identificativo ente SSN"
+          "description": "Codice identificativo ente SSN",
+          "semantic_type": "ssn_code"
         },
         {
           "name": "codice_ente_bdap",
@@ -2494,7 +2551,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di rilevazione (derivato da rilevazione_data)"
+          "description": "Anno di rilevazione (derivato da rilevazione_data)",
+          "semantic_type": "year"
         },
         {
           "name": "rilevazione_data",
@@ -2524,7 +2582,8 @@
           "name": "comune_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune sede"
+          "description": "Denominazione del comune sede",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "comune_codice_istat",
@@ -2688,7 +2747,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno giudiziario di riferimento"
+          "description": "Anno giudiziario di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "fonte",
@@ -2780,7 +2840,8 @@
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune (6 caratteri, zero-padded)"
+          "description": "Codice ISTAT del comune (6 caratteri, zero-padded)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "denominazione",
@@ -2792,25 +2853,29 @@
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale Belfiore"
+          "description": "Codice catastale Belfiore",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia"
+          "description": "Sigla della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia (nome esteso)"
+          "description": "Provincia (nome esteso)",
+          "semantic_type": "province_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": "Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "superficie_km2",
@@ -2948,13 +3013,15 @@
           "name": "codice_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice IPA dell'ente (es. c_b354)"
+          "description": "Codice IPA dell'ente (es. c_b354)",
+          "semantic_type": "ipa_code"
         },
         {
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'ente"
+          "description": "Codice fiscale dell'ente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "denominazione_ipa",
@@ -3028,7 +3095,8 @@
           "name": "anno_riferimento",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del consumo"
+          "description": "Anno di riferimento del consumo",
+          "semantic_type": "year"
         },
         {
           "name": "tipologia_amministrazione",
@@ -3052,7 +3120,8 @@
           "name": "sigla_provincia_pa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia della PA acquirente"
+          "description": "Sigla della provincia della PA acquirente",
+          "semantic_type": "province_code"
         },
         {
           "name": "regione_fornitore",
@@ -3120,7 +3189,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "istituzione",
@@ -3138,7 +3208,8 @@
           "name": "codi_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale / partita IVA dell'ente"
+          "description": "Codice fiscale / partita IVA dell'ente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "codi_comparto",
@@ -3322,25 +3393,29 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento dello snapshot"
+          "description": "Anno di riferimento dello snapshot",
+          "semantic_type": "year"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice regione DAIT"
+          "description": "Codice regione DAIT",
+          "semantic_type": "region_code"
         },
         {
           "name": "codice_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice provincia DAIT"
+          "description": "Codice provincia DAIT",
+          "semantic_type": "province_code"
         },
         {
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice comune DAIT"
+          "description": "Codice comune DAIT",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "codice_dait_completo",
@@ -3352,13 +3427,15 @@
           "name": "denominazione_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune"
+          "description": "Denominazione del comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia"
+          "description": "Sigla della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "popolazione_censita",
@@ -3462,7 +3539,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di rilevazione"
+          "description": "Anno di rilevazione",
+          "semantic_type": "year"
         },
         {
           "name": "tipo_istituzione",
@@ -3626,19 +3704,22 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione del comune"
+          "description": "Regione del comune",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia del comune"
+          "description": "Provincia del comune",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune dell'elezione"
+          "description": "Comune dell'elezione",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "turno",
@@ -3742,19 +3823,22 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione del comune"
+          "description": "Regione del comune",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia del comune"
+          "description": "Provincia del comune",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune di votazione"
+          "description": "Comune di votazione",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "lista",
@@ -3828,13 +3912,15 @@
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": "Provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione comune"
+          "description": "Denominazione comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "collegio_plurinominale",
@@ -3962,19 +4048,22 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione del comune"
+          "description": "Regione del comune",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia del comune"
+          "description": "Provincia del comune",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune di votazione (solo 2011-2022)"
+          "description": "Comune di votazione (solo 2011-2022)",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "elettori_uomini",
@@ -4066,7 +4155,8 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione in cui si sono svolte le elezioni"
+          "description": "Regione in cui si sono svolte le elezioni",
+          "semantic_type": "region_code"
         },
         {
           "name": "circoscrizione",
@@ -4078,13 +4168,15 @@
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia del comune"
+          "description": "Provincia del comune",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune"
+          "description": "Denominazione del comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "elettori",
@@ -4164,19 +4256,22 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": "Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": "Provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune"
+          "description": "Comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "circoscrizione",
@@ -4268,13 +4363,15 @@
           "name": "geo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice NUTS territorio"
+          "description": "Codice NUTS territorio",
+          "semantic_type": "nuts_code"
         },
         {
           "name": "year",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "nuts_level",
@@ -4396,13 +4493,15 @@
           "name": "geo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice NUTS territorio"
+          "description": "Codice NUTS territorio",
+          "semantic_type": "nuts_code"
         },
         {
           "name": "year",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "nuts_level",
@@ -4572,13 +4671,15 @@
           "name": "geo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice NUTS territorio"
+          "description": "Codice NUTS territorio",
+          "semantic_type": "nuts_code"
         },
         {
           "name": "year",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "nuts_level",
@@ -4658,7 +4759,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del dato"
+          "description": "Anno di riferimento del dato",
+          "semantic_type": "year"
         },
         {
           "name": "cod_farmacia",
@@ -4688,7 +4790,8 @@
           "name": "p_iva",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Partita IVA della farmacia"
+          "description": "Partita IVA della farmacia",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "cap",
@@ -4700,13 +4803,15 @@
           "name": "cod_comune",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice ISTAT del comune"
+          "description": "Codice ISTAT del comune",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune"
+          "description": "Denominazione del comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "frazione",
@@ -4724,25 +4829,29 @@
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia"
+          "description": "Sigla della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione della provincia"
+          "description": "Denominazione della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "cod_regione",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice ISTAT della regione"
+          "description": "Codice ISTAT della regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione della regione"
+          "description": "Denominazione della regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "data_inizio_validita",
@@ -4810,7 +4919,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno del grant"
+          "description": "Anno del grant",
+          "semantic_type": "year"
         },
         {
           "name": "budget",
@@ -4888,7 +4998,8 @@
           "name": "nuts2",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice NUTS2 del beneficiario"
+          "description": "Codice NUTS2 del beneficiario",
+          "semantic_type": "nuts_code"
         },
         {
           "name": "zona_geografica",
@@ -5058,7 +5169,8 @@
           "name": "anno",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Anno di pubblicazione del provvedimento"
+          "description": "Anno di pubblicazione del provvedimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_sede",
@@ -5088,13 +5200,15 @@
           "name": "numero_provvedimento",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Numero identificativo del provvedimento"
+          "description": "Numero identificativo del provvedimento",
+          "semantic_type": "ricorso_number"
         },
         {
           "name": "numero_ricorso",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Numero del ricorso — chiave di join con altri dataset GA"
+          "description": "Numero del ricorso — chiave di join con altri dataset GA",
+          "semantic_type": "ricorso_number"
         },
         {
           "name": "data_pubblicazione",
@@ -5180,7 +5294,8 @@
           "name": "anno",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Anno di pubblicazione del provvedimento"
+          "description": "Anno di pubblicazione del provvedimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_sede",
@@ -5210,13 +5325,15 @@
           "name": "numero_provvedimento",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Numero identificativo del provvedimento"
+          "description": "Numero identificativo del provvedimento",
+          "semantic_type": "ricorso_number"
         },
         {
           "name": "numero_ricorso",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Numero del ricorso — chiave di join con altri dataset GA"
+          "description": "Numero del ricorso — chiave di join con altri dataset GA",
+          "semantic_type": "ricorso_number"
         },
         {
           "name": "data_pubblicazione",
@@ -5302,7 +5419,8 @@
           "name": "anno",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Anno di pubblicazione della sentenza"
+          "description": "Anno di pubblicazione della sentenza",
+          "semantic_type": "year"
         },
         {
           "name": "codice_sede",
@@ -5332,13 +5450,15 @@
           "name": "numero_provvedimento",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Numero identificativo del provvedimento"
+          "description": "Numero identificativo del provvedimento",
+          "semantic_type": "ricorso_number"
         },
         {
           "name": "numero_ricorso",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Numero del ricorso — chiave di join con altri dataset GA"
+          "description": "Numero del ricorso — chiave di join con altri dataset GA",
+          "semantic_type": "ricorso_number"
         },
         {
           "name": "data_pubblicazione",
@@ -5424,7 +5544,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "tipo_ufficio",
@@ -5486,7 +5607,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di decorrenza della pensione"
+          "description": "Anno di decorrenza della pensione",
+          "semantic_type": "year"
         },
         {
           "name": "trimestre",
@@ -5540,7 +5662,8 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione italiana"
+          "description": "Regione italiana",
+          "semantic_type": "region_code"
         },
         {
           "name": "numero_pensioni",
@@ -5572,31 +5695,36 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento (2020)"
+          "description": "Anno di riferimento (2020)",
+          "semantic_type": "year"
         },
         {
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune (6 cifre)"
+          "description": "Codice ISTAT del comune (6 cifre)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune"
+          "description": "Denominazione del comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "codice_regione",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Codice ISTAT della regione"
+          "description": "Codice ISTAT della regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "codice_provincia",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Codice ISTAT della provincia"
+          "description": "Codice ISTAT della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "nuclei_familiari_percettori_rdc_luglio_2020",
@@ -5706,7 +5834,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "tipo_ufficio",
@@ -5756,7 +5885,8 @@
           "name": "codice_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice IPA dell'ente (FK verso ipa_enti)"
+          "description": "Codice IPA dell'ente (FK verso ipa_enti)",
+          "semantic_type": "ipa_code"
         },
         {
           "name": "denominazione_ente",
@@ -5768,7 +5898,8 @@
           "name": "codice_fiscale_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'ente"
+          "description": "Codice fiscale dell'ente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "codice_uni_aoo",
@@ -5816,7 +5947,8 @@
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune sede dell'AOO"
+          "description": "Codice ISTAT del comune sede dell'AOO",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "codice_catastale_comune",
@@ -5932,7 +6064,8 @@
           "name": "codice_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice identificativo univoco dell'ente in IPA"
+          "description": "Codice identificativo univoco dell'ente in IPA",
+          "semantic_type": "ipa_code"
         },
         {
           "name": "denominazione_ente",
@@ -5944,7 +6077,8 @@
           "name": "codice_fiscale_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'ente"
+          "description": "Codice fiscale dell'ente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "tipologia",
@@ -5968,7 +6102,8 @@
           "name": "codice_ateco",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Ateco dell'attività dell'ente"
+          "description": "Codice Ateco dell'attività dell'ente",
+          "semantic_type": "ateco_code"
         },
         {
           "name": "ente_in_liquidazione",
@@ -5986,7 +6121,8 @@
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT dell'ente"
+          "description": "Codice ISTAT dell'ente",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "acronimo",
@@ -6016,7 +6152,8 @@
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune sede dell'ente"
+          "description": "Codice ISTAT del comune sede dell'ente",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "codice_catastale_comune",
@@ -6132,7 +6269,8 @@
           "name": "codice_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice IPA dell'ente (FK verso ipa_enti)"
+          "description": "Codice IPA dell'ente (FK verso ipa_enti)",
+          "semantic_type": "ipa_code"
         },
         {
           "name": "denominazione_ente",
@@ -6144,7 +6282,8 @@
           "name": "codice_fiscale_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'ente"
+          "description": "Codice fiscale dell'ente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "codice_uni_uo",
@@ -6204,7 +6343,8 @@
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune sede dell'UO"
+          "description": "Codice ISTAT del comune sede dell'UO",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "codice_catastale_comune",
@@ -6308,37 +6448,43 @@
           "name": "anno_di_imposta",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno d'imposta"
+          "description": "Anno d'imposta",
+          "semantic_type": "year"
         },
         {
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale del comune"
+          "description": "Codice catastale del comune",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "codice_istat_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune"
+          "description": "Codice ISTAT del comune",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "denominazione_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune"
+          "description": "Denominazione del comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia"
+          "description": "Sigla della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione di appartenenza"
+          "description": "Regione di appartenenza",
+          "semantic_type": "region_code"
         },
         {
           "name": "codice_istat_regione",
@@ -6640,37 +6786,43 @@
           "name": "pro_com",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT comune"
+          "description": "Codice ISTAT comune",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione comune"
+          "description": "Denominazione comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": "Provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": "Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "periodo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Periodo di riferimento (es. \"2015-2016\")"
+          "description": "Periodo di riferimento (es. \"2015-2016\")",
+          "semantic_type": "month"
         },
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno finale del periodo (per JOIN e ordinamento)"
+          "description": "Anno finale del periodo (per JOIN e ordinamento)",
+          "semantic_type": "year"
         },
         {
           "name": "incremento_netto_ha",
@@ -6726,7 +6878,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento (1990-2023)"
+          "description": "Anno di riferimento (1990-2023)",
+          "semantic_type": "year"
         },
         {
           "name": "industrie_energetiche",
@@ -6782,31 +6935,36 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT comune"
+          "description": "Codice ISTAT comune",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": "Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": "Provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione comune"
+          "description": "Denominazione comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "popolazione",
@@ -6862,13 +7020,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT comune"
+          "description": "Codice ISTAT comune",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune_o_aggregazione",
@@ -6880,7 +7040,8 @@
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": "Provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "numero_comuni",
@@ -6954,13 +7115,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT comune"
+          "description": "Codice ISTAT comune",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune_o_aggregazione",
@@ -6972,7 +7135,8 @@
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": "Provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "numero_comuni",
@@ -7064,13 +7228,15 @@
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune (6 cifre)"
+          "description": "Codice ISTAT del comune (6 cifre)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "ateco_sezione",
@@ -7108,7 +7274,8 @@
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune (6 caratteri: codice regione + provincia + comune)"
+          "description": "Codice ISTAT del comune (6 caratteri: codice regione + provincia + comune)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "denominazione",
@@ -7120,7 +7287,8 @@
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale Belfiore (4-5 caratteri, es. A074 per Agliè)"
+          "description": "Codice catastale Belfiore (4-5 caratteri, es. A074 per Agliè)",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "superficie_km2",
@@ -7144,19 +7312,22 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Nome della regione di appartenenza"
+          "description": "Nome della regione di appartenenza",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Nome della provincia (denominazione UTS) di appartenenza"
+          "description": "Nome della provincia (denominazione UTS) di appartenenza",
+          "semantic_type": "province_code"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla automobilistica della provincia (2 caratteri)"
+          "description": "Sigla automobilistica della provincia (2 caratteri)",
+          "semantic_type": "province_code"
         },
         {
           "name": "zona_altimetrica",
@@ -7206,13 +7377,15 @@
           "name": "regione_codice",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT della regione (4 caratteri, NUTS2)"
+          "description": "Codice ISTAT della regione (4 caratteri, NUTS2)",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione della regione"
+          "description": "Denominazione della regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "tipo_dato",
@@ -7230,7 +7403,8 @@
           "name": "anno",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Anno di riferimento (2003-2024)"
+          "description": "Anno di riferimento (2003-2024)",
+          "semantic_type": "year"
         },
         {
           "name": "gini",
@@ -7262,7 +7436,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "ref_area_codice",
@@ -7524,7 +7699,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento (2018-2025)"
+          "description": "Anno di riferimento (2018-2025)",
+          "semantic_type": "year"
         },
         {
           "name": "indicatore",
@@ -7628,7 +7804,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "valore_mln_eu",
@@ -7660,19 +7837,22 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno d'imposta (URL anno - 1)"
+          "description": "Anno d'imposta (URL anno - 1)",
+          "semantic_type": "year"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione regione"
+          "description": "Denominazione regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "cod_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT regione (2 cifre)"
+          "description": "Codice ISTAT regione (2 cifre)",
+          "semantic_type": "region_code"
         },
         {
           "name": "contribuenti",
@@ -7734,7 +7914,8 @@
           "name": "anno_di_imposta",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di imposta"
+          "description": "Anno di imposta",
+          "semantic_type": "year"
         },
         {
           "name": "classe_reddito",
@@ -7746,7 +7927,8 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione italiana"
+          "description": "Regione italiana",
+          "semantic_type": "region_code"
         },
         {
           "name": "numero_contribuenti",
@@ -8006,7 +8188,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "metric",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "amministrazione_settore_istituzionale",
@@ -8036,7 +8219,8 @@
           "name": "amministrazione_codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'amministrazione"
+          "description": "Codice fiscale dell'amministrazione",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "appartenenza_perimetro_tusp",
@@ -8054,7 +8238,8 @@
           "name": "amministrazione_regione_sede",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione in cui ha sede l'amministrazione"
+          "description": "Regione in cui ha sede l'amministrazione",
+          "semantic_type": "region_code"
         },
         {
           "name": "amministrazione_provincia_sede",
@@ -8536,7 +8721,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del censimento"
+          "description": "Anno di riferimento del censimento",
+          "semantic_type": "year"
         },
         {
           "name": "id_variazione",
@@ -8572,7 +8758,8 @@
           "name": "amministrazione_codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'ente cedente"
+          "description": "Codice fiscale dell'ente cedente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "reg_amministrazione",
@@ -8712,7 +8899,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del censimento"
+          "description": "Anno di riferimento del censimento",
+          "semantic_type": "year"
         },
         {
           "name": "settore_istituzionale",
@@ -8742,31 +8930,36 @@
           "name": "amministrazione_codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'amministrazione"
+          "description": "Codice fiscale dell'amministrazione",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione dell'amministrazione"
+          "description": "Regione dell'amministrazione",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia dell'amministrazione"
+          "description": "Provincia dell'amministrazione",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune dell'amministrazione"
+          "description": "Comune dell'amministrazione",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune"
+          "description": "Codice ISTAT del comune",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "num_beni_proprieta",
@@ -8846,7 +9039,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del censimento"
+          "description": "Anno di riferimento del censimento",
+          "semantic_type": "year"
         },
         {
           "name": "settore_istituzionale",
@@ -8876,7 +9070,8 @@
           "name": "amministrazione_codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'ente"
+          "description": "Codice fiscale dell'ente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "reg_amministrazione",
@@ -9178,7 +9373,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento dell'incarico (2018-2023)"
+          "description": "Anno di riferimento dell'incarico (2018-2023)",
+          "semantic_type": "year"
         },
         {
           "name": "amministrazione",
@@ -9378,7 +9574,8 @@
           "name": "codice_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice meccanografico ministeriale della scuola"
+          "description": "Codice meccanografico ministeriale della scuola",
+          "semantic_type": "school_code"
         },
         {
           "name": "denominazione_scuola",
@@ -9432,25 +9629,29 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": "Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia (sigla)"
+          "description": "Provincia (sigla)",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune"
+          "description": "Comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "codice_comune_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune"
+          "description": "Codice ISTAT del comune",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "cap_scuola",
@@ -9494,7 +9695,8 @@
           "name": "codice_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice unico meccanografico della scuola"
+          "description": "Codice unico meccanografico della scuola",
+          "semantic_type": "school_code"
         },
         {
           "name": "codice_istituto_riferimento",
@@ -9524,25 +9726,29 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": "Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia (sigla)"
+          "description": "Provincia (sigla)",
+          "semantic_type": "province_code"
         },
         {
           "name": "codice_comune_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune"
+          "description": "Codice ISTAT del comune",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune"
+          "description": "Comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "cap_scuola",
@@ -9598,7 +9804,8 @@
           "name": "codice_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice unico ministeriale della scuola"
+          "description": "Codice unico ministeriale della scuola",
+          "semantic_type": "school_code"
         },
         {
           "name": "denominazione_scuola",
@@ -9646,25 +9853,29 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": "Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": "Provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune"
+          "description": "Comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "codice_comune_scuola",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale del comune"
+          "description": "Codice catastale del comune",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "denominazione_istituto_riferimento",
@@ -9696,13 +9907,15 @@
           "name": "mese",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Nome del mese (Gennaio-Dicembre)"
+          "description": "Nome del mese (Gennaio-Dicembre)",
+          "semantic_type": "month"
         },
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento (2001-2018)"
+          "description": "Anno di riferimento (2001-2018)",
+          "semantic_type": "year"
         },
         {
           "name": "incidenti",
@@ -9824,7 +10037,8 @@
           "name": "codice_cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice CUP univoco dell'opera"
+          "description": "Codice CUP univoco dell'opera",
+          "semantic_type": "cup_code"
         },
         {
           "name": "ambito_soggettivo",
@@ -9842,7 +10056,8 @@
           "name": "codice_fiscale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'ente responsabile"
+          "description": "Codice fiscale dell'ente responsabile",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "stato_opera",
@@ -9854,7 +10069,8 @@
           "name": "localizzazione_codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT di localizzazione"
+          "description": "Codice ISTAT di localizzazione",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "localizzazione_codice_nuts",
@@ -9994,13 +10210,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Mese (01-12)"
+          "description": "Mese (01-12)",
+          "semantic_type": "month"
         },
         {
           "name": "fonte",
@@ -10080,7 +10298,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del dato"
+          "description": "Anno di riferimento del dato",
+          "semantic_type": "year"
         },
         {
           "name": "cod_ateneo",
@@ -10136,7 +10355,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno accademico normalizzato (es. 2025 per 2025/2026)"
+          "description": "Anno accademico normalizzato (es. 2025 per 2025/2026)",
+          "semantic_type": "year"
         },
         {
           "name": "classe_cod",
@@ -10186,7 +10406,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno accademico normalizzato"
+          "description": "Anno accademico normalizzato",
+          "semantic_type": "year"
         },
         {
           "name": "ateneo_cod",
@@ -10236,37 +10457,43 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del FSC"
+          "description": "Anno di riferimento del FSC",
+          "semantic_type": "year"
         },
         {
           "name": "username",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ente Sogei"
+          "description": "Codice ente Sogei",
+          "semantic_type": "sogei_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione comune"
+          "description": "Denominazione comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla provincia"
+          "description": "Sigla provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Nome regione"
+          "description": "Nome regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione_istat_cod",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Codice ISTAT regione"
+          "description": "Codice ISTAT regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "popolazione",
@@ -10334,7 +10561,8 @@
           "name": "username",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "",
+          "semantic_type": "sogei_code"
         },
         {
           "name": "denominazione",
@@ -10346,19 +10574,22 @@
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "",
+          "semantic_type": "province_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione_istat_cod",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "",
+          "semantic_type": "region_code"
         }
       ],
       "location": {
@@ -10420,7 +10651,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del metadato"
+          "description": "Anno di riferimento del metadato",
+          "semantic_type": "year"
         },
         {
           "name": "ambito",
@@ -10452,13 +10684,15 @@
           "name": "username",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "",
+          "semantic_type": "sogei_code"
         },
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento (2015-2022, escluso 2020)"
+          "description": "Anno di riferimento (2015-2022, escluso 2020)",
+          "semantic_type": "year"
         },
         {
           "name": "ambito",
@@ -10512,19 +10746,22 @@
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT provincia (3 cifre)"
+          "description": "Codice ISTAT provincia (3 cifre)",
+          "semantic_type": "province_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Nome della regione"
+          "description": "Nome della regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione_istat_cod",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Codice ISTAT regione"
+          "description": "Codice ISTAT regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "join_enti_ok",
@@ -10568,7 +10805,8 @@
           "name": "CUP",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Unico di Progetto"
+          "description": "Codice Unico di Progetto",
+          "semantic_type": "cup_code"
         },
         {
           "name": "OC_COD_CICLO",
@@ -10732,7 +10970,8 @@
           "name": "anno",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Anno di deposito del ricorso"
+          "description": "Anno di deposito del ricorso",
+          "semantic_type": "year"
         },
         {
           "name": "codice_sede",
@@ -10762,7 +11001,8 @@
           "name": "numero_ricorso",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Numero identificativo del ricorso"
+          "description": "Numero identificativo del ricorso",
+          "semantic_type": "ricorso_number"
         },
         {
           "name": "data_deposito_ricorso",
@@ -10780,7 +11020,8 @@
           "name": "codice_cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice CIG della gara (ANAC)"
+          "description": "Codice CIG della gara (ANAC)",
+          "semantic_type": "cig_code"
         },
         {
           "name": "codice_accordo_quadro",
@@ -10846,7 +11087,8 @@
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia della gara"
+          "description": "Provincia della gara",
+          "semantic_type": "province_code"
         },
         {
           "name": "data_pubblicazione",
@@ -10864,7 +11106,8 @@
           "name": "cf_amministrazione_appaltante",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'amministrazione appaltante"
+          "description": "Codice fiscale dell'amministrazione appaltante",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "denominazione_amministrazione_appaltante",
@@ -10896,7 +11139,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "anno_mese_riferimento",
@@ -10908,7 +11152,8 @@
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Mese di riferimento (1-12)"
+          "description": "Mese di riferimento (1-12)",
+          "semantic_type": "month"
         },
         {
           "name": "codice_sede",
@@ -10952,7 +11197,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "tipo_ufficio",
@@ -11020,25 +11266,29 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento della pensione"
+          "description": "Anno di riferimento della pensione",
+          "semantic_type": "year"
         },
         {
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Mese di riferimento della pensione"
+          "description": "Mese di riferimento della pensione",
+          "semantic_type": "month"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione di residenza del pensionato"
+          "description": "Regione di residenza del pensionato",
+          "semantic_type": "region_code"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia di residenza"
+          "description": "Sigla della provincia di residenza",
+          "semantic_type": "province_code"
         },
         {
           "name": "ufficio",
@@ -11154,13 +11404,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del dato"
+          "description": "Anno di riferimento del dato",
+          "semantic_type": "year"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT regione"
+          "description": "Codice ISTAT regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "denominazione_regione",
@@ -11354,7 +11606,8 @@
           "name": "cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Cup"
+          "description": "Cup",
+          "semantic_type": "cup_code"
         },
         {
           "name": "codice_locale_progetto",
@@ -11558,7 +11811,8 @@
           "name": "cf_soggetto_attuatore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Cf soggetto attuatore"
+          "description": "Cf soggetto attuatore",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "flag_progetti_in_essere",
@@ -11656,19 +11910,22 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice comune ISTAT (codice numerico)"
+          "description": "Codice comune ISTAT (codice numerico)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune"
+          "description": "Denominazione del comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "eta",
@@ -11808,13 +12065,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_regione",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Codice ISTAT regione"
+          "description": "Codice ISTAT regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "descrizione_regione",
@@ -11862,19 +12121,22 @@
           "name": "codice_comune",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Codice ISTAT comune"
+          "description": "Codice ISTAT comune",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione comune"
+          "description": "Denominazione comune",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla provincia"
+          "description": "Sigla provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "codice_tipo_struttura",
@@ -11966,19 +12228,22 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di Riferimento"
+          "description": "Anno di Riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Regione (ISTAT)"
+          "description": "Codice Regione (ISTAT)",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione Regione"
+          "description": "Denominazione Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "codice_asl",
@@ -12032,13 +12297,15 @@
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune sede struttura"
+          "description": "Comune sede struttura",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla provincia sede struttura"
+          "description": "Sigla provincia sede struttura",
+          "semantic_type": "province_code"
         },
         {
           "name": "codice_disciplina",
@@ -12160,7 +12427,8 @@
           "name": "codice_fiscale_beneficiario",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale / Partita IVA del beneficiario"
+          "description": "Codice fiscale / Partita IVA del beneficiario",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "tipo_beneficiario",
@@ -12172,7 +12440,8 @@
           "name": "regione_beneficiario",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione del beneficiario"
+          "description": "Regione del beneficiario",
+          "semantic_type": "region_code"
         },
         {
           "name": "soggetto_concedente",
@@ -12208,7 +12477,8 @@
           "name": "cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Unico di Progetto"
+          "description": "Codice Unico di Progetto",
+          "semantic_type": "cup_code"
         },
         {
           "name": "atto_concessione",
@@ -12310,13 +12580,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di concessione (partizione)"
+          "description": "Anno di concessione (partizione)",
+          "semantic_type": "year"
         },
         {
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Mese di concessione"
+          "description": "Mese di concessione",
+          "semantic_type": "month"
         }
       ],
       "location": {
@@ -12450,13 +12722,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di inizio validità"
+          "description": "Anno di inizio validità",
+          "semantic_type": "year"
         },
         {
           "name": "mese",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Mese di inizio validità"
+          "description": "Mese di inizio validità",
+          "semantic_type": "month"
         }
       ],
       "location": {
@@ -12482,7 +12756,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di rilevazione (derivato da data_riferimento)"
+          "description": "Anno di rilevazione (derivato da data_riferimento)",
+          "semantic_type": "year"
         },
         {
           "name": "progetto_codice",
@@ -12530,7 +12805,8 @@
           "name": "comune_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune capofila"
+          "description": "Denominazione del comune capofila",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "comune_codice_istat",
@@ -12628,7 +12904,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di rilevazione (derivato da data_rilevazione)"
+          "description": "Anno di rilevazione (derivato da data_rilevazione)",
+          "semantic_type": "year"
         },
         {
           "name": "sai_struttura_id",
@@ -12652,7 +12929,8 @@
           "name": "comune_denominazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione del comune sede"
+          "description": "Denominazione del comune sede",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "comune_codice_istat",
@@ -12848,7 +13126,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento del report"
+          "description": "Anno di riferimento del report",
+          "semantic_type": "year"
         },
         {
           "name": "link_scheda",
@@ -12884,7 +13163,8 @@
           "name": "cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Unico di Progetto (CUP) dell'intervento"
+          "description": "Codice Unico di Progetto (CUP) dell'intervento",
+          "semantic_type": "cup_code"
         },
         {
           "name": "denominazione",
@@ -12964,19 +13244,22 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "periodo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Mese (01..12)"
+          "description": "Mese (01..12)",
+          "semantic_type": "month"
         },
         {
           "name": "codice_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice SIOPE dell'ente"
+          "description": "Codice SIOPE dell'ente",
+          "semantic_type": "siope_code"
         },
         {
           "name": "codice_voce",
@@ -13000,25 +13283,29 @@
           "name": "codice_istat_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune sede dell'ente"
+          "description": "Codice ISTAT del comune sede dell'ente",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "codice_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice provincia (ISTAT 3 cifre)"
+          "description": "Codice provincia (ISTAT 3 cifre)",
+          "semantic_type": "province_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione provincia"
+          "description": "Denominazione provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione regione"
+          "description": "Denominazione regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "codice_sottocomparto",
@@ -13116,13 +13403,15 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di Riferimento"
+          "description": "Anno di Riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Regione (ISTAT)"
+          "description": "Codice Regione (ISTAT)",
+          "semantic_type": "region_code"
         },
         {
           "name": "codice_asl",
@@ -13134,7 +13423,8 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione Regione"
+          "description": "Denominazione Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "denominazione_asl",
@@ -13164,7 +13454,8 @@
           "name": "sigla_provincia_asl",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla provincia sede ASL"
+          "description": "Sigla provincia sede ASL",
+          "semantic_type": "province_code"
         },
         {
           "name": "residenti_eta_infantile",
@@ -13364,7 +13655,8 @@
           "name": "anno",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Anno di Riferimento"
+          "description": "Anno di Riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_struttura",
@@ -13382,13 +13674,15 @@
           "name": "comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Comune sede struttura"
+          "description": "Comune sede struttura",
+          "semantic_type": "municipality_name"
         },
         {
           "name": "sigla_provincia_struttura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla provincia sede struttura"
+          "description": "Sigla provincia sede struttura",
+          "semantic_type": "province_code"
         },
         {
           "name": "posti_letto_previsti",
@@ -13496,13 +13790,15 @@
           "name": "codice_regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice Regione (ISTAT)"
+          "description": "Codice Regione (ISTAT)",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Denominazione Regione"
+          "description": "Denominazione Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "codice_asl",
@@ -13636,7 +13932,8 @@
           "name": "paese",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Paese della stazione appaltante (IT)"
+          "description": "Paese della stazione appaltante (IT)",
+          "semantic_type": "country_code"
         },
         {
           "name": "flag_multi_paese",
@@ -13944,7 +14241,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento della misura"
+          "description": "Anno di riferimento della misura",
+          "semantic_type": "year"
         },
         {
           "name": "tipo_capacita",
@@ -13956,13 +14254,15 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione italiana"
+          "description": "Regione italiana",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia italiana"
+          "description": "Provincia italiana",
+          "semantic_type": "province_code"
         },
         {
           "name": "fonti",
@@ -14000,19 +14300,22 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": "Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": "Provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "settore",
@@ -14050,7 +14353,8 @@
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "tipo_produzione",
@@ -14062,13 +14366,15 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione"
+          "description": "Regione",
+          "semantic_type": "region_code"
         },
         {
           "name": "provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Provincia"
+          "description": "Provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "fonte",
@@ -14106,13 +14412,15 @@
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune (6 cifre)"
+          "description": "Codice ISTAT del comune (6 cifre)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "anno",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "denominazione",
@@ -14124,13 +14432,15 @@
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Sigla della provincia"
+          "description": "Sigla della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Regione di appartenenza"
+          "description": "Regione di appartenenza",
+          "semantic_type": "region_code"
         },
         {
           "name": "superficie_km2",
@@ -14390,7 +14700,8 @@
           "name": "codice_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice IPA dell'ente"
+          "description": "Codice IPA dell'ente",
+          "semantic_type": "ipa_code"
         },
         {
           "name": "denominazione_ente",
@@ -14402,7 +14713,8 @@
           "name": "codice_fiscale_ente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice fiscale dell'ente"
+          "description": "Codice fiscale dell'ente",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "codice_categoria",
@@ -14420,7 +14732,8 @@
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune (6 cifre)"
+          "description": "Codice ISTAT del comune (6 cifre)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "acronimo",
@@ -14576,7 +14889,8 @@
           "name": "codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune (dati IPA)"
+          "description": "Codice ISTAT del comune (dati IPA)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "codice_catastale_comune",
@@ -14600,7 +14914,8 @@
           "name": "ente_codice_comune_istat",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT del comune dell'ente"
+          "description": "Codice ISTAT del comune dell'ente",
+          "semantic_type": "municipality_code"
         }
       ],
       "location": {
