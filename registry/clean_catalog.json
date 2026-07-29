@@ -14395,7 +14395,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "energia",
+        "elettricità",
+        "fonti-rinnovabili"
+      ],
+      "category": "energia"
     },
     {
       "slug": "unified_comuni",

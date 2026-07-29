@@ -13,6 +13,10 @@ on:
       - "scripts/**"
       - "tools/**"
       - "tests/**"
+      - "registry/**"
+      - "candidates/**"
+      - "compose/**"
+      - "support_datasets/**"
       - "pyproject.toml"
 
 jobs:
@@ -21,6 +25,9 @@ jobs:
 
     steps:
       - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
         with:
@@ -32,5 +39,26 @@ jobs:
       - name: Mypy
         run: mypy scripts/ tools/
 
-      - name: Pytest
+      - name: Pytest (scripts + MCP)
         run: python -m pytest tests/ -q --tb=line --cov=scripts --cov=tools/clean_query_mcp --cov-report=term --cov-fail-under=55
+
+      - name: Smoke test clean-query MCP
+        run: python -m tools.clean_query_mcp.scripts.smoke
+
+      - name: Audit test markers
+        shell: bash
+        run: |
+          for dir in tests; do
+            dir="${dir%/}"
+            changed=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+              -- "$dir/test_*.py" "$dir/**/test_*.py" || true)
+            if [ -z "$changed" ]; then
+              echo "No test files changed in $dir/. OK."
+              continue
+            fi
+            while IFS= read -r f; do
+              fdir=$(dirname "$f")
+              fbase=$(basename "$f")
+              audit-test-markers "$fdir" --diff --files "$fbase"
+            done <<< "$changed"
+          done

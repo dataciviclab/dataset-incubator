@@ -60,3 +60,43 @@ class CleanCatalogValidationTest(unittest.TestCase):
         catalog["datasets"] = [dataset]
         errors = validate_catalog(catalog, self.schema)
         self.assertTrue(any("additional property" in error for error in errors), errors)
+
+
+class TestSearchByTag:
+    """Contratto: search_datasets matcha per tag e category (oltre a nome/descrizione/fonte)."""
+
+    @pytest.fixture(autouse=True)
+    def _mock_catalog(self, monkeypatch):
+        catalog = [
+            {
+                "slug": "demo_energia",
+                "name": "Demo Energia",
+                "description": "",
+                "source": "",
+                "period": {"start": 2020, "end": 2024},
+                "columns": [{"name": "x", "type": "INTEGER", "role": "metric", "description": ""}],
+                "location": {"type": "gcs", "path": "gs://b/x"},
+                "tags": ["energia"],
+                "category": "energia",
+            },
+            {
+                "slug": "demo_no_tag",
+                "name": "No Tag",
+                "description": "",
+                "source": "",
+                "period": {"start": 2020, "end": 2024},
+                "columns": [{"name": "x", "type": "INTEGER", "role": "metric", "description": ""}],
+                "location": {"type": "gcs", "path": "gs://b/y"},
+            },
+        ]
+        import tools.clean_query_mcp.catalog as cat
+
+        monkeypatch.setattr(cat, "_load_catalog", lambda: catalog)
+
+    def test_search_matches_by_tag(self):
+        from tools.clean_query_mcp.catalog import search_datasets
+
+        results = search_datasets("energia")
+        slugs = [r["slug"] for r in results]
+        assert "demo_energia" in slugs
+        assert "demo_no_tag" not in slugs

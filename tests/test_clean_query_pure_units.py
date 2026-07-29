@@ -426,3 +426,29 @@ def test_dataset_graph_unknown_registry():
     """dataset_graph con by_registry inesistente restituisce errore."""
     result = server.dataset_graph(by_registry="xyz_notfound")
     assert "error" in result
+
+
+def test_find_matches_by_tag(monkeypatch):
+    """find() matcha per tag e category."""
+    catalog = [
+        {
+            "slug": "demo_energia",
+            "name": "Demo",
+            "description": "",
+            "source": "",
+            "period": {"start": 2020, "end": 2024},
+            "columns": [{"name": "x", "type": "INTEGER", "role": "metric", "description": ""}],
+            "location": {"type": "gcs", "path": "gs://b/x"},
+            "tags": ["energia"],
+            "category": "energia",
+        },
+    ]
+    import tools.clean_query_mcp.catalog as cat
+
+    monkeypatch.setattr(cat, "_load_catalog", lambda: catalog)
+
+    result = server.find(query="energia")
+    assert result["count"] == 1
+    assert result["datasets"][0]["slug"] == "demo_energia"
+    assert result["datasets"][0]["tags"] == ["energia"]
+    assert result["datasets"][0]["category"] == "energia"

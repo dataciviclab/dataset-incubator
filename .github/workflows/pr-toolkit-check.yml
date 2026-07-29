@@ -8,8 +8,9 @@ env:
   TOOLKIT_VERSION: "from-requirements-txt"
   BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
 
-# Esegue la pipeline toolkit su candidate modificati in PR.
-# Fallisce la PR se toolkit run full fallisce (run + validate + readiness).
+# Preflight + dry-run toolkit su candidate modificati in PR.
+# Su PR: preflight (config + reachability) + SQL dry-run (syntax check).
+# Il run full reale (download + clean + mart) avviene solo su merge.
 
 on:
   pull_request:
@@ -30,6 +31,9 @@ jobs:
           fetch-depth: 0
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
+
+      - name: Validate candidate structure
+        run: python scripts/validate_candidate_structure.py
 
       - name: Detect changed candidate/support roots
         id: detect
@@ -115,33 +119,15 @@ jobs:
           toolkit run preflight --config "${{ matrix.config.config_path }}" --json 2>&1 \
             || echo "::warning::Preflight issues detected for ${{ matrix.config.config_path }}"
 
-      - name: "Toolkit run full (smoke: sample-rows, skip min_rows) [retry x2]"
-        id: run_full
-        env:
-          TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
+      - name: "Toolkit SQL dry-run (valida sintassi SQL senza eseguire)"
+        id: dry_run
         run: |
-          MAX_ATTEMPTS=2
-          for i in $(seq 1 $MAX_ATTEMPTS); do
-            toolkit run full \
-              --config "${{ matrix.config.config_path }}" \
-              --json \
-              --sample-rows 10000 \
-              > run_full.json 2>run_full_err.log; ec=$?
-            if [ $ec -eq 0 ]; then
-              echo "exit_code=0" >> "$GITHUB_OUTPUT"
-              cat run_full.json
-              exit 0
-            fi
-            echo "Attempt $i/$MAX_ATTEMPTS failed (exit=$ec). Stderr:"
-            cat run_full_err.log
-            if [ $i -lt $MAX_ATTEMPTS ]; then
-              WAIT=$(( i * 15 ))
-              echo "Retrying in ${WAIT}s..."
-              sleep $WAIT
-            fi
-          done
+          toolkit run all \
+            --config "${{ matrix.config.config_path }}" \
+            --dry-run \
+            > dry_run.log 2>&1; ec=$?
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
-          cat run_full.json 2>/dev/null || echo "No JSON output"
+          cat dry_run.log
           exit $ec
 
       - name: Upload artifacts
@@ -150,8 +136,7 @@ jobs:
         with:
           name: pr-toolkit-${{ matrix.config.artifact_name }}
           path: |
-            run_full.json
-            run_full_err.log
+            dry_run.log
           retention-days: 7
 
   report:
@@ -182,10 +167,10 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
 
           if [ "$RESULT" = "success" ]; then
-            echo "✅ All candidates passed toolkit run + validate" >> "$GITHUB_STEP_SUMMARY"
+            echo "✅ All candidates passed preflight + SQL dry-run" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "❌ Some candidates failed — individual artifacts in 'pr-toolkit-*' above" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "> I fallimenti possono essere dovuti a fonte irraggiungibile (retry automatico x2)." >> "$GITHUB_STEP_SUMMARY"
-            echo "> Se il fallimento persiste, controlla l'artifact 'pr-toolkit-{slug}/run_full_err.log'." >> "$GITHUB_STEP_SUMMARY"
+            echo "> Il dry-run valida sintassi SQL e struttura config. Per run completo (download + clean + mart),"
+            echo "> usa il merge o esegui: toolkit run all --config <path>" >> "$GITHUB_STEP_SUMMARY"
           fi

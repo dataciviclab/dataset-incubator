@@ -144,3 +144,19 @@ class TestAssignSemanticType:
 
         # Non match (substring)
         assert _assign_semantic_type("cig_qualcosa", alias_map) is None
+
+
+class TestEnrichTagsAndCategory:
+    """Contratto: _enrich_tags_and_category popola tags nel catalogo dai dataset.yml."""
+
+    def test_tags_populated_from_candidate(self, tmp_path):
+        from scripts.build_clean_catalog import _enrich_tags_and_category
+
+        (tmp_path / "candidates" / "demo").mkdir(parents=True)
+        yml = tmp_path / "candidates" / "demo" / "dataset.yml"
+        yml.write_text(
+            "dataset:\n  name: demo\n  years: [2024]\n  tags: [energia]\n", encoding="utf-8"
+        )
+        catalog = {"datasets": [{"slug": "demo"}]}
+        _enrich_tags_and_category(catalog, tmp_path)
+        assert catalog["datasets"][0]["tags"] == ["energia"]

@@ -51,6 +51,17 @@
           "type": "string",
           "description": "source_id corrispondente in source-observatory/sources_registry.yaml"
         },
+        "tags": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Tag semantici per categorizzazione e raggruppamento batch"
+        },
+        "category": {
+          "type": "string",
+          "description": "Categoria principale del dataset (es. sanità, energia, finanza)"
+        },
         "stage": {
           "type": "string",
           "enum": ["incubating", "published", "deprecated"],
