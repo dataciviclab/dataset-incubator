@@ -1,169 +1,35 @@
-# Join Map Registry
-# Mappa le chiavi di join per comune tra tutti i dataset clean di DataCivicLab.
-# Hub centrale: comuni_master (golden record dei comuni italiani).
+# Join Map Registry — solo casi che lo scanner non scopre da solo
 #
-# Come leggere:
-#   hub_key: colonna di comuni_master usata per il JOIN
-#   dataset[n].comuni_key: colonna/i nel dataset che identificano il comune
-#   normalizer: espressione SQL per normalizzare la chiave al formato hub
-#   verified_on: comune su cui è stata testata la JOIN
+# Lo scanner (tools/join-scanner/scan_join_keys.py) trova automaticamente:
+# - Tutti i join diretti: ISTAT, catastale, CF, denominazione
+# - Normalizer: LPAD, RIGHT, UPPER TRIM, REPLACE brackets
+# - Hub BDAP per chiavi ente (se BDAP disponibile localmente)
 #
-# Versione: 1
-# Aggiornato: 2026-06-21
+# Qui restano solo:
+# - Bridge non rilevabili dallo scanner (es. Sogei, CIG multi-hop)
+# - Cross-grano (NUTS, ecc.)
+# - Casi particolari documentati
+#
+# Uso: prima chiedi allo scanner. Se non trova, guarda qui.
 
-version: 1
+version: 2
 hub:
   slug: comuni_master
   description: Golden record dei comuni italiani (ISTAT + IPA)
   keys:
-    codice_istat:
-      format: istat_6
-      description: Codice ISTAT 6 cifre (es. 015002)
-    codice_catastale:
-      format: belfiore
-      description: Codice catastale Belfiore (es. A010)
-    denominazione:
-      format: title_case
-      description: Denominazione comune (es. Abbiategrasso)
-    codice_fiscale:
-      format: fiscal_code_11
-      description: Codice fiscale ente (es. 01310880156)
-    codice_ipa:
-      format: ipa_code
-      description: Codice IPA (es. c_a010)
+    codice_istat: { format: istat_6, description: Codice ISTAT 6 cifre (es. 015002) }
+    codice_catastale: { format: belfiore, description: Codice catastale Belfiore (es. A010) }
+    denominazione: { format: title_case, description: Denominazione comune (title case) }
+    codice_fiscale: { format: fiscal_code_11, description: Codice fiscale ente (es. 01310880156) }
+    codice_ipa: { format: ipa_code, description: Codice IPA (es. c_a010) }
+    nuts3_2021: { format: nuts3, description: Codice NUTS3 versione 2021 }
+    nuts3_2024: { format: nuts3, description: Codice NUTS3 versione 2024 }
 
 datasets:
 
   # ==========================================================================
-  # POPOLAZIONE E DEMOGRAFIA
+  # BRIDGE BDAP (richiede bdap_anagrafe_enti, non rilevabile dallo scanner)
   # ==========================================================================
-
-  - slug: popolazione_istat_comunale_2019_2025
-    name: Popolazione ISTAT Comunale
-    granularity: comune
-    comuni_key:
-      column: codice_comune
-      format: istat_6
-    hub_key: codice_istat
-    normalizer: direct  # stesso formato
-    verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
-    note: eta=999 se presente dà il totale comunale; altrimenti sommare per anno
-
-  # ==========================================================================
-  # REDDITI E FISCALITÀ
-  # ==========================================================================
-
-  - slug: irpef_comunale
-    name: IRPEF Comunale
-    granularity: comune
-    comuni_key:
-      column: codice_istat_comune
-      format: istat_6
-    hub_key: codice_istat
-    normalizer: direct
-    verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
-    note: Anni d'imposta 2019-2023. Ha anche codice_catastale come colonna aggiuntiva
-
-  # ==========================================================================
-  # AMBIENTE — RIFIUTI
-  # ==========================================================================
-
-  - slug: ispra_ru_base
-    name: ISPRA Rifiuti Urbani (dati base)
-    granularity: comune
-    comuni_key:
-      column: codice_comune_istat
-      format: istat_8_with_regione_prefix
-    hub_key: codice_istat
-    normalizer: "RIGHT(codice_comune_istat, 6)"
-    verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
-
-  - slug: ispra_ru_costi_kg
-    name: ISPRA Costi rifiuti (EUR/kg)
-    granularity: comune
-    comuni_key:
-      column: codice_comune_istat
-      format: istat_8_with_regione_prefix
-    hub_key: codice_istat
-    normalizer: "RIGHT(codice_comune_istat, 6)"
-    verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
-
-  - slug: ispra_ru_costi_procapite
-    name: ISPRA Costi rifiuti (EUR/abitante)
-    granularity: comune
-    comuni_key:
-      column: codice_comune_istat
-      format: istat_8_with_regione_prefix
-    hub_key: codice_istat
-    normalizer: "RIGHT(codice_comune_istat, 6)"
-    verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
-
-  # ==========================================================================
-  # AMBIENTE — CONSUMO SUOLO
-  # ==========================================================================
-
-  - slug: ispra_consumo_suolo
-    name: ISPRA Consumo di Suolo
-    granularity: comune
-    comuni_key:
-      column: pro_com
-      format: istat_5_no_padding
-    hub_key: codice_istat
-    normalizer: "LPAD(CAST(pro_com AS VARCHAR), 6, '0')"
-    verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
-
-  # ==========================================================================
-  # POVERTÀ E SOSTEGNO
-  # ==========================================================================
-
-  - slug: inps_rdc_pdc
-    name: INPS RdC/PdC per comune
-    granularity: comune
-    comuni_key:
-      column: codice_istat
-      format: catastale_belfiore
-    hub_key: codice_catastale
-    normalizer: direct
-    verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
-    note: Il dataset chiama 'codice_istat' ma contiene il codice CATASTALE (es. A010)
-
-  # ==========================================================================
-  # FARMACIE
-  # ==========================================================================
-
-  - slug: farmacie
-    name: Farmacie italiane
-    granularity: comune
-    comuni_key:
-      column: cod_comune
-      format: istat_5_as_int
-    hub_key: codice_istat
-    normalizer: "LPAD(CAST(cod_comune AS VARCHAR), 6, '0')"
-    verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
-
-  # ==========================================================================
-  # AMMINISTRAZIONE
-  # ==========================================================================
-
-  - slug: dait_amministratori_locali
-    name: Amministratori Locali DAIT
-    granularity: comune
-    comuni_key:
-      column: codice_dait_completo
-      format: dait_9
-    hub_key: codice_istat
-    normalizer: via_bridge  # usa bdap_anagrafe_enti per mapping DAIT -> ISTAT
-    bridge_required: bdap_anagrafe_enti
-    verified_on: Abbiategrasso
-    verified_by: 2026-06-21, data-researcher
 
   - slug: dipendenti_pubblici
     name: Dipendenti Pubblici
@@ -172,33 +38,9 @@ datasets:
       column: codice_ente_bdap
       format: bdap_id_18
     hub_key: codice_istat
-    normalizer: via_bridge  # codice_ente_bdap → bdap_anagrafe_enti.id_ente → codice_istat_comune
+    normalizer: via_bridge
     bridge_required: bdap_anagrafe_enti
-    verified_on: Abbiategrasso
-    verified_by: 2026-07-15, data-researcher
-    note: Join via bridge BDAP (non più testuale). Usato in unified_comuni.
-
-  # ==========================================================================
-  # FINANZA PUBBLICA
-  # ==========================================================================
-
-  - slug: opencivitas_fsc_2025_rso
-    name: Fondo Solidarietà Comunale 2025
-    granularity: comune
-    comuni_key:
-      column: username
-      format: sogei_13
-    hub_key: ~
-    normalizer: via_bridge  # username → opencivitas_fsc_enti_rso → denominazione + regione
-    bridge_required: opencivitas_fsc_enti_rso
-    verified_on: Abbiategrasso
-    verified_by: 2026-07-29, tech-developer
-    note: >
-      Il dataset non ha codice ISTAT né catastale. Il join con il territorio avviene in due fasi:
-      1. username (codice Sogei 13 char) → support opencivitas_fsc_enti_rso (bridge) → denominazione + regione
-      2. denominazione + regione → comuni_master (join testuale UPPER+TRIM)
-      Attenzione: la fonte FSC usa apostrofo al posto degli accenti (es. 'NARDO\'' per Nardò).
-      Il support dataset normalizza gli apostrofi. Match rate attuale: ~99.9% dopo normalizzazione.
+    note: "codice_ente_bdap → bdap_anagrafe_enti.id_ente → codice_istat_comune. Match 100%."
 
   - slug: siope_bilancio_unificato
     name: SIOPE Bilancio Unificato
@@ -207,148 +49,102 @@ datasets:
       column: codice_ente
       format: siope_9
     hub_key: codice_istat
-    normalizer: via_bridge  # codice_ente → bdap_anagrafe_enti.codice_ente_siope → codice_istat_comune
+    normalizer: via_bridge
     bridge_required: bdap_anagrafe_enti
-    verified_on: Abbiategrasso
-    verified_by: 2026-07-15, data-researcher
-    note: 6 metriche SIOPE aggregate nel compose unified_comuni. Anni 2021-2025.
+    note: "codice_ente → bdap_anagrafe_enti.codice_ente_siope → codice_istat_comune. Match 99.2%."
 
-  # ==========================================================================
-  # ISTRUZIONE
-  # ==========================================================================
-
-  - slug: mim_alunni_corso_eta
-    name: Alunni per corso ed età
-    granularity: scuola (riconducibile a comune)
+  - slug: dait_amministratori_locali
+    name: Amministratori Locali DAIT
+    granularity: comune (via bridge BDAP)
     comuni_key:
-      column: codice_comune_scuola
-      format: catastale_belfiore
-    hub_key: codice_catastale
-    normalizer: direct  # codice_comune_scuola contiene codice CATASTALE (es. C466), non ISTAT
-    verified_on: Abbiategrasso
-    verified_by: "2026-07-29, tech-developer (verified via DuckDB match: 283.533/306.996 = 92.4%)"
-    note: "La colonna 'codice_comune_scuola' è codice catastale Belfiore, non ISTAT. I no-match (23k su scuole storiche 2016-2025) sono principalmente comuni fusi/cessati — serve tabella fusioni."
-
-  - slug: mim_anagrafica_scuole_statali
-    name: Anagrafica scuole statali
-    granularity: scuola (riconducibile a comune)
-    comuni_key:
-      column: codice_comune_scuola
-      format: catastale_belfiore
-    hub_key: codice_catastale
-    normalizer: direct  # codice_comune_scuola contiene codice CATASTALE
-    verified_on: Abbiategrasso
-    verified_by: "2026-07-29, tech-developer (verified via DuckDB match: 50.510/50.515 = 99.99%)"
-    note: "La colonna 'codice_comune_scuola' è codice catastale Belfiore. Solo 5 no-match su 50k (comuni cessati o refusi)."
-
-  # ==========================================================================
-  # APPALTI (ANAC)
-  # ==========================================================================
-
-  - slug: anac_bandi_gara
-    name: ANAC Bandi di Gara (CIG)
-    granularity: comune (luogo esecuzione)
-    comuni_key:
-      column: codice_istat_luogo
-      format: istat_6
+      column: codice_dait_completo
+      format: dait_9
     hub_key: codice_istat
-    normalizer: direct
-    note: "codice_istat_luogo = luogo di esecuzione della gara. Può differire dal comune della SA."
+    normalizer: via_bridge
+    bridge_required: bdap_anagrafe_enti
+    note: "codice_dait_completo → bdap_anagrafe_enti (mapping DAIT) → codice_istat_comune."
 
   # ==========================================================================
-  # OPENCOESIONE
+  # BRIDGE Sogei (FSC — richiede support dataset)
   # ==========================================================================
 
-  - slug: opencoesione_progetti
-    name: OpenCoesione Progetti
-    granularity: SLL (Sistema Locale del Lavoro)
+  - slug: opencivitas_fsc_2025_rso
+    name: Fondo Solidarietà Comunale
+    granularity: comune (via bridge Sogei + join testuale)
     comuni_key:
-      column: OC_COD_SLL
-      format: sll_code
+      column: username
+      format: sogei_13
     hub_key: ~
-    normalizer: not_direct
-    note: "Non ha join diretto con comuni_master. Ha OC_COD_SLL (codice SLL). Serve mapping SLL->comuni da ISTAT."
+    normalizer: via_bridge
+    bridge_required: opencivitas_fsc_enti_rso
+    note: >
+      Due fasi: username → opencivitas_fsc_enti_rso (bridge) → denominazione+regione.
+      Poi denominazione+regione → comuni_master via UPPER+TRIM.
+      Il support dataset normalizza apostrofo→accento (76 comuni su 6573).
+      Match rate dopo normalizzazione: ~99.9%.
 
   # ==========================================================================
-  # OPERE INCOMPIUTE
+  # BRIDGE CIG (ANAC multi-hop: aggiudicatari → bandi_gara → territorio)
   # ==========================================================================
 
-  - slug: mit_opere_incompiute_2020
-    name: MIT Opere Pubbliche Incompiute
-    granularity: comune
-    comuni_key:
-      column: localizzazione_codice_istat
-      format: istat_6
+  - slug: anac_aggiudicatari
+    name: ANAC Aggiudicatari
+    granularity: comune (via bridge CIG)
     hub_key: codice_istat
-    normalizer: direct
-    note: 405 opere totali. Codice ISTAT del comune dove è localizzata l'opera.
+    normalizer: via_bridge
+    bridge_required: anac_bandi_gara
+    note: >
+      Il CF è di imprese (non matcha). Join via CIG: cig → anac_bandi_gara.cig
+      → codice_istat_luogo. 1.04M CIG su 4.8M matchano (21.6%).
+      Di quelli, 99.1% ha territorio.
 
-  # ==========================================================================
-  # PARTECIPAZIONI PUBBLICHE
-  # ==========================================================================
-
-  - slug: mef_partecipazioni
-    name: MEF Partecipazioni Pubbliche
-    granularity: amministrazione / partecipata
-    comuni_key:
-      column: amministrazione_codice_fiscale
-      format: fiscal_code_11
-    hub_key: codice_fiscale
-    normalizer: "REPLACE(REPLACE(amministrazione_codice_fiscale, '[', ''), ']', '')"
-    verified_on: Abbiategrasso
-    verified_by: "2026-07-29, tech-developer (verified via DuckDB match: 43.659/43.760 su categoria Comuni = 99.8%)"
-    note: "La colonna 'amministrazione_codice_fiscale' ha formato [XXXXXXXXXXX] (parentesi quadre). Per enti categoria 'Comuni' matcha al 99.8% con comuni_master.codice_fiscale. Per altre categorie (Regioni, Province, ecc.) il CF non matcha perché non sono in comuni_master."
-
-  # ==========================================================================
-  # PNRR
-  # ==========================================================================
-
-  - slug: pnrr_progetti
-    name: PNRR Progetti
-    granularity: comune (via codice fiscale)
-    comuni_key:
-      column: cf_soggetto_attuatore
-      format: fiscal_code_11
-    hub_key: codice_fiscale
-    normalizer: direct
-    verified_on: Abbiategrasso
-    verified_by: 2026-07-15, data-researcher
-    note: Match via cf_soggetto_attuatore → comuni_master.codice_fiscale. ~3.700 comuni su 7.500.
-
-  # ==========================================================================
-  # DATABASE ANAGRAFICI (bridge / lookup)
-  # ==========================================================================
-
-  - slug: comuni_master
-    name: Comuni Master
-    granularity: comune
-    hub: true  # questo è l'hub stesso
-    note: Golden record. Usare come chiave primaria per tutti i join.
-
-  - slug: bdap_anagrafe_enti
-    name: BDAP Anagrafe Enti Pubblici
-    granularity: ente
-    comuni_key:
-      column: codice_istat_comune
-      format: istat_6
+  - slug: anac_partecipanti
+    name: ANAC Partecipanti
+    granularity: comune (via bridge CIG)
     hub_key: codice_istat
-    normalizer: direct
-    note: Bridge table. Mappa IPA ↔ SIOPE ↔ ISTAT ↔ MIUR ↔ catastale. ~38k enti.
-    bridge_keys:
-      - codice_ente_siope  # 000270622 per Abbiategrasso
-      - codice_ente_ipa    # c_a010
-      - codice_catastale   # A010
-      - codice_ente_miur   # MIIC8E900V
+    normalizer: via_bridge
+    bridge_required: anac_bandi_gara
+    note: "Stesso bridge CIG di anac_aggiudicatari."
 
-  - slug: istat_elenco_comuni
-    name: Elenco comuni italiani
-    granularity: comune
-    comuni_key:
-      column: codice_istat
-      format: istat_6
+  - slug: anac_subappalti
+    name: ANAC Subappalti
+    granularity: comune (via bridge CIG)
     hub_key: codice_istat
+    normalizer: via_bridge
+    bridge_required: anac_bandi_gara
+    note: "Stesso bridge CIG. Attenzione: subappalto può avere luogo diverso dalla gara principale."
+
+  # ==========================================================================
+  # CROSS-GRANO NUTS (provincia → comune)
+  # ==========================================================================
+
+  - slug: eurostat_economy
+    name: Indicatori economici regionali EU (PIL, GVA, occupazione)
+    granularity: NUTS3 (provincia → comune via cross-grano)
+    comuni_key:
+      column: geo
+      format: nuts3
+    hub_key: nuts3_2021
     normalizer: direct
-    note: Fonte upstream di comuni_master. Stessi dati ma senza codici IPA.
+    note: "105/107 NUTS3 italiani matchano. 2 non matchano per cambio versione NUTS. 1 provincia → N comuni."
+
+  - slug: eurostat_demography
+    name: Indicatori demografici regionali EU
+    granularity: NUTS3 (provincia → comune via cross-grano)
+    comuni_key:
+      column: geo
+      format: nuts3
+    hub_key: nuts3_2021
+    normalizer: direct
+
+  - slug: eurostat_territory
+    name: Indicatori territoriali regionali EU
+    granularity: NUTS3 (provincia → comune via cross-grano)
+    comuni_key:
+      column: geo
+      format: nuts3
+    hub_key: nuts3_2021
+    normalizer: direct
 
   # ==========================================================================
   # COMPOSITE
@@ -363,262 +159,23 @@ datasets:
     hub_key: codice_istat
     normalizer: direct
     is_composite: true
-    note: Compose multi-fonte. Include hub, popolazione, IRPEF, rifiuti, consumo suolo, FSC, SIOPE, dipendenti (via BDAP), PNRR.
+    note: "Compose multi-fonte. Include hub, popolazione, IRPEF, rifiuti, FSC, SIOPE, dipendenti, PNRR."
 
   # ==========================================================================
-  # DATI EUROSTAT (NUTS3 → cross-grano provincia→comune)
+  # NON JOINABILI PER COMUNE (granularità diversa)
   # ==========================================================================
-  # Questi dataset hanno granularità NUTS3 (provincia). Non hanno join diretto
-  # per comune, ma via comuni_master.nuts3_2021/2024 si può risalire al comune.
-  # Attenzione: 1 provincia → N comuni (fino a 311). Il dato provinciale viene
-  # replicato su tutti i comuni della stessa provincia.
-
-  - slug: eurostat_economy
-    name: Indicatori economici regionali EU (PIL, GVA, occupazione)
-    granularity: NUTS3 (provincia) → comune via cross-grano
-    comuni_key:
-      column: geo
-      format: nuts3
-    hub_key: nuts3_2021
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner (105/107 NUTS3 italiani matchano)"
-    note: "Join cross-grano via comuni_master.nuts3_2021. 2 NUTS3 non matchano per cambio versione NUTS."
-
-  - slug: eurostat_demography
-    name: Indicatori demografici regionali EU
-    granularity: NUTS3 (provincia) → comune via cross-grano
-    comuni_key:
-      column: geo
-      format: nuts3
-    hub_key: nuts3_2021
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner"
-
-  - slug: eurostat_territory
-    name: Indicatori territoriali regionali EU
-    granularity: NUTS3 (provincia) → comune via cross-grano
-    comuni_key:
-      column: geo
-      format: nuts3
-    hub_key: nuts3_2021
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner"
-
-  # ==========================================================================
-  # ANAGRAFICA ENTI (IPA)
-  # ==========================================================================
-
-  - slug: ipa_enti
-    name: Anagrafica Enti PA (IndicePA)
-    granularity: ente
-    comuni_key:
-      column: codice_comune_istat
-      format: istat_6
-    hub_key: codice_istat
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner (match 100%)"
-    note: "La colonna 'codice_comune_istat' è codice ISTAT a 6 cifre."
-
-  - slug: ipa_unita_organizzative
-    name: Unità Organizzative (IPA)
-    granularity: ente
-    comuni_key:
-      column: codice_comune_istat
-      format: istat_6
-    hub_key: codice_istat
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner (match 99.9%)"
-    note: "Join via codice_comune_istat → comuni_master.codice_istat."
-
-  - slug: ipa_aree_organizzative_omogenee
-    name: Aree Organizzative Omogenee (IPA)
-    granularity: ente
-    comuni_key:
-      column: codice_comune_istat
-      format: istat_6
-    hub_key: codice_istat
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner (match 99.5%)"
-
-  - slug: who_is_who_pa
-    name: Who is Who PA
-    granularity: ente
-    comuni_key:
-      column: ente_codice_comune_istat
-      format: istat_6
-    hub_key: codice_istat
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner (match 100%)"
-
-  # ==========================================================================
-  # ISTRUZIONE (MIM) — altri
-  # ==========================================================================
-
-  - slug: mim_scuola_infanzia
-    name: MIM Scuola Infanzia
-    granularity: scuola (riconducibile a comune)
-    comuni_key:
-      column: codice_comune_scuola
-      format: catastale_belfiore
-    hub_key: codice_catastale
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner (match 100%)"
-    note: "Stesso pattern di mim_anagrafica_scuole_statali: codice_comune_scuola contiene codice CATASTALE."
-
-  # ==========================================================================
-  # IMPRESE E ASIA
-  # ==========================================================================
-
-  - slug: istat_asia_ul
-    name: ASIA — Unità Locali
-    granularity: comune
-    comuni_key:
-      column: codice_comune
-      format: istat_6
-    hub_key: codice_istat
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner (match 95.1%)"
-    note: "codice_comune è ISTAT 6 cifre. Stesso formato di popolazione_istat."
-
-  # ==========================================================================
-  # PARTECIPAZIONI MEF (serie)
-  # ==========================================================================
-
-  - slug: mef_patrimonio_detenzioni
-    name: MEF Patrimonio Detenzioni
-    granularity: amministrazione
-    comuni_key:
-      column: amministrazione_codice_fiscale
-      format: fiscal_code_11
-    hub_key: codice_fiscale
-    normalizer: "REPLACE(REPLACE(amministrazione_codice_fiscale, '[', ''), ']', '')"
-    verified_by: "2026-07-29, join-scanner (match 59.1% su tutto, ~99% su soli Comuni)"
-    note: "Stesso pattern di mef_partecipazioni. CF con parentesi []. Match su soli enti categoria Comuni."
-
-  - slug: mef_patrimonio_enti
-    name: MEF Patrimonio Enti
-    granularity: amministrazione
-    comuni_key:
-      column: amministrazione_codice_fiscale
-      format: fiscal_code_11
-    hub_key: codice_fiscale
-    normalizer: "REPLACE(REPLACE(amministrazione_codice_fiscale, '[', ''), ']', '')"
-    verified_by: "2026-07-29, join-scanner (match 69.6%)"
-
-  - slug: mef_patrimonio_immobili
-    name: MEF Patrimonio Immobili
-    granularity: amministrazione
-    comuni_key:
-      column: amministrazione_codice_fiscale
-      format: fiscal_code_11
-    hub_key: codice_fiscale
-    normalizer: "REPLACE(REPLACE(amministrazione_codice_fiscale, '[', ''), ']', '')"
-    verified_by: "2026-07-29, join-scanner (match 67.0%)"
-
-  # ==========================================================================
-  # CONTO ANNUALE
-  # ==========================================================================
-
-  - slug: conto_annuale_profilo_ente
-    name: Conto Annuale — Profilo Ente PA
-    granularity: ente
-    comuni_key:
-      column: codi_fiscale
-      format: fiscal_code_11
-    hub_key: codice_fiscale
-    normalizer: direct
-    verified_by: "2026-07-29, join-scanner (match 30.5%)"
-    note: "Il match è basso perché include tutte le PA, non solo comuni. Per i soli comuni il rate è più alto."
-
-  # ==========================================================================
-  # ELEZIONI (denominazione testuale)
-  # ==========================================================================
-
-  - slug: elezioni_politiche
-    name: Elezioni Politiche 1948-2022
-    granularity: comune
-    comuni_key:
-      column: comune
-      format: denominazione_upper
-    hub_key: denominazione
-    normalizer: "UPPER(TRIM(comune))"
-    verified_by: "2026-07-29, join-scanner (match 93.5%)"
-    note: "Join testuale via denominazione. Cross-validato con provincia (non ancora implementato). I no-match sono probabilmente comuni fusi/rinominati."
-
-  - slug: elezioni_comunali
-    name: Elezioni Comunali
-    granularity: comune
-    comuni_key:
-      column: comune
-      format: denominazione_upper
-    hub_key: denominazione
-    normalizer: "UPPER(TRIM(comune))"
-    verified_by: "2026-07-29, join-scanner (match presumibile >90%, da verificare)"
-
-  - slug: elezioni_regionali
-    name: Elezioni Regionali
-    granularity: comune
-    comuni_key:
-      column: comune
-      format: denominazione_upper
-    hub_key: denominazione
-    normalizer: "UPPER(TRIM(comune))"
-    verified_by: "2026-07-29, join-scanner (match presumibile >90%, da verificare)"
-
-  - slug: elezioni_europee
-    name: Elezioni Europee
-    granularity: comune
-    comuni_key:
-      column: comune
-      format: denominazione_upper
-    hub_key: denominazione
-    normalizer: "UPPER(TRIM(comune))"
-    verified_by: "2026-07-29, join-scanner (match presumibile >90%, da verificare)"
-
-  - slug: elezioni_referendum
-    name: Elezioni Referendum
-    granularity: comune
-    comuni_key:
-      column: comune
-      format: denominazione_upper
-    hub_key: denominazione
-    normalizer: "UPPER(TRIM(comune))"
-    verified_by: "2026-07-29, join-scanner (match presumibile >90%, da verificare)"
-
-  # ==========================================================================
-  # DATASET NON JOINABILI PER COMUNE (solo nota)
-  # ==========================================================================
-
-  # Questi dataset hanno granularità regionale/provinciale/nazionale
-  # e NON hanno join diretto con comuni_master.
 
   - slug: ade_cinque_per_mille
     granularity: provincia
     joinable_by_comune: false
-    note: Ha sigla_provincia. Joinabile a livello provinciale, non comunale.
 
   - slug: aifa_spesa_consumo
     granularity: regione
     joinable_by_comune: false
 
-  - slug: anac_aggiudicatari
-    granularity: impresa/operatore
+  - slug: anpr_mobilita_residenziale
+    granularity: regione
     joinable_by_comune: false
-    note: >
-      Il CF è di imprese (match 0% con comuni_master). MA è joinabile indirettamente
-      via CIG → anac_bandi_gara.cig → codice_istat_luogo.
-      Match: 1.04M CIG su 4.8M (21.6% — bandi_gara ha solo dati recenti).
-      Di quelli matchati, 99.1% ha territorio. Bridge: anac_bandi_gara.
-
-  - slug: anac_partecipanti
-    granularity: impresa/operatore
-    joinable_by_comune: false
-    note: "CF di imprese, non enti. Stesso bridge CIG di anac_aggiudicatari."
-
-  - slug: anac_subappalti
-    granularity: subappalto
-    joinable_by_comune: false
-    note: "CF subappaltante è di imprese, non enti."
 
   - slug: bdap_entrate_stato
     granularity: stato
@@ -644,14 +201,13 @@ datasets:
     granularity: ufficio/distretto
     joinable_by_comune: false
 
-  - slug: giustizia_penale_indicatori
-    granularity: distretto
-    joinable_by_comune: false
-
   - slug: consip_consumi_convenzione
     granularity: provincia
     joinable_by_comune: false
-    note: Ha provincia (sigla_provincia_pa). Joinabile a livello provinciale, non comunale.
+
+  - slug: giustizia_penale_indicatori
+    granularity: distretto
+    joinable_by_comune: false
 
   - slug: inps_pensioni_trimestrale
     granularity: regione
@@ -676,7 +232,10 @@ datasets:
   - slug: istat_pil_territoriale
     granularity: provincia/regione
     joinable_by_comune: false
-    note: Ha provincia. Joinabile a livello provinciale.
+
+  - slug: iva_regionale
+    granularity: regione
+    joinable_by_comune: false
 
   - slug: mef_irpef_regionale
     granularity: regione
@@ -690,17 +249,36 @@ datasets:
     granularity: ateneo
     joinable_by_comune: false
 
+  - slug: mur_immatricolati
+    granularity: ateneo
+    joinable_by_comune: false
+
+  - slug: mur_iscritti
+    granularity: ateneo
+    joinable_by_comune: false
+
+  - slug: opencivitas_fsc_enti_rso
+    granularity: support (ente FSC)
+    joinable_by_comune: false
+
   - slug: openga_ricorsi_appalto
     granularity: CIG (ente)
     joinable_by_comune: false
-    note: Ha codici ANAC (CIG). Joinabile via anac_bandi_gara se serve.
 
   - slug: openga_ricorsi_cds
     granularity: sede giudiziaria
     joinable_by_comune: false
 
+  - slug: penale_flussi
+    granularity: distretto
+    joinable_by_comune: false
+
   - slug: pensioni_pa_dag
     granularity: nazionale/categoria
+    joinable_by_comune: false
+
+  - slug: personale_ssn
+    granularity: regione
     joinable_by_comune: false
 
   - slug: posti_letto_stabilimento
@@ -711,6 +289,18 @@ datasets:
     granularity: reparto
     joinable_by_comune: false
 
+  - slug: rna_aiuti_stato
+    granularity: nazionale/aiuto
+    joinable_by_comune: false
+
+  - slug: sbarchi_migranti_italia
+    granularity: nazionale
+    joinable_by_comune: false
+
+  - slug: silos_infrastrutture
+    granularity: infrastruttura
+    joinable_by_comune: false
+
   - slug: strutture_asl
     granularity: ASL/regionale
     joinable_by_comune: false
@@ -719,24 +309,18 @@ datasets:
     granularity: ASL
     joinable_by_comune: false
 
+  - slug: ted_contract_notices
+    granularity: CIG (bando europeo)
+    joinable_by_comune: false
+
   - slug: terna_capacita_rinnovabile
+    granularity: regione
+    joinable_by_comune: false
+
+  - slug: terna_electrical_energy_by_sector
     granularity: regione
     joinable_by_comune: false
 
   - slug: terna_electricity_by_source
     granularity: regione/provincia
     joinable_by_comune: false
-    note: Ha provincia. Joinabile a livello provinciale.
-
-  - slug: opencivitas_fsc_enti_rso
-    granularity: support (ente FSC)
-    joinable_by_comune: false
-    note: Support dataset per opencivitas_fsc_2025_rso, non pubblico.
-
-  - slug: rna_aiuti_stato
-    granularity: nazionale/aiuto
-    joinable_by_comune: false
-    note: >
-      CF beneficiario è di imprese (match 0.1%). Joinabile per regione
-      via regione_beneficiario → comuni_master.regione (UPPER TRIM).
-      Ha anche cup che può fare da bridge verso ANAC CUP.

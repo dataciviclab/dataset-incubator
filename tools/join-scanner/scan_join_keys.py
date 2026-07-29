@@ -108,6 +108,15 @@ HUBS = [
                     ("UPPER TRIM", "UPPER(TRIM({col}))"),
                 ],
             },
+            # Cross-grano NUTS: chiave NUTS3 del dataset → comuni_master.nuts3_2021
+            "nuts": {
+                "hub_column": "nuts3_2021",
+                "normalizers": [
+                    ("direct", "{col}"),
+                ],
+                "cross_grano": True,
+                "note": "1 provincia → N comuni. Il dato viene replicato.",
+            },
         },
     },
     {
@@ -261,6 +270,10 @@ KEYWORD_FALLBACK: dict[str, str] = {
     "prov": "provincia",
     "regione": "regione",
     "nuts": "nuts",
+    "nuts2": "nuts",
+    "nuts3": "nuts",
+    "nuts_code": "nuts",
+    "geo": "nuts",  # Eurostat: colonna geo = codice NUTS
     # chiavi ente BDAP
     "ente_bdap": "id_ente",
     "id_ente": "id_ente",
@@ -377,11 +390,15 @@ def scan(
 
     for hub_info in HUBS:
         hub_slug = hub_info["slug"]
-        hub_url = hub_info["url"]
+        hub_year = hub_info.get("year", 2026)
+        hub_path = resolve_parquet_path(hub_slug, hub_year)
         key_map = hub_info["key_map"]
 
+        if hub_path.startswith("http"):
+            continue  # hub non in locale
+
         try:
-            hub_rel = load_parquet(hub_url, con)
+            hub_rel = load_parquet(hub_path, con)
         except Exception:
             continue
 
