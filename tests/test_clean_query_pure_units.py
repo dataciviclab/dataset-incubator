@@ -160,58 +160,41 @@ _DESCRIBE_FIXTURE = {
 
 
 def test_relationship_map_loads():
-    """_load_relationship_map genera la mappa da join_map.yaml (nessun file JSON)."""
+    """_load_relationship_map carica il grafo entità da entity_graph.json."""
     result = server._load_relationship_map()
     assert "error" not in result, f"Errore caricamento relationship_map: {result.get('error')}"
-    assert "registries" in result
-    assert "comuni_master" in result["registries"]
-    assert "description" in result
-    assert "unconnected_datasets" in result
+    assert "entities" in result
+    assert "Comune" in result["entities"]
+    assert "bridges" in result
+    assert result["summary"]["total_entities"] >= 10
 
 
 def test_dataset_graph_full_map():
     """dataset_graph() senza filtri restituisce la mappa completa."""
     result = server.dataset_graph()
+    assert "entities" in result
     assert "summary" in result
-    assert result["summary"]["registries"] >= 1
-    assert result["summary"]["datasets"] >= 10
-    assert "tip" in result
-
-
-def test_dataset_graph_by_key():
-    """dataset_graph(by_key='codice_istat') filtra per chiave."""
-    result = server.dataset_graph(by_key="codice_istat")
-    reg = result.get("registries", {}).get("comuni_master", {}).get("keys", {})
-    assert "codice_istat" in reg
-    # Non devono apparire chiavi che non contengono 'codice_istat'
-    for key_name in reg:
-        assert "codice_istat" in key_name.lower()
+    assert result["summary"]["total_entities"] >= 10
 
 
 def test_dataset_graph_by_dataset():
-    """dataset_graph(by_dataset='irpef') trova il dataset."""
+    """dataset_graph(by_dataset='irpef') trova il dataset in un'entità."""
     result = server.dataset_graph(by_dataset="irpef")
-    # Deve comparire in almeno una chiave
+    # Deve comparire in almeno un'entità con dataset matching
     found = False
-    for reg in result.get("registries", {}).values():
-        for key in reg.get("keys", {}).values():
-            for ds in key.get("datasets", []):
-                if "irpef" in ds["slug"].lower():
-                    found = True
-    assert found, "irpef_comunale non trovato in nessuna chiave"
+    for entity_name, entity_info in result.get("entities", {}).items():
+        for ds in entity_info.get("datasets", []):
+            if "irpef" in ds["slug"].lower():
+                found = True
+    assert found, "irpef_comunale non trovato in nessuna entità"
 
 
-def test_dataset_graph_unknown_key():
-    """dataset_graph(by_key='inesistente') restituisce mappa vuota."""
-    result = server.dataset_graph(by_key="xyz_notfound_123")
-    assert len(result.get("registries", {})) == 0
-    assert result.get("summary", {}).get("datasets", -1) == 0
-
-
-def test_dataset_graph_unknown_registry():
-    """dataset_graph(by_registry='inesistente') restituisce errore."""
-    result = server.dataset_graph(by_registry="fake_registry")
-    assert "error" in result
+def test_dataset_graph_unknown_filter():
+    """dataset_graph con filtro inesistente restituisce entities vuoto."""
+    result = server.dataset_graph(by_dataset="xyz_notfound_123")
+    # Se non trova match, nessuna entità ha dataset filtrati
+    totale = sum(len(e.get("datasets", [])) for e in result.get("entities", {}).values())
+    assert totale == 0
 
 
 # ---------------------------------------------------------------------------
@@ -432,9 +415,14 @@ def test_find_empty_metric_only():
 # ---------------------------------------------------------------------------
 
 
-def test_dataset_graph_bdap_registry():
-    """dataset_graph con by_registry='bdap_anagrafe_enti' restituisce il bridge."""
-    result = server.dataset_graph(by_registry="bdap_anagrafe_enti")
-    assert "registry" not in result  # non è un errore
-    regs = result.get("registries", {})
-    assert "bdap_anagrafe_enti" in regs
+def test_dataset_graph_by_registry():
+    """dataset_graph con by_registry='Comune' filtra per entità."""
+    result = server.dataset_graph(by_registry="Comune")
+    assert "error" not in result
+    assert "Comune" in result.get("entities", {})
+
+
+def test_dataset_graph_unknown_registry():
+    """dataset_graph con by_registry inesistente restituisce errore."""
+    result = server.dataset_graph(by_registry="xyz_notfound")
+    assert "error" in result

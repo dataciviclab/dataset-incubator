@@ -1,6 +1,8 @@
 from __future__ import annotations
 
+import json
 import re
+from pathlib import Path
 from typing import Any
 
 from lab_connectors.mcp import create_mcp_server, guard_timed
@@ -721,24 +723,47 @@ def find(
 
 # ── Relationship Map ──────────────────────────────────────────────────────────
 
+DI_ROOT = Path(__file__).resolve().parents[2]
+ENTITY_GRAPH_PATH = DI_ROOT / "registry" / "entity_graph.json"
+
 
 def _load_relationship_map() -> dict[str, Any]:
-    """Genera la mappa relazioni dalla join_map.yaml (live, nessun file JSON)."""
+    """Carica il grafo entità da entity_graph.json (generato da build_graph.py)."""
     try:
-        from .build_relationship_map import build as _build_rm
-
-        return _build_rm()
+        if not ENTITY_GRAPH_PATH.exists():
+            return {
+                "error": "entity_graph.json non trovato. Esegui: python tools/graph/build_graph.py"
+            }
+        return json.loads(ENTITY_GRAPH_PATH.read_text())
     except Exception as exc:
-        return {"error": f"Errore generazione relationship map: {exc}"}
+        return {"error": f"Errore caricamento entity_graph.json: {exc}"}
+
+
+DOMAIN_KEYWORDS: dict[str, set[str]] = {
+    "appalti": {"cig_code", "ausa_code", "cpv_code"},
+    "enti": {"fiscal_code", "ipa_code", "siope_code", "miur_code", "ssn_code", "sogei_code"},
+    "territorio": {
+        "municipality_code",
+        "cadastral_code",
+        "municipality_name",
+        "province_code",
+        "region_code",
+        "nuts_code",
+    },
+    "giustizia": {"ricorso_number"},
+    "scuola": {"school_code"},
+    "progetti": {"cup_code"},
+    "economia": {"ateco_code"},
+}
 
 
 @mcp.tool(
     description=(
         "Mostra la mappa delle relazioni tra dataset del Lab. "
-        "Ogni dataset si collega a un registro anagrafico (comuni_master, bdap_anagrafe_enti) "
-        "tramite una chiave (codice_istat, denominazione, ...). "
-        "In piu' mostra le relazioni cross-dataset per dominio (appalti, enti, giustizia, territorio). "
-        "Filtra per chiave, dataset, registro o dominio per esplorare le connessioni."
+        "Ogni dataset si collega a un'entità del mondo reale (Comune, Provincia, Ente, ...) "
+        "tramite un tipo semantico (municipality_code, fiscal_code, ...). "
+        "I bridge collegano entità tra loro (es. CIG → Comune via anac_bandi_gara). "
+        "Filtra per tipo chiave, dataset, entità o dominio logico."
     ),
     structured_output=True,
 )
@@ -751,107 +776,100 @@ def dataset_graph(
     """Esplora la mappa delle relazioni tra dataset.
 
     Args:
-        by_key: Filtra per chiave territoriale (es. 'codice_istat', 'denominazione').
+        by_key: Filtra per tipo semantico (es. 'municipality_code', 'fiscal_code').
         by_dataset: Filtra per dataset slug (es. 'irpef_comunale').
-        by_registry: Filtra per registro (es. 'comuni_master').
-        by_domain: Filtra per dominio cross-dataset (es. 'appalti', 'enti', 'giustizia', 'territorio').
+        by_registry: Filtra per entità (es. 'Comune', 'Provincia').
+        by_domain: Filtra per dominio logico (es. 'appalti', 'enti', 'territorio', 'giustizia').
 
     Returns:
-        Dict con le relazioni trovate, o l'intera mappa se nessun filtro.
+        Dict con entities e bridges filtrati, o l'intero grafo se nessun filtro.
     """
+
+    def _filter_by_domain(bridges: list[dict], domain: str) -> list[dict]:
+        """Filtra bridge per dominio logico in base al tipo semantico."""
+        keywords = DOMAIN_KEYWORDS.get(domain.lower(), set())
+        if not keywords:
+            return []
+        return [b for b in bridges if any(kw in str(b).lower() for kw in keywords)]
 
     def _exec() -> dict[str, Any]:
         graph = _load_relationship_map()
         if "error" in graph:
             return graph
 
-        result: dict[str, Any] = {
-            "description": graph.get("description"),
-            "hub_hint": graph.get("hub_hint"),
-        }
+        entities = graph.get("entities", {})
+        bridges = graph.get("bridges", [])
 
-        # ── Se filtra per dominio cross-dataset ──
+        # ── Filtra per dominio → mostra solo bridge pertinenti ──
         if by_domain:
-            cross = graph.get("cross_relations", [])
-            by_domain_lower = by_domain.lower()
-            filtered = [r for r in cross if by_domain_lower in r["domain"].lower()]
-            if not filtered:
-                domains = set(r["domain"] for r in cross)
+            filtered_bridges = _filter_by_domain(bridges, by_domain)
+            if not filtered_bridges:
                 return {
-                    "error": f"Dominio '{by_domain}' non trovato. Disponibili: {sorted(domains)}"
+                    "error": f"Dominio '{by_domain}' non riconosciuto. "
+                    f"Disponibili: {', '.join(sorted(DOMAIN_KEYWORDS))}"
                 }
-            result["domain"] = by_domain
-            result["relations"] = filtered
-            result["count"] = len(filtered)
-            return result
+            return {
+                "domain": by_domain,
+                "relations": filtered_bridges,
+                "count": len(filtered_bridges),
+            }
 
-        # ── Altrimenti, mostra la mappa territoriale (come prima) ──
-        result["registries"] = {}
-
-        registries_to_show = graph.get("registries", {})
+        # ── Filtra per entità (by_registry) ──
         if by_registry:
-            reg = registries_to_show.get(by_registry)
-            if reg:
-                registries_to_show = {by_registry: reg}
-            else:
+            by_reg_lower = by_registry.lower()
+            matched = {
+                name: info
+                for name, info in entities.items()
+                if by_reg_lower in name.lower() or by_reg_lower in info.get("label", "").lower()
+            }
+            if not matched:
                 return {
-                    "error": f"Registro '{by_registry}' non trovato. Disponibili: {list(registries_to_show.keys())}"
+                    "error": f"Entità '{by_registry}' non trovata. "
+                    f"Disponibili: {sorted(entities.keys())}"
                 }
+            entities = matched
 
-        for reg_name, reg_data in registries_to_show.items():
-            keys_filtered = {}
-            for key_name, key_data in reg_data.get("keys", {}).items():
-                if by_key and by_key.lower() not in key_name.lower():
-                    continue
+        # ── Filtra per chiave (by_key) e/o dataset (by_dataset) ──
+        if by_key or by_dataset:
+            entities_filtered = {}
+            by_key_lower = by_key.lower()
+            by_ds_lower = by_dataset.lower()
+            for entity_name, entity_info in entities.items():
+                ds_filtered = []
+                for ds in entity_info.get("datasets", []):
+                    # Filtra per tipo semantico
+                    if by_key and by_key_lower not in ds.get("semantic_type", "").lower():
+                        continue
+                    # Filtra per slug/nome dataset
+                    if by_dataset and not (
+                        by_ds_lower in ds["slug"].lower()
+                        or by_ds_lower in ds.get("name", "").lower()
+                    ):
+                        continue
+                    ds_filtered.append(ds)
+                if ds_filtered:
+                    filtered_info = dict(entity_info)
+                    filtered_info["datasets"] = ds_filtered
+                    entities_filtered[entity_name] = filtered_info
+            entities = entities_filtered
 
-                datasets = key_data.get("datasets", [])
-                if by_dataset:
-                    datasets = [
-                        d
-                        for d in datasets
-                        if by_dataset.lower() in d["slug"].lower()
-                        or by_dataset.lower() in d["name"].lower()
-                    ]
+        total_datasets = sum(len(e["datasets"]) for e in entities.values())
 
-                if not datasets:
-                    continue
-
-                keys_filtered[key_name] = {
-                    "description": key_data["description"],
-                    "datasets": datasets,
-                }
-
-            if keys_filtered:
-                result["registries"][reg_name] = {
-                    "description": reg_data.get("description", ""),
-                    "keys": keys_filtered,
-                }
-
-        n_keys = sum(len(r["keys"]) for r in result["registries"].values())
-        n_ds = sum(
-            len(k["datasets"]) for r in result["registries"].values() for k in r["keys"].values()
-        )
-
-        result["summary"] = {
-            "keys": n_keys,
-            "datasets": n_ds,
-            "registries": len(result["registries"]),
+        return {
+            "entities": entities,
+            "bridges": bridges,
+            "summary": {
+                "total_entities": len(entities),
+                "total_relations": len(bridges),
+                "total_datasets": total_datasets,
+            },
+            "tip": (
+                "Usa by_key='municipality_code' per vedere i dataset con codice ISTAT, "
+                "by_dataset='irpef_comunale' per vedere le entità collegate, "
+                "by_registry='Comune' per esplorare un'entità, "
+                "o by_domain='appalti' per i bridge del dominio appalti."
+            ),
         }
-
-        if not by_key and not by_dataset and not by_registry:
-            # Mostra disponibilità cross-domain
-            summary = graph.get("cross_relations_summary", {})
-            if summary:
-                result["available_domains"] = summary
-            result["tip"] = (
-                "Usa by_key='codice_istat' per vedere tutti i dataset collegati via ISTAT, "
-                "by_dataset='irpef_comunale' per vedere come si collega, "
-                "by_registry='comuni_master' per esplorare un registro, "
-                "o by_domain='appalti' per le relazioni cross-dataset sugli appalti."
-            )
-            result["unconnected_datasets"] = graph.get("unconnected_datasets", [])
-
-        return result
 
     return guard_timed(_exec, "dataset_graph")
 

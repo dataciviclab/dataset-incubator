@@ -30,7 +30,13 @@ jobs:
         with:
           extra-packages: mcp>=1.26.0 duckdb==1.5.1 pytest pytest-timeout
 
-      - name: Validate catalog and public GCS paths
+      # Validate catalog structure (schema + contract) — sempre
+      - name: Validate catalog structure
+        run: python scripts/build_clean_catalog.py
+
+      # Check GCS paths solo su push a main (troppo lento per PR: ~3min su 106 dataset)
+      - name: Validate public GCS paths
+        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         run: python scripts/build_clean_catalog.py --check-gcs
 
       - name: Smoke test clean-query MCP

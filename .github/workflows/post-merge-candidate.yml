@@ -202,10 +202,13 @@ jobs:
           fi
           python scripts/update_pipeline_sample_runs.py --samples-dir sample_run_artifacts
 
+      - name: Generate entity graph from updated catalog
+        run: python tools/graph/build_graph.py
+
       - name: Check registry diff
         id: diff
         run: |
-          if git diff --quiet -- registry/pipeline_signals.json registry/clean_catalog.json; then
+          if git diff --quiet -- registry/pipeline_signals.json registry/clean_catalog.json registry/entity_graph.json; then
             echo "changed=false" >> "$GITHUB_OUTPUT"
           else
             echo "changed=true" >> "$GITHUB_OUTPUT"
@@ -243,7 +246,7 @@ jobs:
           git checkout -B "$BRANCH"
 
           if [ "$PIPELINE_SIGNALS_CHANGED" = "true" ]; then
-            git add registry/pipeline_signals.json registry/clean_catalog.json
+            git add registry/pipeline_signals.json registry/clean_catalog.json registry/entity_graph.json
             git commit -m "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}"
           fi
 

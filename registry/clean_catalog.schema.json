@@ -101,6 +101,10 @@
         },
         "description": {
           "type": "string"
+        },
+        "semantic_type": {
+          "type": "string",
+          "description": "Tipo semantico della colonna (es. municipality_code, fiscal_code, ...)"
         }
       },
       "additionalProperties": false
