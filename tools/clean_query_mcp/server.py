@@ -599,6 +599,8 @@ def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
                 "description": schema.get("description"),
                 "source": schema.get("source"),
                 "period": schema.get("period"),
+                "tags": schema.get("tags", []),
+                "category": schema.get("category"),
                 "columns": schema.get("columns", []),
                 "total_rows": None,
                 "preview": None,
@@ -627,6 +629,8 @@ def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
             "description": schema.get("description"),
             "source": schema.get("source"),
             "period": schema.get("period"),
+            "tags": schema.get("tags", []),
+            "category": schema.get("category"),
             "columns": schema.get("columns", []),
             "total_rows": total_rows,
             "preview": {
@@ -645,10 +649,10 @@ def dataset_overview(slug: str, limit: int = 10) -> dict[str, Any]:
 
 @mcp.tool(
     description=(
-        "Cerca dataset per nome, descrizione o colonna. "
+        "Cerca dataset per nome, descrizione, fonte, tag, categoria o colonna. "
         "Entry point unico per scoprire dataset. "
         "Con metric_only=True mostra solo dataset con colonne numeriche. "
-        "Con query vuota restituisce tutti i dataset."
+        "Con query vuota restituisce tutti i dataset (con tags e category)."
     ),
     structured_output=True,
 )
@@ -676,11 +680,15 @@ def find(
                 if not has_metric:
                     continue
 
+            ds_tags = [t.lower() for t in ds.get("tags", [])]
+            ds_category = (ds.get("category") or "").lower()
             meta_match = (
                 not q
                 or q in ds.get("name", "").lower()
                 or q in ds.get("description", "").lower()
                 or q in ds.get("source", "").lower()
+                or q in ds_tags
+                or q in ds_category
             )
 
             matched_cols = []
@@ -703,6 +711,8 @@ def find(
                         "name": ds["name"],
                         "source": ds.get("source"),
                         "period": ds.get("period"),
+                        "tags": ds.get("tags", []),
+                        "category": ds.get("category"),
                         "matched_columns": matched_cols,
                         "meta_match": meta_match,
                     }

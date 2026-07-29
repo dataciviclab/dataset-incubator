@@ -147,6 +147,8 @@ def normalize_catalog(catalog: dict[str, Any], *, refresh_date: bool = False) ->
     _enrich_source_ids(normalized, ROOT)
     # Popola period da time_coverage nei dataset.yml
     _enrich_period_from_coverage(normalized, ROOT)
+    # Popola tags e category dai dataset.yml dei candidati
+    _enrich_tags_and_category(normalized, ROOT)
 
     return normalized
 
@@ -234,6 +236,57 @@ def _enrich_period_from_coverage(catalog: dict[str, Any], root: Path) -> None:
 
     if updated:
         print(f"[enrich] period aggiornato da time_coverage per {updated} dataset")
+
+
+def _enrich_tags_and_category(catalog: dict[str, Any], root: Path) -> None:
+    """Popola tags e category dai dataset.yml dei candidati.
+
+    Legge tags e category via load_dataset_manifest() e li aggiunge
+    all'entry del catalogo, se presenti nel dataset.yml.
+    Non sovrascrive se già presenti (l'editoriale ha precedenza).
+    """
+    candidates_dir = root / "candidates"
+    if not candidates_dir.is_dir():
+        return
+
+    slug_to_tags: dict[str, list[str]] = {}
+    slug_to_category: dict[str, str | None] = {}
+    for cand_dir in sorted(candidates_dir.iterdir()):
+        yml_path = cand_dir / "dataset.yml"
+        if not yml_path.is_file():
+            continue
+        try:
+            manifest = load_dataset_manifest(yml_path)
+        except Exception:
+            continue
+        slug = manifest.get("slug") or manifest.get("name") or ""
+        tags = manifest.get("tags") or []
+        category = manifest.get("category")
+        if tags and slug:
+            di_slug = slug.replace("-", "_")
+            slug_to_tags[di_slug] = tags
+        if category and slug:
+            di_slug = slug.replace("-", "_")
+            slug_to_category[di_slug] = category
+
+    if not slug_to_tags and not slug_to_category:
+        return
+
+    updated_tags = 0
+    updated_category = 0
+    for ds in catalog.get("datasets", []):
+        slug = ds.get("slug", "")
+        if slug in slug_to_tags and "tags" not in ds:
+            ds["tags"] = slug_to_tags[slug]
+            updated_tags += 1
+        if slug in slug_to_category and "category" not in ds:
+            ds["category"] = slug_to_category[slug]
+            updated_category += 1
+
+    if updated_tags:
+        print(f"[enrich] tags aggiunto a {updated_tags} dataset da dataset.yml")
+    if updated_category:
+        print(f"[enrich] category aggiunta a {updated_category} dataset da dataset.yml")
 
 
 def derive_catalog_from_gcs(

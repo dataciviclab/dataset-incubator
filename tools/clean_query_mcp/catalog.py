@@ -67,13 +67,15 @@ def list_datasets() -> list[dict[str, Any]]:
             "source": ds.get("source"),
             "period_start": ds["period"]["start"],
             "period_end": ds["period"]["end"],
+            "tags": ds.get("tags", []),
+            "category": ds.get("category"),
         }
         for ds in catalog
     ]
 
 
 def search_datasets(query: str) -> list[dict[str, Any]]:
-    """Cerca nei dataset per nome, descrizione e fonte."""
+    """Cerca nei dataset per nome, descrizione, fonte, tags e category."""
     q = query.lower()
     catalog = _load_catalog()
     matches = []
@@ -81,7 +83,9 @@ def search_datasets(query: str) -> list[dict[str, Any]]:
         name = ds.get("name", "").lower()
         desc = ds.get("description", "").lower()
         source = ds.get("source", "").lower()
-        if q in name or q in desc or q in source:
+        tags = [t.lower() for t in ds.get("tags", [])]
+        category = (ds.get("category") or "").lower()
+        if q in name or q in desc or q in source or q in tags or q in category:
             matches.append(
                 {
                     "slug": ds["slug"],
@@ -90,6 +94,8 @@ def search_datasets(query: str) -> list[dict[str, Any]]:
                     "source": ds.get("source"),
                     "period_start": ds["period"]["start"],
                     "period_end": ds["period"]["end"],
+                    "tags": ds.get("tags", []),
+                    "category": ds.get("category"),
                 }
             )
     return matches
@@ -110,6 +116,8 @@ def describe_dataset(slug: str) -> dict[str, Any]:
         "columns": ds["columns"],
         "location_type": ds["location"]["type"],
         "location_path": ds["location"]["path"],
+        "tags": ds.get("tags", []),
+        "category": ds.get("category"),
     }
 
 
