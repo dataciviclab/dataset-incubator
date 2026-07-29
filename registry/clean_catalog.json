@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-28",
+  "updated_at": "2026-07-29",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -4135,6 +4135,122 @@
         "multi_file": true
       },
       "stage": "incubating",
+      "registry_source": "derive_auto"
+    },
+    {
+      "slug": "elezioni_voto",
+      "name": "Elezioni Voto — risultati comunali, europee e regionali",
+      "description": "Vista unificata del voto in Italia per elezioni comunali, europee e regionali. 23 tornate (1979-2024), 1.35M righe. Schema normalizzato con tipo_elezione come dimensione. Fonte: Eligendo — DAIT Ministero dell'Interno.",
+      "source": "Eligendo — DAIT Ministero dell'Interno",
+      "source_id": "dataciviclab_composite",
+      "period": {
+        "start": 1979,
+        "end": 2024
+      },
+      "columns": [
+        {
+          "name": "data_elezione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data dell'elezione"
+        },
+        {
+          "name": "tipo_elezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Tipo di elezione: comunali, europee, regionali"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Regione"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Provincia"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Comune"
+        },
+        {
+          "name": "circoscrizione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Circoscrizione elettorale (solo europee e regionali)"
+        },
+        {
+          "name": "elettori",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Elettori aventi diritto"
+        },
+        {
+          "name": "votanti",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Votanti totali"
+        },
+        {
+          "name": "schede_bianche",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Schede bianche"
+        },
+        {
+          "name": "affluenza_pct",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Percentuale di affluenza (votanti/elettori * 100)"
+        },
+        {
+          "name": "lista",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Lista elettorale o coalizione"
+        },
+        {
+          "name": "voti_lista",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Voti ottenuti dalla lista"
+        },
+        {
+          "name": "candidato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome del candidato (solo comunali e regionali)"
+        },
+        {
+          "name": "voti_candidato",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Voti ottenuti dal candidato (solo comunali e regionali)"
+        },
+        {
+          "name": "turno",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "Turno di votazione: 1=primo, 2=ballottaggio (solo comunali)"
+        },
+        {
+          "name": "seggi_lista",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": "Seggi assegnati alla lista (solo comunali)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/elezioni_voto/2026/elezioni_voto_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
       "registry_source": "derive_auto"
     },
     {
