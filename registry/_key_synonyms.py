@@ -38,12 +38,14 @@ KEY_SYNONYMS: dict[str, list[str]] = {
         "cod_istat_comune",
         "comune_codice",
         "cod_comune_istat",
+        "codice_comune_scuola",  # MIM: contiene codice CATASTALE (mapping ambiguo, va verificato)
     ],
     "codice_catastale": [
         "codice_catastale",
         "cod_catastale",
         "catastale",
         "codice_belfiore",
+        "codice_comune_scuola",  # MIM: la colonna si chiama così ma contiene codice catastale
     ],
     "regione": [
         "regione",
@@ -66,6 +68,7 @@ KEY_SYNONYMS: dict[str, list[str]] = {
         "denominazione_comune",
         "comune_descrizione",
         "comune_denominazione",
+        "denominazione",  # FSC enti, MEF: colonna generica
     ],
     # ── DOMINIO APPALTI ──────────────────────────────────────────────────
     "cig": [
@@ -115,6 +118,7 @@ KEY_SYNONYMS: dict[str, list[str]] = {
         "CF_SA_DELEGANTE",
         "CF_SA_DELEGATA",
         "codice_fiscale_ente",
+        "amministrazione_codice_fiscale",  # MEF: CF amministrazione con parentesi []
     ],
     "codice_ipa": [
         "codice_ipa",
