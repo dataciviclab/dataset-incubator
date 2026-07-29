@@ -256,7 +256,7 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
         }
         out_dir = f"sample_run_artifacts/{artifact_name}"
         Path(out_dir).mkdir(parents=True, exist_ok=True)
-        with open(f"{out_dir}/sample_run_result.json", "w") as pf:
+        with open(f"{out_dir}/latest_run_result.json", "w") as pf:
             json.dump(payload, pf, indent=2)
         print(f"  {status}")
 

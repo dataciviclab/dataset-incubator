@@ -35,14 +35,14 @@ def main() -> int:
         "--samples-dir",
         type=Path,
         required=True,
-        help="Directory containing sample_run_result.json artifacts.",
+        help="Directory containing latest_run_result.json artifacts.",
     )
     args = parser.parse_args()
 
     catalog = json.loads(args.catalog.read_text(encoding="utf-8"))
     results = read_sample_results(args.samples_dir)
     if not results:
-        print(f"no sample_run_result.json files found in {args.samples_dir}", file=sys.stderr)
+        print(f"no latest_run_result.json files found in {args.samples_dir}", file=sys.stderr)
         return 1
 
     errors = apply_sample_results(catalog, results)
@@ -63,7 +63,7 @@ def main() -> int:
 
 def read_sample_results(samples_dir: Path) -> list[dict[str, Any]]:
     results = []
-    for path in sorted(samples_dir.rglob("sample_run_result.json")):
+    for path in sorted(samples_dir.rglob("latest_run_result.json")):
         payload = json.loads(path.read_text(encoding="utf-8"))
         payload["_artifact_path"] = str(path)
         results.append(payload)
