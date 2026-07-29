@@ -23,9 +23,9 @@ classifiers = [
 ]
 
 dependencies = [
-  # toolkit e lab-connectors sono pinnati in requirements.txt (fonte di verità CI)
-  "jsonschema>=4.0",
-  "mcp>=1.26.0",
+    # toolkit e lab-connectors sono pinnati in requirements.txt (fonte di verità CI)
+    "jsonschema>=4.0",
+    "lab-connectors[duckdb,gcs,mcp] @ git+https://github.com/dataciviclab/lab-connectors.git",
 ]
 
 [project.optional-dependencies]
