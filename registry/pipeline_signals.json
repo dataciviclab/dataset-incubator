@@ -2061,7 +2061,17 @@
       "status": "ok",
       "label": "compose:elezioni-voto",
       "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": ""
+      "action": "",
+      "sample_run": {
+        "status": "passed",
+        "run_id": "30456214276",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30456214276",
+        "checked_at": "2026-07-29",
+        "years": [
+          2026
+        ],
+        "config_path": "compose/elezioni-voto/dataset.yml"
+      }
     },
     {
       "id": "compose:eurostat-demography",
