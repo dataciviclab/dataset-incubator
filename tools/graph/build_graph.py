@@ -134,7 +134,7 @@ def build_graph() -> dict:
 
     return {
         "schema_version": 1,
-        "generated_from": "catalog_annotated.json",
+        "generated_from": "clean_catalog.json",
         "entities": {e: info for e, info in sorted(nodes.items())},
         "bridges": relations,
         "summary": {

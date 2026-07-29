@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_from": "catalog_annotated.json",
+  "generated_from": "clean_catalog.json",
   "entities": {
     "Attività economica": {
       "entity": "Attività economica",
