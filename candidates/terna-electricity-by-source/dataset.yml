@@ -5,6 +5,8 @@ dataset:
   name: "terna_electricity_by_source"
   source_id: "terna_opendata"
   years: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+  tags: [energia, elettricità, fonti-rinnovabili]
+  category: energia
 
 raw:
   sources:

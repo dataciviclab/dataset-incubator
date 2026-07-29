@@ -14,6 +14,9 @@ on:
       - "tools/**"
       - "tests/**"
       - "registry/**"
+      - "candidates/**"
+      - "compose/**"
+      - "support_datasets/**"
       - "pyproject.toml"
 
 jobs:
