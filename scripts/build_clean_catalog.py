@@ -9,6 +9,7 @@ from fnmatch import fnmatchcase
 from pathlib import Path
 from typing import Any
 
+import yaml
 from lab_connectors.gcs import list_objects, object_exists
 from lab_connectors.gcs.paths import gs_url
 from toolkit.core.dataset_loader import load_dataset_manifest
@@ -17,6 +18,49 @@ from toolkit.core.dataset_loader import load_dataset_manifest
 ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_CATALOG = ROOT / "registry" / "clean_catalog.json"
 DEFAULT_SCHEMA = ROOT / "registry" / "clean_catalog.schema.json"
+SEMTYPES_PATH = ROOT / "registry" / "semantic_types.yaml"
+
+
+def _load_semantic_type_map() -> dict[str, str]:
+    """Carica semantic_types.yaml e restituisce mappa alias → semantic_type.
+
+    Match esatto per tutti gli alias. Partial match solo per alias ≥6 caratteri
+    (evita falsi positivi: "prov" in "provvedimento", "ipa" in "partecipazione").
+    """
+    if not SEMTYPES_PATH.exists():
+        return {}
+    data = yaml.safe_load(SEMTYPES_PATH.read_text())
+    types = data.get("types", {})
+    alias_map: dict[str, str] = {}
+    partial_rules: list[tuple[str, str, int]] = []  # (alias_lower, stype, len)
+
+    for stype, info in types.items():
+        for alias in info.get("aliases", []):
+            alias_lower = alias.lower()
+            alias_len = len(alias)
+            if alias_len < 6:
+                # Solo match esatto per alias corti
+                alias_map[alias_lower] = stype
+            else:
+                # Match esatto + partial
+                alias_map[alias_lower] = stype
+                partial_rules.append((alias_lower, stype, alias_len))
+
+    return alias_map, partial_rules
+
+
+def _assign_semantic_type(col_name: str, alias_map, partial_rules) -> str | None:
+    """Assegna semantic_type a un nome colonna."""
+    col_lower = col_name.lower()
+    # Match esatto
+    st = alias_map.get(col_lower)
+    if st:
+        return st
+    # Partial match solo per alias ≥6
+    for alias_lower, stype, _ in partial_rules:
+        if alias_lower in col_lower:
+            return stype
+    return None
 
 
 def main() -> int:
@@ -287,6 +331,7 @@ def derive_catalog_from_gcs(
         )
 
         # Leggi schema dal parquet più recente su GCS (via DuckDB read_parquet)
+        alias_map, partial_rules = _load_semantic_type_map()
         columns: list[dict[str, str]] = []
         latest_year = years[-1]
         parquet_url = _https("clean", "clean_parquet", slug=slug, year=latest_year)
@@ -325,7 +370,12 @@ def derive_catalog_from_gcs(
                 }
                 bq_type = duckdb_to_catalog.get(raw_type, "VARCHAR")
                 role = "dimension" if bq_type == "VARCHAR" else "metric"
-                columns.append({"name": col_name, "type": bq_type, "role": role, "description": ""})
+                # Assegna tipo semantico se riconoscibile
+                semantic_type = _assign_semantic_type(col_name, alias_map, partial_rules)
+                col_entry = {"name": col_name, "type": bq_type, "role": role, "description": ""}
+                if semantic_type:
+                    col_entry["semantic_type"] = semantic_type
+                columns.append(col_entry)
         except Exception as exc:
             errors.append(f"{slug}: cannot read schema from {parquet_url}: {exc}")
             continue
@@ -350,7 +400,7 @@ def derive_catalog_from_gcs(
             for field in ("name", "description", "source", "source_id", "stage", "period"):
                 if old.get(field):
                     entry[field] = old[field]
-            # Preserva descrizione e role delle colonne dall'editoriale
+            # Preserva descrizione, role e semantic_type delle colonne dall'editoriale
             old_cols = {c["name"]: c for c in old.get("columns", [])}
             for col in entry["columns"]:
                 oc = old_cols.get(col["name"])
@@ -359,6 +409,10 @@ def derive_catalog_from_gcs(
                         col["description"] = oc["description"]
                     if oc.get("role"):
                         col["role"] = oc["role"]
+                    # Preserva semantic_type manuale se diverso da quello derivato
+                    oc_st = oc.get("semantic_type")
+                    if oc_st:
+                        col["semantic_type"] = oc_st
 
         datasets.append(entry)
 
