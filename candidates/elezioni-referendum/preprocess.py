@@ -10,7 +10,7 @@ import io
 import os
 import re
 import zipfile
-import urllib.request
+from lab_connectors.http.download import download as _lab_download
 
 SOURCES: dict[int, list[tuple[str, str, bool]]] = {
     1995: [
@@ -130,9 +130,7 @@ COL_MAP: list[tuple[re.Pattern, str]] = [
 
 
 def download(url: str) -> bytes:
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        return resp.read()
+    return _lab_download(url, timeout=120)
 
 
 def normalize_number(val: str) -> str:
