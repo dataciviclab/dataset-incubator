@@ -222,8 +222,8 @@ class TestLoadPreviousSampleRuns:
             json.dumps(
                 {
                     "signals": [
-                        {"id": "ds1", "sample_run": self._SAMPLE_RUN},
-                        {"id": "ds2", "sample_run": {**self._SAMPLE_RUN, "year": 2024}},
+                        {"id": "ds1", "latest_run": self._SAMPLE_RUN},
+                        {"id": "ds2", "latest_run": {**self._SAMPLE_RUN, "year": 2024}},
                     ]
                 }
             )
@@ -240,7 +240,7 @@ class TestLoadPreviousSampleRuns:
             json.dumps(
                 {
                     "signals": [
-                        {"id": "ds1", "sample_run": self._SAMPLE_RUN},
+                        {"id": "ds1", "latest_run": self._SAMPLE_RUN},
                         {"id": "ds2"},
                     ]
                 }
@@ -363,7 +363,7 @@ class TestBuildSignals:
                     "signals": [
                         {
                             "id": "ok-ds",
-                            "sample_run": {
+                            "latest_run": {
                                 "status": "passed",
                                 "run_id": "r1",
                                 "run_url": "u",
@@ -380,7 +380,7 @@ class TestBuildSignals:
         with patch("build_pipeline_signals.ROOT", root):
             assert build_signals(out) == 0
         s = json.loads(out.read_text())["signals"][0]
-        assert s["sample_run"]["run_id"] == "r1"
+        assert s["latest_run"]["run_id"] == "r1"
 
     @pytest.mark.contract
     def test_preserves_compose_sample_runs(self, tmp_path):
@@ -396,7 +396,7 @@ class TestBuildSignals:
                     "signals": [
                         {
                             "id": "compose:agg",
-                            "sample_run": {
+                            "latest_run": {
                                 "status": "passed",
                                 "run_id": "c1",
                                 "run_url": "u",
@@ -424,7 +424,7 @@ class TestBuildSignals:
         signals = json.loads(out.read_text())["signals"]
         compose_signal = [s for s in signals if s["id"] == "compose:agg"]
         assert len(compose_signal) == 1, "compose:agg non trovato dopo rebuild"
-        assert compose_signal[0]["sample_run"]["run_id"] == "c1", (
+        assert compose_signal[0]["latest_run"]["run_id"] == "c1", (
             f"sample_run perso dopo rebuild: {compose_signal[0]}"
         )
 

@@ -30,6 +30,7 @@ import time
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
+from typing import Any
 
 
 # ---------------------------------------------------------------------------
@@ -84,16 +85,16 @@ def _resolve_years(config_path: str, root: str) -> list[int]:
     return params.get("all_years", [])
 
 
-def _run_with_retry(cmd: list[str], cwd: str, attempts: int = 3) -> bool:
+def _run_with_retry(cmd: list[str], cwd: str, attempts: int = 3) -> tuple[bool, str]:
     for i in range(1, attempts + 1):
-        r = subprocess.run(cmd, cwd=cwd)
+        r = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
         if r.returncode == 0:
-            return True
+            return True, r.stdout
         if i < attempts:
             wait = 20 * i
             print(f"    tentativo {i}/{attempts} fallito, riprovo tra {wait}s...")
             time.sleep(wait)
-    return False
+    return False, r.stdout
 
 
 def _push_clean_to_gcs(slug: str, root: str) -> bool:
@@ -179,11 +180,59 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
         # Se un candidate ha bisogno di proxy per raggiungere la fonte,
         # impostalo via os.environ nello script di download.
         print(f"  toolkit run full --years {years_str}")
-        run_ok = _run_with_retry(
+        run_ok, run_stdout = _run_with_retry(
             ["toolkit", "run", "full", "--config", config_path, "--years", years_str, "--json"],
             cwd=root,
             attempts=args.retry,
         )
+
+        # Estrai metriche dall'output JSON del toolkit
+        run_metrics: dict[str, Any] = {}
+        if run_stdout:
+            try:
+                run_data = json.loads(run_stdout)
+                # Leggi readiness dal primo anno disponibile
+                steps = run_data.get("steps", {})
+                if steps:
+                    first_step = next(iter(steps.values()))
+                    readiness = first_step.get("readiness")
+                    if readiness:
+                        run_metrics["readiness"] = readiness
+                    checks = first_step.get("checks")
+                    checks_ok = first_step.get("checks_ok")
+                    checks_fail = first_step.get("checks_fail")
+                    if checks is not None:
+                        run_metrics["readiness_checks"] = {
+                            "total": checks,
+                            "ok": checks_ok or 0,
+                            "fail": checks_fail or 0,
+                        }
+                    layers = first_step.get("layers", {})
+                    row_counts: dict[str, int] = {}
+                    for layer_name in ("raw", "clean", "mart"):
+                        ln = layers.get(layer_name) or {}
+                        lv = ln.get("validation") or {}
+                        rc = lv.get("row_count") or ln.get("row_count")
+                        if rc is not None:
+                            row_counts[layer_name] = int(rc)
+                    if row_counts:
+                        run_metrics["row_counts"] = row_counts
+                # Durata: usa l'ultimo step o calcola dal run_data
+                if "duration_seconds" in run_data:
+                    run_metrics["duration_seconds"] = run_data["duration_seconds"]
+                # Quality scores dal preflight
+                preflight = run_data.get("preflight", {})
+                sources = preflight.get("sources", [])
+                qs = {}
+                for src in sources:
+                    name = src.get("name", "")
+                    score = src.get("quality_score")
+                    if name and score is not None:
+                        qs[name] = score
+                if qs:
+                    run_metrics["quality_scores"] = qs
+            except (json.JSONDecodeError, KeyError, TypeError):
+                pass  # metriche non disponibili — non blocca
 
         status = "passed" if run_ok else "failed"
         if status == "failed":
@@ -194,7 +243,7 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
         # Compose datasets usano prefisso "compose:" per allinearsi
         # a build_pipeline_signals.py che lo usa per evitare collisioni
         resolved_id = f"compose:{slug}" if config_path.startswith("compose/") else slug
-        payload = {
+        payload: dict[str, Any] = {
             "id": resolved_id,
             "status": status,
             "years": all_years,
@@ -203,6 +252,7 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             "run_id": run_id,
             "run_url": f"https://github.com/{repo}/actions/runs/{run_id}",
             "checked_at": datetime.now(timezone.utc).date().isoformat(),
+            **run_metrics,
         }
         out_dir = f"sample_run_artifacts/{artifact_name}"
         Path(out_dir).mkdir(parents=True, exist_ok=True)

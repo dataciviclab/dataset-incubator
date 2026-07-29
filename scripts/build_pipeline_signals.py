@@ -285,7 +285,7 @@ def _build_signal(slug: str, base_dir: Path) -> dict:
 
 
 def build_signals(out_path: Path) -> int:
-    previous_sample_runs = load_previous_sample_runs(out_path)
+    previous_latest_runs = load_previous_sample_runs(out_path)
     signals = []
 
     candidates_dir = ROOT / "candidates"
@@ -296,8 +296,8 @@ def build_signals(out_path: Path) -> int:
     for entry in sorted(p for p in candidates_dir.iterdir() if p.is_dir()):
         slug = entry.name
         signal = _build_signal(slug, entry)
-        if slug in previous_sample_runs:
-            signal["sample_run"] = previous_sample_runs[slug]
+        if slug in previous_latest_runs:
+            signal["latest_run"] = previous_latest_runs[slug]
         signals.append(signal)
 
     # support_datasets also use detect_candidate_layout and need to appear in signals
@@ -306,8 +306,8 @@ def build_signals(out_path: Path) -> int:
         for entry in sorted(p for p in support_dir.iterdir() if p.is_dir()):
             slug = entry.name
             signal = _build_signal(slug, entry)
-            if slug in previous_sample_runs:
-                signal["sample_run"] = previous_sample_runs[slug]
+            if slug in previous_latest_runs:
+                signal["latest_run"] = previous_latest_runs[slug]
             signals.append(signal)
 
     # Compose datasets: mart-only, leggono output gia pubblicati via support:
@@ -317,9 +317,9 @@ def build_signals(out_path: Path) -> int:
         for entry in sorted(p for p in compose_dir.iterdir() if p.is_dir()):
             slug = f"compose:{entry.name}"
             signal = _build_signal(slug, entry)
-            # sample_run per compose usa ID con prefisso "compose:"
-            if slug in previous_sample_runs:
-                signal["sample_run"] = previous_sample_runs[slug]
+            # latest_run per compose usa ID con prefisso "compose:"
+            if slug in previous_latest_runs:
+                signal["latest_run"] = previous_latest_runs[slug]
             signals.append(signal)
 
     by_status: dict[str, int] = {"ok": 0, "warn": 0, "error": 0}
@@ -353,15 +353,16 @@ def load_previous_sample_runs(path: Path) -> dict[str, dict]:
         payload = json.loads(path.read_text(encoding="utf-8"))
     except json.JSONDecodeError:
         return {}
-    sample_runs = {}
+    latest_runs = {}
     for signal in payload.get("signals", []):
         if not isinstance(signal, dict):
             continue
         signal_id = signal.get("id")
-        sample_run = signal.get("sample_run")
-        if signal_id and isinstance(sample_run, dict):
-            sample_runs[signal_id] = sample_run
-    return sample_runs
+        # Transizione: prima prova latest_run, poi fallback a sample_run
+        run = signal.get("latest_run") or signal.get("sample_run")
+        if signal_id and isinstance(run, dict):
+            latest_runs[signal_id] = run
+    return latest_runs
 
 
 def main() -> int:

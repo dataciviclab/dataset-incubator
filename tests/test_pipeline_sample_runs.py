@@ -101,7 +101,7 @@ class PipelineSampleRunTest(unittest.TestCase):
         )
 
         self.assertEqual(errors, [])
-        self.assertEqual(catalog["signals"][0]["sample_run"]["status"], "passed")
+        self.assertEqual(catalog["signals"][0]["latest_run"]["status"], "passed")
 
     def test_apply_sample_results_rejects_unknown_signal(self) -> None:
         catalog = {"signals": []}
@@ -160,7 +160,7 @@ class PipelineSignalsSchemaTest(unittest.TestCase):
                     "label": "test-candidate",
                     "detail": "anno 2024 — fonte test_csv — mart: sì",
                     "action": "",
-                    "sample_run": {
+                    "latest_run": {
                         "status": "passed",
                         "run_id": "123",
                         "run_url": "https://github.com/test/actions/runs/123",
@@ -189,7 +189,7 @@ class PipelineSignalsSchemaTest(unittest.TestCase):
                     "label": "test-candidate",
                     "detail": "anni 2023-2025 — fonte test_csv — mart: sì",
                     "action": "",
-                    "sample_run": {
+                    "latest_run": {
                         "status": "passed",
                         "run_id": "123",
                         "run_url": "https://github.com/test/actions/runs/123",
@@ -218,7 +218,7 @@ class PipelineSignalsSchemaTest(unittest.TestCase):
                     "label": "test-candidate",
                     "detail": "anni 2023-2025 — fonte test_csv — mart: sì",
                     "action": "",
-                    "sample_run": {
+                    "latest_run": {
                         "status": "passed",
                         "run_id": "123",
                         "run_url": "https://github.com/test/actions/runs/123",

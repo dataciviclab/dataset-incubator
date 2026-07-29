@@ -89,14 +89,14 @@
           "type": "string",
           "description": "Azione suggerita. Stringa vuota se nessuna."
         },
-        "sample_run": {
-          "$ref": "#/definitions/SampleRun",
-          "description": "Risultato dell'ultimo sample run (opzionale, presente solo se eseguito)."
+        "latest_run": {
+          "$ref": "#/definitions/LatestRun",
+          "description": "Risultato dell'ultimo pipeline run (opzionale, presente solo se eseguito)."
         }
       },
       "additionalProperties": false
     },
-    "SampleRun": {
+    "LatestRun": {
       "type": "object",
       "required": ["status", "run_id", "run_url", "checked_at"],
       "properties": {
@@ -140,6 +140,40 @@
           "type": "array",
           "items": { "$ref": "#/definitions/ConfigEntry" },
           "description": "Lista dei config testati (post-merge con multi-anno)."
+        },
+        "duration_seconds": {
+          "type": "number",
+          "description": "Durata totale del run in secondi."
+        },
+        "row_counts": {
+          "type": "object",
+          "properties": {
+            "raw": { "type": "integer", "description": "Righe lette in RAW." },
+            "clean": { "type": "integer", "description": "Righe prodotte in CLEAN." },
+            "mart": { "type": "integer", "description": "Righe totali nelle tabelle MART." }
+          },
+          "additionalProperties": false,
+          "description": "Conteggio righe per layer."
+        },
+        "quality_scores": {
+          "type": "object",
+          "additionalProperties": { "type": "number" },
+          "description": "Quality score PA per fonte (nome_fonte → punteggio)."
+        },
+        "readiness": {
+          "type": "string",
+          "enum": ["ready", "needs-review", "incomplete"],
+          "description": "Punteggio di prontezza del dataset."
+        },
+        "readiness_checks": {
+          "type": "object",
+          "properties": {
+            "total": { "type": "integer" },
+            "ok": { "type": "integer" },
+            "fail": { "type": "integer" }
+          },
+          "additionalProperties": false,
+          "description": "Esito dei readiness check."
         }
       },
       "additionalProperties": false,
