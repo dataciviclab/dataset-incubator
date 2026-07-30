@@ -3,7 +3,7 @@ name: intake-candidate
 description: Skill canonico di dataset-incubator per portare un caso da issue intake a candidate runnable.
 license: MIT
 metadata:
-  version: "0.6"
+  version: "0.7"
   owner: "DataCivicLab"
   tags: [dataset-incubator, intake, candidate]
 ---
@@ -11,11 +11,11 @@ metadata:
 # Skill: intake-candidate
 
 Skill canonico di `dataset-incubator`.
-Versione: 0.6 - 2026-06-17
+Versione: 0.7 — 2026-07-30 — CLI allineata a toolkit v1.46
 
 ## Obiettivo
 
-Portare un caso da issue intake a candidate runnable — dataset.yml presente, run full passa, stato tecnico chiaro.
+Portare un caso da issue intake a candidate runnable — dataset.yml presente, run passa, stato tecnico chiaro.
 
 ## Entry point
 
@@ -89,7 +89,7 @@ Prima di runnare, revisiona velocemente:
 Poi:
 
 ```bash
-toolkit run full --config candidates/{slug}/dataset.yml --years 2024
+toolkit run -c candidates/{slug}/dataset.yml --years 2024
 ```
 
 Unico comando. Esegue raw + clean + mart + validate + readiness.
@@ -100,8 +100,7 @@ Prima lascia che la pipeline dica se è tutto ok, poi controlla che i dati abbia
 
 ```bash
 # 1. Stato pipeline
-toolkit inspect summary -c candidates/{slug}/dataset.yml -y 2024 --json
-# Oppure MCP: toolkit_status(config_path) → paths, summary, readiness, run_stats
+toolkit inspect -c candidates/{slug}/dataset.yml -y 2024 --json
 
 # 2. Dati — conta righe e vedi un campione
 toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m sql --sql "SELECT count(*) FROM data"
@@ -143,7 +142,7 @@ Apri PR con:
 
 - PR aperta con candidate strutturato
 - issue e struttura coerenti
-- almeno un run full passato oppure blocker documentato
+- almeno un run passato oppure blocker documentato
 - boundary clean/mart rispettato
 
 ## Dove orientarsi

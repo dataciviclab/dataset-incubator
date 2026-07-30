@@ -3,7 +3,7 @@ name: run-candidate
 description: Skill canonico per eseguire un candidate esistente e verificarne lo stato.
 license: MIT
 metadata:
-  version: "0.5"
+  version: "0.6"
   owner: "DataCivicLab"
   tags: [dataset-incubator, run, candidate]
 ---
@@ -11,7 +11,7 @@ metadata:
 # Skill: run-candidate
 
 Skill canonico di `dataset-incubator`.
-Versione: 0.5 - 2026-06-17
+Versione: 0.6 — 2026-07-30 — CLI allineata a toolkit v1.46
 
 ## Obiettivo
 
@@ -30,7 +30,7 @@ Stop: candidate immaturo, boundary clean/mart assente, problema di fase preceden
 ### 1. Pre-flight
 
 ```bash
-toolkit inspect summary -c candidates/{slug}/dataset.yml -y 2024 --json
+toolkit inspect -c candidates/{slug}/dataset.yml -y 2024 --json
 ```
 
 Oppure MCP: `toolkit_status(config_path)` → sezioni `paths_info` + `run_stats`.
@@ -38,7 +38,7 @@ Oppure MCP: `toolkit_status(config_path)` → sezioni `paths_info` + `run_stats`
 ### 2. Run
 
 ```bash
-toolkit run full --config candidates/{slug}/dataset.yml --years 2024
+toolkit run -c candidates/{slug}/dataset.yml --years 2024
 ```
 
 Unico comando. Esegue raw + clean + mart + validate + readiness in sequenza.
@@ -49,7 +49,7 @@ Prima lo stato pipeline, poi controlla che i dati abbiano senso.
 
 ```bash
 # Stato pipeline
-toolkit inspect summary -c candidates/{slug}/dataset.yml -y 2024 --json
+toolkit inspect -c candidates/{slug}/dataset.yml -y 2024 --json
 # Oppure MCP: toolkit_status(config_path) → sezione readiness
 
 # Ispezione dati — conta righe e campione
@@ -81,12 +81,12 @@ Se il blocker è isolato → documentalo e chiudi con `scaffolded_with_blocker`.
 
 ### 5. Chiudi con stato
 
-- `runnable` — run full passa, output leggibili
+- `runnable` — run passa, output leggibili
 - `scaffolded_with_blocker` — blocker preciso documentato
 
 ## Definition of done
 
-- run full eseguito senza errori oppure blocker documentato
+- run eseguito senza errori oppure blocker documentato
 - esito netto, prossimo passo esplicito
 
 ## Errori tipici

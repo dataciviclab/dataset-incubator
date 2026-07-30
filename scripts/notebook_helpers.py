@@ -13,7 +13,7 @@ Uso nel notebook:
     cfg, anno = NotebookHelper.find_config()
     h = NotebookHelper(cfg, anno)
 
-    paths = h.tk_year("inspect", "paths")
+    info = h.tk("inspect")  # stato completo (ex inspect paths + summary)
     schema = h.tk_schema("clean")
     show(df)
 """
@@ -44,11 +44,11 @@ class NotebookHelper:
     def tk(self, *args: str) -> dict[str, Any]:
         """Esegue un comando toolkit e restituisce il JSON di output.
 
-        I comandi supportati includono: ``inspect config``, ``inspect summary``,
+        I comandi supportati includono: ``inspect``, ``inspect config``,
         ``inspect runs``, etc.
 
         Args:
-            *args: Argomenti del comando (es. ``"inspect", "paths"``).
+            *args: Argomenti del comando (es. ``"inspect", "config"``).
 
         Returns:
             Dict parsato dal JSON stdout del toolkit. Vuoto se stdout è vuoto.
@@ -61,11 +61,7 @@ class NotebookHelper:
         return json.loads(result.stdout) if result.stdout.strip() else {}
 
     def tk_year(self, *args: str) -> dict[str, Any]:
-        """Come :meth:`tk` ma aggiunge automaticamente ``--year <anno>``.
-
-        Utile per comandi che richiedono l'anno (``inspect config``,
-        ``inspect summary``).
-        """
+        """Come :meth:`tk` ma aggiunge automaticamente ``--year <anno>``."""
         return self.tk(*args, "--year", str(self.anno))
 
     def tk_schema(self, layer: str) -> dict[str, Any]:
@@ -79,7 +75,7 @@ class NotebookHelper:
             restituisce ``{"columns": 0, "schema": []}``.
         """
         try:
-            data = self.tk_year("inspect", "config", "-l", layer, "-m", "schema")
+            data = self.tk_year("inspect", "config", "-m", "schema", "-l", layer)
         except Exception:
             return {"columns": 0, "schema": []}
         if isinstance(data, dict) and "column_count" in data and "columns" in data:

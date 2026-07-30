@@ -142,17 +142,16 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
         layers = report.get("layers", {})
         for layer_name in ("raw", "clean", "mart"):
             ln = layers.get(layer_name) or {}
-            lv = ln.get("validation") or {}
-            row_count = lv.get("row_count") or ln.get("row_count")
+            # row_count: prima dal campo uniforme a livello layer (nuovo),
+            # poi fallback su validation per report vecchi
+            row_count = ln.get("row_count") or (ln.get("validation") or {}).get("row_count")
             if row_count is not None:
                 total_row_counts[layer_name] = total_row_counts.get(layer_name, 0) + int(row_count)
-
-        pf = report.get("preflight", {})
-        for src in pf.get("sources", []):
-            name = src.get("name", "")
-            score = src.get("quality_score")
-            if name and score is not None:
-                all_qs[name] = float(score)
+            # quality_score: dal validation del layer (non da preflight,
+            # che ha null per fonti unreachable)
+            qs = (ln.get("validation") or {}).get("quality_score")
+            if qs is not None:
+                all_qs[layer_name] = float(qs)
 
     if latest_duration is not None:
         metrics["duration_seconds"] = latest_duration
