@@ -92,7 +92,9 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
       {root}/data/_reports/{slug}/{year}_run_report.json
     oppure in {root}/out/data/_reports/{slug}/{year}_run_report.json
     (quando il root del dataset.yml è ./out).
-    Contengono duration_seconds, readiness, row_counts, quality_scores.
+    Lo slug nella directory report può usare underscore (terna_capacita)
+    mentre lo slug del candidate usa trattini (terna-capacita).
+    Contiene duration_seconds, readiness, row_counts, quality_scores.
     """
     metrics: dict[str, Any] = {}
     root_path = Path(root)
@@ -101,6 +103,8 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
         root_path / "data" / "_reports",
         root_path / "out" / "data" / "_reports",
     ]
+    # Lo slug del report potrebbe usare underscore invece di trattini
+    slug_variants = [slug, slug.replace("-", "_")]
     latest_duration = None
     total_row_counts: dict[str, int] = {}
     latest_readiness = None
@@ -110,9 +114,12 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
     for year in years:
         report_path = None
         for base in report_dirs:
-            candidate = base / slug / f"{year}_run_report.json"
-            if candidate.exists():
-                report_path = candidate
+            for s in slug_variants:
+                candidate = base / s / f"{year}_run_report.json"
+                if candidate.exists():
+                    report_path = candidate
+                    break
+            if report_path:
                 break
         if report_path is None:
             continue
