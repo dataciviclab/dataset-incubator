@@ -90,10 +90,17 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
 
     I report sono scritti da toolkit run full in:
       {root}/data/_reports/{slug}/{year}_run_report.json
+    oppure in {root}/out/data/_reports/{slug}/{year}_run_report.json
+    (quando il root del dataset.yml è ./out).
     Contengono duration_seconds, readiness, row_counts, quality_scores.
     """
     metrics: dict[str, Any] = {}
     root_path = Path(root)
+    # Cerca in root e in root/out (dove toolkit scrive con root=./out)
+    report_dirs = [
+        root_path / "data" / "_reports",
+        root_path / "out" / "data" / "_reports",
+    ]
     latest_duration = None
     total_row_counts: dict[str, int] = {}
     latest_readiness = None
@@ -101,8 +108,14 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
     all_qs: dict[str, float] = {}
 
     for year in years:
-        report_path = root_path / "data" / "_reports" / slug / f"{year}_run_report.json"
-        if not report_path.exists():
+        report_path = None
+        for base in report_dirs:
+            candidate = base / slug / f"{year}_run_report.json"
+            if candidate.exists():
+                report_path = candidate
+                break
+        if report_path is None:
+            continue
             continue
         try:
             report = json.loads(report_path.read_text(encoding="utf-8"))
@@ -150,6 +163,11 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
 def _run_with_retry(cmd: list[str], cwd: str, attempts: int = 3) -> tuple[bool, str]:
     for i in range(1, attempts + 1):
         r = subprocess.run(cmd, cwd=cwd, capture_output=True, text=True)
+        # Stampa l'output del comando per visibilità in CI
+        if r.stdout:
+            print(r.stdout)
+        if r.stderr:
+            print(r.stderr, file=sys.stderr)
         if r.returncode == 0:
             return True, r.stdout
         if i < attempts:
