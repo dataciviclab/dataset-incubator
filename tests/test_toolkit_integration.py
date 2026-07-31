@@ -1,6 +1,6 @@
 """Integration test: lancia toolkit su un candidate minimo e verifica output.
 
-Contratto: toolkit run full produce output CLEAN e MART su un candidate minimo.
+Contratto: toolkit run produce output CLEAN e MART su un candidate minimo.
 Skip automatico se toolkit non e' disponibile.
 
 Prova del fuoco: se cancello questi test, un refactor di toolkit o del formato
@@ -88,13 +88,13 @@ validation:
 
         # Esegui toolkit
         result = subprocess.run(
-            ["toolkit", "run", "all", "--config", str(yml), "--years", "2024"],
+            ["toolkit", "run", "--config", str(yml), "--years", "2024"],
             capture_output=True,
             text=True,
             timeout=120,
         )
         if result.returncode != 0:
-            pytest.fail(f"toolkit run all fallito:\nSTDOUT:{result.stdout}\nSTDERR:{result.stderr}")
+            pytest.fail(f"toolkit run fallito:\nSTDOUT:{result.stdout}\nSTDERR:{result.stderr}")
 
         # Verifica output CLEAN
         clean_parquet = (
@@ -113,7 +113,12 @@ validation:
         mart_parquet = dst / "out" / "data" / "mart" / "test_intg" / "2024" / "mart_intg.parquet"
         assert mart_parquet.exists(), f"Mart parquet non trovato: {mart_parquet}"
 
-        # Verifica summary.ok in metadata.json
-        meta_dir = mart_parquet.parent
-        meta = json.loads((meta_dir / "metadata.json").read_text(encoding="utf-8"))
-        assert meta.get("summary", {}).get("ok") is True
+        # Verifica validazione nel run record (fonte di verità da toolkit #436:
+        # la validazione è in memoria nel run record, non più in metadata.json)
+        runs_dir = dst / "out" / "data" / "_runs" / "test_intg" / "2024"
+        run_files = sorted(runs_dir.glob("*.json"))
+        assert run_files, f"Run record non trovato in {runs_dir}"
+        run_rec = json.loads(run_files[-1].read_text(encoding="utf-8"))
+        assert run_rec["status"] == "SUCCESS"
+        assert run_rec["validations"]["clean"]["passed"] is True
+        assert run_rec["validations"]["mart"]["passed"] is True

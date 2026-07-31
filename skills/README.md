@@ -9,8 +9,10 @@ Sono il riferimento umano per il comportamento della pipeline toolkit e delle Gi
 | Skill | Quando |
 |---|---|
 | `intake-candidate.md` | Valutare se un caso è maturo per entrare in DI e creare la struttura minima |
-| `run-candidate.md` | Eseguire un candidate e chiuderlo con stato (`runnable`, `scaffolded_with_blocker`, `wait`) |
+| `run-candidate.md` | Eseguire un candidate e chiuderlo con stato (`runnable`, `scaffolded_with_blocker`, `wait`) — inspect come gate |
 | `post-merge-candidate.md` | Checklist maintainer dopo il merge: run completo, push GCS, clean catalog |
+
+> **Gate**: dopo ogni run, `toolkit inspect` mostra il verdict readiness (ready / needs-review / incomplete) con i check. Un candidate si chiude `runnable` solo con `ready` o con `needs-review` motivato per il perimetro del dataset.
 
 ## GitHub Actions (pipeline automatica)
 

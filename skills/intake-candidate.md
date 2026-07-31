@@ -11,7 +11,7 @@ metadata:
 # Skill: intake-candidate
 
 Skill canonico di `dataset-incubator`.
-Versione: 0.7 — 2026-07-30 — CLI allineata a toolkit v1.46
+Versione: 0.7 — 2026-07-31 — inspect come gate con readiness
 
 ## Obiettivo
 
@@ -86,21 +86,22 @@ Prima di runnare, revisiona velocemente:
 - `dataset.yml` — campi `clean.read` e `sql` coerenti col source profile
 - boundary clean/mart — clean raw-faithful, mart analitico
 
-Poi:
+Poi, **un anno per volta**:
 
 ```bash
-toolkit run -c candidates/{slug}/dataset.yml --years 2024
+toolkit run -c candidates/{slug}/dataset.yml --year 2024
 ```
 
-Unico comando. Esegue raw + clean + mart + validate + readiness.
+Esegue raw + clean + mart + validate + readiness. A fine run mostra il
+verdict sintetico (es. `readiness: needs-review (7/8)`).
 
-### 5. Verifica
+### 5. Verifica — inspect è il gate
 
 Prima lascia che la pipeline dica se è tutto ok, poi controlla che i dati abbiano senso.
 
 ```bash
-# 1. Stato pipeline
-toolkit inspect -c candidates/{slug}/dataset.yml -y 2024 --json
+# 1. Stato + verdict readiness con check (comando unico)
+toolkit inspect -c candidates/{slug}/dataset.yml -y 2024
 
 # 2. Dati — conta righe e vedi un campione
 toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m sql --sql "SELECT count(*) FROM data"
@@ -112,7 +113,10 @@ toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m sql --sql "SE
 toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m preview --limit 5
 ```
 
-I numeri sono nel range atteso? Le colonne sono quelle giuste? Se sì → candidate ok.
+I numeri sono nel range atteso? Le colonne sono quelle giuste?
+Se `readiness: ready` → candidate ok.
+Se `needs-review` → guarda quale check fallisce e decidi se è un blocker
+reale o un check da allineare al perimetro.
 
 Se la pipeline fallisce → diagnostica rapida:
 
@@ -128,6 +132,8 @@ toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m schema --jso
 toolkit inspect config -c candidates/{slug}/dataset.yml --diff --json
 ```
 
+Ciclo fix → run → inspect fino a `ready` (o blocker documentato).
+
 Blocker specifico documentato, non formulaico.
 
 ### 6. PR
@@ -136,7 +142,7 @@ Apri PR con:
 - branch da `main`
 - perimetro stretto
 - issue collegata
-- esito del run in descrizione (passed / failed / blocker)
+- esito del run + verdict readiness in descrizione (ready / needs-review motivato / blocker)
 
 ## Definition of done
 
