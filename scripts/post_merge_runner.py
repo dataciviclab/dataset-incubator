@@ -109,7 +109,7 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
     ]
     # Lo slug del run potrebbe usare underscore invece di trattini
     slug_variants = [slug, slug.replace("-", "_")]
-    latest_duration = None
+    total_duration = 0.0
     total_row_counts: dict[str, int] = {}
     all_qs: dict[str, float] = {}
 
@@ -135,9 +135,10 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
         except (json.JSONDecodeError, OSError):
             continue
 
+        # Durata: somma le durate per anno (il run record è per-anno)
         dur = record.get("duration_seconds")
         if dur is not None:
-            latest_duration = dur
+            total_duration += float(dur)
 
         layers = record.get("layers", {})
         validations = record.get("validations", {})
@@ -154,13 +155,13 @@ def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, An
             )
             if row_count is not None:
                 total_row_counts[layer_name] = total_row_counts.get(layer_name, 0) + int(row_count)
-            # quality_score: dal validation del layer
+            # quality_score: dal validation del layer (ultimo anno letto)
             qs = lv.get("quality_score")
             if qs is not None:
                 all_qs[layer_name] = float(qs)
 
-    if latest_duration is not None:
-        metrics["duration_seconds"] = latest_duration
+    if total_duration > 0:
+        metrics["duration_seconds"] = round(total_duration, 2)
     if total_row_counts:
         metrics["row_counts"] = total_row_counts
     if all_qs:
