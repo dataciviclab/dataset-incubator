@@ -8,10 +8,10 @@ env:
   TOOLKIT_VERSION: "from-requirements-txt"
   BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
 
-# Preflight + run con sample-rows su candidate modificati in PR.
-# Su PR: preflight (config + reachability) + run reale RAW→CLEAN→MART
-# con sample-rows 10000 (gate di qualità: valida esecuzione, non solo
-# sintassi SQL). Il run completo (tutti i dati) avviene su merge.
+# Preflight + run full ultimo anno su candidate modificati in PR.
+# Su PR: preflight (config + reachability) + run full dell'ultimo anno
+# (gate di qualità: carica tutti i dati, fa emergere PK duplicati,
+# null_padding, colonne mancanti — lo smoke li maschera).
 
 on:
   pull_request:
@@ -120,8 +120,8 @@ jobs:
           toolkit run preflight --config "${{ matrix.config.config_path }}" --json 2>&1 \
             || echo "::warning::Preflight issues detected for ${{ matrix.config.config_path }}"
 
-      - name: "Toolkit run con sample-rows (esecuzione reale RAW→CLEAN→MART) [retry x2]"
-        id: run_sample
+      - name: "Toolkit run full ultimo anno (RAW→CLEAN→MART completo) [retry x2]"
+        id: run_full
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: |
@@ -129,15 +129,15 @@ jobs:
           for i in $(seq 1 $MAX_ATTEMPTS); do
             toolkit run \
               --config "${{ matrix.config.config_path }}" \
-              --sample-rows 10000 \
-              > run_sample.log 2>&1; ec=$?
+              --year "${{ matrix.config.year }}" \
+              > run_full.log 2>&1; ec=$?
             if [ $ec -eq 0 ]; then
               echo "exit_code=0" >> "$GITHUB_OUTPUT"
-              cat run_sample.log
+              cat run_full.log
               exit 0
             fi
             echo "Attempt $i/$MAX_ATTEMPTS failed (exit=$ec). Stderr:"
-            cat run_sample.log
+            cat run_full.log
             if [ $i -lt $MAX_ATTEMPTS ]; then
               WAIT=$(( i * 15 ))
               echo "Retrying in ${WAIT}s..."
@@ -145,7 +145,7 @@ jobs:
             fi
           done
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
-          cat run_sample.log 2>/dev/null || echo "No output"
+          cat run_full.log 2>/dev/null || echo "No output"
           exit $ec
 
       - name: Upload artifacts
@@ -154,7 +154,7 @@ jobs:
         with:
           name: pr-toolkit-${{ matrix.config.artifact_name }}
           path: |
-            run_sample.log
+            run_full.log
           retention-days: 7
 
   report:
@@ -185,10 +185,10 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
 
           if [ "$RESULT" = "success" ]; then
-            echo "✅ All candidates passed preflight + run sample-rows" >> "$GITHUB_STEP_SUMMARY"
+            echo "✅ All candidates passed preflight + run full ultimo anno" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "❌ Some candidates failed — individual artifacts in 'pr-toolkit-*' above" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "> Il run con sample-rows valida esecuzione reale (download + clean + mart)." >> "$GITHUB_STEP_SUMMARY"
+            echo "> Il run full dell'ultimo anno valida esecuzione reale (download + clean + mart)." >> "$GITHUB_STEP_SUMMARY"
             echo "> I fallimenti possono essere dovuti a fonte irraggiungibile (retry x2)." >> "$GITHUB_STEP_SUMMARY"
           fi
