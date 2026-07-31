@@ -122,7 +122,7 @@ jobs:
       - name: "Toolkit SQL dry-run (valida sintassi SQL senza eseguire)"
         id: dry_run
         run: |
-          toolkit run all \
+          toolkit run \
             --config "${{ matrix.config.config_path }}" \
             --dry-run \
             > dry_run.log 2>&1; ec=$?

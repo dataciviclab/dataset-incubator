@@ -5,7 +5,7 @@ Estratto dalla logica inline Python nei job sample_run e build-and-pr
 del workflow GHA post-merge-candidate.yml.
 
 Subcommands:
-    sample-run    Esegue toolkit run full + GCS push + catalog rebuild
+    sample-run    Esegue toolkit run + GCS push + catalog rebuild
                   per ogni config rilevato in detect_output.json.
                   Sostituisce il blocco inline 'Process each detected config'.
 
@@ -88,7 +88,7 @@ def _resolve_years(config_path: str, root: str) -> list[int]:
 def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, Any]:
     """Legge metriche di run dai run_report.json prodotti dal toolkit.
 
-    I report sono scritti da toolkit run full in:
+    I report sono scritti da toolkit run in:
       {root}/data/_reports/{slug}/{year}_run_report.json
     oppure in {root}/out/data/_reports/{slug}/{year}_run_report.json
     (quando il root del dataset.yml è ./out).
@@ -262,12 +262,13 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
 
         years_str = ",".join(str(y) for y in all_years)
 
-        # --- Toolkit run full (run + validate + readiness + support) ---
+        # --- Toolkit run (run + validate + readiness + support) ---
         # Se un candidate ha bisogno di proxy per raggiungere la fonte,
         # impostalo via os.environ nello script di download.
-        print(f"  toolkit run full --years {years_str}")
+        # Il comando "run" (default) sostituisce il vecchio "run full".
+        print(f"  toolkit run --years {years_str}")
         run_ok, run_stdout = _run_with_retry(
-            ["toolkit", "run", "full", "--config", config_path, "--years", years_str, "--json"],
+            ["toolkit", "run", "--config", config_path, "--years", years_str, "--json"],
             cwd=root,
             attempts=args.retry,
         )
@@ -405,9 +406,7 @@ def main() -> None:
     sub = parser.add_subparsers(dest="command", required=True)
 
     # sample-run
-    p_sample = sub.add_parser(
-        "sample-run", help="Esegui toolkit run full + GCS push per ogni config"
-    )
+    p_sample = sub.add_parser("sample-run", help="Esegui toolkit run + GCS push per ogni config")
     p_sample.add_argument(
         "--detect-json",
         default="detect_output.json",

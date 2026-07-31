@@ -170,11 +170,11 @@ def check_clean_validation_config(dataset_yml: Path, warnings: list[str]) -> Non
 
     clean_validate = cfg.clean.validate
     missing: list[str] = []
-    if not clean_validate.not_null:
+    if not clean_validate or not clean_validate.not_null:
         missing.append("clean.validate.not_null")
     if not cfg.clean.required_columns:
         missing.append("clean.required_columns")
-    if not clean_validate.primary_key:
+    if not clean_validate or not clean_validate.primary_key:
         missing.append(
             "clean.validate.primary_key (utile ma opzionale — deroga se PK non dichiarabile)"
         )
