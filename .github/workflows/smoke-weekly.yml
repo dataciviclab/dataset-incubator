@@ -59,11 +59,15 @@ jobs:
                   d = json.loads(r.stdout)
                   srcs = d.get("sources") or []
                   n_reach = sum(1 for s in srcs if s.get("reachable"))
+                  # Criterio: status "passed" da preflight (config ok + fonti
+                  # raggiungibili). Un candidate senza fonti remote (local_file)
+                  # non deve finire FAILED per il solo conteggio fonti.
+                  ok = d.get("status") == "passed" and len(srcs) > 0 and n_reach == len(srcs)
                   rows.append({
                       "config": cfg,
                       "dataset": d.get("dataset", cfg.split("/")[-2]),
-                      "status": "SUCCESS" if n_reach == len(srcs) and len(srcs) > 0 else "FAILED",
-                      "reachable": f"{n_reach}/{len(srcs)}",
+                      "status": "SUCCESS" if ok else "FAILED",
+                      "reachable": f"{n_reach}/{len(srcs)}" if srcs else "-",
                   })
               except Exception as e:
                   rows.append({"config": cfg, "dataset": cfg.split("/")[-2],

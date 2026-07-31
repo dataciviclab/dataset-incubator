@@ -86,79 +86,81 @@ def _resolve_years(config_path: str, root: str) -> list[int]:
 
 
 def _extract_run_metrics(root: str, slug: str, years: list[int]) -> dict[str, Any]:
-    """Legge metriche di run dai run_report.json prodotti dal toolkit.
+    """Legge metriche di run dai run record prodotti dal toolkit.
 
-    I report sono scritti da toolkit run in:
-      {root}/data/_reports/{slug}/{year}_run_report.json
-    oppure in {root}/out/data/_reports/{slug}/{year}_run_report.json
+    I run record sono scritti da toolkit run in:
+      {root}/data/_runs/{slug}/{year}/*.json
+    oppure in {root}/out/data/_runs/{slug}/{year}/*.json
     (quando il root del dataset.yml è ./out).
-    Lo slug nella directory report può usare underscore (terna_capacita)
+
+    Lo slug nella directory run può usare underscore (terna_capacita)
     mentre lo slug del candidate usa trattini (terna-capacita).
-    Contiene duration_seconds, readiness, row_counts, quality_scores.
+
+    Il run record contiene duration_seconds, layers[].metrics,
+    validations[].quality_score e validations[].summary.stats.
+    (In precedenza lo script leggeva da _reports/, rimosso dal toolkit.)
     """
     metrics: dict[str, Any] = {}
     root_path = Path(root)
     # Cerca in root e in root/out (dove toolkit scrive con root=./out)
-    report_dirs = [
-        root_path / "data" / "_reports",
-        root_path / "out" / "data" / "_reports",
+    run_dirs = [
+        root_path / "data" / "_runs",
+        root_path / "out" / "data" / "_runs",
     ]
-    # Lo slug del report potrebbe usare underscore invece di trattini
+    # Lo slug del run potrebbe usare underscore invece di trattini
     slug_variants = [slug, slug.replace("-", "_")]
     latest_duration = None
     total_row_counts: dict[str, int] = {}
-    latest_readiness = None
-    latest_checks = None
     all_qs: dict[str, float] = {}
 
     for year in years:
-        report_path = None
-        for base in report_dirs:
+        run_record = None
+        for base in run_dirs:
             for s in slug_variants:
-                candidate = base / s / f"{year}_run_report.json"
-                if candidate.exists():
-                    report_path = candidate
-                    break
-            if report_path:
+                year_dir = base / s / str(year)
+                if not year_dir.exists():
+                    continue
+                run_files = sorted(year_dir.glob("*.json"))
+                if not run_files:
+                    continue
+                # Ultimo run dell'anno (ordinamento lessicografico dei run_id ISO)
+                run_record = run_files[-1]
                 break
-        if report_path is None:
-            continue
+            if run_record:
+                break
+        if run_record is None:
             continue
         try:
-            report = json.loads(report_path.read_text(encoding="utf-8"))
+            record = json.loads(run_record.read_text(encoding="utf-8"))
         except (json.JSONDecodeError, OSError):
             continue
 
-        dur = report.get("duration_seconds")
+        dur = record.get("duration_seconds")
         if dur is not None:
             latest_duration = dur
-        rd = report.get("readiness")
-        if rd:
-            latest_readiness = rd
-        rc = report.get("readiness_checks")
-        if rc:
-            latest_checks = rc
 
-        layers = report.get("layers", {})
+        layers = record.get("layers", {})
+        validations = record.get("validations", {})
         for layer_name in ("raw", "clean", "mart"):
             ln = layers.get(layer_name) or {}
-            # row_count: prima dal campo uniforme a livello layer (nuovo),
-            # poi fallback su validation per report vecchi
-            row_count = ln.get("row_count") or (ln.get("validation") or {}).get("row_count")
+            lv = validations.get(layer_name) or {}
+            # row_count: dal summary.stats (nuovo run record) o dal layer
+            summary_block = lv.get("summary") or {}
+            stats = summary_block.get("stats") or {}
+            row_count = (
+                stats.get("clean_rows")
+                or stats.get("raw_rows")
+                or (ln.get("metrics") or {}).get("output_rows")
+            )
             if row_count is not None:
                 total_row_counts[layer_name] = total_row_counts.get(layer_name, 0) + int(row_count)
-            # quality_score: dal validation del layer (non da preflight,
-            # che ha null per fonti unreachable)
-            qs = (ln.get("validation") or {}).get("quality_score")
+            # quality_score: dal validation del layer
+            qs = lv.get("quality_score")
             if qs is not None:
                 all_qs[layer_name] = float(qs)
 
     if latest_duration is not None:
         metrics["duration_seconds"] = latest_duration
-    if latest_readiness:
-        metrics["readiness"] = latest_readiness
-    if latest_checks:
-        metrics["readiness_checks"] = latest_checks
     if total_row_counts:
         metrics["row_counts"] = total_row_counts
     if all_qs:
@@ -273,7 +275,7 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             attempts=args.retry,
         )
 
-        # Estrai metriche dal run_report.json su disco (prodotto dal toolkit)
+        # Estrai metriche dal run record su disco (prodotto dal toolkit)
         run_metrics = _extract_run_metrics(root, slug, all_years)
 
         status = "passed" if run_ok else "failed"

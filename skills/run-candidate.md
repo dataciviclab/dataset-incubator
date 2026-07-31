@@ -21,7 +21,7 @@ Eseguire un candidate già presente in `candidates/` e chiudere con stato:
 ## Entry point
 
 - `candidates/{slug}/dataset.yml` esistente
-- Toolkit accessibile (v1.46+)
+- Toolkit accessibile (v1.47+)
 
 Stop: candidate immaturo, boundary clean/mart assente, problema di fase precedente.
 
