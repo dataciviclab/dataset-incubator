@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-30",
+  "updated_at": "2026-07-31",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -7003,7 +7003,12 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "ambiente",
+        "rifiuti"
+      ],
+      "category": "ambiente"
     },
     {
       "slug": "ispra_ru_costi_kg",
