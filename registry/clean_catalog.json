@@ -5282,7 +5282,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "giustizia-amministrativa",
+        "contenzioso"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "ga_ordinanze",
@@ -5407,7 +5413,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "giustizia-amministrativa",
+        "contenzioso"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "ga_sentenze",
@@ -5532,7 +5544,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "giustizia-amministrativa",
+        "contenzioso"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "giustizia_penale_indicatori",
@@ -11147,7 +11165,13 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "giustizia-amministrativa",
+        "contenzioso"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "openga_ricorsi_cds",
@@ -11205,7 +11229,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "giustizia-amministrativa",
+        "contenzioso"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "penale_flussi",
