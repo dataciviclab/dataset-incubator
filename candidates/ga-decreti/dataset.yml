@@ -235,6 +235,8 @@ raw:
 
 clean:
   read:
+    source: auto
+    mode: all
     delim: ","
     encoding: utf-8
     header: true

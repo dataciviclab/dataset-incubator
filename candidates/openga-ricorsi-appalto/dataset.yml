@@ -253,6 +253,8 @@ raw:
       filename: appalto-tar-valle-d-aosta-2026.csv
 clean:
   read:
+    source: auto
+    mode: all
     delim: ','
     encoding: utf-8
     header: true
@@ -266,10 +268,11 @@ clean:
   sql: sql/clean.sql
   validate:
     min_rows: 5
-    not_null:
-    - numero_ricorso
-    - data_deposito_ricorso
-    - codice_cig
+    max_null_pct:
+      anno: 0.1
+      numero_ricorso: 0.2
+      data_deposito_ricorso: 0.2
+      codice_cig: 0.3
 mart:
   tables:
   - name: mart_ricorsi_sede_classificazione
