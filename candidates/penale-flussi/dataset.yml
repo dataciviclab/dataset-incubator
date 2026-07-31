@@ -11,6 +11,8 @@ schema_version: 1
 dataset:
   name: "penale_flussi"
   source_id: "giustizia_statistiche"
+  tags: [giustizia, statistiche-giudiziarie]
+  category: giustizia
   years: [2025]
   time_coverage:
     start_year: 2014
@@ -56,6 +58,7 @@ mart:
   validate:
     table_rules:
       penale_flussi:
+        primary_key: ['anno', 'tipo_ufficio', 'distretto']
         min_rows: 1
 
 validation:

@@ -10,6 +10,8 @@ schema_version: 1
 dataset:
   name: "monitoraggio_mensile_civile"
   source_id: "giustizia_statistiche"
+  tags: [giustizia, statistiche-giudiziarie]
+  category: giustizia
   years: [2025]
   time_coverage:
     start_year: 2019
@@ -56,6 +58,7 @@ mart:
   validate:
     table_rules:
       monitoraggio_mensile_civile:
+        primary_key: ['anno', 'mese', 'area', 'distretto']
         min_rows: 1
 
 validation:
