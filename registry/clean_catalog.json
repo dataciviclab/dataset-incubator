@@ -2823,7 +2823,12 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "statistiche-giudiziarie"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "comuni_master",
@@ -5590,7 +5595,12 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "statistiche-giudiziarie"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "inps_pensioni_trimestrale",
@@ -5868,7 +5878,12 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "statistiche-giudiziarie"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "ipa_aree_organizzative_omogenee",
@@ -10286,7 +10301,12 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "statistiche-giudiziarie"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "mur_contribuzione_universitaria",
@@ -11254,7 +11274,12 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "giustizia",
+        "statistiche-giudiziarie"
+      ],
+      "category": "giustizia"
     },
     {
       "slug": "pensioni_pa_dag",

@@ -273,9 +273,25 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "26036106012",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26036106012",
-        "checked_at": "2026-05-18",
+        "run_id": "30628794316",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
+        "checked_at": "2026-07-31",
+        "duration_seconds": 28.05,
+        "row_counts": {
+          "clean": 123203,
+          "mart": 324
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
         "years": [
           2025
         ],
@@ -585,9 +601,26 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "29842353692",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
-        "checked_at": "2026-07-21",
+        "run_id": "30628794316",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
+        "checked_at": "2026-07-31",
+        "duration_seconds": 2.77,
+        "row_counts": {
+          "raw": 10488,
+          "clean": 10478,
+          "mart": 1251
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
         "years": [
           2025
         ],
@@ -639,9 +672,25 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "29842353692",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
-        "checked_at": "2026-07-21",
+        "run_id": "30628794316",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
+        "checked_at": "2026-07-31",
+        "duration_seconds": 1.55,
+        "row_counts": {
+          "clean": 3952,
+          "mart": 1560
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
         "years": [
           2025
         ],
@@ -1130,9 +1179,25 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "29842353692",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
-        "checked_at": "2026-07-21",
+        "run_id": "30628794316",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
+        "checked_at": "2026-07-31",
+        "duration_seconds": 31.49,
+        "row_counts": {
+          "clean": 140969,
+          "mart": 2340
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 95.0,
+          "mart": 100.0
+        },
         "years": [
           2025
         ],
@@ -1322,9 +1387,25 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "29842353692",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29842353692",
-        "checked_at": "2026-07-21",
+        "run_id": "30628794316",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
+        "checked_at": "2026-07-31",
+        "duration_seconds": 3.87,
+        "row_counts": {
+          "clean": 17652,
+          "mart": 2196
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
         "years": [
           2025
         ],
