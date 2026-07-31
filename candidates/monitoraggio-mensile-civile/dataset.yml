@@ -43,9 +43,12 @@ clean:
   required_columns:
     - anno
     - mese
+    - fonte
+    - tipo_ufficio
     - distretto
     - sede
     - materia
+    - area
     - iscritti
     - definiti
 

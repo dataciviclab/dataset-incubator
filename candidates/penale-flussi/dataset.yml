@@ -44,7 +44,9 @@ clean:
   required_columns:
     - anno
     - tipo_ufficio
+    - sezione
     - distretto
+    - sede
     - sopravvenuti
     - definiti_totale
     - pendenti_finali
