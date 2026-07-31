@@ -1,11 +1,11 @@
 -- Clean: Ricorsi Pendenti Consiglio di Stato (OpenGA)
--- DuckDB auto-detect con header: true — le colonne arrivano gia' tipizzate
+-- Colonna ANNO_MESE_RIFERIMENTO: YYYYMM (es. 202401) — mese = ultime 2 cifre
 
 SELECT
-    {year}::INTEGER AS anno,
-    "ANNO_MESE_RIFERIMENTO"::BIGINT AS anno_mese_riferimento,
-    (("ANNO_MESE_RIFERIMENTO"::BIGINT) % 100)::INTEGER AS mese,
-    "CODICE_SEDE"::BIGINT AS codice_sede,
-    "NOME_SEDE"::VARCHAR AS nome_sede,
-    "NUMERO_RICORSI_PENDENTI"::BIGINT AS numero_ricorsi_pendenti
+    cast_int({year}) AS anno,
+    cast_bigint("ANNO_MESE_RIFERIMENTO") AS anno_mese_riferimento,
+    cast_int(cast_bigint("ANNO_MESE_RIFERIMENTO") % 100) AS mese,
+    cast_bigint("CODICE_SEDE") AS codice_sede,
+    normalize_string("NOME_SEDE") AS nome_sede,
+    cast_bigint("NUMERO_RICORSI_PENDENTI") AS numero_ricorsi_pendenti
 FROM raw_input

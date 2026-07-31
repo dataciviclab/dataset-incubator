@@ -24,3 +24,5 @@ SELECT
     normalize_string("CF_AMMINISTRAZIONE_APPALTANTE") AS cf_amministrazione_appaltante,
     normalize_string("DENOMINAZIONE_AMMINISTRAZIONE_APPALTANTE") AS denominazione_amministrazione_appaltante
 FROM raw_input
+-- Scarta righe vuote introdotte da null_padding (righe malformate/footer nei CSV)
+WHERE anno IS NOT NULL

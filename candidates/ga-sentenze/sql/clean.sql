@@ -16,8 +16,4 @@ SELECT
     normalize_string("TIPO_UDIENZA") AS tipo_udienza,
     cast_bigint("NUM_MEMBRI_COLLEGIO") AS num_membri_collegio,
     normalize_string("TIPO_PROVVEDIMENTO") AS tipo_provvedimento
-FROM read_csv_auto(
-    '{root}/data/raw/ga_sentenze/{year}/*.csv',
-    union_by_name=true,
-    header=true
-)
+FROM raw_input
