@@ -278,6 +278,24 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
         # Estrai metriche dal run record su disco (prodotto dal toolkit)
         run_metrics = _extract_run_metrics(root, slug, all_years)
 
+        # Readiness: calcolata via toolkit (non nel run record).
+        # Il pipeline_signals la consuma per l'ACB senza dover chiamare il toolkit.
+        readiness_payload: dict[str, Any] = {}
+        try:
+            from toolkit.domain.readiness import review_readiness
+
+            rr = review_readiness(config_path, all_years[0] if all_years else None)
+            readiness_payload["readiness"] = rr.get("readiness")
+            readiness_payload["readiness_checks"] = {
+                "total": rr.get("check_count", 0),
+                "ok": rr.get("ok_count", 0),
+                "fail": rr.get("fail_count", 0),
+            }
+        except Exception:
+            # readiness opzionale — non blocca il post-merge se il toolkit
+            # non la espone (es. versioni precedenti)
+            pass
+
         status = "passed" if run_ok else "failed"
         if status == "failed":
             failed_configs.append(slug)
@@ -297,6 +315,7 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             "run_url": f"https://github.com/{repo}/actions/runs/{run_id}",
             "checked_at": datetime.now(timezone.utc).date().isoformat(),
             **run_metrics,
+            **readiness_payload,
         }
         out_dir = f"sample_run_artifacts/{artifact_name}"
         Path(out_dir).mkdir(parents=True, exist_ok=True)
