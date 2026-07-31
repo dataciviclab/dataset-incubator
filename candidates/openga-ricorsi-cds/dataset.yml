@@ -4,7 +4,12 @@ schema_version: 1
 dataset:
   name: "openga_ricorsi_cds"
   source_id: "openga"
+  tags: [giustizia, giustizia-amministrativa, contenzioso]
+  category: giustizia
   years: [2023, 2024, 2025, 2026]
+  time_coverage:
+    start_year: 2023
+    end_year: 2026
 
 raw:
   output_policy: overwrite
@@ -23,15 +28,25 @@ raw:
 
 clean:
   read:
+    source: auto
     delim: ","
     encoding: "utf-8"
     header: true
     mode: largest
   sql: "sql/clean.sql"
+  required_columns: [anno, anno_mese_riferimento, mese, codice_sede, nome_sede, numero_ricorsi_pendenti]
   validate:
-    not_null: ["codice_sede", "numero_ricorsi_pendenti"]
+    min_rows: 10
+    not_null: [codice_sede, nome_sede, numero_ricorsi_pendenti]
 
 mart:
   tables:
     - name: "ricorsi_annuali"
       sql: "sql/mart_annuale.sql"
+  required_tables:
+    - "ricorsi_annuali"
+  validate:
+    table_rules:
+      ricorsi_annuali:
+        primary_key: [anno, codice_sede, nome_sede]
+        min_rows: 1

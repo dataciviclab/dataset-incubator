@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: ga_decreti
   source_id: openga
+  tags: [giustizia, giustizia-amministrativa, contenzioso]
+  category: giustizia
   years: [2023, 2024, 2025, 2026]
   time_coverage:
     start_year: 2023
@@ -267,6 +269,7 @@ mart:
           - nome_sede
           - esito_provvedimento
           - totale
+        primary_key: [anno, codice_sede, nome_sede, esito_provvedimento]
         min_rows: 5
       mart_esiti_per_tipo:
         required_columns:
@@ -274,6 +277,7 @@ mart:
           - tipo_ricorso
           - esito_provvedimento
           - totale
+        primary_key: [anno, tipo_ricorso, esito_provvedimento]
         min_rows: 5
 
 validation:

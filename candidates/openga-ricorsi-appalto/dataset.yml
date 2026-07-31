@@ -3,6 +3,8 @@ schema_version: 1
 dataset:
   name: openga_ricorsi_appalto
   source_id: openga
+  tags: [giustizia, giustizia-amministrativa, contenzioso]
+  category: giustizia
   years:
   - 2023
   - 2024
@@ -280,28 +282,30 @@ mart:
     table_rules:
       mart_ricorsi_sede_classificazione:
         required_columns:
-        - anno
-        - codice_sede
-        - nome_sede
-        - classificazione_ricorso
-        - totale_ricorsi
-        - gare_distinte
+          - anno
+          - codice_sede
+          - nome_sede
+          - classificazione_ricorso
+          - totale_ricorsi
+          - gare_distinte
+        primary_key: [anno, codice_sede, nome_sede, classificazione_ricorso]
         not_null:
-        - anno
-        - codice_sede
-        - totale_ricorsi
+          - anno
+          - codice_sede
+          - totale_ricorsi
         min_rows: 5
       mart_ricorsi_territorio_settore:
         required_columns:
-        - anno
-        - provincia
-        - settore
-        - totale_ricorsi
-        - gare_distinte
+          - anno
+          - provincia
+          - settore
+          - totale_ricorsi
+          - gare_distinte
+        primary_key: [anno, provincia, settore]
         not_null:
-        - anno
-        - provincia
-        - totale_ricorsi
+          - anno
+          - provincia
+          - totale_ricorsi
         min_rows: 0
 validation:
   fail_on_error: true
