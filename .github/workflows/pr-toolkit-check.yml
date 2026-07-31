@@ -8,9 +8,10 @@ env:
   TOOLKIT_VERSION: "from-requirements-txt"
   BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
 
-# Preflight + dry-run toolkit su candidate modificati in PR.
-# Su PR: preflight (config + reachability) + SQL dry-run (syntax check).
-# Il run full reale (download + clean + mart) avviene solo su merge.
+# Preflight + run con sample-rows su candidate modificati in PR.
+# Su PR: preflight (config + reachability) + run reale RAW→CLEAN→MART
+# con sample-rows 10000 (gate di qualità: valida esecuzione, non solo
+# sintassi SQL). Il run completo (tutti i dati) avviene su merge.
 
 on:
   pull_request:
@@ -119,15 +120,32 @@ jobs:
           toolkit run preflight --config "${{ matrix.config.config_path }}" --json 2>&1 \
             || echo "::warning::Preflight issues detected for ${{ matrix.config.config_path }}"
 
-      - name: "Toolkit SQL dry-run (valida sintassi SQL senza eseguire)"
-        id: dry_run
+      - name: "Toolkit run con sample-rows (esecuzione reale RAW→CLEAN→MART) [retry x2]"
+        id: run_sample
+        env:
+          TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: |
-          toolkit run \
-            --config "${{ matrix.config.config_path }}" \
-            --dry-run \
-            > dry_run.log 2>&1; ec=$?
+          MAX_ATTEMPTS=2
+          for i in $(seq 1 $MAX_ATTEMPTS); do
+            toolkit run \
+              --config "${{ matrix.config.config_path }}" \
+              --sample-rows 10000 \
+              > run_sample.log 2>&1; ec=$?
+            if [ $ec -eq 0 ]; then
+              echo "exit_code=0" >> "$GITHUB_OUTPUT"
+              cat run_sample.log
+              exit 0
+            fi
+            echo "Attempt $i/$MAX_ATTEMPTS failed (exit=$ec). Stderr:"
+            cat run_sample.log
+            if [ $i -lt $MAX_ATTEMPTS ]; then
+              WAIT=$(( i * 15 ))
+              echo "Retrying in ${WAIT}s..."
+              sleep $WAIT
+            fi
+          done
           echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
-          cat dry_run.log
+          cat run_sample.log 2>/dev/null || echo "No output"
           exit $ec
 
       - name: Upload artifacts
@@ -136,7 +154,7 @@ jobs:
         with:
           name: pr-toolkit-${{ matrix.config.artifact_name }}
           path: |
-            dry_run.log
+            run_sample.log
           retention-days: 7
 
   report:
@@ -167,10 +185,10 @@ jobs:
           echo "" >> "$GITHUB_STEP_SUMMARY"
 
           if [ "$RESULT" = "success" ]; then
-            echo "✅ All candidates passed preflight + SQL dry-run" >> "$GITHUB_STEP_SUMMARY"
+            echo "✅ All candidates passed preflight + run sample-rows" >> "$GITHUB_STEP_SUMMARY"
           else
             echo "❌ Some candidates failed — individual artifacts in 'pr-toolkit-*' above" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "> Il dry-run valida sintassi SQL e struttura config. Per run completo (download + clean + mart),"
-            echo "> usa il merge o esegui: toolkit run --config <path>" >> "$GITHUB_STEP_SUMMARY"
+            echo "> Il run con sample-rows valida esecuzione reale (download + clean + mart)." >> "$GITHUB_STEP_SUMMARY"
+            echo "> I fallimenti possono essere dovuti a fonte irraggiungibile (retry x2)." >> "$GITHUB_STEP_SUMMARY"
           fi
