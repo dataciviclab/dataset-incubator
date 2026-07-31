@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "bdap_anagrafe_enti"
   source_id: "openbdap"
+  tags: [pa, bdap, anagrafe, enti]
+  category: pa
   years: [2026]
 
 raw:

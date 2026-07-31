@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "rna_misure"
   source_id: "mimit_rna"
+  tags: [finanza-pubblica, rna, misure]
+  category: finanza-pubblica
   years: [2023]
 
 raw:
@@ -18,10 +20,12 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [car, car_padre, car_attivo, titolo_misura, des_tipo_misura, cod_tipo_misura, data_inizio_misura, data_fine_misura, base_giuridica_nazionale, stato_membro, cod_amm, des_autorita, autorita_concedente, link_aiuto, flag_quadro, flag_modifica_regime, anno, mese]
   read:
     source: auto
     mode: latest
   validate:
+    not_null: [anno]
     min_rows: 10000
 
 mart:

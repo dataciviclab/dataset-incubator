@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "mef_patrimonio_immobili"
   source_id: "mef_de"
+  tags: [finanza-pubblica, mef, patrimonio, immobili]
+  category: finanza-pubblica
   years: [2022, 2023]
   time_coverage:
     mode: full_series
@@ -22,6 +24,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, settore_istituzionale, macrocategoria_amministrazione, tipologia_amministrazione, amministrazione_denominazione, amministrazione_codice_fiscale, reg_amministrazione, prov_amministrazione, comune_amministrazione, codice_comune_amministrazione, titolo_proprieta, titolo_detenzione, detenzione_intera_ui, soggetto_cedente, soggetto_cedente_cf, id_bene, natura_bene, stato_accatastamento, sistema_catastale, regione_bene, provincia_bene, comune_bene, codice_comune_bene, indirizzo, numero_civico, fonte_georef, precisione_georef, immobile_georef, identificativo_catastale, codice_bene_non_accatastato, tipologia_bene, epoca_costruzione, vincoli, natura_giuridica_bene, diritto_gravante_terreno, id_compendio, descrizione_compendio, tipologia_compendio, utilizzo_bene, finalita, altra_finalita, ui_data_interamente_terzi, ui_data_parzialmente_terzi]
   read:
     mode: latest
     delim: ";"
@@ -29,6 +32,7 @@ clean:
     header: true
     quote: '"'
   validate:
+    not_null: [anno]
     min_rows: 1000000
 
 mart:

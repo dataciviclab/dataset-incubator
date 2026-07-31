@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "mur_immatricolati"
   source_id: "mur_ustat"
+  tags: [istruzione, mur, immatricolati]
+  category: istruzione
   years: [2025]
   time_coverage:
     mode: full_series
@@ -22,6 +24,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, classe_cod, classe_nome, sesso]
   read:
     mode: latest
     source: auto
@@ -29,6 +32,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
+    not_null: [anno]
     min_rows: 3000
 
 mart:

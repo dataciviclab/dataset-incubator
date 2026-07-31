@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "istat_pil_territoriale"
   source_id: "istat_sdmx"
+  tags: [economia, istat, pil, territoriale]
+  category: economia
   years: [2024]
   time_coverage:
     start_year: 1995

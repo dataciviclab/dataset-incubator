@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "istat_ipab_aree"
   source_id: "istat_sdmx"
+  tags: [welfare-lavoro, istat, ipab, aree]
+  category: welfare-lavoro
   years: [2024]
   time_coverage:
     start_year: 2010
@@ -32,6 +34,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [area_codice, area, livello_geografico, tipo_abitazione, tipo_abitazione_label, trimestre]
   read:
     source: "auto"
     mode: "latest"
@@ -39,6 +42,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
+    not_null: [area_codice]
     min_rows: 900
 
 mart:

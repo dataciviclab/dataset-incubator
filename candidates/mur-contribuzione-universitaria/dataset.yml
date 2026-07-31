@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "mur_contribuzione_universitaria"
   source_id: "mur_ustat"
+  tags: [istruzione, mur, contribuzione, universitaria]
+  category: istruzione
   years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
 
 raw:
@@ -19,11 +21,13 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, cod_ateneo, nome_ateneo, codice_gettito, descrizione_gettito]
   read:
     source: "auto"
     mode: "latest"
     header: true
   validate:
+    not_null: [anno]
     # Minimo osservato 2017-2024: 1067 righe. Soglia a 800 per margine.
     min_rows: 800
 

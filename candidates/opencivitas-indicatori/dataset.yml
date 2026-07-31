@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "opencivitas_indicatori"
   source_id: "opencivitas"
+  tags: [finanza-pubblica, opencivitas, indicatori]
+  category: finanza-pubblica
   years: [2015, 2016, 2017, 2018, 2019, 2021, 2022]
 
 support:
@@ -29,6 +31,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [username, anno, ambito, indicatore, descrizione_indicatore, tipo_indicatore, categoria_indicatore, funzione_indicatore, denominazione, provincia, regione, regione_istat_cod, join_enti_ok, join_metadati_ok]
   read:
     mode: latest
     source: auto

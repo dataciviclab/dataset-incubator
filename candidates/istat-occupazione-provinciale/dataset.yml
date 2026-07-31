@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "istat_occupazione_provinciale"
   source_id: "istat_sdmx"
+  tags: [welfare-lavoro, istat, occupazione]
+  category: welfare-lavoro
   years: [2025]
   time_coverage:
     start_year: 2018
@@ -32,6 +34,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [ref_area, territorio, anno, indicatore, sesso_codice, sesso, eta_codice, eta]
   read:
     source: "auto"
     mode: "latest"
@@ -39,6 +42,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
+    not_null: [anno]
     min_rows: 10000
     promotion:
       max_row_drop_pct: 80

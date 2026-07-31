@@ -7,6 +7,8 @@ schema_version: 1
 dataset:
   name: "inps_rdc_pdc"
   source_id: "inps_open_data"
+  tags: [welfare-lavoro, inps, rdc, pdc]
+  category: welfare-lavoro
   years: [2020]
 
 
@@ -29,6 +31,8 @@ clean:
     # columns: auto-detected from header
   required_columns: ["codice_istat", "comune", "codice_regione", "codice_provincia", "nuclei_familiari_percettori_rdc_luglio_2020"]
   sql: "sql/clean.sql"
+  validate:
+    not_null: [anno]
 
 mart:
   tables:

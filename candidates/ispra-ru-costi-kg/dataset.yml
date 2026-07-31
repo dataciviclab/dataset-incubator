@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "ispra_ru_costi_kg"
   source_id: "ispra_linked_data"
+  tags: [ambiente, ispra, ru, costi, kg]
+  category: ambiente
   years: [2020, 2021, 2022, 2023, 2024]
 
 raw:
@@ -17,6 +19,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [codice_comune_istat, comune_o_aggregazione, provincia, numero_comuni, popolazione]
   read:
     source: auto
     mode: latest
@@ -42,6 +45,7 @@ clean:
       CKkg: VARCHAR
       CTOTkg: VARCHAR
   validate:
+    not_null: [anno]
     min_rows: 4000
     promotion:
       max_row_drop_pct: 35

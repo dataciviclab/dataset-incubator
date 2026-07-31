@@ -19,12 +19,14 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, tipo_produzione, regione, provincia, fonte]
   read:
     source: auto
     mode: latest
     header: true
     sheet_name: "Export"
   validate:
+    not_null: [anno]
     min_rows: 600
 
 mart:

@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "pensioni_pa_dag"
   source_id: "inps"
+  tags: [welfare-lavoro, pensioni, pa, dag]
+  category: welfare-lavoro
   years: [2024]
   time_coverage:
     start_year: 2017
@@ -27,6 +29,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, mese, regione, sigla_provincia, ufficio, tipo_pensione, codice_tipo_pensione, descrizione_pensione, codice_pensione, descrizione_microqualifica, codice_microqualifica, codice_titolo, titolo]
   read:
     source: auto
     mode: latest
@@ -36,6 +39,7 @@ clean:
     ignore_errors: true
     trim_whitespace: true
   validate:
+    not_null: [anno]
     min_rows: 5000
 
 mart:

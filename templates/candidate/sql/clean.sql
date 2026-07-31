@@ -12,6 +12,11 @@
 --
 -- Documentazione completa: https://github.com/dataciviclab/toolkit/blob/main/docs/standard-macros.md
 --
+-- Regole:
+--   - leggere SOLO da raw_input (view DuckDB sui file raw)
+--   - NON referenziare un alias nella stessa SELECT (es. WHERE anno_alias > 2020
+--     sull'alias appena creato): DuckDB fallisce con Binder Error. Usa subquery/CTE.
+--   - qui solo pulizia/typing: le aggregazioni vanno nel mart.sql
 -- Esempi (sostituisci con le tue colonne):
 --
 -- SELECT

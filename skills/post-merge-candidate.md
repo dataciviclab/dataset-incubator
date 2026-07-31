@@ -23,7 +23,7 @@ Validare e chiudere la draft PR `chore(post-merge): aggiorna registry per PR #<n
 
 ## Cosa fa già CI (GHA `Post-Merge Candidate Registry`)
 
-- ✅ toolkit run full (tutti gli anni)
+- ✅ toolkit run (pipeline completa raw→clean→mart, tutti gli anni)
 - ✅ push clean parquet su GCS
 - ✅ `registry/pipeline_signals.json` aggiornato
 - ✅ `registry/clean_catalog.json` auto-derivato

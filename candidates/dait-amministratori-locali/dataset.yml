@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "dait_amministratori_locali"
   source_id: "dait"
+  tags: [politica, dait, amministratori, locali]
+  category: politica
   years: [2026]
 
 # --- RAW LAYER ---
@@ -21,6 +23,9 @@ raw:
 # Le prime 2 righe del CSV contengono metadati (titolo + data aggiornamento) — skip:2
 clean:
   read:
+  required_columns: [anno, codice_regione, codice_provincia, codice_comune, codice_dait_completo, denominazione_comune, sigla_provincia, cognome, nome, sesso, data_nascita, luogo_nascita, descrizione_carica, incarico, data_elezione, data_entrata_in_carica, lista_appartenenza, titolo_studio, professione]
+  validate:
+    not_null: [anno]
     delim: ";"
     encoding: "utf-8"
     header: true

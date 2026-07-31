@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "istat_asia_ul"
   source_id: "istat_dbnomics"
+  tags: [economia, istat, asia, ul]
+  category: economia
   years: [2020]
   time_coverage:
     mode: full_series
@@ -22,6 +24,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [codice_comune, anno, ateco_sezione]
   read:
     source: "auto"
     mode: "latest"
@@ -29,6 +32,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
+    not_null: [anno]
     min_rows: 100000
 
 mart:

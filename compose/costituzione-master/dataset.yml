@@ -5,6 +5,8 @@ dataset:
   name: "costituzione_master"
   years: [2026]
   source_id: "costituzione-italiana"
+  tags: [normativa, costituzione, master]
+  category: normativa
 
 raw:
   output_policy: overwrite

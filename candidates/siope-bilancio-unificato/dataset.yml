@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "siope_bilancio_unificato"
   source_id: "siope"
+  tags: [finanza-pubblica, siope, bilancio, unificato]
+  category: finanza-pubblica
   years: [2021, 2022, 2023, 2024, 2025, 2026]
 
 raw:

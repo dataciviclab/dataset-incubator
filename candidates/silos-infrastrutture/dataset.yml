@@ -8,6 +8,8 @@ schema_version: 1
 dataset:
   name: "silos_infrastrutture"
   source_id: "dati_camera"
+  tags: [ambiente, silos, infrastrutture]
+  category: ambiente
   # Il file contiene la fotografia al 31/08/2024 ma la serie storica parte dal 2004
   years: [2024]
   time_coverage:
@@ -57,6 +59,8 @@ clean:
   read_mode: strict
   required_columns: ["progressivo", "sistema_infrastrutturale", "denominazione"]
   sql: "sql/clean.sql"
+  validate:
+    not_null: [anno]
 
 mart:
   tables:

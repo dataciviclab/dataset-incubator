@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "mef_rappresentanti_partecipate"
   source_id: "mef_tesoro"
+  tags: [finanza-pubblica, mef, rappresentanti, partecipate]
+  category: finanza-pubblica
   years: [2018, 2019, 2020, 2021, 2022, 2023]
   # 2017 escluso: dati importo anomali (100M€, formato numerico errato)
 
@@ -26,6 +28,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, amministrazione, amm_settore, amm_macrocategoria, amm_categoria, amm_cf, amm_regione, amm_provincia, amm_comune, societa, societa_cf, societa_forma_giuridica, societa_stato, societa_settore, societa_ateco, societa_regione, societa_provincia, societa_comune, rapp_id, rapp_cognome, rapp_nome, rapp_genere, incarico_tipo, incarico_data_inizio, incarico_data_fine, incarico_gratuito]
   read:
     source: auto
     mode: latest
@@ -36,6 +39,7 @@ clean:
     ignore_errors: true
     trim_whitespace: true
   validate:
+    not_null: [anno]
     min_rows: 5000
     promotion:
       max_row_drop_pct: 50

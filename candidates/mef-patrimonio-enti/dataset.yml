@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "mef_patrimonio_enti"
   source_id: "mef_de"
+  tags: [finanza-pubblica, mef, patrimonio, enti]
+  category: finanza-pubblica
   years: [2022, 2023]
 
 raw:
@@ -18,6 +20,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, settore_istituzionale, macrocategoria_amministrazione, tipologia_amministrazione, amministrazione_denominazione, amministrazione_codice_fiscale, regione, provincia, comune, codice_comune, dichiarazione_negativa, dichiarazione_completezza, invio_comunicazione, obbligo_comunicazione, nome_sezione, nome_file_immobili, nome_file_detenzioni]
   read:
     mode: latest
     delim: ";"

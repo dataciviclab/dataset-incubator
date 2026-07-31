@@ -3,6 +3,9 @@ schema_version: 1
 
 dataset:
   name: "strutture_asl"
+  source_id: "ministero_salute"
+  tags: [sanita, strutture, asl]
+  category: sanita
   years: [2022]
 
 raw:
@@ -16,6 +19,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, codice_regione, codice_asl, regione, denominazione_asl, indirizzo_asl, cap_asl, comune_asl, sigla_provincia_asl, adi_casi_trattati, adi_casi_trattati_anziani]
   read:
     source: auto
     mode: latest
@@ -23,6 +27,7 @@ clean:
     encoding: "latin-1"
     header: true
   validate:
+    not_null: [anno]
     min_rows: 20
 
 mart:

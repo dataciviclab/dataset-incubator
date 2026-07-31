@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "mit_incidentalita_mensile"
   source_id: "mit_opendata"
+  tags: [ambiente, mit, incidentalita]
+  category: ambiente
   years: [2001]
   time_coverage:
     start_year: 2001
@@ -20,6 +22,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [mese, anno]
   read:
     source: config_only
     header: false

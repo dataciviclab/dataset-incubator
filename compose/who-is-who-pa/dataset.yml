@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "who_is_who_pa"
   source_id: "dataciviclab_composite"
+  tags: [pa, who, is, who]
+  category: pa
   years: [2026]
 
 raw:

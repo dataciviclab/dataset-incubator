@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "elezioni_comunali"
   source_id: "eligendo"
+  tags: [politica, elezioni]
+  category: politica
   years: [2016, 2017, 2018, 2019, 2020, 2021, 2024]
 
 raw:
@@ -18,6 +20,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [data_elezione, regione, provincia, comune, turno, candidato, lista]
   read:
     mode: latest
     source: auto
@@ -27,6 +30,7 @@ clean:
     strict_mode: false
     ignore_errors: true
   validate:
+    not_null: [data_elezione]
     min_rows: 100
 
 mart:

@@ -1,3 +1,0 @@
-# SPARQL
-candidates/camera-deputati-legislature/dataset.yml
-candidates/camera-votazioni-sparql/dataset.yml

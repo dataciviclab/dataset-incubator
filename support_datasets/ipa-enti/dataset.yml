@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "ipa_enti"
   source_id: "agid"
+  tags: [pa, ipa, enti]
+  category: pa
   years: [2026]
 
 raw:

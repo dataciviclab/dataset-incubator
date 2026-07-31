@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "iva_regionale"
   source_id: "mef_finanze"
+  tags: [finanza-pubblica, iva]
+  category: finanza-pubblica
   years: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
   # 2009-2014 disponibili ma con schema colonne diverso (v1)
 
@@ -19,6 +21,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, regione, cod_regione]
   read:
     source: auto
     delim: ";"
@@ -27,6 +30,7 @@ clean:
     strict_mode: false
     ignore_errors: true
   validate:
+    not_null: [anno]
     min_rows: 20
     promotion:
       max_row_drop_pct: 50

@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "anpr_mobilita_residenziale"
   source_id: "anpr"
+  tags: [pa, anpr, mobilita, residenziale]
+  category: pa
   years: [2026]
   time_coverage:
     start_year: 2022
@@ -21,6 +23,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, mese, partenza, cod_regione_partenza, arrivo, cod_regione_arrivo]
   read:
     source: auto
     mode: latest
@@ -28,6 +31,7 @@ clean:
     encoding: "utf-8"
     trim_whitespace: true
   validate:
+    not_null: [anno]
     min_rows: 1000
 
 mart:

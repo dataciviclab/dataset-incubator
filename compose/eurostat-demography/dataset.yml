@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "eurostat_demography"
   source_id: "eurostat"
+  tags: [welfare-lavoro, eurostat, demography]
+  category: welfare-lavoro
   years: [2026]
   time_coverage:
     mode: full_series

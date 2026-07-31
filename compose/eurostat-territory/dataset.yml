@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "eurostat_territory"
   source_id: "eurostat"
+  tags: [ambiente, eurostat, territory]
+  category: ambiente
   years: [2026]
   time_coverage:
     mode: full_series

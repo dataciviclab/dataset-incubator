@@ -9,6 +9,8 @@ schema_version: 1
 dataset:
   name: "sai_progetti_italia"
   source_id: "centri_d_italia"
+  tags: [immigrazione, sai, progetti]
+  category: immigrazione
   years: [2026]
   time_coverage:
     start_year: 2018
@@ -35,6 +37,8 @@ clean:
   read_mode: robust
   required_columns: ["progetto_codice", "data_riferimento", "ente_locale_progetto", "tipologia", "capienza"]
   sql: "sql/clean.sql"
+  validate:
+    not_null: [anno]
 
 mart:
   tables:

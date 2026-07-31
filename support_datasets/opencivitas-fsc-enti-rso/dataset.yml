@@ -3,6 +3,9 @@ schema_version: 1
 
 dataset:
   name: "opencivitas_fsc_enti_rso"
+  source_id: "opencivitas"
+  tags: [finanza-pubblica, opencivitas, fsc, enti]
+  category: finanza-pubblica
   years: [ 2025 ]
 
 raw:

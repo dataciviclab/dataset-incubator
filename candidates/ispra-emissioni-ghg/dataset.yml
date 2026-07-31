@@ -5,6 +5,8 @@ schema_version: 1
 dataset:
   name: "ispra_emissioni_ghg"
   source_id: "ispra"
+  tags: [ambiente, ispra, emissioni, ghg]
+  category: ambiente
   years: [2023]
 
 raw:
@@ -25,6 +27,8 @@ clean:
     decimal: "."
   required_columns: ["anno", "industrie_energetiche", "industrie_manifatturiere", "residenziale_e_servizi", "trasporti", "totale"]
   sql: "sql/clean.sql"
+  validate:
+    not_null: [anno]
 
 mart:
   tables:

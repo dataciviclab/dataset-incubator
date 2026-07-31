@@ -298,14 +298,31 @@ class TestValidateEntry:
     @pytest.mark.contract
     def test_single_source_ok(self, tmp_path, patch_root):
         from validate_candidate_structure import validate_entry
+        import yaml
 
         base = patch_root / "candidates" / "ds"
-        _touch(base / "dataset.yml")
+        sql = base / "sql"
+        sql.mkdir(parents=True)
         _touch(base / "README.md")
         _touch(base / "notes.md")
-        _mkdir(base / "sql")
-        _touch(base / "sql" / "clean.sql")
-        _touch(base / "sql" / "mart.sql")
+        (sql / "clean.sql").write_text("SELECT 1", encoding="utf-8")
+        (sql / "mart.sql").write_text("SELECT 1", encoding="utf-8")
+        # dataset.yml valido secondo validate_config (contratto toolkit)
+        # + source_id/tags/category: obbligatori con strict (standard candidate)
+        with open(base / "dataset.yml", "w", encoding="utf-8") as f:
+            yaml.dump(
+                {
+                    "dataset": {
+                        "name": "ds",
+                        "years": [2024],
+                        "source_id": "openga",
+                        "tags": ["giustizia"],
+                        "category": "giustizia",
+                    },
+                    "raw": {"sources": [{"name": "src", "type": "local_file"}]},
+                },
+                f,
+            )
         failures: list[str] = []
         validate_entry(base, failures)
         assert failures == []
@@ -372,3 +389,149 @@ class TestValidateEntry:
         failures: list[str] = []
         validate_entry(base, failures)
         assert any("invalid dataset.name" in f for f in failures)
+
+
+class TestCheckConfig:
+    """check_config_yml integra validate_config (toolkit) nel gate struttura."""
+
+    @pytest.mark.contract
+    def test_config_error_diventa_failure(self, tmp_path, patch_root):
+        from validate_candidate_structure import check_config_yml
+
+        base = patch_root / "candidates" / "cfg-bad"
+        base.mkdir(parents=True)
+        yml = base / "dataset.yml"
+        # Sezione dataset mancante → validate_config error
+        yml.write_text("raw:\n  sources: []\n", encoding="utf-8")
+        failures: list[str] = []
+        check_config_yml(yml, failures)
+        assert any("config:" in f for f in failures)
+
+    @pytest.mark.contract
+    def test_warning_source_id_finisce_nelle_raccomandazioni(self, tmp_path, patch_root):
+        from validate_candidate_structure import check_config_yml
+
+        base = patch_root / "candidates" / "cfg-warn"
+        base.mkdir(parents=True)
+        yml = base / "dataset.yml"
+        # Config valido ma senza source_id/tags/category → warning (non failure)
+        yml.write_text(
+            "dataset:\n"
+            "  name: cfg_warn\n"
+            "  years: [2024]\n"
+            "raw:\n"
+            "  sources:\n"
+            "    - name: src\n"
+            "      type: http_file\n",
+            encoding="utf-8",
+        )
+        failures: list[str] = []
+        warnings: list[str] = []
+        check_config_yml(yml, failures, warnings)
+        assert failures == []
+        assert any("source_id" in w for w in warnings)
+        assert any("tags" in w for w in warnings)
+        assert any("category" in w for w in warnings)
+
+    @pytest.mark.contract
+    def test_strict_promuove_warning_a_failure(self, tmp_path, patch_root):
+        from validate_candidate_structure import check_config_yml
+
+        base = patch_root / "candidates" / "cfg-strict"
+        base.mkdir(parents=True)
+        yml = base / "dataset.yml"
+        # Config valido ma senza source_id/tags/category
+        yml.write_text(
+            "dataset:\n"
+            "  name: cfg_strict\n"
+            "  years: [2024]\n"
+            "raw:\n"
+            "  sources:\n"
+            "    - name: src\n"
+            "      type: http_file\n",
+            encoding="utf-8",
+        )
+        failures: list[str] = []
+        check_config_yml(yml, failures, strict=True)
+        assert any("config:" in f for f in failures)
+
+    @pytest.mark.contract
+    def test_validate_entry_integra_il_config_check(self, tmp_path, patch_root):
+        from validate_candidate_structure import validate_entry
+
+        base = patch_root / "candidates" / "ok-ds"
+        sql = base / "sql"
+        sql.mkdir(parents=True)
+        (sql / "clean.sql").write_text("SELECT 1", encoding="utf-8")
+        (sql / "mart.sql").write_text("SELECT 1", encoding="utf-8")
+        _touch(base / "README.md")
+        _touch(base / "notes.md")
+        (base / "dataset.yml").write_text(
+            "dataset:\n"
+            "  name: ok_ds\n"
+            "  years: [2024]\n"
+            "raw:\n"
+            "  sources:\n"
+            "    - name: src\n"
+            "      type: local_file\n",
+            encoding="utf-8",
+        )
+        failures: list[str] = []
+        warnings: list[str] = []
+        validate_entry(base, failures, warnings)
+        # Strict: source_id mancante diventa failure (non più solo warning)
+        assert any("config: 'dataset.source_id'" in f for f in failures)
+
+
+class TestCategoryVocabulary:
+    """category fuori vocabolario (Appendice A) → warning (strict: failure)."""
+
+    @pytest.mark.contract
+    def test_category_fuori_vocabolario_warning(self, tmp_path, patch_root):
+        from validate_candidate_structure import check_config_yml
+
+        base = patch_root / "candidates" / "cat-bad"
+        base.mkdir(parents=True)
+        yml = base / "dataset.yml"
+        yml.write_text(
+            "dataset:\n"
+            "  name: cat_bad\n"
+            "  years: [2024]\n"
+            "  source_id: openga\n"
+            "  tags: [x]\n"
+            "  category: categoria-inventata\n"
+            "raw:\n"
+            "  sources:\n"
+            "    - name: src\n"
+            "      type: local_file\n",
+            encoding="utf-8",
+        )
+        failures: list[str] = []
+        warnings: list[str] = []
+        check_config_yml(yml, failures, warnings)
+        assert failures == []
+        assert any("fuori vocabolario" in w for w in warnings)
+
+    @pytest.mark.contract
+    def test_category_fuori_vocabolario_strict_failure(self, tmp_path, patch_root):
+        from validate_candidate_structure import check_config_yml
+
+        base = patch_root / "candidates" / "cat-strict"
+        base.mkdir(parents=True)
+        yml = base / "dataset.yml"
+        yml.write_text(
+            "dataset:\n"
+            "  name: cat_strict\n"
+            "  years: [2024]\n"
+            "  source_id: openga\n"
+            "  tags: [x]\n"
+            "  category: categoria-inventata\n"
+            "raw:\n"
+            "  sources:\n"
+            "    - name: src\n"
+            "      type: local_file\n",
+            encoding="utf-8",
+        )
+        failures: list[str] = []
+        check_config_yml(yml, failures, strict=True)
+        assert any("fuori vocabolario" in f for f in failures)

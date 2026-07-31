@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "anac_appalti_master"
   source_id: "dataciviclab_composite"
+  tags: [appalti, anac, master]
+  category: appalti
   years: [2026]
 
 raw:

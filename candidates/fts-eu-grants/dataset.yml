@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "fts_eu_grants"
   source_id: "fts"
+  tags: [finanza-pubblica, fts, eu, grants]
+  category: finanza-pubblica
   years: [2024, 2023, 2022, 2021, 2020]
 
 raw:
@@ -18,6 +20,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, budget, rif_impegno_giuridico, rif_bilancio, beneficiario_nome, beneficiario_partita_iva, flag_no_profit, flag_ong, flag_coordinatore, beneficiario_indirizzo, beneficiario_citta, beneficiario_cap, paese_beneficiario, nuts2, zona_geografica, luogo_azione, fonte_dettaglio, tipo_spesa, oggetto_contributo, dipartimento_responsabile, linea_bilancio_codice, linea_bilancio_nome, nome_programma, tipo_finanziamento, codice_gruppo_beneficiario, tipo_beneficiario, data_inizio_progetto, data_fine_progetto, tipo_contratto, tipo_gestione, paese_beneficiante]
   read:
     header: true
     delim: ","
@@ -25,6 +28,7 @@ clean:
     quote: '"'
     escape: '"'
   validate:
+    not_null: [anno]
     promotion:
       max_row_drop_pct: 100.0
       fail_on_row_drop_exceeded: false

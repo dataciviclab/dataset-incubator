@@ -20,73 +20,18 @@ jobs:
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
 
-      - name: Generate candidate batch (dinamico)
-        run: |
-          # Genera batch da candidates/*/dataset.yml invece di mantenere
-          # batches/green.txt manualmente. Ogni aggiunta/rimozione candidate
-          # viene inclusa automaticamente al prossimo run.
-          for dir in candidates/*/; do
-            if [ -f "${dir}dataset.yml" ]; then
-              echo "${dir}dataset.yml"
-            fi
-          done > /tmp/current_batch.txt
-          echo "Generated batch: $(wc -l < /tmp/current_batch.txt) candidates"
-
       - name: Weekly probe — raggiungibilità fonti
         id: probe
         run: |
-          # toolkit run preflight per ogni candidate (probe + reachability).
-          # Il vecchio "batch --step probe" non esiste più (batch deprecato).
+          # batch_by_source scansiona candidates/support_datasets/compose e
+          # esegue toolkit run preflight --json per ognuno, con report aggregato.
+          # Sostituisce il loop inline: stessa logica, criterio fix per local_file
+          # (fonti skipped escluse dal denominatore).
+          python3 scripts/batch_by_source.py --json > /tmp/probe_report.json 2>/tmp/probe_stderr.log || true
           python3 - <<'PY'
-          import json, subprocess, sys
-
-          rows = []
-          stderr_log = []
-          with open("/tmp/current_batch.txt") as f:
-              configs = [l.strip() for l in f if l.strip() and not l.startswith("#")]
-
-          for cfg in configs:
-              try:
-                  r = subprocess.run(
-                      ["toolkit", "run", "preflight", "--config", cfg, "--json"],
-                      capture_output=True, text=True, timeout=90,
-                  )
-                  if r.returncode != 0:
-                      rows.append({"config": cfg, "dataset": cfg.split("/")[-2],
-                                   "status": "FAILED", "error": r.stderr[:200]})
-                      stderr_log.append(f"{cfg}: {r.stderr[:200]}")
-                      continue
-                  d = json.loads(r.stdout)
-                  srcs = d.get("sources") or []
-                  n_reach = sum(1 for s in srcs if s.get("reachable"))
-                  # Criterio: status "passed" da preflight (config ok + fonti
-                  # raggiungibili). Un candidate senza fonti remote (local_file)
-                  # non deve finire FAILED per il solo conteggio fonti.
-                  ok = d.get("status") == "passed" and len(srcs) > 0 and n_reach == len(srcs)
-                  rows.append({
-                      "config": cfg,
-                      "dataset": d.get("dataset", cfg.split("/")[-2]),
-                      "status": "SUCCESS" if ok else "FAILED",
-                      "reachable": f"{n_reach}/{len(srcs)}" if srcs else "-",
-                  })
-              except Exception as e:
-                  rows.append({"config": cfg, "dataset": cfg.split("/")[-2],
-                               "status": "FAILED", "error": str(e)[:200]})
-                  stderr_log.append(f"{cfg}: {e}")
-
-          report = {
-              "summary": {
-                  "total": len(rows),
-                  "passed": sum(1 for r in rows if r["status"] == "SUCCESS"),
-                  "failed": sum(1 for r in rows if r["status"] != "SUCCESS"),
-              },
-              "rows": rows,
-          }
-          with open("/tmp/probe_report.json", "w") as f:
-              json.dump(report, f, indent=2)
-          with open("/tmp/probe_stderr.log", "w") as f:
-              f.write("\n".join(stderr_log))
-          print(f"passed={report['summary']['passed']} failed={report['summary']['failed']} total={report['summary']['total']}")
+          import json
+          d = json.load(open("/tmp/probe_report.json"))
+          print(f"passed={d['summary']['passed']} failed={d['summary']['failed']} total={d['summary']['total']}")
           PY
           echo "passed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['passed'])")" >> "$GITHUB_OUTPUT"
           echo "failed=$(python3 -c "import json;d=json.load(open('/tmp/probe_report.json'));print(d['summary']['failed'])")" >> "$GITHUB_OUTPUT"
@@ -115,10 +60,11 @@ jobs:
           import json
           d = json.load(open('/tmp/probe_report.json'))
           for r in d['rows']:
-              icon = '✅' if r['status'] == 'SUCCESS' else '🔴'
+              icon = '✅' if r['ok'] else '🔴'
               extra = r.get('reachable', '')
               err = f\" — {r.get('error', '')[:80]}\" if r.get('error') else ''
-              print(f'{icon} {r[\"dataset\"]:35s} {extra}{err}')
+              warn = f\" ⚠ {'; '.join(r.get('warnings', []))[:60]}\" if r.get('warnings') else ''
+              print(f'{icon} {r[\"dataset\"]:35s} {extra}{warn}{err}')
           " >> "$GITHUB_STEP_SUMMARY"
           echo "" >> "$GITHUB_STEP_SUMMARY"
           if [ -s /tmp/probe_stderr.log ]; then
