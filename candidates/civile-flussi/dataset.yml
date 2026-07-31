@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "civile_flussi"
   source_id: "giustizia_statistiche"
+  tags: [giustizia, statistiche-giudiziarie]
+  category: giustizia
   # Chiave di snapshot per il run: il file contiene gia l'intera serie 2014-2025.
   years: [2025]
   time_coverage:
@@ -26,14 +28,22 @@ clean:
     mode: latest
     header: true
     sheet_name: "Data"
+  required_columns: [anno, fonte, tipo_ufficio, distretto, sede, macromateria, materia, dettaglio, sopravvenuti, definiti_totale]
   validate:
     min_rows: 100000
+    not_null: [anno, fonte, tipo_ufficio, distretto]
 
 mart:
   tables:
     - name: "mart_summary"
       sql: "sql/mart.sql"
-  validate: {}
+  required_tables:
+    - "mart_summary"
+  validate:
+    table_rules:
+      mart_summary:
+        primary_key: [anno, livello_aggregazione, distretto]
+        min_rows: 1
 
 validation:
   fail_on_error: true

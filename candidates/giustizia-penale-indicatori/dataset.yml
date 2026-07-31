@@ -11,6 +11,8 @@ schema_version: 1
 dataset:
   name: "giustizia_penale_indicatori"
   source_id: "giustizia_statistiche"
+  tags: [giustizia, statistiche-giudiziarie]
+  category: giustizia
   years: [2025]
   time_coverage:
     start_year: 2014
@@ -28,12 +30,15 @@ raw:
 
 clean:
   read:
+    source: auto
+    mode: latest
     delim: ","
     encoding: "utf-8"
     header: true
     skip: 0
   read_mode: strict
   sql: "sql/clean.sql"
+  required_columns: [anno, tipo_ufficio, distretto, sede, sezione, clearance_rate, disposition_time_gg]
   validate:
     min_rows: 10000
     not_null:
@@ -48,4 +53,5 @@ mart:
   validate:
     table_rules:
       giustizia_penale_indicatori:
+        primary_key: ['anno', 'distretto', 'tipo_ufficio']
         min_rows: 1
