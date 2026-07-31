@@ -172,5 +172,5 @@ jobs:
             echo "❌ Some candidates failed — individual artifacts in 'pr-toolkit-*' above" >> "$GITHUB_STEP_SUMMARY"
             echo "" >> "$GITHUB_STEP_SUMMARY"
             echo "> Il dry-run valida sintassi SQL e struttura config. Per run completo (download + clean + mart),"
-            echo "> usa il merge o esegui: toolkit run all --config <path>" >> "$GITHUB_STEP_SUMMARY"
+            echo "> usa il merge o esegui: toolkit run --config <path>" >> "$GITHUB_STEP_SUMMARY"
           fi
