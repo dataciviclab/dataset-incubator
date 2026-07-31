@@ -13114,7 +13114,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "immigrazione",
+        "migranti",
+        "sbarchi"
+      ],
+      "category": "immigrazione"
     },
     {
       "slug": "silos_infrastrutture",
