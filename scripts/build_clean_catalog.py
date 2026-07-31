@@ -68,6 +68,13 @@ def main() -> int:
         "Usa --write per salvare (--derive senza --write è dry-run).",
     )
     parser.add_argument(
+        "--slug",
+        type=str,
+        default=None,
+        help="Limita il derive a un singolo slug (es. sbarchi_migranti_italia). "
+        "Scansiona solo quel prefisso nel bucket — molto più veloce del derive completo.",
+    )
+    parser.add_argument(
         "--check-gcs",
         action="store_true",
         help="Verify that public GCS paths resolve to at least one parquet.",
@@ -83,7 +90,7 @@ def main() -> int:
                 print(f"[derive] Caricati metadata editoriali da {args.catalog}", file=sys.stderr)
             except Exception:
                 print(f"[derive] WARN: cannot read {args.catalog}, starting fresh", file=sys.stderr)
-        catalog, derive_errors = derive_catalog_from_gcs(raw, args.refresh_date)
+        catalog, derive_errors = derive_catalog_from_gcs(raw, args.refresh_date, slug=args.slug)
     else:
         original_text = args.catalog.read_text(encoding="utf-8")
         catalog = json.loads(original_text)
@@ -290,11 +297,14 @@ def _enrich_tags_and_category(catalog: dict[str, Any], root: Path) -> None:
 
 
 def derive_catalog_from_gcs(
-    existing: dict[str, Any], refresh_date: bool = False
+    existing: dict[str, Any],
+    refresh_date: bool = False,
+    slug: str | None = None,
 ) -> tuple[dict[str, Any], list[str]]:
     """Deriva il catalogo scansionando GCS e leggendo schemi parquet.
 
     1. Scansiona ``gs://dataciviclab-clean/`` per scoprire slug + anni
+       (se ``slug`` è dato, limita la scansione a quel prefisso)
     2. Per ogni slug, legge lo schema del parquet più recente
     3. Costruisce location usando il path contract
     4. Fonde con metadata editoriali dal catalogo esistente
@@ -313,11 +323,16 @@ def derive_catalog_from_gcs(
     slug_index: dict[str, set[str]] = {}
     bucket = "dataciviclab-clean"
 
-    print(f"[derive] Scansione GCS bucket {bucket}...", file=sys.stderr)
+    # Se slug è dato, scansiona solo quel prefisso — evita la scansione
+    # completa del bucket (decine di migliaia di oggetti).
+    prefix = f"{slug}/" if slug else ""
+    print(
+        f"[derive] Scansione GCS bucket {bucket} (prefix={prefix or 'tutto'})...", file=sys.stderr
+    )
 
     # 1. Scansiona bucket per scoprire slug + anni
     try:
-        objects = list_objects(bucket, auth=False)
+        objects = list_objects(bucket, prefix=prefix, auth=False)
     except Exception as exc:
         print(f"[derive] ERRORE: impossibile leggere GCS: {exc}", file=sys.stderr)
         return existing, [f"GCS unreachable: {exc}"]
@@ -326,11 +341,14 @@ def derive_catalog_from_gcs(
         name: str = obj["name"]
         parts = name.split("/")
         if len(parts) == 3 and parts[2].endswith("_clean.parquet"):
-            slug, year = parts[0], parts[1]
-            slug_index.setdefault(slug, set()).add(year)
+            slug_found, year = parts[0], parts[1]
+            slug_index.setdefault(slug_found, set()).add(year)
 
     if not slug_index:
-        print(f"[derive] Nessun parquet pulito trovato in {bucket}", file=sys.stderr)
+        print(
+            f"[derive] Nessun parquet pulito trovato in {bucket} (prefix={prefix or 'tutto'})",
+            file=sys.stderr,
+        )
         return existing, []
 
     print(f"[derive] Trovati {len(slug_index)} slug su GCS", file=sys.stderr)

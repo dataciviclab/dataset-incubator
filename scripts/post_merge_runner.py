@@ -204,12 +204,16 @@ def _push_mart_to_gcs(slug: str, root: str) -> bool:
     return r.returncode == 0
 
 
-def _rebuild_clean_catalog(root: str) -> None:
-    """Rebuild clean_catalog.json after GCS push."""
-    r = subprocess.run(
-        ["python", "scripts/build_clean_catalog.py", "--derive", "--write"],
-        cwd=root,
-    )
+def _rebuild_clean_catalog(root: str, slug: str | None = None) -> None:
+    """Rebuild clean_catalog.json after GCS push.
+
+    Con ``slug`` deriva solo quel prefisso dal bucket (veloce) invece di
+    scansionare tutto GCS. Il derive completo resta per uso schedulato/manuale.
+    """
+    cmd = ["python", "scripts/build_clean_catalog.py", "--derive", "--write"]
+    if slug:
+        cmd += ["--slug", slug]
+    r = subprocess.run(cmd, cwd=root)
     if r.returncode != 0:
         print(f"  WARN: build_clean_catalog --derive --write fallito (code {r.returncode})")
 
@@ -347,7 +351,7 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
     # --- Clean catalog rebuild ---
     if gcs_push_ok:
         print("\n  Rebuilding clean catalog...")
-        _rebuild_clean_catalog(root)
+        _rebuild_clean_catalog(root, slug=slug)
     else:
         print("\n  Skip clean catalog rebuild: nessun GCS push riuscito")
 
