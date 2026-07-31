@@ -81,6 +81,11 @@ def main() -> int:
     )
     args = parser.parse_args()
 
+    # Normalizza lo slug a underscore: i nomi candidate usano trattini
+    # (sbarchi-migranti-italia) ma GCS usa underscore (sbarchi_migranti_italia/)
+    if args.slug:
+        args.slug = args.slug.replace("-", "_")
+
     # Il catalogo di partenza: vuoto se --derive, altrimenti da file
     if args.derive:
         raw: dict[str, Any] = {"datasets": []}

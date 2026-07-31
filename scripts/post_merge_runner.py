@@ -328,10 +328,13 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
             json.dump(payload, pf, indent=2)
         print(f"  {status}")
 
+        # push_slug: slug GCS normalizzato (trattini → underscore)
+        # usato sia per il push che per il rebuild del catalogo
+        push_slug = cfg.get("push_slug", slug).replace("-", "_")
+
         # --- GCS push ---
         if status == "passed" and os.environ.get("GOOGLE_APPLICATION_CREDENTIALS"):
             print(f"  GCS push per {slug}...")
-            push_slug = cfg.get("push_slug", slug)
 
             # Push clean parquet (obbligatorio)
             if _push_clean_to_gcs(push_slug, root):
@@ -351,7 +354,7 @@ def cmd_sample_run(args: argparse.Namespace) -> None:
     # --- Clean catalog rebuild ---
     if gcs_push_ok:
         print("\n  Rebuilding clean catalog...")
-        _rebuild_clean_catalog(root, slug=slug)
+        _rebuild_clean_catalog(root, slug=push_slug)
     else:
         print("\n  Skip clean catalog rebuild: nessun GCS push riuscito")
 
