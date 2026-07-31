@@ -1,9 +1,9 @@
 ---
 name: run-candidate
-description: Skill canonico per eseguire un candidate esistente e verificarne lo stato.
+description: Skill canonico per eseguire un candidate esistente e verificarlo end-to-end con readiness come gate.
 license: MIT
 metadata:
-  version: "0.6"
+  version: "0.7"
   owner: "DataCivicLab"
   tags: [dataset-incubator, run, candidate]
 ---
@@ -11,7 +11,7 @@ metadata:
 # Skill: run-candidate
 
 Skill canonico di `dataset-incubator`.
-Versione: 0.6 — 2026-07-30 — CLI allineata a toolkit v1.46
+Versione: 0.7 — 2026-07-31 — flusso end-to-end con readiness come gate
 
 ## Obiettivo
 
@@ -21,36 +21,45 @@ Eseguire un candidate già presente in `candidates/` e chiudere con stato:
 ## Entry point
 
 - `candidates/{slug}/dataset.yml` esistente
-- Toolkit accessibile
+- Toolkit accessibile (v1.46+)
 
 Stop: candidate immaturo, boundary clean/mart assente, problema di fase precedente.
 
+## Regole
+
+1. **Mai guardare solo l'exit code** — `run` può passare con warning. `inspect` mostra i check.
+2. **Un anno per volta** durante lo sviluppo, non tutti gli anni configurati.
+3. **`inspect` è il gate** — il run ti dice "è andato", `inspect` ti dice "è buono".
+4. **Blocker > formula** — se qualcosa fallisce, documenta il *perché* preciso, non "non funziona".
+
 ## Procedura
 
-### 1. Pre-flight
+### 1. Pre-flight — capire dove siamo
 
 ```bash
-toolkit inspect -c candidates/{slug}/dataset.yml -y 2024 --json
+toolkit inspect -c candidates/{slug}/dataset.yml -y 2024
 ```
 
-Oppure MCP: `toolkit_status(config_path)` → sezioni `paths_info` + `run_stats`.
+Il comando unico mostra: run status, righe/colonne per layer, raw hints e
+**verdict readiness con check**. Risponde a: il dataset è mai stato runnato?
+è pronto? cosa manca?
 
-### 2. Run
+Oppure MCP: `toolkit_status(config_path)` → sezione readiness.
+
+### 2. Run — un anno per volta
 
 ```bash
-toolkit run -c candidates/{slug}/dataset.yml --years 2024
+toolkit run -c candidates/{slug}/dataset.yml --year 2024
 ```
 
-Unico comando. Esegue raw + clean + mart + validate + readiness in sequenza.
+Esegue raw + clean + mart + validazione + readiness. A fine run mostra il
+verdict sintetico: `readiness: needs-review (7/8)`.
 
-### 3. Verifica
-
-Prima lo stato pipeline, poi controlla che i dati abbiano senso.
+### 3. Verifica — inspect è il gate
 
 ```bash
-# Stato pipeline
-toolkit inspect -c candidates/{slug}/dataset.yml -y 2024 --json
-# Oppure MCP: toolkit_status(config_path) → sezione readiness
+# Stato + verdict + check (comando unico)
+toolkit inspect -c candidates/{slug}/dataset.yml -y 2024
 
 # Ispezione dati — conta righe e campione
 toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m sql --sql "SELECT count(*) FROM data"
@@ -62,7 +71,12 @@ toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m sql --sql "SE
 toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m preview --limit 5
 ```
 
-### 4. Diagnostica (se fallisce)
+Se `readiness: ready` → chiudi con `runnable`.
+Se `needs-review` → guarda **quale check fallisce** nell'output di inspect
+(es. `validation_rules_coverage`) e decidi: è un blocker reale o un check
+da allineare al perimetro del dataset?
+
+### 4. Diagnostica (se fallisce o il verdict non torna)
 
 ```bash
 # MCP (raccomandato)
@@ -77,23 +91,28 @@ toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m schema --jso
 toolkit inspect config -c candidates/{slug}/dataset.yml --diff --json
 ```
 
-Se il blocker è isolato → documentalo e chiudi con `scaffolded_with_blocker`.
+### 5. Ciclo fino a ready
 
-### 5. Chiudi con stato
+fix → run → inspect → fix → run → inspect.
+Fermati quando `readiness: ready`, oppure `needs-review` con blocker
+documentato con precisione.
 
-- `runnable` — run passa, output leggibili
+### 6. Chiudi con stato
+
+- `runnable` — run passa, `readiness: ready` o `needs-review` motivato
 - `scaffolded_with_blocker` — blocker preciso documentato
 
 ## Definition of done
 
-- run eseguito senza errori oppure blocker documentato
-- esito netto, prossimo passo esplicito
+- run eseguito, inspect conferma il verdict
+- esito netto (ready / blocker documentato), prossimo passo esplicito
 
 ## Errori tipici
 
-- lanciare compose prima dei source layer
-- guardare solo exit code, non gli output reali
+- lanciare tutti gli anni invece di un anno singolo
+- guardare solo exit code, non il verdict readiness né gli output reali
 - cambiare troppe cose dopo il primo errore
+- chiudere `runnable` con check falliti non motivati
 
 ## Dove orientarsi
 
