@@ -1366,9 +1366,26 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "27878799069",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27878799069",
-        "checked_at": "2026-06-20",
+        "run_id": "30641695862",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30641695862",
+        "checked_at": "2026-07-31",
+        "duration_seconds": 4.5,
+        "row_counts": {
+          "raw": 84,
+          "clean": 84,
+          "mart": 8
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
         "years": [
           2023,
           2024,
