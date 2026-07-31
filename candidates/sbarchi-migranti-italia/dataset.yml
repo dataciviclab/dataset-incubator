@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "sbarchi_migranti_italia"
   years: [2025]
+  tags: [immigrazione, migranti, sbarchi]
+  category: immigrazione
   time_coverage:
     mode: "full_series"
     start_year: 2019
