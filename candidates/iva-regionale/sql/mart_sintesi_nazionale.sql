@@ -14,10 +14,7 @@ WITH all_clean AS (
            va_frequenza, va_fiscale_eur,
            imposta_dovuta_frequenza, imposta_dovuta_eur,
            imposta_credito_frequenza, imposta_credito_eur
-    FROM read_parquet(
-        '{root}/data/clean/{dataset}/*/{dataset}_*_clean.parquet',
-        union_by_name=true
-    )
+    FROM clean_input
     WHERE anno IS NOT NULL
 ),
 per_anno AS (

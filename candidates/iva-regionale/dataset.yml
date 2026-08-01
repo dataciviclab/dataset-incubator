@@ -46,15 +46,20 @@ clean:
 
 mart:
   tables:
-    # Regione x anno con quota % e rank sul volume nazionale
+    # Regione x anno con quota % e rank sul volume nazionale.
+    # PER-ANNO (workaround toolkit #445): il benchmark è calcolato dentro
+    # la stessa query sull'anno corrente; una tabella per-anno mantiene
+    # has_single_year_mart=True così il run passa e il multi-year parte.
     - name: "mart_regioni_anno"
       sql: "sql/mart_regioni_anno.sql"
-    # Sintesi nazionale per anno con delta vs anno precedente
+    # Sintesi nazionale per anno con delta vs anno precedente (multi-year)
     - name: "mart_sintesi_nazionale"
       sql: "sql/mart_sintesi_nazionale.sql"
-    # Trend per regione (primo vs ultimo anno della serie)
+      years: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+    # Trend per regione (primo vs ultimo anno della serie) (multi-year)
     - name: "mart_trend_regioni"
       sql: "sql/mart_trend_regioni.sql"
+      years: [2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
   required_tables:
     - "mart_regioni_anno"
     - "mart_sintesi_nazionale"
@@ -63,7 +68,7 @@ mart:
       mart_regioni_anno:
         required_columns: [anno, regione, contribuenti, volume_frequenza, volume_affari_eur, va_frequenza, va_fiscale_eur, imposta_credito_frequenza, quota_volume_pct]
         primary_key: [anno, regione]
-        min_rows: 200
+        min_rows: 20
       mart_sintesi_nazionale:
         required_columns: [anno, contribuenti, volume_affari_eur, va_fiscale_eur, imposta_credito_frequenza, delta_volume_pct]
         primary_key: [anno]

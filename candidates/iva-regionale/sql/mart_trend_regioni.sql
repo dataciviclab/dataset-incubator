@@ -11,10 +11,7 @@ WITH all_clean AS (
     SELECT anno, regione, contribuenti,
            volume_frequenza, volume_affari_eur,
            va_frequenza, va_fiscale_eur
-    FROM read_parquet(
-        '{root}/data/clean/{dataset}/*/{dataset}_*_clean.parquet',
-        union_by_name=true
-    )
+    FROM clean_input
     WHERE anno IS NOT NULL AND regione IS NOT NULL
 ),
 finestre AS (
