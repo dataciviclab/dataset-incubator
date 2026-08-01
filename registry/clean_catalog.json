@@ -2139,7 +2139,8 @@
           "name": "esercizio_finanziario",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "codice_titolo",
@@ -2398,7 +2399,8 @@
           "name": "esercizio_finanziario",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Anno di riferimento"
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
         },
         {
           "name": "stato_previsione",

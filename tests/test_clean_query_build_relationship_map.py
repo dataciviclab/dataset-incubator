@@ -65,6 +65,47 @@ class TestEntityGraph:
         bdap_bridges = [b for b in bridges if "bdap" in str(b).lower()]
         assert len(bdap_bridges) > 0, "Nessun bridge BDAP trovato"
 
+    def test_bridges_have_on_column(self):
+        """Ogni bridge deve dichiarare la colonna di join (`to.on`).
+
+        Regressione: la chiave YAML `on:` veniva parsificata come booleano
+        True da YAML 1.1, quindi `bridge.get("on", "")` restituiva sempre ""
+        e il grafo perdeva la colonna di join (CIG, CUP, ...).
+        """
+        graph = _load()
+        bridges = graph.get("bridges", [])
+        assert bridges, "Nessun bridge da verificare"
+        empty_on = [b for b in bridges if not b.get("to", {}).get("on")]
+        assert not empty_on, (
+            f"{len(empty_on)} bridge con colonna di join vuota: "
+            f"{[b['from']['dataset'] for b in empty_on[:5]]}"
+        )
+
+    def test_bridges_no_duplicates(self):
+        """Non devono esistere relazioni duplicate (stesso dataset → stesso bridge).
+
+        Regressione: il builder generava una relazione per ogni colonna con
+        lo stesso semantic_type (es. anac_bandi_gara con 3 colonne cig_code
+        produceva 3 bridge identici).
+        """
+        graph = _load()
+        bridges = graph.get("bridges", [])
+        seen = set()
+        dups = []
+        for b in bridges:
+            key = (
+                b["from"]["entity"],
+                b["from"]["dataset"],
+                b["from"]["via"],
+                b["to"]["entity"],
+                b["to"]["bridge"],
+                b["to"]["semantic_type"],
+            )
+            if key in seen:
+                dups.append(key)
+            seen.add(key)
+        assert not dups, f"{len(dups)} relazioni duplicate trovate: {dups[:5]}"
+
     def test_entity_has_required_fields(self):
         """Ogni dataset in un'entità deve avere slug, column, semantic_type."""
         graph = _load()

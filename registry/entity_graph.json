@@ -1599,9 +1599,21 @@
           "semantic_type": "month"
         },
         {
+          "slug": "bdap_entrate_stato",
+          "name": "BDAP Entrate Stato - Serie Storica",
+          "column": "esercizio_finanziario",
+          "semantic_type": "year"
+        },
+        {
           "slug": "bdap_lea",
           "name": "Bdap Lea",
           "column": "anno_riferimento",
+          "semantic_type": "year"
+        },
+        {
+          "slug": "bdap_spese_stato",
+          "name": "BDAP Spese Stato",
+          "column": "esercizio_finanziario",
           "semantic_type": "year"
         },
         {
@@ -2038,7 +2050,7 @@
         }
       ],
       "types": {
-        "year": 70,
+        "year": 72,
         "month": 10
       }
     }
@@ -2053,7 +2065,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2066,20 +2078,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
-        "semantic_type": "municipality_code"
-      }
-    },
-    {
-      "from": {
-        "entity": "Gara",
-        "dataset": "anac_aggiudicazioni",
-        "via": "cig_code"
-      },
-      "to": {
-        "entity": "Comune",
-        "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2092,7 +2091,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2105,7 +2104,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_cup",
-        "on": "",
+        "on": "cup",
         "semantic_type": "municipality_code"
       }
     },
@@ -2118,33 +2117,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
-        "semantic_type": "municipality_code"
-      }
-    },
-    {
-      "from": {
-        "entity": "Gara",
-        "dataset": "anac_bandi_gara",
-        "via": "cig_code"
-      },
-      "to": {
-        "entity": "Comune",
-        "bridge": "anac_bandi_gara",
-        "on": "",
-        "semantic_type": "municipality_code"
-      }
-    },
-    {
-      "from": {
-        "entity": "Gara",
-        "dataset": "anac_bandi_gara",
-        "via": "cig_code"
-      },
-      "to": {
-        "entity": "Comune",
-        "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2157,7 +2130,7 @@
       "to": {
         "entity": "Ente (o Impresa)",
         "bridge": "bdap_anagrafe_enti",
-        "on": "",
+        "on": "codice_ente_ipa",
         "semantic_type": "fiscal_code"
       }
     },
@@ -2170,7 +2143,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2183,7 +2156,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2196,7 +2169,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_cup",
-        "on": "",
+        "on": "cup",
         "semantic_type": "municipality_code"
       }
     },
@@ -2209,7 +2182,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2222,7 +2195,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2235,7 +2208,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2248,7 +2221,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "bdap_anagrafe_enti",
-        "on": "",
+        "on": "codice_ente_miur",
         "semantic_type": "municipality_code"
       }
     },
@@ -2261,7 +2234,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "bdap_anagrafe_enti",
-        "on": "",
+        "on": "codice_ente_ssn",
         "semantic_type": "municipality_code"
       }
     },
@@ -2274,7 +2247,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "bdap_anagrafe_enti",
-        "on": "",
+        "on": "codice_ente_ssn",
         "semantic_type": "municipality_code"
       }
     },
@@ -2287,7 +2260,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_cup",
-        "on": "",
+        "on": "cup",
         "semantic_type": "municipality_code"
       }
     },
@@ -2300,7 +2273,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "opencivitas_fsc_enti_rso",
-        "on": "",
+        "on": "username",
         "semantic_type": "municipality_name"
       }
     },
@@ -2313,7 +2286,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "opencivitas_fsc_enti_rso",
-        "on": "",
+        "on": "username",
         "semantic_type": "municipality_name"
       }
     },
@@ -2326,7 +2299,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "opencivitas_fsc_enti_rso",
-        "on": "",
+        "on": "username",
         "semantic_type": "municipality_name"
       }
     },
@@ -2339,7 +2312,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_cup",
-        "on": "",
+        "on": "cup",
         "semantic_type": "municipality_code"
       }
     },
@@ -2352,7 +2325,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_bandi_gara",
-        "on": "",
+        "on": "cig",
         "semantic_type": "municipality_code"
       }
     },
@@ -2365,7 +2338,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_cup",
-        "on": "",
+        "on": "cup",
         "semantic_type": "municipality_code"
       }
     },
@@ -2378,7 +2351,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_cup",
-        "on": "",
+        "on": "cup",
         "semantic_type": "municipality_code"
       }
     },
@@ -2391,7 +2364,7 @@
       "to": {
         "entity": "Comune",
         "bridge": "anac_cup",
-        "on": "",
+        "on": "cup",
         "semantic_type": "municipality_code"
       }
     },
@@ -2404,13 +2377,13 @@
       "to": {
         "entity": "Comune",
         "bridge": "bdap_anagrafe_enti",
-        "on": "",
+        "on": "codice_ente_siope",
         "semantic_type": "municipality_code"
       }
     }
   ],
   "summary": {
     "total_entities": 16,
-    "total_relations": 28
+    "total_relations": 25
   }
 }

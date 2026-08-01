@@ -10,6 +10,8 @@
 #     normalizers: espressioni SQL per normalizzare la colonna del dataset al formato hub
 #   bridge: se il join è indiretto (opzionale)
 #     via: hub/dataset intermedio
+#     on_column: colonna del bridge su cui avviene il join
+#                (NOTA: non usare "on" — in YAML 1.1 "on:" è parsificato come booleano True)
 #     to: tipo semantico di arrivo
 #   validators: hint per validazione (opzionale)
 
@@ -152,7 +154,7 @@ types:
     aliases: [cig, codice_cig, cig_accordo_quadro, CIG_PROG_ESTERNA, CIG_COLLEGAMENTO]
     bridge:
       via: anac_bandi_gara
-      on: cig
+      on_column: cig
       to: municipality_code
     weight: 25
 
@@ -162,7 +164,7 @@ types:
     aliases: [cup, codice_cup]
     bridge:
       via: anac_cup
-      on: cup
+      on_column: cup
       to: municipality_code
     weight: 20
 
@@ -172,7 +174,7 @@ types:
     aliases: [codice_ausa, ausa]
     bridge:
       via: bdap_anagrafe_enti
-      on: codice_ente_ipa
+      on_column: codice_ente_ipa
       to: fiscal_code
     weight: 15
 
@@ -203,7 +205,7 @@ types:
     aliases: [codice_ente]
     bridge:
       via: bdap_anagrafe_enti
-      on: codice_ente_siope
+      on_column: codice_ente_siope
       to: municipality_code
     weight: 15
 
@@ -213,7 +215,7 @@ types:
     aliases: [codice_ente_miur, codice_ente_miur]
     bridge:
       via: bdap_anagrafe_enti
-      on: codice_ente_miur
+      on_column: codice_ente_miur
       to: municipality_code
     weight: 15
 
@@ -223,7 +225,7 @@ types:
     aliases: [codice_ente_ssn]
     bridge:
       via: bdap_anagrafe_enti
-      on: codice_ente_ssn
+      on_column: codice_ente_ssn
       to: municipality_code
     weight: 15
 
@@ -233,7 +235,7 @@ types:
     aliases: [username]
     bridge:
       via: opencivitas_fsc_enti_rso
-      on: username
+      on_column: username
       to: municipality_name
     weight: 10
 
@@ -256,7 +258,7 @@ types:
   year:
     description: "Anno di riferimento"
     entity: Tempo
-    aliases: [anno, year, anno_di_imposta, anno_riferimento]
+    aliases: [anno, year, anno_di_imposta, anno_riferimento, esercizio_finanziario]
     weight: 1
 
   month:
