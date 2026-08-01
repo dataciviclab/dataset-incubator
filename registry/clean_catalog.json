@@ -401,7 +401,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "anac",
+        "aggiudicatari"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "anac_aggiudicazioni",
@@ -834,7 +840,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "anac",
+        "master"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "anac_bandi_gara",
@@ -1305,7 +1317,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "anac",
+        "collaudo"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "anac_cup",
@@ -1339,7 +1357,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "anac",
+        "cup"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "anac_partecipanti",
@@ -1391,7 +1415,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "anac",
+        "partecipanti"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "anac_stati_avanzamento",
@@ -1478,7 +1508,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "anac",
+        "stati",
+        "avanzamento"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "anac_subappalti",
@@ -1592,7 +1629,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "anac",
+        "subappalti"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "anpr_mobilita_residenziale",
@@ -2072,7 +2115,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "bdap",
+        "anagrafe",
+        "enti"
+      ],
+      "category": "pa"
     },
     {
       "slug": "bdap_entrate_stato",
@@ -3164,7 +3214,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "comuni",
+        "master"
+      ],
+      "category": "pa"
     },
     {
       "slug": "consip_consumi_convenzione",
@@ -3377,7 +3433,15 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "conto",
+        "annuale",
+        "profilo",
+        "ente"
+      ],
+      "category": "pa"
     },
     {
       "slug": "costituzione_master",
@@ -3469,7 +3533,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "normativa",
+        "costituzione",
+        "master"
+      ],
+      "category": "normativa"
     },
     {
       "slug": "dait_amministratori_locali",
@@ -4480,7 +4550,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "elezioni",
+        "voto"
+      ],
+      "category": "politica"
     },
     {
       "slug": "eurostat_demography",
@@ -4610,7 +4686,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "welfare-lavoro",
+        "eurostat",
+        "demography"
+      ],
+      "category": "welfare-lavoro"
     },
     {
       "slug": "eurostat_economy",
@@ -4788,7 +4870,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "economia",
+        "eurostat",
+        "economy"
+      ],
+      "category": "economia"
     },
     {
       "slug": "eurostat_territory",
@@ -4876,7 +4964,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "ambiente",
+        "eurostat",
+        "territory"
+      ],
+      "category": "ambiente"
     },
     {
       "slug": "farmacie",
@@ -5847,7 +5941,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "welfare-lavoro",
+        "inps",
+        "pensioni"
+      ],
+      "category": "welfare-lavoro"
     },
     {
       "slug": "inps_rdc_pdc",
@@ -6228,7 +6328,15 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "ipa",
+        "aree",
+        "organizzative",
+        "omogenee"
+      ],
+      "category": "pa"
     },
     {
       "slug": "ipa_enti",
@@ -6433,7 +6541,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "ipa",
+        "enti"
+      ],
+      "category": "pa"
     },
     {
       "slug": "ipa_unita_organizzative",
@@ -6612,7 +6726,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "ipa",
+        "unita",
+        "organizzative"
+      ],
+      "category": "pa"
     },
     {
       "slug": "irpef_comunale",
@@ -7588,7 +7709,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "istat",
+        "elenco",
+        "comuni"
+      ],
+      "category": "pa"
     },
     {
       "slug": "istat_gini_regionale",
@@ -8074,7 +8202,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "economia",
+        "istat",
+        "pil",
+        "territoriale"
+      ],
+      "category": "economia"
     },
     {
       "slug": "iva_regionale",
@@ -10088,7 +10223,15 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "istruzione",
+        "mim",
+        "anagrafica",
+        "scuole",
+        "statali"
+      ],
+      "category": "istruzione"
     },
     {
       "slug": "mim_scuola_infanzia",
@@ -10322,7 +10465,13 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "ambiente",
+        "mit",
+        "incidentalita"
+      ],
+      "category": "ambiente"
     },
     {
       "slug": "mit_opere_incompiute_2020",
@@ -10889,14 +11038,20 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "opencivitas",
+        "fsc"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "opencivitas_fsc_enti_rso",
       "name": "Opencivitas Fsc Enti Rso",
       "description": "Anagrafica enti FSC 2025 — mapping username → comune/provincia/regione (solo support, non pubblicato)",
       "source": "",
-      "source_id": "",
+      "source_id": "opencivitas",
       "period": {
         "start": 2025,
         "end": 2025
@@ -10943,7 +11098,14 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "opencivitas",
+        "fsc",
+        "enti"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "opencivitas_glossario",
@@ -11012,7 +11174,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "opencivitas",
+        "glossario"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "opencivitas_indicatori",
@@ -12441,7 +12609,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "welfare-lavoro",
+        "popolazione",
+        "istat"
+      ],
+      "category": "welfare-lavoro"
     },
     {
       "slug": "posti_letto_stabilimento",
@@ -15170,7 +15344,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "unified",
+        "comuni"
+      ],
+      "category": "pa"
     },
     {
       "slug": "who_is_who_pa",
@@ -15411,7 +15591,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "who",
+        "is",
+        "who"
+      ],
+      "category": "pa"
     }
   ]
 }
