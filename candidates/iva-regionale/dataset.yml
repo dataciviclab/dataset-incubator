@@ -24,7 +24,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno, regione, cod_regione, contribuenti, volume_affari_eur, acquisti_eur, va_fiscale_eur, imposta_dovuta_eur, imposta_credito_eur]
+  required_columns: [anno, regione, cod_regione, contribuenti, volume_frequenza, volume_affari_eur, acquisti_frequenza, acquisti_eur, va_frequenza, va_fiscale_eur, imposta_dovuta_frequenza, imposta_dovuta_eur, imposta_credito_frequenza, imposta_credito_eur]
   read:
     source: auto
     mode: latest
@@ -58,15 +58,15 @@ mart:
   validate:
     table_rules:
       mart_regioni_anno:
-        required_columns: [anno, regione, contribuenti, volume_affari_eur, va_fiscale_eur, quota_volume_pct]
+        required_columns: [anno, regione, contribuenti, volume_frequenza, volume_affari_eur, va_frequenza, va_fiscale_eur, imposta_credito_frequenza, quota_volume_pct]
         primary_key: [anno, regione]
         min_rows: 200
       mart_sintesi_nazionale:
-        required_columns: [anno, contribuenti, volume_affari_eur, va_fiscale_eur, delta_volume_pct]
+        required_columns: [anno, contribuenti, volume_affari_eur, va_fiscale_eur, imposta_credito_frequenza, delta_volume_pct]
         primary_key: [anno]
         min_rows: 10
       mart_trend_regioni:
-        required_columns: [regione, delta_volume_eur, delta_volume_pct, delta_contribuenti_pct]
+        required_columns: [regione, delta_volume_eur, delta_volume_pct, delta_contribuenti_pct, delta_frequenza_pct]
         primary_key: [regione]
         min_rows: 20
 
