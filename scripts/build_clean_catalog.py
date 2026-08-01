@@ -165,30 +165,50 @@ def normalize_catalog(catalog: dict[str, Any], *, refresh_date: bool = False) ->
     return normalized
 
 
-def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
-    """Legge source_id dai dataset.yml dei candidati e li fonde nel catalogo.
+def _iter_dataset_ymls(root: Path):
+    """Itera i dataset.yml di candidates/, support_datasets/ e compose/.
 
-    Per ogni dataset nel catalogo, se esiste un candidate dataset.yml con source_id,
-    lo aggiunge al catalogo (non sovrascrive se già presente).
+    Allineato allo standard candidate: i metadati (source_id, tags, category)
+    valgono per tutte e tre le sezioni, non solo per i candidate.
     """
-    candidates_dir = root / "candidates"
-    if not candidates_dir.is_dir():
-        return
-
-    slug_to_source: dict[str, str] = {}
-    for cand_dir in sorted(candidates_dir.iterdir()):
-        yml_path = cand_dir / "dataset.yml"
-        if not yml_path.is_file():
+    for section in ("candidates", "support_datasets", "compose"):
+        section_dir = root / section
+        if not section_dir.is_dir():
             continue
+        for entry_dir in sorted(section_dir.iterdir()):
+            yml_path = entry_dir / "dataset.yml"
+            if yml_path.is_file():
+                yield yml_path
+
+
+def _manifest_key(manifest: dict[str, Any]) -> str:
+    """Chiave di match col catalogo: dataset.name (underscore), con fallback slug.
+
+    Il catalogo usa lo slug del nome dataset (es. inps_pensioni_trimestrale),
+    non il nome directory del candidate (inps-pensioni): matchnare su name
+    evita i falsi negativi dell'enrich.
+    """
+    key = manifest.get("name") or manifest.get("slug") or ""
+    return key.replace("-", "_")
+
+
+def _enrich_source_ids(catalog: dict[str, Any], root: Path) -> None:
+    """Legge source_id dai dataset.yml e li fonde nel catalogo.
+
+    Per ogni dataset nel catalogo, se esiste un dataset.yml (candidate,
+    support o compose) con source_id, lo aggiunge al catalogo (non
+    sovrascrive se già presente).
+    """
+    slug_to_source: dict[str, str] = {}
+    for yml_path in _iter_dataset_ymls(root):
         try:
             manifest = load_dataset_manifest(yml_path)
         except Exception:
             continue
         sid = manifest.get("source_id")
-        slug = manifest.get("slug") or manifest.get("name") or ""
-        if sid and slug:
-            di_slug = slug.replace("-", "_")
-            slug_to_source[di_slug] = sid
+        key = _manifest_key(manifest)
+        if sid and key:
+            slug_to_source[key] = sid
 
     if not slug_to_source:
         return
@@ -213,24 +233,16 @@ def _enrich_period_from_coverage(catalog: dict[str, Any], root: Path) -> None:
     evita che period rifletta solo gli anni di cui abbiamo un parquet su GCS,
     il che sarebbe fuorviante per dataset con file snapshot multi-anno.
     """
-    candidates_dir = root / "candidates"
-    if not candidates_dir.is_dir():
-        return
-
     slug_to_period: dict[str, dict[str, int]] = {}
-    for cand_dir in sorted(candidates_dir.iterdir()):
-        yml_path = cand_dir / "dataset.yml"
-        if not yml_path.is_file():
-            continue
+    for yml_path in _iter_dataset_ymls(root):
         try:
             manifest = load_dataset_manifest(yml_path)
         except Exception:
             continue
         tc = manifest.get("time_coverage")
-        slug = manifest.get("slug") or manifest.get("name") or ""
-        if tc and slug and "start_year" in tc and "end_year" in tc:
-            di_slug = slug.replace("-", "_")
-            slug_to_period[di_slug] = {
+        key = _manifest_key(manifest)
+        if tc and key and "start_year" in tc and "end_year" in tc:
+            slug_to_period[key] = {
                 "start": tc["start_year"],
                 "end": tc["end_year"],
             }
@@ -257,29 +269,20 @@ def _enrich_tags_and_category(catalog: dict[str, Any], root: Path) -> None:
     all'entry del catalogo, se presenti nel dataset.yml.
     Non sovrascrive se già presenti (l'editoriale ha precedenza).
     """
-    candidates_dir = root / "candidates"
-    if not candidates_dir.is_dir():
-        return
-
     slug_to_tags: dict[str, list[str]] = {}
     slug_to_category: dict[str, str | None] = {}
-    for cand_dir in sorted(candidates_dir.iterdir()):
-        yml_path = cand_dir / "dataset.yml"
-        if not yml_path.is_file():
-            continue
+    for yml_path in _iter_dataset_ymls(root):
         try:
             manifest = load_dataset_manifest(yml_path)
         except Exception:
             continue
-        slug = manifest.get("slug") or manifest.get("name") or ""
+        key = _manifest_key(manifest)
         tags = manifest.get("tags") or []
         category = manifest.get("category")
-        if tags and slug:
-            di_slug = slug.replace("-", "_")
-            slug_to_tags[di_slug] = tags
-        if category and slug:
-            di_slug = slug.replace("-", "_")
-            slug_to_category[di_slug] = category
+        if tags and key:
+            slug_to_tags[key] = tags
+        if category and key:
+            slug_to_category[key] = category
 
     if not slug_to_tags and not slug_to_category:
         return
