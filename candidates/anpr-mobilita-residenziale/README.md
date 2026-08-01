@@ -20,14 +20,21 @@
 | `cod_regione_arrivo` | VARCHAR | Codice ISTAT regione arrivo |
 | `totale` | INTEGER | Numero trasferimenti di residenza |
 
+## Mart
+
+- **`mart_saldi_regionali`** — arrivi, partenze, saldo netto, flussi interni e quota interni per regione × anno. Include ESTERO.
+- **`mart_corridoi`** — trasferimenti per coppia origine → destinazione × anno. Include ESTERO.
+- **`mart_trend_mensile`** — totale trasferimenti per anno × mese con quota % sul totale annuo.
+
+Rispondono alle 13 domande della [discussion #393](https://github.com/orgs/dataciviclab/discussions/393) (saldi, corridoi Sud→Nord, stagionalità, ESTERO).
+
 ## Esecuzione
 
 ```bash
 cd dataset-incubator
-python -m toolkit.cli.app run full \
-  --config candidates/anpr-mobilita-residenziale/dataset.yml
+toolkit run -c candidates/anpr-mobilita-residenziale/dataset.yml
 ```
 
 ## Issue di riferimento
 
-- Intake: [#555](https://github.com/dataciviclab/dataset-incubator/issues/555)
+- Intake: [#554](https://github.com/dataciviclab/dataset-incubator/issues/554)

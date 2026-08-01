@@ -2,7 +2,8 @@
 
 ## Stato
 
-Candidate v0. Run passato con years: [2026]. 21.750 righe, 7 colonne.
+Candidate a standard v1 (2026-08-01): mart analitiche serie (saldi / corridoi /
+trend mensile). Run passed con years: [2026]. 22.176 righe, 7 colonne.
 
 ## Copertura per anno
 
@@ -14,6 +15,25 @@ Candidate v0. Run passato con years: [2026]. 21.750 righe, 7 colonne.
 | 2025 | 5.118 | Completo |
 | 2026 | 2.552 | Gen-Giu (dati parziali) |
 
+## Note tecniche
+
+- Fonte: http_file standard (GitHub raw, ANPR opendata)
+- clean.sql: macro standard (cast_int, normalize_string, LPAD codici ISTAT)
+- Il dataset è un file unico con tutti gli anni: le mart leggono `FROM clean_input`
+  (nessun multi-year necessario — i 5 anni sono nello stesso parquet)
+- ESTERO è una entità valida (arrivo e partenza) — non filtrata
+- primary_key clean: [anno, mese, partenza, arrivo]
+
+## Decisioni metodologiche (2026-08-01)
+
+- Mart pass-through rimosso: il dato grezzo è una matrice origine→destinazione;
+  le 3 mart serie rispondono alle 13 domande della discussion #393
+- `quota_interni_pct` in mart_saldi: flussi interni / (arrivi + partenze - interni)
+  — misura l'autosufficienza regionale (D4)
+- I saldi cumulati multi-anno non coincidono coi saldi di un singolo anno
+  citati nella discussion (es. Lombardia cumulato +80.6k vs +81.4k 2025):
+  differenza attesa, sono metriche diverse
+
 ## Saldi netti interregionali 2025 (escluso ESTERO)
 
 | Regione | Uscite | Entrate | Saldo |
@@ -23,17 +43,3 @@ Candidate v0. Run passato con years: [2026]. 21.750 righe, 7 colonne.
 | Puglia | 28.295 | 19.723 | -8.572 |
 | Calabria | 20.113 | 12.583 | -7.530 |
 | … | … | … | … |
-| Lombardia | 63.203 | 77.870 | **+14.667** |
-| Emilia Romagna | 33.750 | 44.646 | **+10.896** |
-
-## Fonte
-
-Repo GitHub ufficiale: `italia/anpr-opendata`
-File: `data/cambi_residenza.csv` — aggiornato automaticamente via GitHub Actions.
-
-## Note
-
-- Dato aggiornato quasi in tempo reale (ANPR, non ISTAT con 2 anni di ritardo)
-- Subentro ANPR parziale nel 2022: possibile sottostima comuni minori del Sud
-- Include flussi con ESTERO (cancellazioni/iscrizioni anagrafiche)
-- Il file è unico e contiene tutta la serie storica

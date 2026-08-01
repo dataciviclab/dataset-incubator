@@ -23,7 +23,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno, mese, partenza, cod_regione_partenza, arrivo, cod_regione_arrivo]
+  required_columns: [anno, mese, partenza, cod_regione_partenza, arrivo, cod_regione_arrivo, totale]
   read:
     source: auto
     mode: latest
@@ -31,19 +31,38 @@ clean:
     encoding: "utf-8"
     trim_whitespace: true
   validate:
-    not_null: [anno]
+    not_null: [anno, partenza, arrivo]
     min_rows: 1000
+    primary_key: [anno, mese, partenza, arrivo]
 
 mart:
   tables:
-    - name: "mart_flussi_regionali"
-      sql: "sql/mart.sql"
+    # Saldo migratorio per regione x anno (arrivi, partenze, interno)
+    - name: "mart_saldi_regionali"
+      sql: "sql/mart_saldi_regionali.sql"
+    # Flussi tra coppie origine -> destinazione per anno
+    - name: "mart_corridoi"
+      sql: "sql/mart_corridoi.sql"
+    # Totale trasferimenti per anno x mese (stagionalita')
+    - name: "mart_trend_mensile"
+      sql: "sql/mart_trend_mensile.sql"
   required_tables:
-    - "mart_flussi_regionali"
+    - "mart_saldi_regionali"
+    - "mart_corridoi"
   validate:
     table_rules:
-      mart_flussi_regionali:
+      mart_saldi_regionali:
+        required_columns: [anno, regione, arrivi, partenze, saldo_netto, flussi_interni]
+        primary_key: [anno, regione]
+        min_rows: 100
+      mart_corridoi:
+        required_columns: [anno, partenza, arrivo, trasferimenti]
+        primary_key: [anno, partenza, arrivo]
         min_rows: 1000
+      mart_trend_mensile:
+        required_columns: [anno, mese, trasferimenti, quota_mensile_pct]
+        primary_key: [anno, mese]
+        min_rows: 50
 
 validation:
   fail_on_error: true
