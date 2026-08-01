@@ -110,23 +110,24 @@ def build_graph() -> dict:
             bridge = type_info.get("bridge")
             if bridge:
                 via = bridge.get("via", "")
-                on = bridge.get("on", "")
+                on = bridge.get("on_column", "")
                 to_st = bridge.get("to", "")
                 to_info = types_info.get(to_st, {})
                 to_entity = to_info.get("entity", "Sconosciuto")
 
                 if to_entity and to_entity != entity:
-                    relations.append(
-                        {
-                            "from": {"entity": entity, "dataset": slug, "via": st},
-                            "to": {
-                                "entity": to_entity,
-                                "bridge": via,
-                                "on": on,
-                                "semantic_type": to_st,
-                            },
-                        }
-                    )
+                    rel = {
+                        "from": {"entity": entity, "dataset": slug, "via": st},
+                        "to": {
+                            "entity": to_entity,
+                            "bridge": via,
+                            "on": on,
+                            "semantic_type": to_st,
+                        },
+                    }
+                    # Evita relazioni duplicate (stessa coppia dataset→bridge)
+                    if rel not in relations:
+                        relations.append(rel)
 
     # Ordina dataset per slug
     for entity in nodes:
