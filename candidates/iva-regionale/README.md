@@ -39,9 +39,11 @@ Ammontare / Frequenza.
 
 ```bash
 cd dataset-incubator
-TOOLKIT_ALLOW_SCRIPT_SOURCE=1 toolkit run \
-  -c candidates/iva-regionale/dataset.yml
+toolkit run -c candidates/iva-regionale/dataset.yml
 ```
+
+Fonte scaricata via `http_file` standard (URL MEF con `{year}` nel path);
+`read.skip: 9` salta le righe di metadati (header sempre alla riga 9).
 
 ## Issue di riferimento
 

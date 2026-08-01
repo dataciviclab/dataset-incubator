@@ -20,13 +20,17 @@ Tutti gli anni dal 2009 al 2024 funzionano (16 anni totali). Attivi 2014-2023.
 
 ## Note tecniche
 
-- `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` necessario per il preprocess
-- preprocess.py scarica, salta metadati, normalizza formato numerico italiano
+- Fonte scaricata via `http_file` (URL MEF con `{year}` nel path); header
+  sempre alla riga 9 (verificato 5/5 anni: 2015, 2018, 2020, 2022, 2024) —
+  `read.skip: 9` + `null_padding: true` (riga finale con 1 solo campo)
+- Numeri raw in formato italiano (punti migliaia, virgola decimale):
+  letti come VARCHAR, normalizzati con le macro standard
+  (`normalize_italian_integer` / `normalize_italian_number`)
 - I valori raw sono in migliaia di euro; il clean moltiplica ×1000 per avere euro
 - `***` = data masking (meno di 3 contribuenti) → NULL
+- Niente più preprocess.py: migrato a http_file (2026-08-01)
 - clean.sql usa le **macro standard** del toolkit (cast_bigint, cast_double,
-  normalize_string) — il preprocess ha già normalizzato il formato numerico,
-  quindi niente normalize_italian_number
+  normalize_string, normalize_italian_*)
 
 ## Decisioni metodologiche (2026-08-01)
 
