@@ -535,3 +535,62 @@ class TestCategoryVocabulary:
         failures: list[str] = []
         check_config_yml(yml, failures, strict=True)
         assert any("fuori vocabolario" in f for f in failures)
+
+
+class TestReadLeak:
+    """Chiavi di clean.read dentro clean.validate → failure (config malformato)."""
+
+    @pytest.mark.contract
+    def test_read_keys_in_validate_failure(self, tmp_path, patch_root):
+        from validate_candidate_structure import check_config_yml
+
+        base = patch_root / "candidates" / "leak"
+        base.mkdir(parents=True)
+        yml = base / "dataset.yml"
+        yml.write_text(
+            "dataset:\n"
+            "  name: leak\n"
+            "  years: [2024]\n"
+            "  source_id: openga\n"
+            "  tags: [x]\n"
+            "  category: giustizia\n"
+            "clean:\n"
+            "  read:\n"
+            "  validate:\n"
+            "    not_null: [anno]\n"
+            "    delim: ';'\n"
+            "    encoding: 'utf-8'\n",
+            encoding="utf-8",
+        )
+        failures: list[str] = []
+        check_config_yml(yml, failures)
+        assert any("clean.read dentro clean.validate" in f for f in failures)
+
+    @pytest.mark.contract
+    def test_no_leak_ok(self, tmp_path, patch_root):
+        from validate_candidate_structure import check_config_yml
+
+        base = patch_root / "candidates" / "no-leak"
+        base.mkdir(parents=True)
+        yml = base / "dataset.yml"
+        yml.write_text(
+            "dataset:\n"
+            "  name: no_leak\n"
+            "  years: [2024]\n"
+            "  source_id: openga\n"
+            "  tags: [x]\n"
+            "  category: giustizia\n"
+            "raw:\n"
+            "  sources:\n"
+            "    - name: src\n"
+            "      type: local_file\n"
+            "clean:\n"
+            "  read:\n"
+            "    delim: ';'\n"
+            "  validate:\n"
+            "    not_null: [anno]\n",
+            encoding="utf-8",
+        )
+        failures: list[str] = []
+        check_config_yml(yml, failures)
+        assert failures == []

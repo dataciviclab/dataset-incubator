@@ -43,6 +43,31 @@ CATEGORIES = {
     "trasporti",
 }
 
+# Chiavi che appartengono a clean.read — se compaiono in clean.validate il
+# config è malformato (bug visto in migrazione 2026-07-31: read svuotato,
+# parametri finiti in validate).
+READ_KEYS_IN_VALIDATE = {
+    "delim",
+    "encoding",
+    "header",
+    "skip",
+    "columns",
+    "parallel",
+    "ignore_errors",
+    "dateformat",
+    "quote",
+    "escape",
+    "mode",
+    "source",
+    "trim_whitespace",
+    "decimal",
+    "sheet_name",
+    "null_padding",
+    "normalize_rows_to_columns",
+    "align_by_header",
+    "sample_size",
+}
+
 
 def detect_candidate_layout(base_dir: Path) -> dict:
     """Shared layout detection for candidate, support_dataset, and compose structures.
@@ -280,6 +305,23 @@ def check_config_yml(
             failures.append(msg)
         elif warnings is not None:
             warnings.append(msg)
+
+    # Guard: chiavi di clean.read finite dentro clean.validate (config
+    # malformato — read svuotato). Il modello Pydantic non lo rileva (read
+    # vuoto è valido): lo verifichiamo sul YAML grezzo.
+    import yaml as _yaml
+
+    try:
+        _raw = _yaml.safe_load(yml_path.read_text(encoding="utf-8")) or {}
+        _val = (_raw.get("clean") or {}).get("validate") or {}
+        _leaked = sorted(k for k in READ_KEYS_IN_VALIDATE if k in _val)
+        if _leaked:
+            failures.append(
+                f"{yml_path.relative_to(ROOT)}: config: chiavi di clean.read dentro "
+                f"clean.validate ({', '.join(_leaked)}) — ripristinare il blocco read"
+            )
+    except Exception:
+        pass  # YAML già segnalato da validate_config se non parsabile
 
 
 def validate_entry(base_dir: Path, failures: list[str], warnings: list[str] | None = None) -> None:
