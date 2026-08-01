@@ -8,11 +8,16 @@ dataset:
   tags: [ambiente, ispra, emissioni, ghg]
   category: ambiente
   years: [2023]
+  # Anno nominale: il file XLS copre l'intera serie 1990-2023 (34 anni).
+  # Non esistono file separati per anno: year=2023 e` il rilascio piu recente.
+  # Output in formato wide: una riga per anno, colonne per settore e totale.
+  time_coverage: {start_year: 1990, end_year: 2023}
 
 raw:
   output_policy: overwrite
   sources:
-    - type: script
+    - name: "ispra_emissioni_ghg_xls"
+      type: script
       args:
         command: "python preprocess.py raw_input.csv"
         output: "raw_input.csv"
@@ -20,17 +25,41 @@ raw:
       primary: true
 
 clean:
+  sql: "sql/clean.sql"
   read:
+    source: auto
+    mode: latest
     delim: ";"
     encoding: "utf-8"
     header: true
     decimal: "."
   required_columns: ["anno", "industrie_energetiche", "industrie_manifatturiere", "residenziale_e_servizi", "trasporti", "totale"]
-  sql: "sql/clean.sql"
   validate:
+    min_rows: 30
     not_null: [anno]
+    primary_key: [anno]
 
 mart:
   tables:
-    - name: "ispra_emissioni_ghg"
-      sql: "sql/mart.sql"
+    # Serie storica long: anno x settore con quota % sul totale nazionale
+    - name: "mart_settori_anno"
+      sql: "sql/mart_settori_anno.sql"
+    # Trend per settore: delta 1990->ultimo anno, CAGR, picco, benchmark
+    - name: "mart_trend_settori"
+      sql: "sql/mart_trend_settori.sql"
+  required_tables:
+    - "mart_settori_anno"
+    - "mart_trend_settori"
+  validate:
+    table_rules:
+      mart_settori_anno:
+        required_columns: [anno, settore, emissioni_mt, quota_pct]
+        primary_key: [anno, settore]
+        min_rows: 100
+      mart_trend_settori:
+        required_columns: [settore, emissioni_1990, emissioni_ultimo, delta_pct, cagr_annuale]
+        primary_key: [settore]
+        min_rows: 5
+
+validation:
+  fail_on_error: true
