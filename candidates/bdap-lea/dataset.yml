@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "bdap_lea"
   source_id: "openbdap"
+  tags: [sanita, bdap, lea]
+  category: sanita
   years: [2019, 2020, 2021, 2022, 2023, 2024]
 
 raw:
@@ -25,6 +27,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno_riferimento, codice_regione, descrizione_regione, codice_ente_ssn, codice_ente_bdap, descrizione_ente, codice_voce_contabile, descrizione_voce_contabile, data_aggiornamento]
   read:
     source: "config_only"
     mode: "latest"
@@ -63,6 +66,7 @@ clean:
       "Altri costi": "VARCHAR"
       "Importo Totale": "VARCHAR"
   validate:
+    not_null: [anno_riferimento]
     min_rows: 1000
 
 mart:

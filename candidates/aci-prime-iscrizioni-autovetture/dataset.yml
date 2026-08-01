@@ -3,6 +3,9 @@ schema_version: 1
 
 dataset:
   name: "aci_prime_iscrizioni_autovetture"
+  source_id: "aci"
+  tags: [trasporti, aci, prime, iscrizioni, autovetture]
+  category: trasporti
   years: [2024]
   time_coverage:
     mode: "full_series"
@@ -56,6 +59,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, comune, provincia, alimentazione]
   read:
     source: config_only
     mode: all
@@ -63,7 +67,8 @@ clean:
     delim: ","
     encoding: "utf-8"
     trim_whitespace: true
-  validate: {}
+  validate:
+    not_null: [anno]
 
 mart:
   tables:

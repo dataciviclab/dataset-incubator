@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "istat_elenco_comuni"
   source_id: "istat_situas"
+  tags: [pa, istat, elenco, comuni]
+  category: pa
   years: [2026]
 
 raw:

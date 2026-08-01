@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "personale_ssn"
   source_id: "ministero_salute"
+  tags: [sanita, personale, ssn]
+  category: sanita
   years: [2021]
   time_coverage:
     mode: full_series
@@ -22,6 +24,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [prospetto, anno, codice_regione, denominazione_regione, codice_azienda, ruolo_categoria]
   read:
     source: auto
     mode: latest
@@ -29,6 +32,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
+    not_null: [anno]
     min_rows: 15000
 
 mart:

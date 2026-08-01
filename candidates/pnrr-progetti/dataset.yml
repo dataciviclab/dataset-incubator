@@ -6,6 +6,8 @@ schema_version: 1
 dataset:
   name: "pnrr_progetti"
   source_id: "italiadomani"
+  tags: [finanza-pubblica, pnrr, progetti]
+  category: finanza-pubblica
   years: [2026]
 
 raw:
@@ -24,6 +26,9 @@ clean:
     encoding: "utf-8"
     header: true
     sample_size: -1
+  required_columns: [programma, missione, descrizione_missione, componente, descrizione_componente, id_misura, codice_univoco_misura, descrizione_misura, id_submisura, codice_cid, codice_univoco_submisura, descrizione_submisura, amministrazione_titolare, codice_procedura_attivazione, titolo_procedura, tipologia_procedura_attivazione, cup, codice_locale_progetto, stato_cup, cup_codice_natura, cup_descrizione_natura, cup_codice_tipologia, cup_descrizione_tipologia, cup_codice_settore, cup_descrizione_settore, cup_codice_sottosettore, cup_descrizione_sottosettore, cup_codice_categoria, cup_descrizione_categoria, titolo_progetto, sintesi_progetto, descrizione_tipo_aiuto, soggetto_attuatore, cf_soggetto_attuatore, flag_progetti_in_essere, data_inizio_prevista, data_inizio_effettiva, data_fine_prevista, data_fine_effettiva, data_estrazione, data_ultima_validazione, esito_validazione, codice_fase_iter, descrizione_fase_iter, stato_fase_iter, stato_avanzamento]
+  validate:
+    not_null: [programma]
   sql: "sql/clean.sql"
 
 mart:

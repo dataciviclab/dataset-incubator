@@ -5,6 +5,8 @@ schema_version: 1
 dataset:
   name: "camera_votazioni_sparql"
   source_id: "dati_camera"
+  tags: [politica, camera, votazioni, sparql]
+  category: politica
   years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 
 raw:
@@ -52,6 +54,9 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [votazione, titolo, legislatura, seduta, atto_camera]
+  validate:
+    not_null: [votazione]
 
 mart:
   tables:

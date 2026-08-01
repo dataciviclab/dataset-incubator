@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "camera_deputati_legislature"
   source_id: "dati_camera"
+  tags: [politica, camera, deputati, legislature]
+  category: politica
   years: [2024]
 
 raw:
@@ -38,6 +40,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [deputato, cognome, nome, legislatura, gender]
   read:
     source: auto
     mode: latest
@@ -46,7 +49,8 @@ clean:
     strict_mode: false
     ignore_errors: true
     trim_whitespace: true
-  validate: {}
+  validate:
+    not_null: [deputato]
 
 mart:
   tables:

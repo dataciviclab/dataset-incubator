@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "anac_bandi_gara"
   source_id: "anac"
+  tags: [appalti, anac, bandi, gara]
+  category: appalti
   years: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 
 raw:

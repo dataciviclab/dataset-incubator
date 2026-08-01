@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "conto_annuale_profilo_ente"
   source_id: "rgs_conto_annuale"
+  tags: [pa, conto, annuale, profilo, ente]
+  category: pa
   years: [2020, 2021, 2022, 2023, 2024]
 
 raw:

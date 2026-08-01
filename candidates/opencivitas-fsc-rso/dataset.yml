@@ -3,6 +3,9 @@ schema_version: 1
 
 dataset:
   name: "opencivitas_fsc_2025_rso"
+  source_id: "opencivitas"
+  tags: [finanza-pubblica, opencivitas, fsc]
+  category: finanza-pubblica
   years: [2022, 2023, 2024, 2025]
 
 support:
@@ -23,6 +26,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, username, comune, provincia, regione, regione_istat_cod, join_enti_ok]
   read:
     source: config_only
     mode: latest

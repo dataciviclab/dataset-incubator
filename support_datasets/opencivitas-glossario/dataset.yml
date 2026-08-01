@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "opencivitas_glossario"
   source_id: "opencivitas"
+  tags: [finanza-pubblica, opencivitas, glossario]
+  category: finanza-pubblica
   years: [2015, 2016, 2017, 2018, 2019, 2021, 2022]
 
 raw:

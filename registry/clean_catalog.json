@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-07-31",
+  "updated_at": "2026-08-01",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -56,7 +56,15 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "trasporti",
+        "aci",
+        "prime",
+        "iscrizioni",
+        "autovetture"
+      ],
+      "category": "trasporti"
     },
     {
       "slug": "ade_cinque_per_mille",
@@ -195,7 +203,15 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "terzo-settore",
+        "ade",
+        "cinque",
+        "per",
+        "mille"
+      ],
+      "category": "terzo-settore"
     },
     {
       "slug": "aifa_spesa_consumo",
@@ -320,7 +336,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "sanita",
+        "aifa",
+        "spesa",
+        "consumo"
+      ],
+      "category": "sanita"
     },
     {
       "slug": "anac_aggiudicatari",
@@ -568,7 +591,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "anac",
+        "aggiudicazioni"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "anac_appalti_master",
@@ -1176,7 +1205,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "anac",
+        "bandi",
+        "gara"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "anac_collaudo",
@@ -1620,7 +1656,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "pa",
+        "anpr",
+        "mobilita",
+        "residenziale"
+      ],
+      "category": "pa"
     },
     {
       "slug": "bdap_anagrafe_enti",
@@ -2115,7 +2158,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "bdap",
+        "entrate"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "bdap_lea",
@@ -2276,7 +2325,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "sanita",
+        "bdap",
+        "lea"
+      ],
+      "category": "sanita"
     },
     {
       "slug": "bdap_spese_stato",
@@ -2368,7 +2423,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "bdap",
+        "spese"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "camera_deputati_legislature",
@@ -2418,7 +2479,14 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "camera",
+        "deputati",
+        "legislature"
+      ],
+      "category": "politica"
     },
     {
       "slug": "camera_votazioni_sparql",
@@ -2534,7 +2602,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "camera",
+        "votazioni",
+        "sparql"
+      ],
+      "category": "politica"
     },
     {
       "slug": "centri_accoglienza_italia",
@@ -2730,7 +2805,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "immigrazione",
+        "centri",
+        "accoglienza"
+      ],
+      "category": "immigrazione"
     },
     {
       "slug": "civile_flussi",
@@ -3177,7 +3258,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "consip",
+        "consumi",
+        "convenzione"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "conto_annuale_profilo_ente",
@@ -3527,7 +3615,14 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "dait",
+        "amministratori",
+        "locali"
+      ],
+      "category": "politica"
     },
     {
       "slug": "dipendenti_pubblici",
@@ -3686,7 +3781,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "welfare-lavoro",
+        "dipendenti",
+        "pubblici"
+      ],
+      "category": "welfare-lavoro"
     },
     {
       "slug": "elezioni_comunali",
@@ -3799,7 +3900,12 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "elezioni"
+      ],
+      "category": "politica"
     },
     {
       "slug": "elezioni_europee",
@@ -3882,7 +3988,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "elezioni",
+        "europee"
+      ],
+      "category": "politica"
     },
     {
       "slug": "elezioni_politiche",
@@ -4030,7 +4142,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "elezioni",
+        "politiche"
+      ],
+      "category": "politica"
     },
     {
       "slug": "elezioni_referendum",
@@ -4137,7 +4255,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "elezioni",
+        "referendum"
+      ],
+      "category": "politica"
     },
     {
       "slug": "elezioni_regionali",
@@ -4232,7 +4356,12 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "elezioni"
+      ],
+      "category": "politica"
     },
     {
       "slug": "elezioni_voto",
@@ -4907,7 +5036,12 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "sanita",
+        "farmacie"
+      ],
+      "category": "sanita"
     },
     {
       "slug": "fts_eu_grants",
@@ -5157,7 +5291,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "fts",
+        "eu",
+        "grants"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "ga_decreti",
@@ -5845,7 +5986,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "welfare-lavoro",
+        "inps",
+        "rdc",
+        "pdc"
+      ],
+      "category": "welfare-lavoro"
     },
     {
       "slug": "intercettazioni",
@@ -6802,7 +6950,12 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "irpef"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "ispra_consumo_suolo",
@@ -6894,7 +7047,14 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "ambiente",
+        "ispra",
+        "consumo",
+        "suolo"
+      ],
+      "category": "ambiente"
     },
     {
       "slug": "ispra_emissioni_ghg",
@@ -6951,7 +7111,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "ambiente",
+        "ispra",
+        "emissioni",
+        "ghg"
+      ],
+      "category": "ambiente"
     },
     {
       "slug": "ispra_ru_base",
@@ -7136,7 +7303,15 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "ambiente",
+        "ispra",
+        "ru",
+        "costi",
+        "kg"
+      ],
+      "category": "ambiente"
     },
     {
       "slug": "ispra_ru_costi_procapite",
@@ -7249,7 +7424,15 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "ambiente",
+        "ispra",
+        "ru",
+        "costi",
+        "procapite"
+      ],
+      "category": "ambiente"
     },
     {
       "slug": "istat_asia_ul",
@@ -7295,7 +7478,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "economia",
+        "istat",
+        "asia",
+        "ul"
+      ],
+      "category": "economia"
     },
     {
       "slug": "istat_elenco_comuni",
@@ -7457,7 +7647,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "istat",
+        "gini"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "istat_housing_crowding",
@@ -7646,7 +7842,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "welfare-lavoro",
+        "istat",
+        "housing",
+        "crowding"
+      ],
+      "category": "welfare-lavoro"
     },
     {
       "slug": "istat_ipab_aree",
@@ -7708,7 +7911,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "welfare-lavoro",
+        "istat",
+        "ipab",
+        "aree"
+      ],
+      "category": "welfare-lavoro"
     },
     {
       "slug": "istat_occupazione_provinciale",
@@ -7783,7 +7993,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "welfare-lavoro",
+        "istat",
+        "occupazione"
+      ],
+      "category": "welfare-lavoro"
     },
     {
       "slug": "istat_pil_territoriale",
@@ -7935,7 +8151,12 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "iva"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "mef_irpef_regionale",
@@ -8209,14 +8430,20 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "irpef"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "mef_partecipazioni",
       "name": "MEF Partecipazioni Pubbliche",
       "description": "Partecipazioni pubbliche dichiarate dalle PA italiane: amministrazioni, partecipate, quote, servizi affidati per territorio e categoria — MEF 2020-2023",
       "source": "MEF — Dipartimento dell'Economia, Open Data Partecipazioni Pubbliche",
-      "source_id": "",
+      "source_id": "mef_tesoro",
       "period": {
         "start": 2020,
         "end": 2023
@@ -8742,7 +8969,13 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "partecipazioni"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "mef_patrimonio_detenzioni",
@@ -8920,7 +9153,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "patrimonio",
+        "detenzioni"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "mef_patrimonio_enti",
@@ -9060,7 +9300,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "patrimonio",
+        "enti"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "mef_patrimonio_immobili",
@@ -9394,7 +9641,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "patrimonio",
+        "immobili"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "mef_rappresentanti_partecipate",
@@ -9589,7 +9843,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "rappresentanti",
+        "partecipate"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "mim_alunni_corso_eta",
@@ -9710,7 +9971,15 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "istruzione",
+        "mim",
+        "alunni",
+        "corso",
+        "eta"
+      ],
+      "category": "istruzione"
     },
     {
       "slug": "mim_anagrafica_scuole_statali",
@@ -9928,7 +10197,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "istruzione",
+        "mim",
+        "scuola",
+        "infanzia"
+      ],
+      "category": "istruzione"
     },
     {
       "slug": "mit_incidentalita_mensile",
@@ -10231,7 +10507,14 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "mit",
+        "opere",
+        "incompiute"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "monitoraggio_mensile_civile",
@@ -10381,7 +10664,14 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "istruzione",
+        "mur",
+        "contribuzione",
+        "universitaria"
+      ],
+      "category": "istruzione"
     },
     {
       "slug": "mur_immatricolati",
@@ -10432,7 +10722,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "istruzione",
+        "mur",
+        "immatricolati"
+      ],
+      "category": "istruzione"
     },
     {
       "slug": "mur_iscritti",
@@ -10483,7 +10779,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "istruzione",
+        "mur",
+        "iscritti"
+      ],
+      "category": "istruzione"
     },
     {
       "slug": "opencivitas_fsc_2025_rso",
@@ -10825,7 +11127,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "opencivitas",
+        "indicatori"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "opencoesione_progetti",
@@ -10996,7 +11304,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "opencoesione",
+        "progetti"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "openga_ricorsi_appalto",
@@ -11441,7 +11755,14 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "welfare-lavoro",
+        "pensioni",
+        "pa",
+        "dag"
+      ],
+      "category": "welfare-lavoro"
     },
     {
       "slug": "personale_ssn",
@@ -11553,7 +11874,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "sanita",
+        "personale",
+        "ssn"
+      ],
+      "category": "sanita"
     },
     {
       "slug": "pnrr_progetti",
@@ -11953,7 +12280,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "pnrr",
+        "progetti"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "popolazione_istat_comunale_2019_2025",
@@ -12271,7 +12604,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "sanita",
+        "posti",
+        "letto",
+        "stabilimento"
+      ],
+      "category": "sanita"
     },
     {
       "slug": "reparti_ricovero",
@@ -12446,7 +12786,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "sanita",
+        "reparti",
+        "ricovero"
+      ],
+      "category": "sanita"
     },
     {
       "slug": "rna_aiuti_stato",
@@ -12657,7 +13003,13 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "rna",
+        "aiuti"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "rna_misure",
@@ -12799,7 +13151,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "rna",
+        "misure"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "sai_progetti_italia",
@@ -12947,7 +13305,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "immigrazione",
+        "sai",
+        "progetti"
+      ],
+      "category": "immigrazione"
     },
     {
       "slug": "sai_strutture_italia",
@@ -13125,14 +13489,20 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "immigrazione",
+        "sai",
+        "strutture"
+      ],
+      "category": "immigrazione"
     },
     {
       "slug": "sbarchi_migranti_italia",
       "name": "Sbarchi Migranti Italia",
       "description": "Arrivi giornalieri di migranti via mare in Italia (2019-2025). Dati estratti da PDF del Ministero dell'Interno.",
       "source": "onData — liberiamoli-tutti",
-      "source_id": "",
+      "source_id": "liberiamoli_tutti",
       "period": {
         "start": 2019,
         "end": 2025
@@ -13287,7 +13657,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "ambiente",
+        "silos",
+        "infrastrutture"
+      ],
+      "category": "ambiente"
     },
     {
       "slug": "siope_bilancio_unificato",
@@ -13452,7 +13828,14 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "siope",
+        "bilancio",
+        "unificato"
+      ],
+      "category": "finanza-pubblica"
     },
     {
       "slug": "strutture_asl",
@@ -13704,7 +14087,13 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "sanita",
+        "strutture",
+        "asl"
+      ],
+      "category": "sanita"
     },
     {
       "slug": "strutture_ricovero_asl",
@@ -13885,7 +14274,14 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "sanita",
+        "strutture",
+        "ricovero",
+        "asl"
+      ],
+      "category": "sanita"
     },
     {
       "slug": "ted_contract_notices",
@@ -14290,7 +14686,14 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto"
+      "registry_source": "derive_auto",
+      "tags": [
+        "appalti",
+        "ted",
+        "contract",
+        "notices"
+      ],
+      "category": "appalti"
     },
     {
       "slug": "terna_capacita_rinnovabile",

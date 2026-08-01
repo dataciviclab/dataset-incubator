@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "mef_patrimonio_detenzioni"
   source_id: "mef_de"
+  tags: [finanza-pubblica, mef, patrimonio, detenzioni]
+  category: finanza-pubblica
   years: [2022, 2023]
   time_coverage:
     mode: full_series
@@ -22,6 +24,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, id_variazione, settore_istituzionale, macrocategoria_amministrazione, tipologia_amministrazione, amministrazione_denominazione, amministrazione_codice_fiscale, reg_amministrazione, prov_amministrazione, comune_amministrazione, codice_comune_amministrazione, tipo_detenzione_terzi, detenzione_intera_ui, data_decorrenza, data_scadenza, soggetto_ricevente_tipo, soggetto_ricevente_denominazione, soggetto_ricevente_cf, soggetto_ricevente_pa, finalita_pf, id_bene, natura_bene, tipologia_bene]
   read:
     mode: latest
     delim: ";"
@@ -29,6 +32,7 @@ clean:
     header: true
     quote: '"'
   validate:
+    not_null: [anno]
     min_rows: 100000
 
 mart:

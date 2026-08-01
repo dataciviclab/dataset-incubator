@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "anac_stati_avanzamento"
   source_id: "anac"
+  tags: [appalti, anac, stati, avanzamento]
+  category: appalti
   years: [2026]
   time_coverage:
     start_year: 2000

@@ -27,10 +27,13 @@ Segna solo quello che si applica.
 
 ## Checklist candidate
 
-Se tocchi `candidates/`:
+Se tocchi `candidates/` (standard: `docs/candidate-standard.md`):
 
-- [ ] `dataset.yml` presente con `name` e `years`
-- [ ] toolkit run eseguito senza errori su tutti gli anni dichiarati
+- [ ] `dataset.yml` con `name`, `years`, `source_id`, `tags`, `category` (tutti obbligatori — gate strict)
+- [ ] `clean.validate` con `required_columns`, `not_null`, `min_rows` (primary_key se dichiarabile)
+- [ ] `mart.validate.table_rules` con `primary_key` dai GROUP BY
+- [ ] `toolkit run` eseguito senza errori su tutti gli anni dichiarati
+- [ ] `python scripts/validate_candidate_structure.py` passato senza failure
 - [ ] nessun file dati committato nella root del candidate (`*.csv`, `*.parquet`, `*.xlsx`)
 - [ ] output immagini cleared dal notebook (rimuovere `image/png`)
 - [ ] notebook nominato `{slug}_v0.ipynb`, nessun path assoluto di macchina
@@ -43,11 +46,12 @@ Spiega come hai verificato il cambiamento.
 
 ```bash
 # Esempi
-python -m toolkit.cli.app run all --config candidates/{slug}/dataset.yml
+toolkit run -c candidates/{slug}/dataset.yml --years 2024
 python scripts/validate_candidate_structure.py
+python scripts/batch_by_source.py --fonte <source_id>   # preflight per fonte
 ```
 
-- [ ] `run all` o `dry-run` eseguito senza errori (candidate/support)
+- [ ] `toolkit run` eseguito senza errori (candidate/support)
 - [ ] `python scripts/validate_candidate_structure.py` passato
 - [ ] Perimetro stretto: candidate con domanda minima chiara
 

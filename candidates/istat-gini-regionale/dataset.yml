@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "istat_gini_regionale"
   source_id: "istat_sdmx"
+  tags: [finanza-pubblica, istat, gini]
+  category: finanza-pubblica
   years: [2023]
   time_coverage:
     start_year: 2003
@@ -30,6 +32,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [regione_codice, regione, tipo_dato, pres_aff_imp, anno]
   read:
     source: "auto"
     mode: "latest"
@@ -37,6 +40,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
+    not_null: [anno]
     min_rows: 50
 
 mart:

@@ -1,4 +1,0 @@
-# SDMX
-candidates/istat-gini-regionale/dataset.yml
-candidates/istat-housing-crowding/dataset.yml
-candidates/istat-ipab-aree/dataset.yml

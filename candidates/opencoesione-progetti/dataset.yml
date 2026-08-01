@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "opencoesione_progetti"
   source_id: "opencoesione"
+  tags: [finanza-pubblica, opencoesione, progetti]
+  category: finanza-pubblica
   years: [2026]
   time_coverage:
     start_year: 2007
@@ -20,10 +22,12 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [COD_LOCALE_PROGETTO, CUP, OC_COD_CICLO, OC_DESCR_CICLO, OC_TEMA_SINTETICO, OC_MACROAREA, OC_COD_SLL, OC_DENOMINAZIONE_SLL, COD_ATECO, DESCRIZIONE_ATECO, OC_STATO_PROGETTO, OC_STATO_PROCEDURALE, OC_DATA_INIZIO_PROGETTO, OC_DATA_FINE_PROGETTO_PREVISTA, OC_DATA_FINE_PROGETTO_EFFETTIVA]
   read:
     source: config_only
     mode: latest
   validate:
+    not_null: [COD_LOCALE_PROGETTO]
     min_rows: 2000000
 
 mart:

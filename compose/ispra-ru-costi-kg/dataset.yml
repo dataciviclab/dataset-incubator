@@ -3,6 +3,9 @@ schema_version: 1
 
 dataset:
   name: "ispra_ru_costi_kg_compose"
+  source_id: "ispra_linked_data"
+  tags: [ambiente, ispra, ru, costi, kg]
+  category: ambiente
   years: [2020, 2021, 2022, 2023, 2024]
 
 support:

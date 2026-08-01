@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "comuni_master"
   source_id: "istat_situas"
+  tags: [pa, comuni, master]
+  category: pa
   years: [2026]
 
 raw:

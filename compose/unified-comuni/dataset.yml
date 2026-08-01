@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "unified_comuni"
   source_id: "dataciviclab_composite"
+  tags: [pa, unified, comuni]
+  category: pa
   years: [2026]
 
 raw:

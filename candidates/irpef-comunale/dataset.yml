@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "irpef_comunale"
   source_id: mef_irpef
+  tags: [finanza-pubblica, irpef]
+  category: finanza-pubblica
   years: [2019, 2020, 2021, 2022, 2023, 2024]
 
 raw:

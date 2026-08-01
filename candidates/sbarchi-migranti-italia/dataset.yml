@@ -3,6 +3,7 @@ schema_version: 1
 
 dataset:
   name: "sbarchi_migranti_italia"
+  source_id: "liberiamoli_tutti"
   years: [2025]
   tags: [immigrazione, migranti, sbarchi]
   category: immigrazione
@@ -22,13 +23,15 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [data_sbarchi, note, fonte]
   read:
     delim: ","
     encoding: "utf-8"
     header: true
     trim_whitespace: true
     mode: all
-  validate: {}
+  validate:
+    not_null: [data_sbarchi]
 
 mart:
   tables:

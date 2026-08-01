@@ -78,6 +78,12 @@ Se il candidate esiste già ma vuoi rigenerare lo scaffold:
 toolkit run raw -c candidates/{slug}/dataset.yml -y 2024
 ```
 
+> **Standard candidate**: ogni nuovo candidate deve rispettare
+> [`docs/candidate-standard.md`](../docs/candidate-standard.md) — `source_id`,
+> `tags`, `category`, `required_columns` + `not_null` sono obbligatori e
+> verificati dal gate (`validate_candidate_structure.py`, strict).
+> Verifica: `python scripts/validate_candidate_structure.py`.
+
 ### 4. Run
 
 Prima di runnare, revisiona velocemente:

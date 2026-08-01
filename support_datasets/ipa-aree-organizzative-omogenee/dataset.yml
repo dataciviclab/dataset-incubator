@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "ipa_aree_organizzative_omogenee"
   source_id: "agid"
+  tags: [pa, ipa, aree, organizzative, omogenee]
+  category: pa
   years: [2026]
 
 raw:

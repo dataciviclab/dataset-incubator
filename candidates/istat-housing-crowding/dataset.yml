@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "istat_housing_crowding"
   source_id: "istat_sdmx"
+  tags: [welfare-lavoro, istat, housing, crowding]
+  category: welfare-lavoro
   years: [2024]
   time_coverage:
     start_year: 2004
@@ -42,6 +44,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, ref_area_codice, ref_area, indicatore_codice, indicatore, misura_codice, misura, titolo_godimento_codice, titolo_godimento, numero_componenti_nucleo, numero_componenti_nucleo_label, tipologia_nucleo_codice, tipologia_nucleo_label, numero_figli, numero_figli_label, numero_anziani, numero_anziani_label, quintile_reddito_codice, quintile_reddito_label, sesso_percettore_principale_codice, sesso_percettore_principale_label, eta_percettore_principale_codice, eta_percettore_principale_label, titolo_studio_percettore_codice, titolo_studio_percettore_label, condizione_professionale_percettore_codice, condizione_professionale_percettore_label]
   read:
     source: "auto"
     mode: "latest"
@@ -49,6 +52,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
+    not_null: [anno]
     min_rows: 20
 
 mart:

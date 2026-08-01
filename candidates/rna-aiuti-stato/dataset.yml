@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "rna_aiuti_stato"
   source_id: "mimit_rna"
+  tags: [finanza-pubblica, rna, aiuti]
+  category: finanza-pubblica
   years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
 
 raw:

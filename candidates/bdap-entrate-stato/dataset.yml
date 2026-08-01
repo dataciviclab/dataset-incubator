@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "bdap_entrate_stato"
   source_id: "openbdap"
+  tags: [finanza-pubblica, bdap, entrate]
+  category: finanza-pubblica
   years: [2024]
   time_coverage:
     start_year: 2008
@@ -21,6 +23,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [esercizio_finanziario, codice_titolo, titolo, codice_natura, natura, codice_tipologia, tipologia, codice_provento, provento]
   read:
     source: config_only
     mode: latest
@@ -43,6 +46,7 @@ clean:
       column10: "VARCHAR"
       column11: "VARCHAR"
   validate:
+    not_null: [esercizio_finanziario]
     min_rows: 1000
 
 mart:

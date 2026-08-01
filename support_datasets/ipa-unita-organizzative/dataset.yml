@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "ipa_unita_organizzative"
   source_id: "agid"
+  tags: [pa, ipa, unita, organizzative]
+  category: pa
   years: [2026]
 
 raw:

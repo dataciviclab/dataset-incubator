@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "elezioni_politiche"
   source_id: "ministero_interno_dait"
+  tags: [politica, elezioni, politiche]
+  category: politica
   years: [2022]
   time_coverage:
     mode: full_series
@@ -22,6 +24,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [data_elezione, camera_senato, circoscrizione, provincia, comune, collegio_plurinominale, collegio_uninominale, lista, descr_lista, cognome, nome, luogo_nascita, data_nascita, sesso]
   read:
     mode: latest
     source: auto
@@ -30,6 +33,7 @@ clean:
     header: true
     quote: '"'
   validate:
+    not_null: [data_elezione]
     min_rows: 50000
 
 mart:

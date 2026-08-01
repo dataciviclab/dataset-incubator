@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "ispra_consumo_suolo"
   source_id: "ispra_linked_data"
+  tags: [ambiente, ispra, consumo, suolo]
+  category: ambiente
   years: [ 2024 ]
   # Anno nominale: il file XLSX copre l'intera serie 2006-2024.
   # Non esistono file separati per anno: year=2024 e` il rilascio piu recente.
@@ -22,6 +24,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [pro_com, comune, provincia, regione, periodo, anno]
   read:
     source: auto
     mode: latest
@@ -29,6 +32,7 @@ clean:
     # La riga 0 e` header (nomi colonne originali ISPRA)
     # La riga 1 e` spesso una riga di unita` misura: skippiata in clean.sql
   validate:
+    not_null: [anno]
     min_rows: 70000
     # ~7.896 comuni x 11 periodi = ~86.856 righe in formato long
 

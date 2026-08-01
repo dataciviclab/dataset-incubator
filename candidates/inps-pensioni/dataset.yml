@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "inps_pensioni_trimestrale"
   source_id: inps
+  tags: [welfare-lavoro, inps, pensioni]
+  category: welfare-lavoro
   years: [2024] # serie 2020-2024
   time_coverage:
     start_year: 2020
@@ -21,6 +23,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, trimestre, sesso, classe_eta, classe_importo, area_geografica, gestione, tipo_gestione, categoria, regione]
   read:
     source: auto
     mode: latest
@@ -32,6 +35,7 @@ clean:
     quote: '"'
     escape: '"'
   validate:
+    not_null: [anno]
     min_rows: 100000
 
 mart:

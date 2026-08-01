@@ -3,6 +3,9 @@ schema_version: 1
 
 dataset:
   name: "mef_irpef_regionale"
+  source_id: "mef_irpef"
+  tags: [finanza-pubblica, mef, irpef]
+  category: finanza-pubblica
   years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
 
 raw:
@@ -19,6 +22,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno_di_imposta, classe_reddito, regione]
   read:
     source: config_only
     mode: latest
@@ -76,7 +80,8 @@ clean:
     null_padding: true
     sample_size: -1
     trim_whitespace: true
-  validate: {}
+  validate:
+    not_null: [anno_di_imposta]
 
 mart:
   tables:

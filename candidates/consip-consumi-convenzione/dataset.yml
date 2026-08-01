@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "consip_consumi_convenzione"
   source_id: "consip_open_data"
+  tags: [finanza-pubblica, consip, consumi, convenzione]
+  category: finanza-pubblica
   years: [2023, 2024, 2025]
 
 raw:
@@ -33,6 +35,9 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno_riferimento, tipologia_amministrazione, regione_pa, provincia_pa, sigla_provincia_pa, regione_fornitore, convenzione, lotto]
+  validate:
+    not_null: [anno_riferimento]
   read:
     mode: largest
     delim: ","

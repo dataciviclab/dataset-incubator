@@ -7,6 +7,8 @@ schema_version: 1
 dataset:
   name: "farmacie"
   source_id: "ministero_salute"
+  tags: [sanita, farmacie]
+  category: sanita
   years: [2026]
 
 
@@ -29,6 +31,8 @@ clean:
   read_mode: robust
   required_columns: ["cod_farmacia", "cod_farmacia_asl", "indirizzo", "descrizione_farmacia", "p_iva"]
   sql: "sql/clean.sql"
+  validate:
+    not_null: [anno]
 
 mart:
   tables:

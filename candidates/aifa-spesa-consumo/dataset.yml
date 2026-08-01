@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "aifa_spesa_consumo"
   source_id: "aifa"
+  tags: [sanita, aifa, spesa, consumo]
+  category: sanita
   years: [ 2018, 2019, 2020, 2021, 2022, 2023, 2024 ]
 
 raw:
@@ -25,6 +27,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, mese, codreg, regione, classe, atc1, descrizione_atc1, atc2, descrizione_atc2, atc3, descrizione_atc3, atc4, descrizione_atc4]
   read:
     source: config_only
     mode: latest
@@ -34,6 +37,7 @@ clean:
     ignore_errors: true
     trim_whitespace: true
   validate:
+    not_null: [anno]
     min_rows: 80000
 
 mart:

@@ -3,6 +3,9 @@ schema_version: 1
 
 dataset:
   name: "mortalita_istat_evitabile"
+  source_id: "istat_situas"
+  tags: [sanita, mortalita, istat, evitabile]
+  category: sanita
   years: [2022]
 
 raw:
@@ -23,8 +26,10 @@ clean:
     mode: latest
     sheet_name: "d_base_2022"
     header: true
+  required_columns: [anno, cod_territorio, territorio, cod_sesso, sesso, cod_causa, causa, decessi]
   validate:
     min_rows: 1000
+    not_null: [anno, cod_territorio]
 
 mart:
   tables:

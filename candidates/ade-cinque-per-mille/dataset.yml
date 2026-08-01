@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "ade_cinque_per_mille"
   source_id: "ade"
+  tags: [terzo-settore, ade, cinque, per, mille]
+  category: terzo-settore
   years: [2023, 2024, 2025]
 
 raw:

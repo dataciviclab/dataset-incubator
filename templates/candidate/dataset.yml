@@ -1,13 +1,24 @@
+# ============================================================
+# Template candidate — dataset-incubator
+# Standard di riferimento: docs/candidate-standard.md
+# Contratto campi completo: toolkit docs/config-schema.md
+# ============================================================
 root: "../../out"
 schema_version: 1
 
 dataset:
-  name: "template_dataset"
-  source_id: "ente_fonte"     # opzionale — per tracciabilità source-observatory
+  name: "template_dataset"          # snake_case (^[a-z0-9_]+$)
+  source_id: "ente_fonte"           # obbligatorio — id fonte in source-observatory
+  tags: [tema, sotto-tema]          # obbligatorio — lista kebab-case descrittiva
+  category: tema                    # obbligatorio — vedi candidate-standard.md App. A
   years: [2024]
+  time_coverage:                    # raccomandato per serie storiche
+    start_year: 2024
+    end_year: 2024
 
 # --- RAW LAYER ---
 raw:
+  output_policy: overwrite
   sources:
     - name: "fonte_principale_http"
       type: "http_file"
@@ -21,18 +32,22 @@ raw:
 # Poi revisiona sql/clean.sql e clean.read prima del run completo.
 clean:
   sql: "sql/clean.sql"
-  read_mode: "fallback"  # strict | fallback | robust
-  # Parametri non-default: delim, encoding, decimal, columns, skip, ecc.
-  # read:
-  #   delim: ";"
-  #   encoding: "utf-8"
-
-  required_columns:
+  read:
+    source: auto
+    mode: latest                  # latest | all (multi-file) | explicit | largest
+    delim: ";"
+    encoding: "utf-8"             # PA italiana: spesso cp1252
+    header: true
+    # altri campi SOLO se il parsing reale lo richiede (vedi config-schema.md)
+  required_columns:               # obbligatorio — nomi colonne OUTPUT del clean.sql
     - anno
     - chiave_principale
   validate:
-    min_rows: 1
-    not_null:
+    min_rows: 100
+    not_null:                     # obbligatorio
+      - anno
+      - chiave_principale
+    primary_key:                  # obbligatorio se dichiarabile (deroga: nota in notes.md)
       - anno
       - chiave_principale
 
@@ -41,9 +56,18 @@ mart:
   tables:
     - name: "mart_template"
       sql: "sql/mart.sql"
-  required_tables:
+  required_tables:                # tabelle essenziali (verifica presenza output)
     - "mart_template"
   validate:
     table_rules:
-      mart_template:
-        min_rows: 1
+      mart_template:              # chiave = name in mart.tables
+        required_columns:
+          - anno
+          - chiave_principale
+        primary_key:              # deriva dal GROUP BY del mart.sql
+          - anno
+          - chiave_principale
+        min_rows: 10
+
+validation:
+  fail_on_error: true

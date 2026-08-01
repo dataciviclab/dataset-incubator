@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "ted_contract_notices"
   source_id: "ted"
+  tags: [appalti, ted, contract, notices]
+  category: appalti
   years: [2023, 2022, 2021, 2020]
 
 raw:
@@ -19,6 +21,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [ted_notice_url, anno_pubblicazione, id_tipo_notice, data_invio, xsd_version, future_can_id, flag_multipla_stazione, stazione_appaltante_nome, stazione_appaltante_codice_nazionale, stazione_appaltante_indirizzo, stazione_appaltante_citta, stazione_appaltante_cap, paese, flag_multi_paese, paesi_coinvolti, tipo_stazione_appaltante, codice_istituzione_ue, attivita_principale, flag_per_conto_terzi, flag_appalto_congiunto, flag_aggiudicato_centrale, tipo_contratto, nuts_luogo_esecuzione, flag_accordo_quadro, flag_operatore_unico, flag_sistema_dinamico, cpv_codice, id_lotto, cpv_codici_aggiuntivi, flag_gpa, flag_varianti, flag_opzioni, flag_fondi_ue, flag_rinnovo, data_inizio_contratto, data_fine_contratto, tipo_procedura, flag_accelerata, codice_criterio_aggiudicazione, criteri_qualitativi, pesi_criteri, flag_asta_elettronica, data_scadenza_offerte, flag_lingua_qualsiasi_ce, lingue_ammesse, altre_lingue_ammesse, flag_appalto_ricorrente]
   read:
     header: true
     delim: ","
@@ -29,6 +32,7 @@ clean:
     trim_whitespace: true
     sample_size: -1
   validate:
+    not_null: [anno_pubblicazione]
     promotion:
       max_row_drop_pct: 100.0
       fail_on_row_drop_exceeded: false

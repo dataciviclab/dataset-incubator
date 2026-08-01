@@ -20,12 +20,14 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, regione, provincia, settore]
   read:
     source: "auto"
     mode: "latest"
     header: true
     sheet_name: "Export"
   validate:
+    not_null: [anno]
     min_rows: 400
     promotion:
       max_row_drop_pct: 100

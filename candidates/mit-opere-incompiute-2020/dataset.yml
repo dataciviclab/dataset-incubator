@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "mit_opere_incompiute_2020"
   source_id: "mit_opendata"
+  tags: [appalti, mit, opere, incompiute]
+  category: appalti
   years: [2020]
 
 raw:
@@ -17,6 +19,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [graduatoria_pubblicata_da, anno_di_riferimento, codice_cup, ambito_soggettivo, stazione_appaltante, codice_fiscale, stato_opera, localizzazione_codice_istat, localizzazione_codice_nuts, ambito_oggettivo, titolo_opera_incompiuta, descrizione_intervento, mancanza_fondi, cause_tecniche, sopravvenienza_norme, fallimento_liquidazione, mancato_interesse, opera_fruibile_collettivita, uso_ridimensionato_opera, infrastruttura_rete, discontinuita_rete, livello_sviluppo]
   read:
     source: auto
     mode: latest

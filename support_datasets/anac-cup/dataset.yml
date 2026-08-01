@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "anac_cup"
   source_id: "anac"
+  tags: [appalti, anac, cup]
+  category: appalti
   years: [2026]
   time_coverage:
     start_year: 2000

@@ -267,6 +267,7 @@ clean:
   - codice_cig
   sql: sql/clean.sql
   validate:
+    not_null: [anno]
     min_rows: 5
     max_null_pct:
       anno: 0.1

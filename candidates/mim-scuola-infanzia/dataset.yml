@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "mim_scuola_infanzia"
   source_id: "mim_opendata"
+  tags: [istruzione, mim, scuola, infanzia]
+  category: istruzione
   years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
   # NOTA: 2017 non disponibile — il server restituisce HTML invece del CSV
 
@@ -32,6 +34,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno_scolastico, codice_scuola, denominazione_scuola, grado_istruzione_scuola, caratteristica_scuola, area_geografica, regione, provincia, comune, codice_comune_scuola, denominazione_istituto_riferimento]
   read:
     source: auto
     mode: latest
@@ -41,6 +44,7 @@ clean:
     ignore_errors: true
     trim_whitespace: true
   validate:
+    not_null: [anno_scolastico]
     min_rows: 500
 
 mart:

@@ -4,6 +4,8 @@ schema_version: 1
 dataset:
   name: "bdap_spese_stato"
   source_id: "openbdap"
+  tags: [finanza-pubblica, bdap, spese]
+  category: finanza-pubblica
   years: [2024]
   time_coverage:
     start_year: 2008
@@ -21,6 +23,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [esercizio_finanziario, stato_previsione, amministrazione, missione, programma, udv_livello_1, udv_livello_2, udv_livello_3, codice_puntato_udv, macroaggregato]
   read:
     source: config_only
     mode: latest
@@ -44,6 +47,7 @@ clean:
       column11: "VARCHAR"
       column12: "VARCHAR"
   validate:
+    not_null: [esercizio_finanziario]
     min_rows: 1000
 
 mart:

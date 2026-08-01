@@ -3,6 +3,9 @@ schema_version: 1
 
 dataset:
   name: "reparti_ricovero"
+  source_id: "ministero_salute"
+  tags: [sanita, reparti, ricovero]
+  category: sanita
   years: [2022]
 
 raw:
@@ -16,6 +19,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns: [anno, codice_regione, regione, codice_asl, asl, codice_struttura, struttura, indirizzo, tipo_struttura, comune, sigla_provincia, codice_disciplina, disciplina, num_dimessi, giornate_degenza]
   read:
     source: auto
     mode: latest
@@ -24,6 +28,7 @@ clean:
     header: true
     decimal: ","
   validate:
+    not_null: [anno]
     min_rows: 100
 
 mart:
