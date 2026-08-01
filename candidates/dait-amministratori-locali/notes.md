@@ -71,3 +71,16 @@ Per unire file con schemi diversi servirebbe clean.sql manuale con UNION ALL e a
 - **Serie storica**: snapshot annuali hanno struttura e naming diversi tra anni → da verificare consistenza
 - **Dimensione**: 26.7 MB gestibile (~3 MB Parquet)
 - **Stato SO**: fonte `dait` è in `radar-only` — dopo intake si può valutare `catalog-watch`
+
+## Aggiornamento 2026-08-01 (standard v1)
+
+- Mart flat passthrough rimossa; 3 mart analitiche serie (profilo_carica,
+  profilo_demografico, territorio) — rispondono alle domande del README
+- Run passed: clean 124.716 righe (0% drop), mart 3/3, readiness 8/8
+- Numeri chiave: 7.769 sindaci su 7.768 comuni (~1:1); sindaci F 15,4%
+  (eta media 55,8) vs consiglieri F 35,9% (49,9); regione 03 (Lombardia)
+  1.492 sindaci
+- `codice_regione` è il codice DAIT (2 cifre), non ISTAT — join con dataset
+  ISTAT richiede mappatura (nota già presente nel clean.sql)
+- `popolazione_censita` e `codice_dait_completo` aggiunti a required_columns
+- read.mode al posto di read_mode (legacy)

@@ -8,62 +8,39 @@ Anagrafe degli Amministratori Locali e Regionali (DAIT) — snapshot corrente (g
 
 ## Domanda
 
-*Chi sono gli amministratori locali italiani? Quali profili demografici (età, genere, titolo di studio, professione) hanno sindaci, assessori e consiglieri comunali? Come cambia la composizione della classe politica locale tra territori e nel tempo?*
+*Chi sono gli amministratori locali italiani? Quali profili demografici (età, genere, titolo di studio, professione) hanno sindaci, assessori e consiglieri comunali? Come cambia la composizione della classe politica locale tra territori?*
 
 Sotto-domande esplorative:
-- Quanto durano in carica i sindaci? Ci sono differenze Nord/Sud?
-- Quali professioni prevalgono tra gli amministratori locali?
-- Quante donne sono elette? La presenza femminile aumenta nel tempo?
-- Qual è l'età media di sindaci, assessori, consiglieri per regione?
+- Quante donne sono elette? La presenza femminile varia per carica?
+- Qual è l'età media di sindaci, assessori, consiglieri?
+- Ci sono differenze territoriali (Nord/Sud) nella composizione?
+- Quanto durano in carica i sindaci?
 
 ## Dataset
 
 - **Fonte**: `ammcom.csv` — Amministratori Comunali (DAIT)
 - **Granularità**: 1 riga = 1 amministratore in 1 carica
-- **Periodo**: snapshot corrente (2026). In futuro → serie storica 1991–2025
-- **Righe**: 116.054 amministratori in carica
-- **Colonne (19)**: anno, codice_regione, codice_provincia, codice_comune, denominazione_comune, sigla_provincia, popolazione_censita, cognome, nome, sesso, data_nascita, luogo_nascita, descrizione_carica (Sindaco/Assessore/Consigliere/Consigliere candidato sindaco), incarico (Vicesindaco, Presidente del consiglio, ecc.), data_elezione, data_entrata_in_carica, lista_appartenenza, titolo_studio, professione
+- **Periodo**: snapshot corrente (2026)
+- **Righe**: 124.716 amministratori in carica
+- **Colonne (20)**: anno, codice_regione, codice_provincia, codice_comune, codice_dait_completo, denominazione_comune, sigla_provincia, popolazione_censita, cognome, nome, sesso, data_nascita, luogo_nascita, descrizione_carica (Sindaco/Assessore/Consigliere/...), incarico, data_elezione, data_entrata_in_carica, lista_appartenenza, titolo_studio, professione
 
 ## Mart
 
 | Mart | Descrizione |
 |---|---|
-| `dait_amministratori_locali` | Tutti gli amministratori (schema flat, passthrough) |
+| `mart_profilo_carica` | Conteggi, età media, % femmine/maschi per carica |
+| `mart_profilo_demografico` | Distribuzione sesso × classe di età per carica |
+| `mart_territorio` | Composizione per regione × carica (quota femmine, età media) |
 
-Mart aggiuntivi (`dait_sindaci`, `dait_amministratori_territorio`) da sviluppare in fase successiva.
+Rispondono alle domande del README: profilo demografico della classe politica locale, presenza femminile per carica, differenze territoriali.
 
-## Perché vale la pena incubarlo
+## Esecuzione
 
-- **Primo dataset "anagrafico" del Lab**: primo dataset con persone fisiche (nome, cognome, età, professione, titolo di studio)
-- **Domanda civica forte e trasversale**: la composizione della classe politica locale interessa cittadini, giornalisti, ricercatori
-- **Potenziale di join**: i codici DAIT sono proprietari. Serve una mappatura verificata per join con dataset ISTAT/BDAP (es. via denominazione_comune + sigla_provincia)
-- **Unico nel catalogo**: nessun altro dataset dà il profilo socio-demografico dei politici locali
-- **Serie storica lunghissima**: 1991–2026 = 35 anni di dati, permette analisi di trend (fase 2)
-- **Fonte ufficiale e strutturale**: Ministero dell'Interno, aggiornamento annuale
+```bash
+cd dataset-incubator
+toolkit run -c candidates/dait-amministratori-locali/dataset.yml
+```
 
-## Output minimo atteso
+## Issue di riferimento
 
-- ✅ Tabella clean `dait_amministratori_locali` — 116.054 righe, 19 colonne
-- ✅ Run full RAW→CLEAN→MART superato (7.7s, readiness 5/5)
-- ✅ Notebook v0 con setup candidate
-- ⬜ Mart dimensionale territoriale (fase 2)
-- ⬜ Serie storica 1991–2025 (fase 2)
-
-## Criterio di promozione
-
-Superato il **review readiness** con run full (RAW→CLEAN→MART) su anno 2026:
-- `config_valid` ✅
-- `raw_output_present` ✅
-- `clean_output_readable` ✅ (116.054 righe)
-- `mart_outputs_readable` ✅
-- `run_record_coherent` ✅
-
-## Stato
-
-- intake
-
-## Prossimo passo
-
-- review PR e merge
-- eventuale estensione con `maggiororgano.csv` (sindaci) via inject_column
-- serie storica 1991–2025
+- Intake: [#349](https://github.com/dataciviclab/dataset-incubator/issues/349)
