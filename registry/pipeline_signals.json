@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-07-31",
+  "generated_at": "2026-08-01",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -14,7 +14,7 @@
   "signals": [
     {
       "id": "aci-prime-iscrizioni-autovetture",
-      "source_id": "",
+      "source_id": "aci",
       "status": "ok",
       "label": "aci-prime-iscrizioni-autovetture",
       "detail": "anno 2024 — fonti: aci_2017, aci_2018 — mart: sì",
@@ -760,13 +760,30 @@
       "source_id": "ispra",
       "status": "ok",
       "label": "ispra-emissioni-ghg",
-      "detail": "anno 2023 — fonte: ? — mart: sì",
+      "detail": "anno 2023 — fonte: ispra_emissioni_ghg_xls — mart: sì",
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "27819243061",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27819243061",
-        "checked_at": "2026-06-19",
+        "run_id": "30696025152",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30696025152",
+        "checked_at": "2026-08-01",
+        "duration_seconds": 1.25,
+        "row_counts": {
+          "raw": 34,
+          "clean": 34,
+          "mart": 141
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
         "years": [
           2023
         ],
@@ -984,7 +1001,7 @@
     },
     {
       "id": "mef-irpef-regionale",
-      "source_id": "",
+      "source_id": "mef_irpef",
       "status": "ok",
       "label": "mef-irpef-regionale",
       "detail": "anni 2017-2025 — fonte: reg_tipo_reddito — mart: sì",
@@ -1000,7 +1017,7 @@
     },
     {
       "id": "mef-partecipazioni",
-      "source_id": "",
+      "source_id": "mef_tesoro",
       "status": "ok",
       "label": "mef-partecipazioni",
       "detail": "anni 2020-2023 — fonti: mef_partecipazioni_2020, mef_partecipazioni_2021 — mart: sì",
@@ -1223,7 +1240,7 @@
     },
     {
       "id": "mortalita-istat-evitabile",
-      "source_id": "",
+      "source_id": "istat_situas",
       "status": "ok",
       "label": "mortalita-istat-evitabile",
       "detail": "anno 2022 — fonte: mortalita_causa_istat — mart: sì",
@@ -1292,7 +1309,7 @@
     },
     {
       "id": "opencivitas-fsc-rso",
-      "source_id": "",
+      "source_id": "opencivitas",
       "status": "ok",
       "label": "opencivitas-fsc-rso",
       "detail": "anni 2022-2025 — fonte: opencivitas_fsc_zip — mart: sì",
@@ -1519,7 +1536,7 @@
     },
     {
       "id": "posti-letto-stabilimento",
-      "source_id": "",
+      "source_id": "ministero_salute",
       "status": "ok",
       "label": "posti-letto-stabilimento",
       "detail": "anni 2020-2023 — fonte: posti_letto — mart: sì",
@@ -1540,7 +1557,7 @@
     },
     {
       "id": "reparti-ricovero",
-      "source_id": "",
+      "source_id": "ministero_salute",
       "status": "ok",
       "label": "reparti-ricovero",
       "detail": "anno 2022 — fonte: reparti_ricovero — mart: sì",
@@ -1639,7 +1656,7 @@
     },
     {
       "id": "sbarchi-migranti-italia",
-      "source_id": "",
+      "source_id": "liberiamoli_tutti",
       "status": "ok",
       "label": "sbarchi-migranti-italia",
       "detail": "anno 2025 — fonte: sbarchi_per_giorno — mart: sì",
@@ -1715,7 +1732,7 @@
     },
     {
       "id": "strutture-asl",
-      "source_id": "",
+      "source_id": "ministero_salute",
       "status": "ok",
       "label": "strutture-asl",
       "detail": "anno 2022 — fonte: strutture_asl — mart: sì",
@@ -1733,7 +1750,7 @@
     },
     {
       "id": "strutture-ricovero-asl",
-      "source_id": "",
+      "source_id": "ministero_salute",
       "status": "ok",
       "label": "strutture-ricovero-asl",
       "detail": "anno 2022 — fonte: strutture_ricovero_asl — mart: sì",
@@ -2087,7 +2104,7 @@
     },
     {
       "id": "opencivitas-fsc-enti-rso",
-      "source_id": "",
+      "source_id": "opencivitas",
       "status": "ok",
       "label": "opencivitas-fsc-enti-rso",
       "detail": "anni: ? — fonte: ? — mart: sì",
@@ -2301,7 +2318,7 @@
     },
     {
       "id": "compose:ispra-ru-costi-kg",
-      "source_id": "",
+      "source_id": "ispra_linked_data",
       "status": "ok",
       "label": "compose:ispra-ru-costi-kg",
       "detail": "anni 2020-2024 — fonti: a, b — mart: sì",
@@ -2323,7 +2340,7 @@
     },
     {
       "id": "compose:malasanita-compose",
-      "source_id": "",
+      "source_id": "dataciviclab_composite",
       "status": "ok",
       "label": "compose:malasanita-compose",
       "detail": "anno 2022 — fonti: a, c — mart: sì",
