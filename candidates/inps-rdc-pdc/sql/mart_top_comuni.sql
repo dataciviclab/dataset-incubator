@@ -4,26 +4,25 @@
 -- importo medio, rank per incidenza e per nuclei.
 -- Serve per: benchmark territoriale, comuni con povertà più concentrata.
 --
--- PK: (codice_istat)
+-- PK: (codice_catastale)
 
 WITH base AS (
     SELECT
-        codice_istat,
+        codice_catastale,
         comune,
-        codice_regione,
+        regione,
         nuclei_rdc,
         nuclei_pdc,
         nuclei_rdc + nuclei_pdc AS nuclei_tot,
         importo_medio_mensile,
-        popolazione_residente,
         ROUND(100.0 * (nuclei_rdc + nuclei_pdc) / NULLIF(popolazione_residente, 0), 2) AS incidenza_rdc_pct
     FROM clean_input
     WHERE popolazione_residente > 0
 )
 SELECT
-    codice_istat,
+    codice_catastale,
     comune,
-    codice_regione,
+    regione,
     nuclei_rdc,
     nuclei_pdc,
     nuclei_tot,

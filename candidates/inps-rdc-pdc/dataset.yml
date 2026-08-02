@@ -20,6 +20,11 @@ raw:
         filename: "ID-5773.csv"
       primary: true
 
+support:
+  - name: "istat_elenco_comuni"
+    config: "../../support_datasets/istat-elenco-comuni/dataset.yml"
+    years: [2026]
+
 clean:
   sql: "sql/clean.sql"
   read:
@@ -29,11 +34,11 @@ clean:
     encoding: "utf-8"
     decimal: "."
     header: true
-  required_columns: [anno, codice_istat, comune, codice_regione, codice_provincia, nuclei_rdc, nuclei_pdc, individui_coinvolti, componenti_per_famiglia, donne_per_famiglia, minori_18_per_famiglia, anziani_75_per_famiglia, importo_medio_mensile, dev_standard_importo, uomini_residenti, donne_residenti, popolazione_residente, takeup, takeup_donne]
+  required_columns: [anno, codice_catastale, codice_istat, comune, regione, sigla_provincia, codice_regione, codice_provincia, superficie_km2, nuclei_rdc, nuclei_pdc, individui_coinvolti, componenti_per_famiglia, donne_per_famiglia, minori_18_per_famiglia, anziani_75_per_famiglia, importo_medio_mensile, dev_standard_importo, uomini_residenti, donne_residenti, popolazione_residente, takeup, takeup_donne]
   validate:
-    not_null: [anno, codice_istat]
+    not_null: [anno, codice_catastale]
     min_rows: 7000
-    primary_key: [codice_istat]
+    primary_key: [codice_catastale]
 
 mart:
   tables:
@@ -52,16 +57,16 @@ mart:
   validate:
     table_rules:
       mart_incidenza_comune:
-        required_columns: [codice_istat, comune, codice_regione, nuclei_rdc, nuclei_pdc, popolazione_residente, incidenza_rdc_pct]
-        primary_key: [codice_istat]
+        required_columns: [codice_catastale, comune, regione, nuclei_rdc, nuclei_pdc, popolazione_residente, incidenza_rdc_pct]
+        primary_key: [codice_catastale]
         min_rows: 7000
       mart_sintesi_regione:
-        required_columns: [codice_regione, n_comuni, nuclei_rdc, nuclei_pdc, importo_medio_pesato, incidenza_media_pct]
-        primary_key: [codice_regione]
+        required_columns: [regione, n_comuni, nuclei_rdc, nuclei_pdc, importo_medio_pesato, incidenza_media_pct]
+        primary_key: [regione]
         min_rows: 15
       mart_top_comuni:
-        required_columns: [codice_istat, comune, incidenza_rdc_pct, nuclei_rdc]
-        primary_key: [codice_istat]
+        required_columns: [codice_catastale, comune, incidenza_rdc_pct, nuclei_rdc]
+        primary_key: [codice_catastale]
         min_rows: 20
 
 validation:

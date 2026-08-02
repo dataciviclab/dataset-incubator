@@ -15,9 +15,26 @@ In quali comuni l'incidenza dei nuclei RdC/PdC è più alta rispetto alla popola
 
 - **Copertura**: luglio 2020 (singolo snapshot)
 - **Granularità**: comune ISTAT (7.976 comuni)
-- **Join key**: `codice_istat` — join score 100/100 con 18 dataset del Lab
-- **Colonne**: 19 (anno, codice_istat, comune, RdC, PdC, individui coinvolti, importo medio, takeup, popolazione, ecc.)
-- **Formato clean**: Parquet, 19 colonne, 7.976 righe
+- **Join key**: `codice_catastale` (Belfiore) — arricchito con `codice_istat` (6 cifre), `regione`, `sigla_provincia`, `superficie_km2` dal support `istat_elenco_comuni`
+- **Colonne**: 23 (anno, codice_catastale, codice_istat, comune, regione, sigla_provincia, codice_regione, codice_provincia, superficie_km2, nuclei RdC/PdC, importo medio, takeup, popolazione, ecc.)
+- **Formato clean**: Parquet, 23 colonne, 7.976 righe
+
+> **Nota importante**: la colonna `codice_istat` del CSV INPS è in realtà il **codice catastale Belfiore** (es. A001 = Abano Terme), non il codice ISTAT numerico. Il join con il catalogo Lab avviene via `codice_catastale`; il `codice_istat` ISTAT (6 cifre) viene dal support `istat_elenco_comuni`.
+
+## Mart
+
+| Mart | Descrizione |
+|---|---|
+| `mart_incidenza_comune` | Takeup (metrica ufficiale INPS) + incidenza ricalcolata (nuclei/popolazione) per comune. Esclude comuni con popolazione 0 (soppressi/fusi). |
+| `mart_sintesi_regione` | Nuclei RdC/PdC, importo medio pesato, incidenza media per regione. |
+| `mart_top_comuni` | Benchmark: top comuni per incidenza e per nuclei totali, con rank. |
+
+## Esecuzione
+
+```bash
+cd dataset-incubator
+toolkit run -c candidates/inps-rdc-pdc/dataset.yml
+```
 
 ## Perché vale la pena
 
@@ -28,30 +45,3 @@ In quali comuni l'incidenza dei nuclei RdC/PdC è più alta rispetto alla popola
 ## Output minimo atteso
 
 - Dataset clean `inps_rdc_pdc_2020_clean.parquet` queryabile via DuckDB
-- Mart con dati comunali pronti per join
-- Analisi territoriale: mappa takeup per comune, correlazione con IRPEF
-
-## Criterio di promozione
-
-- Run full passato (RAW→CLEAN→MART), readiness 5/5
-- Dati coerenti: 7.976 comuni, importi e takeup realistici
-
-## Limitazioni note
-
-- **Singolo anno (2020)**: è l'unico snapshot comunale pubblicato da INPS in questo formato. Esistono dati regionali 2019-2023 sul portale CKAN INPS ma non comunali.
-- **Nomi comuni**: in lowercase senza spazi (es. "abanoterme") — così nel dataset INPS originale. Il join è via `codice_istat`.
-- **Comuni soppressi**: alcuni codici ISTAT (es. A042 Acquarica del Capo) hanno popolazione 0 perché fusi prima del 2020.
-- **Importo medio con 0 nuclei**: 620 comuni hanno importo medio > 0 ma 0 nuclei RdC+PdC — artefatto del dato INPS originale.
-
-## Stato
-
-- ✅ Run full passato (RAW→CLEAN→MART)
-- ✅ 7.976 righe, 19 colonne
-- ✅ Readiness 5/5
-- ⏳ Da pubblicare su explorer
-
-## Prossimo passo
-
-- Notebook v0 esplorativo
-- Analisi pubblica in `dataciviclab/analisi/`
-- Pubblicazione su data-explorer

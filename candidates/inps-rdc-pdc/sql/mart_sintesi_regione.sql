@@ -1,14 +1,14 @@
 -- mart_sintesi_regione — Sintesi RdC/PdC per regione
 --
--- 1 riga = 1 regione (codice ISTAT): comuni coperti, nuclei RdC/PdC,
--- individui coinvolti, importo medio pesato sui nuclei, incidenza media
--- (takeup medio) e popolazione totale.
+-- 1 riga = 1 regione (nome): comuni coperti, nuclei RdC/PdC, individui
+-- coinvolti, importo medio pesato sui nuclei, incidenza media (takeup)
+-- e popolazione totale.
 -- Serve per: confronto regionale della povertà RdC/PdC, divari territoriali.
 --
--- PK: (codice_regione)
+-- PK: (regione)
 
 SELECT
-    codice_regione,
+    regione,
     COUNT(*) AS n_comuni,
     ROUND(SUM(nuclei_rdc), 0) AS nuclei_rdc,
     ROUND(SUM(nuclei_pdc), 0) AS nuclei_pdc,
@@ -22,6 +22,6 @@ SELECT
     ROUND(100.0 * AVG(takeup), 2) AS incidenza_media_pct,
     ROUND(SUM(popolazione_residente), 0) AS popolazione_totale
 FROM clean_input
-WHERE codice_regione IS NOT NULL
-GROUP BY codice_regione
+WHERE regione IS NOT NULL
+GROUP BY regione
 ORDER BY nuclei_tot DESC
