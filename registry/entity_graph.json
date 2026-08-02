@@ -171,6 +171,12 @@
         {
           "slug": "inps_rdc_pdc",
           "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
+          "column": "codice_catastale",
+          "semantic_type": "cadastral_code"
+        },
+        {
+          "slug": "inps_rdc_pdc",
+          "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
           "column": "codice_istat",
           "semantic_type": "municipality_code"
         },
@@ -418,7 +424,7 @@
       "types": {
         "municipality_name": 26,
         "municipality_code": 27,
-        "cadastral_code": 7
+        "cadastral_code": 8
       }
     },
     "Ente": {
@@ -1004,6 +1010,12 @@
         {
           "slug": "inps_rdc_pdc",
           "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
+          "column": "sigla_provincia",
+          "semantic_type": "province_code"
+        },
+        {
+          "slug": "inps_rdc_pdc",
+          "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
           "column": "codice_provincia",
           "semantic_type": "province_code"
         },
@@ -1165,7 +1177,7 @@
         }
       ],
       "types": {
-        "province_code": 46
+        "province_code": 47
       }
     },
     "Provincia (tramite NUTS3)": {
@@ -1286,6 +1298,12 @@
         {
           "slug": "inps_pensioni_trimestrale",
           "name": "INPS Pensioni — trimestrale",
+          "column": "regione",
+          "semantic_type": "region_code"
+        },
+        {
+          "slug": "inps_rdc_pdc",
+          "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
           "column": "regione",
           "semantic_type": "region_code"
         },
@@ -1507,7 +1525,7 @@
         }
       ],
       "types": {
-        "region_code": 50
+        "region_code": 51
       }
     },
     "Scuola": {
