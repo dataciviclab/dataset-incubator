@@ -8255,7 +8255,7 @@
           "name": "volume_frequenza",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Partite IVA che dichiarano volume d'affari"
         },
         {
           "name": "volume_affari_eur",
@@ -8267,7 +8267,7 @@
           "name": "acquisti_frequenza",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Partite IVA che dichiarano acquisti e importazioni"
         },
         {
           "name": "acquisti_eur",
@@ -8279,7 +8279,7 @@
           "name": "va_frequenza",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Partite IVA con valore aggiunto fiscale"
         },
         {
           "name": "va_fiscale_eur",
@@ -8291,7 +8291,7 @@
           "name": "imposta_dovuta_frequenza",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Partite IVA con imposta a debito"
         },
         {
           "name": "imposta_dovuta_eur",
@@ -8303,7 +8303,7 @@
           "name": "imposta_credito_frequenza",
           "type": "INTEGER",
           "role": "metric",
-          "description": ""
+          "description": "Partite IVA con imposta a credito"
         },
         {
           "name": "imposta_credito_eur",
