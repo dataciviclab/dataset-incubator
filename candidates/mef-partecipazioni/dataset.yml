@@ -7,8 +7,10 @@ dataset:
   tags: [finanza-pubblica, mef, partecipazioni]
   category: finanza-pubblica
   years: [2020, 2021, 2022, 2023]
+  time_coverage: {start_year: 2020, end_year: 2023}
 
 raw:
+  output_policy: overwrite
   sources:
     - name: "mef_partecipazioni_2020"
       type: "http_file"
