@@ -34,7 +34,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno_scolastico, codice_scuola, denominazione_scuola, grado_istruzione_scuola, caratteristica_scuola, area_geografica, regione, provincia, comune, codice_comune_scuola, denominazione_istituto_riferimento]
+  required_columns: [anno_scolastico, codice_scuola, denominazione_scuola, grado_istruzione_scuola, caratteristica_scuola, bambini_italiani, bambini_non_italiani, bambini_totale, area_geografica, regione, provincia, comune, codice_comune_scuola, denominazione_istituto_riferimento]
   read:
     source: auto
     mode: latest
@@ -44,18 +44,38 @@ clean:
     ignore_errors: true
     trim_whitespace: true
   validate:
-    not_null: [anno_scolastico]
-    min_rows: 500
+    not_null: [anno_scolastico, codice_scuola]
+    min_rows: 5000
+    primary_key: [anno_scolastico, codice_scuola]
 
 mart:
   tables:
-    - name: "mart_bambini"
-      sql: "sql/mart.sql"
+    # Serie temporale bambini per cittadinanza (multi-year: LAG su anni)
+    - name: "mart_trend_cittadinanza"
+      sql: "sql/mart_trend_cittadinanza.sql"
+      years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+    # Sintesi per regione con quota stranieri
+    - name: "mart_sintesi_regione"
+      sql: "sql/mart_sintesi_regione.sql"
+    # Dettaglio comunale con benchmark provinciale
+    - name: "mart_comune"
+      sql: "sql/mart_comune.sql"
   required_tables:
-    - "mart_bambini"
+    - "mart_trend_cittadinanza"
+    - "mart_sintesi_regione"
   validate:
     table_rules:
-      mart_bambini:
+      mart_trend_cittadinanza:
+        required_columns: [anno_scolastico, italiani, non_italiani, totale, quota_non_italiani_pct]
+        primary_key: [anno_scolastico]
+        min_rows: 8
+      mart_sintesi_regione:
+        required_columns: [regione, bambini_italiani, bambini_non_italiani, bambini_totale, quota_non_italiani_pct]
+        primary_key: [regione]
+        min_rows: 15
+      mart_comune:
+        required_columns: [codice_comune_scuola, comune, bambini_totale, quota_non_italiani_pct]
+        primary_key: [codice_comune_scuola]
         min_rows: 500
 
 validation:
