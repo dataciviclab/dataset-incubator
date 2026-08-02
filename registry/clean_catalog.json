@@ -5973,7 +5973,7 @@
           "name": "codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
+          "description": "Codice catastale Belfiore del comune (dal CSV INPS, es. A001)",
           "semantic_type": "cadastral_code"
         },
         {
@@ -5994,14 +5994,14 @@
           "name": "regione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
+          "description": "Nome della regione di appartenenza (dal support istat_elenco_comuni)",
           "semantic_type": "region_code"
         },
         {
           "name": "sigla_provincia",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
+          "description": "Sigla automobilistica della provincia (dal support istat_elenco_comuni)",
           "semantic_type": "province_code"
         },
         {
@@ -6022,49 +6022,49 @@
           "name": "superficie_km2",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Superficie territoriale del comune in km² (dal support istat_elenco_comuni)"
         },
         {
           "name": "nuclei_rdc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Nuclei familiari percettori di Reddito di Cittadinanza (luglio 2020)"
         },
         {
           "name": "nuclei_pdc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Nuclei familiari percettori di Pensione di Cittadinanza (luglio 2020)"
         },
         {
           "name": "individui_coinvolti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Individui coinvolti nei nuclei RdC/PdC"
         },
         {
           "name": "componenti_per_famiglia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Numero medio di componenti per nucleo familiare"
         },
         {
           "name": "donne_per_famiglia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Numero medio di donne per nucleo familiare"
         },
         {
           "name": "minori_18_per_famiglia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Numero medio di minori sotto i 18 anni per nucleo"
         },
         {
           "name": "anziani_75_per_famiglia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Numero medio di anziani sopra i 75 anni per nucleo"
         },
         {
           "name": "importo_medio_mensile",
@@ -6076,25 +6076,25 @@
           "name": "dev_standard_importo",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Deviazione standard dell'importo medio mensile"
         },
         {
           "name": "uomini_residenti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Uomini residenti al 1-1-2020"
         },
         {
           "name": "donne_residenti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Donne residenti al 1-1-2020"
         },
         {
           "name": "popolazione_residente",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Popolazione residente al 1-1-2020"
         },
         {
           "name": "takeup",
