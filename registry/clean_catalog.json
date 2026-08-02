@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-08-01",
+  "updated_at": "2026-08-02",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -8220,8 +8220,8 @@
       "source": "MEF — Dipartimento delle Finanze (CIVATOT0201)",
       "source_id": "mef_finanze",
       "period": {
-        "start": 2015,
-        "end": 2024
+        "start": 2014,
+        "end": 2023
       },
       "columns": [
         {
@@ -8247,9 +8247,15 @@
         },
         {
           "name": "contribuenti",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "metric",
           "description": "Numero di contribuenti IVA"
+        },
+        {
+          "name": "volume_frequenza",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Partite IVA che dichiarano volume d'affari"
         },
         {
           "name": "volume_affari_eur",
@@ -8258,10 +8264,22 @@
           "description": "Volume d'affari complessivo (euro)"
         },
         {
+          "name": "acquisti_frequenza",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Partite IVA che dichiarano acquisti e importazioni"
+        },
+        {
           "name": "acquisti_eur",
           "type": "DOUBLE",
           "role": "metric",
           "description": "Acquisti e importazioni (euro)"
+        },
+        {
+          "name": "va_frequenza",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Partite IVA con valore aggiunto fiscale"
         },
         {
           "name": "va_fiscale_eur",
@@ -8270,10 +8288,22 @@
           "description": "Valore aggiunto fiscale (euro)"
         },
         {
+          "name": "imposta_dovuta_frequenza",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Partite IVA con imposta a debito"
+        },
+        {
           "name": "imposta_dovuta_eur",
           "type": "DOUBLE",
           "role": "metric",
           "description": "Imposta IVA dovuta (euro)"
+        },
+        {
+          "name": "imposta_credito_frequenza",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Partite IVA con imposta a credito"
         },
         {
           "name": "imposta_credito_eur",
@@ -8291,7 +8321,8 @@
       "registry_source": "derive_auto",
       "tags": [
         "finanza-pubblica",
-        "iva"
+        "iva",
+        "regionale"
       ],
       "category": "finanza-pubblica"
     },

@@ -1,6 +1,6 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-08-01",
+  "generated_at": "2026-08-02",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
@@ -1010,13 +1010,30 @@
       "source_id": "mef_finanze",
       "status": "ok",
       "label": "iva-regionale",
-      "detail": "anni 2015-2024 — fonte: ? — mart: sì",
+      "detail": "anni 2015-2024 — fonte: mef_finanze_iva_regione — mart: sì",
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "28398625551",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28398625551",
-        "checked_at": "2026-06-29",
+        "run_id": "30751890413",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30751890413",
+        "checked_at": "2026-08-02",
+        "duration_seconds": 8.77,
+        "row_counts": {
+          "raw": 331,
+          "clean": 210,
+          "mart": 210
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 95.0,
+          "mart": 100.0
+        },
         "years": [
           2015,
           2016,
