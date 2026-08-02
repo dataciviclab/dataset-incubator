@@ -1,16 +1,19 @@
 -- Clean: alunni per corso/eta + join anagrafica scuole
--- Arricchisce ogni record alunno con i metadati della scuola (regione, provincia, comune, ecc.)
+-- Arricchisce ogni record alunno con i metadati della scuola (regione,
+-- provincia, comune, ecc.) via support mim-anagrafica-scuole-statali.
+-- Macro standard: cast_int/cast_bigint/normalize_string.
+
 WITH alunni AS (
     SELECT
-        CAST(ANNOSCOLASTICO AS VARCHAR) AS anno_scolastico,
-        TRIM(CODICESCUOLA) AS codice_scuola,
-        TRIM(ORDINESCUOLA) AS ordine_scuola,
-        CAST(ANNOCORSO AS VARCHAR) AS anno_corso,
-        TRIM(FASCIAETA) AS fascia_eta,
-        TRY_CAST(ALUNNI AS BIGINT) AS alunni
+        normalize_string(ANNOSCOLASTICO) AS anno_scolastico,
+        normalize_string(CODICESCUOLA) AS codice_scuola,
+        normalize_string(ORDINESCUOLA) AS ordine_scuola,
+        normalize_string(ANNOCORSO) AS anno_corso,
+        normalize_string(FASCIAETA) AS fascia_eta,
+        cast_bigint(ALUNNI) AS alunni
     FROM raw_input
     WHERE CODICESCUOLA IS NOT NULL
-      AND TRY_CAST(ALUNNI AS BIGINT) IS NOT NULL
+      AND cast_bigint(ALUNNI) IS NOT NULL
 ),
 scuole AS (
     SELECT *
