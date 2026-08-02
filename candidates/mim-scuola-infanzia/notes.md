@@ -36,3 +36,12 @@ LEFT JOIN con `mim_anagrafica_scuole_statali` su `codice_scuola`. Circa il 2% de
 INFANZIASTRACITSTA{aa}{aa+1}{gg}{mm}{aa}.csv
 es. INFANZIASTRACITSTA20242520250831.csv
 ```
+
+## 2026-08-02 — standard v1, mart serie cittadinanza
+
+- Mart flat rimossa; 3 mart serie: trend_cittadinanza (multi-year), sintesi_regione, comune
+- clean.sql: macro standard; required_columns completo (14, mancavano i 3 bambini_*)
+- Numeri chiave: calo demografico -15% (903k → 768k bambini, 2017-18 → 2024-25);
+  quota stranieri stabile 12-14%; Lombardia 25,2% stranieri vs Campania 4,9%
+  (divario Nord-Sud); Roma 16.653 bambini (18,2% stranieri)
+- Il 2017 non è disponibile (server restituisce HTML) — la serie parte dal 2018

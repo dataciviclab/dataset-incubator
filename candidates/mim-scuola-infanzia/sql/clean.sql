@@ -1,23 +1,23 @@
 -- Clean: bambini scuola infanzia per cittadinanza + join anagrafica scuole
 --
 -- Input: INFANZIASTRACITSTA da MIM (4 colonne)
--- Arricchisce ogni record scuola con i metadati territoriali (regione, provincia, comune)
+-- Arricchisce ogni record scuola con i metadati territoriali (regione,
+-- provincia, comune) via support mim-anagrafica-scuole-statali.
+-- Macro standard: cast_int/normalize_string.
 
 WITH bambini AS (
     SELECT
-        CAST(ANNOSCOLASTICO AS VARCHAR) AS anno_scolastico,
-        TRIM(CODICESCUOLA) AS codice_scuola,
-        TRY_CAST(BAMBINICITTADINANZAITALIANA AS INTEGER) AS bambini_italiani,
-        TRY_CAST(BAMBINICITTADINANZANONITALIANA AS INTEGER) AS bambini_non_italiani
+        normalize_string(ANNOSCOLASTICO) AS anno_scolastico,
+        normalize_string(CODICESCUOLA) AS codice_scuola,
+        cast_int(BAMBINICITTADINANZAITALIANA) AS bambini_italiani,
+        cast_int(BAMBINICITTADINANZANONITALIANA) AS bambini_non_italiani
     FROM raw_input
     WHERE CODICESCUOLA IS NOT NULL
 ),
-
 scuole AS (
     SELECT *
     FROM read_parquet('{support.scu_anagrafica_statali.mart}')
 )
-
 SELECT
     b.anno_scolastico,
     b.codice_scuola,

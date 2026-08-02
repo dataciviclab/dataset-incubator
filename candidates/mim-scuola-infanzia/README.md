@@ -39,3 +39,13 @@ python -m toolkit.cli.app run all \
 ## Issue di riferimento
 
 - Intake: [#553](https://github.com/dataciviclab/dataset-incubator/issues/553)
+
+## Mart
+
+| Mart | Descrizione |
+|---|---|
+| `mart_trend_cittadinanza` | Bambini italiani/non italiani per anno (multi-year): quota stranieri %, delta — risponde al calo demografico e alla presenza straniera nel tempo |
+| `mart_sintesi_regione` | Quota stranieri e quota nazionale per regione (divari territoriali) |
+| `mart_comune` | Dettaglio comunale con benchmark provinciale |
+
+Rispondono alla domanda guida (bambini italiani/non italiani, distribuzione territoriale) e alla mappa domande-risposte #164.
