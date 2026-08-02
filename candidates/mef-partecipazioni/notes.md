@@ -54,3 +54,10 @@ Anni verificati: 2020, 2021, 2022, 2023. Tutti gli anni con URL dedicato.
 - primary_key [anno, amministrazione_codice_fiscale, partecipata_codice_fiscale]
   (0 duplicati, 0 null verificati)
 - min_rows, table_rules con PK dai GROUP BY
+
+### 2026-08-02 — review fix: migrazione macro standard
+- clean.sql: trim/try_cast → normalize_string (58x), cast_bigint (23x),
+  cast_double (3x), cast_int (1x) — macro standard toolkit
+- Verificato 0 stringhe vuote nei dati: normalize_string (TRIM+NULLIF)
+  identico a trim() → nessun cambio comportamento
+- Run passed 4 anni, readiness 8/8, dati identici (0% drop)
