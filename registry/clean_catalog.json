@@ -5970,6 +5970,13 @@
           "semantic_type": "year"
         },
         {
+          "name": "codice_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice catastale Belfiore del comune (dal CSV INPS, es. A001)",
+          "semantic_type": "cadastral_code"
+        },
+        {
           "name": "codice_istat",
           "type": "VARCHAR",
           "role": "dimension",
@@ -5982,6 +5989,20 @@
           "role": "dimension",
           "description": "Denominazione del comune",
           "semantic_type": "municipality_name"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della regione di appartenenza (dal support istat_elenco_comuni)",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sigla automobilistica della provincia (dal support istat_elenco_comuni)",
+          "semantic_type": "province_code"
         },
         {
           "name": "codice_regione",
@@ -5998,46 +6019,52 @@
           "semantic_type": "province_code"
         },
         {
-          "name": "nuclei_familiari_percettori_rdc_luglio_2020",
+          "name": "superficie_km2",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Nuclei familiari percettori di RdC a luglio 2020"
+          "description": "Superficie territoriale del comune in km² (dal support istat_elenco_comuni)"
         },
         {
-          "name": "nuclei_familiari_percettori_pdc_luglio_2020",
+          "name": "nuclei_rdc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Nuclei familiari percettori di PdC a luglio 2020"
+          "description": "Nuclei familiari percettori di Reddito di Cittadinanza (luglio 2020)"
         },
         {
-          "name": "individui_coinvolti_luglio_2020",
+          "name": "nuclei_pdc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Individui coinvolti nei nuclei percettori RdC/PdC a luglio 2020"
+          "description": "Nuclei familiari percettori di Pensione di Cittadinanza (luglio 2020)"
         },
         {
-          "name": "numero_componenti_per_famiglia",
+          "name": "individui_coinvolti",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Individui coinvolti nei nuclei RdC/PdC"
+        },
+        {
+          "name": "componenti_per_famiglia",
           "type": "DOUBLE",
           "role": "metric",
           "description": "Numero medio di componenti per nucleo familiare"
         },
         {
-          "name": "numero_donne_per_famiglia",
+          "name": "donne_per_famiglia",
           "type": "DOUBLE",
           "role": "metric",
           "description": "Numero medio di donne per nucleo familiare"
         },
         {
-          "name": "numero_minori_18_anni_per_famiglia",
+          "name": "minori_18_per_famiglia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero medio di minori (< 18 anni) per nucleo familiare"
+          "description": "Numero medio di minori sotto i 18 anni per nucleo"
         },
         {
-          "name": "numero_anziani_75_anni_per_famiglia",
+          "name": "anziani_75_per_famiglia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero medio di anziani (> 75 anni) per nucleo familiare"
+          "description": "Numero medio di anziani sopra i 75 anni per nucleo"
         },
         {
           "name": "importo_medio_mensile",
@@ -6046,28 +6073,28 @@
           "description": "Importo medio mensile per nucleo (€)"
         },
         {
-          "name": "dev_standard_importo_mensile",
+          "name": "dev_standard_importo",
           "type": "DOUBLE",
           "role": "metric",
           "description": "Deviazione standard dell'importo medio mensile"
         },
         {
-          "name": "uomini_residenti_al_1_1_2020",
+          "name": "uomini_residenti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Uomini residenti nel comune al 1° gennaio 2020"
+          "description": "Uomini residenti al 1-1-2020"
         },
         {
-          "name": "donne_residenti_al_1_1_2020",
+          "name": "donne_residenti",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Donne residenti nel comune al 1° gennaio 2020"
+          "description": "Donne residenti al 1-1-2020"
         },
         {
-          "name": "popolazione_residente_al_1_1_2020",
+          "name": "popolazione_residente",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Popolazione totale residente al 1° gennaio 2020"
+          "description": "Popolazione residente al 1-1-2020"
         },
         {
           "name": "takeup",
