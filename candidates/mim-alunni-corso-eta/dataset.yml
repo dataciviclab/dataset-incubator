@@ -35,7 +35,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno_scolastico, codice_scuola, denominazione_scuola, ordine_scuola, grado_istruzione_scuola, caratteristica_scuola, anno_corso, fascia_eta, area_geografica, regione, provincia, comune, codice_comune_scuola, cap_scuola, denominazione_istituto_riferimento]
+  required_columns: [anno_scolastico, codice_scuola, denominazione_scuola, ordine_scuola, grado_istruzione_scuola, caratteristica_scuola, anno_corso, fascia_eta, alunni, area_geografica, regione, provincia, comune, codice_comune_scuola, cap_scuola, denominazione_istituto_riferimento]
   read:
     source: auto
     mode: latest
@@ -45,39 +45,46 @@ clean:
     ignore_errors: true
     trim_whitespace: true
   validate:
-    not_null: [anno_scolastico]
+    not_null: [anno_scolastico, codice_scuola]
+    min_rows: 50000
+    primary_key: [anno_scolastico, codice_scuola, ordine_scuola, anno_corso, fascia_eta]
 
 mart:
   tables:
-    - name: "mart_alunni"
-      sql: "sql/mart.sql"
-  hierarchy:
-    axis: territoriale
-    levels:
-      - level: naz
-        table: h_naz
-        grain: [anno_scolastico, ordine_scuola, fascia_eta]
-        exclude_metrics: [scuole]
-      - level: reg
-        table: h_reg
-        grain: [anno_scolastico, regione, ordine_scuola, fascia_eta]
-        exclude_metrics: [scuole]
-      - level: prv
-        table: h_prv
-        grain: [anno_scolastico, provincia, ordine_scuola, fascia_eta]
-        exclude_metrics: [scuole]
-      - level: com
-        table: h_com
-        grain: [anno_scolastico, codice_comune_scuola, comune, ordine_scuola, fascia_eta]
-        exclude_metrics: [scuole]
+    # Serie temporale alunni per ordine scolastico (multi-year: LAG su anni)
+    - name: "mart_trend_ordine"
+      sql: "sql/mart_trend_ordine.sql"
+      years: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+    # Sintesi per regione × ordine (quota nazionale)
+    - name: "mart_sintesi_regione"
+      sql: "sql/mart_sintesi_regione.sql"
+    # Alunni in età non allineata al corso per provincia (ripetenti/anticipatari)
+    - name: "mart_ripetenti_provincia"
+      sql: "sql/mart_ripetenti_provincia.sql"
+    # Dettaglio comunale con benchmark provinciale
+    - name: "mart_comune"
+      sql: "sql/mart_comune.sql"
   required_tables:
-    - "mart_alunni"
+    - "mart_trend_ordine"
+    - "mart_ripetenti_provincia"
   validate:
     table_rules:
-      mart_alunni:
-        min_rows: 5000
-      h_naz:
-        min_rows: 10
+      mart_trend_ordine:
+        required_columns: [anno_scolastico, ordine_scuola, alunni, delta_alunni, variazione_pct]
+        primary_key: [anno_scolastico, ordine_scuola]
+        min_rows: 3
+      mart_sintesi_regione:
+        required_columns: [regione, ordine_scuola, alunni, quota_nazionale_pct]
+        primary_key: [regione, ordine_scuola]
+        min_rows: 50
+      mart_ripetenti_provincia:
+        required_columns: [anno_scolastico, provincia, ordine_scuola, alunni_tot, alunni_non_allineati, quota_non_allineati_pct]
+        primary_key: [anno_scolastico, provincia, ordine_scuola]
+        min_rows: 50
+      mart_comune:
+        required_columns: [codice_comune_scuola, comune, ordine_scuola, alunni, quota_provinciale_pct]
+        primary_key: [codice_comune_scuola, ordine_scuola]
+        min_rows: 1000
 
 validation:
   fail_on_error: true

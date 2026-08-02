@@ -33,3 +33,21 @@
 - `anno_scolastico` è una stringa `YYYYYY` (es. `202425`)
 - 7% di scuole senza regione/provincia/comune — non presenti nell'anagrafica 2024 (scuole chiuse, private, o nuovi istituti)
 - Le tabelle gerarchiche includono SOLO le metriche numeriche (`alunni`) — `scuole` va contato con `COUNT(DISTINCT codice_scuola)`
+
+## 2026-08-02 — Sostituita hierarchy con mart SQL esplicite
+
+Decisione: abbandonata `mart.hierarchy` per questo candidate. La hierarchy
+fa solo SUM(colonna) per grain territoriale e non può calcolare metriche
+derivate (es. alunni in età non allineata al corso). Sostituita con 4 mart
+esplicite:
+- mart_trend_ordine (multi-year: LAG per delta %)
+- mart_sintesi_regione (quota nazionale)
+- mart_ripetenti_provincia (età attesa = corso+offset per ordine:
+  primaria corso+5, sec I corso+10, sec II corso+13)
+- mart_comune (quota provinciale)
+
+Numeri chiave 2023-24: primaria in calo costante (-0.3% → -3.0% 2020-21);
+Reggio Calabria 27.4% alunni in età non allineata (sec II) — top provincia.
+
+Nota: la feature hierarchy resta nel toolkit (utile se la gerarchia
+territoriale è il prodotto unico), ma non per dataset analitici multi-anno.

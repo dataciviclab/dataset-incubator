@@ -80,3 +80,14 @@ Il toolkit genera automaticamente: `SELECT grain, SUM(alunni) FROM clean_input G
 - Clean join: 93% righe con regione (7% scuole non in anagrafica — scuole chiuse/private)
 - Mart: 68k righe per livello territoriale + orine scuola + fascia eta
 - Tutti gli anni superano validate ✅
+
+## Mart
+
+| Mart | Descrizione |
+|---|---|
+| `mart_trend_ordine` | Alunni per ordine scolastico × anno (multi-year): delta e variazione % — risponde al calo iscrizioni per ordine |
+| `mart_sintesi_regione` | Quota nazionale alunni per regione × ordine |
+| `mart_ripetenti_provincia` | Alunni in età non allineata al corso per provincia (ripetenti/anticipatari) — età attesa = corso + offset per ordine |
+| `mart_comune` | Dettaglio comunale con quota provinciale |
+
+Le mart rispondono alle domande del README (calo iscrizioni, pressione demografica per ordine/regione) e della mappa domande-risposte (#162 alunni per ordine, #163 province con più ripetenti).
