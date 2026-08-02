@@ -26,3 +26,31 @@ Anni verificati: 2020, 2021, 2022, 2023. Tutti gli anni con URL dedicato.
 
 - Dato dichiarativo: copertura dipende dall'adempimento
 - Serie storica: 4 anni (2020-2023)
+## 2026-08-02 — standard v1, mart serie
+
+### Fix clean.sql
+- `quota_soggetto_privato`: era `trim(...)` su colonna DOUBLE sniffata da DuckDB
+  (percentuali con virgola es. "48,85") → BinderError `trim(DOUBLE)`.
+  Corretto con `try_cast(... as double)`.
+
+### Mart — sostituita mart_comuni (granularità comune, mai pubblicata)
+- `mart_trend_anno` (multi-year): partecipazioni/amministrazioni/partecipate per
+  anno, pct TUSP, delta, variazione %
+- `mart_top_amministrazioni`: per amministrazione-anno: partecipazioni,
+  partecipate distinte, settore/macrocategoria/categoria, regione
+- `mart_sintesi_regione`: per (anno, regione, categoria): partecipazioni,
+  amministrazioni distinte, pct TUSP e revisione
+
+### Numeri chiave (2023)
+- Amministrazioni in calo (8869→8360) ma partecipazioni in crescita
+  (51983→53656) → concentrazione crescente
+- Top amministrazioni 2023: Valle d'Aosta (181), CNR (154), Napoli Federico II (124)
+- Lombardia comuni: 8.295 partecipazioni (1.429 amministrazioni)
+- pct perimetro TUSP stabile ~99%
+
+### Standard v1
+- required_columns completo (85 output, mancavano 25 tra cui anno e metriche
+  finanziarie) → validation_rules_coverage 100%
+- primary_key [anno, amministrazione_codice_fiscale, partecipata_codice_fiscale]
+  (0 duplicati, 0 null verificati)
+- min_rows, table_rules con PK dai GROUP BY

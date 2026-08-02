@@ -37,9 +37,11 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [amministrazione_settore_istituzionale, amministrazione_macrocategoria, amministrazione_categoria, amministrazione_denominazione, amministrazione_codice_fiscale, appartenenza_perimetro_tusp, appartenenza_perimetro_revisione_periodica, amministrazione_regione_sede, amministrazione_provincia_sede, amministrazione_comune_sede, partecipata_denominazione, partecipata_codice_fiscale, partecipata_forma_giuridica, partecipata_stato_giuridico, partecipata_nazione, partecipata_regione_sede, partecipata_provincia_sede, partecipata_comune_sede, emittente_azioni_quotate, emittente_strumenti_quotati, societa_controllata_da_una_quotata, gal, partecipata_settore_attivita, partecipata_divisione_ateco, servizi_affidati, servizio_affidato_1, modalita_affidamento_servizio_1, ente_affidante_servizio_1, servizio_affidato_2, modalita_affidamento_servizio_2, ente_affidante_servizio_2, servizio_affidato_3, modalita_affidamento_servizio_3, ente_affidante_servizio_3, servizio_affidato_4, modalita_affidamento_servizio_4, ente_affidante_servizio_4, servizio_affidato_5, modalita_affidamento_servizio_5, ente_affidante_servizio_5, importo_impegnato_servizio_5, partecipazione_indiretta, tipo_controllo, partecipata_tipo_contabilita, partecipata_tipo_bilancio, partecipata_bilancio_di_esercizio_approvato, partecipata_bilancio_di_esercizio_2020_approvato, partecipata_bilancio_di_esercizio_2019_approvato, partecipazione_ancora_detenuta_alla_data_di_adozione_del_provvedimento, societa_controllata_da_una_quotata_dichiarata, attivita_a_favore_amm, societa_all_a, attivita_svolta, quota_soggetto_privato, attivita_analoghe_art_20_c_2_lett_c, contenimento_dei_costi_art_20_c_2_lett_f, aggregazione_di_societa_art_20_c_2_lett_g, esito_della_ricognizione, modalita_razionalizzazione, termine_razionalizzazione]
+  required_columns: [anno, amministrazione_settore_istituzionale, amministrazione_macrocategoria, amministrazione_categoria, amministrazione_denominazione, amministrazione_codice_fiscale, appartenenza_perimetro_tusp, appartenenza_perimetro_revisione_periodica, amministrazione_regione_sede, amministrazione_provincia_sede, amministrazione_comune_sede, partecipata_denominazione, partecipata_codice_fiscale, partecipata_anno_di_costituzione, partecipata_forma_giuridica, partecipata_stato_giuridico, partecipata_anno_inizio_procedura, partecipata_nazione, partecipata_regione_sede, partecipata_provincia_sede, partecipata_comune_sede, emittente_azioni_quotate, emittente_strumenti_quotati, societa_controllata_da_una_quotata, gal, partecipata_settore_attivita, partecipata_divisione_ateco, servizi_affidati, servizio_affidato_1, modalita_affidamento_servizio_1, ente_affidante_servizio_1, importo_impegnato_servizio_1, servizio_affidato_2, modalita_affidamento_servizio_2, ente_affidante_servizio_2, importo_impegnato_servizio_2, servizio_affidato_3, modalita_affidamento_servizio_3, ente_affidante_servizio_3, importo_impegnato_servizio_3, servizio_affidato_4, modalita_affidamento_servizio_4, ente_affidante_servizio_4, importo_impegnato_servizio_4, servizio_affidato_5, modalita_affidamento_servizio_5, ente_affidante_servizio_5, importo_impegnato_servizio_5, quota_partecipazione_diretta, partecipazione_indiretta, tipo_controllo, totale_oneri_importo_impegnato, totale_oneri_importo_pagato_c_residui, totale_oneri_importo_pagato_c_competenza, partecipata_tipo_contabilita, partecipata_tipo_bilancio, partecipata_bilancio_di_esercizio_approvato, partecipata_numero_di_addetti, partecipata_patrimonio_netto_co_e_p, partecipata_risultato_d_esercizio_co_e_p, partecipata_valore_della_produzione_co_e_p, partecipata_costo_della_produzione_co_e_p, partecipata_costo_del_personale_co_e_p, partecipata_patrimonio_netto_co_f, partecipata_totale_entrate_co_f, partecipata_totale_uscite_co_f, partecipata_spese_per_personale_co_f, nr_amministratori, nr_componenti_organo_di_controllo, partecipata_bilancio_di_esercizio_2020_approvato, risultato_d_esercizio_2020, partecipata_bilancio_di_esercizio_2019_approvato, risultato_d_esercizio_2019, partecipazione_ancora_detenuta_alla_data_di_adozione_del_provvedimento, societa_controllata_da_una_quotata_dichiarata, attivita_a_favore_amm, societa_all_a, attivita_svolta, quota_soggetto_privato, attivita_analoghe_art_20_c_2_lett_c, contenimento_dei_costi_art_20_c_2_lett_f, aggregazione_di_societa_art_20_c_2_lett_g, esito_della_ricognizione, modalita_razionalizzazione, termine_razionalizzazione]
   validate:
-    not_null: [anno]
+    not_null: [anno, amministrazione_codice_fiscale, partecipata_codice_fiscale]
+    min_rows: 40000
+    primary_key: [anno, amministrazione_codice_fiscale, partecipata_codice_fiscale]
   read:
     source: auto
     mode: latest
@@ -51,11 +53,34 @@ clean:
 
 mart:
   tables:
-    - name: "mart_comuni"
-      sql: "sql/mart.sql"
+    # Trend temporale partecipazioni/amministrazioni/partecipate per anno
+    - name: "mart_trend_anno"
+      sql: "sql/mart_trend_anno.sql"
+      years: [2020, 2021, 2022, 2023]
+    # Top amministrazioni per numero partecipazioni
+    - name: "mart_top_amministrazioni"
+      sql: "sql/mart_top_amministrazioni.sql"
+    # Sintesi per regione e categoria amministrazione
+    - name: "mart_sintesi_regione"
+      sql: "sql/mart_sintesi_regione.sql"
   required_tables:
-    - "mart_comuni"
+    - "mart_trend_anno"
+    - "mart_top_amministrazioni"
+    - "mart_sintesi_regione"
+  validate:
+    table_rules:
+      mart_trend_anno:
+        required_columns: [anno, numero_partecipazioni, numero_amministrazioni, numero_partecipate]
+        primary_key: [anno]
+        min_rows: 4
+      mart_top_amministrazioni:
+        required_columns: [anno, amministrazione_codice_fiscale, amministrazione_denominazione, numero_partecipazioni, numero_partecipate]
+        primary_key: [anno, amministrazione_codice_fiscale]
+        min_rows: 8000
+      mart_sintesi_regione:
+        required_columns: [anno, amministrazione_regione, amministrazione_categoria, numero_partecipazioni, numero_amministrazioni]
+        primary_key: [anno, amministrazione_regione, amministrazione_categoria]
+        min_rows: 100
 
 validation:
   fail_on_error: true
-
