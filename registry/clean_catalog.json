@@ -5336,7 +5336,7 @@
           "name": "is_rrf",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Flag RRF (Recovery and Resilience Facility): trasferimenti di bilancio UE→Stato, non grant analitici — esclusi dalle mart, esposti separatamente nel trend"
         },
         {
           "name": "tipo_finanziamento",
