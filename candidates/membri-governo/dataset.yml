@@ -1,0 +1,85 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "membri_governo"
+  source_id: "dati_camera"
+  tags: [politica, governo, ministri, legislature]
+  category: politica
+  years: [2026]
+  time_coverage:
+    start_year: 1862
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "membri_governo_sparql"
+      type: "sparql"
+      primary: true
+      args:
+        endpoint: "https://dati.camera.it/sparql"
+        query: |
+          PREFIX ocd: <http://dati.camera.it/ocd/>
+          PREFIX foaf: <http://xmlns.com/foaf/0.1/>
+          PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+          SELECT ?membro (MAX(?ruolo) AS ?ruolo) (MAX(?label) AS ?label)
+                 (MAX(?start) AS ?start) (MAX(?persona) AS ?persona)
+                 (MAX(?nome) AS ?nome) (MAX(?cognome) AS ?cognome)
+                 (MAX(?legislatura) AS ?legislatura) (MAX(?governo) AS ?governo)
+                 (MAX(?organo) AS ?organo)
+          WHERE {
+            ?membro a ocd:membroGoverno .
+            OPTIONAL { ?membro ocd:membroGoverno ?ruolo . }
+            OPTIONAL { ?membro rdfs:label ?label . }
+            OPTIONAL { ?membro ocd:startDate ?start . }
+            OPTIONAL { ?membro ocd:rif_persona ?persona . }
+            OPTIONAL { ?persona foaf:firstName ?nome . }
+            OPTIONAL { ?persona foaf:surname ?cognome . }
+            OPTIONAL { ?membro ocd:rif_leg ?legislatura . }
+            OPTIONAL { ?membro ocd:rif_governo ?governo . }
+            OPTIONAL { ?membro ocd:rif_organoGoverno ?organo . }
+          }
+          GROUP BY ?membro
+        accept_format: "sparql-results+json"
+
+clean:
+  sql: "sql/clean.sql"
+  read_mode: robust
+  required_columns: [membro, persona_id, ruolo, label, start_date, nome, cognome, legislatura, governo, organo]
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    not_null: [membro]
+    min_rows: 1000
+
+mart:
+  tables:
+    # Membri per legislatura (serie storica)
+    - name: "mart_legislatura"
+      sql: "sql/mart_legislatura.sql"
+    # Durata media dei governi
+    - name: "mart_governi"
+      sql: "sql/mart_governi.sql"
+  required_tables:
+    - "mart_legislatura"
+    - "mart_governi"
+  validate:
+    table_rules:
+      mart_legislatura:
+        required_columns: [legislatura, n_membri]
+        primary_key: [legislatura]
+        min_rows: 15
+      mart_governi:
+        required_columns: [governo, n_membri]
+        primary_key: [governo]
+        min_rows: 50
+
+validation:
+  fail_on_error: false
