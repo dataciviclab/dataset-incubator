@@ -1528,6 +1528,27 @@
         "region_code": 51
       }
     },
+    "Sconosciuto": {
+      "entity": "Sconosciuto",
+      "label": "Sconosciuto",
+      "datasets": [
+        {
+          "slug": "camera_deputati_legislature",
+          "name": "Camera Deputati Legislature",
+          "column": "persona_id",
+          "semantic_type": "person_id"
+        },
+        {
+          "slug": "camera_incarichi",
+          "name": "Incarichi nei Gruppi Parlamentari (Camera)",
+          "column": "persona_id",
+          "semantic_type": "person_id"
+        }
+      ],
+      "types": {
+        "person_id": 2
+      }
+    },
     "Scuola": {
       "entity": "Scuola",
       "label": "Scuola",
@@ -2401,7 +2422,7 @@
     }
   ],
   "summary": {
-    "total_entities": 16,
+    "total_entities": 17,
     "total_relations": 25
   }
 }

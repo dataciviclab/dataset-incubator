@@ -10167,6 +10167,93 @@
       "category": "finanza-pubblica"
     },
     {
+      "slug": "membri_governo",
+      "name": "Membri Governo",
+      "description": "",
+      "source": "",
+      "source_id": "dati_camera",
+      "period": {
+        "start": 1862,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "membro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "persona_id",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "ruolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "start_date",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "legislatura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "governo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "organo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/membri_governo/2026/membri_governo_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "governo",
+        "ministri",
+        "legislature"
+      ],
+      "category": "politica"
+    },
+    {
       "slug": "mim_alunni_corso_eta",
       "name": "Alunni per corso ed età — MIM",
       "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia d'eta. Dato MIM a livello di singola scuola, arricchito con anagrafica scuole (regione, provincia, comune). Include gerarchia territoriale (nazionale → regione → provincia) per drill-down. Fonte: dati.istruzione.it.",
