@@ -44,3 +44,29 @@ camera-deputati-legislature/
 └── notebooks/
     └── camera_deputati_legislature_v0.ipynb
 ```
+
+## 2026-08-03 — estensione issue #787 (approccio A: semplice)
+
+### Cosa è cambiato
+- years: 2024 → 2026 (anno di run corrente)
+- Query SPARQL: GROUP BY ?deputato + MAX() (fix duplicati da OPTIONAL multipli) —
+  recupera il gap: 27.764 deputati (prima 27.618)
+- accept_format: "sparql-results+json" (con "csv" l'endpoint restituisce Turtle!)
+- Colonne nuove: persona_id, biografia, foto_url, mandato, scheda_url
+- Mart serie (no pass-through): mart_legislatura_genere, mart_top_mandati
+  (aggregata per persona_id — un deputato URI è per-legislatura)
+
+### persona_id — chiave standard
+- Estratto dall'URI deputato.rdf/d302103_17 → 302103 (regexp)
+- Deputati del Regno hanno URI dr56_26 (con 'r') → secondo pattern
+- 11.276 persone distinte su 27.764 mandati
+- Ponte verso senato/governo (stessa normalizzazione ovunque)
+
+### Legislatura — formato uniforme
+- Ora "repubblica_17" / "regno_21" / "costituente" (nome completo, niente
+  REPLACE che toglieva il prefisso) — identico a camera-incarichi
+- Join deputati ↔ incarichi su (persona_id, legislatura): 3.096/3.096 (100%)
+
+### Perché NON per-legislatura (approccio B scartato)
+- 20 legislature come years × query IF × zero-padding = complessità esplosa
+- L'approccio A (query unica pages:3) funziona: 27.764 righe, niente perdita

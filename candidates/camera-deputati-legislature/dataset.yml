@@ -6,9 +6,13 @@ dataset:
   source_id: "dati_camera"
   tags: [politica, camera, deputati, legislature]
   category: politica
-  years: [2024]
+  years: [2026]
+  time_coverage:
+    start_year: 1861
+    end_year: 2026
 
 raw:
+  output_policy: overwrite
   sources:
     - name: "camera_deputati_sparql"
       type: "sparql"
@@ -18,7 +22,14 @@ raw:
         query: |
           PREFIX foaf: <http://xmlns.com/foaf/0.1/>
           PREFIX ocd: <http://dati.camera.it/ocd/>
-          SELECT DISTINCT ?deputato ?cogn ?nome ?label ?legislatura ?gender
+          PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+          PREFIX dc: <http://purl.org/dc/elements/1.1/>
+          PREFIX dcterms: <http://purl.org/dc/terms/>
+          SELECT ?deputato (MAX(?cogn) AS ?cogn) (MAX(?nome) AS ?nome)
+                 (MAX(?label) AS ?label) (MAX(?gender) AS ?gender)
+                 (MAX(?legislatura) AS ?legislatura)
+                 (MAX(?biografia) AS ?biografia) (MAX(?foto) AS ?foto)
+                 (MAX(?mandato) AS ?mandato) (MAX(?scheda) AS ?scheda)
           WHERE {
             ?deputato a ocd:deputato .
             OPTIONAL { ?deputato foaf:surname ?cogn . }
@@ -27,20 +38,24 @@ raw:
             OPTIONAL { ?deputato ocd:rif_leg ?leg .
                         BIND(
                           REPLACE(
-                            REPLACE(STR(?leg), 'http://dati.camera.it/ocd/legislatura.rdf/', ''),
-                            'repubblica_', ''
+                            STR(?leg), 'http://dati.camera.it/ocd/legislatura.rdf/', ''
                           ) AS ?legislatura
                         ) . }
             OPTIONAL { ?deputato foaf:gender ?gender . }
+            OPTIONAL { ?deputato dc:description ?biografia . }
+            OPTIONAL { ?deputato foaf:depiction ?foto . }
+            OPTIONAL { ?deputato ocd:rif_mandatoCamera ?mandato . }
+            OPTIONAL { ?deputato dcterms:isReferencedBy ?scheda . }
           }
-          LIMIT 10000
+          GROUP BY ?deputato
+          LIMIT 30000
         pages: 3
         step: 10000
-        accept_format: "csv"
+        accept_format: "sparql-results+json"
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [deputato, cognome, nome, legislatura, gender]
+  required_columns: [deputato, persona_id, cognome, nome, gender, legislatura, biografia, foto_url, mandato, scheda_url]
   read:
     source: auto
     mode: latest
@@ -51,18 +66,29 @@ clean:
     trim_whitespace: true
   validate:
     not_null: [deputato]
+    min_rows: 1000
 
 mart:
   tables:
-    - name: "mart_deputati"
-      sql: "sql/mart.sql"
+    # Composizione per legislatura e genere
+    - name: "mart_legislatura_genere"
+      sql: "sql/mart_legislatura_genere.sql"
+    # Top deputati per numero di legislature
+    - name: "mart_top_mandati"
+      sql: "sql/mart_top_mandati.sql"
   required_tables:
-    - "mart_deputati"
+    - "mart_legislatura_genere"
+    - "mart_top_mandati"
   validate:
     table_rules:
-      mart_deputati:
-        min_rows: 1000
+      mart_legislatura_genere:
+        required_columns: [legislatura, n_deputati, n_donne, quota_donne_pct]
+        primary_key: [legislatura]
+        min_rows: 15
+      mart_top_mandati:
+        required_columns: [persona_id, n_legislature]
+        primary_key: [persona_id]
+        min_rows: 500
 
 validation:
   fail_on_error: false
-
