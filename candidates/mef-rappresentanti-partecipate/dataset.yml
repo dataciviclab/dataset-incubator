@@ -7,6 +7,7 @@ dataset:
   tags: [finanza-pubblica, mef, rappresentanti, partecipate]
   category: finanza-pubblica
   years: [2018, 2019, 2020, 2021, 2022, 2023]
+  time_coverage: {start_year: 2018, end_year: 2023}
   # 2017 escluso: dati importo anomali (100M€, formato numerico errato)
 
 raw:
@@ -28,7 +29,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno, amministrazione, amm_settore, amm_macrocategoria, amm_categoria, amm_cf, amm_regione, amm_provincia, amm_comune, societa, societa_cf, societa_forma_giuridica, societa_stato, societa_settore, societa_ateco, societa_regione, societa_provincia, societa_comune, rapp_id, rapp_cognome, rapp_nome, rapp_genere, incarico_tipo, incarico_data_inizio, incarico_data_fine, incarico_gratuito]
+  required_columns: [anno, amministrazione, amm_settore, amm_macrocategoria, amm_categoria, amm_cf, amm_regione, amm_provincia, amm_comune, societa, societa_cf, societa_anno_costituzione, societa_forma_giuridica, societa_stato, societa_settore, societa_ateco, societa_regione, societa_provincia, societa_comune, rapp_id, rapp_cognome, rapp_nome, rapp_genere, incarico_tipo, incarico_data_inizio, incarico_data_fine, incarico_gratuito, incarico_importo_eur, incarico_riversato_eur]
   read:
     source: auto
     mode: latest
@@ -39,22 +40,51 @@ clean:
     ignore_errors: true
     trim_whitespace: true
   validate:
-    not_null: [anno]
+    not_null: [anno, rapp_id]
     min_rows: 5000
+    primary_key: [anno, rapp_id, societa_cf, amm_cf, incarico_tipo, incarico_data_inizio]
     promotion:
       max_row_drop_pct: 50
       fail_on_row_drop_exceeded: false
 
 mart:
   tables:
-    - name: "mart_rappresentanti"
-      sql: "sql/mart.sql"
+    # Trend spesa totale per anno (multi-year)
+    - name: "mart_trend_anno"
+      sql: "sql/mart_trend_anno.sql"
+      years: [2018, 2019, 2020, 2021, 2022, 2023]
+    # Compensi per tipo di incarico (AD vs consigliere, liquidatori)
+    - name: "mart_sintesi_incarico"
+      sql: "sql/mart_sintesi_incarico.sql"
+    # Divario di genere per anno
+    - name: "mart_gender_gap"
+      sql: "sql/mart_gender_gap.sql"
+    # Top amministrazioni per incarichi e compensi
+    - name: "mart_top_amministrazioni"
+      sql: "sql/mart_top_amministrazioni.sql"
   required_tables:
-    - "mart_rappresentanti"
+    - "mart_trend_anno"
+    - "mart_sintesi_incarico"
+    - "mart_gender_gap"
+    - "mart_top_amministrazioni"
   validate:
     table_rules:
-      mart_rappresentanti:
-        min_rows: 5000
+      mart_trend_anno:
+        required_columns: [anno, n_incarichi, n_rappresentanti, spesa_totale_eur, quota_gratuiti_pct, riversato_totale_eur]
+        primary_key: [anno]
+        min_rows: 6
+      mart_sintesi_incarico:
+        required_columns: [anno, incarico_tipo, n_remunerati, importo_medio_eur, importo_max_eur]
+        primary_key: [anno, incarico_tipo]
+        min_rows: 5
+      mart_gender_gap:
+        required_columns: [anno, rapp_genere, n_remunerati, importo_medio_eur, spesa_totale_eur]
+        primary_key: [anno, rapp_genere]
+        min_rows: 2
+      mart_top_amministrazioni:
+        required_columns: [anno, amm_cf, amministrazione, n_incarichi, spesa_totale_eur, riversato_totale_eur]
+        primary_key: [anno, amm_cf]
+        min_rows: 500
 
 validation:
   fail_on_error: true
