@@ -6,12 +6,14 @@ dataset:
   source_id: "fts"
   tags: [finanza-pubblica, fts, eu, grants]
   category: finanza-pubblica
-  years: [2024, 2023, 2022, 2021, 2020]
+  years: [2025, 2024, 2023, 2022, 2021, 2020]
+  time_coverage: {start_year: 2020, end_year: 2025}
 
 raw:
   output_policy: overwrite
   sources:
-    - type: script
+    - name: "fts_script"
+      type: "script"
       args:
         command: "python scripts/convert_xlsx_to_csv.py --year {year} --output fts_{year}.csv"
         output: "fts_{year}.csv"
@@ -20,25 +22,66 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno, budget, rif_impegno_giuridico, rif_bilancio, beneficiario_nome, beneficiario_partita_iva, flag_no_profit, flag_ong, flag_coordinatore, beneficiario_indirizzo, beneficiario_citta, beneficiario_cap, paese_beneficiario, nuts2, zona_geografica, luogo_azione, fonte_dettaglio, tipo_spesa, oggetto_contributo, dipartimento_responsabile, linea_bilancio_codice, linea_bilancio_nome, nome_programma, tipo_finanziamento, codice_gruppo_beneficiario, tipo_beneficiario, data_inizio_progetto, data_fine_progetto, tipo_contratto, tipo_gestione, paese_beneficiante]
+  required_columns: [anno, budget, rif_impegno_giuridico, rif_bilancio, beneficiario_nome, beneficiario_partita_iva, flag_no_profit, flag_ong, flag_coordinatore, beneficiario_indirizzo, beneficiario_citta, beneficiario_cap, paese_beneficiario, nuts2, zona_geografica, luogo_azione, importo_contrattato, importo_contrattato_stimato, importo_consumato_stimato, impegno_importo_a, importo_aggiuntivo_ridotto_b, impegno_totale_a_plus_b, impegno_consumato, fonte_dettaglio, tipo_spesa, oggetto_contributo, dipartimento_responsabile, linea_bilancio_codice, linea_bilancio_nome, nome_programma, is_rrf, tipo_finanziamento, codice_gruppo_beneficiario, tipo_beneficiario, data_inizio_progetto, data_fine_progetto, tipo_contratto, tipo_gestione, paese_beneficiante]
   read:
+    source: auto
+    mode: latest
     header: true
     delim: ","
     encoding: "utf-8"
     quote: '"'
     escape: '"'
+    strict_mode: false
+    ignore_errors: true
   validate:
-    not_null: [anno]
+    not_null: [anno, beneficiario_nome]
+    min_rows: 3000
+    # ⚠ DER0GA primary_key: il sorgente FTS contiene righe duplicate reali
+    # (stesso rif_impegno_giuridico + beneficiario + importi + oggetto +
+    # programma + date) — anche con 8 campi restano 38 duplicati identici
+    # su 8.559 righe Italy (2023). PK non dichiarabile: vedi notes.md.
     promotion:
       max_row_drop_pct: 100.0
       fail_on_row_drop_exceeded: false
 
 mart:
   tables:
-    - name: "mart_grants_italia"
-      sql: "sql/mart.sql"
+    # Trend importi contrattati/consumati per anno (multi-year)
+    - name: "mart_trend_anno"
+      sql: "sql/mart_trend_anno.sql"
+      years: [2020, 2021, 2022, 2023, 2024, 2025]
+    # Sintesi per programma e tipo finanziamento
+    - name: "mart_sintesi_programma"
+      sql: "sql/mart_sintesi_programma.sql"
+    # Sintesi per tipo beneficiario
+    - name: "mart_sintesi_beneficiario"
+      sql: "sql/mart_sintesi_beneficiario.sql"
+    # Top beneficiari per importo contrattato
+    - name: "mart_top_beneficiari"
+      sql: "sql/mart_top_beneficiari.sql"
   required_tables:
-    - "mart_grants_italia"
+    - "mart_trend_anno"
+    - "mart_sintesi_programma"
+    - "mart_sintesi_beneficiario"
+    - "mart_top_beneficiari"
+  validate:
+    table_rules:
+      mart_trend_anno:
+        required_columns: [anno, n_grant, importo_contrattato_totale, importo_consumato_totale, importo_rrf_eur, quota_consumato_pct]
+        primary_key: [anno]
+        min_rows: 5
+      mart_sintesi_programma:
+        required_columns: [anno, nome_programma, n_grant, importo_contrattato_totale, importo_medio]
+        primary_key: [anno, nome_programma]
+        min_rows: 20
+      mart_sintesi_beneficiario:
+        required_columns: [anno, tipo_beneficiario, n_grant, importo_contrattato_totale, importo_medio]
+        primary_key: [anno, tipo_beneficiario]
+        min_rows: 5
+      mart_top_beneficiari:
+        required_columns: [anno, beneficiario_nome, n_grant, importo_contrattato_totale]
+        primary_key: [anno, beneficiario_nome]
+        min_rows: 300
 
 validation:
   fail_on_error: true

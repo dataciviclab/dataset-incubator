@@ -29,3 +29,23 @@ Tutti i beneficiari di fondi UE con sede in Italia, dal 2020 a oggi. Per ogni gr
 - **TED contract_notices** — bandi di gara UE in Italia
 - **OpenCoesione** — fondi strutturali in Italia
 - **RNA aiuti_stato** — aiuti di Stato alle imprese
+
+## Perché vale la pena
+
+I grant UE diretti all'Italia sono quasi 20 miliardi di EUR in 6 anni (2020-2025, escluso RRF). Sapere quali programmi, quali beneficiari e dove finiscono i soldi europei è una domanda di trasparenza diretta — risponde alla discussion #395 (13 domande verificate).
+
+## Output minimo atteso
+
+- `mart_trend_anno`: contrattato/consumato per anno + RRF separato (19,80 mld no-RRF 2020-2025, assorbimento 71%)
+- `mart_sintesi_programma`: per programma-anno (Horizon 4,75 mld, CEF Transport 1,11 mld)
+- `mart_sintesi_beneficiario`: per tipo beneficiario (Private Companies 56%)
+- `mart_top_beneficiari`: top beneficiari per importo (CNR, Polimi, Leonardo, BBT)
+
+## Criterio di promozione
+
+Promuovere quando: (1) i numeri del trend e delle classifiche sono verificati e citabili; (2) la discrepanza vs discussion #395 è riconciliata; (3) almeno una risposta della discussion è chiusa con dati.
+
+## Stato / prossimo passo
+
+- **Stato**: candidate a standard v1 (2026-08-03) — 4 mart serie, script fixato (schema variabile), run passed 5 anni, readiness 8/8
+- **Prossimo passo**: merge PR; post-merge: catalog aggiornamento; riconciliazione numeri con discussion #395 (data-researcher)
