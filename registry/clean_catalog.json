@@ -5147,7 +5147,7 @@
       "source_id": "fts",
       "period": {
         "start": 2020,
-        "end": 2024
+        "end": 2025
       },
       "columns": [
         {
@@ -5331,6 +5331,12 @@
           "type": "VARCHAR",
           "role": "dimension",
           "description": "Nome del programma UE (es. Horizon Europe, Erasmus+)"
+        },
+        {
+          "name": "is_rrf",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         },
         {
           "name": "tipo_finanziamento",
