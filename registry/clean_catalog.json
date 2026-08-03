@@ -10167,6 +10167,94 @@
       "category": "finanza-pubblica"
     },
     {
+      "slug": "membri_governo",
+      "name": "Membri dei Governi italiani (1862-2026)",
+      "description": "Membri e organi dei Governi italiani dal Regno d'Italia (1862) alla XIX legislatura: ruolo (Presidente del Consiglio, Ministro, Sottosegretario...), legislatura, governo e organo. Join con camera_deputati_legislature via persona_id (chiave standard del sistema parlamentare). Fonte: dati.camera.it SPARQL, 7.579 membri.",
+      "source": "Camera dei Deputati — OpenData SPARQL endpoint",
+      "source_id": "dati_camera",
+      "period": {
+        "start": 1862,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "membro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI del membro del governo"
+        },
+        {
+          "name": "persona_id",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": "ID numerico della persona (chiave standard del sistema parlamentare, ponte verso deputati/senato)",
+          "semantic_type": "person_id"
+        },
+        {
+          "name": "ruolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Ruolo ricoperto (MINISTRO, SOTTOSEGRETARIO DI STATO, PRESIDENTE DEL CONSIGLIO...) — NULL per il Regno"
+        },
+        {
+          "name": "label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Etichetta completa del ruolo (ruolo + dicastero + date)"
+        },
+        {
+          "name": "start_date",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data inizio incarico (NULL per il Regno — data solo nella label)"
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome della persona"
+        },
+        {
+          "name": "cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Cognome della persona"
+        },
+        {
+          "name": "legislatura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Legislatura (es. repubblica_17, regno_21, costituente)"
+        },
+        {
+          "name": "governo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI del governo"
+        },
+        {
+          "name": "organo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI dell'organo di governo (dicastero)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/membri_governo/2026/membri_governo_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "governo",
+        "ministri",
+        "legislature"
+      ],
+      "category": "politica"
+    },
+    {
       "slug": "mim_alunni_corso_eta",
       "name": "Alunni per corso ed età — MIM",
       "description": "Alunni delle scuole statali italiane per ordine scolastico, anno di corso e fascia d'eta. Dato MIM a livello di singola scuola, arricchito con anagrafica scuole (regione, provincia, comune). Include gerarchia territoriale (nazionale → regione → provincia) per drill-down. Fonte: dati.istruzione.it.",
