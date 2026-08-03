@@ -79,6 +79,7 @@ FTS_COLUMN_MAP = {
     "Reference (Budget)": "rif_bilancio",
     "Name of beneficiary": "beneficiario_nome",
     "Recipient main registration number": "beneficiario_partita_iva",  # 2020-2023
+    "Main registration number of beneficiary": "beneficiario_partita_iva",  # 2025
     "VAT number of beneficiary": "beneficiario_partita_iva",  # 2024 (sovrascrive se presente)
     "Not-for-profit organisation (NFPO)": "flag_no_profit",
     "Non-governmental organisation (NGO)": "flag_ong",

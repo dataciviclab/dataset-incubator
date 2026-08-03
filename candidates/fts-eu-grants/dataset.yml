@@ -6,8 +6,8 @@ dataset:
   source_id: "fts"
   tags: [finanza-pubblica, fts, eu, grants]
   category: finanza-pubblica
-  years: [2024, 2023, 2022, 2021, 2020]
-  time_coverage: {start_year: 2020, end_year: 2024}
+  years: [2025, 2024, 2023, 2022, 2021, 2020]
+  time_coverage: {start_year: 2020, end_year: 2025}
 
 raw:
   output_policy: overwrite
@@ -31,6 +31,8 @@ clean:
     encoding: "utf-8"
     quote: '"'
     escape: '"'
+    strict_mode: false
+    ignore_errors: true
   validate:
     not_null: [anno, beneficiario_nome]
     min_rows: 3000
@@ -47,7 +49,7 @@ mart:
     # Trend importi contrattati/consumati per anno (multi-year)
     - name: "mart_trend_anno"
       sql: "sql/mart_trend_anno.sql"
-      years: [2020, 2021, 2022, 2023, 2024]
+      years: [2020, 2021, 2022, 2023, 2024, 2025]
     # Sintesi per programma e tipo finanziamento
     - name: "mart_sintesi_programma"
       sql: "sql/mart_sintesi_programma.sql"

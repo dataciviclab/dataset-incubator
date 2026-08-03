@@ -32,11 +32,11 @@ Tutti i beneficiari di fondi UE con sede in Italia, dal 2020 a oggi. Per ogni gr
 
 ## Perché vale la pena
 
-I grant UE diretti all'Italia sono 17 miliardi di EUR in 5 anni (2020-2024, escluso RRF). Sapere quali programmi, quali beneficiari e dove finiscono i soldi europei è una domanda di trasparenza diretta — risponde alla discussion #395 (13 domande verificate).
+I grant UE diretti all'Italia sono quasi 20 miliardi di EUR in 6 anni (2020-2025, escluso RRF). Sapere quali programmi, quali beneficiari e dove finiscono i soldi europei è una domanda di trasparenza diretta — risponde alla discussion #395 (13 domande verificate).
 
 ## Output minimo atteso
 
-- `mart_trend_anno`: contrattato/consumato per anno + RRF separato (17,05 mld no-RRF, assorbimento 72%)
+- `mart_trend_anno`: contrattato/consumato per anno + RRF separato (19,80 mld no-RRF 2020-2025, assorbimento 71%)
 - `mart_sintesi_programma`: per programma-anno (Horizon 4,75 mld, CEF Transport 1,11 mld)
 - `mart_sintesi_beneficiario`: per tipo beneficiario (Private Companies 56%)
 - `mart_top_beneficiari`: top beneficiari per importo (CNR, Polimi, Leonardo, BBT)

@@ -4,7 +4,7 @@
 
 - **URL XLSX**: `https://ec.europa.eu/budget/financial-transparency-system/download/{YEAR}_FTS_dataset_en.xlsx`
 - **Formato**: XLSX, primo sheet
-- **Anni**: 2020–2024 verificati funzionanti (2007–2019 disponibili su richiesta)
+- **Anni**: 2020–2025 verificati funzionanti (2007–2019 disponibili su richiesta)
 - **HEAD richiesto**: il server Europa restituisce `Content-Length: 0` su HEAD ma il file è correttamente servito su GET (chunked encoding)
 - **Licenza**: EU Open Data
 
@@ -21,8 +21,9 @@
 |---|---|---|
 | 2020-2023 | 39 | `Recipient main registration number`, `Call for proposals Reference`, `Project / Contract Reference`, `Project / Contract Acronym` |
 | 2024 | 38 | `VAT number of beneficiary`, `Geographical Zone`, `Action location`, `Funding type` |
+| 2025 | 38 | `Main registration number of beneficiary` (nome nuovo), `Call ID`/`Project ID`/`Project Acronym`; ASSENTI `Geographical Zone`, `Action location`, `Funding type`, `Beneficiary Group Code` |
 
-**35 colonne comuni** a tutti gli anni. Lo script mappa **per NOME** (non posizionale) a 38 colonne italiane stabili; colonne assenti nell'anno → vuote. Il vecchio script posizionale era rotto: `df.columns = FTS_COLUMNS` (38) su file da 39 colonne → ValueError, run mai riuscito.
+**35 colonne comuni** a tutti gli anni (2020-2025). Lo script mappa **per NOME** (non posizionale) a 38 colonne italiane stabili; colonne assenti nell'anno → vuote. Il vecchio script posizionale era rotto: `df.columns = FTS_COLUMNS` (38) su file da 39 colonne → ValueError, run mai riuscito.
 
 **Perché non http_file+XLSX diretto**: il toolkit legge l'XLSX nativamente ma DuckDB risolve i nomi colonna a parse time → referenziare una colonna 2024-only nel run 2023 fallisce (BinderError). `align_by_header` (schema variabile) è supportato SOLO per CSV, non per Excel. Lo script resta il punto di normalizzazione.
 
