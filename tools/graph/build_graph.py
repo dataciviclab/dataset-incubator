@@ -42,6 +42,7 @@ ENTITY_LABELS = {
     "Ente sanitario": "Ente sanitario",
     "Procedimento": "Procedimento giudiziario",
     "Categoria merceologica": "Categoria merceologica",
+    "Persona": "Persona",
 }
 
 

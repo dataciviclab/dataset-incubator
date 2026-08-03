@@ -787,6 +787,33 @@
         "country_code": 3
       }
     },
+    "Persona": {
+      "entity": "Persona",
+      "label": "Persona",
+      "datasets": [
+        {
+          "slug": "camera_deputati_legislature",
+          "name": "Camera Deputati Legislature",
+          "column": "persona_id",
+          "semantic_type": "person_id"
+        },
+        {
+          "slug": "camera_incarichi",
+          "name": "Incarichi nei Gruppi Parlamentari (Camera)",
+          "column": "persona_id",
+          "semantic_type": "person_id"
+        },
+        {
+          "slug": "membri_governo",
+          "name": "Membri dei Governi italiani (1862-2026)",
+          "column": "persona_id",
+          "semantic_type": "person_id"
+        }
+      ],
+      "types": {
+        "person_id": 3
+      }
+    },
     "Procedimento": {
       "entity": "Procedimento",
       "label": "Procedimento giudiziario",
@@ -1526,27 +1553,6 @@
       ],
       "types": {
         "region_code": 51
-      }
-    },
-    "Sconosciuto": {
-      "entity": "Sconosciuto",
-      "label": "Sconosciuto",
-      "datasets": [
-        {
-          "slug": "camera_deputati_legislature",
-          "name": "Camera Deputati Legislature",
-          "column": "persona_id",
-          "semantic_type": "person_id"
-        },
-        {
-          "slug": "camera_incarichi",
-          "name": "Incarichi nei Gruppi Parlamentari (Camera)",
-          "column": "persona_id",
-          "semantic_type": "person_id"
-        }
-      ],
-      "types": {
-        "person_id": 2
       }
     },
     "Scuola": {

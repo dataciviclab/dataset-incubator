@@ -10168,9 +10168,9 @@
     },
     {
       "slug": "membri_governo",
-      "name": "Membri Governo",
-      "description": "",
-      "source": "",
+      "name": "Membri dei Governi italiani (1862-2026)",
+      "description": "Membri e organi dei Governi italiani dal Regno d'Italia (1862) alla XIX legislatura: ruolo (Presidente del Consiglio, Ministro, Sottosegretario...), legislatura, governo e organo. Join con camera_deputati_legislature via persona_id (chiave standard del sistema parlamentare). Fonte: dati.camera.it SPARQL, 7.579 membri.",
+      "source": "Camera dei Deputati — OpenData SPARQL endpoint",
       "source_id": "dati_camera",
       "period": {
         "start": 1862,
@@ -10181,61 +10181,62 @@
           "name": "membro",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI del membro del governo"
         },
         {
           "name": "persona_id",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "ID numerico della persona (chiave standard del sistema parlamentare, ponte verso deputati/senato)",
+          "semantic_type": "person_id"
         },
         {
           "name": "ruolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ruolo ricoperto (MINISTRO, SOTTOSEGRETARIO DI STATO, PRESIDENTE DEL CONSIGLIO...) — NULL per il Regno"
         },
         {
           "name": "label",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Etichetta completa del ruolo (ruolo + dicastero + date)"
         },
         {
           "name": "start_date",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data inizio incarico (NULL per il Regno — data solo nella label)"
         },
         {
           "name": "nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome della persona"
         },
         {
           "name": "cognome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome della persona"
         },
         {
           "name": "legislatura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Legislatura (es. repubblica_17, regno_21, costituente)"
         },
         {
           "name": "governo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI del governo"
         },
         {
           "name": "organo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI dell'organo di governo (dicastero)"
         }
       ],
       "location": {
