@@ -6,49 +6,43 @@
 
 WITH raw_clean AS (
     SELECT
-        {year}::INTEGER                                             AS anno,
+        cast_int({year})                                             AS anno,
         -- Amministrazione
-        TRIM(CAST("Amministrazione Denominazione" AS VARCHAR))           AS amministrazione,
-        TRIM(CAST("Amministrazione Settore Istituzionale" AS VARCHAR))  AS amm_settore,
-        TRIM(CAST("Amministrazione Macrocategoria" AS VARCHAR))         AS amm_macrocategoria,
-        TRIM(CAST("Amministrazione Categoria" AS VARCHAR))              AS amm_categoria,
-        TRIM(CAST("Amministrazione Codice Fiscale" AS VARCHAR))         AS amm_cf,
-        TRIM(CAST("Amministrazione Regione Sede" AS VARCHAR))           AS amm_regione,
-        TRIM(CAST("Amministrazione Provincia Sede" AS VARCHAR))         AS amm_provincia,
-        TRIM(CAST("Amministrazione Comune Sede" AS VARCHAR))            AS amm_comune,
+        normalize_string("Amministrazione Denominazione")           AS amministrazione,
+        normalize_string("Amministrazione Settore Istituzionale")  AS amm_settore,
+        normalize_string("Amministrazione Macrocategoria")         AS amm_macrocategoria,
+        normalize_string("Amministrazione Categoria")              AS amm_categoria,
+        normalize_string("Amministrazione Codice Fiscale")         AS amm_cf,
+        normalize_string("Amministrazione Regione Sede")           AS amm_regione,
+        normalize_string("Amministrazione Provincia Sede")         AS amm_provincia,
+        normalize_string("Amministrazione Comune Sede")            AS amm_comune,
 
         -- Società partecipata
-        TRIM(CAST("Società/ente in cui è nominato il rappresentante Denominazione" AS VARCHAR)) AS societa,
-        TRIM(CAST("Società/Ente Codice Fiscale" AS VARCHAR))            AS societa_cf,
-        TRY_CAST(TRIM(CAST("Società/Ente Anno di costituzione" AS VARCHAR)) AS INTEGER) AS societa_anno_costituzione,
-        TRIM(CAST("Società/Ente Forma Giuridica" AS VARCHAR))           AS societa_forma_giuridica,
-        TRIM(CAST("Società/Ente Stato Giuridico" AS VARCHAR))           AS societa_stato,
-        TRIM(CAST("Società/Ente Settore Attività" AS VARCHAR))          AS societa_settore,
-        TRIM(CAST("Società/Ente Divisione ATECO" AS VARCHAR))           AS societa_ateco,
-        TRIM(CAST("Società/Ente Regione Sede" AS VARCHAR))              AS societa_regione,
-        TRIM(CAST("Società/Ente Provincia Sede" AS VARCHAR))            AS societa_provincia,
-        TRIM(CAST("Società/Ente Comune Sede" AS VARCHAR))               AS societa_comune,
+        normalize_string("Società/ente in cui è nominato il rappresentante Denominazione") AS societa,
+        normalize_string("Società/Ente Codice Fiscale")            AS societa_cf,
+        cast_int(normalize_string("Società/Ente Anno di costituzione")) AS societa_anno_costituzione,
+        normalize_string("Società/Ente Forma Giuridica")           AS societa_forma_giuridica,
+        normalize_string("Società/Ente Stato Giuridico")           AS societa_stato,
+        normalize_string("Società/Ente Settore Attività")          AS societa_settore,
+        normalize_string("Società/Ente Divisione ATECO")           AS societa_ateco,
+        normalize_string("Società/Ente Regione Sede")              AS societa_regione,
+        normalize_string("Società/Ente Provincia Sede")            AS societa_provincia,
+        normalize_string("Società/Ente Comune Sede")               AS societa_comune,
 
         -- Rappresentante
-        TRY_CAST(TRIM(CAST("Rappresentante identificativo" AS VARCHAR)) AS BIGINT) AS rapp_id,
-        TRIM(CAST("Rappresentante Cognome" AS VARCHAR))                 AS rapp_cognome,
-        TRIM(CAST("Rappresentante Nome" AS VARCHAR))                    AS rapp_nome,
-        TRIM(CAST("Rappresentante Genere" AS VARCHAR))                  AS rapp_genere,
+        cast_bigint(normalize_string("Rappresentante identificativo")) AS rapp_id,
+        normalize_string("Rappresentante Cognome")                 AS rapp_cognome,
+        normalize_string("Rappresentante Nome")                    AS rapp_nome,
+        normalize_string("Rappresentante Genere")                  AS rapp_genere,
 
         -- Incarico
-        TRIM(CAST("Incarico Tipologia" AS VARCHAR))                     AS incarico_tipo,
-        TRIM(CAST("Incarico Data inizio" AS VARCHAR))                   AS incarico_data_inizio,
-        TRIM(CAST("Incarico Data fine" AS VARCHAR))                     AS incarico_data_fine,
-        TRIM(CAST("Incarico gratuito o remunerato" AS VARCHAR))         AS incarico_gratuito,
+        normalize_string("Incarico Tipologia")                     AS incarico_tipo,
+        normalize_string("Incarico Data inizio")                   AS incarico_data_inizio,
+        normalize_string("Incarico Data fine")                     AS incarico_data_fine,
+        normalize_string("Incarico gratuito o remunerato")         AS incarico_gratuito,
         -- Importo: formato italiano (punto come separatore migliaia, virgola come decimale)
-        TRY_CAST(REPLACE(
-            REPLACE(TRIM(CAST("Incarico Importo trattamento economico" AS VARCHAR)), '.', ''),
-            ',', '.'
-        ) AS DOUBLE)                                                    AS incarico_importo_eur,
-        TRY_CAST(REPLACE(
-            REPLACE(TRIM(CAST("Incarico Compenso riversato all'Amministrazione" AS VARCHAR)), '.', ''),
-            ',', '.'
-        ) AS DOUBLE)                                                    AS incarico_riversato_eur
+        normalize_italian_number("Incarico Importo trattamento economico") AS incarico_importo_eur,
+        normalize_italian_number("Incarico Compenso riversato all'Amministrazione") AS incarico_riversato_eur
 
     FROM raw_input
     WHERE "Rappresentante identificativo" IS NOT NULL

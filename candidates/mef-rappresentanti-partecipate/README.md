@@ -29,3 +29,23 @@ python -m toolkit.cli.app run all \
 ## Issue di riferimento
 
 - Intake: [#544](https://github.com/dataciviclab/dataset-incubator/issues/544)
+
+## Perché vale la pena
+
+I compensi dei rappresentanti della PA nei CdA delle società partecipate sono soldi pubblici: 132,9 milioni € nel 2023. Sapere chi nomina, chi viene pagato, quanto e con quale divario di genere è una domanda di trasparenza diretta — risponde alla discussion #406 (11 domande verificate sul dato).
+
+## Output minimo atteso
+
+- `mart_trend_anno`: spesa PA per anno (109,7M → 132,9M, +21% in 6 anni), quota gratuiti, riversato
+- `mart_sintesi_incarico`: compenso medio per ruolo (AD €63.923 = 6x consigliere)
+- `mart_gender_gap`: divario di genere per anno (F = 68% del compenso M)
+- `mart_top_amministrazioni`: chi nomina e paga di più (MEF, Roma, Milano)
+
+## Criterio di promozione
+
+Promuovere quando: (1) i numeri del trend e del gender gap sono verificati e citabili; (2) almeno una risposta della discussion #406 è chiusa con dati; (3) la geografia dei compensi (Nord-Sud) è esplorata via clean-query.
+
+## Stato / prossimo passo
+
+- **Stato**: candidate a standard v1 (2026-08-03) — 4 mart serie, run passed 6 anni, readiness 8/8
+- **Prossimo passo**: merge PR; post-merge: catalog aggiornamento; rispondere alle domande #406 con le mart
