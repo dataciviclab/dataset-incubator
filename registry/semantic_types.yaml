@@ -268,6 +268,17 @@ types:
     weight: 1
 
   # ═══════════════════════════════════════════════════════════════════════
+  # PERSONE (sistema parlamentare e non solo)
+  # ═══════════════════════════════════════════════════════════════════════
+
+  person_id:
+    description: "ID numerico della persona fisica (es. 302103 da ocd/persona.rdf/p302103 — Camera/Senato/Governo)"
+    entity: Persona
+    aliases: [persona_id, person_id, id_persona, codice_persona]
+    weight: 15
+    note: "Chiave standard del sistema parlamentare (deputati, senatori, membri governo). Ponte tra rami via URI persona."
+
+  # ═══════════════════════════════════════════════════════════════════════
   # GIUSTIZIA
   # ═══════════════════════════════════════════════════════════════════════
 

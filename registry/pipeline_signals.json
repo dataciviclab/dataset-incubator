@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 110,
+    "total": 111,
     "by_status": {
-      "ok": 110,
+      "ok": 111,
       "warn": 0,
       "error": 0
     }
@@ -1250,6 +1250,41 @@
           2023
         ],
         "config_path": "candidates/mef-rappresentanti-partecipate/dataset.yml"
+      }
+    },
+    {
+      "id": "membri-governo",
+      "source_id": "dati_camera",
+      "status": "ok",
+      "label": "membri-governo",
+      "detail": "anno 2026 — fonte: membri_governo_sparql — mart: sì",
+      "action": "",
+      "latest_run": {
+        "status": "passed",
+        "run_id": "30855026928",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30855026928",
+        "checked_at": "2026-08-03",
+        "duration_seconds": 4.24,
+        "row_counts": {
+          "raw": 7505,
+          "clean": 7579,
+          "mart": 312
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/membri-governo/dataset.yml"
       }
     },
     {
