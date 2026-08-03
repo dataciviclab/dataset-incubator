@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 109,
+    "total": 110,
     "by_status": {
-      "ok": 109,
+      "ok": 110,
       "warn": 0,
       "error": 0
     }
@@ -225,15 +225,32 @@
       "source_id": "dati_camera",
       "status": "ok",
       "label": "camera-deputati-legislature",
-      "detail": "anno 2024 — fonte: camera_deputati_sparql — mart: sì",
+      "detail": "anno 2026 — fonte: camera_deputati_sparql — mart: sì",
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "26682747895",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26682747895",
-        "checked_at": "2026-05-30",
+        "run_id": "30837728630",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30837728630",
+        "checked_at": "2026-08-03",
+        "duration_seconds": 11.97,
+        "row_counts": {
+          "raw": 27764,
+          "clean": 27764,
+          "mart": 11326
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 95.0,
+          "mart": 100.0
+        },
         "years": [
-          2024
+          2026
         ],
         "config_path": "candidates/camera-deputati-legislature/dataset.yml"
       }
@@ -2161,6 +2178,41 @@
           2026
         ],
         "config_path": "support_datasets/bdap-anagrafe-enti/dataset.yml"
+      }
+    },
+    {
+      "id": "camera-incarichi",
+      "source_id": "dati_camera",
+      "status": "ok",
+      "label": "camera-incarichi",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "latest_run": {
+        "status": "passed",
+        "run_id": "30837728630",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30837728630",
+        "checked_at": "2026-08-03",
+        "duration_seconds": 2.13,
+        "row_counts": {
+          "raw": 3096,
+          "clean": 3096,
+          "mart": 2196
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/camera-incarichi/dataset.yml"
       }
     },
     {

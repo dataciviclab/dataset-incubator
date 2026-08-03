@@ -2490,8 +2490,8 @@
       "source": "Camera dei Deputati — OpenData SPARQL endpoint",
       "source_id": "dati_camera",
       "period": {
-        "start": 2024,
-        "end": 2024
+        "start": 1861,
+        "end": 2026
       },
       "columns": [
         {
@@ -2537,6 +2537,87 @@
         "camera",
         "deputati",
         "legislature"
+      ],
+      "category": "politica"
+    },
+    {
+      "slug": "camera_incarichi",
+      "name": "Camera Incarichi",
+      "description": "",
+      "source": "",
+      "source_id": "dati_camera",
+      "period": {
+        "start": 1946,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "incarico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "ruolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "deputato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "persona_id",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "gruppo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "legislatura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "start_date",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "end_date",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/camera_incarichi/2026/camera_incarichi_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "camera",
+        "incarichi",
+        "gruppi-parlamentari"
       ],
       "category": "politica"
     },
