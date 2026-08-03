@@ -9117,7 +9117,7 @@
         },
         {
           "name": "quota_soggetto_privato",
-          "type": "VARCHAR",
+          "type": "DOUBLE",
           "role": "dimension",
           "description": "Quota di partecipazione di soggetto privato"
         },
