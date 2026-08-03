@@ -42,3 +42,22 @@ cd dataset-incubator
 python -m toolkit.cli.app run all \
   --config candidates/camera-deputati-legislature/dataset.yml --years 2024
 ```
+
+## Perché vale la pena
+
+Chi sono i deputati e cosa hanno fatto in Parlamento: anagrafica completa (biografia, foto, mandato) + join con gli incarichi nei gruppi parlamentari (support `camera-incarichi`). La chiave `persona_id` collega Camera, Senato e Governo — base per analisi trasversali (issue #787).
+
+## Output minimo atteso
+
+- `mart_legislatura_genere`: composizione Camera per legislatura e genere
+- `mart_top_mandati`: persone con più legislature (carriere lunghe)
+- Join con `camera-incarichi` per (persona_id, legislatura)
+
+## Criterio di promozione
+
+Promuovere quando: (1) i numeri di composizione per legislatura sono verificati; (2) il join con gli incarichi è stabile; (3) una domanda civica usa i dati (es. presenza femminile per legislatura).
+
+## Stato / prossimo passo
+
+- **Stato**: candidate esteso a standard v1 (2026-08-03) — 10 colonne, mart serie, readiness 8/8
+- **Prossimo passo**: merge PR; post-merge catalog; esplorare composizione gruppi per legislatura
