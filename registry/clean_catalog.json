@@ -14178,6 +14178,94 @@
       "category": "politica"
     },
     {
+      "slug": "senato_firmatari",
+      "name": "Senato Firmatari",
+      "description": "",
+      "source": "",
+      "source_id": "dati_senato",
+      "period": {
+        "start": 2022,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "ddl",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "ddl_id",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "iniziativa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "presentatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_iniziativa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "primo_firmatario",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "senatore_id",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_aggiunta_firma",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_ritiro_firma",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "deputato_url",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/senato_firmatari/2026/senato_firmatari_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "senato",
+        "ddl",
+        "firmatari",
+        "iter-legislativo"
+      ],
+      "category": "politica"
+    },
+    {
       "slug": "silos_infrastrutture",
       "name": "Infrastrutture strategiche e prioritarie (SILOS)",
       "description": "Censimento delle infrastrutture strategiche e prioritarie in Italia. Report annuale del Servizio Studi della Camera dei Deputati. Per ogni opera: CUP, denominazione, soggetto competente, localizzazione, stato di attuazione, costi, disponibilità finanziaria e fabbisogno residuo in milioni di euro.",
