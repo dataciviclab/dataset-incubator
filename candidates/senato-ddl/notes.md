@@ -75,3 +75,20 @@ iniziativa, progressivo_iter, legislatura, numero_legge, data_legge.
 - Legislature 13-19: graph `ddl/13`..`ddl/19` (pattern `{year}` → `{leg}`)
 - `senatore`/`rif_deputato`: presentatori → join con anagrafica persone (persona_id)
 - `assegnazione`/`tipoCommissione`/`dataAssegnazione`: iter per commissione
+
+## 2026-08-04 — 27 colonne complete, 3 sorgenti (limite WAF)
+
+Il WAF Senato rifiuta query SPARQL > ~15 colonne (403 su 1.642 char, ok su 1.498).
+La query completa (25 predicati) è spezzata in 3 sorgenti (q1: 11 col, q2a: 8,
+q2b: 7), unite con read.mode: all + union_by_name. Il clean ricombina con
+GROUP BY ddl + MAX (pattern identico alla query SPARQL).
+
+Copertura verificata: 15/27 colonne al 100% (titolo, stato, data, natura, fase,
+ramo, iniziativa, iter, legislatura...); numero_legge/data_legge 14% (solo
+approvati — corretto); relatore 38%; testo_approvato 7.8%; testo_unificato e
+stralcio ~0% (rari nella fonte). Nessun dato troncato: tutte le colonne della
+fonte sono esposte.
+
+Lezione: prima di ogni candidate SPARQL, confrontare predicati disponibili vs
+colonne estratte (gate standard). Il mode all unisce per union_by_name (concat)
+→ serve GROUP BY + MAX nel clean per ricombinare sorgenti complementari.
