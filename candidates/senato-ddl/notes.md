@@ -92,3 +92,13 @@ fonte sono esposte.
 Lezione: prima di ogni candidate SPARQL, confrontare predicati disponibili vs
 colonne estratte (gate standard). Il mode all unisce per union_by_name (concat)
 → serve GROUP BY + MAX nel clean per ricombinare sorgenti complementari.
+
+## 2026-08-04 — mart_iter_tempi (valorizzazione domanda #781)
+
+Aggiunta la mart che risponde alla domanda guida ("come nasce e muore una legge"):
+- 345 ddl diventati legge con data_legge reale (escluso placeholder 2100-01-01)
+- media 295 giorni dall'iter, min 30, max 1.372 (3,7 anni)
+- per ddl: n_versioni (ping-pong tra rami), ramo, giorni/mesi iter
+- aggregata per id_ddl (il clean ha una riga per versione dell'atto)
+- NOTA: il placeholder 2100-01-01 del Senato (legge pubblicata senza data nota)
+  è escluso dalla mart — 1 solo ddl nel dataset, non distorce i tempi
