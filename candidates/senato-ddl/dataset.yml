@@ -116,7 +116,7 @@ clean:
     trim_whitespace: true
   validate:
     not_null: [id_ddl]
-    min_rows: 1000
+    min_rows: 3000
     # una riga = una versione dell'atto nell'iter (ddl × ramo/numero atto)
     primary_key: [id_ddl, fase]
 
@@ -151,4 +151,4 @@ mart:
         min_rows: 100
 
 validation:
-  fail_on_error: false
+  fail_on_error: true
