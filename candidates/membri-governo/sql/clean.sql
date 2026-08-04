@@ -18,6 +18,9 @@ WITH base AS (
         ruolo,
         label,
         start,
+        "end",
+        interim,
+        motivoTermine,
         persona,
         nome,
         cognome,
@@ -47,6 +50,17 @@ SELECT
                   substr(CAST(start AS VARCHAR), 7, 2)
         END AS DATE
     )                                                                 AS start_date,
+    -- end: stessa codifica YYYYMMDD → DATE (membri cessati; NULL = in carica)
+    TRY_CAST(
+        CASE WHEN "end" IS NOT NULL
+             THEN substr(CAST("end" AS VARCHAR), 1, 4) || '-' ||
+                  substr(CAST("end" AS VARCHAR), 5, 2) || '-' ||
+                  substr(CAST("end" AS VARCHAR), 7, 2)
+        END AS DATE
+    )                                                                 AS end_date,
+    -- interim: flag "ad interim" (0/1 dalla fonte)
+    TRY_CAST(interim AS BOOLEAN)                                      AS interim,
+    normalize_string(motivoTermine)                                   AS motivo_termine,
     normalize_string(nome)                                            AS nome,
     normalize_string(cognome)                                         AS cognome,
     -- legislatura: URI ocd/legislatura.rdf/repubblica_17 → "repubblica_17"

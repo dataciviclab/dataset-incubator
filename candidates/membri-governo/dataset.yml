@@ -24,7 +24,9 @@ raw:
           PREFIX foaf: <http://xmlns.com/foaf/0.1/>
           PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
           SELECT ?membro (MAX(?ruolo) AS ?ruolo) (MAX(?label) AS ?label)
-                 (MAX(?start) AS ?start) (MAX(?persona) AS ?persona)
+                 (MAX(?start) AS ?start) (MAX(?end) AS ?end)
+                 (MAX(?interim) AS ?interim) (MAX(?motivoTermine) AS ?motivoTermine)
+                 (MAX(?persona) AS ?persona)
                  (MAX(?nome) AS ?nome) (MAX(?cognome) AS ?cognome)
                  (MAX(?legislatura) AS ?legislatura) (MAX(?governo) AS ?governo)
                  (MAX(?organo) AS ?organo)
@@ -33,6 +35,9 @@ raw:
             OPTIONAL { ?membro ocd:membroGoverno ?ruolo . }
             OPTIONAL { ?membro rdfs:label ?label . }
             OPTIONAL { ?membro ocd:startDate ?start . }
+            OPTIONAL { ?membro ocd:endDate ?end . }
+            OPTIONAL { ?membro ocd:interim ?interim . }
+            OPTIONAL { ?membro ocd:motivoTermine ?motivoTermine . }
             OPTIONAL { ?membro ocd:rif_persona ?persona . }
             OPTIONAL { ?persona foaf:firstName ?nome . }
             OPTIONAL { ?persona foaf:surname ?cognome . }
@@ -46,7 +51,7 @@ raw:
 clean:
   sql: "sql/clean.sql"
   read_mode: robust
-  required_columns: [membro, persona_id, ruolo, label, start_date, nome, cognome, legislatura, governo, organo]
+  required_columns: [membro, persona_id, ruolo, label, start_date, end_date, interim, motivo_termine, nome, cognome, legislatura, governo, organo]
   read:
     source: auto
     mode: latest
