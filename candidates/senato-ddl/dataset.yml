@@ -40,7 +40,7 @@ raw:
 clean:
   sql: "sql/clean.sql"
   read_mode: robust
-  required_columns: [id_ddl, ddl_url, titolo, stato, data_presentazione, tipo_iniziativa]
+  required_columns: [id_ddl, ddl_url, titolo, stato, data_presentazione, tipo_iniziativa, fase]
   read:
     source: auto
     mode: latest

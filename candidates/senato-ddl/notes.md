@@ -44,10 +44,11 @@ WHERE { GRAPH <http://dati.senato.it/ddl/19> {
 GROUP BY ?ddl
 ```
 
-## Fase — blank node
+## Fase — codice atto
 
-`fase` può essere un blank node (`nodeID://b307199465`) — esclusi nel clean
-(`CASE WHEN fase LIKE 'http://%' THEN fase ELSE NULL END`).
+`fase` è il codice dell'atto (es. C.1774 = atto Camera, S.782 = atto Senato),
+5.114 valori unici. I blank node (`nodeID://b307199465`) sono esclusi nel clean
+(`CASE WHEN fase LIKE 'nodeID://%' THEN NULL ELSE fase END`).
 
 ## Estensione futura
 

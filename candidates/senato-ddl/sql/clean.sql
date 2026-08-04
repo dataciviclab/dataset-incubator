@@ -24,8 +24,11 @@ SELECT
     normalize_string(stato)                                           AS stato,
     TRY_CAST(data AS DATE)                                            AS data_presentazione,
     normalize_string(tipo)                                            AS tipo_iniziativa,
-    -- fase: esclude i blank node (nodeID://) inutili
-    CASE WHEN fase LIKE 'http://%' THEN normalize_string(fase) ELSE NULL END AS fase_url
+    -- fase: codice atto (es. C.1774 = atto Camera, S.782 = Senato).
+    -- Esclude solo i blank node (nodeID://) — NON richiedere URL.
+    CASE WHEN fase LIKE 'nodeID://%' OR fase IS NULL THEN NULL
+         ELSE normalize_string(fase)
+    END                                                               AS fase
 FROM raw_input
 WHERE ddl LIKE '%/ddl/%'
   AND idDdl IS NOT NULL
