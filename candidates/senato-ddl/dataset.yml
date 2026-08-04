@@ -1,0 +1,155 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "senato_ddl"
+  source_id: "dati_senato"
+  tags: [politica, senato, ddl, iter-legislativo]
+  category: politica
+  years: [2026]
+  time_coverage:
+    # copertura reale del graph <http://dati.senato.it/ddl/19> — XIX legislatura
+    start_year: 2022
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    # 3 sorgenti: il WAF Senato rifiuta query > ~15-16 colonne (403),
+    # quindi la query completa (27 predicati) è spezzata in 3 sotto il limite.
+    - name: "senato_ddl_q1"
+      type: "sparql"
+      primary: true
+      args:
+        endpoint: "https://dati.senato.it/sparql"
+        query: |
+          PREFIX osr: <http://dati.senato.it/osr/>
+          SELECT ?ddl (MAX(?idDdl) AS ?idDdl) (MAX(?titolo) AS ?titolo)
+                 (MAX(?titoloBreve) AS ?titoloBreve) (MAX(?stato) AS ?stato)
+                 (MAX(?dataPresentazione) AS ?dataPresentazione)
+                 (MAX(?dataStatoDdl) AS ?dataStatoDdl)
+                 (MAX(?natura) AS ?natura) (MAX(?fase) AS ?fase)
+                 (MAX(?ramo) AS ?ramo) (MAX(?iniziativa) AS ?iniziativa)
+                 (MAX(?descrIniziativa) AS ?descrIniziativa)
+          WHERE {
+            GRAPH <http://dati.senato.it/ddl/19> {
+              ?ddl osr:idDdl ?idDdl .
+              OPTIONAL { ?ddl osr:titolo ?titolo . }
+              OPTIONAL { ?ddl osr:titoloBreve ?titoloBreve . }
+              OPTIONAL { ?ddl osr:statoDdl ?stato . }
+              OPTIONAL { ?ddl osr:dataPresentazione ?dataPresentazione . }
+              OPTIONAL { ?ddl osr:dataStatoDdl ?dataStatoDdl . }
+              OPTIONAL { ?ddl osr:natura ?natura . }
+              OPTIONAL { ?ddl osr:fase ?fase . }
+              OPTIONAL { ?ddl osr:ramo ?ramo . }
+              OPTIONAL { ?ddl osr:iniziativa ?iniziativa . }
+              OPTIONAL { ?ddl osr:descrIniziativa ?descrIniziativa . }
+            }
+          }
+          GROUP BY ?ddl
+        accept_format: "sparql-results+json"
+    - name: "senato_ddl_q2a"
+      type: "sparql"
+      args:
+        endpoint: "https://dati.senato.it/sparql"
+        query: |
+          PREFIX osr: <http://dati.senato.it/osr/>
+          SELECT ?ddl (MAX(?progressivoIter) AS ?progressivoIter)
+                 (MAX(?numeroFase) AS ?numeroFase)
+                 (MAX(?numeroFaseCompatto) AS ?numeroFaseCompatto)
+                 (MAX(?idFase) AS ?idFase) (MAX(?legislatura) AS ?legislatura)
+                 (MAX(?presentatoTrasmesso) AS ?presentatoTrasmesso)
+                 (MAX(?numeroLegge) AS ?numeroLegge) (MAX(?dataLegge) AS ?dataLegge)
+          WHERE {
+            GRAPH <http://dati.senato.it/ddl/19> {
+              ?ddl osr:idDdl ?idDdl .
+              OPTIONAL { ?ddl osr:progressivoIter ?progressivoIter . }
+              OPTIONAL { ?ddl osr:numeroFase ?numeroFase . }
+              OPTIONAL { ?ddl osr:numeroFaseCompatto ?numeroFaseCompatto . }
+              OPTIONAL { ?ddl osr:idFase ?idFase . }
+              OPTIONAL { ?ddl osr:legislatura ?legislatura . }
+              OPTIONAL { ?ddl osr:presentatoTrasmesso ?presentatoTrasmesso . }
+              OPTIONAL { ?ddl osr:numeroLegge ?numeroLegge . }
+              OPTIONAL { ?ddl osr:dataLegge ?dataLegge . }
+            }
+          }
+          GROUP BY ?ddl
+        accept_format: "sparql-results+json"
+    - name: "senato_ddl_q2b"
+      type: "sparql"
+      args:
+        endpoint: "https://dati.senato.it/sparql"
+        query: |
+          PREFIX osr: <http://dati.senato.it/osr/>
+          SELECT ?ddl (MAX(?relatore) AS ?relatore)
+                 (MAX(?classificazione) AS ?classificazione)
+                 (MAX(?assegnazione) AS ?assegnazione)
+                 (MAX(?testoPresentato) AS ?testoPresentato)
+                 (MAX(?testoApprovato) AS ?testoApprovato)
+                 (MAX(?testoUnificato) AS ?testoUnificato)
+                 (MAX(?stralcio) AS ?stralcio)
+          WHERE {
+            GRAPH <http://dati.senato.it/ddl/19> {
+              ?ddl osr:idDdl ?idDdl .
+              OPTIONAL { ?ddl osr:relatore ?relatore . }
+              OPTIONAL { ?ddl osr:classificazione ?classificazione . }
+              OPTIONAL { ?ddl osr:assegnazione ?assegnazione . }
+              OPTIONAL { ?ddl osr:testoPresentato ?testoPresentato . }
+              OPTIONAL { ?ddl osr:testoApprovato ?testoApprovato . }
+              OPTIONAL { ?ddl osr:testoUnificato ?testoUnificato . }
+              OPTIONAL { ?ddl osr:stralcio ?stralcio . }
+            }
+          }
+          GROUP BY ?ddl
+        accept_format: "sparql-results+json"
+
+clean:
+  sql: "sql/clean.sql"
+  read_mode: robust
+  required_columns: [id_ddl, ddl_url, titolo, titolo_breve, stato, data_presentazione, data_stato_ddl, natura, fase, ramo, iniziativa, descr_iniziativa, progressivo_iter, numero_fase, numero_fase_compatto, id_fase, legislatura, presentato_trasmesso, numero_legge, data_legge, relatore, classificazione, assegnazione, testo_presentato, testo_approvato, testo_unificato, stralcio]
+  read:
+    source: auto
+    mode: all
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    not_null: [id_ddl]
+    min_rows: 3000
+    # una riga = una versione dell'atto nell'iter (ddl × ramo/numero atto)
+    primary_key: [id_ddl, fase]
+
+mart:
+  tables:
+    # DDL per stato (distribuzione dell'iter)
+    - name: "mart_stato"
+      sql: "sql/mart_stato.sql"
+    # DDL per anno di presentazione
+    - name: "mart_anno"
+      sql: "sql/mart_anno.sql"
+    # Tempi dell'iter per i ddl diventati legge
+    - name: "mart_iter_tempi"
+      sql: "sql/mart_iter_tempi.sql"
+  required_tables:
+    - "mart_stato"
+    - "mart_anno"
+    - "mart_iter_tempi"
+  validate:
+    table_rules:
+      mart_stato:
+        required_columns: [stato, n_ddl]
+        primary_key: [stato]
+        min_rows: 5
+      mart_anno:
+        required_columns: [anno, n_ddl]
+        primary_key: [anno]
+        min_rows: 5
+      mart_iter_tempi:
+        required_columns: [id_ddl, giorni_iter, mesi_iter]
+        primary_key: [id_ddl]
+        min_rows: 100
+
+validation:
+  fail_on_error: true
