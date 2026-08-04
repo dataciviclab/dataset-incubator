@@ -8,14 +8,15 @@ dataset:
   category: politica
   years: [2026]
   time_coverage:
-    start_year: 2013
+    # copertura reale del graph <http://dati.senato.it/ddl/19> — XIX legislatura
+    start_year: 2022
     end_year: 2026
 
 raw:
   output_policy: overwrite
   sources:
-    # 2 sorgenti: il WAF Senato rifiuta query > ~16 colonne (403),
-    # quindi la query completa (25 predicati) è spezzata in 2 sotto il limite.
+    # 3 sorgenti: il WAF Senato rifiuta query > ~15-16 colonne (403),
+    # quindi la query completa (27 predicati) è spezzata in 3 sotto il limite.
     - name: "senato_ddl_q1"
       type: "sparql"
       primary: true
