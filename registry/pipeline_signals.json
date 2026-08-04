@@ -229,10 +229,10 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "30837728630",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30837728630",
-        "checked_at": "2026-08-03",
-        "duration_seconds": 11.97,
+        "run_id": "30924328812",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30924328812",
+        "checked_at": "2026-08-04",
+        "duration_seconds": 12.62,
         "row_counts": {
           "raw": 27764,
           "clean": 27764,
@@ -260,13 +260,28 @@
       "source_id": "dati_camera",
       "status": "ok",
       "label": "camera-votazioni-sparql",
-      "detail": "anni 2018-2025 — fonte: sparql — mart: sì",
+      "detail": "anni 2018-2026 — fonte: sparql — mart: sì",
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "26683799852",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26683799852",
-        "checked_at": "2026-05-30",
+        "run_id": "30924328812",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30924328812",
+        "checked_at": "2026-08-04",
+        "duration_seconds": 32.69,
+        "row_counts": {
+          "raw": 30023,
+          "clean": 30023
+        },
+        "readiness": "needs-review",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 7,
+          "fail": 1
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0
+        },
         "years": [
           2018,
           2019,
@@ -275,7 +290,8 @@
           2022,
           2023,
           2024,
-          2025
+          2025,
+          2026
         ],
         "config_path": "candidates/camera-votazioni-sparql/dataset.yml"
       }
@@ -1261,10 +1277,10 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "30855026928",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30855026928",
-        "checked_at": "2026-08-03",
-        "duration_seconds": 4.24,
+        "run_id": "30924328812",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30924328812",
+        "checked_at": "2026-08-04",
+        "duration_seconds": 3.21,
         "row_counts": {
           "raw": 7505,
           "clean": 7579,
@@ -2259,10 +2275,10 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "30837728630",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30837728630",
-        "checked_at": "2026-08-03",
-        "duration_seconds": 2.13,
+        "run_id": "30924328812",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30924328812",
+        "checked_at": "2026-08-04",
+        "duration_seconds": 1.71,
         "row_counts": {
           "raw": 3096,
           "clean": 3096,
