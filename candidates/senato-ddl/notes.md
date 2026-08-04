@@ -57,11 +57,11 @@ nel suo iter tra i rami. Es. ddl 54667:
 - S.1670 (Senato) → S.1670-B (appr. definit. Legge)
 - C.2473 (Camera) → C.2473-B (approvato)
 
-Quindi  = numero atto per ramo (non codice fase univoco), e la sequenza
-delle righe col  ricostruisce l'iter completo (ping-pong
+Quindi `fase` = numero atto per ramo (non codice fase univoco), e la sequenza
+delle righe col `progressivo_iter` ricostruisce l'iter completo (ping-pong
 Camera↔Senato). 5.124 righe = 4.671 ddl × versioni. PK: (id_ddl, fase).
 
-Nota: / solo per i ddl approvati (727, 14%) —
+Nota: `numero_legge`/`data_legge` solo per i ddl approvati (727, 14%) —
 data_legge può essere 2100-01-01 (placeholder Senato per legge pubblicata).
 
 ## Colonne disponibili (25 predicati, verificate)

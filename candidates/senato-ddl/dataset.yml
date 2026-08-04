@@ -61,6 +61,8 @@ clean:
   validate:
     not_null: [id_ddl]
     min_rows: 1000
+    # una riga = una versione dell'atto nell'iter (ddl × ramo/numero atto)
+    primary_key: [id_ddl, fase]
 
 mart:
   tables:
