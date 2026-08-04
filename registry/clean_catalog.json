@@ -13991,8 +13991,8 @@
     {
       "slug": "senato_ddl",
       "name": "Senato Ddl",
-      "description": "",
-      "source": "",
+      "description": "Disegni di legge del Senato della Repubblica — iter legislativo, stato e tempi dalla XIX legislatura",
+      "source": "Senato della Repubblica — SPARQL endpoint (dati.senato.it)",
       "source_id": "dati_senato",
       "period": {
         "start": 2022,
@@ -14003,164 +14003,163 @@
           "name": "id_ddl",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Identificativo numerico del disegno di legge (osr:idDdl)"
         },
         {
           "name": "ddl_url",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI del disegno di legge nel graph Senato"
         },
         {
           "name": "titolo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Titolo completo del disegno di legge"
         },
         {
           "name": "titolo_breve",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Titolo breve / oggetto sintetico del disegno di legge"
         },
         {
           "name": "stato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
-          "semantic_type": "country_code"
+          "description": "Stato dell'iter legislativo (es. assegnato, approvato, approvato definitivamente)"
         },
         {
           "name": "data_presentazione",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data di presentazione del disegno di legge"
         },
         {
           "name": "data_stato_ddl",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data dell'ultimo stato registrato"
         },
         {
           "name": "natura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Natura del provvedimento (es. disegno di legge, ddl costituzionale)"
         },
         {
           "name": "fase",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Fase dell'iter: codice atto o ramo (es. C.1774)"
         },
         {
           "name": "ramo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Ramo del parlamento in cui si trova il ddl (Camera/Senato)"
         },
         {
           "name": "iniziativa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di iniziativa (parlamentare, governativa, ecc.)"
         },
         {
           "name": "descr_iniziativa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione dell'iniziativa"
         },
         {
           "name": "progressivo_iter",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Progressivo dell'iter legislativo"
         },
         {
           "name": "numero_fase",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero della fase nell'iter"
         },
         {
           "name": "numero_fase_compatto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Numero fase in formato compatto"
         },
         {
           "name": "id_fase",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Identificativo della fase nell'iter"
         },
         {
           "name": "legislatura",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero della legislatura"
         },
         {
           "name": "presentato_trasmesso",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Indicazione presentato/trasmesso"
         },
         {
           "name": "numero_legge",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Numero della legge risultante (se approvato)"
         },
         {
           "name": "data_legge",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data della legge risultante (se approvato)"
         },
         {
           "name": "relatore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Relatore del disegno di legge"
         },
         {
           "name": "classificazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Classificazione del disegno di legge"
         },
         {
           "name": "assegnazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Commissione/assegnazione del disegno di legge"
         },
         {
           "name": "testo_presentato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI del testo presentato"
         },
         {
           "name": "testo_approvato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI del testo approvato"
         },
         {
           "name": "testo_unificato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI del testo unificato"
         },
         {
           "name": "stralcio",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI/indicazione dello stralcio"
         }
       ],
       "location": {
