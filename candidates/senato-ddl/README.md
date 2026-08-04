@@ -14,6 +14,7 @@ Complementare a `italia-corpus` (Normattiva = leggi vigenti): questo dà l'**ite
 
 - `mart_stato`: ddl per stato dell'iter (approvati vs fermi)
 - `mart_anno`: ddl per anno di presentazione
+- `mart_iter_tempi`: tempi dell'iter per i ddl diventati legge (media 295 giorni, max 3,7 anni)
 
 ## Criterio di promozione
 
