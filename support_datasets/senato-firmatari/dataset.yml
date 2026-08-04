@@ -1,0 +1,94 @@
+# Firmatari dei disegni di legge del Senato — support dataset
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "senato_firmatari"
+  source_id: "dati_senato"
+  tags: [politica, senato, ddl, firmatari, iter-legislativo]
+  category: politica
+  years: [2026]
+  time_coverage:
+    start_year: 2022
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "senato_firmatari_sparql"
+      type: "sparql"
+      primary: true
+      args:
+        endpoint: "https://dati.senato.it/sparql"
+        query: |
+          PREFIX osr: <http://dati.senato.it/osr/>
+          SELECT ?ddl ?iniziativa (MAX(?idDdl) AS ?idDdl)
+                 (MAX(?presentatore) AS ?presentatore)
+                 (MAX(?primoFirmatario) AS ?primoFirmatario)
+                 (MAX(?tipoIniziativa) AS ?tipoIniziativa)
+                 (MAX(?senatore) AS ?senatore)
+                 (MAX(?dataAggiuntaFirma) AS ?dataAggiuntaFirma)
+                 (MAX(?dataRitiroFirma) AS ?dataRitiroFirma)
+                 (MAX(?deputato) AS ?deputato)
+          WHERE {
+            GRAPH <http://dati.senato.it/ddl/19> {
+              ?ddl osr:iniziativa ?iniziativa .
+              OPTIONAL { ?ddl osr:idDdl ?idDdl . }
+            }
+            ?iniziativa osr:presentatore ?presentatore .
+            OPTIONAL { ?iniziativa osr:primoFirmatario ?primoFirmatario . }
+            OPTIONAL { ?iniziativa osr:tipoIniziativa ?tipoIniziativa . }
+            OPTIONAL { ?iniziativa osr:senatore ?senatore . }
+            OPTIONAL { ?iniziativa osr:dataAggiuntaFirma ?dataAggiuntaFirma . }
+            OPTIONAL { ?iniziativa osr:dataRitiroFirma ?dataRitiroFirma . }
+            OPTIONAL { ?iniziativa <http://dati.camera.it/ocd/rif_deputato> ?deputato . }
+          }
+          GROUP BY ?ddl ?iniziativa
+        # il WAF Senato tronca a ~10k righe/risposta: paginazione OFFSET.
+        # 34.761 iniziative totali → 4 pagine da 10k (3 pagine = 30k = tronca ~4.7k)
+        pages: 4
+        step: 10000
+        accept_format: "sparql-results+json"
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns: [ddl, ddl_id, iniziativa, presentatore, tipo_iniziativa, primo_firmatario, senatore_id, data_aggiunta_firma, data_ritiro_firma, deputato_url]
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    not_null: [ddl, presentatore]
+    # 34.761 iniziative totali (paginato a 4 pagine) — perdere 1 pagina (<30k) fallisce
+    min_rows: 30000
+    # una riga = una coppia (ddl URI, iniziativa) — un idDdl può avere più URI
+    primary_key: [ddl, iniziativa]
+
+mart:
+  tables:
+    # Firmatari per ddl (distinti)
+    - name: "mart_firmatari_ddl"
+      sql: "sql/mart_firmatari_ddl.sql"
+    # Primi firmatari per tipo di iniziativa
+    - name: "mart_tipo_iniziativa"
+      sql: "sql/mart_tipo_iniziativa.sql"
+  required_tables:
+    - "mart_firmatari_ddl"
+    - "mart_tipo_iniziativa"
+  validate:
+    table_rules:
+      mart_firmatari_ddl:
+        required_columns: [ddl_id, n_firmatari]
+        primary_key: [ddl_id]
+        min_rows: 1000
+      mart_tipo_iniziativa:
+        required_columns: [tipo_iniziativa, n_firmatari]
+        primary_key: [tipo_iniziativa]
+        min_rows: 2
+
+validation:
+  fail_on_error: true
