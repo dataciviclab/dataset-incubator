@@ -24,6 +24,9 @@ raw:
           SELECT ?ddl (MAX(?idDdl) AS ?idDdl) (MAX(?titolo) AS ?titolo)
                  (MAX(?stato) AS ?stato) (MAX(?data) AS ?data)
                  (MAX(?natura) AS ?natura) (MAX(?fase) AS ?fase)
+                 (MAX(?ramo) AS ?ramo) (MAX(?iniziativa) AS ?iniziativa)
+                 (MAX(?progIter) AS ?progIter) (MAX(?legislatura) AS ?legislatura)
+                 (MAX(?numLegge) AS ?numLegge) (MAX(?dataLegge) AS ?dataLegge)
           WHERE {
             GRAPH <http://dati.senato.it/ddl/19> {
               ?ddl osr:idDdl ?idDdl .
@@ -32,6 +35,12 @@ raw:
               OPTIONAL { ?ddl osr:dataPresentazione ?data . }
               OPTIONAL { ?ddl osr:natura ?natura . }
               OPTIONAL { ?ddl osr:fase ?fase . }
+              OPTIONAL { ?ddl osr:ramo ?ramo . }
+              OPTIONAL { ?ddl osr:iniziativa ?iniziativa . }
+              OPTIONAL { ?ddl osr:progressivoIter ?progIter . }
+              OPTIONAL { ?ddl osr:legislatura ?legislatura . }
+              OPTIONAL { ?ddl osr:numeroLegge ?numLegge . }
+              OPTIONAL { ?ddl osr:dataLegge ?dataLegge . }
             }
           }
           GROUP BY ?ddl
@@ -40,7 +49,7 @@ raw:
 clean:
   sql: "sql/clean.sql"
   read_mode: robust
-  required_columns: [id_ddl, ddl_url, titolo, stato, data_presentazione, natura, fase]
+  required_columns: [id_ddl, ddl_url, titolo, stato, data_presentazione, natura, fase, ramo, iniziativa, progressivo_iter, legislatura, numero_legge, data_legge]
   read:
     source: auto
     mode: latest

@@ -28,7 +28,18 @@ SELECT
     -- Esclude solo i blank node (nodeID://) — NON richiedere URL.
     CASE WHEN fase LIKE 'nodeID://%' OR fase IS NULL THEN NULL
          ELSE normalize_string(fase)
-    END                                                               AS fase
+    END                                                               AS fase,
+    normalize_string(ramo)                                            AS ramo,
+    -- iniziativa: URI (es. /iniziativa/INIZ-DD) → codice finale
+    CASE
+        WHEN iniziativa LIKE '%/iniziativa/%' THEN
+            substring(iniziativa, strpos(iniziativa, '/iniziativa/') + 12)
+        ELSE normalize_string(iniziativa)
+    END                                                               AS iniziativa,
+    TRY_CAST(CAST(progIter AS VARCHAR) AS BIGINT)                     AS progressivo_iter,
+    TRY_CAST(CAST(legislatura AS VARCHAR) AS BIGINT)                  AS legislatura,
+    TRY_CAST(CAST(numLegge AS VARCHAR) AS BIGINT)                     AS numero_legge,
+    TRY_CAST(dataLegge AS DATE)                                       AS data_legge
 FROM raw_input
 WHERE ddl LIKE '%/ddl/%'
   AND idDdl IS NOT NULL

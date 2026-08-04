@@ -50,6 +50,26 @@ GROUP BY ?ddl
 5.114 valori unici. I blank node (`nodeID://b307199465`) sono esclusi nel clean
 (`CASE WHEN fase LIKE 'nodeID://%' THEN NULL ELSE fase END`).
 
+## Struttura reale: una riga = una versione dell'atto nell'iter
+
+Verificato 2026-08-04 (review): un ddl ha PIÙ righe — una per versione dell'atto
+nel suo iter tra i rami. Es. ddl 54667:
+- S.1670 (Senato) → S.1670-B (appr. definit. Legge)
+- C.2473 (Camera) → C.2473-B (approvato)
+
+Quindi  = numero atto per ramo (non codice fase univoco), e la sequenza
+delle righe col  ricostruisce l'iter completo (ping-pong
+Camera↔Senato). 5.124 righe = 4.671 ddl × versioni. PK: (id_ddl, fase).
+
+Nota: / solo per i ddl approvati (727, 14%) —
+data_legge può essere 2100-01-01 (placeholder Senato per legge pubblicata).
+
+## Colonne disponibili (25 predicati, verificate)
+
+La fonte espone 25 predicati sui ddl — estraiamo i 13 con valore per la domanda:
+id_ddl, ddl_url, titolo, stato, data_presentazione, natura, fase, ramo,
+iniziativa, progressivo_iter, legislatura, numero_legge, data_legge.
+
 ## Estensione futura
 
 - Legislature 13-19: graph `ddl/13`..`ddl/19` (pattern `{year}` → `{leg}`)
