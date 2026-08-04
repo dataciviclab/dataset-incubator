@@ -10209,6 +10209,24 @@
           "description": "Data inizio incarico (NULL per il Regno — data solo nella label)"
         },
         {
+          "name": "end_date",
+          "type": "DATE",
+          "role": "dimension",
+          "description": "Data fine incarico (membri cessati; NULL = in carica). Non disponibile per i membri del Regno (data solo nella label)."
+        },
+        {
+          "name": "interim",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": "Flag ad interim (TRUE se l'incarico è reggenza temporanea)."
+        },
+        {
+          "name": "motivo_termine",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Motivo della cessazione (es. Dimissioni, Scioglimento, Decesso)."
+        },
+        {
           "name": "nome",
           "type": "VARCHAR",
           "role": "dimension",
@@ -14180,8 +14198,8 @@
     {
       "slug": "senato_firmatari",
       "name": "Senato Firmatari",
-      "description": "",
-      "source": "",
+      "description": "Presentatori/firmatari dei disegni di legge del Senato (XIX legislatura): chi ha presentato ogni ddl, tipo di iniziativa (Parlamentare/Governativa), data di firma, link al senatore o al deputato. Support dataset di senato-ddl — join su ddl_id. Fonte: dati.senato.it SPARQL, 37.992 presentatori.",
+      "source": "Senato della Repubblica — SPARQL endpoint (dati.senato.it)",
       "source_id": "dati_senato",
       "period": {
         "start": 2022,
@@ -14192,61 +14210,61 @@
           "name": "ddl",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI del disegno di legge nel graph Senato"
         },
         {
           "name": "ddl_id",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "Identificativo numerico del ddl (osr:idDdl — numerazione interna condivisa con senato-ddl; NON è l'id dell'URI /ddl/N)"
         },
         {
           "name": "iniziativa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI della risorsa iniziativa (una per presentatore/firmatario)"
         },
         {
           "name": "presentatore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del presentatore (es. \"Sen. Mario Turco\", \"On. Alberto Bagnai\", \"Ministro...\")"
         },
         {
           "name": "tipo_iniziativa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Tipo di iniziativa: Parlamentare, Governativa, Regionale, CNEL, Popolare"
         },
         {
           "name": "primo_firmatario",
           "type": "BOOLEAN",
           "role": "dimension",
-          "description": ""
+          "description": "Flag primo firmatario (TRUE se il presentatore è il primo firmatario)"
         },
         {
           "name": "senatore_id",
           "type": "BIGINT",
           "role": "metric",
-          "description": ""
+          "description": "ID numerico del senatore dall'URI /senatore/N (NULL per presentatori non-senatori)"
         },
         {
           "name": "data_aggiunta_firma",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data in cui il firmatario ha aggiunto la firma"
         },
         {
           "name": "data_ritiro_firma",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data di ritiro della firma (NULL = firma ancora valida)"
         },
         {
           "name": "deputato_url",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "URI del deputato Camera (per presentatori \"On.\"; NULL per senatori/governativi)"
         }
       ],
       "location": {
