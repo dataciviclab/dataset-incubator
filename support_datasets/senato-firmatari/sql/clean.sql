@@ -25,7 +25,13 @@ SELECT
     -- primoFirmatario: "1"/"0" (o NULL se assente) → BOOLEAN
     TRY_CAST(primoFirmatario AS BOOLEAN)                              AS primo_firmatario,
     -- id numerico del senatore dall'URI /senatore/N (NULL per non-senatori)
-    TRY_CAST(regexp_extract(senatore, '/senatore/(\d+)', 1) AS BIGINT) AS senatore_id
+    TRY_CAST(regexp_extract(senatore, '/senatore/(\d+)', 1) AS BIGINT) AS senatore_id,
+    -- data aggiunta firma: la fonte la fornisce già in formato ISO (es. 2023-05-26)
+    TRY_CAST(dataAggiuntaFirma AS DATE)                               AS data_aggiunta_firma,
+    -- data ritiro firma: stesso formato ISO (NULL = firma ancora valida)
+    TRY_CAST(dataRitiroFirma AS DATE)                                 AS data_ritiro_firma,
+    -- URI deputato Camera (presentatori 'On.' — NULL per senatori/governativi)
+    normalize_string(deputato)                                        AS deputato_url
 FROM base
 WHERE ddl IS NOT NULL
   AND presentatore IS NOT NULL

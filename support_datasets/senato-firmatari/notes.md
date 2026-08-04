@@ -27,17 +27,20 @@
 - **`tipoIniziativa`**: presente al 100% — Parlamentare, Governativa, Regionale,
   CNEL, Popolare.
 - **⚠️ WAF Senato tronca a ~10.000 righe/risposta**: la query firmatari produce
-  ~30.000 righe → serve paginazione OFFSET (`pages: 3, step: 10000`). Senza,
-  il CSV si ferma a 10k righe e si perdono ~2/3 dei firmatari silenziosamente
-  (scoperto in verifica: 9.857 righe senza paginazione → 29.522 con).
+  ~38.000 righe → serve paginazione OFFSET (`pages: 4, step: 10000`). Con 3
+  pagine il CSV si fermava a 30k (perdeva ~8.000 righe silenziosamente —
+  scoperto confrontando col COUNT fonte: 34.761 iniziative vs 29.522 catturate).
+- **`dataAggiuntaFirma`/`dataRitiroFirma`**: la fonte le fornisce in formato ISO
+  (es. 2023-05-26), NON YYYYMMDD — il clean le casta direttamente a DATE.
 
 ## Volumi
 
 - DDL con metadati (graph ddl/19): 5.124
-- Iniziative/presentatori totali: **29.522** (paginato)
-- idDdl distinti: 4.264 — match 100% con `senato-ddl`
-- URI ddl distinti: 4.685 (alcuni idDdl hanno più URI)
-- Firma media: ~6.3 iniziative per idDdl
+- Iniziative/presentatori totali: **37.992** (4 pagine — completo)
+- idDdl distinti: 4.659 — match 100% con `senato-ddl`
+- Con `data_aggiunta_firma`: 6.731 · con `data_ritiro_firma`: 161
+- Con `deputato_url` (link Camera): 21.755 · con `senatore_id`: 12.792
+- Firma media: ~8.1 iniziative per idDdl
 
 ## Limiti dichiarati
 
