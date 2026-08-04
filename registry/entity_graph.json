@@ -777,6 +777,12 @@
           "semantic_type": "country_code"
         },
         {
+          "slug": "senato_ddl",
+          "name": "Senato Ddl",
+          "column": "stato",
+          "semantic_type": "country_code"
+        },
+        {
           "slug": "ted_contract_notices",
           "name": "Bandi di gara UE in Italia (TED Contract Notices)",
           "column": "paese",
@@ -784,7 +790,7 @@
         }
       ],
       "types": {
-        "country_code": 3
+        "country_code": 4
       }
     },
     "Persona": {
