@@ -22,7 +22,7 @@ WHERE {
 GROUP BY ?senatore
 ```
 
-GROUP BY + MAX (pattern standard). 341 righe < soglia WAF 10k → una sola query, nessuna paginazione.
+GROUP BY + MAX (pattern standard). 212 righe < soglia WAF 10k → una sola query, nessuna paginazione.
 
 ## Struttura della fonte (verificata 2026-08-04)
 
@@ -30,7 +30,7 @@ GROUP BY + MAX (pattern standard). 341 righe < soglia WAF 10k → una sola query
 - `rdfs:label`: nome completo ("Gianluca Cantalamessa", "Luca De Carlo")
 - `bio:date`: data di nascita ISO (1968-02-02)
 - `bio:place` → nodeID → `osr:Citta` con `rdfs:label` = città ("Napoli", "Pieve Di Cadore")
-- Copertura: ~254/341 con data di nascita (le altre senza — nomina o dato mancante)
+- Copertura verificata sul parquet (2026-08-04): **212/212 con data e luogo di nascita (100%)**
 
 ## Perimetro
 

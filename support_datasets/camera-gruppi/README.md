@@ -21,5 +21,5 @@ Promuovere quando il join con `camera_incarichi` (via URI gruppo) è verificato 
 
 ## Stato / prossimo passo
 
-- **Stato**: support a standard v1 (2026-08-04)
-- **Prossimo passo**: run + verifica join con camera_incarichi
+- **Stato**: support a standard v1 (2026-08-04) — run ok, join con camera_incarichi verificato 100%
+- **Prossimo passo**: promozione
