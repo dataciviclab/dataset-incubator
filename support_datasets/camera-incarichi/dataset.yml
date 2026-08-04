@@ -52,7 +52,8 @@ clean:
     trim_whitespace: true
   validate:
     not_null: [incarico, deputato]
-    min_rows: 1000
+    # volume reale 3.096 incarichi (2026) — margine ~35% di perdita tollerato
+    min_rows: 2000
     primary_key: [incarico]
 
 mart:

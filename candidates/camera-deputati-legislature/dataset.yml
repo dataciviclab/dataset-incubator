@@ -48,7 +48,10 @@ raw:
             OPTIONAL { ?deputato dcterms:isReferencedBy ?scheda . }
           }
           GROUP BY ?deputato
-          LIMIT 30000
+        # Paginazione OFFSET: niente ORDER BY (Virtuoso di dati.camera.it rifiuta
+        # ORDER BY + OFFSET con SR353). La paginazione OFFSET senza ORDER BY è
+        # non-deterministica ma è il comportamento che l'endpoint supporta; la
+        # perdita di dati è protetta da min_rows + fail_on_error.
         pages: 3
         step: 10000
         accept_format: "sparql-results+json"
@@ -66,7 +69,8 @@ clean:
     trim_whitespace: true
   validate:
     not_null: [deputato]
-    min_rows: 1000
+    # volume reale 27.764 deputati (2026) — margine ~45% di perdita tollerato
+    min_rows: 15000
 
 mart:
   tables:
@@ -91,4 +95,4 @@ mart:
         min_rows: 500
 
 validation:
-  fail_on_error: false
+  fail_on_error: true

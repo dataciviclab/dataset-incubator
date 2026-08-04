@@ -57,7 +57,8 @@ clean:
     trim_whitespace: true
   validate:
     not_null: [membro]
-    min_rows: 1000
+    # volume reale 7.579 membri (2026) — margine ~35% di perdita tollerato
+    min_rows: 5000
 
 mart:
   tables:
@@ -82,4 +83,4 @@ mart:
         min_rows: 50
 
 validation:
-  fail_on_error: false
+  fail_on_error: true

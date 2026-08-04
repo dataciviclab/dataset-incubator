@@ -7,7 +7,10 @@ dataset:
   source_id: "dati_camera"
   tags: [politica, camera, votazioni, sparql]
   category: politica
-  years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+  time_coverage:
+    start_year: 2018
+    end_year: 2026
 
 raw:
   output_policy: overwrite
@@ -49,7 +52,9 @@ raw:
             FILTER (STRSTARTS(?data, "{year}"))
           }
           GROUP BY ?votazione
-          LIMIT 20000
+        # obbligatorio: con Accept csv Camera risponde Turtle (res:ResultSet)
+        # per query con GROUP BY — serve sparql-results+json per bindings reali
+        accept_format: "sparql-results+json"
       primary: true
 
 clean:
@@ -57,8 +62,29 @@ clean:
   required_columns: [votazione, titolo, legislatura, seduta, atto_camera]
   validate:
     not_null: [votazione]
+    # volume minimo storico 2.121 (2022) — margine ~15% di perdita tollerato
+    min_rows: 1800
+    # una riga = una votazione (URI RDF univoco)
+    primary_key: [votazione]
 
 mart:
   tables:
+    # serie per anno — output multi-year unico (9 righe, una per anno)
     - name: "camera_votazioni"
       sql: "sql/mart.sql"
+      years: [2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025, 2026]
+  time_coverage:
+    start_year: 2018
+    end_year: 2026
+  required_tables:
+    - "camera_votazioni"
+  validate:
+    table_rules:
+      camera_votazioni:
+        required_columns: [anno, n_votazioni, media_votanti]
+        primary_key: [anno]
+        # 9 anni dichiarati — perdere più di 1 anno fallisce
+        min_rows: 8
+
+validation:
+  fail_on_error: true
