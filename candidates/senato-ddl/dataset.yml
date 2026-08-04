@@ -1,0 +1,79 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "senato_ddl"
+  source_id: "dati_senato"
+  tags: [politica, senato, ddl, iter-legislativo]
+  category: politica
+  years: [2026]
+  time_coverage:
+    start_year: 2013
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "senato_ddl_sparql"
+      type: "sparql"
+      primary: true
+      args:
+        endpoint: "https://dati.senato.it/sparql"
+        query: |
+          PREFIX osr: <http://dati.senato.it/osr/>
+          SELECT ?ddl (MAX(?idDdl) AS ?idDdl) (MAX(?titolo) AS ?titolo)
+                 (MAX(?stato) AS ?stato) (MAX(?data) AS ?data)
+                 (MAX(?tipo) AS ?tipo) (MAX(?fase) AS ?fase)
+          WHERE {
+            GRAPH <http://dati.senato.it/ddl/19> {
+              ?ddl osr:idDdl ?idDdl .
+              OPTIONAL { ?ddl osr:titolo ?titolo . }
+              OPTIONAL { ?ddl osr:statoDdl ?stato . }
+              OPTIONAL { ?ddl osr:dataPresentazione ?data . }
+              OPTIONAL { ?ddl osr:tipoIniziativa ?tipo . }
+              OPTIONAL { ?ddl osr:fase ?fase . }
+            }
+          }
+          GROUP BY ?ddl
+        accept_format: "sparql-results+json"
+
+clean:
+  sql: "sql/clean.sql"
+  read_mode: robust
+  required_columns: [id_ddl, ddl_url, titolo, stato, data_presentazione, tipo_iniziativa]
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    not_null: [id_ddl]
+    min_rows: 1000
+
+mart:
+  tables:
+    # DDL per stato (distribuzione dell'iter)
+    - name: "mart_stato"
+      sql: "sql/mart_stato.sql"
+    # DDL per anno di presentazione
+    - name: "mart_anno"
+      sql: "sql/mart_anno.sql"
+  required_tables:
+    - "mart_stato"
+    - "mart_anno"
+  validate:
+    table_rules:
+      mart_stato:
+        required_columns: [stato, n_ddl]
+        primary_key: [stato]
+        min_rows: 5
+      mart_anno:
+        required_columns: [anno, n_ddl]
+        primary_key: [anno]
+        min_rows: 5
+
+validation:
+  fail_on_error: false
