@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 112,
+    "total": 113,
     "by_status": {
-      "ok": 112,
+      "ok": 113,
       "warn": 0,
       "error": 0
     }
@@ -1277,10 +1277,10 @@
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "30924328812",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30924328812",
+        "run_id": "30934746986",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30934746986",
         "checked_at": "2026-08-04",
-        "duration_seconds": 3.21,
+        "duration_seconds": 3.15,
         "row_counts": {
           "raw": 7505,
           "clean": 7579,
@@ -2473,6 +2473,41 @@
           2025
         ],
         "config_path": "support_datasets/popolazione-istat-comunale-2019-2025/dataset.yml"
+      }
+    },
+    {
+      "id": "senato-firmatari",
+      "source_id": "dati_senato",
+      "status": "ok",
+      "label": "senato-firmatari",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "latest_run": {
+        "status": "passed",
+        "run_id": "30934746986",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30934746986",
+        "checked_at": "2026-08-04",
+        "duration_seconds": 35.31,
+        "row_counts": {
+          "raw": 37992,
+          "clean": 37992,
+          "mart": 4664
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/senato-firmatari/dataset.yml"
       }
     },
     {
