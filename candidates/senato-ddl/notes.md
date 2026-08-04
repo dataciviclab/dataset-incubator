@@ -34,12 +34,12 @@ L'endpoint espone ogni ddl in DUE forme:
 
 ```sparql
 SELECT ?ddl (MAX(?idDdl) AS ?idDdl) (MAX(?titolo) AS ?titolo) (MAX(?stato) AS ?stato)
-       (MAX(?data) AS ?data) (MAX(?tipo) AS ?tipo) (MAX(?fase) AS ?fase)
+       (MAX(?data) AS ?data) (MAX(?natura) AS ?natura) (MAX(?fase) AS ?fase)
 WHERE { GRAPH <http://dati.senato.it/ddl/19> {
   ?ddl osr:idDdl ?idDdl .
   OPTIONAL { ?ddl osr:titolo ?titolo . } OPTIONAL { ?ddl osr:statoDdl ?stato . }
   OPTIONAL { ?ddl osr:dataPresentazione ?data . }
-  OPTIONAL { ?ddl osr:tipoIniziativa ?tipo . } OPTIONAL { ?ddl osr:fase ?fase . }
+  OPTIONAL { ?ddl osr:natura ?natura . } OPTIONAL { ?ddl osr:fase ?fase . }
 } }
 GROUP BY ?ddl
 ```

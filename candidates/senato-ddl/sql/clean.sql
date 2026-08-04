@@ -23,7 +23,7 @@ SELECT
     normalize_string(titolo)                                          AS titolo,
     normalize_string(stato)                                           AS stato,
     TRY_CAST(data AS DATE)                                            AS data_presentazione,
-    normalize_string(tipo)                                            AS tipo_iniziativa,
+    normalize_string(natura)                                          AS natura,
     -- fase: codice atto (es. C.1774 = atto Camera, S.782 = Senato).
     -- Esclude solo i blank node (nodeID://) — NON richiedere URL.
     CASE WHEN fase LIKE 'nodeID://%' OR fase IS NULL THEN NULL
