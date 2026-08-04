@@ -1,0 +1,79 @@
+# Anagrafica Senatori — support dataset
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "senato_anagrafica"
+  source_id: "dati_senato"
+  tags: [politica, senato, anagrafica, senatori]
+  category: politica
+  years: [2026]
+  time_coverage:
+    start_year: 2022
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "senato_anagrafica_sparql"
+      type: "sparql"
+      primary: true
+      args:
+        endpoint: "https://dati.senato.it/sparql"
+        query: |
+          PREFIX osr: <http://dati.senato.it/osr/>
+          PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+          PREFIX bio: <http://purl.org/vocab/bio/0.1/>
+          SELECT ?senatore (MAX(?label) AS ?label)
+                 (MAX(?dataNascita) AS ?dataNascita) (MAX(?citta) AS ?citta)
+          WHERE {
+            GRAPH <http://dati.senato.it/composizione/19> {
+              ?senatore a osr:Senatore .
+              OPTIONAL { ?senatore rdfs:label ?label . }
+              OPTIONAL { ?senatore bio:birth ?b . ?b bio:date ?dataNascita . }
+              OPTIONAL { ?senatore bio:birth ?b2 . ?b2 bio:place ?pl . ?pl rdfs:label ?citta . }
+            }
+          }
+          GROUP BY ?senatore
+        accept_format: "sparql-results+json"
+
+clean:
+  sql: "sql/clean.sql"
+  read_mode: robust
+  required_columns: [senatore_id, nome, cognome, data_nascita, luogo_nascita, legislatura]
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    not_null: [senatore_id]
+    # 212 senatori reali (XIX leg., count diretto 2026-08-04) — margine ~30%
+    min_rows: 150
+    primary_key: [senatore_id]
+
+mart:
+  tables:
+    - name: "mart_nascita_anno"
+      sql: "sql/mart_nascita_anno.sql"
+    - name: "mart_luogo_nascita"
+      sql: "sql/mart_luogo_nascita.sql"
+  required_tables:
+    - "mart_nascita_anno"
+    - "mart_luogo_nascita"
+  validate:
+    table_rules:
+      mart_nascita_anno:
+        required_columns: [anno_nascita, n_senatori]
+        primary_key: [anno_nascita]
+        min_rows: 10
+      mart_luogo_nascita:
+        required_columns: [luogo_nascita, n_senatori]
+        primary_key: [luogo_nascita]
+        min_rows: 10
+
+validation:
+  fail_on_error: true

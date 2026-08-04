@@ -1,0 +1,66 @@
+# Gruppi parlamentari della Camera — support dataset
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "camera_gruppi"
+  source_id: "dati_camera"
+  tags: [politica, camera, gruppi, parlamentari]
+  category: politica
+  years: [2026]
+  time_coverage:
+    start_year: 1948
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "camera_gruppi_sparql"
+      type: "sparql"
+      primary: true
+      args:
+        endpoint: "https://dati.camera.it/sparql"
+        query: |
+          PREFIX ocd: <http://dati.camera.it/ocd/>
+          PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+          SELECT ?gruppo (MAX(?label) AS ?label) (MAX(?legislatura) AS ?legislatura)
+          WHERE {
+            ?gruppo a ocd:gruppoParlamentare .
+            OPTIONAL { ?gruppo rdfs:label ?label . }
+            OPTIONAL { ?gruppo ocd:rif_leg ?legislatura . }
+          }
+          GROUP BY ?gruppo
+        accept_format: "sparql-results+json"
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns: [gruppo, nome, legislatura]
+  read:
+    source: auto
+    mode: latest
+    header: true
+    encoding: "utf-8"
+    strict_mode: false
+    ignore_errors: true
+    trim_whitespace: true
+  validate:
+    not_null: [gruppo]
+    # 239 gruppi reali (tutte le legislature) — margine ~40%
+    min_rows: 150
+    primary_key: [gruppo]
+
+mart:
+  tables:
+    - name: "mart_gruppi_legislatura"
+      sql: "sql/mart_gruppi_legislatura.sql"
+  required_tables:
+    - "mart_gruppi_legislatura"
+  validate:
+    table_rules:
+      mart_gruppi_legislatura:
+        required_columns: [legislatura, n_gruppi]
+        primary_key: [legislatura]
+        min_rows: 10
+
+validation:
+  fail_on_error: true
