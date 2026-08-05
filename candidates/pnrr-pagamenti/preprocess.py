@@ -1,52 +1,115 @@
 #!/usr/bin/env python3
-"""Scarica PNRR_Pagamenti_di_Progetto.csv da Italia Domani (AEM/Akamai).
+"""Scarica PNRR_Gare.csv da Italia Domani (AEM/Akamai).
 
-Akamai fa HTTP fingerprinting: blocca (403) i client HTTP con headers
-incompleti e versioni vecchie di requests/urllib3. Serve il set di header
-browser completo e un ambiente Python aggiornato (il venv del workspace).
+Akamai blocca gli IP di GitHub Actions (403) sia diretto che via fallback
+automatico. Il pattern validato nel Lab (mur-immatricolati) è: HttpClient
+di lab-connectors con **proxy esplicito** da BLOCKED_SOURCE_PROXY.
 
-Nota: il probe HEAD/GET Range fallisce (404) su questo endpoint; il GET
-completo con Accept-Encoding gzip funziona. Il contenuto viene scritto
-decompresso in output.
+Catena: HttpClient (diretto) -> HttpClient (proxy esplicito) -> wget (proxy)
+-> curl (proxy). Ogni tentativo verifica che il contenuto NON sia HTML
+(pagina di errore).
 
-Questo script va eseguito nel venv del workspace (come tutti gli script Lab).
+Uso: python preprocess.py <output.csv>
 """
 
-import gzip
+import os
+import subprocess
 import sys
-
-from lab_connectors.http import HttpClient
+from pathlib import Path
 
 URL = "https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Pagamenti_di_Progetto.csv"
-UA = (
+UA_BROWSER = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
 )
-HEADERS = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
-    "Accept-Encoding": "gzip",
-}
+UA_SHORT = "Mozilla/5.0"
+
+
+def _is_html(content: bytes) -> bool:
+    """True se il contenuto sembra una pagina HTML (errore/challenge)."""
+    head = content[:512].lower()
+    return b"<!doctype" in head or b"<html" in head or b"access denied" in head
+
+
+def _proxy() -> dict[str, str] | None:
+    url = os.environ.get("BLOCKED_SOURCE_PROXY")
+    if not url:
+        return None
+    return {"http": url, "https": url}
+
+
+def _try_httpclient(output: Path, proxies: dict | None) -> bool:
+    """HttpClient di lab-connectors, opzionalmente con proxy esplicito."""
+    from lab_connectors.http import HttpClient
+
+    headers = {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+    }
+    client = HttpClient(timeout=300, max_retries=1, user_agent=UA_BROWSER)
+    kwargs = {"headers": headers}
+    if proxies:
+        kwargs["proxies"] = proxies
+    result = client.get(URL, **kwargs)
+    if result.response is not None and result.response.status_code == 200:
+        content = result.response.content
+        if not _is_html(content):
+            output.write_bytes(content)
+            print(f"HttpClient{' (proxy)' if proxies else ''}: ok ({output.stat().st_size} bytes)")
+            return True
+        print(f"HttpClient{' (proxy)' if proxies else ''}: 200 ma HTML — scartato")
+    return False
+
+
+def _try_tool(output: Path, tool: str) -> bool:
+    """wget o curl con UA breve e proxy (se configurato)."""
+    proxies = _proxy()
+    cmd = []
+    if tool == "wget":
+        cmd = ["wget", "-q", "--user-agent=" + UA_SHORT]
+        if proxies:
+            cmd += [
+                "-e",
+                "use_proxy=yes",
+                "-e",
+                f"http_proxy={proxies['http']}",
+                "-e",
+                f"https_proxy={proxies['https']}",
+            ]
+        cmd += ["-O", str(output), URL]
+    else:  # curl
+        cmd = ["curl", "-sS", "-A", UA_SHORT]
+        if proxies:
+            cmd += ["-x", proxies["https"]]
+        cmd += ["-o", str(output), URL]
+    try:
+        subprocess.run(cmd, check=True, timeout=400)
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+    if output.exists() and output.stat().st_size > 0:
+        content = output.read_bytes()
+        if not _is_html(content):
+            print(f"{tool}{' (proxy)' if proxies else ''}: ok ({output.stat().st_size} bytes)")
+            return True
+        print(f"{tool}: scaricato ma HTML — scartato")
+    return False
 
 
 def main() -> None:
-    output = sys.argv[1] if len(sys.argv) > 1 else "raw_input.csv"
-    client = HttpClient(timeout=300, max_retries=2, user_agent=UA)
-    result = client.get(URL, headers=HEADERS)
-    if result.response is None or result.response.status_code != 200:
-        status = (
-            result.response.status_code
-            if result.response is not None
-            else f"no response (is_ok={result.is_ok})"
-        )
-        raise RuntimeError(f"Download fallito per {URL}: HTTP {status}")
-    content = result.response.content
-    # Il server serve il CSV con header gzip: decomprimi se magic gzip
-    if content[:2] == b"\x1f\x8b":
-        content = gzip.decompress(content)
-    with open(output, "wb") as fh:
-        fh.write(content)
-    print(f"Downloaded {len(content)} bytes -> {output}")
+    output = Path(sys.argv[1] if len(sys.argv) > 1 else "raw_input.csv")
+    # 1. diretto
+    if _try_httpclient(output, None):
+        return
+    # 2. proxy esplicito (pattern mur-immatricolati)
+    if _proxy():
+        print("tentativo diretto fallito — riprovo con proxy esplicito")
+        if _try_httpclient(output, _proxy()):
+            return
+        if _try_tool(output, "wget"):
+            return
+        if _try_tool(output, "curl"):
+            return
+    raise RuntimeError(f"Download fallito per {URL} (tutti i client, con e senza proxy)")
 
 
 if __name__ == "__main__":
