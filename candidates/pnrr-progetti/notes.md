@@ -9,10 +9,13 @@
 
 ## Download
 
-Il server AEM blocca python-requests (anche con User-Agent Mozilla/5.0) ma accetta wget.
-Il dataset.yml usa `type: script` con comando wget + sed per rimuovere il BOM.
-
-Per CI: `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` necessario (guardrail di sicurezza).
+Il server AEM/Akamai blocca python-requests ma **accetta wget** (pattern
+verificato in CI su #527 e confermato per questo candidate).
+- `preprocess.py`: wget con User-Agent "Mozilla/5.0 (X11; Linux x86_64)
+  AppleWebKit/537.36", fallback su urllib se wget non disponibile.
+- Dataset.yml con `type: script`.
+- Per CI: `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` necessario (guardrail di sicurezza).
+- `clean.read.decimal: ","` — gli importi sono in formato italiano (virgola decimale).
 
 ## Schema clean (63 colonne)
 
@@ -86,17 +89,16 @@ Per CI: `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` necessario (guardrail di sicurezza).
 - `stato_fase_iter` — Stato fase
 - `stato_avanzamento` — Stato avanzamento (es. "Concluso", "In corso")
 
-## Volumi
+## Volumi (dati estratti 2026-08-05)
 
 | Metrica | Valore |
 |---|---|
-| Righe | 222.379 |
-| Progetti unici (CUP) | 218.240 |
+| Righe | 291.398 |
+| Progetti unici (CUP) | 285.994 |
 | Missioni | 7 |
-| Finanziamento PNRR | €59,2 mld |
-| Finanziamento complessivo | €72,1 mld |
-| Soggetti attuatori unici | ~5.000+ |
-| Dim. parquet | ~100 MB |
+| Finanziamento PNRR | €144,0 mld |
+| Finanziamento complessivo | €206,9 mld |
+| Dim. raw | ~317 MB |
 
 ## Qualità dati
 

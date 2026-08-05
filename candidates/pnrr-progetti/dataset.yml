@@ -1,5 +1,7 @@
 # PNRR Progetti — Italia Domani
-# Download via wget: il server AEM blocca python-requests ma accetta wget.
+# Download via preprocess.py (wget + fallback urllib): il server AEM/Akamai
+# blocca python-requests ma accetta wget (pattern verificato in CI).
+# Per CI serve TOOLKIT_ALLOW_SCRIPT_SOURCE=1 (guardrail di sicurezza).
 root: "../../out"
 schema_version: 1
 
@@ -9,11 +11,15 @@ dataset:
   tags: [finanza-pubblica, pnrr, progetti]
   category: finanza-pubblica
   years: [2026]
+  time_coverage:
+    start_year: 2021
+    end_year: 2026
 
 raw:
   output_policy: overwrite
   sources:
-    - type: script
+    - name: pnrr_progetti
+      type: script
       args:
         command: "python preprocess.py raw_input.csv"
         output: "raw_input.csv"
@@ -22,19 +28,104 @@ raw:
 
 clean:
   read:
+    source: auto
+    mode: latest
     delim: ";"
     encoding: "utf-8"
     header: true
+    decimal: ","
     sample_size: -1
-  required_columns: [programma, missione, descrizione_missione, componente, descrizione_componente, id_misura, codice_univoco_misura, descrizione_misura, id_submisura, codice_cid, codice_univoco_submisura, descrizione_submisura, amministrazione_titolare, codice_procedura_attivazione, titolo_procedura, tipologia_procedura_attivazione, cup, codice_locale_progetto, stato_cup, cup_codice_natura, cup_descrizione_natura, cup_codice_tipologia, cup_descrizione_tipologia, cup_codice_settore, cup_descrizione_settore, cup_codice_sottosettore, cup_descrizione_sottosettore, cup_codice_categoria, cup_descrizione_categoria, titolo_progetto, sintesi_progetto, descrizione_tipo_aiuto, soggetto_attuatore, cf_soggetto_attuatore, flag_progetti_in_essere, data_inizio_prevista, data_inizio_effettiva, data_fine_prevista, data_fine_effettiva, data_estrazione, data_ultima_validazione, esito_validazione, codice_fase_iter, descrizione_fase_iter, stato_fase_iter, stato_avanzamento]
-  validate:
-    not_null: [programma]
+  required_columns:
+    - programma
+    - missione
+    - descrizione_missione
+    - componente
+    - descrizione_componente
+    - id_misura
+    - codice_univoco_misura
+    - descrizione_misura
+    - id_submisura
+    - codice_cid
+    - codice_univoco_submisura
+    - descrizione_submisura
+    - amministrazione_titolare
+    - codice_procedura_attivazione
+    - titolo_procedura
+    - tipologia_procedura_attivazione
+    - cup
+    - codice_locale_progetto
+    - stato_cup
+    - cup_codice_natura
+    - cup_descrizione_natura
+    - cup_codice_tipologia
+    - cup_descrizione_tipologia
+    - cup_codice_settore
+    - cup_descrizione_settore
+    - cup_codice_sottosettore
+    - cup_descrizione_sottosettore
+    - cup_codice_categoria
+    - cup_descrizione_categoria
+    - titolo_progetto
+    - sintesi_progetto
+    - descrizione_tipo_aiuto
+    - fin_stato
+    - fin_stato_bilancio
+    - fin_stato_foi
+    - fin_fpop
+    - fin_ue
+    - fin_regione
+    - fin_provincia
+    - fin_comune
+    - fin_altro_pubblico
+    - fin_privato
+    - fin_da_reperire
+    - fin_pnrr
+    - fin_pnc
+    - altri_fondi
+    - fin_totale
+    - fin_totale_pubblico
+    - fin_totale_pubblico_netto
+    - soggetto_attuatore
+    - cf_soggetto_attuatore
+    - flag_progetti_in_essere
+    - data_inizio_prevista
+    - data_inizio_effettiva
+    - data_fine_prevista
+    - data_fine_effettiva
+    - data_estrazione
+    - data_ultima_validazione
+    - esito_validazione
+    - codice_fase_iter
+    - descrizione_fase_iter
+    - stato_fase_iter
+    - stato_avanzamento
   sql: "sql/clean.sql"
+  validate:
+    min_rows: 200000
+    not_null:
+      - cup
+    # primary_key: deroga — un CUP può avere più righe (più procedimenti/
+    # submisure per lo stesso progetto). CUP + codice_locale_progetto come
+    # chiave naturale non garantita unica.
 
 mart:
   tables:
-    - name: "pnrr_progetti"
-      sql: "sql/mart.sql"
+    - name: "mart_missione"
+      sql: "sql/mart_missione.sql"
+    - name: "mart_stato_avanzamento"
+      sql: "sql/mart_stato_avanzamento.sql"
+  required_tables:
+    - mart_missione
+  validate:
+    table_rules:
+      mart_missione:
+        required_columns: [missione, descrizione_missione, n_progetti, tot_fin_pnrr, tot_fin_totale]
+        primary_key: [missione, descrizione_missione, componente, descrizione_componente]
+        min_rows: 5
+      mart_stato_avanzamento:
+        required_columns: [stato_avanzamento, n_progetti, tot_fin_pnrr, tot_fin_totale, pct_fin_pnrr]
+        primary_key: [stato_avanzamento]
+        min_rows: 3
 
 validation:
   fail_on_error: true
