@@ -1,0 +1,22 @@
+SELECT
+    CAST("Codice Univoco Submisura" AS VARCHAR) AS codice_univoco_submisura,
+    CAST("Descrizione Submisura" AS VARCHAR) AS descrizione_submisura,
+    CAST("Descrizione Procedura di Aggiudicazione" AS VARCHAR) AS descrizione_procedura_aggiudicazione,
+    TRIM(CAST("CUP" AS VARCHAR)) AS cup,
+    CAST("Codice Locale Progetto" AS VARCHAR) AS codice_locale_progetto,
+    NULLIF(TRIM(CAST("CIG" AS VARCHAR)), '') AS cig,
+    NULLIF(TRIM(CAST("CIG Accordo Quadro" AS VARCHAR)), '') AS cig_accordo_quadro,
+    NULLIF(TRIM(CAST("Codice Procedura Utente" AS VARCHAR)), '') AS codice_procedura_utente,
+    CAST("Modalità di Realizzazione" AS VARCHAR) AS modalita_realizzazione,
+    CAST("Codice Interno PDA" AS VARCHAR) AS codice_interno_pda,
+    CAST("Oggetto Principale del Contratto" AS VARCHAR) AS oggetto_principale_contratto,
+    CAST("Oggetto Gara" AS VARCHAR) AS oggetto_gara,
+    TRY_STRPTIME(CAST("Data Pubblicazione del CIG" AS VARCHAR), '%d/%m/%Y') AS data_pubblicazione_cig,
+    NULLIF(TRIM(CAST("Codice Motivo Assenza CIG" AS VARCHAR)), '') AS codice_motivo_assenza_cig,
+    NULLIF(TRIM(CAST("Descrizione Motivo Assenza CIG" AS VARCHAR)), '') AS descrizione_motivo_assenza_cig,
+    CAST("Importo Complessivo Gara" AS DOUBLE) AS importo_complessivo_gara,
+    CAST("Importo Aggiudicazione" AS DOUBLE) AS importo_aggiudicazione,
+    TRY_STRPTIME(CAST("Data Aggiudicazione Definitiva" AS VARCHAR), '%d/%m/%Y') AS data_aggiudicazione_definitiva,
+    TRY_STRPTIME(CAST("Data di Estrazione" AS VARCHAR), '%d/%m/%Y') AS data_estrazione,
+    CAST({year} AS INTEGER) AS anno_estrazione
+FROM raw_input

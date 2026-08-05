@@ -1,0 +1,89 @@
+# PNRR Gare — Italia Domani
+# Download via preprocess.py (wget + fallback urllib): il server AEM/Akamai
+# blocca python-requests ma accetta wget (pattern verificato in CI).
+# Per CI serve TOOLKIT_ALLOW_SCRIPT_SOURCE=1 (come pnrr-progetti).
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "pnrr_gare"
+  source_id: "italiadomani"
+  tags: [finanza-pubblica, pnrr, appalti, gare]
+  category: finanza-pubblica
+  years: [2026]
+  time_coverage:
+    start_year: 2016
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: pnrr_gare
+      type: script
+      args:
+        command: "python preprocess.py raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  read:
+    source: auto
+    mode: latest
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    decimal: ","
+    sample_size: -1
+  required_columns:
+    - codice_univoco_submisura
+    - descrizione_submisura
+    - descrizione_procedura_aggiudicazione
+    - cup
+    - codice_locale_progetto
+    - cig
+    - cig_accordo_quadro
+    - codice_procedura_utente
+    - modalita_realizzazione
+    - codice_interno_pda
+    - oggetto_principale_contratto
+    - oggetto_gara
+    - data_pubblicazione_cig
+    - codice_motivo_assenza_cig
+    - descrizione_motivo_assenza_cig
+    - importo_complessivo_gara
+    - importo_aggiudicazione
+    - data_aggiudicazione_definitiva
+    - data_estrazione
+    - anno_estrazione
+  sql: "sql/clean.sql"
+  validate:
+    min_rows: 200000
+    not_null:
+      - cup
+    # importo_complessivo_gara non è not_null: 99 righe (0,03%) su 282.655
+    # hanno importi e oggetto NULL (record parziali del source, legittimi).
+    # primary_key: deroga — 1.057 coppie (cig,cup) duplicate e 25.250 CIG assenti
+    # (vedi notes.md). CIG è opzionale per legge (motivi assenza CIG).
+
+mart:
+  tables:
+    - name: "mart_submisura"
+      sql: "sql/mart_submisura.sql"
+    - name: "mart_procedura"
+      sql: "sql/mart_procedura.sql"
+  required_tables:
+    - mart_submisura
+  validate:
+    table_rules:
+      mart_submisura:
+        required_columns: [codice_univoco_submisura, descrizione_submisura, n_gare, tot_importo_aggiudicazione]
+        primary_key: [codice_univoco_submisura]
+        min_rows: 100
+      mart_procedura:
+        required_columns: [descrizione_procedura_aggiudicazione, n_gare, tot_importo_aggiudicazione]
+        primary_key: [descrizione_procedura_aggiudicazione]
+        min_rows: 5
+
+validation:
+  fail_on_error: true
