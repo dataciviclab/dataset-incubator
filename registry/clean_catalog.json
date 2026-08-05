@@ -2572,6 +2572,51 @@
       "category": "politica"
     },
     {
+      "slug": "camera_gruppi",
+      "name": "Gruppi Parlamentari (Camera)",
+      "description": "Anagrafica dei gruppi parlamentari della Camera dei Deputati: denominazione completa (nome + acronimo + date di esistenza) e legislatura per ogni gruppo. Support di camera_incarichi — join su gruppo (URI). Fonte: dati.camera.it SPARQL, 239 gruppi, tutte le legislature.",
+      "source": "Camera dei Deputati — OpenData SPARQL endpoint (dati.camera.it)",
+      "source_id": "dati_camera",
+      "period": {
+        "start": 1948,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "gruppo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "URI del gruppo parlamentare (ocd:gruppoParlamentare.rdf/gr...)"
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Denominazione completa del gruppo (nome + acronimo + date, es. \"MOVIMENTO 5 STELLE (M5S) (19.03.2013...\")"
+        },
+        {
+          "name": "legislatura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Legislatura del gruppo (es. repubblica_17, costituente)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/camera_gruppi/2026/camera_gruppi_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "camera",
+        "gruppi",
+        "parlamentari"
+      ],
+      "category": "politica"
+    },
+    {
       "slug": "camera_incarichi",
       "name": "Incarichi nei Gruppi Parlamentari (Camera)",
       "description": "Incarichi dei deputati nei gruppi parlamentari della Camera: ruolo (presidente, vicepresidente, capogruppo...), gruppo, legislatura e date inizio/fine. Join con camera_deputati_legislature via persona_id (chiave standard del sistema parlamentare). Fonte: dati.camera.it SPARQL, 3.096 incarichi.",
@@ -14008,9 +14053,9 @@
     },
     {
       "slug": "senato_anagrafica",
-      "name": "Senato Anagrafica",
-      "description": "",
-      "source": "",
+      "name": "Anagrafica Senatori (XIX legislatura)",
+      "description": "Anagrafica dei senatori della XIX legislatura: nome, cognome, data e luogo di nascita. Support di senato_firmatari — join su senatore_id. Fonte: dati.senato.it SPARQL (graph composizione/19), 212 senatori.",
+      "source": "Senato della Repubblica — OpenData SPARQL endpoint (dati.senato.it)",
       "source_id": "dati_senato",
       "period": {
         "start": 2022,
@@ -14020,38 +14065,38 @@
         {
           "name": "senatore_id",
           "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "ID numerico del senatore (dall'URI /senatore/N — id locale Senato)"
         },
         {
           "name": "nome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Nome del senatore"
         },
         {
           "name": "cognome",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Cognome del senatore"
         },
         {
           "name": "data_nascita",
           "type": "DATE",
           "role": "dimension",
-          "description": ""
+          "description": "Data di nascita (bio:date)"
         },
         {
           "name": "luogo_nascita",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Città di nascita"
         },
         {
           "name": "legislatura",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Legislatura (19 = XIX)"
         }
       ],
       "location": {
@@ -14108,7 +14153,8 @@
           "name": "stato",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Stato dell'iter legislativo (es. assegnato, approvato, approvato definitivamente)"
+          "description": "Stato dell'iter legislativo (es. assegnato, approvato, approvato definitivamente)",
+          "semantic_type": "country_code"
         },
         {
           "name": "data_presentazione",
