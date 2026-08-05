@@ -12381,6 +12381,156 @@
       "category": "sanita"
     },
     {
+      "slug": "pnrr_gare",
+      "name": "Pnrr Gare",
+      "description": "",
+      "source": "",
+      "source_id": "italiadomani",
+      "period": {
+        "start": 2016,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_univoco_submisura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_submisura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_procedura_aggiudicazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cup",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "cup_code"
+        },
+        {
+          "name": "codice_locale_progetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "cig_code"
+        },
+        {
+          "name": "cig_accordo_quadro",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "cig_code"
+        },
+        {
+          "name": "codice_procedura_utente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "modalita_realizzazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_interno_pda",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "oggetto_principale_contratto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "oggetto_gara",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_pubblicazione_cig",
+          "type": "TIMESTAMP",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_motivo_assenza_cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_motivo_assenza_cig",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "importo_complessivo_gara",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "importo_aggiudicazione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_aggiudicazione_definitiva",
+          "type": "TIMESTAMP",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_estrazione",
+          "type": "TIMESTAMP",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "anno_estrazione",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/pnrr_gare/2026/pnrr_gare_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "pnrr",
+        "appalti",
+        "gare"
+      ],
+      "category": "finanza-pubblica"
+    },
+    {
       "slug": "pnrr_progetti",
       "name": "PNRR Progetti — Italia Domani",
       "description": "Progetti finanziati dal PNRR (Piano Nazionale di Ripresa e Resilienza): programma, missione, CUP, finanziamenti, soggetto attuatore, stato avanzamento. 63 colonne, 280k righe. Fonte: MEF Italia Domani.",

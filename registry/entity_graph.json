@@ -754,10 +754,22 @@
           "name": "Ricorsi Appalto (OpenGA — 31 sedi)",
           "column": "codice_cig",
           "semantic_type": "cig_code"
+        },
+        {
+          "slug": "pnrr_gare",
+          "name": "Pnrr Gare",
+          "column": "cig",
+          "semantic_type": "cig_code"
+        },
+        {
+          "slug": "pnrr_gare",
+          "name": "Pnrr Gare",
+          "column": "cig_accordo_quadro",
+          "semantic_type": "cig_code"
         }
       ],
       "types": {
-        "cig_code": 13
+        "cig_code": 15
       }
     },
     "Nazione": {
@@ -900,6 +912,12 @@
           "semantic_type": "cup_code"
         },
         {
+          "slug": "pnrr_gare",
+          "name": "Pnrr Gare",
+          "column": "cup",
+          "semantic_type": "cup_code"
+        },
+        {
           "slug": "pnrr_progetti",
           "name": "PNRR Progetti — Italia Domani",
           "column": "cup",
@@ -919,7 +937,7 @@
         }
       ],
       "types": {
-        "cup_code": 7
+        "cup_code": 8
       }
     },
     "Provincia": {
@@ -2383,6 +2401,32 @@
     {
       "from": {
         "entity": "Progetto",
+        "dataset": "pnrr_gare",
+        "via": "cup_code"
+      },
+      "to": {
+        "entity": "Comune",
+        "bridge": "anac_cup",
+        "on": "cup",
+        "semantic_type": "municipality_code"
+      }
+    },
+    {
+      "from": {
+        "entity": "Gara",
+        "dataset": "pnrr_gare",
+        "via": "cig_code"
+      },
+      "to": {
+        "entity": "Comune",
+        "bridge": "anac_bandi_gara",
+        "on": "cig",
+        "semantic_type": "municipality_code"
+      }
+    },
+    {
+      "from": {
+        "entity": "Progetto",
         "dataset": "pnrr_progetti",
         "via": "cup_code"
       },
@@ -2435,6 +2479,6 @@
   ],
   "summary": {
     "total_entities": 17,
-    "total_relations": 25
+    "total_relations": 27
   }
 }
