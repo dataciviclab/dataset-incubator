@@ -3,7 +3,7 @@
   "name": "Lab Clean Registry",
   "description": "Catalogo canonico dei clean parquet pubblici prodotti o adottati da dataset-incubator.",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-08-04",
+  "updated_at": "2026-08-05",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -14005,6 +14005,69 @@
         "sbarchi"
       ],
       "category": "immigrazione"
+    },
+    {
+      "slug": "senato_anagrafica",
+      "name": "Senato Anagrafica",
+      "description": "",
+      "source": "",
+      "source_id": "dati_senato",
+      "period": {
+        "start": 2022,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "senatore_id",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cognome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_nascita",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "luogo_nascita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "legislatura",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/senato_anagrafica/2026/senato_anagrafica_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto",
+      "tags": [
+        "politica",
+        "senato",
+        "anagrafica",
+        "senatori"
+      ],
+      "category": "politica"
     },
     {
       "slug": "senato_ddl",
