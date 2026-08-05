@@ -19,7 +19,9 @@ Le gare d'appalto dei progetti PNRR pubblicate da Italia Domani (fonte ReGiS): p
 URL: https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Gare.csv
 Dimensione: ~106-111 MB, CSV `;` UTF-8 con BOM, importi in formato italiano (virgola decimale), date DD/MM/YYYY.
 
-**Accesso**: il server AEM/Akamai blocca curl/wget e python-requests senza header browser completi. Il `preprocess.py` usa `HttpClient` di `lab-connectors` con `Accept` + `Accept-Language` (validato: HTTP 200).
+**Accesso**: il server AEM/Akamai blocca python-requests ma accetta wget.
+Il `preprocess.py` usa wget (UA "Mozilla/5.0 (X11...)") con fallback urllib
+(pattern verificato in CI).
 
 ## Issue
 

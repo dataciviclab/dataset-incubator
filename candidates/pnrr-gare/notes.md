@@ -9,23 +9,12 @@
 
 ## Download (AEM/Akamai)
 
-Il server AEM/Akamai **blocca** curl, wget e python-requests con solo User-Agent
-(solo UA → HTTP 403 Access Denied). Serve la coppia `Accept` + `Accept-Language`.
-- `HttpClient` di lab-connectors con `headers={"Accept": ..., "Accept-Language": ...}`
-  scarica il file completo (HTTP 200, ~111 MB) — pattern validato.
-- `preprocess.py` usa questo pattern. Dataset.yml con `type: script`.
+Il server AEM/Akamai blocca python-requests ma **accetta wget** (pattern
+verificato in CI).
+- `preprocess.py`: wget con User-Agent "Mozilla/5.0 (X11; Linux x86_64)
+  AppleWebKit/537.36", fallback su urllib se wget non disponibile.
+- Dataset.yml con `type: script`.
 - Per CI: `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` (guardrail, come pnrr-progetti).
-
-### Ambiente Python (download)
-
-Akamai fa fingerprinting sul client HTTP: versioni vecchie di requests/urllib3 danno 403.
-Lo script va eseguito nel venv del workspace (come tutti gli script Lab), che ha le
-dipendenze aggiornate.
-
-Il run va lanciato con il venv attivato (`source .venv/bin/activate` prima di
-`toolkit run`), così `python` nel subprocess dello script risolve al venv e trova
-`lab_connectors`. Senza venv attivo lo script fallisce con `ModuleNotFoundError`
-— attivare il venv, non aggirare il problema.
 
 ## Formato
 
