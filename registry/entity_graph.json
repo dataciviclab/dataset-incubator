@@ -23,6 +23,27 @@
         "ateco_code": 2
       }
     },
+    "Atto legislativo": {
+      "entity": "Atto legislativo",
+      "label": "Atto legislativo / Disegno di legge",
+      "datasets": [
+        {
+          "slug": "senato_ddl",
+          "name": "Senato Ddl",
+          "column": "id_ddl",
+          "semantic_type": "ddl_id"
+        },
+        {
+          "slug": "senato_firmatari",
+          "name": "Senato Firmatari",
+          "column": "ddl_id",
+          "semantic_type": "ddl_id"
+        }
+      ],
+      "types": {
+        "ddl_id": 2
+      }
+    },
     "Categoria merceologica": {
       "entity": "Categoria merceologica",
       "label": "Categoria merceologica",
@@ -772,6 +793,27 @@
         "cig_code": 15
       }
     },
+    "Gruppo parlamentare": {
+      "entity": "Gruppo parlamentare",
+      "label": "Gruppo parlamentare",
+      "datasets": [
+        {
+          "slug": "camera_gruppi",
+          "name": "Gruppi Parlamentari (Camera)",
+          "column": "gruppo",
+          "semantic_type": "gruppo_parlamentare"
+        },
+        {
+          "slug": "camera_incarichi",
+          "name": "Incarichi nei Gruppi Parlamentari (Camera)",
+          "column": "gruppo",
+          "semantic_type": "gruppo_parlamentare"
+        }
+      ],
+      "types": {
+        "gruppo_parlamentare": 2
+      }
+    },
     "Nazione": {
       "entity": "Nazione",
       "label": "Nazione",
@@ -826,10 +868,23 @@
           "name": "Membri dei Governi italiani (1862-2026)",
           "column": "persona_id",
           "semantic_type": "person_id"
+        },
+        {
+          "slug": "senato_anagrafica",
+          "name": "Anagrafica Senatori (XIX legislatura)",
+          "column": "senatore_id",
+          "semantic_type": "senator_id"
+        },
+        {
+          "slug": "senato_firmatari",
+          "name": "Senato Firmatari",
+          "column": "senatore_id",
+          "semantic_type": "senator_id"
         }
       ],
       "types": {
-        "person_id": 3
+        "person_id": 3,
+        "senator_id": 2
       }
     },
     "Procedimento": {
@@ -919,7 +974,7 @@
         },
         {
           "slug": "pnrr_pagamenti",
-          "name": "Pnrr Pagamenti",
+          "name": "PNRR Pagamenti — Italia Domani",
           "column": "cup",
           "semantic_type": "cup_code"
         },
@@ -2497,7 +2552,7 @@
     }
   ],
   "summary": {
-    "total_entities": 17,
+    "total_entities": 19,
     "total_relations": 28
   }
 }

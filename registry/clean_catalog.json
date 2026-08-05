@@ -2586,7 +2586,8 @@
           "name": "gruppo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "URI del gruppo parlamentare (ocd:gruppoParlamentare.rdf/gr...)"
+          "description": "URI del gruppo parlamentare (ocd:gruppoParlamentare.rdf/gr...)",
+          "semantic_type": "gruppo_parlamentare"
         },
         {
           "name": "nome",
@@ -2662,7 +2663,8 @@
           "name": "gruppo",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "URI del gruppo parlamentare"
+          "description": "URI del gruppo parlamentare",
+          "semantic_type": "gruppo_parlamentare"
         },
         {
           "name": "legislatura",
@@ -14382,7 +14384,8 @@
           "name": "senatore_id",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "ID numerico del senatore (dall'URI /senatore/N — id locale Senato)"
+          "description": "ID numerico del senatore (dall'URI /senatore/N — id locale Senato)",
+          "semantic_type": "senator_id"
         },
         {
           "name": "nome",
@@ -14445,7 +14448,8 @@
           "name": "id_ddl",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Identificativo numerico del disegno di legge (osr:idDdl)"
+          "description": "Identificativo numerico del disegno di legge (osr:idDdl)",
+          "semantic_type": "ddl_id"
         },
         {
           "name": "ddl_url",
@@ -14641,7 +14645,8 @@
           "name": "ddl_id",
           "type": "BIGINT",
           "role": "metric",
-          "description": "Identificativo numerico del ddl (osr:idDdl — numerazione interna condivisa con senato-ddl; NON è l'id dell'URI /ddl/N)"
+          "description": "Identificativo numerico del ddl (osr:idDdl — numerazione interna condivisa con senato-ddl; NON è l'id dell'URI /ddl/N)",
+          "semantic_type": "ddl_id"
         },
         {
           "name": "iniziativa",
@@ -14671,7 +14676,8 @@
           "name": "senatore_id",
           "type": "BIGINT",
           "role": "metric",
-          "description": "ID numerico del senatore dall'URI /senatore/N (NULL per presentatori non-senatori)"
+          "description": "ID numerico del senatore dall'URI /senatore/N (NULL per presentatori non-senatori)",
+          "semantic_type": "senator_id"
         },
         {
           "name": "data_aggiunta_firma",

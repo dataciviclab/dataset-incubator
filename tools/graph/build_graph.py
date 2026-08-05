@@ -43,6 +43,8 @@ ENTITY_LABELS = {
     "Procedimento": "Procedimento giudiziario",
     "Categoria merceologica": "Categoria merceologica",
     "Persona": "Persona",
+    "Atto legislativo": "Atto legislativo / Disegno di legge",
+    "Gruppo parlamentare": "Gruppo parlamentare",
 }
 
 
