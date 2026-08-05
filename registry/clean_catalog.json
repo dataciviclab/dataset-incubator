@@ -12382,9 +12382,9 @@
     },
     {
       "slug": "pnrr_gare",
-      "name": "Pnrr Gare",
-      "description": "",
-      "source": "",
+      "name": "PNRR Gare — Italia Domani",
+      "description": "Gare d'appalto dei progetti PNRR (fonte ReGiS): collegamento CUP→CIG, importi complessivo e di aggiudicazione, procedura, modalità di realizzazione e oggetto del contratto. 282.655 righe, 244.510 CIG unici. Fonte: MEF Italia Domani.",
+      "source": "MEF — Italia Domani (italiadomani.gov.it)",
       "source_id": "italiadomani",
       "period": {
         "start": 2016,
@@ -12395,124 +12395,124 @@
           "name": "codice_univoco_submisura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice univoco della submisura PNRR (es. M1C1I1.01.00)"
         },
         {
           "name": "descrizione_submisura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione della submisura"
         },
         {
           "name": "descrizione_procedura_aggiudicazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Procedura di aggiudicazione (AFFIDAMENTO DIRETTO, APERTA, ...)"
         },
         {
           "name": "cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
+          "description": "Codice Unico Progetto — chiave di join",
           "semantic_type": "cup_code"
         },
         {
           "name": "codice_locale_progetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice locale del progetto"
         },
         {
           "name": "cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
+          "description": "Codice Identificativo Gara — join con ANAC",
           "semantic_type": "cig_code"
         },
         {
           "name": "cig_accordo_quadro",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
+          "description": "CIG dell'accordo quadro di riferimento",
           "semantic_type": "cig_code"
         },
         {
           "name": "codice_procedura_utente",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice procedura utente"
         },
         {
           "name": "modalita_realizzazione",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Modalità di realizzazione (CONTRATTO D'APPALTO, CONCESSIONE, ...)"
         },
         {
           "name": "codice_interno_pda",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice interno della procedura"
         },
         {
           "name": "oggetto_principale_contratto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Categoria principale del contratto (LAVORI/SERVIZI/FORNITURE)"
         },
         {
           "name": "oggetto_gara",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Oggetto/descrizione della gara"
         },
         {
           "name": "data_pubblicazione_cig",
           "type": "TIMESTAMP",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di pubblicazione del CIG"
         },
         {
           "name": "codice_motivo_assenza_cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice motivo dell'assenza CIG"
         },
         {
           "name": "descrizione_motivo_assenza_cig",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Motivo dell'assenza CIG (per legge)"
         },
         {
           "name": "importo_complessivo_gara",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo complessivo della gara (€)"
         },
         {
           "name": "importo_aggiudicazione",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Importo di aggiudicazione (€)"
         },
         {
           "name": "data_aggiudicazione_definitiva",
           "type": "TIMESTAMP",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di aggiudicazione definitiva"
         },
         {
           "name": "data_estrazione",
           "type": "TIMESTAMP",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di estrazione del dato"
         },
         {
           "name": "anno_estrazione",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di estrazione del dato"
         }
       ],
       "location": {
