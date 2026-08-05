@@ -15,7 +15,7 @@ SELECT
     TRY_CAST("Codice Identificativo Procedura di Attivazione" AS VARCHAR) AS codice_procedura_attivazione,
     CAST("Titolo Procedura" AS VARCHAR) AS titolo_procedura,
     CAST("Tipologia Procedura di Attivazione" AS VARCHAR) AS tipologia_procedura_attivazione,
-    TRIM(CAST(CUP AS VARCHAR)) AS cup,
+    TRIM(CAST("CUP" AS VARCHAR)) AS cup,
     CAST("Codice Locale Progetto" AS VARCHAR) AS codice_locale_progetto,
     CAST("Stato CUP" AS VARCHAR) AS stato_cup,
     TRY_CAST("CUP Codice Natura" AS VARCHAR) AS cup_codice_natura,
