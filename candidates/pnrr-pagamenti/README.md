@@ -18,7 +18,10 @@ I pagamenti registrati per i progetti PNRR (fonte ReGiS): per ogni progetto (CUP
 URL: https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Pagamenti_di_Progetto.csv
 Dimensione: ~40 MB, CSV `;` UTF-8 con BOM, importi in formato italiano (virgola decimale), date DD/MM/YYYY.
 
-**Accesso**: il server AEM/Akamai blocca curl/wget e python-requests senza header browser completi. Il `preprocess.py` usa `HttpClient` di `lab-connectors` con `Accept` + `Accept-Language`. Nota: il probe HEAD/GET Range fallisce (404) su questo endpoint; il GET completo funziona e il contenuto può arrivare gzip (gestito nel preprocess).
+**Accesso**: il server AEM/Akamai blocca python-requests ma accetta wget.
+Il `preprocess.py` usa wget (UA "Mozilla/5.0 (X11...)") con fallback urllib.
+Nota: il probe HEAD/GET Range fallisce (404) su questo endpoint; il GET
+completo funziona e il contenuto può arrivare gzip (gestito nel preprocess).
 
 ## Mart
 

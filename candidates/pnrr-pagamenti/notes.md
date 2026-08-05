@@ -9,14 +9,12 @@
 
 ## Download (AEM/Akamai)
 
-Il server AEM/Akamai **blocca** curl, wget e python-requests con solo User-Agent
-(solo UA → HTTP 403 Access Denied). Serve la coppia `Accept` + `Accept-Language`.
-- `HttpClient` di lab-connectors con `headers={"Accept": ..., "Accept-Language": ...}`
-  scarica il file completo (HTTP 200, ~40 MB) — pattern validato.
+Il server AEM/Akamai blocca python-requests ma **accetta wget** (pattern
+verificato in CI).
+- `preprocess.py`: wget con User-Agent "Mozilla/5.0 (X11; Linux x86_64)
+  AppleWebKit/537.36", fallback su urllib se wget non disponibile.
 - **Probe HEAD/GET Range fallisce (404)** su questo endpoint — il probe del
   toolkit può dare falsi negativi; il GET completo funziona.
-- Il contenuto può arrivare **gzip** (magic `1f 8b`) — il preprocess decompatta.
-- Lo script va eseguito nel venv del workspace (come tutti gli script Lab).
 - Per CI: `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` (guardrail, come pnrr-progetti).
 - `clean.read.decimal: ","` — gli importi sono in formato italiano.
 
