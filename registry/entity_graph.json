@@ -757,13 +757,13 @@
         },
         {
           "slug": "pnrr_gare",
-          "name": "Pnrr Gare",
+          "name": "PNRR Gare — Italia Domani",
           "column": "cig",
           "semantic_type": "cig_code"
         },
         {
           "slug": "pnrr_gare",
-          "name": "Pnrr Gare",
+          "name": "PNRR Gare — Italia Domani",
           "column": "cig_accordo_quadro",
           "semantic_type": "cig_code"
         }
@@ -913,7 +913,13 @@
         },
         {
           "slug": "pnrr_gare",
-          "name": "Pnrr Gare",
+          "name": "PNRR Gare — Italia Domani",
+          "column": "cup",
+          "semantic_type": "cup_code"
+        },
+        {
+          "slug": "pnrr_pagamenti",
+          "name": "Pnrr Pagamenti",
           "column": "cup",
           "semantic_type": "cup_code"
         },
@@ -937,7 +943,7 @@
         }
       ],
       "types": {
-        "cup_code": 8
+        "cup_code": 9
       }
     },
     "Provincia": {
@@ -2427,6 +2433,19 @@
     {
       "from": {
         "entity": "Progetto",
+        "dataset": "pnrr_pagamenti",
+        "via": "cup_code"
+      },
+      "to": {
+        "entity": "Comune",
+        "bridge": "anac_cup",
+        "on": "cup",
+        "semantic_type": "municipality_code"
+      }
+    },
+    {
+      "from": {
+        "entity": "Progetto",
         "dataset": "pnrr_progetti",
         "via": "cup_code"
       },
@@ -2479,6 +2498,6 @@
   ],
   "summary": {
     "total_entities": 17,
-    "total_relations": 27
+    "total_relations": 28
   }
 }

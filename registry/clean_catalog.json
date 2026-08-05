@@ -12531,6 +12531,172 @@
       "category": "finanza-pubblica"
     },
     {
+      "slug": "pnrr_pagamenti",
+      "name": "Pnrr Pagamenti",
+      "description": "",
+      "source": "",
+      "source_id": "italiadomani",
+      "period": {
+        "start": 2021,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_univoco_submisura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_submisura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cup",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "cup_code"
+        },
+        {
+          "name": "codice_locale_progetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "finanziamento_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "finanziamento_pnrr",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_pnrr",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_stato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_stato_bilancio",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_stato_foi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_fpop",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_ue",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_regione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_provincia",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_comune",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_altro_pubblico",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_privato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_da_reperire",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_pnc",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "pagamento_altri_fondi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_estrazione",
+          "type": "TIMESTAMP",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "anno_estrazione",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/pnrr_pagamenti/2026/pnrr_pagamenti_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "pnrr",
+        "pagamenti",
+        "rendicontazione"
+      ],
+      "category": "finanza-pubblica"
+    },
+    {
       "slug": "pnrr_progetti",
       "name": "PNRR Progetti — Italia Domani",
       "description": "Progetti finanziati dal PNRR (Piano Nazionale di Ripresa e Resilienza): programma, missione, CUP, finanziamenti, soggetto attuatore, stato avanzamento. 63 colonne, 280k righe. Fonte: MEF Italia Domani.",
