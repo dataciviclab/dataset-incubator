@@ -12532,9 +12532,9 @@
     },
     {
       "slug": "pnrr_pagamenti",
-      "name": "Pnrr Pagamenti",
-      "description": "",
-      "source": "",
+      "name": "PNRR Pagamenti — Italia Domani",
+      "description": "Pagamenti registrati per i progetti PNRR (fonte ReGiS): per ogni CUP/CLP il finanziamento totale e PNRR, i pagamenti effettivi (totale, quota PNRR e riparto per fonte) e la data di estrazione. 211.901 righe, €101,9 mld pagamenti PNRR. Fonte: MEF Italia Domani.",
+      "source": "MEF — Italia Domani (italiadomani.gov.it)",
       "source_id": "italiadomani",
       "period": {
         "start": 2021,
@@ -12545,140 +12545,140 @@
           "name": "codice_univoco_submisura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice univoco della submisura PNRR"
         },
         {
           "name": "descrizione_submisura",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Descrizione della submisura"
         },
         {
           "name": "cup",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "",
+          "description": "Codice Unico Progetto — chiave di join",
           "semantic_type": "cup_code"
         },
         {
           "name": "codice_locale_progetto",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": ""
+          "description": "Codice locale del progetto"
         },
         {
           "name": "finanziamento_totale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento totale del progetto (€)"
         },
         {
           "name": "finanziamento_pnrr",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Finanziamento PNRR del progetto (€)"
         },
         {
           "name": "pagamento_totale",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti totali registrati (€)"
         },
         {
           "name": "pagamento_pnrr",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti quota PNRR (€)"
         },
         {
           "name": "pagamento_stato",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti fonte Stato (€)"
         },
         {
           "name": "pagamento_stato_bilancio",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti Stato - Bilancio (€)"
         },
         {
           "name": "pagamento_stato_foi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti Stato - FOI (€)"
         },
         {
           "name": "pagamento_fpop",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti Prosecuzione Opere Pubbliche FPOP (€)"
         },
         {
           "name": "pagamento_ue",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti UE diversi da PNRR (€)"
         },
         {
           "name": "pagamento_regione",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti fonte Regione (€)"
         },
         {
           "name": "pagamento_provincia",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti fonte Provincia (€)"
         },
         {
           "name": "pagamento_comune",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti fonte Comune (€)"
         },
         {
           "name": "pagamento_altro_pubblico",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti Altro Pubblico (€)"
         },
         {
           "name": "pagamento_privato",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti fonte Privato (€)"
         },
         {
           "name": "pagamento_da_reperire",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti da reperire (€)"
         },
         {
           "name": "pagamento_pnc",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti PNC (€)"
         },
         {
           "name": "pagamento_altri_fondi",
           "type": "DOUBLE",
           "role": "metric",
-          "description": ""
+          "description": "Pagamenti altri fondi (€)"
         },
         {
           "name": "data_estrazione",
           "type": "TIMESTAMP",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Data di estrazione del dato"
         },
         {
           "name": "anno_estrazione",
           "type": "INTEGER",
-          "role": "metric",
-          "description": ""
+          "role": "dimension",
+          "description": "Anno di estrazione del dato"
         }
       ],
       "location": {
