@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 116,
+    "total": 117,
     "by_status": {
-      "ok": 116,
+      "ok": 117,
       "warn": 0,
       "error": 0
     }
@@ -1770,6 +1770,41 @@
           2026
         ],
         "config_path": "candidates/pnrr-gare/dataset.yml"
+      }
+    },
+    {
+      "id": "pnrr-pagamenti",
+      "source_id": "italiadomani",
+      "status": "ok",
+      "label": "pnrr-pagamenti",
+      "detail": "anno 2026 — fonte: pnrr_pagamenti — mart: sì",
+      "action": "",
+      "latest_run": {
+        "status": "passed",
+        "run_id": "31007324120",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/31007324120",
+        "checked_at": "2026-08-05",
+        "duration_seconds": 11.34,
+        "row_counts": {
+          "raw": 211901,
+          "clean": 211901,
+          "mart": 214
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/pnrr-pagamenti/dataset.yml"
       }
     },
     {

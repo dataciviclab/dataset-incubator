@@ -12531,6 +12531,172 @@
       "category": "finanza-pubblica"
     },
     {
+      "slug": "pnrr_pagamenti",
+      "name": "PNRR Pagamenti — Italia Domani",
+      "description": "Pagamenti registrati per i progetti PNRR (fonte ReGiS): per ogni CUP/CLP il finanziamento totale e PNRR, i pagamenti effettivi (totale, quota PNRR e riparto per fonte) e la data di estrazione. 211.901 righe, €101,9 mld pagamenti PNRR. Fonte: MEF Italia Domani.",
+      "source": "MEF — Italia Domani (italiadomani.gov.it)",
+      "source_id": "italiadomani",
+      "period": {
+        "start": 2021,
+        "end": 2026
+      },
+      "columns": [
+        {
+          "name": "codice_univoco_submisura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice univoco della submisura PNRR"
+        },
+        {
+          "name": "descrizione_submisura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Descrizione della submisura"
+        },
+        {
+          "name": "cup",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice Unico Progetto — chiave di join",
+          "semantic_type": "cup_code"
+        },
+        {
+          "name": "codice_locale_progetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice locale del progetto"
+        },
+        {
+          "name": "finanziamento_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Finanziamento totale del progetto (€)"
+        },
+        {
+          "name": "finanziamento_pnrr",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Finanziamento PNRR del progetto (€)"
+        },
+        {
+          "name": "pagamento_totale",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti totali registrati (€)"
+        },
+        {
+          "name": "pagamento_pnrr",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti quota PNRR (€)"
+        },
+        {
+          "name": "pagamento_stato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti fonte Stato (€)"
+        },
+        {
+          "name": "pagamento_stato_bilancio",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti Stato - Bilancio (€)"
+        },
+        {
+          "name": "pagamento_stato_foi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti Stato - FOI (€)"
+        },
+        {
+          "name": "pagamento_fpop",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti Prosecuzione Opere Pubbliche FPOP (€)"
+        },
+        {
+          "name": "pagamento_ue",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti UE diversi da PNRR (€)"
+        },
+        {
+          "name": "pagamento_regione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti fonte Regione (€)"
+        },
+        {
+          "name": "pagamento_provincia",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti fonte Provincia (€)"
+        },
+        {
+          "name": "pagamento_comune",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti fonte Comune (€)"
+        },
+        {
+          "name": "pagamento_altro_pubblico",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti Altro Pubblico (€)"
+        },
+        {
+          "name": "pagamento_privato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti fonte Privato (€)"
+        },
+        {
+          "name": "pagamento_da_reperire",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti da reperire (€)"
+        },
+        {
+          "name": "pagamento_pnc",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti PNC (€)"
+        },
+        {
+          "name": "pagamento_altri_fondi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti altri fondi (€)"
+        },
+        {
+          "name": "data_estrazione",
+          "type": "TIMESTAMP",
+          "role": "dimension",
+          "description": "Data di estrazione del dato"
+        },
+        {
+          "name": "anno_estrazione",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di estrazione del dato"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/pnrr_pagamenti/2026/pnrr_pagamenti_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "registry_source": "derive_auto",
+      "tags": [
+        "finanza-pubblica",
+        "pnrr",
+        "pagamenti",
+        "rendicontazione"
+      ],
+      "category": "finanza-pubblica"
+    },
+    {
       "slug": "pnrr_progetti",
       "name": "PNRR Progetti — Italia Domani",
       "description": "Progetti finanziati dal PNRR (Piano Nazionale di Ripresa e Resilienza): programma, missione, CUP, finanziamenti, soggetto attuatore, stato avanzamento. 63 colonne, 280k righe. Fonte: MEF Italia Domani.",
