@@ -2,7 +2,7 @@
 
 Tutti i progetti del Piano Nazionale di Ripresa e Resilienza (PNRR) con dettaglio CUP, missione, componente, misura, finanziamenti per 14 fonti, soggetto attuatore e stato avanzamento.
 
-**280.769 righe**, **275.636 progetti** (CUP unici), **€116,1 mld PNRR**, **€148,9 mld complessivi**.
+**291.398 righe**, **285.994 progetti** (CUP unici), **€144,0 mld PNRR**, **€206,9 mld complessivi**.
 
 ## Dati
 
@@ -18,10 +18,18 @@ Tutti i progetti del Piano Nazionale di Ripresa e Resilienza (PNRR) con dettagli
 ## Fonte
 
 **Italia Domani** — MEF / SoGeI
-URL: https://www.italiadomani.gov.it/
-Dimensione file: 294 MB
-Encoding: UTF-8 con BOM (stripato in preprocessing)
-Download: wget (il server AEM blocca python-requests)
+URL: https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Progetti.csv
+Dimensione file: ~317 MB
+Encoding: UTF-8 con BOM
+Download: `preprocess.py` con `HttpClient` di `lab-connectors` + header browser
+(AEM/Akamai blocca curl/wget e python-requests senza `Accept`+`Accept-Language`)
+
+## Mart
+
+| Tabella | Grano | Contenuto |
+|---|---|---|
+| `mart_missione` | missione × componente | n progetti, finanziamenti PNRR e totali per missione/componente |
+| `mart_stato_avanzamento` | stato avanzamento | n progetti, finanziamenti e % sul totale per stato (In Corso / Concluso / Da Attivare) |
 
 ## Issue
 
