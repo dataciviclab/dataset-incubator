@@ -1,7 +1,6 @@
 # PNRR Progetti — Italia Domani
-# Download via preprocess.py: il server AEM/Akamai blocca curl/wget e
-# python-requests senza header browser. Usa HttpClient di lab-connectors
-# con Accept + Accept-Language (pattern validato, HTTP 200).
+# Download via preprocess.py (wget + fallback urllib): il server AEM/Akamai
+# blocca python-requests ma accetta wget (pattern verificato in CI).
 # Per CI serve TOOLKIT_ALLOW_SCRIPT_SOURCE=1 (guardrail di sicurezza).
 root: "../../out"
 schema_version: 1

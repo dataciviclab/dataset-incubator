@@ -9,12 +9,11 @@
 
 ## Download
 
-Il server AEM/Akamai **blocca** curl, wget e python-requests con solo User-Agent
-(solo UA → HTTP 403 Access Denied). Serve la coppia `Accept` + `Accept-Language`.
-- `HttpClient` di lab-connectors con `headers={"Accept": ..., "Accept-Language": ...}`
-  scarica il file completo (HTTP 200, ~317 MB) — pattern validato.
-- `preprocess.py` usa questo pattern. Dataset.yml con `type: script`.
-- Lo script va eseguito nel venv del workspace (come tutti gli script Lab).
+Il server AEM/Akamai blocca python-requests ma **accetta wget** (pattern
+verificato in CI su #527 e confermato per questo candidate).
+- `preprocess.py`: wget con User-Agent "Mozilla/5.0 (X11; Linux x86_64)
+  AppleWebKit/537.36", fallback su urllib se wget non disponibile.
+- Dataset.yml con `type: script`.
 - Per CI: `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` necessario (guardrail di sicurezza).
 - `clean.read.decimal: ","` — gli importi sono in formato italiano (virgola decimale).
 
