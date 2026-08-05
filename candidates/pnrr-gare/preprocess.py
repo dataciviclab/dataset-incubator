@@ -1,44 +1,95 @@
 #!/usr/bin/env python3
 """Scarica PNRR_Gare.csv da Italia Domani (AEM/Akamai).
 
-Akamai fa HTTP fingerprinting: blocca (403) i client HTTP con headers
-incompleti e versioni vecchie di requests/urllib3. Serve il set di header
-browser completo e un ambiente Python aggiornato (il venv del workspace).
+Akamai fa fingerprinting del client: nessun singolo client funziona ovunque.
+- HttpClient di lab-connectors + header browser completi: funziona dal venv
+  locale (requests recente), ma può dare 403 da GitHub Actions (IP runner).
+- wget con User-Agent breve ("Mozilla/5.0"): funziona anche da CI.
+- curl: ultima risorsa.
 
-Questo script va eseguito nel venv del workspace (come tutti gli script Lab).
-Se gira in un ambiente senza lab_connectors, fallisce subito con un errore
-chiaro: attivare il venv (source .venv/bin/activate).
+La catena prova in ordine: HttpClient -> wget -> curl. Il primo che risponde
+HTTP 200 vince.
+
+Uso: python preprocess.py <output.csv>
 """
 
+import subprocess
 import sys
-
-from lab_connectors.http import HttpClient
+from pathlib import Path
 
 URL = "https://www.italiadomani.gov.it/content/dam/sogei-ng/opendata/PNRR_Gare.csv"
-UA = (
+UA_BROWSER = (
     "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
     "AppleWebKit/537.36 (KHTML, like Gecko) Chrome/134.0.0.0 Safari/537.36"
 )
-HEADERS = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
-    "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
-}
+UA_SHORT = "Mozilla/5.0"
+
+
+def _try_httpclient(output: Path) -> bool:
+    """Tentativo con HttpClient di lab-connectors + header browser."""
+    from lab_connectors.http import HttpClient
+
+    headers = {
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",
+        "Accept-Language": "it-IT,it;q=0.9,en;q=0.8",
+    }
+    client = HttpClient(timeout=300, max_retries=1, user_agent=UA_BROWSER)
+    result = client.get(URL, headers=headers)
+    if result.response is not None and result.response.status_code == 200:
+        content = result.response.content
+        if content[:2] == b"\x1f\x8b":
+            import gzip
+
+            content = gzip.decompress(content)
+        output.write_bytes(content)
+        print(f"HttpClient: ok ({len(content)} bytes)")
+        return True
+    return False
+
+
+def _try_wget(output: Path) -> bool:
+    """Tentativo con wget + UA breve (funziona anche da CI)."""
+    try:
+        subprocess.run(
+            ["wget", "-q", "--user-agent=" + UA_SHORT, "-O", str(output), URL],
+            check=True,
+            timeout=400,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+    if output.exists() and output.stat().st_size > 0:
+        print(f"wget: ok ({output.stat().st_size} bytes)")
+        return True
+    return False
+
+
+def _try_curl(output: Path) -> bool:
+    """Tentativo con curl + UA breve."""
+    try:
+        subprocess.run(
+            ["curl", "-sS", "-A", UA_SHORT, "-o", str(output), URL],
+            check=True,
+            timeout=400,
+        )
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+    if output.exists() and output.stat().st_size > 0:
+        print(f"curl: ok ({output.stat().st_size} bytes)")
+        return True
+    return False
 
 
 def main() -> None:
-    output = sys.argv[1] if len(sys.argv) > 1 else "raw_input.csv"
-    client = HttpClient(timeout=300, max_retries=2, user_agent=UA)
-    result = client.get(URL, headers=HEADERS)
-    if result.response is None or result.response.status_code != 200:
-        status = (
-            result.response.status_code
-            if result.response is not None
-            else f"no response (is_ok={result.is_ok})"
-        )
-        raise RuntimeError(f"Download fallito per {URL}: HTTP {status}")
-    with open(output, "wb") as fh:
-        fh.write(result.response.content)
-    print(f"Downloaded {len(result.response.content)} bytes -> {output}")
+    output = Path(sys.argv[1] if len(sys.argv) > 1 else "raw_input.csv")
+    if _try_httpclient(output):
+        return
+    print("HttpClient fallito (403 o errore) — fallback wget")
+    if _try_wget(output):
+        return
+    print("wget fallito — fallback curl")
+    if _try_curl(output):
+        return
+    raise RuntimeError(f"Download fallito per {URL} (tutti i client)")
 
 
 if __name__ == "__main__":
