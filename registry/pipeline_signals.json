@@ -1,12 +1,12 @@
 {
   "schema_version": "1",
-  "generated_at": "2026-08-04",
+  "generated_at": "2026-08-05",
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 113,
+    "total": 115,
     "by_status": {
-      "ok": 113,
+      "ok": 115,
       "warn": 0,
       "error": 0
     }
@@ -2267,6 +2267,41 @@
       }
     },
     {
+      "id": "camera-gruppi",
+      "source_id": "dati_camera",
+      "status": "ok",
+      "label": "camera-gruppi",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "latest_run": {
+        "status": "passed",
+        "run_id": "30987598178",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30987598178",
+        "checked_at": "2026-08-05",
+        "duration_seconds": 1.43,
+        "row_counts": {
+          "raw": 239,
+          "clean": 239,
+          "mart": 20
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/camera-gruppi/dataset.yml"
+      }
+    },
+    {
       "id": "camera-incarichi",
       "source_id": "dati_camera",
       "status": "ok",
@@ -2473,6 +2508,41 @@
           2025
         ],
         "config_path": "support_datasets/popolazione-istat-comunale-2019-2025/dataset.yml"
+      }
+    },
+    {
+      "id": "senato-anagrafica",
+      "source_id": "dati_senato",
+      "status": "ok",
+      "label": "senato-anagrafica",
+      "detail": "anni: ? — fonte: ? — mart: sì",
+      "action": "",
+      "latest_run": {
+        "status": "passed",
+        "run_id": "30987598178",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30987598178",
+        "checked_at": "2026-08-05",
+        "duration_seconds": 2.48,
+        "row_counts": {
+          "raw": 212,
+          "clean": 212,
+          "mart": 186
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
+        "years": [
+          2026
+        ],
+        "config_path": "support_datasets/senato-anagrafica/dataset.yml"
       }
     },
     {
