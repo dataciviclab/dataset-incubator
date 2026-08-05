@@ -1742,13 +1742,30 @@
       "source_id": "italiadomani",
       "status": "ok",
       "label": "pnrr-progetti",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
+      "detail": "anno 2026 — fonte: pnrr_progetti — mart: sì",
       "action": "",
       "latest_run": {
         "status": "passed",
-        "run_id": "27903429536",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27903429536",
-        "checked_at": "2026-06-21",
+        "run_id": "31006021383",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/31006021383",
+        "checked_at": "2026-08-05",
+        "duration_seconds": 21.7,
+        "row_counts": {
+          "raw": 291398,
+          "clean": 291398,
+          "mart": 22
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
         "years": [
           2026
         ],
