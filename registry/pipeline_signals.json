@@ -4,9 +4,9 @@
   "repo": "dataset-incubator",
   "topic": "pipeline_state",
   "summary": {
-    "total": 115,
+    "total": 116,
     "by_status": {
-      "ok": 115,
+      "ok": 116,
       "warn": 0,
       "error": 0
     }
@@ -1735,6 +1735,41 @@
           2021
         ],
         "config_path": "candidates/personale-ssn/dataset.yml"
+      }
+    },
+    {
+      "id": "pnrr-gare",
+      "source_id": "italiadomani",
+      "status": "ok",
+      "label": "pnrr-gare",
+      "detail": "anno 2026 — fonte: pnrr_gare — mart: sì",
+      "action": "",
+      "latest_run": {
+        "status": "passed",
+        "run_id": "31006395846",
+        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/31006395846",
+        "checked_at": "2026-08-05",
+        "duration_seconds": 8.5,
+        "row_counts": {
+          "raw": 282655,
+          "clean": 282655,
+          "mart": 227
+        },
+        "readiness": "ready",
+        "readiness_checks": {
+          "total": 8,
+          "ok": 8,
+          "fail": 0
+        },
+        "quality_scores": {
+          "raw": 100.0,
+          "clean": 100.0,
+          "mart": 100.0
+        },
+        "years": [
+          2026
+        ],
+        "config_path": "candidates/pnrr-gare/dataset.yml"
       }
     },
     {
