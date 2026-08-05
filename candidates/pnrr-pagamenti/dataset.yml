@@ -1,0 +1,93 @@
+# PNRR Pagamenti — Italia Domani
+# Download via preprocess.py: il server AEM/Akamai blocca curl/wget e
+# python-requests senza header browser. Usa HttpClient di lab-connectors
+# con Accept + Accept-Language (pattern validato, HTTP 200).
+# Nota: su questo endpoint il probe HEAD/GET Range fallisce (404); il GET
+# completo funziona e il contenuto può arrivare gzip (gestito in preprocess).
+# Per CI serve TOOLKIT_ALLOW_SCRIPT_SOURCE=1 (guardrail di sicurezza).
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "pnrr_pagamenti"
+  source_id: "italiadomani"
+  tags: [finanza-pubblica, pnrr, pagamenti, rendicontazione]
+  category: finanza-pubblica
+  years: [2026]
+  time_coverage:
+    start_year: 2021
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: pnrr_pagamenti
+      type: script
+      args:
+        command: "python preprocess.py raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  read:
+    source: auto
+    mode: latest
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    decimal: ","
+    sample_size: -1
+  required_columns:
+    - codice_univoco_submisura
+    - descrizione_submisura
+    - cup
+    - codice_locale_progetto
+    - finanziamento_totale
+    - finanziamento_pnrr
+    - pagamento_totale
+    - pagamento_pnrr
+    - pagamento_stato
+    - pagamento_stato_bilancio
+    - pagamento_stato_foi
+    - pagamento_fpop
+    - pagamento_ue
+    - pagamento_regione
+    - pagamento_provincia
+    - pagamento_comune
+    - pagamento_altro_pubblico
+    - pagamento_privato
+    - pagamento_da_reperire
+    - pagamento_pnc
+    - pagamento_altri_fondi
+    - data_estrazione
+    - anno_estrazione
+  sql: "sql/clean.sql"
+  validate:
+    min_rows: 150000
+    not_null:
+      - cup
+    # primary_key: deroga — più righe per CUP possibili (più submisure/
+    # date di estrazione per lo stesso progetto). CUP non univoco.
+
+mart:
+  tables:
+    - name: "mart_submisura"
+      sql: "sql/mart_submisura.sql"
+    - name: "mart_sintesi"
+      sql: "sql/mart_sintesi.sql"
+  required_tables:
+    - mart_submisura
+  validate:
+    table_rules:
+      mart_submisura:
+        required_columns: [codice_univoco_submisura, descrizione_submisura, n_progetti, tot_finanziamento_pnrr, tot_pagamenti_pnrr, tasso_assorbimento_pnrr_pct]
+        primary_key: [codice_univoco_submisura, descrizione_submisura]
+        min_rows: 100
+      mart_sintesi:
+        required_columns: [tot_finanziamento, tot_finanziamento_pnrr, tot_pagamenti, tot_pagamenti_pnrr, tasso_assorbimento_pnrr_pct, n_progetti_con_pagamenti]
+        primary_key: []
+        min_rows: 1
+
+validation:
+  fail_on_error: true
