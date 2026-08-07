@@ -22,7 +22,6 @@ import yaml
 
 DI_ROOT = Path(__file__).resolve().parents[2]
 CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
-SEMTYPES_PATH = DI_ROOT / "registry" / "semantic_types.yaml"
 OUTPUT_PATH = DI_ROOT / "registry" / "entity_graph.json"
 
 # Entity display names
@@ -54,21 +53,10 @@ def load_annotated() -> list[dict]:
 
 
 def load_semantic_types() -> dict[str, dict]:
-    """Vocabolario semantic types dal toolkit (un solo source of truth).
+    """Vocabolario semantic types dal toolkit (un solo source of truth)."""
+    from toolkit.registry import schema_reader
 
-    Fallback sul file locale se il modulo registry del toolkit non è
-    disponibile (es. toolkit pinnato senza PR #452).
-    """
-    try:
-        from toolkit.registry import schema_reader
-
-        toolkit_path = schema_reader.DEFAULT_SEMANTIC_TYPES
-        if toolkit_path.is_file():
-            return yaml.safe_load(toolkit_path.read_text()).get("types", {})
-    except ImportError:
-        pass
-    data = yaml.safe_load(SEMTYPES_PATH.read_text())
-    return data.get("types", {})
+    return yaml.safe_load(schema_reader.DEFAULT_SEMANTIC_TYPES.read_text()).get("types", {})
 
 
 def build_graph() -> dict:
