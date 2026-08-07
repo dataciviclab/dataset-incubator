@@ -147,8 +147,8 @@ Gli output del toolkit vivono sotto `out/` — non vanno mai versionati. Il cont
 I clean pubblici del Lab sono tracciati in `registry/clean_catalog.json`. Per aggiornarlo:
 
 ```bash
-python scripts/build_clean_catalog.py --write
-python scripts/build_clean_catalog.py --check-gcs
+python scripts/build_registry.py --write
+python scripts/build_registry.py --check-gcs
 ```
 
 ## Per contribuire

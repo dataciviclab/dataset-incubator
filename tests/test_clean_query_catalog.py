@@ -19,15 +19,22 @@ import pytest
 pytestmark = pytest.mark.contract
 
 ROOT = Path(__file__).resolve().parents[1]
-from build_clean_catalog import validate_catalog
+
+
+def validate_catalog(catalog, _schema) -> list:
+    """Valida contro lo schema condiviso del toolkit (PR #452).
+
+    Wrapper per il contratto storico del test (lista errori stringa).
+    """
+    from toolkit.registry.validation import validate_artifact
+
+    return validate_artifact(catalog, "clean_catalog.schema.json")
 
 
 @pytest.mark.contract
 class CleanCatalogValidationTest(unittest.TestCase):
     def setUp(self) -> None:
-        self.schema = json.loads(
-            (ROOT / "registry" / "clean_catalog.schema.json").read_text(encoding="utf-8")
-        )
+        self.schema = None  # schema dal toolkit (validate_catalog)
         self.catalog = json.loads(
             (ROOT / "registry" / "clean_catalog.json").read_text(encoding="utf-8")
         )
@@ -49,7 +56,7 @@ class CleanCatalogValidationTest(unittest.TestCase):
         dataset["stage"] = "ready-ish"
         catalog["datasets"] = [dataset]
         errors = validate_catalog(catalog, self.schema)
-        self.assertTrue(any("not in enum" in error for error in errors), errors)
+        self.assertTrue(any("is not one of" in error for error in errors), errors)
 
     def test_schema_rejects_extra_location_property(self) -> None:
         catalog = dict(self.catalog)
@@ -59,7 +66,9 @@ class CleanCatalogValidationTest(unittest.TestCase):
         dataset["location"] = location
         catalog["datasets"] = [dataset]
         errors = validate_catalog(catalog, self.schema)
-        self.assertTrue(any("additional property" in error for error in errors), errors)
+        self.assertTrue(
+            any("Additional properties are not allowed" in error for error in errors), errors
+        )
 
 
 class TestSearchByTag:

@@ -23,24 +23,34 @@ Validare e chiudere la draft PR `chore(post-merge): aggiorna registry per PR #<n
 
 ## Cosa fa già CI (GHA `Post-Merge Candidate Registry`)
 
-- ✅ toolkit run (pipeline completa raw→clean→mart, tutti gli anni)
-- ✅ push clean parquet su GCS
-- ✅ `registry/pipeline_signals.json` aggiornato
-- ✅ `registry/clean_catalog.json` auto-derivato
+Pattern snello (eurostat post-merge-registry.yml):
+- ✅ run completo dei dataset cambiati (parquet locali) + push GCS
+- ✅ `python scripts/build_registry.py --write` (wrapper su `toolkit.registry`):
+  - `registry/clean_catalog.json` auto-derivato (metadata dal dataset.yml,
+    schema dai parquet appena runnati; entry non cambiate preservate dal
+    catalogo esistente)
+  - `registry/pipeline_signals.json` + `registry/mart_catalog.json` + `registry/codelists.json`
+- ✅ `registry/entity_graph.json` (tools/graph/build_graph.py)
 - ✅ draft PR aperta
 
 ## Cosa rimane al maintainer
 
-### 1. Compila i campi del clean catalog
+I campi del catalogo (name/description/source/tags/category) arrivano dal
+`dataset.yml`; le entry già presenti restano dal catalogo esistente. Il
+maintainer interviene **solo per i casi editoriali rari**: descrizioni umane
+di qualità per slug nuovi (il `name` derivato `slug.title()` non è un buon
+titolo). In quel caso compila direttamente nel catalogo della PR draft:
 
-Solo per slug nuovi. Apri `registry/clean_catalog.json` e compila:
+### 1. (Raro) Compila i campi editoriali del clean catalog
+
+Solo per slug nuovi con titolo/descrizione derivati poco leggibili. Apri
+`registry/clean_catalog.json` e compila:
 
 | Campo | Cosa mettere |
 |---|---|
 | `name` | Nome canonico, es. "PIL regionale e provinciale" |
 | `description` | Una frase: cosa contiene, da dove viene |
 | `source` | Nome ente o URL breve |
-| `source_id` | ID fonte da source-observatory (es. `istat_sdmx`) |
 | `columns[].role` | `dimension` per geo/tempo/categoria, `metric` per numeri |
 | `columns[].description` | Descrizione breve della colonna |
 
@@ -51,7 +61,7 @@ Regole per `role`:
 ### 2. Verifica
 
 ```bash
-python scripts/build_clean_catalog.py --check-gcs
+python scripts/build_registry.py --check-gcs
 ```
 
 Deve restituire `ok`.

@@ -10,7 +10,7 @@ Uso::
 
     python tools/graph/build_graph.py [--json] [--entity Comune]
 
-Dipende da: clean_catalog.json (con colonne annotate da build_clean_catalog.py --derive).
+Dipende da: clean_catalog.json (prodotto da scripts/build_registry.py --write).
 """
 
 from __future__ import annotations
@@ -54,6 +54,19 @@ def load_annotated() -> list[dict]:
 
 
 def load_semantic_types() -> dict[str, dict]:
+    """Vocabolario semantic types dal toolkit (un solo source of truth).
+
+    Fallback sul file locale se il modulo registry del toolkit non è
+    disponibile (es. toolkit pinnato senza PR #452).
+    """
+    try:
+        from toolkit.registry import schema_reader
+
+        toolkit_path = schema_reader.DEFAULT_SEMANTIC_TYPES
+        if toolkit_path.is_file():
+            return yaml.safe_load(toolkit_path.read_text()).get("types", {})
+    except ImportError:
+        pass
     data = yaml.safe_load(SEMTYPES_PATH.read_text())
     return data.get("types", {})
 
