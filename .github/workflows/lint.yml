@@ -34,16 +34,13 @@ jobs:
           extra-packages: ruff mypy types-pyyaml types-requests pytest pytest-cov pytest-timeout mcp>=1.26.0 duckdb==1.5.1
 
       - name: Ruff
-        run: ruff check scripts/ tools/
+        run: ruff check scripts/
 
       - name: Mypy
-        run: mypy scripts/ tools/
+        run: mypy scripts/
 
-      - name: Pytest (scripts + MCP)
-        run: python -m pytest tests/ -q --tb=line --cov=scripts --cov=tools/clean_query_mcp --cov-report=term --cov-fail-under=55
-
-      - name: Smoke test clean-query MCP
-        run: python -m tools.clean_query_mcp.scripts.smoke
+      - name: Pytest (scripts)
+        run: python -m pytest tests/ -q --tb=line --cov=scripts --cov-report=term --cov-fail-under=55
 
       - name: Audit test markers
         shell: bash

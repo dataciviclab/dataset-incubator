@@ -33,7 +33,7 @@ I **mart** analitici sono tre:
 - `mart_enti`: benchmark entrate/uscite per singolo ente
 
 Non esiste più un mart passthrough (`siope_bilancio_unificato`): per il dato
-full si usa il clean (via clean-query MCP o direttamente da GCS).
+full si usa il clean (via query SQL su parquet o direttamente da GCS).
 
 ## Rischi
 

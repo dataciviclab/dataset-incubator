@@ -64,8 +64,6 @@ dataset-incubator/
     registry.json             # artifact unico (fusion ADR) — sezioni datasets/marts/signals/codelists/entities
     clean_catalog.json        # proiezione legacy (consumer non ancora migrati)
     pipeline_signals.json     # proiezione legacy (stato dei run per filone)
-  tools/
-    clean_query_mcp/          # MCP per interrogare i clean pubblici
   templates/
     candidate/                 # template di partenza per filone
   skills/                      # skill markdown (riferimento umano per agenti e operatori)

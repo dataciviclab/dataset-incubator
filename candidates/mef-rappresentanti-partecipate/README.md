@@ -43,7 +43,7 @@ I compensi dei rappresentanti della PA nei CdA delle società partecipate sono s
 
 ## Criterio di promozione
 
-Promuovere quando: (1) i numeri del trend e del gender gap sono verificati e citabili; (2) almeno una risposta della discussion #406 è chiusa con dati; (3) la geografia dei compensi (Nord-Sud) è esplorata via clean-query.
+Promuovere quando: (1) i numeri del trend e del gender gap sono verificati e citabili; (2) almeno una risposta della discussion #406 è chiusa con dati; (3) la geografia dei compensi (Nord-Sud) è esplorata via query SQL.
 
 ## Stato / prossimo passo
 

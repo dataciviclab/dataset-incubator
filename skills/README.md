@@ -22,7 +22,7 @@ Sono il riferimento umano per il comportamento della pipeline toolkit e delle Gi
 | `lint.yml` | PR e push su scripts/, tools/, pyproject.toml | Mypy + ruff + pytest su codice Python |
 | `pr-toolkit-check.yml` | PR su candidates/, support_datasets/ | `validate_candidate_structure.py` (struttura+config strict) + preflight + `toolkit run` con sample-rows |
 | `post-merge-candidate.yml` | Merge su candidates/, support_datasets/ | Run CI, rebuild `registry.json` (fusion) + proiezioni legacy, apre draft PR handoff |
-| `validate-clean-catalog.yml` | PR e push su `registry/` | Schema JSON, GCS check, clean-query smoke test |
+| `validate-clean-catalog.yml` | PR e push su `registry/` | Schema JSON, GCS check |
 
 ## Cross-repo
 
