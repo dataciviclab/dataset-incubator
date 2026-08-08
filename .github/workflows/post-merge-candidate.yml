@@ -128,8 +128,8 @@ jobs:
           for dir in $(cat changed_dirs_final.txt); do
             slug=$(grep '^  name:' "$dir/dataset.yml" | sed 's/.*: "//;s/"//')
             [ -z "$slug" ] && continue
-            python scripts/push_archive.py --layer clean --slug "$slug" --no-bq \
-              && python scripts/push_archive.py --layer mart --slug "$slug" --no-bq \
+            python scripts/push_archive.py --layer clean --slug "$slug" \
+              && python scripts/push_archive.py --layer mart --slug "$slug" \
               || echo "⚠️  push GCS fallito (skip): $slug"
           done
 
