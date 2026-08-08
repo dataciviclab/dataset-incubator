@@ -108,6 +108,43 @@ class TestDetectFromFiles:
         assert items == []
         assert configs == []
 
+    @pytest.mark.contract
+    @pytest.mark.parametrize(
+        "files",
+        [
+            ["candidates/my-ds/README.md"],
+            ["candidates/my-ds/notes.md"],
+            ["candidates/my-ds/notebook.ipynb"],
+            ["candidates/my-ds/out/data/clean/x.parquet"],
+            ["candidates/my-ds/images/plot.png"],
+        ],
+    )
+    def test_doc_only_changes_do_not_trigger(self, files):
+        """README/notes/notebook/immagini/out non devono triggerare la pipeline."""
+        from detect_candidates import _detect_from_files
+
+        items, configs = _detect_from_files(files)
+        assert items == []
+        assert configs == []
+
+    @pytest.mark.contract
+    @pytest.mark.parametrize(
+        "files",
+        [
+            ["candidates/my-ds/dataset.yml"],
+            ["candidates/my-ds/sql/clean.sql"],
+            ["candidates/my-ds/preprocess.py"],
+            ["candidates/my-ds/sources/a/dataset.yml"],
+            ["candidates/my-ds/dataset.yml", "candidates/my-ds/README.md"],
+        ],
+    )
+    def test_pipeline_files_still_trigger(self, files):
+        """dataset.yml/sql/script/fonti restano trigger anche con file doc."""
+        from detect_candidates import _detect_from_files
+
+        items, _ = _detect_from_files(files)
+        assert any(i["slug"] == "my-ds" for i in items)
+
 
 class TestDetectCandidatesFiles:
     @pytest.mark.contract
