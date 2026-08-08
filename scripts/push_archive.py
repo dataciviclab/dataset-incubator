@@ -1,5 +1,5 @@
 """
-push_archive.py — carica CLEAN e MART da DI/out/ su GCS + BigQuery
+push_archive.py — carica CLEAN e MART da DI/out/ su GCS
 
 Struttura sorgente (toolkit):
   {DI_ROOT}/out/data/clean/{slug}/{year}/{slug}_{year}_clean.parquet
@@ -8,11 +8,6 @@ Struttura sorgente (toolkit):
 Struttura GCS:
   gs://dataciviclab-clean/{slug}/{year}/{slug}_{year}_clean.parquet  (pubblico)
   gs://dataciviclab-mart/{slug}/{year}/mart_*.parquet                (privato)
-
-Struttura BigQuery (solo mart):
-  project: dataciviclab
-  dataset: {slug}        (auto-creato se non esiste, location EU)
-  table:   {parquet_stem}
 
 Uso:
   python push_archive.py --layer clean --slug ispra_ru_base --dry-run
@@ -49,8 +44,6 @@ from toolkit.contracts import layer_dataset_dir, run_record_dir as _run_record_d
 # ---------------------------------------------------------------------------
 # Config
 # ---------------------------------------------------------------------------
-GCP_PROJECT = "dataciviclab"
-BQ_LOCATION = "EU"
 
 DI_ROOT = Path(__file__).resolve().parents[1]
 CATALOG_PATH = DI_ROOT / "registry" / "clean_catalog.json"
@@ -144,104 +137,6 @@ def upload_manifest(manifest, dry_run=False):
         content_type="application/json",
     )
     print(f"  GCS: {manifest_gs}")
-
-
-# ---------------------------------------------------------------------------
-# BigQuery
-# ---------------------------------------------------------------------------
-def create_bq_external_table(bq_client, slug, dry_run=False):
-    """Crea o aggiorna una external table BQ che punta ai clean parquet in GCS.
-
-    Non usa Hive partitioning perché il path GCS è {slug}/{year}/ (plain).
-    Il filtro per anno si fa via colonna `anno` già presente nel dato.
-    Per abilitare partitioning nativo servirebbero path year=YYYY/ — migrare in futuro.
-    """
-    dataset_id = slug
-    table_id = f"{GCP_PROJECT}.{dataset_id}.clean"
-    gcs_uri = f"gs://{CLEAN_BUCKET}/{slug}/*/*.parquet"
-
-    if dry_run:
-        print(f"  [dry] BQ external table: {table_id} <- {gcs_uri}")
-        return
-
-    ensure_bq_dataset(bq_client, dataset_id)
-
-    slug_dir = _clean_dir(slug)
-    years = get_years(slug_dir) if slug_dir.exists() else []
-    source_uris = (
-        [f"gs://{CLEAN_BUCKET}/{slug}/{year}/*.parquet" for year in years]
-        if years
-        else [f"gs://{CLEAN_BUCKET}/{slug}/2*/*.parquet"]  # fallback per dataset nuovi
-    )
-
-    from google.cloud import bigquery
-    from google.api_core.exceptions import Conflict
-
-    external_config = bigquery.ExternalConfig("PARQUET")
-    external_config.source_uris = source_uris
-    external_config.autodetect = True
-
-    table = bigquery.Table(table_id)
-    table.external_data_configuration = external_config
-
-    try:
-        bq_client.create_table(table)
-        print(f"  BQ external table creata: {table_id}")
-    except Conflict:
-        existing = bq_client.get_table(table_id)
-        existing.external_data_configuration = external_config
-        bq_client.update_table(existing, ["external_data_configuration"])
-        print(f"  BQ external table aggiornata: {table_id}")
-
-
-def ensure_bq_dataset(bq_client, dataset_id, dry_run=False):
-    from google.cloud import bigquery
-    from google.api_core.exceptions import Conflict
-
-    full_id = f"{GCP_PROJECT}.{dataset_id}"
-    if dry_run:
-        print(f"  [dry] BQ dataset: {full_id}")
-        return
-    dataset = bigquery.Dataset(full_id)
-    dataset.location = BQ_LOCATION
-    try:
-        bq_client.create_dataset(dataset)
-        print(f"  BQ dataset creato: {full_id}")
-    except Conflict:
-        pass
-
-
-def push_bq(bq_client, local_path, slug, year, dry_run=False):
-    from google.cloud import bigquery
-
-    df = pd.read_parquet(local_path)
-    table_name = local_path.stem
-    table_id = f"{GCP_PROJECT}.{slug}.{table_name}"
-
-    if dry_run:
-        print(f"  [dry] BQ: {table_id} ({len(df)} righe, cols: {list(df.columns)})")
-        return
-
-    if "anno" not in df.columns:
-        df["anno"] = int(year)
-
-    # Converti anno in DATE (1 gennaio dell'anno) per partizione BQ e Looker Studio
-    df["data_anno"] = pd.to_datetime(df["anno"].astype(str) + "-01-01").dt.date
-
-    # Elimina righe esistenti per questo anno prima di ricaricare
-    try:
-        bq_client.query(f"DELETE FROM `{table_id}` WHERE anno = {year}").result()
-    except Exception:
-        pass  # tabella non esiste ancora — ok
-
-    job_config = bigquery.LoadJobConfig(
-        write_disposition=bigquery.WriteDisposition.WRITE_APPEND,
-        schema_update_options=[bigquery.SchemaUpdateOption.ALLOW_FIELD_ADDITION],
-        autodetect=True,
-    )
-    job = bq_client.load_table_from_dataframe(df, table_id, job_config=job_config)
-    job.result()
-    print(f"  BQ: {table_id} ({len(df)} righe)")
 
 
 # ---------------------------------------------------------------------------
@@ -401,7 +296,7 @@ def push_clean(slug_filter=None, year_filter=None, dry_run=False):
 # ---------------------------------------------------------------------------
 # Layer: MART
 # ---------------------------------------------------------------------------
-def push_mart(bq_client, slug_filter=None, year_filter=None, dry_run=False):
+def push_mart(slug_filter=None, year_filter=None, dry_run=False):
     mart_root = _layer_root("mart")
     slugs = get_slugs(mart_root, slug_filter)
     print(f"[mart] slug: {slugs}\n")
@@ -414,15 +309,11 @@ def push_mart(bq_client, slug_filter=None, year_filter=None, dry_run=False):
             continue
 
         print(f"[{slug}] anni: {years}")
-        if bq_client:
-            ensure_bq_dataset(bq_client, slug, dry_run)
 
         for year in years:
             for parq in get_parquets(slug_dir / year):
                 gcs_path = mart_parquet(slug, year, parq.stem)
                 push_gcs(parq, MART_BUCKET, gcs_path, dry_run)
-                if bq_client:
-                    push_bq(bq_client, parq, slug, year, dry_run)
         print()
 
 
@@ -430,7 +321,7 @@ def push_mart(bq_client, slug_filter=None, year_filter=None, dry_run=False):
 # Main
 # ---------------------------------------------------------------------------
 def main():
-    parser = argparse.ArgumentParser(description="Push CLEAN/MART → GCS + BigQuery")
+    parser = argparse.ArgumentParser(description="Push CLEAN/MART → GCS")
     parser.add_argument(
         "--layer",
         choices=["clean", "mart", "all"],
@@ -440,12 +331,6 @@ def main():
     parser.add_argument("--slug", help="Slug specifico (default: tutti)")
     parser.add_argument("--year", help="Anno specifico (default: tutti)")
     parser.add_argument("--dry-run", action="store_true", help="Simula senza caricare")
-    parser.add_argument("--no-bq", action="store_true", help="Salta BigQuery (solo GCS)")
-    parser.add_argument(
-        "--create-bq-table",
-        action="store_true",
-        help="Crea/aggiorna external table BQ per i clean pushati",
-    )
     parser.add_argument(
         "--update-catalog",
         action="store_true",
@@ -462,34 +347,22 @@ def main():
     )
     args = parser.parse_args()
 
-    # --catalog-only disabilita tutto il push GCS/BQ, solo catalogo
+    # --catalog-only disabilita il push GCS, solo catalogo
     if args.catalog_only:
         args.layer = None
-        args.no_bq = True
-        args.create_bq_table = False
-
-    if not args.no_bq or args.create_bq_table:
-        from google.cloud import bigquery
-
-        bq_client = bigquery.Client(project=GCP_PROJECT)
-    else:
-        bq_client = None
 
     if args.layer in ("clean", "all") and not args.catalog_only:
         push_clean(args.slug, args.year, args.dry_run)
 
-    if args.update_catalog or args.create_bq_table:
+    if args.update_catalog:
         clean_root = _layer_root("clean")
         slugs = get_slugs(clean_root, args.slug)
         for slug in slugs:
-            if args.update_catalog:
-                years = get_years(_clean_dir(slug))
-                update_catalog(slug, years, args.status, args.dry_run)
-            if args.create_bq_table:
-                create_bq_external_table(bq_client, slug, args.dry_run)
+            years = get_years(_clean_dir(slug))
+            update_catalog(slug, years, args.status, args.dry_run)
 
     if args.layer in ("mart", "all"):
-        push_mart(bq_client, args.slug, args.year, args.dry_run)
+        push_mart(args.slug, args.year, args.dry_run)
 
     print("Done.")
 

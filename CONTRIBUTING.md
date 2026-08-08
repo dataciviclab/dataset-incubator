@@ -264,8 +264,8 @@ La promotion serve a fissare:
 Dopo il merge di un candidate, il workflow `Post-Merge Candidate Registry` (GitHub Actions) apre una draft PR di handoff con la checklist dei passi manuali:
 
 1. Run completo `toolkit run all --config candidates/{slug}/dataset.yml`
-2. `python scripts/push_archive.py --layer clean --slug {slug} --create-bq-table --update-catalog --status clean_ready`
-3. `python scripts/build_clean_catalog.py --write` + `--check-gcs`
+2. `python scripts/push_archive.py --layer clean --slug {slug} --update-catalog --status clean_ready`
+3. `python scripts/build_registry.py --write` + `--check-gcs`
 
 Vedi [skills/post-merge-candidate.md](skills/post-merge-candidate.md) per il dettaglio completo.
 

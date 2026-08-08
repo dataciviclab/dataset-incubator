@@ -16,7 +16,10 @@ repos:
         exclude: '^(candidates/|support_datasets/|templates/)'
       - id: check-yaml
       - id: check-json
+      # Gli artifact registry (registry.json, proiezioni legacy) sono contratti
+      # committati e superano i 500KB default (es. registry.json ~850KB).
       - id: check-added-large-files
+        args: [--maxkb=1024]
       - id: check-merge-conflict
       - id: detect-private-key
 
