@@ -79,10 +79,22 @@ def main() -> int:
                 file=sys.stderr,
             )
 
+    existing_signals = None
+    signals_path = args.out / "pipeline_signals.json"
+    if signals_path.is_file():
+        try:
+            existing_signals = json.loads(signals_path.read_text(encoding="utf-8"))
+        except json.JSONDecodeError:
+            print(
+                "WARN: pipeline_signals.json esistente illeggibile — riparto da zero",
+                file=sys.stderr,
+            )
+
     result = build_registry(
         layout,
         path_contract=contract,
         existing_catalog=existing,
+        existing_signals=existing_signals,
         derive_mode="check-gcs" if args.check_gcs else "local",
     )
 
