@@ -81,7 +81,7 @@ def _load_existing(out: Path) -> tuple[dict | None, dict | None]:
     return existing_catalog, existing_signals
 
 
-def _legacy_header(name: str, path: Path, registry: dict) -> dict:
+def _legacy_header(name: tuple[str, ...], path: Path, registry: dict) -> dict:
     """Header legacy per clean_catalog.json/pipeline_signals.json.
 
     Preserva i campi di presentazione dal file esistente (se presente),
