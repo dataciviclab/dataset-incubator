@@ -738,11 +738,11 @@ ENTITY_GRAPH_PATH = DI_ROOT / "registry" / "entity_graph.json"
 
 
 def _load_relationship_map() -> dict[str, Any]:
-    """Carica il grafo entità da entity_graph.json (generato da build_graph.py)."""
+    """Carica il grafo entità da entity_graph.json (proiezione del registry)."""
     try:
         if not ENTITY_GRAPH_PATH.exists():
             return {
-                "error": "entity_graph.json non trovato. Esegui: python tools/graph/build_graph.py"
+                "error": "entity_graph.json non trovato. Rigenera con: python scripts/build_registry.py --write"
             }
         return json.loads(ENTITY_GRAPH_PATH.read_text())
     except Exception as exc:

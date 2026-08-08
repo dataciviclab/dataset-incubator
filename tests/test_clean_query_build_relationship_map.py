@@ -18,7 +18,9 @@ GRAPH_PATH = Path(__file__).resolve().parents[1] / "registry" / "entity_graph.js
 
 def _load() -> dict:
     if not GRAPH_PATH.exists():
-        pytest.skip("entity_graph.json non trovato. Esegui: python tools/graph/build_graph.py")
+        pytest.skip(
+            "entity_graph.json non trovato. Rigenera con: python scripts/build_registry.py --write"
+        )
     return json.loads(GRAPH_PATH.read_text())
 
 

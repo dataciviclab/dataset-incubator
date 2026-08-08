@@ -28,7 +28,6 @@ def patch_root(monkeypatch: pytest.MonkeyPatch, tmp_path: Path) -> Path:
     """Imposta ROOT a tmp_path per moduli che usano ROOT per path relativi."""
     # Patches validate_candidate_structure.ROOT
     monkeypatch.setattr("validate_candidate_structure.ROOT", tmp_path)
-    monkeypatch.setattr("build_pipeline_signals.ROOT", tmp_path)
     monkeypatch.setattr("resolve_sample_run.ROOT", tmp_path)
     monkeypatch.setattr("detect_candidates.ROOT", tmp_path)
     return tmp_path

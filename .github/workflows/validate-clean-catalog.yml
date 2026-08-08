@@ -3,17 +3,17 @@ name: Validate Clean Catalog
 on:
   pull_request:
     paths:
+      - "registry/registry.json"
       - "registry/clean_catalog.json"
-      - "registry/clean_catalog.schema.json"
-      - "scripts/build_clean_catalog.py"
+      - "scripts/build_registry.py"
       - "tools/clean_query_mcp/**"
   push:
     branches:
       - main
     paths:
+      - "registry/registry.json"
       - "registry/clean_catalog.json"
-      - "registry/clean_catalog.schema.json"
-      - "scripts/build_clean_catalog.py"
+      - "scripts/build_registry.py"
       - "tools/clean_query_mcp/**"
   workflow_dispatch:
 
@@ -32,12 +32,12 @@ jobs:
 
       # Validate catalog structure (schema + contract) — sempre
       - name: Validate catalog structure
-        run: python scripts/build_clean_catalog.py
+        run: python scripts/build_registry.py
 
       # Check GCS paths solo su push a main (troppo lento per PR: ~3min su 106 dataset)
       - name: Validate public GCS paths
         if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: python scripts/build_clean_catalog.py --check-gcs
+        run: python scripts/build_registry.py --check-gcs
 
       # Notifiche downstream — su push a main (dopo merge registry PR)
       # Notifica DE per qualsiasi modifica al catalogo (nuovo slug OPPURE aggiornamento)

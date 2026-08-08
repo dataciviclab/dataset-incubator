@@ -13,772 +13,801 @@
   },
   "signals": [
     {
-      "id": "aci-prime-iscrizioni-autovetture",
+      "id": "aci_prime_iscrizioni_autovetture",
       "source_id": "aci",
       "status": "ok",
-      "label": "aci-prime-iscrizioni-autovetture",
-      "detail": "anno 2024 — fonti: aci_2017, aci_2018 — mart: sì",
+      "label": "aci_prime_iscrizioni_autovetture",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28817993929",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28817993929",
-        "checked_at": "2026-07-06",
-        "years": [
-          2024
-        ],
-        "config_path": "candidates/aci-prime-iscrizioni-autovetture/dataset.yml"
-      }
+      "years": [
+        2024
+      ]
     },
     {
-      "id": "ade-cinque-per-mille",
+      "id": "ade_cinque_per_mille",
       "source_id": "ade",
       "status": "ok",
-      "label": "ade-cinque-per-mille",
-      "detail": "anni 2023-2025 — fonte: ? — mart: sì",
+      "label": "ade_cinque_per_mille",
+      "detail": "anni 2023-2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29826248891",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29826248891",
-        "checked_at": "2026-07-21",
-        "years": [
-          2023,
-          2024,
-          2025
-        ],
-        "config_path": "candidates/ade-cinque-per-mille/dataset.yml"
+      "years": [
+        2023,
+        2024,
+        2025
+      ],
+      "run": {
+        "run_id": "20260728T140724Z_2d4d475f",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 85,
+          "mart": 95
+        },
+        "output_rows": {
+          "clean": 95977,
+          "mart": 21
+        },
+        "output_bytes": {
+          "raw": 10784519,
+          "clean": 3172301,
+          "mart": 3268
+        },
+        "started_at": "2026-07-28T14:07:24.076485+00:00",
+        "finished_at": "2026-07-28T14:07:46.805591+00:00",
+        "duration_seconds": 22.729
       }
     },
     {
-      "id": "aifa-spesa-consumo",
+      "id": "aifa_spesa_consumo",
       "source_id": "aifa",
       "status": "ok",
-      "label": "aifa-spesa-consumo",
-      "detail": "anni 2018-2024 — fonte: aifa_spesa_consumo_csv — mart: sì",
+      "label": "aifa_spesa_consumo",
+      "detail": "anni 2018-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30524438404",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30524438404",
-        "checked_at": "2026-07-30",
-        "duration_seconds": 10.113,
-        "readiness": "needs-review",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 7,
-          "fail": 1
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "run": {
+        "run_id": "20260730T084948Z_d12bb7c2",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 95
         },
-        "years": [
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/aifa-spesa-consumo/dataset.yml"
+        "output_rows": {
+          "clean": 177500,
+          "mart": 123673
+        },
+        "output_bytes": {
+          "raw": 31895365,
+          "clean": 2076040,
+          "mart": 1644528
+        },
+        "started_at": "2026-07-30T08:49:48.164156+00:00",
+        "finished_at": "2026-07-30T08:50:08.017957+00:00",
+        "duration_seconds": 19.854
       }
     },
     {
-      "id": "anac-aggiudicazioni",
+      "id": "anac_aggiudicazioni",
       "source_id": "anac",
       "status": "ok",
-      "label": "anac-aggiudicazioni",
-      "detail": "anno 2026 — fonte: aggiudicazioni — mart: sì",
+      "label": "anac_aggiudicazioni",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29639215447",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29639215447",
-        "checked_at": "2026-07-18",
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/anac-aggiudicazioni/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "anac-bandi-gara",
+      "id": "anac_bandi_gara",
       "source_id": "anac",
       "status": "ok",
-      "label": "anac-bandi-gara",
-      "detail": "anni 2016-2025 — fonte: cig_{year} — mart: sì",
+      "label": "anac_bandi_gara",
+      "detail": "anni 2016-2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28327708156",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28327708156",
-        "checked_at": "2026-06-28",
-        "years": [
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024,
-          2025
-        ],
-        "config_path": "candidates/anac-bandi-gara/dataset.yml"
+      "years": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "run": {
+        "run_id": "20260728T093933Z_e87c8a52",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 80,
+          "mart": 75
+        },
+        "output_rows": {
+          "raw": 1228909,
+          "clean": 1228909,
+          "mart": 419803
+        },
+        "output_bytes": {
+          "raw": 980659088,
+          "clean": 151704174,
+          "mart": 7643797
+        },
+        "started_at": "2026-07-28T09:39:33.538892+00:00",
+        "finished_at": "2026-07-28T09:42:56.910622+00:00",
+        "duration_seconds": 203.372
       }
     },
     {
-      "id": "anpr-mobilita-residenziale",
+      "id": "anpr_mobilita_residenziale",
       "source_id": "anpr",
       "status": "ok",
-      "label": "anpr-mobilita-residenziale",
-      "detail": "anno 2026 — fonte: anpr_cambi_residenza_csv — mart: sì",
+      "label": "anpr_mobilita_residenziale",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30702611494",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30702611494",
-        "checked_at": "2026-08-01",
-        "duration_seconds": 0.98,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260801T133743Z_75b44ded",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 22176,
           "clean": 22176,
           "mart": 2362
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 798721,
+          "clean": 46089,
+          "mart": 11914
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/anpr-mobilita-residenziale/dataset.yml"
+        "started_at": "2026-08-01T13:37:43.676108+00:00",
+        "finished_at": "2026-08-01T13:37:45.384535+00:00",
+        "duration_seconds": 1.708
       }
     },
     {
-      "id": "bdap-entrate-stato",
+      "id": "bdap_entrate_stato",
       "source_id": "openbdap",
       "status": "ok",
-      "label": "bdap-entrate-stato",
-      "detail": "anno 2024 — fonte: openbdap_entrate_csv — mart: sì",
+      "label": "bdap_entrate_stato",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26637016060",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26637016060",
-        "checked_at": "2026-05-29",
-        "years": [
-          2024
-        ],
-        "config_path": "candidates/bdap-entrate-stato/dataset.yml"
+      "years": [
+        2024
+      ],
+      "run": {
+        "run_id": "20260731T163739Z_1a473287",
+        "year": 2024,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-31T16:37:39.488090+00:00",
+        "finished_at": "2026-07-31T16:37:39.494379+00:00",
+        "duration_seconds": 0.006
       }
     },
     {
-      "id": "bdap-lea",
+      "id": "bdap_lea",
       "source_id": "openbdap",
       "status": "ok",
-      "label": "bdap-lea",
-      "detail": "anni 2019-2024 — fonte: bdap_lea_csv — mart: sì",
+      "label": "bdap_lea",
+      "detail": "anni 2019-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27040177316",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27040177316",
-        "checked_at": "2026-06-05",
-        "years": [
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/bdap-lea/dataset.yml"
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "run": {
+        "run_id": "20260731T163744Z_3e42196f",
+        "year": 2024,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-31T16:37:44.040306+00:00",
+        "finished_at": "2026-07-31T16:37:44.044617+00:00",
+        "duration_seconds": 0.004
       }
     },
     {
-      "id": "bdap-spese-stato",
+      "id": "bdap_spese_stato",
       "source_id": "openbdap",
       "status": "ok",
-      "label": "bdap-spese-stato",
-      "detail": "anno 2024 — fonte: openbdap_spese_csv — mart: sì",
+      "label": "bdap_spese_stato",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27060712871",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27060712871",
-        "checked_at": "2026-06-06",
-        "years": [
-          2024
-        ],
-        "config_path": "candidates/bdap-spese-stato/dataset.yml"
+      "years": [
+        2024
+      ],
+      "run": {
+        "run_id": "20260731T163747Z_7aea68b1",
+        "year": 2024,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-31T16:37:47.439580+00:00",
+        "finished_at": "2026-07-31T16:37:47.443667+00:00",
+        "duration_seconds": 0.004
       }
     },
     {
-      "id": "camera-deputati-legislature",
+      "id": "camera_deputati_legislature",
       "source_id": "dati_camera",
       "status": "ok",
-      "label": "camera-deputati-legislature",
-      "detail": "anno 2026 — fonte: camera_deputati_sparql — mart: sì",
+      "label": "camera_deputati_legislature",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30924328812",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30924328812",
-        "checked_at": "2026-08-04",
-        "duration_seconds": 12.62,
-        "row_counts": {
-          "raw": 27764,
-          "clean": 27764,
-          "mart": 11326
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260803T171856Z_18c50a47",
+        "year": 9,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_rows": {
+          "raw": 676
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 95.0,
-          "mart": 100.0
+        "output_bytes": {
+          "raw": 314386
         },
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/camera-deputati-legislature/dataset.yml"
+        "started_at": "2026-08-03T17:18:56.625514+00:00",
+        "finished_at": "2026-08-03T17:18:58.264216+00:00",
+        "duration_seconds": 1.639
       }
     },
     {
-      "id": "camera-votazioni-sparql",
+      "id": "camera_votazioni_sparql",
       "source_id": "dati_camera",
       "status": "ok",
-      "label": "camera-votazioni-sparql",
-      "detail": "anni 2018-2026 — fonte: sparql — mart: sì",
+      "label": "camera_votazioni_sparql",
+      "detail": "anni 2018-2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30924328812",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30924328812",
-        "checked_at": "2026-08-04",
-        "duration_seconds": 32.69,
-        "row_counts": {
-          "raw": 30023,
-          "clean": 30023
-        },
-        "readiness": "needs-review",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 7,
-          "fail": 1
-        },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0
-        },
-        "years": [
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024,
-          2025,
-          2026
-        ],
-        "config_path": "candidates/camera-votazioni-sparql/dataset.yml"
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "run": {
+        "run_id": "20260804T152323Z_35f0c659",
+        "year": 2026,
+        "status": "SUCCESS",
+        "started_at": "2026-08-04T15:23:23.299777+00:00",
+        "finished_at": "2026-08-04T15:23:23.320965+00:00",
+        "duration_seconds": 0.021
       }
     },
     {
-      "id": "centri-accoglienza-italia",
+      "id": "centri_accoglienza_italia",
       "source_id": "centri_d_italia",
       "status": "ok",
-      "label": "centri-accoglienza-italia",
-      "detail": "anno 2026 — fonte: centri-accoglienza-italia_source — mart: sì",
+      "label": "centri_accoglienza_italia",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28542315999",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28542315999",
-        "checked_at": "2026-07-01",
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/centri-accoglienza-italia/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "civile-flussi",
+      "id": "civile_flussi",
       "source_id": "giustizia_statistiche",
       "status": "ok",
-      "label": "civile-flussi",
-      "detail": "anno 2025 — fonte: ministero_giustizia_xlsx — mart: sì",
+      "label": "civile_flussi",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30628794316",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 28.05,
-        "row_counts": {
+      "years": [
+        2025
+      ],
+      "run": {
+        "run_id": "20260731T114731Z_3dec8a0d",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "clean": 123203,
           "mart": 324
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 6716220,
+          "clean": 698682,
+          "mart": 6090
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2025
-        ],
-        "config_path": "candidates/civile-flussi/dataset.yml"
+        "started_at": "2026-07-31T11:47:31.726712+00:00",
+        "finished_at": "2026-07-31T11:48:42.007615+00:00",
+        "duration_seconds": 70.281
       }
     },
     {
-      "id": "consip-consumi-convenzione",
+      "id": "consip_consumi_convenzione",
       "source_id": "consip_open_data",
       "status": "ok",
-      "label": "consip-consumi-convenzione",
-      "detail": "anni 2023-2025 — fonti: consip_consumi_convenzione_2023, consip_consumi_convenzione_2024 — mart: sì",
+      "label": "consip_consumi_convenzione",
+      "detail": "anni 2023-2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26456578571",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26456578571",
-        "checked_at": "2026-05-26",
-        "years": [
-          2023,
-          2024,
-          2025
-        ],
-        "config_path": "candidates/consip-consumi-convenzione/dataset.yml"
+      "years": [
+        2023,
+        2024,
+        2025
+      ],
+      "run": {
+        "run_id": "20260728T141049Z_6e9fd376",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 95
+        },
+        "output_rows": {
+          "raw": 7115,
+          "clean": 7115,
+          "mart": 3778
+        },
+        "output_bytes": {
+          "raw": 1096932,
+          "clean": 79910,
+          "mart": 38236
+        },
+        "started_at": "2026-07-28T14:10:49.622969+00:00",
+        "finished_at": "2026-07-28T14:10:52.081123+00:00",
+        "duration_seconds": 2.458
       }
     },
     {
-      "id": "dait-amministratori-locali",
+      "id": "dait_amministratori_locali",
       "source_id": "dait",
       "status": "ok",
-      "label": "dait-amministratori-locali",
-      "detail": "anno 2026 — fonte: dait_ammcom — mart: sì",
+      "label": "dait_amministratori_locali",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30710469074",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30710469074",
-        "checked_at": "2026-08-01",
-        "duration_seconds": 3.05,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260801T153423Z_6248142e",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "clean": 124716,
           "mart": 167
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 30791385,
+          "clean": 2097594,
+          "mart": 5808
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/dait-amministratori-locali/dataset.yml"
+        "started_at": "2026-08-01T15:34:23.277119+00:00",
+        "finished_at": "2026-08-01T15:34:33.386596+00:00",
+        "duration_seconds": 10.109
       }
     },
     {
-      "id": "dipendenti-pubblici",
+      "id": "dipendenti_pubblici",
       "source_id": "openbdap",
       "status": "ok",
-      "label": "dipendenti-pubblici",
-      "detail": "anni 2010-2024 — fonte: bdap_csv — mart: sì",
+      "label": "dipendenti_pubblici",
+      "detail": "anni 2010-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29419456370",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29419456370",
-        "checked_at": "2026-07-15",
-        "years": [
-          2010,
-          2011,
-          2012,
-          2013,
-          2014,
-          2015,
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/dipendenti-pubblici/dataset.yml"
+      "years": [
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "run": {
+        "run_id": "20260731T163751Z_089f4aa1",
+        "year": 2024,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-31T16:37:51.902532+00:00",
+        "finished_at": "2026-07-31T16:37:51.906743+00:00",
+        "duration_seconds": 0.004
       }
     },
     {
-      "id": "elezioni-comunali",
+      "id": "elezioni_comunali",
       "source_id": "eligendo",
       "status": "ok",
-      "label": "elezioni-comunali",
-      "detail": "anni 2016-2024 — fonte: ? — mart: sì",
+      "label": "elezioni_comunali",
+      "detail": "anni 2016-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28931381611",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28931381611",
-        "checked_at": "2026-07-08",
-        "years": [
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2024
-        ],
-        "config_path": "candidates/elezioni-comunali/dataset.yml"
+      "years": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2024
+      ],
+      "run": {
+        "run_id": "20260729T190208Z_85955605",
+        "year": 2016,
+        "status": "FAILED",
+        "started_at": "2026-07-29T19:02:08.989234+00:00",
+        "finished_at": "2026-07-29T19:02:09.046553+00:00",
+        "duration_seconds": 0.057
       }
     },
     {
-      "id": "elezioni-europee",
+      "id": "elezioni_europee",
       "source_id": "eligendo",
       "status": "ok",
-      "label": "elezioni-europee",
-      "detail": "anni 1979-2024 — fonte: ? — mart: sì",
+      "label": "elezioni_europee",
+      "detail": "anni 1979-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28931923147",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28931923147",
-        "checked_at": "2026-07-08",
-        "years": [
-          1979,
-          1984,
-          1989,
-          1994,
-          1999,
-          2004,
-          2009,
-          2014,
-          2019,
-          2024
-        ],
-        "config_path": "candidates/elezioni-europee/dataset.yml"
-      }
+      "years": [
+        1979,
+        1984,
+        1989,
+        1994,
+        1999,
+        2004,
+        2009,
+        2014,
+        2019,
+        2024
+      ]
     },
     {
-      "id": "elezioni-politiche",
+      "id": "elezioni_politiche",
       "source_id": "ministero_interno_dait",
       "status": "ok",
-      "label": "elezioni-politiche",
-      "detail": "anno 2022 — fonte: ? — mart: sì",
+      "label": "elezioni_politiche",
+      "detail": "anno 2022 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29334544005",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29334544005",
-        "checked_at": "2026-07-14",
-        "years": [
-          2022
-        ],
-        "config_path": "candidates/elezioni-politiche/dataset.yml"
+      "years": [
+        2022
+      ],
+      "run": {
+        "run_id": "20260728T210947Z_47f26b76",
+        "year": 2022,
+        "status": "SUCCESS",
+        "quality_score": {
+          "mart": 85
+        },
+        "output_rows": {
+          "mart": 3648936
+        },
+        "output_bytes": {
+          "mart": 32864143
+        },
+        "started_at": "2026-07-28T21:09:47.546840+00:00",
+        "finished_at": "2026-07-28T21:09:53.898445+00:00",
+        "duration_seconds": 6.352
       }
     },
     {
-      "id": "elezioni-referendum",
+      "id": "elezioni_referendum",
       "source_id": "eligendo",
       "status": "ok",
-      "label": "elezioni-referendum",
-      "detail": "anni 1995-2022 — fonte: ? — mart: sì",
+      "label": "elezioni_referendum",
+      "detail": "anni 1995-2022 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30454985257",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30454985257",
-        "checked_at": "2026-07-29",
-        "years": [
-          1995,
-          1997,
-          1999,
-          2000,
-          2001,
-          2003,
-          2005,
-          2006,
-          2011,
-          2016,
-          2020,
-          2022
-        ],
-        "config_path": "candidates/elezioni-referendum/dataset.yml"
+      "years": [
+        1995,
+        1997,
+        1999,
+        2000,
+        2001,
+        2003,
+        2005,
+        2006,
+        2011,
+        2016,
+        2020,
+        2022
+      ],
+      "run": {
+        "run_id": "20260729T130800Z_fe96cc85",
+        "year": 2022,
+        "status": "SUCCESS",
+        "quality_score": {
+          "mart": 90
+        },
+        "output_rows": {
+          "mart": 39595
+        },
+        "output_bytes": {
+          "mart": 648782
+        },
+        "started_at": "2026-07-29T13:08:00.809829+00:00",
+        "finished_at": "2026-07-29T13:08:01.376889+00:00",
+        "duration_seconds": 0.567
       }
     },
     {
-      "id": "elezioni-regionali",
+      "id": "elezioni_regionali",
       "source_id": "eligendo",
       "status": "ok",
-      "label": "elezioni-regionali",
-      "detail": "anni 2018-2024 — fonte: ? — mart: sì",
+      "label": "elezioni_regionali",
+      "detail": "anni 2018-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28939377890",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28939377890",
-        "checked_at": "2026-07-08",
-        "years": [
-          2018,
-          2019,
-          2020,
-          2021,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/elezioni-regionali/dataset.yml"
-      }
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2023,
+        2024
+      ]
     },
     {
       "id": "farmacie",
       "source_id": "ministero_salute",
       "status": "ok",
       "label": "farmacie",
-      "detail": "anno 2026 — fonte: farmacie_source — mart: sì",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27872594347",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27872594347",
-        "checked_at": "2026-06-20",
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/farmacie/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "fts-eu-grants",
+      "id": "fts_eu_grants",
       "source_id": "fts",
       "status": "ok",
-      "label": "fts-eu-grants",
-      "detail": "anni 2020-2025 — fonte: fts_script — mart: sì",
+      "label": "fts_eu_grants",
+      "detail": "anni 2020-2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30823576972",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30823576972",
-        "checked_at": "2026-08-03",
-        "duration_seconds": 292.98,
-        "row_counts": {
-          "raw": 607815,
-          "clean": 45734,
-          "mart": 12626
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "run": {
+        "run_id": "20260803T142618Z_72bd8736",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "mart": 100
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_rows": {
+          "mart": 1714
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 95.0,
-          "mart": 100.0
+        "output_bytes": {
+          "mart": 37839
         },
-        "years": [
-          2020,
-          2021,
-          2022,
-          2023,
-          2024,
-          2025
-        ],
-        "config_path": "candidates/fts-eu-grants/dataset.yml"
+        "started_at": "2026-08-03T14:26:18.297828+00:00",
+        "finished_at": "2026-08-03T14:26:18.530459+00:00",
+        "duration_seconds": 0.233
       }
     },
     {
-      "id": "ga-decreti",
+      "id": "ga_decreti",
       "source_id": "openga",
       "status": "ok",
-      "label": "ga-decreti",
-      "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
+      "label": "ga_decreti",
+      "detail": "anni 2023-2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29916534336",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29916534336",
-        "checked_at": "2026-07-22",
-        "years": [
-          2023,
-          2024,
-          2025,
-          2026
-        ],
-        "config_path": "candidates/ga-decreti/dataset.yml"
+      "years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "run": {
+        "run_id": "20260731T164741Z_c2fa4114",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 1727,
+          "clean": 17726,
+          "mart": 882
+        },
+        "output_bytes": {
+          "raw": 6538663,
+          "clean": 872061,
+          "mart": 9078
+        },
+        "started_at": "2026-07-31T16:47:41.536101+00:00",
+        "finished_at": "2026-07-31T16:48:25.675999+00:00",
+        "duration_seconds": 44.14
       }
     },
     {
-      "id": "ga-ordinanze",
+      "id": "ga_ordinanze",
       "source_id": "openga",
       "status": "ok",
-      "label": "ga-ordinanze",
-      "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
+      "label": "ga_ordinanze",
+      "detail": "anni 2023-2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30647757280",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30647757280",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 248.74,
-        "row_counts": {
-          "raw": 15392,
-          "clean": 113828,
-          "mart": 5018
+      "years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "run": {
+        "run_id": "20260731T164839Z_e096ea4f",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
         },
-        "readiness": "needs-review",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 7,
-          "fail": 1
+        "output_rows": {
+          "raw": 3971,
+          "clean": 32839,
+          "mart": 1294
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 95.0,
-          "mart": 100.0
+        "output_bytes": {
+          "raw": 11768135,
+          "clean": 1510752,
+          "mart": 11671
         },
-        "years": [
-          2023,
-          2024,
-          2025,
-          2026
-        ],
-        "config_path": "candidates/ga-ordinanze/dataset.yml"
+        "started_at": "2026-07-31T16:48:39.363232+00:00",
+        "finished_at": "2026-07-31T16:49:24.672774+00:00",
+        "duration_seconds": 45.31
       }
     },
     {
-      "id": "ga-sentenze",
+      "id": "ga_sentenze",
       "source_id": "openga",
       "status": "ok",
-      "label": "ga-sentenze",
-      "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
+      "label": "ga_sentenze",
+      "detail": "anni 2023-2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29850059857",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29850059857",
-        "checked_at": "2026-07-21",
-        "years": [
-          2023,
-          2024,
-          2025,
-          2026
-        ],
-        "config_path": "candidates/ga-sentenze/dataset.yml"
+      "years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "run": {
+        "run_id": "20260731T164928Z_d58e6f80",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 6471,
+          "clean": 60280,
+          "mart": 1404
+        },
+        "output_bytes": {
+          "raw": 21352716,
+          "clean": 2888321,
+          "mart": 10627
+        },
+        "started_at": "2026-07-31T16:49:28.971050+00:00",
+        "finished_at": "2026-07-31T16:50:16.554599+00:00",
+        "duration_seconds": 47.584
       }
     },
     {
-      "id": "giustizia-penale-indicatori",
+      "id": "giustizia_penale_indicatori",
       "source_id": "giustizia_statistiche",
       "status": "ok",
-      "label": "giustizia-penale-indicatori",
-      "detail": "anno 2025 — fonte: ? — mart: sì",
+      "label": "giustizia_penale_indicatori",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30628794316",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 2.77,
-        "row_counts": {
+      "years": [
+        2025
+      ],
+      "run": {
+        "run_id": "20260731T114716Z_f5866314",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 10488,
           "clean": 10478,
           "mart": 1251
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 914617,
+          "clean": 134681,
+          "mart": 53189
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2025
-        ],
-        "config_path": "candidates/giustizia-penale-indicatori/dataset.yml"
+        "started_at": "2026-07-31T11:47:16.516103+00:00",
+        "finished_at": "2026-07-31T11:47:21.231718+00:00",
+        "duration_seconds": 4.716
       }
     },
     {
-      "id": "inps-pensioni",
+      "id": "inps_pensioni_trimestrale",
       "source_id": "inps",
       "status": "ok",
-      "label": "inps-pensioni",
-      "detail": "anno 2024 — fonte: inps_pensioni_csv — mart: sì",
+      "label": "inps_pensioni_trimestrale",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26462812456",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
-        "checked_at": "2026-05-26",
-        "years": [
-          2024
-        ],
-        "config_path": "candidates/inps-pensioni/dataset.yml"
-      }
+      "years": [
+        2024
+      ]
     },
     {
-      "id": "inps-rdc-pdc",
+      "id": "inps_rdc_pdc",
       "source_id": "inps_open_data",
       "status": "ok",
-      "label": "inps-rdc-pdc",
-      "detail": "anno 2020 — fonte: inps_rdc_pdc_csv — mart: sì",
+      "label": "inps_rdc_pdc",
+      "detail": "anno 2020 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30753192162",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30753192162",
-        "checked_at": "2026-08-02",
-        "duration_seconds": 3.01,
-        "row_counts": {
+      "years": [
+        2020
+      ],
+      "run": {
+        "run_id": "20260802T144644Z_466a9d69",
+        "year": 2020,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 7976,
           "clean": 7976,
           "mart": 15848
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 872051,
+          "clean": 328980,
+          "mart": 423879
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2020
-        ],
-        "config_path": "candidates/inps-rdc-pdc/dataset.yml"
+        "started_at": "2026-08-02T14:46:44.923044+00:00",
+        "finished_at": "2026-08-02T14:46:47.376092+00:00",
+        "duration_seconds": 2.453
       }
     },
     {
@@ -786,2099 +815,1891 @@
       "source_id": "giustizia_statistiche",
       "status": "ok",
       "label": "intercettazioni",
-      "detail": "anno 2025 — fonte: intercettazioni_xlsx — mart: sì",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30628794316",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 1.55,
-        "row_counts": {
+      "years": [
+        2025
+      ],
+      "run": {
+        "run_id": "20260731T114851Z_0639a702",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "clean": 3952,
           "mart": 1560
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 213981,
+          "clean": 8386,
+          "mart": 5417
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2025
-        ],
-        "config_path": "candidates/intercettazioni/dataset.yml"
+        "started_at": "2026-07-31T11:48:51.291161+00:00",
+        "finished_at": "2026-07-31T11:48:53.648463+00:00",
+        "duration_seconds": 2.357
       }
     },
     {
-      "id": "irpef-comunale",
+      "id": "irpef_comunale",
       "source_id": "mef_irpef",
       "status": "ok",
-      "label": "irpef-comunale",
-      "detail": "anni 2019-2024 — fonte: finanze_http_zip — mart: sì",
+      "label": "irpef_comunale",
+      "detail": "anni 2019-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30347354104",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30347354104",
-        "checked_at": "2026-07-28",
-        "years": [
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/irpef-comunale/dataset.yml"
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "run": {
+        "run_id": "20260730T182415Z_687dcf3d",
+        "year": 2024,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-30T18:24:15.434148+00:00",
+        "finished_at": "2026-07-30T18:24:15.438095+00:00",
+        "duration_seconds": 0.004
       }
     },
     {
-      "id": "ispra-consumo-suolo",
+      "id": "ispra_consumo_suolo",
       "source_id": "ispra_linked_data",
       "status": "ok",
-      "label": "ispra-consumo-suolo",
-      "detail": "anno 2024 — fonte: ispra_consumo_suolo_xlsx — mart: sì",
+      "label": "ispra_consumo_suolo",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30345539085",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30345539085",
-        "checked_at": "2026-07-28",
-        "years": [
-          2024
-        ],
-        "config_path": "candidates/ispra-consumo-suolo/dataset.yml"
+      "years": [
+        2024
+      ],
+      "run": {
+        "run_id": "20260727T225500Z_9ccedea6",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 90,
+          "mart": 95
+        },
+        "output_rows": {
+          "clean": 86856,
+          "mart": 88008
+        },
+        "output_bytes": {
+          "raw": 1725183,
+          "clean": 1225921,
+          "mart": 2034884
+        },
+        "started_at": "2026-07-27T22:55:00.864542+00:00",
+        "finished_at": "2026-07-27T22:55:17.710967+00:00",
+        "duration_seconds": 16.846
       }
     },
     {
-      "id": "ispra-emissioni-ghg",
+      "id": "ispra_emissioni_ghg",
       "source_id": "ispra",
       "status": "ok",
-      "label": "ispra-emissioni-ghg",
-      "detail": "anno 2023 — fonte: ispra_emissioni_ghg_xls — mart: sì",
+      "label": "ispra_emissioni_ghg",
+      "detail": "anno 2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30696025152",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30696025152",
-        "checked_at": "2026-08-01",
-        "duration_seconds": 1.25,
-        "row_counts": {
+      "years": [
+        2023
+      ],
+      "run": {
+        "run_id": "20260801T103200Z_4dc2cbf5",
+        "year": 2023,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 34,
           "clean": 34,
           "mart": 141
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 3479,
+          "clean": 2397,
+          "mart": 4286
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2023
-        ],
-        "config_path": "candidates/ispra-emissioni-ghg/dataset.yml"
+        "started_at": "2026-08-01T10:32:00.800427+00:00",
+        "finished_at": "2026-08-01T10:32:02.250921+00:00",
+        "duration_seconds": 1.45
       }
     },
     {
-      "id": "ispra-ru-base",
+      "id": "ispra_ru_base",
       "source_id": "ispra_linked_data",
       "status": "ok",
-      "label": "ispra-ru-base",
-      "detail": "anni 2010-2024 — fonte: ispra_ru_base_http_csv — mart: sì",
+      "label": "ispra_ru_base",
+      "detail": "anni 2010-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30624517445",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30624517445",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 4.31,
-        "row_counts": {
-          "clean": 114761,
-          "mart": 118342
-        },
-        "readiness": "needs-review",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 7,
-          "fail": 1
-        },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 95.0,
-          "mart": 100.0
-        },
-        "years": [
-          2010,
-          2011,
-          2012,
-          2013,
-          2014,
-          2015,
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/ispra-ru-base/dataset.yml"
+      "years": [
+        2010,
+        2011,
+        2012,
+        2013,
+        2014,
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "run": {
+        "run_id": "20260731T103443Z_1b75dcf8",
+        "year": 2024,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-31T10:34:43.409146+00:00",
+        "finished_at": "2026-07-31T10:34:43.416212+00:00",
+        "duration_seconds": 0.007
       }
     },
     {
-      "id": "ispra-ru-costi-kg",
+      "id": "ispra_ru_costi_kg",
       "source_id": "ispra_linked_data",
       "status": "ok",
-      "label": "ispra-ru-costi-kg",
-      "detail": "anni 2020-2024 — fonte: ispra_ru_costi_kg_http_csv — mart: sì",
+      "label": "ispra_ru_costi_kg",
+      "detail": "anni 2020-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28322708552",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28322708552",
-        "checked_at": "2026-06-28",
-        "years": [
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/ispra-ru-costi-kg/dataset.yml"
-      }
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
     },
     {
-      "id": "ispra-ru-costi-procapite",
+      "id": "ispra_ru_costi_procapite",
       "source_id": "ispra_linked_data",
       "status": "ok",
-      "label": "ispra-ru-costi-procapite",
-      "detail": "anni 2020-2024 — fonte: ispra_ru_costi_procapite_http_csv — mart: sì",
+      "label": "ispra_ru_costi_procapite",
+      "detail": "anni 2020-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28322709699",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28322709699",
-        "checked_at": "2026-06-28",
-        "years": [
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/ispra-ru-costi-procapite/dataset.yml"
-      }
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
     },
     {
-      "id": "istat-asia-ul",
+      "id": "istat_asia_ul",
       "source_id": "istat_dbnomics",
       "status": "ok",
-      "label": "istat-asia-ul",
-      "detail": "anno 2020 — fonte: ? — mart: sì",
+      "label": "istat_asia_ul",
+      "detail": "anno 2020 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29199035023",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29199035023",
-        "checked_at": "2026-07-12",
-        "years": [
-          2020
-        ],
-        "config_path": "candidates/istat-asia-ul/dataset.yml"
-      }
+      "years": [
+        2020
+      ]
     },
     {
-      "id": "istat-gini-regionale",
+      "id": "istat_gini_regionale",
       "source_id": "istat_sdmx",
       "status": "ok",
-      "label": "istat-gini-regionale",
-      "detail": "anno 2023 — fonte: istat_sdmx_gini — mart: sì",
+      "label": "istat_gini_regionale",
+      "detail": "anno 2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26088201871",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26088201871",
-        "checked_at": "2026-05-19",
-        "years": [
-          2023
-        ],
-        "config_path": "candidates/istat-gini-regionale/dataset.yml"
-      }
+      "years": [
+        2023
+      ]
     },
     {
-      "id": "istat-housing-crowding",
+      "id": "istat_housing_crowding",
       "source_id": "istat_sdmx",
       "status": "ok",
-      "label": "istat-housing-crowding",
-      "detail": "anno 2024 — fonte: istat_sdmx_housing_crowding — mart: sì",
+      "label": "istat_housing_crowding",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26462812456",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26462812456",
-        "checked_at": "2026-05-26",
-        "years": [
-          2024
-        ],
-        "config_path": "candidates/istat-housing-crowding/dataset.yml"
-      }
+      "years": [
+        2024
+      ]
     },
     {
-      "id": "istat-ipab-aree",
+      "id": "istat_ipab_aree",
       "source_id": "istat_sdmx",
       "status": "ok",
-      "label": "istat-ipab-aree",
-      "detail": "anno 2024 — fonte: istat_sdmx_ipab_aree — mart: sì",
+      "label": "istat_ipab_aree",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26088201871",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26088201871",
-        "checked_at": "2026-05-19",
-        "years": [
-          2024
-        ],
-        "config_path": "candidates/istat-ipab-aree/dataset.yml"
-      }
+      "years": [
+        2024
+      ]
     },
     {
-      "id": "istat-occupazione-provinciale",
+      "id": "istat_occupazione_provinciale",
       "source_id": "istat_sdmx",
       "status": "ok",
-      "label": "istat-occupazione-provinciale",
-      "detail": "anno 2025 — fonte: istat_sdmx_occupazione — mart: sì",
+      "label": "istat_occupazione_provinciale",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28329727205",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28329727205",
-        "checked_at": "2026-06-28",
-        "years": [
-          2025
-        ],
-        "config_path": "candidates/istat-occupazione-provinciale/dataset.yml"
+      "years": [
+        2025
+      ],
+      "run": {
+        "run_id": "20260806T103246Z_04b24585",
+        "year": 2025,
+        "status": "FAILED",
+        "started_at": "2026-08-06T10:32:46.528792+00:00",
+        "finished_at": "2026-08-06T10:34:59.409896+00:00",
+        "duration_seconds": 132.881
       }
     },
     {
-      "id": "iva-regionale",
+      "id": "iva_regionale",
       "source_id": "mef_finanze",
       "status": "ok",
-      "label": "iva-regionale",
-      "detail": "anni 2015-2024 — fonte: mef_finanze_iva_regione — mart: sì",
+      "label": "iva_regionale",
+      "detail": "anni 2015-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30751890413",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30751890413",
-        "checked_at": "2026-08-02",
-        "duration_seconds": 8.77,
-        "row_counts": {
-          "raw": 331,
-          "clean": 210,
-          "mart": 210
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "run": {
+        "run_id": "20260802T133429Z_d1f83810",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_rows": {
+          "raw": 33,
+          "clean": 21,
+          "mart": 21
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 95.0,
-          "mart": 100.0
+        "output_bytes": {
+          "raw": 7591,
+          "clean": 3630,
+          "mart": 4915
         },
-        "years": [
-          2015,
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/iva-regionale/dataset.yml"
+        "started_at": "2026-08-02T13:34:29.280524+00:00",
+        "finished_at": "2026-08-02T13:34:30.475378+00:00",
+        "duration_seconds": 1.195
       }
     },
     {
-      "id": "mef-irpef-regionale",
+      "id": "mef_irpef_regionale",
       "source_id": "mef_irpef",
       "status": "ok",
-      "label": "mef-irpef-regionale",
-      "detail": "anni 2017-2025 — fonte: reg_tipo_reddito — mart: sì",
+      "label": "mef_irpef_regionale",
+      "detail": "anni 2017-2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "25606109984",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/25606109984",
-        "checked_at": "2026-05-09",
-        "year": 2025,
-        "config_path": "candidates/mef-irpef-regionale/dataset.yml"
-      }
+      "years": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ]
     },
     {
-      "id": "mef-partecipazioni",
+      "id": "mef_partecipazioni",
       "source_id": "mef_tesoro",
       "status": "ok",
-      "label": "mef-partecipazioni",
-      "detail": "anni 2020-2023 — fonti: mef_partecipazioni_2020, mef_partecipazioni_2021 — mart: sì",
+      "label": "mef_partecipazioni",
+      "detail": "anni 2020-2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30763582907",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30763582907",
-        "checked_at": "2026-08-02",
-        "duration_seconds": 93.49,
-        "row_counts": {
-          "raw": 210145,
-          "clean": 210145,
-          "mart": 35396
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "run": {
+        "run_id": "20260802T180319Z_432e868a",
+        "year": 2023,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_rows": {
+          "raw": 53656,
+          "clean": 53656,
+          "mart": 8557
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 95.0,
-          "mart": 100.0
+        "output_bytes": {
+          "raw": 35046757,
+          "clean": 2629582,
+          "mart": 144002
         },
-        "years": [
-          2020,
-          2021,
-          2022,
-          2023
-        ],
-        "config_path": "candidates/mef-partecipazioni/dataset.yml"
+        "started_at": "2026-08-02T18:03:19.213223+00:00",
+        "finished_at": "2026-08-02T18:03:57.083600+00:00",
+        "duration_seconds": 37.87
       }
     },
     {
-      "id": "mef-patrimonio-detenzioni",
+      "id": "mef_patrimonio_detenzioni",
       "source_id": "mef_de",
       "status": "ok",
-      "label": "mef-patrimonio-detenzioni",
-      "detail": "anni 2022-2023 — fonte: ? — mart: sì",
+      "label": "mef_patrimonio_detenzioni",
+      "detail": "anni 2022-2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29813695592",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29813695592",
-        "checked_at": "2026-07-21",
-        "years": [
-          2022,
-          2023
-        ],
-        "config_path": "candidates/mef-patrimonio-detenzioni/dataset.yml"
-      }
+      "years": [
+        2022,
+        2023
+      ]
     },
     {
-      "id": "mef-patrimonio-enti",
+      "id": "mef_patrimonio_enti",
       "source_id": "mef_de",
       "status": "ok",
-      "label": "mef-patrimonio-enti",
-      "detail": "anni 2022-2023 — fonte: ? — mart: sì",
+      "label": "mef_patrimonio_enti",
+      "detail": "anni 2022-2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29813695592",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29813695592",
-        "checked_at": "2026-07-21",
-        "years": [
-          2022,
-          2023
-        ],
-        "config_path": "candidates/mef-patrimonio-enti/dataset.yml"
-      }
+      "years": [
+        2022,
+        2023
+      ]
     },
     {
-      "id": "mef-patrimonio-immobili",
+      "id": "mef_patrimonio_immobili",
       "source_id": "mef_de",
       "status": "ok",
-      "label": "mef-patrimonio-immobili",
-      "detail": "anni 2022-2023 — fonte: ? — mart: sì",
+      "label": "mef_patrimonio_immobili",
+      "detail": "anni 2022-2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29813695592",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29813695592",
-        "checked_at": "2026-07-21",
-        "years": [
-          2022,
-          2023
-        ],
-        "config_path": "candidates/mef-patrimonio-immobili/dataset.yml"
-      }
+      "years": [
+        2022,
+        2023
+      ]
     },
     {
-      "id": "mef-rappresentanti-partecipate",
+      "id": "mef_rappresentanti_partecipate",
       "source_id": "mef_tesoro",
       "status": "ok",
-      "label": "mef-rappresentanti-partecipate",
-      "detail": "anni 2018-2023 — fonte: mef_rappresentanti_csv — mart: sì",
+      "label": "mef_rappresentanti_partecipate",
+      "detail": "anni 2018-2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30807694862",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30807694862",
-        "checked_at": "2026-08-03",
-        "duration_seconds": 68.13,
-        "row_counts": {
-          "raw": 101534,
-          "clean": 101534,
-          "mart": 12757
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023
+      ],
+      "run": {
+        "run_id": "20260803T104219Z_ba17250b",
+        "year": 2023,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_rows": {
+          "raw": 16785,
+          "clean": 16785,
+          "mart": 1961
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 95.0,
-          "mart": 100.0
+        "output_bytes": {
+          "raw": 8188766,
+          "clean": 543610,
+          "mart": 46456
         },
-        "years": [
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023
-        ],
-        "config_path": "candidates/mef-rappresentanti-partecipate/dataset.yml"
+        "started_at": "2026-08-03T10:42:19.829537+00:00",
+        "finished_at": "2026-08-03T10:42:34.022082+00:00",
+        "duration_seconds": 14.193
       }
     },
     {
-      "id": "membri-governo",
+      "id": "membri_governo",
       "source_id": "dati_camera",
       "status": "ok",
-      "label": "membri-governo",
-      "detail": "anno 2026 — fonte: membri_governo_sparql — mart: sì",
+      "label": "membri_governo",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30934746986",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30934746986",
-        "checked_at": "2026-08-04",
-        "duration_seconds": 3.15,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260804T165251Z_03930feb",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 7505,
           "clean": 7579,
           "mart": 312
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 2961831,
+          "clean": 275827,
+          "mart": 3914
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/membri-governo/dataset.yml"
+        "started_at": "2026-08-04T16:52:51.486748+00:00",
+        "finished_at": "2026-08-04T16:52:56.309604+00:00",
+        "duration_seconds": 4.823
       }
     },
     {
-      "id": "mim-alunni-corso-eta",
+      "id": "mim_alunni_corso_eta",
       "source_id": "mim_opendata",
       "status": "ok",
-      "label": "mim-alunni-corso-eta",
-      "detail": "anni 2016-2025 — fonte: mim_alunni_corso_eta_csv — mart: sì",
+      "label": "mim_alunni_corso_eta",
+      "detail": "anni 2016-2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30757771202",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30757771202",
-        "checked_at": "2026-08-02",
-        "duration_seconds": 189.27,
-        "row_counts": {
-          "raw": 3155723,
-          "clean": 3155723,
-          "mart": 121019
+      "years": [
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "run": {
+        "run_id": "20260802T151738Z_bdfe8893",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_rows": {
+          "raw": 301840,
+          "clean": 301840,
+          "mart": 13091
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
+        "output_bytes": {
+          "raw": 16129927,
+          "clean": 3912910,
+          "mart": 171115
         },
-        "years": [
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024,
-          2025
-        ],
-        "config_path": "candidates/mim-alunni-corso-eta/dataset.yml"
+        "started_at": "2026-08-02T15:17:38.019774+00:00",
+        "finished_at": "2026-08-02T15:17:51.712255+00:00",
+        "duration_seconds": 13.692
       }
     },
     {
-      "id": "mim-scuola-infanzia",
+      "id": "mim_scuola_infanzia",
       "source_id": "mim_opendata",
       "status": "ok",
-      "label": "mim-scuola-infanzia",
-      "detail": "anni 2018-2025 — fonte: mim_scuola_infanzia_csv — mart: sì",
+      "label": "mim_scuola_infanzia",
+      "detail": "anni 2018-2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30758781036",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30758781036",
-        "checked_at": "2026-08-02",
-        "duration_seconds": 12.74,
-        "row_counts": {
-          "raw": 104662,
-          "clean": 104662,
-          "mart": 40406
+      "years": [
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "run": {
+        "run_id": "20260802T170946Z_3d920f3b",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_rows": {
+          "raw": 13027,
+          "clean": 13027,
+          "mart": 5491
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
+        "output_bytes": {
+          "raw": 316943,
+          "clean": 429855,
+          "mart": 101360
         },
-        "years": [
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024,
-          2025
-        ],
-        "config_path": "candidates/mim-scuola-infanzia/dataset.yml"
+        "started_at": "2026-08-02T17:09:46.433945+00:00",
+        "finished_at": "2026-08-02T17:09:48.312381+00:00",
+        "duration_seconds": 1.878
       }
     },
     {
-      "id": "mit-incidentalita-mensile-2001-2018",
+      "id": "mit_incidentalita_mensile",
       "source_id": "mit_opendata",
       "status": "ok",
-      "label": "mit-incidentalita-mensile-2001-2018",
-      "detail": "anno 2001 — fonte: mit_incidentalita_mensile_csv — mart: sì",
+      "label": "mit_incidentalita_mensile",
+      "detail": "anno 2001 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26505556706",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26505556706",
-        "checked_at": "2026-05-27",
-        "years": [
-          2001
-        ],
-        "config_path": "candidates/mit-incidentalita-mensile-2001-2018/dataset.yml"
-      }
+      "years": [
+        2001
+      ]
     },
     {
-      "id": "mit-opere-incompiute-2020",
+      "id": "mit_opere_incompiute_2020",
       "source_id": "mit_opendata",
       "status": "ok",
-      "label": "mit-opere-incompiute-2020",
-      "detail": "anno 2020 — fonte: mit_opere_incompiute_csv — mart: sì",
+      "label": "mit_opere_incompiute_2020",
+      "detail": "anno 2020 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26091471735",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26091471735",
-        "checked_at": "2026-05-19",
-        "years": [
-          2020
-        ],
-        "config_path": "candidates/mit-opere-incompiute-2020/dataset.yml"
-      }
+      "years": [
+        2020
+      ]
     },
     {
-      "id": "monitoraggio-mensile-civile",
+      "id": "monitoraggio_mensile_civile",
       "source_id": "giustizia_statistiche",
       "status": "ok",
-      "label": "monitoraggio-mensile-civile",
-      "detail": "anno 2025 — fonte: monitoraggio_mensile_xlsx — mart: sì",
+      "label": "monitoraggio_mensile_civile",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30628794316",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 31.49,
-        "row_counts": {
+      "years": [
+        2025
+      ],
+      "run": {
+        "run_id": "20260731T115219Z_a7c39d31",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
           "clean": 140969,
           "mart": 2340
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 7180289,
+          "clean": 415055,
+          "mart": 24453
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 95.0,
-          "mart": 100.0
-        },
-        "years": [
-          2025
-        ],
-        "config_path": "candidates/monitoraggio-mensile-civile/dataset.yml"
+        "started_at": "2026-07-31T11:52:19.225482+00:00",
+        "finished_at": "2026-07-31T11:53:38.894285+00:00",
+        "duration_seconds": 79.669
       }
     },
     {
-      "id": "mortalita-istat-evitabile",
+      "id": "mortalita_istat_evitabile",
       "source_id": "istat_situas",
       "status": "ok",
-      "label": "mortalita-istat-evitabile",
-      "detail": "anno 2022 — fonte: mortalita_causa_istat — mart: sì",
-      "action": ""
+      "label": "mortalita_istat_evitabile",
+      "detail": "anno 2022 — mart: si",
+      "action": "",
+      "years": [
+        2022
+      ]
     },
     {
-      "id": "mur-contribuzione-universitaria",
+      "id": "mur_contribuzione_universitaria",
       "source_id": "mur_ustat",
       "status": "ok",
-      "label": "mur-contribuzione-universitaria",
-      "detail": "anni 2017-2024 — fonte: mur_gettito_ckan — mart: sì",
+      "label": "mur_contribuzione_universitaria",
+      "detail": "anni 2017-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27104450361",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27104450361",
-        "checked_at": "2026-06-07",
-        "years": [
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/mur-contribuzione-universitaria/dataset.yml"
-      }
+      "years": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
     },
     {
-      "id": "mur-immatricolati",
+      "id": "mur_immatricolati",
       "source_id": "mur_ustat",
       "status": "ok",
-      "label": "mur-immatricolati",
-      "detail": "anno 2025 — fonte: ? — mart: sì",
+      "label": "mur_immatricolati",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29332061786",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29332061786",
-        "checked_at": "2026-07-14",
-        "years": [
-          2025
-        ],
-        "config_path": "candidates/mur-immatricolati/dataset.yml"
-      }
+      "years": [
+        2025
+      ]
     },
     {
-      "id": "mur-iscritti",
+      "id": "mur_iscritti",
       "source_id": "mur_ustat",
       "status": "ok",
-      "label": "mur-iscritti",
-      "detail": "anno 2025 — fonte: ? — mart: sì",
+      "label": "mur_iscritti",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29348191635",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29348191635",
-        "checked_at": "2026-07-14",
-        "years": [
-          2025
-        ],
-        "config_path": "candidates/mur-iscritti/dataset.yml"
-      }
+      "years": [
+        2025
+      ]
     },
     {
-      "id": "opencivitas-fsc-rso",
+      "id": "opencivitas_fsc_2025_rso",
       "source_id": "opencivitas",
       "status": "ok",
-      "label": "opencivitas-fsc-rso",
-      "detail": "anni 2022-2025 — fonte: opencivitas_fsc_zip — mart: sì",
+      "label": "opencivitas_fsc_2025_rso",
+      "detail": "anni 2022-2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27903144369",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27903144369",
-        "checked_at": "2026-06-21",
-        "years": [
-          2022,
-          2023,
-          2024,
-          2025
-        ],
-        "config_path": "candidates/opencivitas-fsc-rso/dataset.yml"
-      }
+      "years": [
+        2022,
+        2023,
+        2024,
+        2025
+      ]
     },
     {
-      "id": "opencivitas-indicatori",
+      "id": "opencivitas_indicatori",
       "source_id": "opencivitas",
       "status": "ok",
-      "label": "opencivitas-indicatori",
-      "detail": "anni 2015-2022 — fonte: ? — mart: sì",
+      "label": "opencivitas_indicatori",
+      "detail": "anni 2015-2022 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30354805590",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30354805590",
-        "checked_at": "2026-07-28",
-        "years": [
-          2015,
-          2016,
-          2017,
-          2018,
-          2019,
-          2021,
-          2022
-        ],
-        "config_path": "candidates/opencivitas-indicatori/dataset.yml"
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2021,
+        2022
+      ],
+      "run": {
+        "run_id": "20260728T085206Z_2551b510",
+        "year": 2022,
+        "status": "SUCCESS",
+        "quality_score": {
+          "mart": 90
+        },
+        "output_rows": {
+          "mart": 2659122
+        },
+        "output_bytes": {
+          "mart": 41736110
+        },
+        "started_at": "2026-07-28T08:52:06.876449+00:00",
+        "finished_at": "2026-07-28T08:52:16.688673+00:00",
+        "duration_seconds": 9.812
       }
     },
     {
-      "id": "opencoesione-progetti",
+      "id": "opencoesione_progetti",
       "source_id": "opencoesione",
       "status": "ok",
-      "label": "opencoesione-progetti",
-      "detail": "anno 2026 — fonte: progetti_parquet — mart: sì",
+      "label": "opencoesione_progetti",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26940428132",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26940428132",
-        "checked_at": "2026-06-04",
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/opencoesione-progetti/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "openga-ricorsi-appalto",
+      "id": "openga_ricorsi_appalto",
       "source_id": "openga",
       "status": "ok",
-      "label": "openga-ricorsi-appalto",
-      "detail": "anni 2023-2026 — fonti: cds, cga_sicilia — mart: sì",
+      "label": "openga_ricorsi_appalto",
+      "detail": "anni 2023-2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30641958825",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30641958825",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 270.13,
-        "row_counts": {
-          "raw": 2420,
-          "clean": 9692,
-          "mart": 2037
-        },
-        "readiness": "needs-review",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 7,
-          "fail": 1
-        },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2023,
-          2024,
-          2025,
-          2026
-        ],
-        "config_path": "candidates/openga-ricorsi-appalto/dataset.yml"
+      "years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "run": {
+        "run_id": "20260731T123551Z_3ca0794e",
+        "year": 2025,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-31T12:35:51.657488+00:00",
+        "finished_at": "2026-07-31T12:35:51.663620+00:00",
+        "duration_seconds": 0.006
       }
     },
     {
-      "id": "openga-ricorsi-cds",
+      "id": "openga_ricorsi_cds",
       "source_id": "openga",
       "status": "ok",
-      "label": "openga-ricorsi-cds",
-      "detail": "anni 2023-2026 — fonte: cds_ricorsi_pendenti — mart: sì",
+      "label": "openga_ricorsi_cds",
+      "detail": "anni 2023-2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30641695862",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30641695862",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 4.5,
-        "row_counts": {
-          "raw": 84,
-          "clean": 84,
-          "mart": 8
-        },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
-        },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2023,
-          2024,
-          2025,
-          2026
-        ],
-        "config_path": "candidates/openga-ricorsi-cds/dataset.yml"
+      "years": [
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "run": {
+        "run_id": "20260731T123555Z_5571820e",
+        "year": 2025,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-31T12:35:55.828015+00:00",
+        "finished_at": "2026-07-31T12:35:55.831966+00:00",
+        "duration_seconds": 0.004
       }
     },
     {
-      "id": "penale-flussi",
+      "id": "penale_flussi",
       "source_id": "giustizia_statistiche",
       "status": "ok",
-      "label": "penale-flussi",
-      "detail": "anno 2025 — fonte: flussi_penali_principale — mart: sì",
+      "label": "penale_flussi",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30628794316",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30628794316",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 3.87,
-        "row_counts": {
+      "years": [
+        2025
+      ],
+      "run": {
+        "run_id": "20260731T115341Z_c860293c",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "clean": 17652,
           "mart": 2196
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 779334,
+          "clean": 103098,
+          "mart": 19745
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2025
-        ],
-        "config_path": "candidates/penale-flussi/dataset.yml"
+        "started_at": "2026-07-31T11:53:41.149534+00:00",
+        "finished_at": "2026-07-31T11:53:49.224335+00:00",
+        "duration_seconds": 8.075
       }
     },
     {
-      "id": "pensioni-pa-dag",
+      "id": "pensioni_pa_dag",
       "source_id": "inps",
       "status": "ok",
-      "label": "pensioni-pa-dag",
-      "detail": "anno 2024 — fonte: dag_pensioni_totale — mart: sì",
+      "label": "pensioni_pa_dag",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26107821546",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26107821546",
-        "checked_at": "2026-05-19",
-        "years": [
-          2024
-        ],
-        "config_path": "candidates/pensioni-pa-dag/dataset.yml"
-      }
+      "years": [
+        2024
+      ]
     },
     {
-      "id": "personale-ssn",
+      "id": "personale_ssn",
       "source_id": "ministero_salute",
       "status": "ok",
-      "label": "personale-ssn",
-      "detail": "anno 2021 — fonte: ? — mart: sì",
+      "label": "personale_ssn",
+      "detail": "anno 2021 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29244922420",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29244922420",
-        "checked_at": "2026-07-13",
-        "years": [
-          2021
-        ],
-        "config_path": "candidates/personale-ssn/dataset.yml"
-      }
+      "years": [
+        2021
+      ]
     },
     {
-      "id": "pnrr-gare",
+      "id": "pnrr_gare",
       "source_id": "italiadomani",
       "status": "ok",
-      "label": "pnrr-gare",
-      "detail": "anno 2026 — fonte: pnrr_gare — mart: sì",
+      "label": "pnrr_gare",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "31006395846",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/31006395846",
-        "checked_at": "2026-08-05",
-        "duration_seconds": 8.5,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260805T091706Z_2ce7cf85",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 282655,
           "clean": 282655,
           "mart": 227
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 111336940,
+          "clean": 14173379,
+          "mart": 14232
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/pnrr-gare/dataset.yml"
+        "started_at": "2026-08-05T09:17:06.753424+00:00",
+        "finished_at": "2026-08-05T09:17:26.426649+00:00",
+        "duration_seconds": 19.673
       }
     },
     {
-      "id": "pnrr-pagamenti",
+      "id": "pnrr_pagamenti",
       "source_id": "italiadomani",
       "status": "ok",
-      "label": "pnrr-pagamenti",
-      "detail": "anno 2026 — fonte: pnrr_pagamenti — mart: sì",
+      "label": "pnrr_pagamenti",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "31007324120",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/31007324120",
-        "checked_at": "2026-08-05",
-        "duration_seconds": 11.34,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260805T094956Z_85265fae",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 211901,
           "clean": 211901,
           "mart": 214
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 40484686,
+          "clean": 4615369,
+          "mart": 14420
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/pnrr-pagamenti/dataset.yml"
+        "started_at": "2026-08-05T09:49:56.312633+00:00",
+        "finished_at": "2026-08-05T09:50:04.539033+00:00",
+        "duration_seconds": 8.226
       }
     },
     {
-      "id": "pnrr-progetti",
+      "id": "pnrr_progetti",
       "source_id": "italiadomani",
       "status": "ok",
-      "label": "pnrr-progetti",
-      "detail": "anno 2026 — fonte: pnrr_progetti — mart: sì",
+      "label": "pnrr_progetti",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "31006021383",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/31006021383",
-        "checked_at": "2026-08-05",
-        "duration_seconds": 21.7,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260805T122053Z_54cd7799",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 291398,
           "clean": 291398,
           "mart": 22
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 317081292,
+          "clean": 17138314,
+          "mart": 4129
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/pnrr-progetti/dataset.yml"
+        "started_at": "2026-08-05T12:20:53.322984+00:00",
+        "finished_at": "2026-08-05T12:21:25.449919+00:00",
+        "duration_seconds": 32.127
       }
     },
     {
-      "id": "posti-letto-stabilimento",
+      "id": "posti_letto_stabilimento",
       "source_id": "ministero_salute",
       "status": "ok",
-      "label": "posti-letto-stabilimento",
-      "detail": "anni 2020-2023 — fonte: posti_letto — mart: sì",
+      "label": "posti_letto_stabilimento",
+      "detail": "anni 2020-2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27209348374",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27209348374",
-        "checked_at": "2026-06-09",
-        "years": [
-          2020,
-          2021,
-          2022,
-          2023
-        ],
-        "config_path": "candidates/posti-letto-stabilimento/dataset.yml"
-      }
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023
+      ]
     },
     {
-      "id": "reparti-ricovero",
+      "id": "reparti_ricovero",
       "source_id": "ministero_salute",
       "status": "ok",
-      "label": "reparti-ricovero",
-      "detail": "anno 2022 — fonte: reparti_ricovero — mart: sì",
+      "label": "reparti_ricovero",
+      "detail": "anno 2022 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27019783972",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27019783972",
-        "checked_at": "2026-06-05",
-        "years": [
-          2022
-        ],
-        "config_path": "candidates/reparti-ricovero/dataset.yml"
+      "years": [
+        2022
+      ]
+    },
+    {
+      "id": "rna_aiuti_stato",
+      "source_id": "mimit_rna",
+      "status": "ok",
+      "label": "rna_aiuti_stato",
+      "detail": "anni 2017-2026 — mart: si",
+      "action": "",
+      "years": [
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "run": {
+        "run_id": "20260728T141141Z_cc2c1d94",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "mart": 65
+        },
+        "output_rows": {
+          "mart": 3335
+        },
+        "output_bytes": {
+          "mart": 79069
+        },
+        "started_at": "2026-07-28T14:11:41.656230+00:00",
+        "finished_at": "2026-07-28T14:11:44.824753+00:00",
+        "duration_seconds": 3.169
       }
     },
     {
-      "id": "rna-aiuti-stato",
+      "id": "rna_misure",
       "source_id": "mimit_rna",
       "status": "ok",
-      "label": "rna-aiuti-stato",
-      "detail": "anni 2017-2026 — fonte: rna_aiuti_parquet — mart: sì",
+      "label": "rna_misure",
+      "detail": "anno 2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30383075205",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30383075205",
-        "checked_at": "2026-07-28",
-        "years": [
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024,
-          2025,
-          2026
-        ],
-        "config_path": "candidates/rna-aiuti-stato/dataset.yml"
-      }
-    },
-    {
-      "id": "rna-misure",
-      "source_id": "mimit_rna",
-      "status": "ok",
-      "label": "rna-misure",
-      "detail": "anno 2023 — fonte: rna_misure_parquet — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30711502617",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30711502617",
-        "checked_at": "2026-08-01",
-        "duration_seconds": 1.02,
-        "row_counts": {
+      "years": [
+        2023
+      ],
+      "run": {
+        "run_id": "20260801T172236Z_52037e28",
+        "year": 2023,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "clean": 12874,
           "mart": 12903
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 1431438,
+          "clean": 1277967,
+          "mart": 601781
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2023
-        ],
-        "config_path": "candidates/rna-misure/dataset.yml"
+        "started_at": "2026-08-01T17:22:36.458631+00:00",
+        "finished_at": "2026-08-01T17:22:37.840837+00:00",
+        "duration_seconds": 1.382
       }
     },
     {
-      "id": "sai-progetti-italia",
+      "id": "sai_progetti_italia",
       "source_id": "centri_d_italia",
       "status": "ok",
-      "label": "sai-progetti-italia",
-      "detail": "anno 2026 — fonte: sai_progetti_source — mart: sì",
+      "label": "sai_progetti_italia",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28579359267",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28579359267",
-        "checked_at": "2026-07-02",
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/sai-progetti-italia/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "sai-strutture-italia",
+      "id": "sai_strutture_italia",
       "source_id": "centri_d_italia",
       "status": "ok",
-      "label": "sai-strutture-italia",
-      "detail": "anno 2026 — fonte: sai_strutture_source — mart: sì",
+      "label": "sai_strutture_italia",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28587205069",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28587205069",
-        "checked_at": "2026-07-02",
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/sai-strutture-italia/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "sbarchi-migranti-italia",
+      "id": "sbarchi_migranti_italia",
       "source_id": "liberiamoli_tutti",
       "status": "ok",
-      "label": "sbarchi-migranti-italia",
-      "detail": "anno 2025 — fonte: sbarchi_per_giorno — mart: sì",
+      "label": "sbarchi_migranti_italia",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30625809178",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30625809178",
-        "checked_at": "2026-07-31",
-        "duration_seconds": 0.41,
-        "row_counts": {
-          "raw": 4352,
-          "clean": 4348,
-          "mart": 73
-        },
-        "readiness": "incomplete",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 6,
-          "fail": 2
-        },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 95.0,
-          "mart": 100.0
-        },
-        "years": [
-          2025
-        ],
-        "config_path": "candidates/sbarchi-migranti-italia/dataset.yml"
-      }
+      "years": [
+        2025
+      ]
     },
     {
-      "id": "senato-ddl",
+      "id": "senato_ddl",
       "source_id": "dati_senato",
       "status": "ok",
-      "label": "senato-ddl",
-      "detail": "anno 2026 — fonti: senato_ddl_q1, senato_ddl_q2a — mart: sì",
+      "label": "senato_ddl",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30911310772",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30911310772",
-        "checked_at": "2026-08-04",
-        "duration_seconds": 7.02,
-        "row_counts": {
-          "raw": 9795,
-          "clean": 5124,
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260804T125306Z_937bf24f",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "mart": 100
+        },
+        "output_rows": {
           "mart": 370
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "mart": 22347
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "candidates/senato-ddl/dataset.yml"
+        "started_at": "2026-08-04T12:53:06.875573+00:00",
+        "finished_at": "2026-08-04T12:53:07.077926+00:00",
+        "duration_seconds": 0.202
       }
     },
     {
-      "id": "silos-infrastrutture",
+      "id": "silos_infrastrutture",
       "source_id": "dati_camera",
       "status": "ok",
-      "label": "silos-infrastrutture",
-      "detail": "anno 2024 — fonte: silos_download — mart: sì",
+      "label": "silos_infrastrutture",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28612611639",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28612611639",
-        "checked_at": "2026-07-02",
-        "years": [
-          2024
-        ],
-        "config_path": "candidates/silos-infrastrutture/dataset.yml"
-      }
+      "years": [
+        2024
+      ]
     },
     {
-      "id": "siope-bilancio-unificato",
+      "id": "siope_bilancio_unificato",
       "source_id": "siope",
       "status": "ok",
-      "label": "siope-bilancio-unificato",
-      "detail": "anni 2021-2026 — fonte: siope_entrate — mart: sì",
+      "label": "siope_bilancio_unificato",
+      "detail": "anni 2021-2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30353110961",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30353110961",
-        "checked_at": "2026-07-28",
-        "years": [
-          2021,
-          2022,
-          2023,
-          2024,
-          2025,
-          2026
-        ],
-        "config_path": "candidates/siope-bilancio-unificato/dataset.yml"
+      "years": [
+        2021,
+        2022,
+        2023,
+        2024,
+        2025,
+        2026
+      ],
+      "run": {
+        "run_id": "20260728T104720Z_22887f62",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 85
+        },
+        "output_rows": {
+          "clean": 6793964,
+          "mart": 12530
+        },
+        "output_bytes": {
+          "raw": 23201336,
+          "clean": 69710241,
+          "mart": 405006
+        },
+        "started_at": "2026-07-28T10:47:20.449799+00:00",
+        "finished_at": "2026-07-28T10:47:47.521812+00:00",
+        "duration_seconds": 27.072
       }
     },
     {
-      "id": "strutture-asl",
+      "id": "strutture_asl",
       "source_id": "ministero_salute",
       "status": "ok",
-      "label": "strutture-asl",
-      "detail": "anno 2022 — fonte: strutture_asl — mart: sì",
+      "label": "strutture_asl",
+      "detail": "anno 2022 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27014606312",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27014606312",
-        "checked_at": "2026-06-05",
-        "years": [
-          2022
-        ],
-        "config_path": "candidates/strutture-asl/dataset.yml"
+      "years": [
+        2022
+      ],
+      "run": {
+        "run_id": "20260731T200402Z_a97afd3e",
+        "year": 2022,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 107,
+          "clean": 106,
+          "mart": 21
+        },
+        "output_bytes": {
+          "raw": 24100,
+          "clean": 17126,
+          "mart": 1962
+        },
+        "started_at": "2026-07-31T20:04:02.821252+00:00",
+        "finished_at": "2026-07-31T20:04:05.627269+00:00",
+        "duration_seconds": 2.806
       }
     },
     {
-      "id": "strutture-ricovero-asl",
+      "id": "strutture_ricovero_asl",
       "source_id": "ministero_salute",
       "status": "ok",
-      "label": "strutture-ricovero-asl",
-      "detail": "anno 2022 — fonte: strutture_ricovero_asl — mart: sì",
+      "label": "strutture_ricovero_asl",
+      "detail": "anno 2022 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27019783972",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27019783972",
-        "checked_at": "2026-06-05",
-        "years": [
-          2022
-        ],
-        "config_path": "candidates/strutture-ricovero-asl/dataset.yml"
-      }
+      "years": [
+        2022
+      ]
     },
     {
-      "id": "ted-contract-notices",
+      "id": "ted_contract_notices",
       "source_id": "ted",
       "status": "ok",
-      "label": "ted-contract-notices",
-      "detail": "anni 2020-2023 — fonte: ted_cn_{year} — mart: sì",
+      "label": "ted_contract_notices",
+      "detail": "anni 2020-2023 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28517686670",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28517686670",
-        "checked_at": "2026-07-01",
-        "years": [
-          2020,
-          2021,
-          2022,
-          2023
-        ],
-        "config_path": "candidates/ted-contract-notices/dataset.yml"
-      }
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023
+      ]
     },
     {
-      "id": "terna-capacita-rinnovabile",
+      "id": "terna_capacita_rinnovabile",
       "source_id": "terna_opendata",
       "status": "ok",
-      "label": "terna-capacita-rinnovabile",
-      "detail": "anni 2015-2024 — fonte: terna_capacity_renewable_sources_xlsx — mart: sì",
+      "label": "terna_capacita_rinnovabile",
+      "detail": "anni 2015-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30501562348",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30501562348",
-        "checked_at": "2026-07-30",
-        "years": [
-          2015,
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/terna-capacita-rinnovabile/dataset.yml"
-      }
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
     },
     {
-      "id": "terna-electrical-energy-by-sector",
+      "id": "terna_electrical_energy_by_sector",
       "source_id": "terna_opendata",
       "status": "ok",
-      "label": "terna-electrical-energy-by-sector",
-      "detail": "anni 2015-2024 — fonte: terna_electrical_energy_xlsx — mart: sì",
+      "label": "terna_electrical_energy_by_sector",
+      "detail": "anni 2015-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30498924084",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30498924084",
-        "checked_at": "2026-07-29",
-        "years": [
-          2015,
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/terna-electrical-energy-by-sector/dataset.yml"
-      }
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
     },
     {
-      "id": "terna-electricity-by-source",
+      "id": "terna_electricity_by_source",
       "source_id": "terna_opendata",
       "status": "ok",
-      "label": "terna-electricity-by-source",
-      "detail": "anni 2015-2024 — fonte: terna_electricity_by_source_xlsx — mart: sì",
+      "label": "terna_electricity_by_source",
+      "detail": "anni 2015-2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30491824029",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30491824029",
-        "checked_at": "2026-07-29",
-        "years": [
-          2015,
-          2016,
-          2017,
-          2018,
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/terna-electricity-by-source/dataset.yml"
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "run": {
+        "run_id": "20260731T083122Z_d43d863a",
+        "year": 2024,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-31T08:31:22.287201+00:00",
+        "finished_at": "2026-07-31T08:31:22.291339+00:00",
+        "duration_seconds": 0.004
       }
     },
     {
-      "id": "anac-aggiudicatari",
+      "id": "compose:anac_appalti_master",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "anac_appalti_master",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "years": [
+        2026
+      ]
+    },
+    {
+      "id": "compose:comuni_master",
+      "source_id": "istat_situas",
+      "status": "ok",
+      "label": "comuni_master",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260730T160410Z_a60f19f4",
+        "year": 2026,
+        "status": "DRY_RUN",
+        "started_at": "2026-07-30T16:04:10.845383+00:00",
+        "finished_at": "2026-07-30T16:04:10.866765+00:00",
+        "duration_seconds": 0.021
+      }
+    },
+    {
+      "id": "compose:conto_annuale_profilo_ente",
+      "source_id": "rgs_conto_annuale",
+      "status": "ok",
+      "label": "conto_annuale_profilo_ente",
+      "detail": "anni 2020-2024 — mart: si",
+      "action": "",
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ],
+      "run": {
+        "run_id": "20260727T181422Z_2e14ed72",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 90,
+          "mart": 85
+        },
+        "output_rows": {
+          "clean": 10885,
+          "mart": 8294
+        },
+        "output_bytes": {
+          "raw": 1085952,
+          "clean": 571529,
+          "mart": 420788
+        },
+        "started_at": "2026-07-27T18:14:22.788009+00:00",
+        "finished_at": "2026-07-27T18:14:30.384220+00:00",
+        "duration_seconds": 7.596
+      }
+    },
+    {
+      "id": "compose:costituzione_master",
+      "source_id": "costituzione-italiana",
+      "status": "ok",
+      "label": "costituzione_master",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "years": [
+        2026
+      ]
+    },
+    {
+      "id": "compose:elezioni_voto",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "elezioni_voto",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260728T223943Z_19b321c6",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "mart": 85
+        },
+        "output_rows": {
+          "mart": 180073
+        },
+        "output_bytes": {
+          "mart": 2921140
+        },
+        "started_at": "2026-07-28T22:39:43.337934+00:00",
+        "finished_at": "2026-07-28T22:39:46.045440+00:00",
+        "duration_seconds": 2.708
+      }
+    },
+    {
+      "id": "compose:eurostat_demography",
+      "source_id": "eurostat",
+      "status": "ok",
+      "label": "eurostat_demography",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260727T090737Z_986b13bc",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 95
+        },
+        "output_rows": {
+          "clean": 20949,
+          "mart": 1284
+        },
+        "output_bytes": {
+          "raw": 189099,
+          "clean": 384373,
+          "mart": 31386
+        },
+        "started_at": "2026-07-27T09:07:37.475085+00:00",
+        "finished_at": "2026-07-27T09:07:41.498542+00:00",
+        "duration_seconds": 4.023
+      }
+    },
+    {
+      "id": "compose:eurostat_economy",
+      "source_id": "eurostat",
+      "status": "ok",
+      "label": "eurostat_economy",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260727T090658Z_8f8bd230",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 95
+        },
+        "output_rows": {
+          "clean": 41709,
+          "mart": 2568
+        },
+        "output_bytes": {
+          "raw": 189099,
+          "clean": 2280716,
+          "mart": 167310
+        },
+        "started_at": "2026-07-27T09:06:58.133700+00:00",
+        "finished_at": "2026-07-27T09:07:03.043263+00:00",
+        "duration_seconds": 4.91
+      }
+    },
+    {
+      "id": "compose:eurostat_territory",
+      "source_id": "eurostat",
+      "status": "ok",
+      "label": "eurostat_territory",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260727T090743Z_7f7ef8c6",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 95
+        },
+        "output_rows": {
+          "clean": 30495,
+          "mart": 2174
+        },
+        "output_bytes": {
+          "raw": 189099,
+          "clean": 318447,
+          "mart": 24404
+        },
+        "started_at": "2026-07-27T09:07:43.327742+00:00",
+        "finished_at": "2026-07-27T09:07:47.044512+00:00",
+        "duration_seconds": 3.717
+      }
+    },
+    {
+      "id": "compose:ispra_ru_costi_kg_compose",
+      "source_id": "ispra_linked_data",
+      "status": "ok",
+      "label": "ispra_ru_costi_kg_compose",
+      "detail": "anni 2020-2024 — mart: si",
+      "action": "",
+      "years": [
+        2020,
+        2021,
+        2022,
+        2023,
+        2024
+      ]
+    },
+    {
+      "id": "compose:malasanita_compose",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "malasanita_compose",
+      "detail": "anno 2022 — mart: si",
+      "action": "",
+      "years": [
+        2022
+      ]
+    },
+    {
+      "id": "compose:unified_comuni",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "unified_comuni",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "years": [
+        2026
+      ]
+    },
+    {
+      "id": "compose:who_is_who_pa",
+      "source_id": "dataciviclab_composite",
+      "status": "ok",
+      "label": "who_is_who_pa",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "years": [
+        2026
+      ]
+    },
+    {
+      "id": "anac_aggiudicatari",
       "source_id": "anac",
       "status": "ok",
-      "label": "anac-aggiudicatari",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "anac_aggiudicatari",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29639927658",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29639927658",
-        "checked_at": "2026-07-18",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/anac-aggiudicatari/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "anac-collaudo",
+      "id": "anac_collaudo",
       "source_id": "anac",
       "status": "ok",
-      "label": "anac-collaudo",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "anac_collaudo",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30156522396",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30156522396",
-        "checked_at": "2026-07-25",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/anac-collaudo/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "anac-cup",
+      "id": "anac_cup",
       "source_id": "anac",
       "status": "ok",
-      "label": "anac-cup",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "anac_cup",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30156522396",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30156522396",
-        "checked_at": "2026-07-25",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/anac-cup/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "anac-partecipanti",
+      "id": "anac_partecipanti",
       "source_id": "anac",
       "status": "ok",
-      "label": "anac-partecipanti",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "anac_partecipanti",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29655870229",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29655870229",
-        "checked_at": "2026-07-18",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/anac-partecipanti/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "anac-stati-avanzamento",
+      "id": "anac_stati_avanzamento",
       "source_id": "anac",
       "status": "ok",
-      "label": "anac-stati-avanzamento",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "anac_stati_avanzamento",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30156522396",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30156522396",
-        "checked_at": "2026-07-25",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/anac-stati-avanzamento/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "anac-subappalti",
+      "id": "anac_subappalti",
       "source_id": "anac",
       "status": "ok",
-      "label": "anac-subappalti",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "anac_subappalti",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29692046822",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29692046822",
-        "checked_at": "2026-07-19",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/anac-subappalti/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "bdap-anagrafe-enti",
+      "id": "bdap_anagrafe_enti",
       "source_id": "openbdap",
       "status": "ok",
-      "label": "bdap-anagrafe-enti",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "bdap_anagrafe_enti",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26845796510",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26845796510",
-        "checked_at": "2026-06-02",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/bdap-anagrafe-enti/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "camera-gruppi",
+      "id": "camera_gruppi",
       "source_id": "dati_camera",
       "status": "ok",
-      "label": "camera-gruppi",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "camera_gruppi",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30987598178",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30987598178",
-        "checked_at": "2026-08-05",
-        "duration_seconds": 1.43,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260804T192126Z_3baa056e",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 239,
           "clean": 239,
           "mart": 20
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 37943,
+          "clean": 5342,
+          "mart": 538
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/camera-gruppi/dataset.yml"
+        "started_at": "2026-08-04T19:21:26.944365+00:00",
+        "finished_at": "2026-08-04T19:21:28.575720+00:00",
+        "duration_seconds": 1.631
       }
     },
     {
-      "id": "camera-incarichi",
+      "id": "camera_incarichi",
       "source_id": "dati_camera",
       "status": "ok",
-      "label": "camera-incarichi",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "camera_incarichi",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30924328812",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30924328812",
-        "checked_at": "2026-08-04",
-        "duration_seconds": 1.71,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260804T151201Z_de24e6b4",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 3096,
           "clean": 3096,
           "mart": 2196
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 1085531,
+          "clean": 127133,
+          "mart": 12285
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/camera-incarichi/dataset.yml"
+        "started_at": "2026-08-04T15:12:01.231757+00:00",
+        "finished_at": "2026-08-04T15:12:04.079163+00:00",
+        "duration_seconds": 2.847
       }
     },
     {
-      "id": "ipa-aree-organizzative-omogenee",
+      "id": "ipa_aree_organizzative_omogenee",
       "source_id": "agid",
       "status": "ok",
-      "label": "ipa-aree-organizzative-omogenee",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "ipa_aree_organizzative_omogenee",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29403654282",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29403654282",
-        "checked_at": "2026-07-15",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/ipa-aree-organizzative-omogenee/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "ipa-enti",
+      "id": "ipa_enti",
       "source_id": "agid",
       "status": "ok",
-      "label": "ipa-enti",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "ipa_enti",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28023791270",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28023791270",
-        "checked_at": "2026-06-23",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/ipa-enti/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "ipa-unita-organizzative",
+      "id": "ipa_unita_organizzative",
       "source_id": "agid",
       "status": "ok",
-      "label": "ipa-unita-organizzative",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "ipa_unita_organizzative",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29403654282",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29403654282",
-        "checked_at": "2026-07-15",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/ipa-unita-organizzative/dataset.yml"
-      }
+      "years": [
+        2026
+      ]
     },
     {
-      "id": "istat-elenco-comuni",
+      "id": "istat_elenco_comuni",
       "source_id": "istat_situas",
       "status": "ok",
-      "label": "istat-elenco-comuni",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "istat_elenco_comuni",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27298960373",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27298960373",
-        "checked_at": "2026-06-10",
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/istat-elenco-comuni/dataset.yml"
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260802T144646Z_4fcf6d42",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 7894,
+          "clean": 7894,
+          "mart": 15788
+        },
+        "output_bytes": {
+          "raw": 577337,
+          "clean": 170810,
+          "mart": 173974
+        },
+        "started_at": "2026-08-02T14:46:46.836471+00:00",
+        "finished_at": "2026-08-02T14:46:44.919945+00:00",
+        "duration_seconds": -1.917
       }
     },
     {
-      "id": "istat-pil-territoriale",
+      "id": "istat_pil_territoriale",
       "source_id": "istat_sdmx",
       "status": "ok",
-      "label": "istat-pil-territoriale",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "istat_pil_territoriale",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27136216949",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27136216949",
-        "checked_at": "2026-06-08",
-        "years": [
-          2024
-        ],
-        "config_path": "support_datasets/istat-pil-territoriale/dataset.yml"
-      }
+      "years": [
+        2024
+      ]
     },
     {
-      "id": "mim-anagrafica-scuole-statali",
+      "id": "mim_anagrafica_scuole_statali",
       "source_id": "mim_opendata",
       "status": "ok",
-      "label": "mim-anagrafica-scuole-statali",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "mim_anagrafica_scuole_statali",
+      "detail": "anno 2024 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "27878799069",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/27878799069",
-        "checked_at": "2026-06-20",
-        "years": [
-          2024
-        ],
-        "config_path": "support_datasets/mim-anagrafica-scuole-statali/dataset.yml"
+      "years": [
+        2024
+      ],
+      "run": {
+        "run_id": "20260802T170921Z_338da845",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 50515,
+          "clean": 50515,
+          "mart": 50515
+        },
+        "output_bytes": {
+          "raw": 13178615,
+          "clean": 1848102,
+          "mart": 1864310
+        },
+        "started_at": "2026-08-02T17:09:21.138889+00:00",
+        "finished_at": "2026-08-02T17:09:32.630233+00:00",
+        "duration_seconds": 11.491
       }
     },
     {
-      "id": "opencivitas-fsc-enti-rso",
+      "id": "opencivitas_fsc_enti_rso",
       "source_id": "opencivitas",
       "status": "ok",
-      "label": "opencivitas-fsc-enti-rso",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "opencivitas_fsc_enti_rso",
+      "detail": "anno 2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "26562225396",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/26562225396",
-        "checked_at": "2026-05-28",
-        "years": [
-          2025
-        ],
-        "config_path": "support_datasets/opencivitas-fsc-enti-rso/dataset.yml"
+      "years": [
+        2025
+      ],
+      "run": {
+        "run_id": "20260729T120941Z_6c07cd84",
+        "year": 2025,
+        "status": "RUNNING",
+        "started_at": "2026-07-29T12:09:41.401993+00:00"
       }
     },
     {
-      "id": "opencivitas-glossario",
+      "id": "opencivitas_glossario",
       "source_id": "opencivitas",
       "status": "ok",
-      "label": "opencivitas-glossario",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "opencivitas_glossario",
+      "detail": "anni 2015-2022 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29637176868",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29637176868",
-        "checked_at": "2026-07-18",
-        "years": [
-          2015,
-          2016,
-          2017,
-          2018,
-          2019,
-          2021,
-          2022
-        ],
-        "config_path": "support_datasets/opencivitas-glossario/dataset.yml"
-      }
+      "years": [
+        2015,
+        2016,
+        2017,
+        2018,
+        2019,
+        2021,
+        2022
+      ]
     },
     {
-      "id": "popolazione-istat-comunale-2019-2025",
+      "id": "popolazione_istat_comunale_2019_2025",
       "source_id": "istat_sdmx",
       "status": "ok",
-      "label": "popolazione-istat-comunale-2019-2025",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "popolazione_istat_comunale_2019_2025",
+      "detail": "anni 2019-2025 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30195122989",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30195122989",
-        "checked_at": "2026-07-26",
-        "years": [
-          2019,
-          2020,
-          2021,
-          2022,
-          2023,
-          2024,
-          2025
-        ],
-        "config_path": "support_datasets/popolazione-istat-comunale-2019-2025/dataset.yml"
+      "years": [
+        2019,
+        2020,
+        2021,
+        2022,
+        2023,
+        2024,
+        2025
+      ],
+      "run": {
+        "run_id": "20260730T182719Z_16c88d81",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 75
+        },
+        "output_rows": {
+          "raw": 805392,
+          "clean": 797496,
+          "mart": 860796
+        },
+        "output_bytes": {
+          "raw": 46797475,
+          "clean": 5530200,
+          "mart": 3979775
+        },
+        "started_at": "2026-07-30T18:27:19.148801+00:00",
+        "finished_at": "2026-07-30T18:27:36.870374+00:00",
+        "duration_seconds": 17.722
       }
     },
     {
-      "id": "senato-anagrafica",
+      "id": "senato_anagrafica",
       "source_id": "dati_senato",
       "status": "ok",
-      "label": "senato-anagrafica",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "senato_anagrafica",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30987598178",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30987598178",
-        "checked_at": "2026-08-05",
-        "duration_seconds": 2.48,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260804T192431Z_2c2a441e",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 212,
           "clean": 212,
           "mart": 186
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 15933,
+          "clean": 5589,
+          "mart": 2145
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/senato-anagrafica/dataset.yml"
+        "started_at": "2026-08-04T19:24:31.799659+00:00",
+        "finished_at": "2026-08-04T19:24:33.342541+00:00",
+        "duration_seconds": 1.543
       }
     },
     {
-      "id": "senato-firmatari",
+      "id": "senato_firmatari",
       "source_id": "dati_senato",
       "status": "ok",
-      "label": "senato-firmatari",
-      "detail": "anni: ? — fonte: ? — mart: sì",
+      "label": "senato_firmatari",
+      "detail": "anno 2026 — mart: si",
       "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30934746986",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30934746986",
-        "checked_at": "2026-08-04",
-        "duration_seconds": 35.31,
-        "row_counts": {
+      "years": [
+        2026
+      ],
+      "run": {
+        "run_id": "20260804T172610Z_9e59d45e",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
           "raw": 37992,
           "clean": 37992,
           "mart": 4664
         },
-        "readiness": "ready",
-        "readiness_checks": {
-          "total": 8,
-          "ok": 8,
-          "fail": 0
+        "output_bytes": {
+          "raw": 6970601,
+          "clean": 494546,
+          "mart": 12683
         },
-        "quality_scores": {
-          "raw": 100.0,
-          "clean": 100.0,
-          "mart": 100.0
-        },
-        "years": [
-          2026
-        ],
-        "config_path": "support_datasets/senato-firmatari/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:anac-appalti-master",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "compose:anac-appalti-master",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30248169062",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30248169062",
-        "checked_at": "2026-07-27",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/anac-appalti-master/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:comuni-master",
-      "source_id": "istat_situas",
-      "status": "ok",
-      "label": "compose:comuni-master",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30175442735",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30175442735",
-        "checked_at": "2026-07-25",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/comuni-master/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:conto-annuale-profilo-ente",
-      "source_id": "rgs_conto_annuale",
-      "status": "ok",
-      "label": "compose:conto-annuale-profilo-ente",
-      "detail": "anni 2020-2024 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30294866907",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30294866907",
-        "checked_at": "2026-07-27",
-        "years": [
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "compose/conto-annuale-profilo-ente/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:costituzione-master",
-      "source_id": "costituzione-italiana",
-      "status": "ok",
-      "label": "compose:costituzione-master",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28715432836",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28715432836",
-        "checked_at": "2026-07-04",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/costituzione-master/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:elezioni-voto",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "compose:elezioni-voto",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30456214276",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30456214276",
-        "checked_at": "2026-07-29",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/elezioni-voto/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:eurostat-demography",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "compose:eurostat-demography",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30257825297",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30257825297",
-        "checked_at": "2026-07-27",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/eurostat-demography/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:eurostat-economy",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "compose:eurostat-economy",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30257825297",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30257825297",
-        "checked_at": "2026-07-27",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/eurostat-economy/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:eurostat-territory",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "compose:eurostat-territory",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "30257825297",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/30257825297",
-        "checked_at": "2026-07-27",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/eurostat-territory/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:ispra-ru-costi-kg",
-      "source_id": "ispra_linked_data",
-      "status": "ok",
-      "label": "compose:ispra-ru-costi-kg",
-      "detail": "anni 2020-2024 — fonti: a, b — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "28322708552",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/28322708552",
-        "checked_at": "2026-06-28",
-        "years": [
-          2020,
-          2021,
-          2022,
-          2023,
-          2024
-        ],
-        "config_path": "candidates/ispra-ru-costi-kg/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:malasanita-compose",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "compose:malasanita-compose",
-      "detail": "anno 2022 — fonti: a, c — mart: sì",
-      "action": ""
-    },
-    {
-      "id": "compose:unified-comuni",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "compose:unified-comuni",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29422446973",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29422446973",
-        "checked_at": "2026-07-15",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/unified-comuni/dataset.yml"
-      }
-    },
-    {
-      "id": "compose:who-is-who-pa",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "compose:who-is-who-pa",
-      "detail": "anno 2026 — fonte: ? — mart: sì",
-      "action": "",
-      "latest_run": {
-        "status": "passed",
-        "run_id": "29491723328",
-        "run_url": "https://github.com/dataciviclab/dataset-incubator/actions/runs/29491723328",
-        "checked_at": "2026-07-16",
-        "years": [
-          2026
-        ],
-        "config_path": "compose/who-is-who-pa/dataset.yml"
+        "started_at": "2026-08-04T17:26:10.747999+00:00",
+        "finished_at": "2026-08-04T17:26:19.409335+00:00",
+        "duration_seconds": 8.661
       }
     }
   ]
