@@ -61,8 +61,9 @@ dataset-incubator/
   candidates/                  # filoni attivi e passati
   support_datasets/            # basi trasversali riusabili
   registry/
-    clean_catalog.json         # catalogo dei clean pubblici
-    pipeline_signals.json      # stato dei run per filone
+    registry.json             # artifact unico (fusion ADR) — sezioni datasets/marts/signals/codelists/entities
+    clean_catalog.json        # proiezione legacy (consumer non ancora migrati)
+    pipeline_signals.json     # proiezione legacy (stato dei run per filone)
   tools/
     clean_query_mcp/          # MCP per interrogare i clean pubblici
   templates/

@@ -1,8 +1,10 @@
 # ruff: noqa: E402
-"""Test per validazione catalogo clean contro schema JSON.
+"""Test per validazione del registry contro lo schema JSON.
 
-Contratto: validate_catalog() verifica che un catalogo rispetti lo schema
-JSON regolamentare. Usato in CI per validare clean_catalog.json.
+Contratto: validate_catalog() verifica che un artifact registry rispetti lo
+schema JSON regolamentare. Usato in CI per validare registry.json (fusion ADR,
+toolkit v1.49.0). La proiezione legacy clean_catalog.json resta per i consumer
+non ancora migrati; il contratto canonico è registry.json.
 
 Prova del fuoco: se cancello questi test, un catalogo malformato puo'
 essere pubblicato senza preavviso.
@@ -22,22 +24,20 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 def validate_catalog(catalog, _schema) -> list:
-    """Valida contro lo schema condiviso del toolkit (PR #452).
+    """Valida contro lo schema condiviso del toolkit (fusion ADR, #453).
 
     Wrapper per il contratto storico del test (lista errori stringa).
     """
     from toolkit.registry.validation import validate_artifact
 
-    return validate_artifact(catalog, "clean_catalog.schema.json")
+    return validate_artifact(catalog, "registry.schema.json")
 
 
 @pytest.mark.contract
 class CleanCatalogValidationTest(unittest.TestCase):
     def setUp(self) -> None:
         self.schema = None  # schema dal toolkit (validate_catalog)
-        self.catalog = json.loads(
-            (ROOT / "registry" / "clean_catalog.json").read_text(encoding="utf-8")
-        )
+        self.catalog = json.loads((ROOT / "registry" / "registry.json").read_text(encoding="utf-8"))
 
     def test_current_catalog_matches_schema(self) -> None:
         self.assertEqual(validate_catalog(self.catalog, self.schema), [])

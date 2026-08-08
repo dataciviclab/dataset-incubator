@@ -3,11 +3,13 @@
 # Pattern snello (eurostat post-merge-registry.yml): dopo il merge di una PR
 # che tocca candidates/compose/support_datasets:
 #   1. run-changed — run COMPLETO dei dataset cambiati (parquet locali) + push GCS
-#   2. build-and-pr — build_registry --write (derive locale, wrapper sul toolkit)
-#      + entity graph → PR draft "chore(post-merge)" che il maintainer mergia.
+#   2. build-and-pr — build_registry --write (derive locale, wrapper sul toolkit):
+#      registry.json unico (fusion ADR) + proiezioni legacy clean_catalog /
+#      pipeline_signals / entity_graph per i consumer non ancora migrati
+#      → PR draft "chore(post-merge)" che il maintainer mergia.
 #
 # La CI NON committa su main: apre una PR draft col registry aggiornato.
-# Dipende da toolkit.registry (PR toolkit #452).
+# Dipende da toolkit.registry (fusion ADR, toolkit #453).
 
 name: Post-Merge Candidate Registry
 
@@ -156,9 +158,6 @@ jobs:
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: python scripts/build_registry.py --write
-
-      - name: Build entity graph
-        run: python tools/graph/build_graph.py
 
       - name: Check registry diff
         id: diff

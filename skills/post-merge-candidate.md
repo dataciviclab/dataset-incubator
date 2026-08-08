@@ -26,11 +26,13 @@ Validare e chiudere la draft PR `chore(post-merge): aggiorna registry per PR #<n
 Pattern snello (eurostat post-merge-registry.yml):
 - ✅ run completo dei dataset cambiati (parquet locali) + push GCS
 - ✅ `python scripts/build_registry.py --write` (wrapper su `toolkit.registry`):
-  - `registry/clean_catalog.json` auto-derivato (metadata dal dataset.yml,
+  - `registry/registry.json` — artifact unico (fusion ADR, toolkit v1.49.0):
+    sezioni datasets/marts/signals/codelists/entities; metadata dal dataset.yml,
     schema dai parquet appena runnati; entry non cambiate preservate dal
-    catalogo esistente)
-  - `registry/pipeline_signals.json` + `registry/mart_catalog.json` + `registry/codelists.json`
-- ✅ `registry/entity_graph.json` (tools/graph/build_graph.py)
+    catalogo esistente
+  - proiezioni legacy per i consumer non ancora migrati (clean_query_mcp,
+    data-explorer, agent-context-builder): `registry/clean_catalog.json`,
+    `registry/pipeline_signals.json`, `registry/entity_graph.json`
 - ✅ draft PR aperta
 
 ## Cosa rimane al maintainer
@@ -39,12 +41,13 @@ I campi del catalogo (name/description/source/tags/category) arrivano dal
 `dataset.yml`; le entry già presenti restano dal catalogo esistente. Il
 maintainer interviene **solo per i casi editoriali rari**: descrizioni umane
 di qualità per slug nuovi (il `name` derivato `slug.title()` non è un buon
-titolo). In quel caso compila direttamente nel catalogo della PR draft:
+titolo). In quel caso compila direttamente in `registry/registry.json`
+(sezione `datasets`) della PR draft:
 
-### 1. (Raro) Compila i campi editoriali del clean catalog
+### 1. (Raro) Compila i campi editoriali del registry
 
 Solo per slug nuovi con titolo/descrizione derivati poco leggibili. Apri
-`registry/clean_catalog.json` e compila:
+`registry/registry.json` (sezione `datasets`) e compila:
 
 | Campo | Cosa mettere |
 |---|---|
@@ -69,8 +72,8 @@ Deve restituire `ok`.
 ### 3. Chiudi
 
 ```bash
-git add registry/clean_catalog.json
-git commit -m "fix: compila entry {slug} nel clean catalog"
+git add registry/
+git commit -m "fix: compila entry {slug} nel registry"
 git push origin post-merge-candidate/pr-<N>-registry
 ```
 
