@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "dataciviclab-dataset-incubator"
-dynamic = ["version"]
+version = "0.3.0"
 description = "DataCivicLab Dataset Incubator: intake, validazione e promozione dataset"
 readme = "README.md"
 requires-python = ">=3.12"
@@ -49,11 +49,8 @@ dev = [
 Repository = "https://github.com/dataciviclab/dataset-incubator"
 
 [tool.setuptools.packages.find]
-include = ["scripts", "scripts.*", "tools", "tools.*"]
+include = ["scripts", "scripts.*"]
 exclude = ["tests*"]
-
-[tool.setuptools.dynamic]
-version = { attr = "scripts.__version__" }
 
 [tool.pytest.ini_options]
 testpaths = "tests"
