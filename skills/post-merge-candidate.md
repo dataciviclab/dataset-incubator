@@ -64,7 +64,7 @@ Regole per `role`:
 ### 2. Verifica
 
 ```bash
-python scripts/build_registry.py --check-gcs
+python scripts/build_registry.py
 ```
 
 Deve restituire `ok`.

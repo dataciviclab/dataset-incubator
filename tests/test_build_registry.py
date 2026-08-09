@@ -230,12 +230,6 @@ class TestMain:
             assert (tmp_path / name).exists(), name
         assert json.loads((tmp_path / "registry.json").read_text())["repo"] == "dataset-incubator"
 
-    def test_check_gcs_sets_derive_mode(self, tmp_path: Path, patch_builder, _isolate_argv) -> None:
-        sys.argv = ["build_registry.py", "--out", str(tmp_path), "--check-gcs"]
-        code = br.main()
-        assert code == 0
-        assert patch_builder["derive_mode"] == "check-gcs"
-
     def test_validation_error_blocks_write(
         self, tmp_path: Path, monkeypatch, _isolate_argv
     ) -> None:

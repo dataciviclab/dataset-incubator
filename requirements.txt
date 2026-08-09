@@ -5,6 +5,3 @@ dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.49.0
 
 # jsonschema — validazione registry schemas (registry.schema.json, fusion ADR)
 jsonschema>=4.0
-
-# pyarrow — per push_archive.py (GCS push post-merge)
-pyarrow>=24.0.0

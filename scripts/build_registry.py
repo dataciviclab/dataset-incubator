@@ -158,12 +158,6 @@ def main() -> int:
         default=DEFAULT_OUT,
         help=f"Dir di output (default: {DEFAULT_OUT})",
     )
-    parser.add_argument(
-        "--check-gcs",
-        action="store_true",
-        help="Verifica che le location gs:// del clean_catalog risolvano a parquet "
-        "pubblici (derive_mode='check-gcs'). Non scrive nulla.",
-    )
     args = parser.parse_args()
 
     try:
@@ -191,7 +185,6 @@ def main() -> int:
         path_contract=contract,
         existing_catalog=existing_catalog,
         existing_signals=existing_signals,
-        derive_mode="check-gcs" if args.check_gcs else "local",
     )
 
     # Errori già categorizzati dal builder: derive = warning (checkout

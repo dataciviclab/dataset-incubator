@@ -32,11 +32,6 @@ jobs:
       - name: Validate catalog structure
         run: python scripts/build_registry.py
 
-      # Check GCS paths solo su push a main (troppo lento per PR: ~3min su 106 dataset)
-      - name: Validate public GCS paths
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        run: python scripts/build_registry.py --check-gcs
-
       # Notifiche downstream — su push a main (dopo merge registry PR)
       # Notifica DE per qualsiasi modifica al catalogo (nuovo slug OPPURE aggiornamento)
       - name: Notify data-explorer
