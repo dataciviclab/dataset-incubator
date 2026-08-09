@@ -6,7 +6,7 @@ qui solo layout, path contract e scrittura.
 
 Fusion ADR (toolkit v1.49.0): il builder produce un UNICO ``registry.json`` con le
 sezioni datasets/marts/signals/codelists/entities. Per non rompere i consumer
-attuali (clean_query_mcp, data-explorer, agent-context-builder, smoke-weekly) il
+attuali (data-explorer, agent-context-builder, smoke-weekly) il
 wrapper scrive in aggiunta le proiezioni legacy ``clean_catalog.json``,
 ``pipeline_signals.json`` e ``entity_graph.json`` derivandole dalle stesse sezioni.
 La rimozione delle proiezioni avviene dopo la migrazione dei consumer.

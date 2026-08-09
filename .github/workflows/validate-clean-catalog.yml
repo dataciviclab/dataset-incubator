@@ -6,7 +6,6 @@ on:
       - "registry/registry.json"
       - "registry/clean_catalog.json"
       - "scripts/build_registry.py"
-      - "tools/clean_query_mcp/**"
   push:
     branches:
       - main
@@ -14,7 +13,6 @@ on:
       - "registry/registry.json"
       - "registry/clean_catalog.json"
       - "scripts/build_registry.py"
-      - "tools/clean_query_mcp/**"
   workflow_dispatch:
 
 jobs:

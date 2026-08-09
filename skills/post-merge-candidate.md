@@ -30,8 +30,8 @@ Pattern snello (eurostat post-merge-registry.yml):
     sezioni datasets/marts/signals/codelists/entities; metadata dal dataset.yml,
     schema dai parquet appena runnati; entry non cambiate preservate dal
     catalogo esistente
-  - proiezioni legacy per i consumer non ancora migrati (clean_query_mcp,
-    data-explorer, agent-context-builder): `registry/clean_catalog.json`,
+  - proiezioni legacy per i consumer non ancora migrati (data-explorer,
+    agent-context-builder): `registry/clean_catalog.json`,
     `registry/pipeline_signals.json`, `registry/entity_graph.json`
 - ✅ draft PR aperta
 

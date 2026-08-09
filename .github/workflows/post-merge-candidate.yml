@@ -87,8 +87,12 @@ jobs:
               [ -f "$base/$SLUG_INPUT/dataset.yml" ] && echo "$base/$SLUG_INPUT" >> changed_dirs.txt
             done
           else
+            # File non-pipeline (README/notes/notebook/immagini/out) non
+            # triggerano: una modifica a soli doc non deve rigenerare il registry.
             gh pr view "$PR_NUMBER" --json files --jq ".files[].path" | \
               grep -E '^(candidates|compose|support_datasets)/' | \
+              grep -vE '\.(md|ipynb|png|jpg|jpeg|gif|svg)$' | \
+              grep -vE '/(out|__pycache__)/' | \
               cut -d/ -f1-2 | sort -u > changed_dirs.txt
           fi
           # Filtra solo dir con dataset.yml

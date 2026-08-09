@@ -2,7 +2,7 @@
 Fixture condivise per i test di dataset-incubator.
 
 Aggiunge scripts/ e REPO_ROOT al path di default.
-REPO_ROOT serve per import package (``from tools.clean_query_mcp import server``).
+REPO_ROOT serve per import package (``from tools...``).
 scripts/ serve per import moduli scripts (non sono un package).
 """
 

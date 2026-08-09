@@ -101,10 +101,30 @@ def _read_stdin_files() -> list[str]:
     return [line.strip() for line in sys.stdin if line.strip()]
 
 
+# Suffissi / path che non influiscono sulla pipeline: un cambio solo a questi
+# non deve triggerare run (pr-toolkit-check) né publish (post-merge).
+_NON_PIPELINE_SUFFIXES = {".md", ".ipynb", ".png", ".jpg", ".jpeg", ".gif", ".svg"}
+_NON_PIPELINE_PARTS = {"out", "__pycache__", ".ipynb_checkpoints"}
+
+
+def _is_pipeline_file(file_name: str) -> bool:
+    """True se il file impatta la pipeline (dataset.yml, sql, script, sorgenti).
+
+    README/notes/notebook/immagini e output runtime NON contano: una modifica
+    a soli questi file non deve rigenerare la pipeline.
+    """
+    path = Path(file_name)
+    if path.suffix.lower() in _NON_PIPELINE_SUFFIXES:
+        return False
+    return not any(part in _NON_PIPELINE_PARTS for part in path.parts)
+
+
 def _detect_from_files(files: list[str]) -> tuple[list[dict], list[dict]]:
     """Detect candidate/support roots and configs from file list."""
     seen: dict[tuple[str, str], dict] = {}
     for file_name in files:
+        if not _is_pipeline_file(file_name):
+            continue
         path = Path(file_name)
         parts = path.parts
         if len(parts) < 2:
