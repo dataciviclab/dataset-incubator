@@ -23,7 +23,6 @@ body:
       description: Conferma gli elementi minimi richiesti per la promozione.
       options:
         - label: "pipeline `clean` + `mart` stabile sul perimetro dichiarato"
-        - label: "notebook `v0` presente ed eseguibile, se il filone prevede notebook"
         - label: "`README.md` del candidate aggiornato con stato, perimetro e gate aperti"
         - label: "criterio di promozione dichiarato nel `README.md`"
         - label: "issue o discussion pubblica gia' aperta, se il target e' `dataciviclab`"
@@ -56,7 +55,7 @@ body:
     attributes:
       label: Perche e' pronto a uscire
       description: Spiega in modo sintetico perche il filone merita il passaggio.
-      placeholder: Domanda chiara, dataset verificato, mart stabile, notebook v0/v1, discussion pronta, ecc.
+      placeholder: Domanda chiara, dataset verificato, mart stabile, discussion pronta, ecc.
     validations:
       required: true
 
@@ -65,7 +64,7 @@ body:
     attributes:
       label: Artefatti gia pronti
       description: Indica cosa esiste gia e puo sostenere il passaggio.
-      placeholder: README, notes, dataset.yml, clean/mart, notebook, issue pubblica, draft discussion, ecc.
+      placeholder: README, notes, dataset.yml, clean/mart, issue pubblica, draft discussion, ecc.
     validations:
       required: true
 
@@ -83,6 +82,6 @@ body:
     attributes:
       label: Prossimo passo operativo
       description: Qual e' il passo concreto successivo?
-      placeholder: Aprire issue pubblica, creare repo progetto, spostare notebook, chiudere intake, ecc.
+      placeholder: Aprire issue pubblica, creare repo progetto, chiudere intake, ecc.
     validations:
       required: true

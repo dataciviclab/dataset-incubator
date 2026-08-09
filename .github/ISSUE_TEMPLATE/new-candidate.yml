@@ -89,7 +89,7 @@ body:
     attributes:
       label: Output minimo atteso
       description: Qual è il primo artefatto o risultato minimo che renderebbe utile il candidato?
-      placeholder: Mart minimo, notebook v0, tabella di supporto, join di prova, ecc.
+      placeholder: Mart minimo, tabella di supporto, join di prova, ecc.
     validations:
       required: true
 
@@ -98,7 +98,7 @@ body:
     attributes:
       label: Prossimo passo operativo
       description: Qual è il primo passo concreto che vale la pena fare?
-      placeholder: Eseguire run all, verificare la fonte, stringere il framing, aggiungere notebook v0, ecc.
+      placeholder: Eseguire run all, verificare la fonte, stringere il framing, ecc.
     validations:
       required: true
 

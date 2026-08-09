@@ -23,7 +23,7 @@ Un filone entra in DI in due modi:
 ### Processamento
 
 1. **Valutazione intake** — si verifica che il caso sia abbastanza stretto con `intake-candidate.md`
-2. **Creazione candidate** — si crea la struttura in `candidates/<slug>/` (`dataset.yml`, `sql/`, `notebooks/`, `notes.md`)
+2. **Creazione candidate** — si crea la struttura in `candidates/<slug>/` (`dataset.yml`, `sql/`, `notes.md`)
 3. **PR e run automatico** — dopo ogni merge, `post-merge-candidate.yml` esegue il candidate via `toolkit` e valida raw → clean → mart
 4. **Run successivi** — si usano `run-candidate.md` per esecuzioni manuali o verifiche
 
@@ -80,8 +80,6 @@ dataset-incubator/
 candidates/<slug>/
   dataset.yml
   notes.md
-  notebooks/
-    v0.ipynb
   sql/
     clean.sql
     mart.sql

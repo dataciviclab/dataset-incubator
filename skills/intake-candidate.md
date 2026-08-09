@@ -71,7 +71,7 @@ cd ..
 ```
 
 `toolkit scout --scaffold` (alias `-s`) genera: `dataset.yml`, `sql/clean.sql`,
-`sql/mart.sql`, `README.md`, `notes.md`, `notebooks/`.
+`sql/mart.sql`, `README.md`, `notes.md`.
 
 Se il candidate esiste già ma vuoi rigenerare lo scaffold:
 ```bash
