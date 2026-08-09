@@ -112,8 +112,6 @@ candidates/caso/
   dataset.yml
   README.md
   notes.md
-  notebooks/
-    caso_v0.ipynb
   sql/
     clean.sql
     mart.sql
@@ -122,10 +120,6 @@ candidates/caso/
 Template di partenza:
 
 - `templates/candidate/`
-
-Nota pratica:
-
-- `notebooks/` non è obbligatoria per ogni intake, ma un notebook `v0` minimale è consigliato quando aiuta a validare il mart con check base prima della promozione
 
 ### Multi-source
 

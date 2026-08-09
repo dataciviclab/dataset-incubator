@@ -21,10 +21,9 @@ candidates/<slug>/                # slug: ^[a-z0-9-]+$   (validator)
 ├── dataset.yml                   # dataset.name: ^[a-z0-9_]+$   (validator)
 ├── README.md                     # richiesto dal validator
 ├── notes.md                      # richiesto dal validator
-├── sql/
-│   ├── clean.sql                 # obbligatorio
-│   └── mart*.sql                 # almeno 1 in sql/ o sql/mart/   (validator)
-└── notebooks/{slug}_v0.ipynb     # ⚠ decisione aperta (issue #417)
+└── sql/
+    ├── clean.sql                 # obbligatorio
+    └── mart*.sql                 # almeno 1 in sql/ o sql/mart/   (validator)
 ```
 
 Verifica automatica: `scripts/validate_candidate_structure.py` (CI, hard failure).

@@ -9,7 +9,6 @@ Ogni nuovo ingresso in `dataset-incubator` dovrebbe partire da questa cartella, 
 - `notes.md`
 - `sql/clean.sql`
 - `sql/mart.sql`
-- `notebooks/{slug}_v0.ipynb` quando il filone beneficia di un notebook v0 di validazione
 
 Standard di riferimento: [`docs/candidate-standard.md`](../docs/candidate-standard.md).
 
