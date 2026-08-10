@@ -145,7 +145,6 @@ I clean pubblici del Lab sono tracciati in `registry/clean_catalog.json`. Per ag
 
 ```bash
 python scripts/build_registry.py --write
-python scripts/build_registry.py --check-gcs
 ```
 
 ## Per contribuire

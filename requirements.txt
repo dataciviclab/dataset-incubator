@@ -1,10 +1,7 @@
 # lab-connectors[gcs] per script che usano GCS direttamente (toolkit porta solo [duckdb])
 lab-connectors[duckdb,gcs,mcp] @ git+https://github.com/dataciviclab/lab-connectors.git
 # dataciviclab-toolkit — motore RAW->CLEAN->MART. Usato da CI e localmente.
-dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.49.0
+dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.49.2
 
 # jsonschema — validazione registry schemas (registry.schema.json, fusion ADR)
 jsonschema>=4.0
-
-# pyarrow — per push_archive.py (GCS push post-merge)
-pyarrow>=24.0.0

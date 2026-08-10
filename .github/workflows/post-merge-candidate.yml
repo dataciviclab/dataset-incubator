@@ -132,9 +132,16 @@ jobs:
           for dir in $(cat changed_dirs_final.txt); do
             slug=$(grep '^  name:' "$dir/dataset.yml" | sed 's/.*: "//;s/"//')
             [ -z "$slug" ] && continue
-            python scripts/push_archive.py --layer clean --slug "$slug" \
-              && python scripts/push_archive.py --layer mart --slug "$slug" \
-              || echo "⚠️  push GCS fallito (skip): $slug"
+            for year in $(ls "out/data/clean/$slug/" 2>/dev/null); do
+              gsutil -m rsync -r -x ".*/_(run|validate)/.*" \
+                "out/data/clean/$slug/$year/" "gs://dataciviclab-clean/$slug/$year/" \
+                && echo "✅ $slug clean synced (anno $year)"
+            done
+            for year in $(ls "out/data/mart/$slug/" 2>/dev/null); do
+              gsutil -m rsync -r \
+                "out/data/mart/$slug/$year/" "gs://dataciviclab-mart/$slug/$year/" \
+                && echo "✅ $slug mart synced (anno $year)"
+            done
           done
 
   build-and-pr:
