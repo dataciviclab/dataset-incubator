@@ -98,7 +98,7 @@ class TestLoadExisting:
             json.dumps({"datasets": [{"slug": "legacy"}]}), encoding="utf-8"
         )
         catalog, signals = br._load_existing(tmp_path)
-        assert catalog == {"datasets": [{"slug": "a"}]}
+        assert catalog == {"datasets": [{"slug": "a"}], "marts": []}
         assert signals == {"signals": [{"id": "a"}]}
 
     def test_registry_corrupt_falls_back_to_legacy(self, tmp_path: Path) -> None:
