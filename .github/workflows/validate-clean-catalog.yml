@@ -4,13 +4,11 @@ on:
   pull_request:
     paths:
       - "registry/registry.json"
-      - "scripts/build_registry.py"
   push:
     branches:
       - main
     paths:
       - "registry/registry.json"
-      - "scripts/build_registry.py"
   workflow_dispatch:
 
 jobs:
@@ -28,7 +26,7 @@ jobs:
 
       # Validate catalog structure (schema + contract) — sempre
       - name: Validate catalog structure
-        run: python scripts/build_registry.py
+        run: toolkit registry build
 
       # Notifiche downstream — su push a main (dopo merge registry PR)
       # Notifica DE per qualsiasi modifica al catalogo (nuovo slug OPPURE aggiornamento)

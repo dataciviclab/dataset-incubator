@@ -5,12 +5,12 @@
 #   1. detect — dir cambiate (slug manuale o diff della PR, esclusi doc-only)
 #   2. run — run COMPLETO dei dataset cambiati (parquet + run record locali)
 #   3. sync GCS — gsutil rsync dei parquet clean/mart
-#   4. build_registry --write — registry.json (fusion ADR) dai parquet/run
-#      appena generati (stesso runner → i run nuovi entrano subito)
+#   4. toolkit registry build --write — registry.json (fusion ADR) dai
+#      parquet/run appena generati (stesso runner → i run nuovi entrano subito)
 #   5. PR draft "chore(post-merge)" col registry aggiornato (maintainer mergia)
 #
 # La CI NON committa su main: apre una PR draft col registry aggiornato.
-# Un unico job garantisce che build_registry veda parquet e run record.
+# Un unico job garantisce che `toolkit registry build` veda parquet e run record.
 
 name: Post-Merge Candidate Registry
 
@@ -138,7 +138,7 @@ jobs:
         if: steps.detect.outputs.changed == 'true'
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
-        run: python scripts/build_registry.py --write
+        run: toolkit registry build --write
 
       - name: Check registry diff
         id: diff
