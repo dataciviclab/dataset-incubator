@@ -258,7 +258,7 @@ La promotion serve a fissare:
 Dopo il merge di un candidate, il workflow `Post-Merge Candidate Registry` (GitHub Actions) apre una draft PR di handoff con la checklist dei passi manuali:
 
 1. Run completo `toolkit run all --config candidates/{slug}/dataset.yml`
-2. `python scripts/build_registry.py --write`
+2. `toolkit registry build --write`
 
 Vedi [skills/post-merge-candidate.md](skills/post-merge-candidate.md) per il dettaglio completo.
 

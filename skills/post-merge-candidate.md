@@ -25,7 +25,7 @@ Validare e chiudere la draft PR `chore(post-merge): aggiorna registry per PR #<n
 
 Pattern snello (eurostat post-merge-registry.yml):
 - ✅ run completo dei dataset cambiati (parquet locali) + push GCS
-- ✅ `python scripts/build_registry.py --write` (wrapper su `toolkit.registry`):
+- ✅ `toolkit registry build --write` (comando unico su `toolkit.registry`):
   - `registry/registry.json` — artifact unico (fusion ADR): sezioni
     datasets/marts/signals/codelists/entities; metadata dal dataset.yml,
     schema dai parquet appena runnati; entry non cambiate preservate dal
@@ -61,7 +61,7 @@ Regole per `role`:
 ### 2. Verifica
 
 ```bash
-python scripts/build_registry.py
+toolkit registry build
 ```
 
 Deve restituire `ok`.

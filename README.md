@@ -142,7 +142,7 @@ Gli output del toolkit vivono sotto `out/` — non vanno mai versionati. Il cont
 I dataset pubblici del Lab sono tracciati in `registry/registry.json`. Per aggiornarlo:
 
 ```bash
-python scripts/build_registry.py --write
+toolkit registry build --write
 ```
 
 ## Per contribuire
