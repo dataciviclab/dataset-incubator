@@ -4,14 +4,12 @@ on:
   pull_request:
     paths:
       - "registry/registry.json"
-      - "registry/clean_catalog.json"
       - "scripts/build_registry.py"
   push:
     branches:
       - main
     paths:
       - "registry/registry.json"
-      - "registry/clean_catalog.json"
       - "scripts/build_registry.py"
   workflow_dispatch:
 
