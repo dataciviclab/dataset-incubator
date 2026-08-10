@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-08-08",
+  "updated_at": "2026-08-10",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -18189,28 +18189,6 @@
       "table": "ade_cinque_per_mille",
       "description": "ade_cinque_per_mille — mart ade_cinque_per_mille",
       "min_rows": 1,
-      "run": {
-        "run_id": "20260728T140724Z_2d4d475f",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 85,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 95977,
-          "mart": 21
-        },
-        "output_bytes": {
-          "raw": 10784519,
-          "clean": 3172301,
-          "mart": 3268
-        },
-        "started_at": "2026-07-28T14:07:24.076485+00:00",
-        "finished_at": "2026-07-28T14:07:46.805591+00:00",
-        "duration_seconds": 22.729
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ade_cinque_per_mille/2025/ade_cinque_per_mille.parquet",
@@ -18223,28 +18201,6 @@
       "table": "mart_mensile_regione_atc4",
       "description": "aifa_spesa_consumo — mart mart_mensile_regione_atc4",
       "min_rows": 10000,
-      "run": {
-        "run_id": "20260730T084948Z_d12bb7c2",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 177500,
-          "mart": 123673
-        },
-        "output_bytes": {
-          "raw": 31895365,
-          "clean": 2076040,
-          "mart": 1644528
-        },
-        "started_at": "2026-07-30T08:49:48.164156+00:00",
-        "finished_at": "2026-07-30T08:50:08.017957+00:00",
-        "duration_seconds": 19.854
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/aifa_spesa_consumo/2024/mart_mensile_regione_atc4.parquet",
@@ -18324,29 +18280,6 @@
       "dataset": "anac_bandi_gara",
       "table": "mart_bandi_annuale",
       "description": "anac_bandi_gara — mart mart_bandi_annuale",
-      "run": {
-        "run_id": "20260728T093933Z_e87c8a52",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 80,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 1228909,
-          "clean": 1228909,
-          "mart": 419803
-        },
-        "output_bytes": {
-          "raw": 980659088,
-          "clean": 151704174,
-          "mart": 7643797
-        },
-        "started_at": "2026-07-28T09:39:33.538892+00:00",
-        "finished_at": "2026-07-28T09:42:56.910622+00:00",
-        "duration_seconds": 203.372
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_bandi_annuale.parquet",
@@ -18358,29 +18291,6 @@
       "dataset": "anac_bandi_gara",
       "table": "mart_esiti_per_procedura",
       "description": "anac_bandi_gara — mart mart_esiti_per_procedura",
-      "run": {
-        "run_id": "20260728T093933Z_e87c8a52",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 80,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 1228909,
-          "clean": 1228909,
-          "mart": 419803
-        },
-        "output_bytes": {
-          "raw": 980659088,
-          "clean": 151704174,
-          "mart": 7643797
-        },
-        "started_at": "2026-07-28T09:39:33.538892+00:00",
-        "finished_at": "2026-07-28T09:42:56.910622+00:00",
-        "duration_seconds": 203.372
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_esiti_per_procedura.parquet",
@@ -18392,29 +18302,6 @@
       "dataset": "anac_bandi_gara",
       "table": "mart_top_stazioni",
       "description": "anac_bandi_gara — mart mart_top_stazioni",
-      "run": {
-        "run_id": "20260728T093933Z_e87c8a52",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 80,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 1228909,
-          "clean": 1228909,
-          "mart": 419803
-        },
-        "output_bytes": {
-          "raw": 980659088,
-          "clean": 151704174,
-          "mart": 7643797
-        },
-        "started_at": "2026-07-28T09:39:33.538892+00:00",
-        "finished_at": "2026-07-28T09:42:56.910622+00:00",
-        "duration_seconds": 203.372
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_top_stazioni.parquet",
@@ -18427,29 +18314,6 @@
       "table": "mart_trend_pnrr",
       "description": "anac_bandi_gara — mart mart_trend_pnrr",
       "min_rows": 10,
-      "run": {
-        "run_id": "20260728T093933Z_e87c8a52",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 80,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 1228909,
-          "clean": 1228909,
-          "mart": 419803
-        },
-        "output_bytes": {
-          "raw": 980659088,
-          "clean": 151704174,
-          "mart": 7643797
-        },
-        "started_at": "2026-07-28T09:39:33.538892+00:00",
-        "finished_at": "2026-07-28T09:42:56.910622+00:00",
-        "duration_seconds": 203.372
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_trend_pnrr.parquet",
@@ -18461,29 +18325,6 @@
       "dataset": "anac_bandi_gara",
       "table": "mart_trend_settore",
       "description": "anac_bandi_gara — mart mart_trend_settore",
-      "run": {
-        "run_id": "20260728T093933Z_e87c8a52",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 80,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 1228909,
-          "clean": 1228909,
-          "mart": 419803
-        },
-        "output_bytes": {
-          "raw": 980659088,
-          "clean": 151704174,
-          "mart": 7643797
-        },
-        "started_at": "2026-07-28T09:39:33.538892+00:00",
-        "finished_at": "2026-07-28T09:42:56.910622+00:00",
-        "duration_seconds": 203.372
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_trend_settore.parquet",
@@ -18562,29 +18403,6 @@
         "trasferimenti"
       ],
       "min_rows": 1000,
-      "run": {
-        "run_id": "20260801T133743Z_75b44ded",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 22176,
-          "clean": 22176,
-          "mart": 2362
-        },
-        "output_bytes": {
-          "raw": 798721,
-          "clean": 46089,
-          "mart": 11914
-        },
-        "started_at": "2026-08-01T13:37:43.676108+00:00",
-        "finished_at": "2026-08-01T13:37:45.384535+00:00",
-        "duration_seconds": 1.708
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/anpr_mobilita_residenziale/2026/mart_corridoi.parquet",
@@ -18609,29 +18427,6 @@
         "flussi_interni"
       ],
       "min_rows": 100,
-      "run": {
-        "run_id": "20260801T133743Z_75b44ded",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 22176,
-          "clean": 22176,
-          "mart": 2362
-        },
-        "output_bytes": {
-          "raw": 798721,
-          "clean": 46089,
-          "mart": 11914
-        },
-        "started_at": "2026-08-01T13:37:43.676108+00:00",
-        "finished_at": "2026-08-01T13:37:45.384535+00:00",
-        "duration_seconds": 1.708
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/anpr_mobilita_residenziale/2026/mart_saldi_regionali.parquet",
@@ -18654,29 +18449,6 @@
         "quota_mensile_pct"
       ],
       "min_rows": 50,
-      "run": {
-        "run_id": "20260801T133743Z_75b44ded",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 22176,
-          "clean": 22176,
-          "mart": 2362
-        },
-        "output_bytes": {
-          "raw": 798721,
-          "clean": 46089,
-          "mart": 11914
-        },
-        "started_at": "2026-08-01T13:37:43.676108+00:00",
-        "finished_at": "2026-08-01T13:37:45.384535+00:00",
-        "duration_seconds": 1.708
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/anpr_mobilita_residenziale/2026/mart_trend_mensile.parquet",
@@ -18701,14 +18473,6 @@
       "table": "mart_entrate_titolo_natura_anno",
       "description": "bdap_entrate_stato — mart mart_entrate_titolo_natura_anno",
       "min_rows": 80,
-      "run": {
-        "run_id": "20260731T163739Z_1a473287",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:39.488090+00:00",
-        "finished_at": "2026-07-31T16:37:39.494379+00:00",
-        "duration_seconds": 0.006
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/bdap_entrate_stato/2024/mart_entrate_titolo_natura_anno.parquet",
@@ -18721,14 +18485,6 @@
       "table": "mart_spesa_enti",
       "description": "bdap_lea — mart mart_spesa_enti",
       "min_rows": 1000,
-      "run": {
-        "run_id": "20260731T163744Z_3e42196f",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:44.040306+00:00",
-        "finished_at": "2026-07-31T16:37:44.044617+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/bdap_lea/2024/mart_spesa_enti.parquet",
@@ -18741,14 +18497,6 @@
       "table": "mart_spese_missione_anno",
       "description": "bdap_spese_stato — mart mart_spese_missione_anno",
       "min_rows": 80,
-      "run": {
-        "run_id": "20260731T163747Z_7aea68b1",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:47.439580+00:00",
-        "finished_at": "2026-07-31T16:37:47.443667+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/bdap_spese_stato/2024/mart_spese_missione_anno.parquet",
@@ -18770,23 +18518,6 @@
         "quota_donne_pct"
       ],
       "min_rows": 15,
-      "run": {
-        "run_id": "20260803T171856Z_18c50a47",
-        "year": 9,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100
-        },
-        "output_rows": {
-          "raw": 676
-        },
-        "output_bytes": {
-          "raw": 314386
-        },
-        "started_at": "2026-08-03T17:18:56.625514+00:00",
-        "finished_at": "2026-08-03T17:18:58.264216+00:00",
-        "duration_seconds": 1.639
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/camera_deputati_legislature/2026/mart_legislatura_genere.parquet",
@@ -18806,23 +18537,6 @@
         "n_legislature"
       ],
       "min_rows": 500,
-      "run": {
-        "run_id": "20260803T171856Z_18c50a47",
-        "year": 9,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100
-        },
-        "output_rows": {
-          "raw": 676
-        },
-        "output_bytes": {
-          "raw": 314386
-        },
-        "started_at": "2026-08-03T17:18:56.625514+00:00",
-        "finished_at": "2026-08-03T17:18:58.264216+00:00",
-        "duration_seconds": 1.639
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/camera_deputati_legislature/2026/mart_top_mandati.parquet",
@@ -18842,29 +18556,6 @@
         "n_gruppi"
       ],
       "min_rows": 10,
-      "run": {
-        "run_id": "20260804T192126Z_3baa056e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 239,
-          "clean": 239,
-          "mart": 20
-        },
-        "output_bytes": {
-          "raw": 37943,
-          "clean": 5342,
-          "mart": 538
-        },
-        "started_at": "2026-08-04T19:21:26.944365+00:00",
-        "finished_at": "2026-08-04T19:21:28.575720+00:00",
-        "duration_seconds": 1.631
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/camera_gruppi/2026/mart_gruppi_legislatura.parquet",
@@ -18885,29 +18576,6 @@
         "n_gruppi"
       ],
       "min_rows": 10,
-      "run": {
-        "run_id": "20260804T151201Z_de24e6b4",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 3096,
-          "clean": 3096,
-          "mart": 2196
-        },
-        "output_bytes": {
-          "raw": 1085531,
-          "clean": 127133,
-          "mart": 12285
-        },
-        "started_at": "2026-08-04T15:12:01.231757+00:00",
-        "finished_at": "2026-08-04T15:12:04.079163+00:00",
-        "duration_seconds": 2.847
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/camera_incarichi/2026/mart_ruoli_legislatura.parquet",
@@ -18928,29 +18596,6 @@
         "n_gruppi"
       ],
       "min_rows": 500,
-      "run": {
-        "run_id": "20260804T151201Z_de24e6b4",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 3096,
-          "clean": 3096,
-          "mart": 2196
-        },
-        "output_bytes": {
-          "raw": 1085531,
-          "clean": 127133,
-          "mart": 12285
-        },
-        "started_at": "2026-08-04T15:12:01.231757+00:00",
-        "finished_at": "2026-08-04T15:12:04.079163+00:00",
-        "duration_seconds": 2.847
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/camera_incarichi/2026/mart_top_deputati.parquet",
@@ -18971,17 +18616,9 @@
         "media_votanti"
       ],
       "min_rows": 8,
-      "run": {
-        "run_id": "20260804T152323Z_35f0c659",
-        "year": 2026,
-        "status": "SUCCESS",
-        "started_at": "2026-08-04T15:23:23.299777+00:00",
-        "finished_at": "2026-08-04T15:23:23.320965+00:00",
-        "duration_seconds": 0.021
-      },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/camera_votazioni_sparql/2026/camera_votazioni.parquet",
+        "path": "gs://dataciviclab-mart/camera_votazioni_sparql/camera_votazioni.parquet",
         "multi_file": false
       }
     },
@@ -19007,28 +18644,6 @@
         "distretto"
       ],
       "min_rows": 1,
-      "run": {
-        "run_id": "20260731T114731Z_3dec8a0d",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 123203,
-          "mart": 324
-        },
-        "output_bytes": {
-          "raw": 6716220,
-          "clean": 698682,
-          "mart": 6090
-        },
-        "started_at": "2026-07-31T11:47:31.726712+00:00",
-        "finished_at": "2026-07-31T11:48:42.007615+00:00",
-        "duration_seconds": 70.281
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/civile_flussi/2025/mart_summary.parquet",
@@ -19041,14 +18656,6 @@
       "table": "mart_comuni_master",
       "description": "comuni_master — mart mart_comuni_master",
       "min_rows": 7000,
-      "run": {
-        "run_id": "20260730T160410Z_a60f19f4",
-        "year": 2026,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-30T16:04:10.845383+00:00",
-        "finished_at": "2026-07-30T16:04:10.866765+00:00",
-        "duration_seconds": 0.021
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/comuni_master/2026/mart_comuni_master.parquet",
@@ -19060,29 +18667,6 @@
       "dataset": "consip_consumi_convenzione",
       "table": "mart_consumi_convenzione",
       "description": "consip_consumi_convenzione — mart mart_consumi_convenzione",
-      "run": {
-        "run_id": "20260728T141049Z_6e9fd376",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 95
-        },
-        "output_rows": {
-          "raw": 7115,
-          "clean": 7115,
-          "mart": 3778
-        },
-        "output_bytes": {
-          "raw": 1096932,
-          "clean": 79910,
-          "mart": 38236
-        },
-        "started_at": "2026-07-28T14:10:49.622969+00:00",
-        "finished_at": "2026-07-28T14:10:52.081123+00:00",
-        "duration_seconds": 2.458
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/consip_consumi_convenzione/2025/mart_consumi_convenzione.parquet",
@@ -19094,28 +18678,6 @@
       "dataset": "conto_annuale_profilo_ente",
       "table": "assenze_causali",
       "description": "conto_annuale_profilo_ente — mart assenze_causali",
-      "run": {
-        "run_id": "20260727T181422Z_2e14ed72",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 90,
-          "mart": 85
-        },
-        "output_rows": {
-          "clean": 10885,
-          "mart": 8294
-        },
-        "output_bytes": {
-          "raw": 1085952,
-          "clean": 571529,
-          "mart": 420788
-        },
-        "started_at": "2026-07-27T18:14:22.788009+00:00",
-        "finished_at": "2026-07-27T18:14:30.384220+00:00",
-        "duration_seconds": 7.596
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/conto_annuale_profilo_ente/2024/assenze_causali.parquet",
@@ -19128,28 +18690,6 @@
       "table": "profilo_comparti",
       "description": "conto_annuale_profilo_ente — mart profilo_comparti",
       "min_rows": 5,
-      "run": {
-        "run_id": "20260727T181422Z_2e14ed72",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 90,
-          "mart": 85
-        },
-        "output_rows": {
-          "clean": 10885,
-          "mart": 8294
-        },
-        "output_bytes": {
-          "raw": 1085952,
-          "clean": 571529,
-          "mart": 420788
-        },
-        "started_at": "2026-07-27T18:14:22.788009+00:00",
-        "finished_at": "2026-07-27T18:14:30.384220+00:00",
-        "duration_seconds": 7.596
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/conto_annuale_profilo_ente/2024/profilo_comparti.parquet",
@@ -19162,28 +18702,6 @@
       "table": "profilo_ente",
       "description": "conto_annuale_profilo_ente — mart profilo_ente",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260727T181422Z_2e14ed72",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 90,
-          "mart": 85
-        },
-        "output_rows": {
-          "clean": 10885,
-          "mart": 8294
-        },
-        "output_bytes": {
-          "raw": 1085952,
-          "clean": 571529,
-          "mart": 420788
-        },
-        "started_at": "2026-07-27T18:14:22.788009+00:00",
-        "finished_at": "2026-07-27T18:14:30.384220+00:00",
-        "duration_seconds": 7.596
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/conto_annuale_profilo_ente/2024/profilo_ente.parquet",
@@ -19217,28 +18735,6 @@
         "quota_femmine_pct"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260801T153423Z_6248142e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 124716,
-          "mart": 167
-        },
-        "output_bytes": {
-          "raw": 30791385,
-          "clean": 2097594,
-          "mart": 5808
-        },
-        "started_at": "2026-08-01T15:34:23.277119+00:00",
-        "finished_at": "2026-08-01T15:34:33.386596+00:00",
-        "duration_seconds": 10.109
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/dait_amministratori_locali/2026/mart_profilo_carica.parquet",
@@ -19261,28 +18757,6 @@
         "eta_media"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260801T153423Z_6248142e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 124716,
-          "mart": 167
-        },
-        "output_bytes": {
-          "raw": 30791385,
-          "clean": 2097594,
-          "mart": 5808
-        },
-        "started_at": "2026-08-01T15:34:23.277119+00:00",
-        "finished_at": "2026-08-01T15:34:33.386596+00:00",
-        "duration_seconds": 10.109
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/dait_amministratori_locali/2026/mart_profilo_demografico.parquet",
@@ -19305,28 +18779,6 @@
         "quota_femmine_pct"
       ],
       "min_rows": 20,
-      "run": {
-        "run_id": "20260801T153423Z_6248142e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 124716,
-          "mart": 167
-        },
-        "output_bytes": {
-          "raw": 30791385,
-          "clean": 2097594,
-          "mart": 5808
-        },
-        "started_at": "2026-08-01T15:34:23.277119+00:00",
-        "finished_at": "2026-08-01T15:34:33.386596+00:00",
-        "duration_seconds": 10.109
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/dait_amministratori_locali/2026/mart_territorio.parquet",
@@ -19339,14 +18791,6 @@
       "table": "mart_comparti_anno",
       "description": "dipendenti_pubblici — mart mart_comparti_anno",
       "min_rows": 6,
-      "run": {
-        "run_id": "20260731T163751Z_089f4aa1",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:51.902532+00:00",
-        "finished_at": "2026-07-31T16:37:51.906743+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_comparti_anno.parquet",
@@ -19359,14 +18803,6 @@
       "table": "mart_genere_categoria",
       "description": "dipendenti_pubblici — mart mart_genere_categoria",
       "min_rows": 5,
-      "run": {
-        "run_id": "20260731T163751Z_089f4aa1",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:51.902532+00:00",
-        "finished_at": "2026-07-31T16:37:51.906743+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_genere_categoria.parquet",
@@ -19378,14 +18814,6 @@
       "dataset": "dipendenti_pubblici",
       "table": "mart_part_time",
       "description": "dipendenti_pubblici — mart mart_part_time",
-      "run": {
-        "run_id": "20260731T163751Z_089f4aa1",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:51.902532+00:00",
-        "finished_at": "2026-07-31T16:37:51.906743+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_part_time.parquet",
@@ -19397,14 +18825,6 @@
       "dataset": "dipendenti_pubblici",
       "table": "mart_tipo_istituzione",
       "description": "dipendenti_pubblici — mart mart_tipo_istituzione",
-      "run": {
-        "run_id": "20260731T163751Z_089f4aa1",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:51.902532+00:00",
-        "finished_at": "2026-07-31T16:37:51.906743+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_tipo_istituzione.parquet",
@@ -19416,14 +18836,6 @@
       "dataset": "dipendenti_pubblici",
       "table": "mart_turnover_enti",
       "description": "dipendenti_pubblici — mart mart_turnover_enti",
-      "run": {
-        "run_id": "20260731T163751Z_089f4aa1",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:51.902532+00:00",
-        "finished_at": "2026-07-31T16:37:51.906743+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_turnover_enti.parquet",
@@ -19436,14 +18848,6 @@
       "table": "mart_voti_lista_comune",
       "description": "elezioni_comunali — mart mart_voti_lista_comune",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260729T190208Z_85955605",
-        "year": 2016,
-        "status": "FAILED",
-        "started_at": "2026-07-29T19:02:08.989234+00:00",
-        "finished_at": "2026-07-29T19:02:09.046553+00:00",
-        "duration_seconds": 0.057
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/elezioni_comunali/2024/mart_voti_lista_comune.parquet",
@@ -19468,23 +18872,6 @@
       "table": "mart_candidati",
       "description": "elezioni_politiche — mart mart_candidati",
       "min_rows": 50,
-      "run": {
-        "run_id": "20260728T210947Z_47f26b76",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 85
-        },
-        "output_rows": {
-          "mart": 3648936
-        },
-        "output_bytes": {
-          "mart": 32864143
-        },
-        "started_at": "2026-07-28T21:09:47.546840+00:00",
-        "finished_at": "2026-07-28T21:09:53.898445+00:00",
-        "duration_seconds": 6.352
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/elezioni_politiche/2022/mart_candidati.parquet",
@@ -19497,23 +18884,6 @@
       "table": "mart_trend",
       "description": "elezioni_politiche — mart mart_trend",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260728T210947Z_47f26b76",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 85
-        },
-        "output_rows": {
-          "mart": 3648936
-        },
-        "output_bytes": {
-          "mart": 32864143
-        },
-        "started_at": "2026-07-28T21:09:47.546840+00:00",
-        "finished_at": "2026-07-28T21:09:53.898445+00:00",
-        "duration_seconds": 6.352
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/elezioni_politiche/2022/mart_trend.parquet",
@@ -19526,23 +18896,6 @@
       "table": "mart_voti_elezioni_politiche",
       "description": "elezioni_politiche — mart mart_voti_elezioni_politiche",
       "min_rows": 10000,
-      "run": {
-        "run_id": "20260728T210947Z_47f26b76",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 85
-        },
-        "output_rows": {
-          "mart": 3648936
-        },
-        "output_bytes": {
-          "mart": 32864143
-        },
-        "started_at": "2026-07-28T21:09:47.546840+00:00",
-        "finished_at": "2026-07-28T21:09:53.898445+00:00",
-        "duration_seconds": 6.352
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/elezioni_politiche/2022/mart_voti_elezioni_politiche.parquet",
@@ -19555,23 +18908,6 @@
       "table": "mart_trend",
       "description": "elezioni_referendum — mart mart_trend",
       "min_rows": 10,
-      "run": {
-        "run_id": "20260729T130800Z_fe96cc85",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 90
-        },
-        "output_rows": {
-          "mart": 39595
-        },
-        "output_bytes": {
-          "mart": 648782
-        },
-        "started_at": "2026-07-29T13:08:00.809829+00:00",
-        "finished_at": "2026-07-29T13:08:01.376889+00:00",
-        "duration_seconds": 0.567
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/elezioni_referendum/2022/mart_trend.parquet",
@@ -19584,23 +18920,6 @@
       "table": "mart_voti_quesito_comune",
       "description": "elezioni_referendum — mart mart_voti_quesito_comune",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260729T130800Z_fe96cc85",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 90
-        },
-        "output_rows": {
-          "mart": 39595
-        },
-        "output_bytes": {
-          "mart": 648782
-        },
-        "started_at": "2026-07-29T13:08:00.809829+00:00",
-        "finished_at": "2026-07-29T13:08:01.376889+00:00",
-        "duration_seconds": 0.567
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/elezioni_referendum/2022/mart_voti_quesito_comune.parquet",
@@ -19625,23 +18944,6 @@
       "table": "mart_liste",
       "description": "elezioni_voto — mart mart_liste",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260728T223943Z_19b321c6",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 85
-        },
-        "output_rows": {
-          "mart": 180073
-        },
-        "output_bytes": {
-          "mart": 2921140
-        },
-        "started_at": "2026-07-28T22:39:43.337934+00:00",
-        "finished_at": "2026-07-28T22:39:46.045440+00:00",
-        "duration_seconds": 2.708
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/elezioni_voto/2026/mart_liste.parquet",
@@ -19654,23 +18956,6 @@
       "table": "mart_sintesi",
       "description": "elezioni_voto — mart mart_sintesi",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260728T223943Z_19b321c6",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 85
-        },
-        "output_rows": {
-          "mart": 180073
-        },
-        "output_bytes": {
-          "mart": 2921140
-        },
-        "started_at": "2026-07-28T22:39:43.337934+00:00",
-        "finished_at": "2026-07-28T22:39:46.045440+00:00",
-        "duration_seconds": 2.708
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/elezioni_voto/2026/mart_sintesi.parquet",
@@ -19683,23 +18968,6 @@
       "table": "mart_trend",
       "description": "elezioni_voto — mart mart_trend",
       "min_rows": 10,
-      "run": {
-        "run_id": "20260728T223943Z_19b321c6",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 85
-        },
-        "output_rows": {
-          "mart": 180073
-        },
-        "output_bytes": {
-          "mart": 2921140
-        },
-        "started_at": "2026-07-28T22:39:43.337934+00:00",
-        "finished_at": "2026-07-28T22:39:46.045440+00:00",
-        "duration_seconds": 2.708
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/elezioni_voto/2026/mart_trend.parquet",
@@ -19712,28 +18980,6 @@
       "table": "mart_it_nuts3",
       "description": "eurostat_demography — mart mart_it_nuts3",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260727T090737Z_986b13bc",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 20949,
-          "mart": 1284
-        },
-        "output_bytes": {
-          "raw": 189099,
-          "clean": 384373,
-          "mart": 31386
-        },
-        "started_at": "2026-07-27T09:07:37.475085+00:00",
-        "finished_at": "2026-07-27T09:07:41.498542+00:00",
-        "duration_seconds": 4.023
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/eurostat_demography/2026/mart_it_nuts3.parquet",
@@ -19746,28 +18992,6 @@
       "table": "mart_it_nuts3",
       "description": "eurostat_economy — mart mart_it_nuts3",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260727T090658Z_8f8bd230",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 41709,
-          "mart": 2568
-        },
-        "output_bytes": {
-          "raw": 189099,
-          "clean": 2280716,
-          "mart": 167310
-        },
-        "started_at": "2026-07-27T09:06:58.133700+00:00",
-        "finished_at": "2026-07-27T09:07:03.043263+00:00",
-        "duration_seconds": 4.91
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/eurostat_economy/2026/mart_it_nuts3.parquet",
@@ -19780,28 +19004,6 @@
       "table": "mart_it_nuts3",
       "description": "eurostat_territory — mart mart_it_nuts3",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260727T090743Z_7f7ef8c6",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 30495,
-          "mart": 2174
-        },
-        "output_bytes": {
-          "raw": 189099,
-          "clean": 318447,
-          "mart": 24404
-        },
-        "started_at": "2026-07-27T09:07:43.327742+00:00",
-        "finished_at": "2026-07-27T09:07:47.044512+00:00",
-        "duration_seconds": 3.717
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/eurostat_territory/2026/mart_it_nuts3.parquet",
@@ -19836,23 +19038,6 @@
         "importo_medio"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260803T142618Z_72bd8736",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 1714
-        },
-        "output_bytes": {
-          "mart": 37839
-        },
-        "started_at": "2026-08-03T14:26:18.297828+00:00",
-        "finished_at": "2026-08-03T14:26:18.530459+00:00",
-        "duration_seconds": 0.233
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/fts_eu_grants/2025/mart_sintesi_beneficiario.parquet",
@@ -19876,23 +19061,6 @@
         "importo_medio"
       ],
       "min_rows": 20,
-      "run": {
-        "run_id": "20260803T142618Z_72bd8736",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 1714
-        },
-        "output_bytes": {
-          "mart": 37839
-        },
-        "started_at": "2026-08-03T14:26:18.297828+00:00",
-        "finished_at": "2026-08-03T14:26:18.530459+00:00",
-        "duration_seconds": 0.233
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/fts_eu_grants/2025/mart_sintesi_programma.parquet",
@@ -19915,23 +19083,6 @@
         "importo_contrattato_totale"
       ],
       "min_rows": 300,
-      "run": {
-        "run_id": "20260803T142618Z_72bd8736",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 1714
-        },
-        "output_bytes": {
-          "mart": 37839
-        },
-        "started_at": "2026-08-03T14:26:18.297828+00:00",
-        "finished_at": "2026-08-03T14:26:18.530459+00:00",
-        "duration_seconds": 0.233
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/fts_eu_grants/2025/mart_top_beneficiari.parquet",
@@ -19955,26 +19106,9 @@
         "quota_consumato_pct"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260803T142618Z_72bd8736",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 1714
-        },
-        "output_bytes": {
-          "mart": 37839
-        },
-        "started_at": "2026-08-03T14:26:18.297828+00:00",
-        "finished_at": "2026-08-03T14:26:18.530459+00:00",
-        "duration_seconds": 0.233
-      },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/fts_eu_grants/2025/mart_trend_anno.parquet",
+        "path": "gs://dataciviclab-mart/fts_eu_grants/mart_trend_anno.parquet",
         "multi_file": false
       }
     },
@@ -19997,29 +19131,6 @@
         "totale"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260731T164741Z_c2fa4114",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 1727,
-          "clean": 17726,
-          "mart": 882
-        },
-        "output_bytes": {
-          "raw": 6538663,
-          "clean": 872061,
-          "mart": 9078
-        },
-        "started_at": "2026-07-31T16:47:41.536101+00:00",
-        "finished_at": "2026-07-31T16:48:25.675999+00:00",
-        "duration_seconds": 44.14
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ga_decreti/2026/mart_esiti_per_sede.parquet",
@@ -20043,29 +19154,6 @@
         "totale"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260731T164741Z_c2fa4114",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 1727,
-          "clean": 17726,
-          "mart": 882
-        },
-        "output_bytes": {
-          "raw": 6538663,
-          "clean": 872061,
-          "mart": 9078
-        },
-        "started_at": "2026-07-31T16:47:41.536101+00:00",
-        "finished_at": "2026-07-31T16:48:25.675999+00:00",
-        "duration_seconds": 44.14
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ga_decreti/2026/mart_esiti_per_tipo.parquet",
@@ -20091,29 +19179,6 @@
         "totale"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260731T164839Z_e096ea4f",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 3971,
-          "clean": 32839,
-          "mart": 1294
-        },
-        "output_bytes": {
-          "raw": 11768135,
-          "clean": 1510752,
-          "mart": 11671
-        },
-        "started_at": "2026-07-31T16:48:39.363232+00:00",
-        "finished_at": "2026-07-31T16:49:24.672774+00:00",
-        "duration_seconds": 45.31
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ga_ordinanze/2026/mart_esiti_per_sede.parquet",
@@ -20137,29 +19202,6 @@
         "totale"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260731T164839Z_e096ea4f",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 3971,
-          "clean": 32839,
-          "mart": 1294
-        },
-        "output_bytes": {
-          "raw": 11768135,
-          "clean": 1510752,
-          "mart": 11671
-        },
-        "started_at": "2026-07-31T16:48:39.363232+00:00",
-        "finished_at": "2026-07-31T16:49:24.672774+00:00",
-        "duration_seconds": 45.31
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ga_ordinanze/2026/mart_esiti_per_tipo.parquet",
@@ -20185,29 +19227,6 @@
         "totale"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260731T164928Z_d58e6f80",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 6471,
-          "clean": 60280,
-          "mart": 1404
-        },
-        "output_bytes": {
-          "raw": 21352716,
-          "clean": 2888321,
-          "mart": 10627
-        },
-        "started_at": "2026-07-31T16:49:28.971050+00:00",
-        "finished_at": "2026-07-31T16:50:16.554599+00:00",
-        "duration_seconds": 47.584
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ga_sentenze/2026/mart_esiti_per_sede.parquet",
@@ -20231,29 +19250,6 @@
         "totale"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260731T164928Z_d58e6f80",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 6471,
-          "clean": 60280,
-          "mart": 1404
-        },
-        "output_bytes": {
-          "raw": 21352716,
-          "clean": 2888321,
-          "mart": 10627
-        },
-        "started_at": "2026-07-31T16:49:28.971050+00:00",
-        "finished_at": "2026-07-31T16:50:16.554599+00:00",
-        "duration_seconds": 47.584
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ga_sentenze/2026/mart_esiti_per_tipo.parquet",
@@ -20271,29 +19267,6 @@
         "tipo_ufficio"
       ],
       "min_rows": 1,
-      "run": {
-        "run_id": "20260731T114716Z_f5866314",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 10488,
-          "clean": 10478,
-          "mart": 1251
-        },
-        "output_bytes": {
-          "raw": 914617,
-          "clean": 134681,
-          "mart": 53189
-        },
-        "started_at": "2026-07-31T11:47:16.516103+00:00",
-        "finished_at": "2026-07-31T11:47:21.231718+00:00",
-        "duration_seconds": 4.716
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/giustizia_penale_indicatori/2025/giustizia_penale_indicatori.parquet",
@@ -20330,29 +19303,6 @@
         "incidenza_rdc_pct"
       ],
       "min_rows": 7000,
-      "run": {
-        "run_id": "20260802T144644Z_466a9d69",
-        "year": 2020,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7976,
-          "clean": 7976,
-          "mart": 15848
-        },
-        "output_bytes": {
-          "raw": 872051,
-          "clean": 328980,
-          "mart": 423879
-        },
-        "started_at": "2026-08-02T14:46:44.923044+00:00",
-        "finished_at": "2026-08-02T14:46:47.376092+00:00",
-        "duration_seconds": 2.453
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/inps_rdc_pdc/2020/mart_incidenza_comune.parquet",
@@ -20376,29 +19326,6 @@
         "incidenza_media_pct"
       ],
       "min_rows": 15,
-      "run": {
-        "run_id": "20260802T144644Z_466a9d69",
-        "year": 2020,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7976,
-          "clean": 7976,
-          "mart": 15848
-        },
-        "output_bytes": {
-          "raw": 872051,
-          "clean": 328980,
-          "mart": 423879
-        },
-        "started_at": "2026-08-02T14:46:44.923044+00:00",
-        "finished_at": "2026-08-02T14:46:47.376092+00:00",
-        "duration_seconds": 2.453
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/inps_rdc_pdc/2020/mart_sintesi_regione.parquet",
@@ -20420,29 +19347,6 @@
         "nuclei_rdc"
       ],
       "min_rows": 20,
-      "run": {
-        "run_id": "20260802T144644Z_466a9d69",
-        "year": 2020,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7976,
-          "clean": 7976,
-          "mart": 15848
-        },
-        "output_bytes": {
-          "raw": 872051,
-          "clean": 328980,
-          "mart": 423879
-        },
-        "started_at": "2026-08-02T14:46:44.923044+00:00",
-        "finished_at": "2026-08-02T14:46:47.376092+00:00",
-        "duration_seconds": 2.453
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/inps_rdc_pdc/2020/mart_top_comuni.parquet",
@@ -20460,28 +19364,6 @@
         "tipologia_intercettazione"
       ],
       "min_rows": 1,
-      "run": {
-        "run_id": "20260731T114851Z_0639a702",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 3952,
-          "mart": 1560
-        },
-        "output_bytes": {
-          "raw": 213981,
-          "clean": 8386,
-          "mart": 5417
-        },
-        "started_at": "2026-07-31T11:48:51.291161+00:00",
-        "finished_at": "2026-07-31T11:48:53.648463+00:00",
-        "duration_seconds": 2.357
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/intercettazioni/2025/intercettazioni.parquet",
@@ -20530,14 +19412,6 @@
       "table": "mart_comuni",
       "description": "irpef_comunale — mart mart_comuni",
       "min_rows": 1000,
-      "run": {
-        "run_id": "20260730T182415Z_687dcf3d",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-30T18:24:15.434148+00:00",
-        "finished_at": "2026-07-30T18:24:15.438095+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/irpef_comunale/2024/mart_comuni.parquet",
@@ -20549,14 +19423,6 @@
       "dataset": "irpef_comunale",
       "table": "mart_fasce",
       "description": "irpef_comunale — mart mart_fasce",
-      "run": {
-        "run_id": "20260730T182415Z_687dcf3d",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-30T18:24:15.434148+00:00",
-        "finished_at": "2026-07-30T18:24:15.438095+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/irpef_comunale/2024/mart_fasce.parquet",
@@ -20569,14 +19435,6 @@
       "table": "mart_sintesi",
       "description": "irpef_comunale — mart mart_sintesi",
       "min_rows": 10,
-      "run": {
-        "run_id": "20260730T182415Z_687dcf3d",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-30T18:24:15.434148+00:00",
-        "finished_at": "2026-07-30T18:24:15.438095+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/irpef_comunale/2024/mart_sintesi.parquet",
@@ -20588,14 +19446,6 @@
       "dataset": "irpef_comunale",
       "table": "mart_trend",
       "description": "irpef_comunale — mart mart_trend",
-      "run": {
-        "run_id": "20260730T182415Z_687dcf3d",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-30T18:24:15.434148+00:00",
-        "finished_at": "2026-07-30T18:24:15.438095+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/irpef_comunale/2024/mart_trend.parquet",
@@ -20608,28 +19458,6 @@
       "table": "mart_comuni",
       "description": "ispra_consumo_suolo — mart mart_comuni",
       "min_rows": 70000,
-      "run": {
-        "run_id": "20260727T225500Z_9ccedea6",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 90,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 86856,
-          "mart": 88008
-        },
-        "output_bytes": {
-          "raw": 1725183,
-          "clean": 1225921,
-          "mart": 2034884
-        },
-        "started_at": "2026-07-27T22:55:00.864542+00:00",
-        "finished_at": "2026-07-27T22:55:17.710967+00:00",
-        "duration_seconds": 16.846
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ispra_consumo_suolo/2024/mart_comuni.parquet",
@@ -20642,28 +19470,6 @@
       "table": "mart_sintesi",
       "description": "ispra_consumo_suolo — mart mart_sintesi",
       "min_rows": 500,
-      "run": {
-        "run_id": "20260727T225500Z_9ccedea6",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 90,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 86856,
-          "mart": 88008
-        },
-        "output_bytes": {
-          "raw": 1725183,
-          "clean": 1225921,
-          "mart": 2034884
-        },
-        "started_at": "2026-07-27T22:55:00.864542+00:00",
-        "finished_at": "2026-07-27T22:55:17.710967+00:00",
-        "duration_seconds": 16.846
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ispra_consumo_suolo/2024/mart_sintesi.parquet",
@@ -20686,29 +19492,6 @@
         "quota_pct"
       ],
       "min_rows": 100,
-      "run": {
-        "run_id": "20260801T103200Z_4dc2cbf5",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 34,
-          "clean": 34,
-          "mart": 141
-        },
-        "output_bytes": {
-          "raw": 3479,
-          "clean": 2397,
-          "mart": 4286
-        },
-        "started_at": "2026-08-01T10:32:00.800427+00:00",
-        "finished_at": "2026-08-01T10:32:02.250921+00:00",
-        "duration_seconds": 1.45
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ispra_emissioni_ghg/2023/mart_settori_anno.parquet",
@@ -20731,29 +19514,6 @@
         "cagr_annuale"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260801T103200Z_4dc2cbf5",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 34,
-          "clean": 34,
-          "mart": 141
-        },
-        "output_bytes": {
-          "raw": 3479,
-          "clean": 2397,
-          "mart": 4286
-        },
-        "started_at": "2026-08-01T10:32:00.800427+00:00",
-        "finished_at": "2026-08-01T10:32:02.250921+00:00",
-        "duration_seconds": 1.45
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ispra_emissioni_ghg/2023/mart_trend_settori.parquet",
@@ -20766,14 +19526,6 @@
       "table": "mart_comuni",
       "description": "ispra_ru_base — mart mart_comuni",
       "min_rows": 6500,
-      "run": {
-        "run_id": "20260731T103443Z_1b75dcf8",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T10:34:43.409146+00:00",
-        "finished_at": "2026-07-31T10:34:43.416212+00:00",
-        "duration_seconds": 0.007
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ispra_ru_base/2024/mart_comuni.parquet",
@@ -20786,14 +19538,6 @@
       "table": "mart_sintesi",
       "description": "ispra_ru_base — mart mart_sintesi",
       "min_rows": 10,
-      "run": {
-        "run_id": "20260731T103443Z_1b75dcf8",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T10:34:43.409146+00:00",
-        "finished_at": "2026-07-31T10:34:43.416212+00:00",
-        "duration_seconds": 0.007
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ispra_ru_base/2024/mart_sintesi.parquet",
@@ -20806,14 +19550,6 @@
       "table": "mart_trend",
       "description": "ispra_ru_base — mart mart_trend",
       "min_rows": 5,
-      "run": {
-        "run_id": "20260731T103443Z_1b75dcf8",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T10:34:43.409146+00:00",
-        "finished_at": "2026-07-31T10:34:43.416212+00:00",
-        "duration_seconds": 0.007
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/ispra_ru_base/2024/mart_trend.parquet",
@@ -20886,29 +19622,6 @@
       "table": "mart_codici_catastali",
       "description": "istat_elenco_comuni — mart mart_codici_catastali",
       "min_rows": 7890,
-      "run": {
-        "run_id": "20260802T144646Z_4fcf6d42",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7894,
-          "clean": 7894,
-          "mart": 15788
-        },
-        "output_bytes": {
-          "raw": 577337,
-          "clean": 170810,
-          "mart": 173974
-        },
-        "started_at": "2026-08-02T14:46:46.836471+00:00",
-        "finished_at": "2026-08-02T14:46:44.919945+00:00",
-        "duration_seconds": -1.917
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/istat_elenco_comuni/2026/mart_codici_catastali.parquet",
@@ -20921,29 +19634,6 @@
       "table": "mart_superficie",
       "description": "istat_elenco_comuni — mart mart_superficie",
       "min_rows": 7890,
-      "run": {
-        "run_id": "20260802T144646Z_4fcf6d42",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7894,
-          "clean": 7894,
-          "mart": 15788
-        },
-        "output_bytes": {
-          "raw": 577337,
-          "clean": 170810,
-          "mart": 173974
-        },
-        "started_at": "2026-08-02T14:46:46.836471+00:00",
-        "finished_at": "2026-08-02T14:46:44.919945+00:00",
-        "duration_seconds": -1.917
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/istat_elenco_comuni/2026/mart_superficie.parquet",
@@ -20991,14 +19681,6 @@
       "table": "mart_occupazione_provinciale",
       "description": "istat_occupazione_provinciale — mart mart_occupazione_provinciale",
       "min_rows": 10000,
-      "run": {
-        "run_id": "20260806T103246Z_04b24585",
-        "year": 2025,
-        "status": "FAILED",
-        "started_at": "2026-08-06T10:32:46.528792+00:00",
-        "finished_at": "2026-08-06T10:34:59.409896+00:00",
-        "duration_seconds": 132.881
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/istat_occupazione_provinciale/2025/mart_occupazione_provinciale.parquet",
@@ -21038,29 +19720,6 @@
         "quota_volume_pct"
       ],
       "min_rows": 20,
-      "run": {
-        "run_id": "20260802T133429Z_d1f83810",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 33,
-          "clean": 21,
-          "mart": 21
-        },
-        "output_bytes": {
-          "raw": 7591,
-          "clean": 3630,
-          "mart": 4915
-        },
-        "started_at": "2026-08-02T13:34:29.280524+00:00",
-        "finished_at": "2026-08-02T13:34:30.475378+00:00",
-        "duration_seconds": 1.195
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/iva_regionale/2024/mart_regioni_anno.parquet",
@@ -21084,32 +19743,9 @@
         "delta_volume_pct"
       ],
       "min_rows": 10,
-      "run": {
-        "run_id": "20260802T133429Z_d1f83810",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 33,
-          "clean": 21,
-          "mart": 21
-        },
-        "output_bytes": {
-          "raw": 7591,
-          "clean": 3630,
-          "mart": 4915
-        },
-        "started_at": "2026-08-02T13:34:29.280524+00:00",
-        "finished_at": "2026-08-02T13:34:30.475378+00:00",
-        "duration_seconds": 1.195
-      },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/iva_regionale/2024/mart_sintesi_nazionale.parquet",
+        "path": "gs://dataciviclab-mart/iva_regionale/mart_sintesi_nazionale.parquet",
         "multi_file": false
       }
     },
@@ -21129,32 +19765,9 @@
         "delta_frequenza_pct"
       ],
       "min_rows": 20,
-      "run": {
-        "run_id": "20260802T133429Z_d1f83810",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 33,
-          "clean": 21,
-          "mart": 21
-        },
-        "output_bytes": {
-          "raw": 7591,
-          "clean": 3630,
-          "mart": 4915
-        },
-        "started_at": "2026-08-02T13:34:29.280524+00:00",
-        "finished_at": "2026-08-02T13:34:30.475378+00:00",
-        "duration_seconds": 1.195
-      },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/iva_regionale/2024/mart_trend_regioni.parquet",
+        "path": "gs://dataciviclab-mart/iva_regionale/mart_trend_regioni.parquet",
         "multi_file": false
       }
     },
@@ -21223,29 +19836,6 @@
         "numero_amministrazioni"
       ],
       "min_rows": 100,
-      "run": {
-        "run_id": "20260802T180319Z_432e868a",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 53656,
-          "clean": 53656,
-          "mart": 8557
-        },
-        "output_bytes": {
-          "raw": 35046757,
-          "clean": 2629582,
-          "mart": 144002
-        },
-        "started_at": "2026-08-02T18:03:19.213223+00:00",
-        "finished_at": "2026-08-02T18:03:57.083600+00:00",
-        "duration_seconds": 37.87
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mef_partecipazioni/2023/mart_sintesi_regione.parquet",
@@ -21269,29 +19859,6 @@
         "numero_partecipate"
       ],
       "min_rows": 8000,
-      "run": {
-        "run_id": "20260802T180319Z_432e868a",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 53656,
-          "clean": 53656,
-          "mart": 8557
-        },
-        "output_bytes": {
-          "raw": 35046757,
-          "clean": 2629582,
-          "mart": 144002
-        },
-        "started_at": "2026-08-02T18:03:19.213223+00:00",
-        "finished_at": "2026-08-02T18:03:57.083600+00:00",
-        "duration_seconds": 37.87
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mef_partecipazioni/2023/mart_top_amministrazioni.parquet",
@@ -21313,32 +19880,9 @@
         "numero_partecipate"
       ],
       "min_rows": 4,
-      "run": {
-        "run_id": "20260802T180319Z_432e868a",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 53656,
-          "clean": 53656,
-          "mart": 8557
-        },
-        "output_bytes": {
-          "raw": 35046757,
-          "clean": 2629582,
-          "mart": 144002
-        },
-        "started_at": "2026-08-02T18:03:19.213223+00:00",
-        "finished_at": "2026-08-02T18:03:57.083600+00:00",
-        "duration_seconds": 37.87
-      },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_partecipazioni/2023/mart_trend_anno.parquet",
+        "path": "gs://dataciviclab-mart/mef_partecipazioni/mart_trend_anno.parquet",
         "multi_file": false
       }
     },
@@ -21395,29 +19939,6 @@
         "spesa_totale_eur"
       ],
       "min_rows": 2,
-      "run": {
-        "run_id": "20260803T104219Z_ba17250b",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 16785,
-          "clean": 16785,
-          "mart": 1961
-        },
-        "output_bytes": {
-          "raw": 8188766,
-          "clean": 543610,
-          "mart": 46456
-        },
-        "started_at": "2026-08-03T10:42:19.829537+00:00",
-        "finished_at": "2026-08-03T10:42:34.022082+00:00",
-        "duration_seconds": 14.193
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_gender_gap.parquet",
@@ -21441,29 +19962,6 @@
         "importo_max_eur"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260803T104219Z_ba17250b",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 16785,
-          "clean": 16785,
-          "mart": 1961
-        },
-        "output_bytes": {
-          "raw": 8188766,
-          "clean": 543610,
-          "mart": 46456
-        },
-        "started_at": "2026-08-03T10:42:19.829537+00:00",
-        "finished_at": "2026-08-03T10:42:34.022082+00:00",
-        "duration_seconds": 14.193
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_sintesi_incarico.parquet",
@@ -21488,29 +19986,6 @@
         "riversato_totale_eur"
       ],
       "min_rows": 500,
-      "run": {
-        "run_id": "20260803T104219Z_ba17250b",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 16785,
-          "clean": 16785,
-          "mart": 1961
-        },
-        "output_bytes": {
-          "raw": 8188766,
-          "clean": 543610,
-          "mart": 46456
-        },
-        "started_at": "2026-08-03T10:42:19.829537+00:00",
-        "finished_at": "2026-08-03T10:42:34.022082+00:00",
-        "duration_seconds": 14.193
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_top_amministrazioni.parquet",
@@ -21534,32 +20009,9 @@
         "riversato_totale_eur"
       ],
       "min_rows": 6,
-      "run": {
-        "run_id": "20260803T104219Z_ba17250b",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 16785,
-          "clean": 16785,
-          "mart": 1961
-        },
-        "output_bytes": {
-          "raw": 8188766,
-          "clean": 543610,
-          "mart": 46456
-        },
-        "started_at": "2026-08-03T10:42:19.829537+00:00",
-        "finished_at": "2026-08-03T10:42:34.022082+00:00",
-        "duration_seconds": 14.193
-      },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_trend_anno.parquet",
+        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/mart_trend_anno.parquet",
         "multi_file": false
       }
     },
@@ -21576,29 +20028,6 @@
         "n_membri"
       ],
       "min_rows": 50,
-      "run": {
-        "run_id": "20260804T165251Z_03930feb",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7505,
-          "clean": 7579,
-          "mart": 312
-        },
-        "output_bytes": {
-          "raw": 2961831,
-          "clean": 275827,
-          "mart": 3914
-        },
-        "started_at": "2026-08-04T16:52:51.486748+00:00",
-        "finished_at": "2026-08-04T16:52:56.309604+00:00",
-        "duration_seconds": 4.823
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/membri_governo/2026/mart_governi.parquet",
@@ -21618,29 +20047,6 @@
         "n_membri"
       ],
       "min_rows": 15,
-      "run": {
-        "run_id": "20260804T165251Z_03930feb",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7505,
-          "clean": 7579,
-          "mart": 312
-        },
-        "output_bytes": {
-          "raw": 2961831,
-          "clean": 275827,
-          "mart": 3914
-        },
-        "started_at": "2026-08-04T16:52:51.486748+00:00",
-        "finished_at": "2026-08-04T16:52:56.309604+00:00",
-        "duration_seconds": 4.823
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/membri_governo/2026/mart_legislatura.parquet",
@@ -21664,29 +20070,6 @@
         "quota_provinciale_pct"
       ],
       "min_rows": 1000,
-      "run": {
-        "run_id": "20260802T151738Z_bdfe8893",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 301840,
-          "clean": 301840,
-          "mart": 13091
-        },
-        "output_bytes": {
-          "raw": 16129927,
-          "clean": 3912910,
-          "mart": 171115
-        },
-        "started_at": "2026-08-02T15:17:38.019774+00:00",
-        "finished_at": "2026-08-02T15:17:51.712255+00:00",
-        "duration_seconds": 13.692
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mim_alunni_corso_eta/2025/mart_comune.parquet",
@@ -21712,29 +20095,6 @@
         "quota_non_allineati_pct"
       ],
       "min_rows": 50,
-      "run": {
-        "run_id": "20260802T151738Z_bdfe8893",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 301840,
-          "clean": 301840,
-          "mart": 13091
-        },
-        "output_bytes": {
-          "raw": 16129927,
-          "clean": 3912910,
-          "mart": 171115
-        },
-        "started_at": "2026-08-02T15:17:38.019774+00:00",
-        "finished_at": "2026-08-02T15:17:51.712255+00:00",
-        "duration_seconds": 13.692
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mim_alunni_corso_eta/2025/mart_ripetenti_provincia.parquet",
@@ -21757,29 +20117,6 @@
         "quota_nazionale_pct"
       ],
       "min_rows": 50,
-      "run": {
-        "run_id": "20260802T151738Z_bdfe8893",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 301840,
-          "clean": 301840,
-          "mart": 13091
-        },
-        "output_bytes": {
-          "raw": 16129927,
-          "clean": 3912910,
-          "mart": 171115
-        },
-        "started_at": "2026-08-02T15:17:38.019774+00:00",
-        "finished_at": "2026-08-02T15:17:51.712255+00:00",
-        "duration_seconds": 13.692
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mim_alunni_corso_eta/2025/mart_sintesi_regione.parquet",
@@ -21803,32 +20140,9 @@
         "variazione_pct"
       ],
       "min_rows": 3,
-      "run": {
-        "run_id": "20260802T151738Z_bdfe8893",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 301840,
-          "clean": 301840,
-          "mart": 13091
-        },
-        "output_bytes": {
-          "raw": 16129927,
-          "clean": 3912910,
-          "mart": 171115
-        },
-        "started_at": "2026-08-02T15:17:38.019774+00:00",
-        "finished_at": "2026-08-02T15:17:51.712255+00:00",
-        "duration_seconds": 13.692
-      },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/mim_alunni_corso_eta/2025/mart_trend_ordine.parquet",
+        "path": "gs://dataciviclab-mart/mim_alunni_corso_eta/mart_trend_ordine.parquet",
         "multi_file": false
       }
     },
@@ -21837,29 +20151,6 @@
       "dataset": "mim_anagrafica_scuole_statali",
       "table": "mart_scuole_statali_geo",
       "description": "mim_anagrafica_scuole_statali — mart mart_scuole_statali_geo",
-      "run": {
-        "run_id": "20260802T170921Z_338da845",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 50515,
-          "clean": 50515,
-          "mart": 50515
-        },
-        "output_bytes": {
-          "raw": 13178615,
-          "clean": 1848102,
-          "mart": 1864310
-        },
-        "started_at": "2026-08-02T17:09:21.138889+00:00",
-        "finished_at": "2026-08-02T17:09:32.630233+00:00",
-        "duration_seconds": 11.491
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mim_anagrafica_scuole_statali/2024/mart_scuole_statali_geo.parquet",
@@ -21881,29 +20172,6 @@
         "quota_non_italiani_pct"
       ],
       "min_rows": 500,
-      "run": {
-        "run_id": "20260802T170946Z_3d920f3b",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 13027,
-          "clean": 13027,
-          "mart": 5491
-        },
-        "output_bytes": {
-          "raw": 316943,
-          "clean": 429855,
-          "mart": 101360
-        },
-        "started_at": "2026-08-02T17:09:46.433945+00:00",
-        "finished_at": "2026-08-02T17:09:48.312381+00:00",
-        "duration_seconds": 1.878
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mim_scuola_infanzia/2025/mart_comune.parquet",
@@ -21926,29 +20194,6 @@
         "quota_non_italiani_pct"
       ],
       "min_rows": 15,
-      "run": {
-        "run_id": "20260802T170946Z_3d920f3b",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 13027,
-          "clean": 13027,
-          "mart": 5491
-        },
-        "output_bytes": {
-          "raw": 316943,
-          "clean": 429855,
-          "mart": 101360
-        },
-        "started_at": "2026-08-02T17:09:46.433945+00:00",
-        "finished_at": "2026-08-02T17:09:48.312381+00:00",
-        "duration_seconds": 1.878
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mim_scuola_infanzia/2025/mart_sintesi_regione.parquet",
@@ -21971,32 +20216,9 @@
         "quota_non_italiani_pct"
       ],
       "min_rows": 8,
-      "run": {
-        "run_id": "20260802T170946Z_3d920f3b",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 13027,
-          "clean": 13027,
-          "mart": 5491
-        },
-        "output_bytes": {
-          "raw": 316943,
-          "clean": 429855,
-          "mart": 101360
-        },
-        "started_at": "2026-08-02T17:09:46.433945+00:00",
-        "finished_at": "2026-08-02T17:09:48.312381+00:00",
-        "duration_seconds": 1.878
-      },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/mim_scuola_infanzia/2025/mart_trend_cittadinanza.parquet",
+        "path": "gs://dataciviclab-mart/mim_scuola_infanzia/mart_trend_cittadinanza.parquet",
         "multi_file": false
       }
     },
@@ -22036,28 +20258,6 @@
         "distretto"
       ],
       "min_rows": 1,
-      "run": {
-        "run_id": "20260731T115219Z_a7c39d31",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 140969,
-          "mart": 2340
-        },
-        "output_bytes": {
-          "raw": 7180289,
-          "clean": 415055,
-          "mart": 24453
-        },
-        "started_at": "2026-07-31T11:52:19.225482+00:00",
-        "finished_at": "2026-07-31T11:53:38.894285+00:00",
-        "duration_seconds": 79.669
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/monitoraggio_mensile_civile/2025/monitoraggio_mensile_civile.parquet",
@@ -22178,12 +20378,6 @@
       "table": "mart_enti",
       "description": "opencivitas_fsc_enti_rso — mart mart_enti",
       "min_rows": 1000,
-      "run": {
-        "run_id": "20260729T120941Z_6c07cd84",
-        "year": 2025,
-        "status": "RUNNING",
-        "started_at": "2026-07-29T12:09:41.401993+00:00"
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/opencivitas_fsc_enti_rso/2025/mart_enti.parquet",
@@ -22216,23 +20410,6 @@
         "codice_istat"
       ],
       "min_rows": 100000,
-      "run": {
-        "run_id": "20260728T085206Z_2551b510",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 90
-        },
-        "output_rows": {
-          "mart": 2659122
-        },
-        "output_bytes": {
-          "mart": 41736110
-        },
-        "started_at": "2026-07-28T08:52:06.876449+00:00",
-        "finished_at": "2026-07-28T08:52:16.688673+00:00",
-        "duration_seconds": 9.812
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/opencivitas_indicatori/2022/mart_indicatori.parquet",
@@ -22271,14 +20448,6 @@
         "gare_distinte"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260731T123551Z_3ca0794e",
-        "year": 2025,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T12:35:51.657488+00:00",
-        "finished_at": "2026-07-31T12:35:51.663620+00:00",
-        "duration_seconds": 0.006
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/openga_ricorsi_appalto/2026/mart_ricorsi_sede_classificazione.parquet",
@@ -22303,14 +20472,6 @@
         "gare_distinte"
       ],
       "min_rows": 0,
-      "run": {
-        "run_id": "20260731T123551Z_3ca0794e",
-        "year": 2025,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T12:35:51.657488+00:00",
-        "finished_at": "2026-07-31T12:35:51.663620+00:00",
-        "duration_seconds": 0.006
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/openga_ricorsi_appalto/2026/mart_ricorsi_territorio_settore.parquet",
@@ -22328,14 +20489,6 @@
         "nome_sede"
       ],
       "min_rows": 1,
-      "run": {
-        "run_id": "20260731T123555Z_5571820e",
-        "year": 2025,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T12:35:55.828015+00:00",
-        "finished_at": "2026-07-31T12:35:55.831966+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/openga_ricorsi_cds/2026/ricorsi_annuali.parquet",
@@ -22353,28 +20506,6 @@
         "distretto"
       ],
       "min_rows": 1,
-      "run": {
-        "run_id": "20260731T115341Z_c860293c",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 17652,
-          "mart": 2196
-        },
-        "output_bytes": {
-          "raw": 779334,
-          "clean": 103098,
-          "mart": 19745
-        },
-        "started_at": "2026-07-31T11:53:41.149534+00:00",
-        "finished_at": "2026-07-31T11:53:49.224335+00:00",
-        "duration_seconds": 8.075
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/penale_flussi/2025/penale_flussi.parquet",
@@ -22419,29 +20550,6 @@
         "tot_importo_aggiudicazione"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260805T091706Z_2ce7cf85",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 282655,
-          "clean": 282655,
-          "mart": 227
-        },
-        "output_bytes": {
-          "raw": 111336940,
-          "clean": 14173379,
-          "mart": 14232
-        },
-        "started_at": "2026-08-05T09:17:06.753424+00:00",
-        "finished_at": "2026-08-05T09:17:26.426649+00:00",
-        "duration_seconds": 19.673
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/pnrr_gare/2026/mart_procedura.parquet",
@@ -22463,29 +20571,6 @@
         "tot_importo_aggiudicazione"
       ],
       "min_rows": 100,
-      "run": {
-        "run_id": "20260805T091706Z_2ce7cf85",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 282655,
-          "clean": 282655,
-          "mart": 227
-        },
-        "output_bytes": {
-          "raw": 111336940,
-          "clean": 14173379,
-          "mart": 14232
-        },
-        "started_at": "2026-08-05T09:17:06.753424+00:00",
-        "finished_at": "2026-08-05T09:17:26.426649+00:00",
-        "duration_seconds": 19.673
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/pnrr_gare/2026/mart_submisura.parquet",
@@ -22506,29 +20591,6 @@
         "n_progetti_con_pagamenti"
       ],
       "min_rows": 1,
-      "run": {
-        "run_id": "20260805T094956Z_85265fae",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 211901,
-          "clean": 211901,
-          "mart": 214
-        },
-        "output_bytes": {
-          "raw": 40484686,
-          "clean": 4615369,
-          "mart": 14420
-        },
-        "started_at": "2026-08-05T09:49:56.312633+00:00",
-        "finished_at": "2026-08-05T09:50:04.539033+00:00",
-        "duration_seconds": 8.226
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/pnrr_pagamenti/2026/mart_sintesi.parquet",
@@ -22553,29 +20615,6 @@
         "tasso_assorbimento_pnrr_pct"
       ],
       "min_rows": 100,
-      "run": {
-        "run_id": "20260805T094956Z_85265fae",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 211901,
-          "clean": 211901,
-          "mart": 214
-        },
-        "output_bytes": {
-          "raw": 40484686,
-          "clean": 4615369,
-          "mart": 14420
-        },
-        "started_at": "2026-08-05T09:49:56.312633+00:00",
-        "finished_at": "2026-08-05T09:50:04.539033+00:00",
-        "duration_seconds": 8.226
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/pnrr_pagamenti/2026/mart_submisura.parquet",
@@ -22601,29 +20640,6 @@
         "tot_fin_totale"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260805T122053Z_54cd7799",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 291398,
-          "clean": 291398,
-          "mart": 22
-        },
-        "output_bytes": {
-          "raw": 317081292,
-          "clean": 17138314,
-          "mart": 4129
-        },
-        "started_at": "2026-08-05T12:20:53.322984+00:00",
-        "finished_at": "2026-08-05T12:21:25.449919+00:00",
-        "duration_seconds": 32.127
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/pnrr_progetti/2026/mart_missione.parquet",
@@ -22646,29 +20662,6 @@
         "pct_fin_pnrr"
       ],
       "min_rows": 3,
-      "run": {
-        "run_id": "20260805T122053Z_54cd7799",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 291398,
-          "clean": 291398,
-          "mart": 22
-        },
-        "output_bytes": {
-          "raw": 317081292,
-          "clean": 17138314,
-          "mart": 4129
-        },
-        "started_at": "2026-08-05T12:20:53.322984+00:00",
-        "finished_at": "2026-08-05T12:21:25.449919+00:00",
-        "duration_seconds": 32.127
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/pnrr_progetti/2026/mart_stato_avanzamento.parquet",
@@ -22680,29 +20673,6 @@
       "dataset": "popolazione_istat_comunale_2019_2025",
       "table": "popolazione_by_comune",
       "description": "popolazione_istat_comunale_2019_2025 — mart popolazione_by_comune",
-      "run": {
-        "run_id": "20260730T182719Z_16c88d81",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 805392,
-          "clean": 797496,
-          "mart": 860796
-        },
-        "output_bytes": {
-          "raw": 46797475,
-          "clean": 5530200,
-          "mart": 3979775
-        },
-        "started_at": "2026-07-30T18:27:19.148801+00:00",
-        "finished_at": "2026-07-30T18:27:36.870374+00:00",
-        "duration_seconds": 17.722
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_by_comune.parquet",
@@ -22714,29 +20684,6 @@
       "dataset": "popolazione_istat_comunale_2019_2025",
       "table": "popolazione_by_eta",
       "description": "popolazione_istat_comunale_2019_2025 — mart popolazione_by_eta",
-      "run": {
-        "run_id": "20260730T182719Z_16c88d81",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 805392,
-          "clean": 797496,
-          "mart": 860796
-        },
-        "output_bytes": {
-          "raw": 46797475,
-          "clean": 5530200,
-          "mart": 3979775
-        },
-        "started_at": "2026-07-30T18:27:19.148801+00:00",
-        "finished_at": "2026-07-30T18:27:36.870374+00:00",
-        "duration_seconds": 17.722
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_by_eta.parquet",
@@ -22748,29 +20695,6 @@
       "dataset": "popolazione_istat_comunale_2019_2025",
       "table": "popolazione_by_provincia",
       "description": "popolazione_istat_comunale_2019_2025 — mart popolazione_by_provincia",
-      "run": {
-        "run_id": "20260730T182719Z_16c88d81",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 805392,
-          "clean": 797496,
-          "mart": 860796
-        },
-        "output_bytes": {
-          "raw": 46797475,
-          "clean": 5530200,
-          "mart": 3979775
-        },
-        "started_at": "2026-07-30T18:27:19.148801+00:00",
-        "finished_at": "2026-07-30T18:27:36.870374+00:00",
-        "duration_seconds": 17.722
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_by_provincia.parquet",
@@ -22782,29 +20706,6 @@
       "dataset": "popolazione_istat_comunale_2019_2025",
       "table": "popolazione_by_regione",
       "description": "popolazione_istat_comunale_2019_2025 — mart popolazione_by_regione",
-      "run": {
-        "run_id": "20260730T182719Z_16c88d81",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 805392,
-          "clean": 797496,
-          "mart": 860796
-        },
-        "output_bytes": {
-          "raw": 46797475,
-          "clean": 5530200,
-          "mart": 3979775
-        },
-        "started_at": "2026-07-30T18:27:19.148801+00:00",
-        "finished_at": "2026-07-30T18:27:36.870374+00:00",
-        "duration_seconds": 17.722
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_by_regione.parquet",
@@ -22816,29 +20717,6 @@
       "dataset": "popolazione_istat_comunale_2019_2025",
       "table": "popolazione_indicatori",
       "description": "popolazione_istat_comunale_2019_2025 — mart popolazione_indicatori",
-      "run": {
-        "run_id": "20260730T182719Z_16c88d81",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 805392,
-          "clean": 797496,
-          "mart": 860796
-        },
-        "output_bytes": {
-          "raw": 46797475,
-          "clean": 5530200,
-          "mart": 3979775
-        },
-        "started_at": "2026-07-30T18:27:19.148801+00:00",
-        "finished_at": "2026-07-30T18:27:36.870374+00:00",
-        "duration_seconds": 17.722
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_indicatori.parquet",
@@ -22887,23 +20765,6 @@
       "table": "mart_aiuti_per_obiettivo",
       "description": "rna_aiuti_stato — mart mart_aiuti_per_obiettivo",
       "min_rows": 10,
-      "run": {
-        "run_id": "20260728T141141Z_cc2c1d94",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 65
-        },
-        "output_rows": {
-          "mart": 3335
-        },
-        "output_bytes": {
-          "mart": 79069
-        },
-        "started_at": "2026-07-28T14:11:41.656230+00:00",
-        "finished_at": "2026-07-28T14:11:44.824753+00:00",
-        "duration_seconds": 3.169
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_aiuti_stato/2026/mart_aiuti_per_obiettivo.parquet",
@@ -22915,23 +20776,6 @@
       "dataset": "rna_aiuti_stato",
       "table": "mart_aiuti_per_procedimento",
       "description": "rna_aiuti_stato — mart mart_aiuti_per_procedimento",
-      "run": {
-        "run_id": "20260728T141141Z_cc2c1d94",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 65
-        },
-        "output_rows": {
-          "mart": 3335
-        },
-        "output_bytes": {
-          "mart": 79069
-        },
-        "started_at": "2026-07-28T14:11:41.656230+00:00",
-        "finished_at": "2026-07-28T14:11:44.824753+00:00",
-        "duration_seconds": 3.169
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_aiuti_stato/2026/mart_aiuti_per_procedimento.parquet",
@@ -22943,23 +20787,6 @@
       "dataset": "rna_aiuti_stato",
       "table": "mart_aiuti_per_regione",
       "description": "rna_aiuti_stato — mart mart_aiuti_per_regione",
-      "run": {
-        "run_id": "20260728T141141Z_cc2c1d94",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 65
-        },
-        "output_rows": {
-          "mart": 3335
-        },
-        "output_bytes": {
-          "mart": 79069
-        },
-        "started_at": "2026-07-28T14:11:41.656230+00:00",
-        "finished_at": "2026-07-28T14:11:44.824753+00:00",
-        "duration_seconds": 3.169
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_aiuti_stato/2026/mart_aiuti_per_regione.parquet",
@@ -22971,23 +20798,6 @@
       "dataset": "rna_aiuti_stato",
       "table": "mart_aiuti_per_strumento",
       "description": "rna_aiuti_stato — mart mart_aiuti_per_strumento",
-      "run": {
-        "run_id": "20260728T141141Z_cc2c1d94",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 65
-        },
-        "output_rows": {
-          "mart": 3335
-        },
-        "output_bytes": {
-          "mart": 79069
-        },
-        "started_at": "2026-07-28T14:11:41.656230+00:00",
-        "finished_at": "2026-07-28T14:11:44.824753+00:00",
-        "duration_seconds": 3.169
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_aiuti_stato/2026/mart_aiuti_per_strumento.parquet",
@@ -22999,23 +20809,6 @@
       "dataset": "rna_aiuti_stato",
       "table": "mart_aiuti_settore_regione",
       "description": "rna_aiuti_stato — mart mart_aiuti_settore_regione",
-      "run": {
-        "run_id": "20260728T141141Z_cc2c1d94",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 65
-        },
-        "output_rows": {
-          "mart": 3335
-        },
-        "output_bytes": {
-          "mart": 79069
-        },
-        "started_at": "2026-07-28T14:11:41.656230+00:00",
-        "finished_at": "2026-07-28T14:11:44.824753+00:00",
-        "duration_seconds": 3.169
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_aiuti_stato/2026/mart_aiuti_settore_regione.parquet",
@@ -23027,23 +20820,6 @@
       "dataset": "rna_aiuti_stato",
       "table": "mart_aiuti_tipo_beneficiario",
       "description": "rna_aiuti_stato — mart mart_aiuti_tipo_beneficiario",
-      "run": {
-        "run_id": "20260728T141141Z_cc2c1d94",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 65
-        },
-        "output_rows": {
-          "mart": 3335
-        },
-        "output_bytes": {
-          "mart": 79069
-        },
-        "started_at": "2026-07-28T14:11:41.656230+00:00",
-        "finished_at": "2026-07-28T14:11:44.824753+00:00",
-        "duration_seconds": 3.169
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_aiuti_stato/2026/mart_aiuti_tipo_beneficiario.parquet",
@@ -23055,23 +20831,6 @@
       "dataset": "rna_aiuti_stato",
       "table": "mart_aiuti_top_beneficiari",
       "description": "rna_aiuti_stato — mart mart_aiuti_top_beneficiari",
-      "run": {
-        "run_id": "20260728T141141Z_cc2c1d94",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 65
-        },
-        "output_rows": {
-          "mart": 3335
-        },
-        "output_bytes": {
-          "mart": 79069
-        },
-        "started_at": "2026-07-28T14:11:41.656230+00:00",
-        "finished_at": "2026-07-28T14:11:44.824753+00:00",
-        "duration_seconds": 3.169
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_aiuti_stato/2026/mart_aiuti_top_beneficiari.parquet",
@@ -23093,28 +20852,6 @@
         "quota_attive_pct"
       ],
       "min_rows": 10,
-      "run": {
-        "run_id": "20260801T172236Z_52037e28",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 12874,
-          "mart": 12903
-        },
-        "output_bytes": {
-          "raw": 1431438,
-          "clean": 1277967,
-          "mart": 601781
-        },
-        "started_at": "2026-08-01T17:22:36.458631+00:00",
-        "finished_at": "2026-08-01T17:22:37.840837+00:00",
-        "duration_seconds": 1.382
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_misure/2023/mart_misure_attive.parquet",
@@ -23137,28 +20874,6 @@
         "totale_eur"
       ],
       "min_rows": 3,
-      "run": {
-        "run_id": "20260801T172236Z_52037e28",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 12874,
-          "mart": 12903
-        },
-        "output_bytes": {
-          "raw": 1431438,
-          "clean": 1277967,
-          "mart": 601781
-        },
-        "started_at": "2026-08-01T17:22:36.458631+00:00",
-        "finished_at": "2026-08-01T17:22:37.840837+00:00",
-        "duration_seconds": 1.382
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_misure/2023/mart_misure_per_tipo.parquet",
@@ -23182,28 +20897,6 @@
         "stato"
       ],
       "min_rows": 10000,
-      "run": {
-        "run_id": "20260801T172236Z_52037e28",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 12874,
-          "mart": 12903
-        },
-        "output_bytes": {
-          "raw": 1431438,
-          "clean": 1277967,
-          "mart": 601781
-        },
-        "started_at": "2026-08-01T17:22:36.458631+00:00",
-        "finished_at": "2026-08-01T17:22:37.840837+00:00",
-        "duration_seconds": 1.382
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/rna_misure/2023/mart_top_misure.parquet",
@@ -23256,29 +20949,6 @@
         "n_senatori"
       ],
       "min_rows": 10,
-      "run": {
-        "run_id": "20260804T192431Z_2c2a441e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 212,
-          "clean": 212,
-          "mart": 186
-        },
-        "output_bytes": {
-          "raw": 15933,
-          "clean": 5589,
-          "mart": 2145
-        },
-        "started_at": "2026-08-04T19:24:31.799659+00:00",
-        "finished_at": "2026-08-04T19:24:33.342541+00:00",
-        "duration_seconds": 1.543
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/senato_anagrafica/2026/mart_luogo_nascita.parquet",
@@ -23298,29 +20968,6 @@
         "n_senatori"
       ],
       "min_rows": 10,
-      "run": {
-        "run_id": "20260804T192431Z_2c2a441e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 212,
-          "clean": 212,
-          "mart": 186
-        },
-        "output_bytes": {
-          "raw": 15933,
-          "clean": 5589,
-          "mart": 2145
-        },
-        "started_at": "2026-08-04T19:24:31.799659+00:00",
-        "finished_at": "2026-08-04T19:24:33.342541+00:00",
-        "duration_seconds": 1.543
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/senato_anagrafica/2026/mart_nascita_anno.parquet",
@@ -23340,23 +20987,6 @@
         "n_ddl"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260804T125306Z_937bf24f",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 370
-        },
-        "output_bytes": {
-          "mart": 22347
-        },
-        "started_at": "2026-08-04T12:53:06.875573+00:00",
-        "finished_at": "2026-08-04T12:53:07.077926+00:00",
-        "duration_seconds": 0.202
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/senato_ddl/2026/mart_anno.parquet",
@@ -23377,23 +21007,6 @@
         "mesi_iter"
       ],
       "min_rows": 100,
-      "run": {
-        "run_id": "20260804T125306Z_937bf24f",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 370
-        },
-        "output_bytes": {
-          "mart": 22347
-        },
-        "started_at": "2026-08-04T12:53:06.875573+00:00",
-        "finished_at": "2026-08-04T12:53:07.077926+00:00",
-        "duration_seconds": 0.202
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/senato_ddl/2026/mart_iter_tempi.parquet",
@@ -23413,23 +21026,6 @@
         "n_ddl"
       ],
       "min_rows": 5,
-      "run": {
-        "run_id": "20260804T125306Z_937bf24f",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 370
-        },
-        "output_bytes": {
-          "mart": 22347
-        },
-        "started_at": "2026-08-04T12:53:06.875573+00:00",
-        "finished_at": "2026-08-04T12:53:07.077926+00:00",
-        "duration_seconds": 0.202
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/senato_ddl/2026/mart_stato.parquet",
@@ -23449,29 +21045,6 @@
         "n_firmatari"
       ],
       "min_rows": 1000,
-      "run": {
-        "run_id": "20260804T172610Z_9e59d45e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 37992,
-          "clean": 37992,
-          "mart": 4664
-        },
-        "output_bytes": {
-          "raw": 6970601,
-          "clean": 494546,
-          "mart": 12683
-        },
-        "started_at": "2026-08-04T17:26:10.747999+00:00",
-        "finished_at": "2026-08-04T17:26:19.409335+00:00",
-        "duration_seconds": 8.661
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/senato_firmatari/2026/mart_firmatari_ddl.parquet",
@@ -23491,29 +21064,6 @@
         "n_firmatari"
       ],
       "min_rows": 2,
-      "run": {
-        "run_id": "20260804T172610Z_9e59d45e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 37992,
-          "clean": 37992,
-          "mart": 4664
-        },
-        "output_bytes": {
-          "raw": 6970601,
-          "clean": 494546,
-          "mart": 12683
-        },
-        "started_at": "2026-08-04T17:26:10.747999+00:00",
-        "finished_at": "2026-08-04T17:26:19.409335+00:00",
-        "duration_seconds": 8.661
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/senato_firmatari/2026/mart_tipo_iniziativa.parquet",
@@ -23537,28 +21087,6 @@
       "table": "mart_enti",
       "description": "siope_bilancio_unificato — mart mart_enti",
       "min_rows": 100,
-      "run": {
-        "run_id": "20260728T104720Z_22887f62",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 85
-        },
-        "output_rows": {
-          "clean": 6793964,
-          "mart": 12530
-        },
-        "output_bytes": {
-          "raw": 23201336,
-          "clean": 69710241,
-          "mart": 405006
-        },
-        "started_at": "2026-07-28T10:47:20.449799+00:00",
-        "finished_at": "2026-07-28T10:47:47.521812+00:00",
-        "duration_seconds": 27.072
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/siope_bilancio_unificato/2026/mart_enti.parquet",
@@ -23571,28 +21099,6 @@
       "table": "mart_sintesi",
       "description": "siope_bilancio_unificato — mart mart_sintesi",
       "min_rows": 10,
-      "run": {
-        "run_id": "20260728T104720Z_22887f62",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 85
-        },
-        "output_rows": {
-          "clean": 6793964,
-          "mart": 12530
-        },
-        "output_bytes": {
-          "raw": 23201336,
-          "clean": 69710241,
-          "mart": 405006
-        },
-        "started_at": "2026-07-28T10:47:20.449799+00:00",
-        "finished_at": "2026-07-28T10:47:47.521812+00:00",
-        "duration_seconds": 27.072
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/siope_bilancio_unificato/2026/mart_sintesi.parquet",
@@ -23605,28 +21111,6 @@
       "table": "mart_trend",
       "description": "siope_bilancio_unificato — mart mart_trend",
       "min_rows": 5,
-      "run": {
-        "run_id": "20260728T104720Z_22887f62",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 85
-        },
-        "output_rows": {
-          "clean": 6793964,
-          "mart": 12530
-        },
-        "output_bytes": {
-          "raw": 23201336,
-          "clean": 69710241,
-          "mart": 405006
-        },
-        "started_at": "2026-07-28T10:47:20.449799+00:00",
-        "finished_at": "2026-07-28T10:47:47.521812+00:00",
-        "duration_seconds": 27.072
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/siope_bilancio_unificato/2026/mart_trend.parquet",
@@ -23639,29 +21123,6 @@
       "table": "mart_regioni",
       "description": "strutture_asl — mart mart_regioni",
       "min_rows": 21,
-      "run": {
-        "run_id": "20260731T200402Z_a97afd3e",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 107,
-          "clean": 106,
-          "mart": 21
-        },
-        "output_bytes": {
-          "raw": 24100,
-          "clean": 17126,
-          "mart": 1962
-        },
-        "started_at": "2026-07-31T20:04:02.821252+00:00",
-        "finished_at": "2026-07-31T20:04:05.627269+00:00",
-        "duration_seconds": 2.806
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/strutture_asl/2022/mart_regioni.parquet",
@@ -23718,14 +21179,6 @@
       "dataset": "terna_electricity_by_source",
       "table": "mart_mix_regioni",
       "description": "terna_electricity_by_source — mart mart_mix_regioni",
-      "run": {
-        "run_id": "20260731T083122Z_d43d863a",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T08:31:22.287201+00:00",
-        "finished_at": "2026-07-31T08:31:22.291339+00:00",
-        "duration_seconds": 0.004
-      },
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/terna_electricity_by_source/2024/mart_mix_regioni.parquet",
