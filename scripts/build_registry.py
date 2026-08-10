@@ -47,7 +47,10 @@ def _load_existing(out: Path) -> tuple[dict | None, dict | None]:
         try:
             existing = json.loads(registry_path.read_text(encoding="utf-8"))
             return (
-                {"datasets": existing.get("datasets", [])},
+                {
+                    "datasets": existing.get("datasets", []),
+                    "marts": existing.get("marts", []),
+                },
                 {"signals": existing.get("signals", [])},
             )
         except json.JSONDecodeError:
