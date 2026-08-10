@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-08-08",
+  "updated_at": "2026-08-10",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -14,6 +14,14 @@
         "start": 2017,
         "end": 2024
       },
+      "tags": [
+        "trasporti",
+        "aci",
+        "prime",
+        "iscrizioni",
+        "autovetture"
+      ],
+      "category": "trasporti",
       "columns": [
         {
           "name": "anno",
@@ -55,15 +63,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "trasporti",
-        "aci",
-        "prime",
-        "iscrizioni",
-        "autovetture"
-      ],
-      "category": "trasporti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ade_cinque_per_mille",
@@ -412,6 +412,12 @@
         "start": 2000,
         "end": 2026
       },
+      "tags": [
+        "appalti",
+        "anac",
+        "aggiudicatari"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "cig",
@@ -458,13 +464,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "anac",
-        "aggiudicatari"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "anac_aggiudicazioni",
@@ -476,6 +476,12 @@
         "start": 2000,
         "end": 2026
       },
+      "tags": [
+        "appalti",
+        "anac",
+        "aggiudicazioni"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "cig",
@@ -654,13 +660,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "anac",
-        "aggiudicazioni"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "anac_appalti_master",
@@ -672,6 +672,12 @@
         "start": 2016,
         "end": 2025
       },
+      "tags": [
+        "appalti",
+        "anac",
+        "master"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "cig",
@@ -897,13 +903,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "anac",
-        "master"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "anac_bandi_gara",
@@ -1326,6 +1326,12 @@
         "start": 2000,
         "end": 2026
       },
+      "tags": [
+        "appalti",
+        "anac",
+        "collaudo"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "cig",
@@ -1407,13 +1413,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "anac",
-        "collaudo"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "anac_cup",
@@ -1425,6 +1425,12 @@
         "start": 2000,
         "end": 2026
       },
+      "tags": [
+        "appalti",
+        "anac",
+        "cup"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "cig",
@@ -1447,13 +1453,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "anac",
-        "cup"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "anac_partecipanti",
@@ -1465,6 +1465,12 @@
         "start": 2023,
         "end": 2026
       },
+      "tags": [
+        "appalti",
+        "anac",
+        "partecipanti"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "cig",
@@ -1505,13 +1511,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "anac",
-        "partecipanti"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "anac_stati_avanzamento",
@@ -1523,6 +1523,13 @@
         "start": 2000,
         "end": 2026
       },
+      "tags": [
+        "appalti",
+        "anac",
+        "stati",
+        "avanzamento"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "cig",
@@ -1598,14 +1605,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "anac",
-        "stati",
-        "avanzamento"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "anac_subappalti",
@@ -1617,6 +1617,12 @@
         "start": 2020,
         "end": 2026
       },
+      "tags": [
+        "appalti",
+        "anac",
+        "subappalti"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "cig",
@@ -1719,13 +1725,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "anac",
-        "subappalti"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "anpr_mobilita_residenziale",
@@ -1839,6 +1839,13 @@
         "start": 2026,
         "end": 2026
       },
+      "tags": [
+        "pa",
+        "bdap",
+        "anagrafe",
+        "enti"
+      ],
+      "category": "pa",
       "columns": [
         {
           "name": "id_ente",
@@ -2236,14 +2243,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "pa",
-        "bdap",
-        "anagrafe",
-        "enti"
-      ],
-      "category": "pa"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "bdap_entrate_stato",
@@ -2255,6 +2255,12 @@
         "start": 2008,
         "end": 2024
       },
+      "tags": [
+        "finanza-pubblica",
+        "bdap",
+        "entrate"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "esercizio_finanziario",
@@ -2330,13 +2336,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "bdap",
-        "entrate"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "bdap_lea",
@@ -2348,6 +2348,12 @@
         "start": 2024,
         "end": 2024
       },
+      "tags": [
+        "sanita",
+        "bdap",
+        "lea"
+      ],
+      "category": "sanita",
       "columns": [
         {
           "name": "anno_riferimento",
@@ -2497,13 +2503,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "sanita",
-        "bdap",
-        "lea"
-      ],
-      "category": "sanita"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "bdap_spese_stato",
@@ -2515,6 +2515,12 @@
         "start": 2008,
         "end": 2024
       },
+      "tags": [
+        "finanza-pubblica",
+        "bdap",
+        "spese"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "esercizio_finanziario",
@@ -2596,13 +2602,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "bdap",
-        "spese"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "camera_deputati_legislature",
@@ -3059,6 +3059,12 @@
         "start": 2018,
         "end": 2024
       },
+      "tags": [
+        "immigrazione",
+        "centri",
+        "accoglienza"
+      ],
+      "category": "immigrazione",
       "columns": [
         {
           "name": "anno",
@@ -3243,13 +3249,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "immigrazione",
-        "centri",
-        "accoglienza"
-      ],
-      "category": "immigrazione"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "civile_flussi",
@@ -3944,6 +3944,12 @@
         "start": 2026,
         "end": 2026
       },
+      "tags": [
+        "normativa",
+        "costituzione",
+        "master"
+      ],
+      "category": "normativa",
       "columns": [
         {
           "name": "articolo",
@@ -4024,13 +4030,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "normativa",
-        "costituzione",
-        "master"
-      ],
-      "category": "normativa"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "dait_amministratori_locali",
@@ -4409,6 +4409,11 @@
         "start": 2016,
         "end": 2024
       },
+      "tags": [
+        "politica",
+        "elezioni"
+      ],
+      "category": "politica",
       "columns": [
         {
           "name": "data_elezione",
@@ -4510,12 +4515,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "politica",
-        "elezioni"
-      ],
-      "category": "politica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "elezioni_europee",
@@ -4527,6 +4527,12 @@
         "start": 1979,
         "end": 2024
       },
+      "tags": [
+        "politica",
+        "elezioni",
+        "europee"
+      ],
+      "category": "politica",
       "columns": [
         {
           "name": "data_elezione",
@@ -4598,13 +4604,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "politica",
-        "elezioni",
-        "europee"
-      ],
-      "category": "politica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "elezioni_politiche",
@@ -4936,6 +4936,11 @@
         "start": 2018,
         "end": 2024
       },
+      "tags": [
+        "politica",
+        "elezioni"
+      ],
+      "category": "politica",
       "columns": [
         {
           "name": "data_elezione",
@@ -5019,12 +5024,7 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "politica",
-        "elezioni"
-      ],
-      "category": "politica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "elezioni_voto",
@@ -5684,6 +5684,11 @@
         "start": 2026,
         "end": 2026
       },
+      "tags": [
+        "sanita",
+        "farmacie"
+      ],
+      "category": "sanita",
       "columns": [
         {
           "name": "anno",
@@ -5832,12 +5837,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "sanita",
-        "farmacie"
-      ],
-      "category": "sanita"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "fts_eu_grants",
@@ -6723,6 +6723,12 @@
         "start": 2020,
         "end": 2024
       },
+      "tags": [
+        "welfare-lavoro",
+        "inps",
+        "pensioni"
+      ],
+      "category": "welfare-lavoro",
       "columns": [
         {
           "name": "anno",
@@ -6799,13 +6805,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "welfare-lavoro",
-        "inps",
-        "pensioni"
-      ],
-      "category": "welfare-lavoro"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "inps_rdc_pdc",
@@ -7105,6 +7105,14 @@
         "start": 2026,
         "end": 2026
       },
+      "tags": [
+        "pa",
+        "ipa",
+        "aree",
+        "organizzative",
+        "omogenee"
+      ],
+      "category": "pa",
       "columns": [
         {
           "name": "codice_ipa",
@@ -7272,15 +7280,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "pa",
-        "ipa",
-        "aree",
-        "organizzative",
-        "omogenee"
-      ],
-      "category": "pa"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ipa_enti",
@@ -7292,6 +7292,12 @@
         "start": 2026,
         "end": 2026
       },
+      "tags": [
+        "pa",
+        "ipa",
+        "enti"
+      ],
+      "category": "pa",
       "columns": [
         {
           "name": "codice_ipa",
@@ -7485,13 +7491,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "pa",
-        "ipa",
-        "enti"
-      ],
-      "category": "pa"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ipa_unita_organizzative",
@@ -7503,6 +7503,13 @@
         "start": 2026,
         "end": 2026
       },
+      "tags": [
+        "pa",
+        "ipa",
+        "unita",
+        "organizzative"
+      ],
+      "category": "pa",
       "columns": [
         {
           "name": "codice_ipa",
@@ -7670,14 +7677,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "pa",
-        "ipa",
-        "unita",
-        "organizzative"
-      ],
-      "category": "pa"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "irpef_comunale",
@@ -8396,6 +8396,14 @@
         "start": 2020,
         "end": 2024
       },
+      "tags": [
+        "ambiente",
+        "ispra",
+        "ru",
+        "costi",
+        "kg"
+      ],
+      "category": "ambiente",
       "columns": [
         {
           "name": "anno",
@@ -8479,15 +8487,7 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "ambiente",
-        "ispra",
-        "ru",
-        "costi",
-        "kg"
-      ],
-      "category": "ambiente"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ispra_ru_costi_procapite",
@@ -8499,6 +8499,14 @@
         "start": 2020,
         "end": 2024
       },
+      "tags": [
+        "ambiente",
+        "ispra",
+        "ru",
+        "costi",
+        "procapite"
+      ],
+      "category": "ambiente",
       "columns": [
         {
           "name": "anno",
@@ -8600,15 +8608,7 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "ambiente",
-        "ispra",
-        "ru",
-        "costi",
-        "procapite"
-      ],
-      "category": "ambiente"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_asia_ul",
@@ -8620,6 +8620,13 @@
         "start": 2018,
         "end": 2020
       },
+      "tags": [
+        "economia",
+        "istat",
+        "asia",
+        "ul"
+      ],
+      "category": "economia",
       "columns": [
         {
           "name": "codice_comune",
@@ -8654,14 +8661,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "economia",
-        "istat",
-        "asia",
-        "ul"
-      ],
-      "category": "economia"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_elenco_comuni",
@@ -8813,6 +8813,12 @@
         "start": 2003,
         "end": 2024
       },
+      "tags": [
+        "finanza-pubblica",
+        "istat",
+        "gini"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "regione_codice",
@@ -8860,13 +8866,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "istat",
-        "gini"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_housing_crowding",
@@ -8878,6 +8878,13 @@
         "start": 2004,
         "end": 2025
       },
+      "tags": [
+        "welfare-lavoro",
+        "istat",
+        "housing",
+        "crowding"
+      ],
+      "category": "welfare-lavoro",
       "columns": [
         {
           "name": "anno",
@@ -9055,14 +9062,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "welfare-lavoro",
-        "istat",
-        "housing",
-        "crowding"
-      ],
-      "category": "welfare-lavoro"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_ipab_aree",
@@ -9074,6 +9074,13 @@
         "start": 2010,
         "end": 2025
       },
+      "tags": [
+        "welfare-lavoro",
+        "istat",
+        "ipab",
+        "aree"
+      ],
+      "category": "welfare-lavoro",
       "columns": [
         {
           "name": "area_codice",
@@ -9124,14 +9131,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "welfare-lavoro",
-        "istat",
-        "ipab",
-        "aree"
-      ],
-      "category": "welfare-lavoro"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_occupazione_provinciale",
@@ -9143,6 +9143,12 @@
         "start": 2018,
         "end": 2025
       },
+      "tags": [
+        "welfare-lavoro",
+        "istat",
+        "occupazione"
+      ],
+      "category": "welfare-lavoro",
       "columns": [
         {
           "name": "ref_area",
@@ -9206,13 +9212,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "welfare-lavoro",
-        "istat",
-        "occupazione"
-      ],
-      "category": "welfare-lavoro"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "istat_pil_territoriale",
@@ -9224,6 +9224,13 @@
         "start": 1995,
         "end": 2024
       },
+      "tags": [
+        "economia",
+        "istat",
+        "pil",
+        "territoriale"
+      ],
+      "category": "economia",
       "columns": [
         {
           "name": "territorio_codice",
@@ -9287,14 +9294,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "economia",
-        "istat",
-        "pil",
-        "territoriale"
-      ],
-      "category": "economia"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "iva_regionale",
@@ -9459,6 +9459,12 @@
         "start": 2017,
         "end": 2025
       },
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "irpef"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "anno_di_imposta",
@@ -9721,13 +9727,7 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "mef",
-        "irpef"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mef_partecipazioni",
@@ -10312,6 +10312,13 @@
         "start": 2022,
         "end": 2023
       },
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "patrimonio",
+        "detenzioni"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "anno",
@@ -10478,14 +10485,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "mef",
-        "patrimonio",
-        "detenzioni"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mef_patrimonio_enti",
@@ -10497,6 +10497,13 @@
         "start": 2022,
         "end": 2023
       },
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "patrimonio",
+        "enti"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "anno",
@@ -10625,14 +10632,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "mef",
-        "patrimonio",
-        "enti"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mef_patrimonio_immobili",
@@ -10644,6 +10644,13 @@
         "start": 2022,
         "end": 2023
       },
+      "tags": [
+        "finanza-pubblica",
+        "mef",
+        "patrimonio",
+        "immobili"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "anno",
@@ -10966,14 +10973,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "mef",
-        "patrimonio",
-        "immobili"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mef_rappresentanti_partecipate",
@@ -11830,6 +11830,12 @@
         "start": 2001,
         "end": 2018
       },
+      "tags": [
+        "ambiente",
+        "mit",
+        "incidentalita"
+      ],
+      "category": "ambiente",
       "columns": [
         {
           "name": "mese",
@@ -11936,13 +11942,7 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "ambiente",
-        "mit",
-        "incidentalita"
-      ],
-      "category": "ambiente"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mit_opere_incompiute_2020",
@@ -11954,6 +11954,13 @@
         "start": 2020,
         "end": 2020
       },
+      "tags": [
+        "appalti",
+        "mit",
+        "opere",
+        "incompiute"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "graduatoria_pubblicata_da",
@@ -12127,14 +12134,7 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "mit",
-        "opere",
-        "incompiute"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "monitoraggio_mensile_civile",
@@ -12267,6 +12267,13 @@
         "start": 2017,
         "end": 2024
       },
+      "tags": [
+        "istruzione",
+        "mur",
+        "contribuzione",
+        "universitaria"
+      ],
+      "category": "istruzione",
       "columns": [
         {
           "name": "anno",
@@ -12312,14 +12319,7 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "istruzione",
-        "mur",
-        "contribuzione",
-        "universitaria"
-      ],
-      "category": "istruzione"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mur_immatricolati",
@@ -12331,6 +12331,12 @@
         "start": 1998,
         "end": 2025
       },
+      "tags": [
+        "istruzione",
+        "mur",
+        "immatricolati"
+      ],
+      "category": "istruzione",
       "columns": [
         {
           "name": "anno",
@@ -12370,13 +12376,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "istruzione",
-        "mur",
-        "immatricolati"
-      ],
-      "category": "istruzione"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "mur_iscritti",
@@ -12388,6 +12388,12 @@
         "start": 2000,
         "end": 2025
       },
+      "tags": [
+        "istruzione",
+        "mur",
+        "iscritti"
+      ],
+      "category": "istruzione",
       "columns": [
         {
           "name": "anno",
@@ -12427,13 +12433,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "istruzione",
-        "mur",
-        "iscritti"
-      ],
-      "category": "istruzione"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "opencivitas_fsc_2025_rso",
@@ -12445,6 +12445,12 @@
         "start": 2022,
         "end": 2025
       },
+      "tags": [
+        "finanza-pubblica",
+        "opencivitas",
+        "fsc"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "anno",
@@ -12537,13 +12543,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "opencivitas",
-        "fsc"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "opencivitas_fsc_enti_rso",
@@ -12555,6 +12555,13 @@
         "start": 2025,
         "end": 2025
       },
+      "tags": [
+        "finanza-pubblica",
+        "opencivitas",
+        "fsc",
+        "enti"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "username",
@@ -12597,14 +12604,7 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "opencivitas",
-        "fsc",
-        "enti"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "opencivitas_glossario",
@@ -12616,6 +12616,12 @@
         "start": 2015,
         "end": 2022
       },
+      "tags": [
+        "finanza-pubblica",
+        "opencivitas",
+        "glossario"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "codice_indicatore",
@@ -12673,13 +12679,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "opencivitas",
-        "glossario"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "opencivitas_indicatori",
@@ -12841,6 +12841,12 @@
         "start": 2007,
         "end": 2027
       },
+      "tags": [
+        "finanza-pubblica",
+        "opencoesione",
+        "progetti"
+      ],
+      "category": "finanza-pubblica",
       "columns": [
         {
           "name": "COD_LOCALE_PROGETTO",
@@ -13000,13 +13006,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "finanza-pubblica",
-        "opencoesione",
-        "progetti"
-      ],
-      "category": "finanza-pubblica"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "openga_ricorsi_appalto",
@@ -13018,6 +13018,12 @@
         "start": 2023,
         "end": 2026
       },
+      "tags": [
+        "giustizia",
+        "giustizia-amministrativa",
+        "contenzioso"
+      ],
+      "category": "giustizia",
       "columns": [
         {
           "name": "anno",
@@ -13175,13 +13181,7 @@
         "multi_file": true
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "giustizia",
-        "giustizia-amministrativa",
-        "contenzioso"
-      ],
-      "category": "giustizia"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "openga_ricorsi_cds",
@@ -13193,6 +13193,12 @@
         "start": 2023,
         "end": 2026
       },
+      "tags": [
+        "giustizia",
+        "giustizia-amministrativa",
+        "contenzioso"
+      ],
+      "category": "giustizia",
       "columns": [
         {
           "name": "anno",
@@ -13239,13 +13245,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "giustizia",
-        "giustizia-amministrativa",
-        "contenzioso"
-      ],
-      "category": "giustizia"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "penale_flussi",
@@ -13359,6 +13359,13 @@
         "start": 2017,
         "end": 2022
       },
+      "tags": [
+        "welfare-lavoro",
+        "pensioni",
+        "pa",
+        "dag"
+      ],
+      "category": "welfare-lavoro",
       "columns": [
         {
           "name": "anno",
@@ -13479,14 +13486,7 @@
         "multi_file": false
       },
       "stage": "incubating",
-      "registry_source": "derive_auto",
-      "tags": [
-        "welfare-lavoro",
-        "pensioni",
-        "pa",
-        "dag"
-      ],
-      "category": "welfare-lavoro"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "personale_ssn",
@@ -13498,6 +13498,12 @@
         "start": 2010,
         "end": 2021
       },
+      "tags": [
+        "sanita",
+        "personale",
+        "ssn"
+      ],
+      "category": "sanita",
       "columns": [
         {
           "name": "prospetto",
@@ -13598,13 +13604,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "sanita",
-        "personale",
-        "ssn"
-      ],
-      "category": "sanita"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "pnrr_gare",
@@ -14628,6 +14628,13 @@
         "start": 2020,
         "end": 2023
       },
+      "tags": [
+        "sanita",
+        "posti",
+        "letto",
+        "stabilimento"
+      ],
+      "category": "sanita",
       "columns": [
         {
           "name": "anno",
@@ -14779,14 +14786,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "sanita",
-        "posti",
-        "letto",
-        "stabilimento"
-      ],
-      "category": "sanita"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "reparti_ricovero",
@@ -14798,6 +14798,12 @@
         "start": 2022,
         "end": 2022
       },
+      "tags": [
+        "sanita",
+        "reparti",
+        "ricovero"
+      ],
+      "category": "sanita",
       "columns": [
         {
           "name": "anno",
@@ -14961,13 +14967,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "sanita",
-        "reparti",
-        "ricovero"
-      ],
-      "category": "sanita"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "rna_aiuti_stato",
@@ -15404,6 +15404,12 @@
         "start": 2018,
         "end": 2024
       },
+      "tags": [
+        "immigrazione",
+        "sai",
+        "progetti"
+      ],
+      "category": "immigrazione",
       "columns": [
         {
           "name": "anno",
@@ -15540,13 +15546,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "immigrazione",
-        "sai",
-        "progetti"
-      ],
-      "category": "immigrazione"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "sai_strutture_italia",
@@ -15558,6 +15558,12 @@
         "start": 2018,
         "end": 2024
       },
+      "tags": [
+        "immigrazione",
+        "sai",
+        "strutture"
+      ],
+      "category": "immigrazione",
       "columns": [
         {
           "name": "anno",
@@ -15724,13 +15730,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "immigrazione",
-        "sai",
-        "strutture"
-      ],
-      "category": "immigrazione"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "sbarchi_migranti_italia",
@@ -15742,6 +15742,12 @@
         "start": 2019,
         "end": 2025
       },
+      "tags": [
+        "immigrazione",
+        "migranti",
+        "sbarchi"
+      ],
+      "category": "immigrazione",
       "columns": [
         {
           "name": "data_sbarchi",
@@ -15774,13 +15780,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "immigrazione",
-        "migranti",
-        "sbarchi"
-      ],
-      "category": "immigrazione"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "senato_anagrafica",
@@ -16222,6 +16222,12 @@
         "start": 2004,
         "end": 2024
       },
+      "tags": [
+        "ambiente",
+        "silos",
+        "infrastrutture"
+      ],
+      "category": "ambiente",
       "columns": [
         {
           "name": "anno",
@@ -16322,13 +16328,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "ambiente",
-        "silos",
-        "infrastrutture"
-      ],
-      "category": "ambiente"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "siope_bilancio_unificato",
@@ -16834,6 +16834,13 @@
         "start": 2022,
         "end": 2022
       },
+      "tags": [
+        "sanita",
+        "strutture",
+        "ricovero",
+        "asl"
+      ],
+      "category": "sanita",
       "columns": [
         {
           "name": "anno",
@@ -17003,14 +17010,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "sanita",
-        "strutture",
-        "ricovero",
-        "asl"
-      ],
-      "category": "sanita"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "ted_contract_notices",
@@ -17022,6 +17022,13 @@
         "start": 2020,
         "end": 2023
       },
+      "tags": [
+        "appalti",
+        "ted",
+        "contract",
+        "notices"
+      ],
+      "category": "appalti",
       "columns": [
         {
           "name": "id_notice_cn",
@@ -17415,14 +17422,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "appalti",
-        "ted",
-        "contract",
-        "notices"
-      ],
-      "category": "appalti"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "terna_capacita_rinnovabile",
@@ -17434,6 +17434,12 @@
         "start": 2015,
         "end": 2024
       },
+      "tags": [
+        "energia",
+        "elettricità",
+        "fonti-rinnovabili"
+      ],
+      "category": "energia",
       "columns": [
         {
           "name": "anno",
@@ -17481,13 +17487,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "energia",
-        "elettricità",
-        "fonti-rinnovabili"
-      ],
-      "category": "energia"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "terna_electrical_energy_by_sector",
@@ -17499,6 +17499,12 @@
         "start": 2015,
         "end": 2024
       },
+      "tags": [
+        "energia",
+        "elettricità",
+        "fonti-rinnovabili"
+      ],
+      "category": "energia",
       "columns": [
         {
           "name": "anno",
@@ -17540,13 +17546,7 @@
         "multi_file": true
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "energia",
-        "elettricità",
-        "fonti-rinnovabili"
-      ],
-      "category": "energia"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "terna_electricity_by_source",
@@ -17638,6 +17638,12 @@
         "start": 2026,
         "end": 2026
       },
+      "tags": [
+        "pa",
+        "unified",
+        "comuni"
+      ],
+      "category": "pa",
       "columns": [
         {
           "name": "codice_istat",
@@ -17914,13 +17920,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "pa",
-        "unified",
-        "comuni"
-      ],
-      "category": "pa"
+      "registry_source": "derive_auto"
     },
     {
       "slug": "who_is_who_pa",
@@ -17932,6 +17932,13 @@
         "start": 2026,
         "end": 2026
       },
+      "tags": [
+        "pa",
+        "who",
+        "is",
+        "who"
+      ],
+      "category": "pa",
       "columns": [
         {
           "name": "codice_ipa",
@@ -18161,14 +18168,7 @@
         "multi_file": false
       },
       "stage": "published",
-      "registry_source": "derive_auto",
-      "tags": [
-        "pa",
-        "who",
-        "is",
-        "who"
-      ],
-      "category": "pa"
+      "registry_source": "derive_auto"
     }
   ],
   "marts": [
@@ -18981,7 +18981,7 @@
       },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/camera_votazioni_sparql/2026/camera_votazioni.parquet",
+        "path": "gs://dataciviclab-mart/camera_votazioni_sparql/camera_votazioni.parquet",
         "multi_file": false
       }
     },
@@ -19974,7 +19974,7 @@
       },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/fts_eu_grants/2025/mart_trend_anno.parquet",
+        "path": "gs://dataciviclab-mart/fts_eu_grants/mart_trend_anno.parquet",
         "multi_file": false
       }
     },
@@ -21109,7 +21109,7 @@
       },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/iva_regionale/2024/mart_sintesi_nazionale.parquet",
+        "path": "gs://dataciviclab-mart/iva_regionale/mart_sintesi_nazionale.parquet",
         "multi_file": false
       }
     },
@@ -21154,7 +21154,7 @@
       },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/iva_regionale/2024/mart_trend_regioni.parquet",
+        "path": "gs://dataciviclab-mart/iva_regionale/mart_trend_regioni.parquet",
         "multi_file": false
       }
     },
@@ -21338,7 +21338,7 @@
       },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_partecipazioni/2023/mart_trend_anno.parquet",
+        "path": "gs://dataciviclab-mart/mef_partecipazioni/mart_trend_anno.parquet",
         "multi_file": false
       }
     },
@@ -21559,7 +21559,7 @@
       },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_trend_anno.parquet",
+        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/mart_trend_anno.parquet",
         "multi_file": false
       }
     },
@@ -21828,7 +21828,7 @@
       },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/mim_alunni_corso_eta/2025/mart_trend_ordine.parquet",
+        "path": "gs://dataciviclab-mart/mim_alunni_corso_eta/mart_trend_ordine.parquet",
         "multi_file": false
       }
     },
@@ -21996,7 +21996,7 @@
       },
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/mim_scuola_infanzia/2025/mart_trend_cittadinanza.parquet",
+        "path": "gs://dataciviclab-mart/mim_scuola_infanzia/mart_trend_cittadinanza.parquet",
         "multi_file": false
       }
     },
