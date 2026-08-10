@@ -62,8 +62,6 @@ dataset-incubator/
   support_datasets/            # basi trasversali riusabili
   registry/
     registry.json             # artifact unico (fusion ADR) — sezioni datasets/marts/signals/codelists/entities
-    clean_catalog.json        # proiezione legacy (consumer non ancora migrati)
-    pipeline_signals.json     # proiezione legacy (stato dei run per filone)
   templates/
     candidate/                 # template di partenza per filone
   skills/                      # skill markdown (riferimento umano per agenti e operatori)
@@ -141,7 +139,7 @@ Gli output del toolkit vivono sotto `out/` — non vanno mai versionati. Il cont
 
 ## Lab Clean Registry
 
-I clean pubblici del Lab sono tracciati in `registry/clean_catalog.json`. Per aggiornarlo:
+I dataset pubblici del Lab sono tracciati in `registry/registry.json`. Per aggiornarlo:
 
 ```bash
 python scripts/build_registry.py --write

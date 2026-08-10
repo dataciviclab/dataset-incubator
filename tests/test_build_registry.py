@@ -1,10 +1,9 @@
 # ruff: noqa: E402
 """Test per scripts/build_registry.py — wrapper fusion del registry.
 
-Contratto: il wrapper produce registry.json unico (fusion ADR) e scrive le
-proiezioni legacy clean_catalog/pipeline_signals/entity_graph per i consumer
-non ancora migrati. La logica di derivazione è del toolkit; qui si testa il
-layout DI (existing preservato, proiezioni compatibili, exit codes).
+Contratto: il wrapper produce registry.json unico (fusion ADR). La logica di
+derivazione è del toolkit; qui si testa il layout DI (existing preservato dal
+registry.json, exit codes).
 
 Prova del fuoco: se cancello questi test, un wrapper rotto pubblica un
 registry malformato o perde i metadata editoriali senza preavviso.
@@ -84,105 +83,31 @@ def _result(**overrides) -> dict:
 
 
 class TestLoadExisting:
-    def test_no_files_returns_none(self, tmp_path: Path) -> None:
+    def test_no_registry_returns_none(self, tmp_path: Path) -> None:
         catalog, signals = br._load_existing(tmp_path)
         assert catalog is None
         assert signals is None
 
-    def test_registry_json_priority(self, tmp_path: Path) -> None:
+    def test_registry_json_loaded(self, tmp_path: Path) -> None:
         (tmp_path / "registry.json").write_text(
-            json.dumps({"datasets": [{"slug": "a"}], "signals": [{"id": "a"}]}),
-            encoding="utf-8",
-        )
-        (tmp_path / "clean_catalog.json").write_text(
-            json.dumps({"datasets": [{"slug": "legacy"}]}), encoding="utf-8"
-        )
-        catalog, signals = br._load_existing(tmp_path)
-        assert catalog == {"datasets": [{"slug": "a"}], "marts": []}
-        assert signals == {"signals": [{"id": "a"}]}
-
-    def test_registry_corrupt_falls_back_to_legacy(self, tmp_path: Path) -> None:
-        (tmp_path / "registry.json").write_text("{not json", encoding="utf-8")
-        (tmp_path / "clean_catalog.json").write_text(
-            json.dumps({"datasets": [{"slug": "legacy"}]}), encoding="utf-8"
-        )
-        (tmp_path / "pipeline_signals.json").write_text(
-            json.dumps({"signals": [{"id": "legacy"}]}), encoding="utf-8"
-        )
-        catalog, signals = br._load_existing(tmp_path)
-        assert catalog == {"datasets": [{"slug": "legacy"}]}
-        assert signals == {"signals": [{"id": "legacy"}]}
-
-    def test_legacy_only(self, tmp_path: Path) -> None:
-        (tmp_path / "clean_catalog.json").write_text(
-            json.dumps({"datasets": [{"slug": "x"}]}), encoding="utf-8"
-        )
-        catalog, signals = br._load_existing(tmp_path)
-        assert catalog == {"datasets": [{"slug": "x"}]}
-        assert signals is None
-
-
-# ---------------------------------------------------------------------------
-# Proiezioni legacy
-# ---------------------------------------------------------------------------
-
-
-class TestProjections:
-    def test_clean_catalog_header_preserved(self, tmp_path: Path) -> None:
-        (tmp_path / "clean_catalog.json").write_text(
             json.dumps(
                 {
-                    "schema_version": 1,
-                    "name": "Nome Editoriale",
-                    "description": "Descrizione editoriale",
-                    "source_repo": "dataciviclab/dataset-incubator",
-                    "updated_at": "2026-01-01",
+                    "datasets": [{"slug": "a"}],
+                    "marts": [{"slug": "a__m"}],
+                    "signals": [{"id": "a"}],
                 }
             ),
             encoding="utf-8",
         )
-        registry = _registry_payload()
-        proj = br._project_clean_catalog(registry, tmp_path)
-        assert proj["name"] == "Nome Editoriale"
-        assert proj["description"] == "Descrizione editoriale"
-        assert proj["datasets"] == registry["datasets"]
+        catalog, signals = br._load_existing(tmp_path)
+        assert catalog == {"datasets": [{"slug": "a"}], "marts": [{"slug": "a__m"}]}
+        assert signals == {"signals": [{"id": "a"}]}
 
-    def test_clean_catalog_default_header(self, tmp_path: Path) -> None:
-        proj = br._project_clean_catalog(_registry_payload(), tmp_path)
-        assert proj["name"] == "Lab Clean Registry"
-        assert proj["source_repo"] == "dataciviclab/dataset-incubator"
-        assert len(proj["datasets"]) == 1
-
-    def test_pipeline_signals_by_status(self, tmp_path: Path) -> None:
-        registry = _registry_payload(
-            signals=[
-                {"id": "a", "status": "ok", "label": "a", "detail": "", "action": ""},
-                {"id": "b", "status": "warn", "label": "b", "detail": "", "action": ""},
-                {"id": "c", "status": "error", "label": "c", "detail": "", "action": ""},
-            ]
-        )
-        proj = br._project_pipeline_signals(registry, tmp_path)
-        assert proj["summary"] == {"total": 3, "by_status": {"ok": 1, "warn": 1, "error": 1}}
-
-    def test_pipeline_signals_header_preserved(self, tmp_path: Path) -> None:
-        (tmp_path / "pipeline_signals.json").write_text(
-            json.dumps({"schema_version": "1", "repo": "dataset-incubator", "topic": "custom"}),
-            encoding="utf-8",
-        )
-        proj = br._project_pipeline_signals(_registry_payload(), tmp_path)
-        assert proj["repo"] == "dataset-incubator"
-        assert proj["topic"] == "custom"
-
-    def test_entity_graph_structure(self) -> None:
-        proj = br._project_entity_graph(_registry_payload())
-        assert proj["schema_version"] == 1
-        assert proj["generated_from"] == "registry.json"
-        assert "Comune" in proj["entities"]
-        assert proj["bridges"] == []
-        assert proj["summary"]["total_entities"] == 1
-
-    def test_legacy_header_missing_file(self, tmp_path: Path) -> None:
-        assert br._legacy_header(("schema_version", "name"), tmp_path / "missing.json", {}) == {}
+    def test_registry_corrupt_returns_none(self, tmp_path: Path) -> None:
+        (tmp_path / "registry.json").write_text("{not json", encoding="utf-8")
+        catalog, signals = br._load_existing(tmp_path)
+        assert catalog is None
+        assert signals is None
 
 
 # ---------------------------------------------------------------------------
@@ -215,19 +140,17 @@ class TestMain:
         assert code == 0
         assert not (tmp_path / "registry.json").exists()
 
-    def test_write_produces_four_artifacts(
+    def test_write_produces_only_registry(
         self, tmp_path: Path, patch_builder, _isolate_argv
     ) -> None:
         sys.argv = ["build_registry.py", "--out", str(tmp_path), "--write"]
         code = br.main()
         assert code == 0
-        for name in (
-            "registry.json",
-            "clean_catalog.json",
-            "pipeline_signals.json",
-            "entity_graph.json",
-        ):
-            assert (tmp_path / name).exists(), name
+        assert (tmp_path / "registry.json").exists()
+        # Niente più proiezioni legacy
+        assert not (tmp_path / "clean_catalog.json").exists()
+        assert not (tmp_path / "pipeline_signals.json").exists()
+        assert not (tmp_path / "entity_graph.json").exists()
         assert json.loads((tmp_path / "registry.json").read_text())["repo"] == "dataset-incubator"
 
     def test_validation_error_blocks_write(
@@ -260,10 +183,14 @@ class TestMain:
         assert code == 0
 
     def test_existing_passed_to_builder(self, tmp_path: Path, patch_builder, _isolate_argv) -> None:
-        (tmp_path / "clean_catalog.json").write_text(
-            json.dumps({"datasets": [{"slug": "editoriale"}]}), encoding="utf-8"
+        (tmp_path / "registry.json").write_text(
+            json.dumps({"datasets": [{"slug": "editoriale"}], "marts": []}),
+            encoding="utf-8",
         )
         sys.argv = ["build_registry.py", "--out", str(tmp_path)]
         br.main()
         kwargs = patch_builder["kwargs"]
-        assert kwargs["existing_catalog"] == {"datasets": [{"slug": "editoriale"}]}
+        assert kwargs["existing_catalog"] == {
+            "datasets": [{"slug": "editoriale"}],
+            "marts": [],
+        }
