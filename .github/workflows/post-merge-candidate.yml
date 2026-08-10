@@ -1,15 +1,16 @@
 # Post-Merge Candidate Registry — dataset-incubator
 #
-# Pattern snello (eurostat post-merge-registry.yml): dopo il merge di una PR
-# che tocca candidates/compose/support_datasets:
-#   1. run-changed — run COMPLETO dei dataset cambiati (parquet locali) + push GCS
-#   2. build-and-pr — build_registry --write (derive locale, wrapper sul toolkit):
-#      registry.json unico (fusion ADR) + proiezioni legacy clean_catalog /
-#      pipeline_signals / entity_graph per i consumer non ancora migrati
-#      → PR draft "chore(post-merge)" che il maintainer mergia.
+# Pattern job unico (eurostat/dcl-bologna pipeline.yml): dopo il merge di una
+# PR che tocca candidates/compose/support_datasets, o su workflow_dispatch:
+#   1. detect — dir cambiate (slug manuale o diff della PR, esclusi doc-only)
+#   2. run — run COMPLETO dei dataset cambiati (parquet + run record locali)
+#   3. sync GCS — gsutil rsync dei parquet clean/mart
+#   4. build_registry --write — registry.json (fusion ADR) dai parquet/run
+#      appena generati (stesso runner → i run nuovi entrano subito)
+#   5. PR draft "chore(post-merge)" col registry aggiornato (maintainer mergia)
 #
 # La CI NON committa su main: apre una PR draft col registry aggiornato.
-# Dipende da toolkit.registry (fusion ADR, toolkit #453).
+# Un unico job garantisce che build_registry veda parquet e run record.
 
 name: Post-Merge Candidate Registry
 
@@ -37,16 +38,13 @@ env:
   GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
 jobs:
-  run-changed:
-    # Run completo dei dataset cambiati (o slug manuale) → parquet locali che
-    # alimentano il registry, poi push GCS (DI non ha un publish.yml separato).
+  pipeline:
     if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
     runs-on: ubuntu-latest
     permissions:
-      contents: read
+      contents: write
+      pull-requests: write
       id-token: write
-    outputs:
-      changed: ${{ steps.detect.outputs.changed }}
 
     steps:
       - uses: actions/checkout@v7
@@ -107,14 +105,6 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Upload changed dirs
-        if: steps.detect.outputs.changed == 'true'
-        uses: actions/upload-artifact@v7
-        with:
-          name: changed-dirs
-          path: changed_dirs_final.txt
-          retention-days: 1
-
       - name: Run changed datasets (full)
         if: steps.detect.outputs.changed == 'true'
         env:
@@ -144,28 +134,8 @@ jobs:
             done
           done
 
-  build-and-pr:
-    needs: run-changed
-    if: needs.run-changed.outputs.changed == 'true'
-    runs-on: ubuntu-latest
-    permissions:
-      contents: write
-      pull-requests: write
-
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
-          fetch-depth: 0
-
-      - uses: actions/setup-python@v7
-        with:
-          python-version: "3.12"
-
-      - name: Install toolkit
-        run: pip install git+https://github.com/dataciviclab/toolkit.git
-
       - name: Build registry
+        if: steps.detect.outputs.changed == 'true'
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: python scripts/build_registry.py --write
