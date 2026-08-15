@@ -14237,7 +14237,10 @@
         "path": "gs://dataciviclab-clean/unified_comuni/2026/unified_comuni_2026_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "unified_comuni__unified_comuni"
+      ]
     },
     {
       "slug": "who_is_who_pa",
@@ -16227,47 +16230,6 @@
       }
     },
     {
-      "id": "camera_deputati_legislature",
-      "source_id": "dati_camera",
-      "status": "ok",
-      "label": "camera_deputati_legislature",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260803T171856Z_18c50a47",
-        "year": 9,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100
-        },
-        "output_rows": {
-          "raw": 676
-        },
-        "output_bytes": {
-          "raw": 314386
-        },
-        "started_at": "2026-08-03T17:18:56.625514+00:00",
-        "finished_at": "2026-08-03T17:18:58.264216+00:00",
-        "duration_seconds": 1.639
-      }
-    },
-    {
-      "id": "camera_votazioni_sparql",
-      "source_id": "dati_camera",
-      "status": "ok",
-      "label": "camera_votazioni_sparql",
-      "detail": "anni 2018-2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260804T152323Z_35f0c659",
-        "year": 2026,
-        "status": "SUCCESS",
-        "started_at": "2026-08-04T15:23:23.299777+00:00",
-        "finished_at": "2026-08-04T15:23:23.320965+00:00",
-        "duration_seconds": 0.021
-      }
-    },
-    {
       "id": "centri_accoglienza_italia",
       "source_id": "centri_d_italia",
       "status": "ok",
@@ -16337,36 +16299,6 @@
       }
     },
     {
-      "id": "dait_amministratori_locali",
-      "source_id": "dait",
-      "status": "ok",
-      "label": "dait_amministratori_locali",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260801T153423Z_6248142e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 124716,
-          "mart": 167
-        },
-        "output_bytes": {
-          "raw": 30791385,
-          "clean": 2097594,
-          "mart": 5808
-        },
-        "started_at": "2026-08-01T15:34:23.277119+00:00",
-        "finished_at": "2026-08-01T15:34:33.386596+00:00",
-        "duration_seconds": 10.109
-      }
-    },
-    {
       "id": "dipendenti_pubblici",
       "source_id": "openbdap",
       "status": "ok",
@@ -16381,88 +16313,6 @@
         "finished_at": "2026-07-31T16:37:51.906743+00:00",
         "duration_seconds": 0.004
       }
-    },
-    {
-      "id": "elezioni_comunali",
-      "source_id": "eligendo",
-      "status": "ok",
-      "label": "elezioni_comunali",
-      "detail": "anni 2016-2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260729T190208Z_85955605",
-        "year": 2016,
-        "status": "FAILED",
-        "started_at": "2026-07-29T19:02:08.989234+00:00",
-        "finished_at": "2026-07-29T19:02:09.046553+00:00",
-        "duration_seconds": 0.057
-      }
-    },
-    {
-      "id": "elezioni_europee",
-      "source_id": "eligendo",
-      "status": "ok",
-      "label": "elezioni_europee",
-      "detail": "anni 1979-2024 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "elezioni_politiche",
-      "source_id": "ministero_interno_dait",
-      "status": "ok",
-      "label": "elezioni_politiche",
-      "detail": "anno 2022 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260728T210947Z_47f26b76",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 85
-        },
-        "output_rows": {
-          "mart": 3648936
-        },
-        "output_bytes": {
-          "mart": 32864143
-        },
-        "started_at": "2026-07-28T21:09:47.546840+00:00",
-        "finished_at": "2026-07-28T21:09:53.898445+00:00",
-        "duration_seconds": 6.352
-      }
-    },
-    {
-      "id": "elezioni_referendum",
-      "source_id": "eligendo",
-      "status": "ok",
-      "label": "elezioni_referendum",
-      "detail": "anni 1995-2022 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260729T130800Z_fe96cc85",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 90
-        },
-        "output_rows": {
-          "mart": 39595
-        },
-        "output_bytes": {
-          "mart": 648782
-        },
-        "started_at": "2026-07-29T13:08:00.809829+00:00",
-        "finished_at": "2026-07-29T13:08:01.376889+00:00",
-        "duration_seconds": 0.567
-      }
-    },
-    {
-      "id": "elezioni_regionali",
-      "source_id": "eligendo",
-      "status": "ok",
-      "label": "elezioni_regionali",
-      "detail": "anni 2018-2024 — mart: si",
-      "action": ""
     },
     {
       "id": "farmacie",
@@ -16973,37 +16823,6 @@
       }
     },
     {
-      "id": "membri_governo",
-      "source_id": "dati_camera",
-      "status": "ok",
-      "label": "membri_governo",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260804T165251Z_03930feb",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7505,
-          "clean": 7579,
-          "mart": 312
-        },
-        "output_bytes": {
-          "raw": 2961831,
-          "clean": 275827,
-          "mart": 3914
-        },
-        "started_at": "2026-08-04T16:52:51.486748+00:00",
-        "finished_at": "2026-08-04T16:52:56.309604+00:00",
-        "duration_seconds": 4.823
-      }
-    },
-    {
       "id": "mim_alunni_corso_eta",
       "source_id": "mim_opendata",
       "status": "ok",
@@ -17396,31 +17215,6 @@
       "action": ""
     },
     {
-      "id": "senato_ddl",
-      "source_id": "dati_senato",
-      "status": "ok",
-      "label": "senato_ddl",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260804T125306Z_937bf24f",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 100
-        },
-        "output_rows": {
-          "mart": 370
-        },
-        "output_bytes": {
-          "mart": 22347
-        },
-        "started_at": "2026-08-04T12:53:06.875573+00:00",
-        "finished_at": "2026-08-04T12:53:07.077926+00:00",
-        "duration_seconds": 0.202
-      }
-    },
-    {
       "id": "silos_infrastrutture",
       "source_id": "dati_camera",
       "status": "ok",
@@ -17570,31 +17364,6 @@
       "action": ""
     },
     {
-      "id": "compose:elezioni_voto",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "elezioni_voto",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260728T223943Z_19b321c6",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 85
-        },
-        "output_rows": {
-          "mart": 180073
-        },
-        "output_bytes": {
-          "mart": 2921140
-        },
-        "started_at": "2026-07-28T22:39:43.337934+00:00",
-        "finished_at": "2026-07-28T22:39:46.045440+00:00",
-        "duration_seconds": 2.708
-      }
-    },
-    {
       "id": "compose:eurostat_demography",
       "source_id": "eurostat",
       "status": "ok",
@@ -17706,7 +17475,29 @@
       "status": "ok",
       "label": "unified_comuni",
       "detail": "anno 2026 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20260815T162530Z_de3bede1",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 52540,
+          "mart": 52540
+        },
+        "output_bytes": {
+          "raw": 857542,
+          "clean": 4749707,
+          "mart": 4749833
+        },
+        "started_at": "2026-08-15T16:25:30.209124+00:00",
+        "finished_at": "2026-08-15T16:27:00.490842+00:00",
+        "duration_seconds": 90.282
+      }
     },
     {
       "id": "compose:who_is_who_pa",
@@ -17771,68 +17562,6 @@
       "label": "bdap_anagrafe_enti",
       "detail": "anno 2026 — mart: si",
       "action": ""
-    },
-    {
-      "id": "camera_gruppi",
-      "source_id": "dati_camera",
-      "status": "ok",
-      "label": "camera_gruppi",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260804T192126Z_3baa056e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 239,
-          "clean": 239,
-          "mart": 20
-        },
-        "output_bytes": {
-          "raw": 37943,
-          "clean": 5342,
-          "mart": 538
-        },
-        "started_at": "2026-08-04T19:21:26.944365+00:00",
-        "finished_at": "2026-08-04T19:21:28.575720+00:00",
-        "duration_seconds": 1.631
-      }
-    },
-    {
-      "id": "camera_incarichi",
-      "source_id": "dati_camera",
-      "status": "ok",
-      "label": "camera_incarichi",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260804T151201Z_de24e6b4",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 3096,
-          "clean": 3096,
-          "mart": 2196
-        },
-        "output_bytes": {
-          "raw": 1085531,
-          "clean": 127133,
-          "mart": 12285
-        },
-        "started_at": "2026-08-04T15:12:01.231757+00:00",
-        "finished_at": "2026-08-04T15:12:04.079163+00:00",
-        "duration_seconds": 2.847
-      }
     },
     {
       "id": "ipa_aree_organizzative_omogenee",
@@ -17980,68 +17709,6 @@
         "finished_at": "2026-07-30T18:27:36.870374+00:00",
         "duration_seconds": 17.722
       }
-    },
-    {
-      "id": "senato_anagrafica",
-      "source_id": "dati_senato",
-      "status": "ok",
-      "label": "senato_anagrafica",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260804T192431Z_2c2a441e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 212,
-          "clean": 212,
-          "mart": 186
-        },
-        "output_bytes": {
-          "raw": 15933,
-          "clean": 5589,
-          "mart": 2145
-        },
-        "started_at": "2026-08-04T19:24:31.799659+00:00",
-        "finished_at": "2026-08-04T19:24:33.342541+00:00",
-        "duration_seconds": 1.543
-      }
-    },
-    {
-      "id": "senato_firmatari",
-      "source_id": "dati_senato",
-      "status": "ok",
-      "label": "senato_firmatari",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260804T172610Z_9e59d45e",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 37992,
-          "clean": 37992,
-          "mart": 4664
-        },
-        "output_bytes": {
-          "raw": 6970601,
-          "clean": 494546,
-          "mart": 12683
-        },
-        "started_at": "2026-08-04T17:26:10.747999+00:00",
-        "finished_at": "2026-08-04T17:26:19.409335+00:00",
-        "duration_seconds": 8.661
-      }
     }
   ],
   "codelists": [],
@@ -18066,27 +17733,6 @@
         ],
         "types": {
           "ateco_code": 2
-        }
-      },
-      "Atto legislativo": {
-        "entity": "Atto legislativo",
-        "label": "Atto legislativo / Disegno di legge",
-        "datasets": [
-          {
-            "slug": "senato_ddl",
-            "name": "Senato Ddl",
-            "column": "id_ddl",
-            "semantic_type": "ddl_id"
-          },
-          {
-            "slug": "senato_firmatari",
-            "name": "Senato Firmatari",
-            "column": "ddl_id",
-            "semantic_type": "ddl_id"
-          }
-        ],
-        "types": {
-          "ddl_id": 2
         }
       },
       "Categoria merceologica": {
@@ -18173,54 +17819,6 @@
             "name": "Comuni Master — hub territoriale completo",
             "column": "codice_catastale",
             "semantic_type": "cadastral_code"
-          },
-          {
-            "slug": "dait_amministratori_locali",
-            "name": "Amministratori Locali DAIT",
-            "column": "codice_comune",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "dait_amministratori_locali",
-            "name": "Amministratori Locali DAIT",
-            "column": "denominazione_comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "elezioni_comunali",
-            "name": "Elezioni Comunali",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "elezioni_europee",
-            "name": "Elezioni Europee",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "elezioni_politiche",
-            "name": "Elezioni Politiche 1948-2022",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "elezioni_referendum",
-            "name": "Elezioni Referendum",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "elezioni_regionali",
-            "name": "Elezioni Regionali 2018-2024",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "elezioni_voto",
-            "name": "Elezioni Voto — risultati comunali, europee e regionali",
-            "column": "comune",
-            "semantic_type": "municipality_name"
           },
           {
             "slug": "farmacie",
@@ -18482,8 +18080,8 @@
           }
         ],
         "types": {
-          "municipality_name": 26,
-          "municipality_code": 27,
+          "municipality_name": 19,
+          "municipality_code": 25,
           "cadastral_code": 8
         }
       },
@@ -18549,8 +18147,7 @@
         "types": {
           "miur_code": 1,
           "ipa_code": 5,
-          "sogei_code": 3,
-          "siope_code": 1
+          "sogei_code": 3
         }
       },
       "Ente (o Impresa)": {
@@ -18697,7 +18294,7 @@
           }
         ],
         "types": {
-          "fiscal_code": 24
+          "fiscal_code": 23
         }
       },
       "Ente sanitario": {
@@ -18820,27 +18417,6 @@
           "cig_code": 15
         }
       },
-      "Gruppo parlamentare": {
-        "entity": "Gruppo parlamentare",
-        "label": "Gruppo parlamentare",
-        "datasets": [
-          {
-            "slug": "camera_gruppi",
-            "name": "Gruppi Parlamentari (Camera)",
-            "column": "gruppo",
-            "semantic_type": "gruppo_parlamentare"
-          },
-          {
-            "slug": "camera_incarichi",
-            "name": "Incarichi nei Gruppi Parlamentari (Camera)",
-            "column": "gruppo",
-            "semantic_type": "gruppo_parlamentare"
-          }
-        ],
-        "types": {
-          "gruppo_parlamentare": 2
-        }
-      },
       "Nazione": {
         "entity": "Nazione",
         "label": "Nazione",
@@ -18858,12 +18434,6 @@
             "semantic_type": "country_code"
           },
           {
-            "slug": "senato_ddl",
-            "name": "Senato Ddl",
-            "column": "stato",
-            "semantic_type": "country_code"
-          },
-          {
             "slug": "ted_contract_notices",
             "name": "Bandi di gara UE in Italia (TED Contract Notices)",
             "column": "paese",
@@ -18871,47 +18441,7 @@
           }
         ],
         "types": {
-          "country_code": 4
-        }
-      },
-      "Persona": {
-        "entity": "Persona",
-        "label": "Persona",
-        "datasets": [
-          {
-            "slug": "camera_deputati_legislature",
-            "name": "Camera Deputati Legislature",
-            "column": "persona_id",
-            "semantic_type": "person_id"
-          },
-          {
-            "slug": "camera_incarichi",
-            "name": "Incarichi nei Gruppi Parlamentari (Camera)",
-            "column": "persona_id",
-            "semantic_type": "person_id"
-          },
-          {
-            "slug": "membri_governo",
-            "name": "Membri dei Governi italiani (1862-2026)",
-            "column": "persona_id",
-            "semantic_type": "person_id"
-          },
-          {
-            "slug": "senato_anagrafica",
-            "name": "Anagrafica Senatori (XIX legislatura)",
-            "column": "senatore_id",
-            "semantic_type": "senator_id"
-          },
-          {
-            "slug": "senato_firmatari",
-            "name": "Senato Firmatari",
-            "column": "senatore_id",
-            "semantic_type": "senator_id"
-          }
-        ],
-        "types": {
-          "person_id": 3,
-          "senator_id": 2
+          "country_code": 3
         }
       },
       "Procedimento": {
@@ -19019,7 +18549,7 @@
           }
         ],
         "types": {
-          "cup_code": 9
+          "cup_code": 8
         }
       },
       "Provincia": {
@@ -19078,54 +18608,6 @@
             "slug": "consip_consumi_convenzione",
             "name": "Consip Consumi Convenzione",
             "column": "sigla_provincia_pa",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "dait_amministratori_locali",
-            "name": "Amministratori Locali DAIT",
-            "column": "codice_provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "dait_amministratori_locali",
-            "name": "Amministratori Locali DAIT",
-            "column": "sigla_provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "elezioni_comunali",
-            "name": "Elezioni Comunali",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "elezioni_europee",
-            "name": "Elezioni Europee",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "elezioni_politiche",
-            "name": "Elezioni Politiche 1948-2022",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "elezioni_referendum",
-            "name": "Elezioni Referendum",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "elezioni_regionali",
-            "name": "Elezioni Regionali 2018-2024",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "elezioni_voto",
-            "name": "Elezioni Voto — risultati comunali, europee e regionali",
-            "column": "provincia",
             "semantic_type": "province_code"
           },
           {
@@ -19298,7 +18780,7 @@
           }
         ],
         "types": {
-          "province_code": 47
+          "province_code": 37
         }
       },
       "Provincia (tramite NUTS3)": {
@@ -19365,42 +18847,6 @@
           {
             "slug": "comuni_master",
             "name": "Comuni Master — hub territoriale completo",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "dait_amministratori_locali",
-            "name": "Amministratori Locali DAIT",
-            "column": "codice_regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "elezioni_comunali",
-            "name": "Elezioni Comunali",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "elezioni_europee",
-            "name": "Elezioni Europee",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "elezioni_referendum",
-            "name": "Elezioni Referendum",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "elezioni_regionali",
-            "name": "Elezioni Regionali 2018-2024",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "elezioni_voto",
-            "name": "Elezioni Voto — risultati comunali, europee e regionali",
             "column": "regione",
             "semantic_type": "region_code"
           },
@@ -19634,7 +19080,7 @@
           }
         ],
         "types": {
-          "region_code": 51
+          "region_code": 43
         }
       },
       "Scuola": {
@@ -19764,12 +19210,6 @@
           {
             "slug": "conto_annuale_profilo_ente",
             "name": "Conto Annuale — Profilo Ente PA",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "dait_amministratori_locali",
-            "name": "Amministratori Locali DAIT",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -20141,8 +19581,8 @@
           }
         ],
         "types": {
-          "year": 72,
-          "month": 10
+          "year": 68,
+          "month": 7
         }
       }
     },
