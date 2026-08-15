@@ -12900,182 +12900,6 @@
       "stage": "published"
     },
     {
-      "slug": "siope_bilancio_unificato",
-      "name": "SIOPE Bilancio Unificato",
-      "description": "Bilancio consolidato entrate/uscite di tutti gli enti pubblici italiani (comuni, ASL, regioni, universita'). Dato mensile 2021-2026, 16+ comparti, ~18.000 enti, arricchimento territoriale e classificazione per macro-categoria. Fonte: SIOPE tramite open-siope.",
-      "source": "SIOPE — Sistema Informativo sulle Operazioni degli Enti Pubblici",
-      "source_id": "siope",
-      "period": {
-        "start": 2021,
-        "end": 2026
-      },
-      "tags": [
-        "finanza-pubblica",
-        "siope",
-        "bilancio",
-        "unificato"
-      ],
-      "category": "finanza-pubblica",
-      "columns": [
-        {
-          "name": "codice_comparto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Comparto SIOPE (PRO, REG, SAN, UNI, MON, CDC, ...)"
-        },
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "periodo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Mese (01..12)",
-          "semantic_type": "month"
-        },
-        {
-          "name": "codice_ente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice SIOPE dell'ente",
-          "semantic_type": "siope_code"
-        },
-        {
-          "name": "codice_voce",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice gestionale della voce contabile"
-        },
-        {
-          "name": "denominazione_ente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione dell'ente"
-        },
-        {
-          "name": "tipo_ente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia ente (COMUNE, ASL, REGIONE, ATENEO, ...)"
-        },
-        {
-          "name": "codice_istat_comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT del comune sede dell'ente",
-          "semantic_type": "municipality_code"
-        },
-        {
-          "name": "codice_provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice provincia (ISTAT 3 cifre)",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione provincia",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione regione",
-          "semantic_type": "region_code"
-        },
-        {
-          "name": "codice_sottocomparto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice sottocomparto SIOPE"
-        },
-        {
-          "name": "descrizione_sottocomparto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione sottocomparto"
-        },
-        {
-          "name": "descrizione_comparto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione comparto"
-        },
-        {
-          "name": "is_titolo_9",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "True per partite di giro (da escludere dai totali strutturali)"
-        },
-        {
-          "name": "macro_categoria_v2",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Macro-categoria entrate: Imposte proprie, Fondi perequativi, Trasferimenti correnti, Contributi investimenti"
-        },
-        {
-          "name": "macro_area",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Macro-area uscite: Spese correnti, Spese conto capitale, Rimborso prestiti"
-        },
-        {
-          "name": "macro_categoria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Macro-categoria uscite: Personale, Acquisto beni, Investimenti, Interessi"
-        },
-        {
-          "name": "descrizione_codice",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione del codice gestionale"
-        },
-        {
-          "name": "has_codgest_match",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "True se il codice voce ha match con il dizionario SIOPE"
-        },
-        {
-          "name": "importo",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": "Importo in centesimi di euro"
-        },
-        {
-          "name": "importo_eur",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo in euro"
-        },
-        {
-          "name": "lato",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Lato contabile: entrate o uscite"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/siope_bilancio_unificato/*/siope_bilancio_unificato_*_clean.parquet",
-        "multi_file": true
-      },
-      "stage": "incubating",
-      "mart_refs": [
-        "siope_bilancio_unificato__mart_sintesi",
-        "siope_bilancio_unificato__mart_trend",
-        "siope_bilancio_unificato__mart_enti"
-      ]
-    },
-    {
       "slug": "strutture_asl",
       "name": "Strutture Asl",
       "description": "Strutture e attività delle ASL — medici di base, pediatri, popolazione residente, servizi territoriali e presidi per regione — Ministero della Salute 2022",
@@ -16135,36 +15959,6 @@
       }
     },
     {
-      "slug": "siope_bilancio_unificato__mart_enti",
-      "dataset": "siope_bilancio_unificato",
-      "table": "mart_enti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/siope_bilancio_unificato/2026/mart_enti.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "siope_bilancio_unificato__mart_sintesi",
-      "dataset": "siope_bilancio_unificato",
-      "table": "mart_sintesi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/siope_bilancio_unificato/2026/mart_sintesi.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "siope_bilancio_unificato__mart_trend",
-      "dataset": "siope_bilancio_unificato",
-      "table": "mart_trend",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/siope_bilancio_unificato/2026/mart_trend.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "strutture_asl__mart_regioni",
       "dataset": "strutture_asl",
       "table": "mart_regioni",
@@ -17635,36 +17429,6 @@
       "action": ""
     },
     {
-      "id": "siope_bilancio_unificato",
-      "source_id": "siope",
-      "status": "ok",
-      "label": "siope_bilancio_unificato",
-      "detail": "anni 2021-2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260728T104720Z_22887f62",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 85
-        },
-        "output_rows": {
-          "clean": 6793964,
-          "mart": 12530
-        },
-        "output_bytes": {
-          "raw": 23201336,
-          "clean": 69710241,
-          "mart": 405006
-        },
-        "started_at": "2026-07-28T10:47:20.449799+00:00",
-        "finished_at": "2026-07-28T10:47:47.521812+00:00",
-        "duration_seconds": 27.072
-      }
-    },
-    {
       "id": "strutture_asl",
       "source_id": "ministero_salute",
       "status": "ok",
@@ -18687,12 +18451,6 @@
             "semantic_type": "municipality_name"
           },
           {
-            "slug": "siope_bilancio_unificato",
-            "name": "SIOPE Bilancio Unificato",
-            "column": "codice_istat_comune",
-            "semantic_type": "municipality_code"
-          },
-          {
             "slug": "strutture_ricovero_asl",
             "name": "Strutture Ricovero Asl",
             "column": "comune",
@@ -18780,12 +18538,6 @@
             "name": "Indicatori di performance dei comuni",
             "column": "username",
             "semantic_type": "sogei_code"
-          },
-          {
-            "slug": "siope_bilancio_unificato",
-            "name": "SIOPE Bilancio Unificato",
-            "column": "codice_ente",
-            "semantic_type": "siope_code"
           },
           {
             "slug": "who_is_who_pa",
@@ -19509,18 +19261,6 @@
             "semantic_type": "province_code"
           },
           {
-            "slug": "siope_bilancio_unificato",
-            "name": "SIOPE Bilancio Unificato",
-            "column": "codice_provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "siope_bilancio_unificato",
-            "name": "SIOPE Bilancio Unificato",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
             "slug": "strutture_asl",
             "name": "Strutture Asl",
             "column": "sigla_provincia_asl",
@@ -19841,12 +19581,6 @@
           {
             "slug": "reparti_ricovero",
             "name": "Reparti Ricovero",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "siope_bilancio_unificato",
-            "name": "SIOPE Bilancio Unificato",
             "column": "regione",
             "semantic_type": "region_code"
           },
@@ -20370,18 +20104,6 @@
             "semantic_type": "year"
           },
           {
-            "slug": "siope_bilancio_unificato",
-            "name": "SIOPE Bilancio Unificato",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "siope_bilancio_unificato",
-            "name": "SIOPE Bilancio Unificato",
-            "column": "periodo",
-            "semantic_type": "month"
-          },
-          {
             "slug": "strutture_asl",
             "name": "Strutture Asl",
             "column": "anno",
@@ -20760,19 +20482,6 @@
           "entity": "Comune",
           "bridge": "anac_cup",
           "on": "cup",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Ente",
-          "dataset": "siope_bilancio_unificato",
-          "via": "siope_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "bdap_anagrafe_enti",
-          "on": "codice_ente_siope",
           "semantic_type": "municipality_code"
         }
       }
