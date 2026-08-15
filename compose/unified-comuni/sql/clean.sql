@@ -118,15 +118,15 @@ siope AS (
         SUM(CASE WHEN s.lato='entrate' AND NOT s.is_titolo_9 THEN s.importo_eur ELSE 0 END) AS siope_entrate,
         SUM(CASE WHEN s.lato='uscite' AND NOT s.is_titolo_9 THEN s.importo_eur ELSE 0 END) AS siope_uscite,
         SUM(CASE WHEN s.lato='uscite' AND s.macro_categoria='Personale' AND NOT s.is_titolo_9 THEN s.importo_eur ELSE 0 END) AS siope_personale,
-        SUM(CASE WHEN s.lato='uscite' AND s.macro_categoria='Investimenti' AND NOT s.is_titolo_9 THEN s.importo_eur ELSE 0 END) AS siope_investimenti,
-        SUM(CASE WHEN s.lato='entrate' AND s.macro_categoria_v2='Imposte proprie' AND NOT s.is_titolo_9 THEN s.importo_eur ELSE 0 END) AS siope_imposte_proprie,
-        SUM(CASE WHEN s.lato='entrate' AND s.macro_categoria_v2='Fondi perequativi' AND NOT s.is_titolo_9 THEN s.importo_eur ELSE 0 END) AS siope_fondi_perequativi
+        SUM(CASE WHEN s.lato='uscite' AND s.macro_categoria='Investimenti fissi' AND NOT s.is_titolo_9 THEN s.importo_eur ELSE 0 END) AS siope_investimenti,
+        SUM(CASE WHEN s.lato='entrate' AND s.macro_categoria='Imposte proprie' AND NOT s.is_titolo_9 THEN s.importo_eur ELSE 0 END) AS siope_imposte_proprie,
+        SUM(CASE WHEN s.lato='entrate' AND s.macro_categoria='Fondi perequativi' AND NOT s.is_titolo_9 THEN s.importo_eur ELSE 0 END) AS siope_fondi_perequativi
     FROM read_parquet([
-        'https://storage.googleapis.com/dataciviclab-clean/siope_bilancio_unificato/2021/siope_bilancio_unificato_2021_clean.parquet',
-        'https://storage.googleapis.com/dataciviclab-clean/siope_bilancio_unificato/2022/siope_bilancio_unificato_2022_clean.parquet',
-        'https://storage.googleapis.com/dataciviclab-clean/siope_bilancio_unificato/2023/siope_bilancio_unificato_2023_clean.parquet',
-        'https://storage.googleapis.com/dataciviclab-clean/siope_bilancio_unificato/2024/siope_bilancio_unificato_2024_clean.parquet',
-        'https://storage.googleapis.com/dataciviclab-clean/siope_bilancio_unificato/2025/siope_bilancio_unificato_2025_clean.parquet'
+        'https://storage.googleapis.com/dataciviclab-clean/siope/siope_bilancio_unificato/2021/siope_bilancio_unificato_2021_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/siope/siope_bilancio_unificato/2022/siope_bilancio_unificato_2022_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/siope/siope_bilancio_unificato/2023/siope_bilancio_unificato_2023_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/siope/siope_bilancio_unificato/2024/siope_bilancio_unificato_2024_clean.parquet',
+        'https://storage.googleapis.com/dataciviclab-clean/siope/siope_bilancio_unificato/2025/siope_bilancio_unificato_2025_clean.parquet'
     ], union_by_name=true) s
     INNER JOIN bridge b ON s.codice_ente = b.codice_ente_siope
     GROUP BY b.codice_istat_comune, s.anno

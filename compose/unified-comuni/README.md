@@ -28,7 +28,7 @@ Legge i parquet già pubblicati su GCS via HTTPS diretto.
 | `ispra_ru_base` | 2020–2024 | `RIGHT(codice_comune_istat,6)` |
 | `ispra_consumo_suolo` | 2024 (long, 11 periodi) | `LPAD(pro_com,6,'0')` |
 | `opencivitas_fsc_2025_rso` | 2022–2025 | `UPPER(TRIM(comune)) + regione` |
-| `siope_bilancio_unificato` | 2021–2025 | `codice_ente → bdap.codice_ente_siope` |
+| `siope_bilancio_unificato` (open-siope, annuale) | 2021–2026 | `codice_ente → bdap.codice_ente_siope` |
 | `dipendenti_pubblici` | 2019–2023 | `codice_ente_bdap → bdap.id_ente` |
 | `pnrr_progetti` | 2026 | `cf_soggetto_attuatore → comune.codice_fiscale` |
 | `bdap_anagrafe_enti` (bridge) | 2026 | bridge per SIOPE e dipendenti |
