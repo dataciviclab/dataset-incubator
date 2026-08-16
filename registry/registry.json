@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-08-15",
+  "updated_at": "2026-08-16",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -14732,6 +14732,16 @@
       }
     },
     {
+      "slug": "bdap_pagamenti_stato__mart_pagamenti_missione_categoria",
+      "dataset": "bdap_pagamenti_stato",
+      "table": "mart_pagamenti_missione_categoria",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/bdap_pagamenti_stato/2025/mart_pagamenti_missione_categoria.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "bdap_spese_stato__mart_spese_missione_anno",
       "dataset": "bdap_spese_stato",
       "table": "mart_spese_missione_anno",
@@ -16212,6 +16222,14 @@
         "finished_at": "2026-07-31T16:37:44.044617+00:00",
         "duration_seconds": 0.004
       }
+    },
+    {
+      "id": "bdap_pagamenti_stato",
+      "source_id": "openbdap",
+      "status": "ok",
+      "label": "bdap_pagamenti_stato",
+      "detail": "anni 2014-2025 — mart: si",
+      "action": ""
     },
     {
       "id": "bdap_spese_stato",
