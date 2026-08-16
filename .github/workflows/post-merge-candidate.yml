@@ -110,10 +110,13 @@ jobs:
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: |
-          YEAR=$(date +%Y)
           for dir in $(cat changed_dirs_final.txt); do
             echo "=== $dir ==="
-            toolkit run -c "$dir/dataset.yml" --years $YEAR || echo "⚠️  run fallito (skip): $dir"
+            # run COMPLETO sugli anni dichiarati nel dataset.yml (nessun --years:
+            # il toolkit usa tutti gli anni del config — necessario per candidate
+            # con serie storica chiusa, es. bdap_pagamenti_stato 2014-2025, che
+            # non hanno l'anno corrente tra gli anni configurati).
+            toolkit run -c "$dir/dataset.yml" || echo "⚠️  run fallito (skip): $dir"
           done
 
       - name: Push changed datasets to GCS
