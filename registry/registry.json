@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-08-15",
+  "updated_at": "2026-08-16",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -2384,6 +2384,133 @@
         "multi_file": true
       },
       "stage": "published"
+    },
+    {
+      "slug": "bdap_pagamenti_stato",
+      "name": "Pagamenti Bilancio dello Stato (consuntivo)",
+      "description": "Consuntivo dei pagamenti del bilancio dello Stato per amministrazione, missione e categoria economica, 2014-2025. Fonte: MEF RGS OpenBDAP. Completa il triangolo previsione (BDAP spese) → stima (OCPI) → consuntivo; include la missione \"Debito pubblico\" con interessi e rimborsi pagati realmente.",
+      "source": "MEF — Ragioneria Generale dello Stato / OpenBDAP",
+      "source_id": "openbdap",
+      "period": {
+        "start": 2014,
+        "end": 2025
+      },
+      "tags": [
+        "finanza-pubblica",
+        "bdap",
+        "pagamenti",
+        "consuntivo",
+        "bilancio-stato"
+      ],
+      "category": "finanza-pubblica",
+      "columns": [
+        {
+          "name": "esercizio_finanziario",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno contabile",
+          "semantic_type": "year"
+        },
+        {
+          "name": "codice_stp",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice ministero (STP)"
+        },
+        {
+          "name": "amministrazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Amministrazione dello Stato"
+        },
+        {
+          "name": "codice_missione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice missione"
+        },
+        {
+          "name": "missione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Missione di spesa"
+        },
+        {
+          "name": "codice_categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice categoria economica"
+        },
+        {
+          "name": "categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Categoria economica"
+        },
+        {
+          "name": "op_erario",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti per ordini di pagamento (erario)"
+        },
+        {
+          "name": "op_tesoreria",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti per ordini di pagamento (tesoreria)"
+        },
+        {
+          "name": "op_esterno",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti per ordini di pagamento (esterno)"
+        },
+        {
+          "name": "oa_tesoreria",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti per ordini di accreditamento (tesoreria)"
+        },
+        {
+          "name": "oa_spesa_funz_deleg",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti per spese funzionali delegate"
+        },
+        {
+          "name": "rsf_stipendi",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti ruoli di spesa fissa — stipendi"
+        },
+        {
+          "name": "rsf_altro",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti ruoli di spesa fissa — altro"
+        },
+        {
+          "name": "note_imputazione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Pagamenti via note di imputazione"
+        },
+        {
+          "name": "totale_pagato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Totale pagato (somma canali)"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/bdap_pagamenti_stato/*/bdap_pagamenti_stato_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "bdap_pagamenti_stato__mart_pagamenti_missione_categoria"
+      ]
     },
     {
       "slug": "bdap_spese_stato",
@@ -14732,6 +14859,16 @@
       }
     },
     {
+      "slug": "bdap_pagamenti_stato__mart_pagamenti_missione_categoria",
+      "dataset": "bdap_pagamenti_stato",
+      "table": "mart_pagamenti_missione_categoria",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/bdap_pagamenti_stato/2025/mart_pagamenti_missione_categoria.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "bdap_spese_stato__mart_spese_missione_anno",
       "dataset": "bdap_spese_stato",
       "table": "mart_spese_missione_anno",
@@ -16211,6 +16348,37 @@
         "started_at": "2026-07-31T16:37:44.040306+00:00",
         "finished_at": "2026-07-31T16:37:44.044617+00:00",
         "duration_seconds": 0.004
+      }
+    },
+    {
+      "id": "bdap_pagamenti_stato",
+      "source_id": "openbdap",
+      "status": "ok",
+      "label": "bdap_pagamenti_stato",
+      "detail": "anni 2014-2025 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260816T082045Z_786bab73",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 542,
+          "clean": 542,
+          "mart": 542
+        },
+        "output_bytes": {
+          "raw": 117921,
+          "clean": 19845,
+          "mart": 7827
+        },
+        "started_at": "2026-08-16T08:20:45.346498+00:00",
+        "finished_at": "2026-08-16T08:20:46.918325+00:00",
+        "duration_seconds": 1.572
       }
     },
     {
@@ -19184,6 +19352,12 @@
             "semantic_type": "year"
           },
           {
+            "slug": "bdap_pagamenti_stato",
+            "name": "Bdap Pagamenti Stato",
+            "column": "esercizio_finanziario",
+            "semantic_type": "year"
+          },
+          {
             "slug": "bdap_spese_stato",
             "name": "BDAP Spese Stato",
             "column": "esercizio_finanziario",
@@ -19581,7 +19755,7 @@
           }
         ],
         "types": {
-          "year": 68,
+          "year": 69,
           "month": 7
         }
       }
