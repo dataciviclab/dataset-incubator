@@ -17,10 +17,13 @@ raw:
   output_policy: overwrite
   sources:
     - name: "inpa_comunicazioni"
-      # CSV prodotto da scripts/harvest_comunicazioni.py (harvest esplicito)
-      type: "local_file"
+      # Harvest comunicazioni (~2 min) — eseguito dal toolkit a ogni run
+      type: "script"
+      client:
+        timeout: 600
       args:
-        path: "../../out/data/raw/inpa_comunicazioni/2026/raw_input.csv"
+        command: "python scripts/harvest_comunicazioni.py raw_input.csv"
+        output: "raw_input.csv"
         filename: "raw_input.csv"
       primary: true
 
