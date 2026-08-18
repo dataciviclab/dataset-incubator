@@ -1,0 +1,76 @@
+# Bandi e avvisi nel Portale inPA (Portale del Reclutamento PA)
+# Fonte: API pubblica non documentata https://portale.inpa.gov.it/concorsi-smart/api/
+# Harvest via scripts/harvest_inpa.py → snapshot OPEN (con dettaglio) + CLOSED (storico)
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "inpa_bandi"
+  source_id: "inpa_reclutamento"
+  tags: [pa, concorsi, reclutamento, lavoro]
+  category: pa
+  # Snapshot dell'archivio vivo: anni = anno di snapshot (file unico)
+  years: [2026]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "inpa_open"
+      # CSV prodotto da scripts/harvest_inpa.py (harvest esplicito → out/data/raw)
+      # OPEN con dettaglio (company_district_code, link_sito_pa, allegati, ...)
+      type: "local_file"
+      args:
+        path: "../../out/data/raw/inpa_bandi/2026/raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+    - name: "inpa_closed"
+      # Storia chiusa: harvest --status CLOSED --no-detail (nessun dettaglio, volume 71k)
+      type: "local_file"
+      args:
+        path: "../../out/data/raw/inpa_bandi/2026/raw_input_closed.csv"
+        filename: "raw_input_closed.csv"
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all            # unione OPEN+CLOSED (union_by_name → colonne dettaglio NULL su CLOSED)
+    header: true
+    delim: ","
+    encoding: "utf-8"
+  required_columns: [id, codice, titolo, figura_ricercata, data_pubblicazione, data_scadenza, num_posti, tipo_procedura, categoria, settore, regione, provincia, ente, status, status_label, company_district_code, link_sito_pa, link_gazzetta_ufficiale]
+  validate:
+    not_null: [id, titolo, data_scadenza]
+    primary_key: [id]
+    min_rows: 50000
+
+mart:
+  tables:
+    - name: "mart_sintesi_regione_categoria"
+      sql: "sql/mart_sintesi_regione_categoria.sql"
+    - name: "mart_scadenze_prossime"
+      sql: "sql/mart_scadenze_prossime.sql"
+    - name: "mart_trend_anno"
+      sql: "sql/mart_trend_anno.sql"
+  required_tables:
+    - "mart_sintesi_regione_categoria"
+    - "mart_scadenze_prossime"
+    - "mart_trend_anno"
+  validate:
+    table_rules:
+      mart_sintesi_regione_categoria:
+        required_columns: [regione, categoria, num_bandi, posti_totali]
+        primary_key: [regione, categoria]
+        min_rows: 5
+      mart_scadenze_prossime:
+        required_columns: [data_scadenza, num_bandi, posti_totali]
+        primary_key: [data_scadenza]
+        min_rows: 5
+      mart_trend_anno:
+        required_columns: [anno, num_bandi, posti_totali, enti_distinti]
+        primary_key: [anno]
+        min_rows: 3
+
+validation:
+  fail_on_error: true
