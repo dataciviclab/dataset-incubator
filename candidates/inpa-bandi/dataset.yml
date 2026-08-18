@@ -17,18 +17,23 @@ raw:
   output_policy: overwrite
   sources:
     - name: "inpa_open"
-      # CSV prodotto da scripts/harvest_inpa.py (harvest esplicito → out/data/raw)
-      # OPEN con dettaglio (company_district_code, link_sito_pa, allegati, ...)
-      type: "local_file"
+      # Harvest OPEN con dettaglio (~13 min) — eseguito dal toolkit a ogni run
+      type: "script"
+      client:
+        timeout: 1200
       args:
-        path: "../../out/data/raw/inpa_bandi/2026/raw_input.csv"
+        command: "python scripts/harvest_inpa.py raw_input.csv"
+        output: "raw_input.csv"
         filename: "raw_input.csv"
       primary: true
     - name: "inpa_closed"
-      # Storia chiusa: harvest --status CLOSED --no-detail (nessun dettaglio, volume 71k)
-      type: "local_file"
+      # Harvest CLOSED senza dettaglio (~17 min) — storico 71k
+      type: "script"
+      client:
+        timeout: 1500
       args:
-        path: "../../out/data/raw/inpa_bandi/2026/raw_input_closed.csv"
+        command: "python scripts/harvest_inpa.py raw_input_closed.csv --status CLOSED --no-detail"
+        output: "raw_input_closed.csv"
         filename: "raw_input_closed.csv"
 
 clean:
