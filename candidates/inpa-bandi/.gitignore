@@ -1,0 +1,3 @@
+# Output del harvest (generato dal runner raw, non va committato)
+raw_input.csv
+raw_input_closed.csv
