@@ -850,11 +850,11 @@
     {
       "slug": "anac_bandi_gara",
       "name": "ANAC Bandi di Gara (CIG)",
-      "description": "Bandi di gara pubblici italiani (CIG): oggetto, importi, stazione appaltante, territorio, CPV, esito e flag PNRR/urgenza/delega. Fonte ANAC, serie annuale 2025+.",
+      "description": "Bandi di gara pubblici italiani (CIG): oggetto, importi, stazione appaltante, territorio, CPV, esito e flag PNRR/urgenza/delega. Fonte ANAC, serie annuale 2016-2025.",
       "source": "ANAC - Autorità Nazionale Anticorruzione",
       "source_id": "anac",
       "period": {
-        "start": 2023,
+        "start": 2016,
         "end": 2025
       },
       "tags": [
@@ -1219,8 +1219,8 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_bandi_gara/2024/anac_bandi_gara_2024_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/anac_bandi_gara/*/anac_bandi_gara_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "published",
       "mart_refs": [

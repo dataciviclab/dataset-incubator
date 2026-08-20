@@ -86,13 +86,3 @@ jobs:
           ITEMS_JSON: ${{ steps.detect.outputs.new_slugs }}
           REPO: "dataciviclab/data-explorer"
         run: python scripts/create_issue.py
-
-      - name: Open analysis issue in dataciviclab
-        if: always() && steps.detect.outputs.new_slugs != '' && fromJSON(steps.detect.outputs.new_slugs)[0] != null
-        env:
-          GH_TOKEN: ${{ secrets.LAB_OPS_TOKEN }}
-          PR_NUMBER: ""
-          PR_TITLE: "merge in main@${{ github.sha }}"
-          ITEMS_JSON: ${{ steps.detect.outputs.new_slugs }}
-          REPO: "dataciviclab/dataciviclab"
-        run: python scripts/create_issue.py
