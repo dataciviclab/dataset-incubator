@@ -2,7 +2,7 @@
 lab-connectors[duckdb,gcs] @ git+https://github.com/dataciviclab/lab-connectors.git  # da43879 — proxy fallback su timeout
 
 # dataciviclab-toolkit — motore RAW->CLEAN->MART. Usato da CI e localmente.
-dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.44.1
+dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git@v1.51.0
 
 # jsonschema — validazione registry schemas (pipeline_signals, clean_catalog)
 jsonschema>=4.0
