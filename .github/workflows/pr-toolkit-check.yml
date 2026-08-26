@@ -1,17 +1,11 @@
-name: Toolkit Pipeline Check
+# PR check — preflight dei dataset in candidates/compose/support_datasets
+#
+# ADR-001: workflow orchestratore, logica nei componenti condivisi.
+# Il preflight (config valida + fonte raggiungibile + quality score) è
+# delegato al reusable `dataset-config-check-reusable`. Il run completo
+# avviene post-merge (pipeline.yml).
 
-concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
-
-env:
-  TOOLKIT_VERSION: "from-requirements-txt"
-  BLOCKED_SOURCE_PROXY: ${{ vars.BLOCKED_SOURCE_PROXY }}
-
-# Preflight + run con sample-rows su candidate modificati in PR.
-# Su PR: preflight (config + reachability) + run reale RAW→CLEAN→MART
-# con sample-rows 10000 (gate di qualità: valida esecuzione, non solo
-# sintassi SQL). Il run completo (tutti i dati) avviene su merge.
+name: PR check
 
 on:
   pull_request:
@@ -19,176 +13,12 @@ on:
       - "candidates/**"
       - "compose/**"
       - "support_datasets/**"
+      - ".github/workflows/pr-toolkit-check.yml"
 
 jobs:
-  detect:
-    runs-on: ubuntu-latest
-    outputs:
-      has_configs: ${{ steps.detect.outputs.has_configs }}
-      configs: ${{ steps.detect.outputs.configs }}
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - name: Python setup
-        uses: dataciviclab/.github/actions/python-setup@main
-
-      - name: Validate candidate structure
-        run: python scripts/validate_candidate_structure.py
-
-      - name: Detect changed candidate/support roots
-        id: detect
-        run: |
-          python scripts/detect_candidates.py \
-            --base-sha "${{ github.event.pull_request.base.sha }}" \
-            --head-sha "${{ github.event.pull_request.head.sha }}" \
-            --json > detect_output.json
-
-          python - <<'PY'
-          import json, os
-          d = json.load(open("detect_output.json"))
-          with open(os.environ["GITHUB_OUTPUT"], "a", encoding="utf-8") as out:
-              out.write(f"has_items={str(d['has_items']).lower()}\n")
-              out.write(f"has_configs={str(d['has_configs']).lower()}\n")
-              out.write("items<<JSON\n")
-              out.write(json.dumps(d["items"], ensure_ascii=False))
-              out.write("\nJSON\n")
-              out.write("configs<<JSON\n")
-              out.write(json.dumps(d["configs"], ensure_ascii=False))
-              out.write("\nJSON\n")
-          PY
-
-  toolkit-check:
-    needs: detect
-    if: needs.detect.outputs.has_configs == 'true'
-    runs-on: ubuntu-latest
-    env:
-      DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
-    strategy:
-      fail-fast: false
-      matrix:
-        config: ${{ fromJSON(needs.detect.outputs.configs) }}
-    defaults:
-      run:
-        shell: bash
-
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          fetch-depth: 0
-      - name: Python setup
-        uses: dataciviclab/.github/actions/python-setup@main
-
-      - name: Configure extra source CA certificates
-        env:
-          CONFIG_PATH: ${{ matrix.config.config_path }}
-        run: |
-          set -euo pipefail
-
-          urls_file="${RUNNER_TEMP:-/tmp}/extra-ca-cert-urls.txt"
-          python scripts/get_extra_ca_cert_urls.py "$CONFIG_PATH" > "$urls_file"
-
-          if [ ! -s "$urls_file" ]; then
-            echo "::notice::No extra CA certificates configured for ${CONFIG_PATH}"
-            exit 0
-          fi
-
-          command -v curl >/dev/null
-          command -v openssl >/dev/null
-
-          bundle="${RUNNER_TEMP:-/tmp}/ca-certificates-with-extra-source-cas.pem"
-          cp /etc/ssl/certs/ca-certificates.crt "$bundle"
-
-          i=0
-          while IFS= read -r url; do
-            i=$((i + 1))
-            cert_raw="${RUNNER_TEMP:-/tmp}/extra-source-ca-${i}.crt"
-            cert_pem="${RUNNER_TEMP:-/tmp}/extra-source-ca-${i}.pem"
-            curl -fsSL "$url" -o "$cert_raw"
-            openssl x509 -inform DER -in "$cert_raw" -out "$cert_pem" 2>/dev/null \
-              || openssl x509 -in "$cert_raw" -out "$cert_pem"
-            cat "$cert_pem" >> "$bundle"
-          done < "$urls_file"
-
-          echo "REQUESTS_CA_BUNDLE=$bundle" >> "$GITHUB_ENV"
-          echo "SSL_CERT_FILE=$bundle" >> "$GITHUB_ENV"
-
-      - name: "Preflight: config valida + fonte raggiungibile + quality score"
-        id: preflight
-        continue-on-error: true
-        run: |
-          toolkit run preflight --config "${{ matrix.config.config_path }}" --json 2>&1 \
-            || echo "::warning::Preflight issues detected for ${{ matrix.config.config_path }}"
-
-      - name: "Toolkit run con sample-rows (esecuzione reale RAW→CLEAN→MART) [retry x2]"
-        id: run_sample
-        env:
-          TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
-        run: |
-          MAX_ATTEMPTS=2
-          for i in $(seq 1 $MAX_ATTEMPTS); do
-            toolkit run \
-              --config "${{ matrix.config.config_path }}" \
-              --sample-rows 10000 \
-              > run_sample.log 2>&1; ec=$?
-            if [ $ec -eq 0 ]; then
-              echo "exit_code=0" >> "$GITHUB_OUTPUT"
-              cat run_sample.log
-              exit 0
-            fi
-            echo "Attempt $i/$MAX_ATTEMPTS failed (exit=$ec). Stderr:"
-            cat run_sample.log
-            if [ $i -lt $MAX_ATTEMPTS ]; then
-              WAIT=$(( i * 15 ))
-              echo "Retrying in ${WAIT}s..."
-              sleep $WAIT
-            fi
-          done
-          echo "exit_code=$ec" >> "$GITHUB_OUTPUT"
-          cat run_sample.log 2>/dev/null || echo "No output"
-          exit $ec
-
-      - name: Upload artifacts
-        if: always()
-        uses: actions/upload-artifact@v7
-        with:
-          name: pr-toolkit-${{ matrix.config.artifact_name }}
-          path: |
-            run_sample.log
-          retention-days: 7
-
-  report:
-    needs: [detect, toolkit-check]
-    if: always()
-    runs-on: ubuntu-latest
-    steps:
-      - name: Aggregated toolkit check report
-        run: |
-          {
-            echo "## Toolkit Pipeline Check"
-            echo ""
-            echo "### Configs changed"
-            echo '```json'
-            echo '${{ needs.detect.outputs.configs }}'
-            echo '```'
-            echo ""
-            echo "### Results by candidate"
-            echo ""
-            echo "| Candidate | Result |"
-            echo "|-----------|--------|"
-          } >> "$GITHUB_STEP_SUMMARY"
-
-          # toolkit-check è una matrix job — needs.toolkit-check è un
-          # aggregato. Mostriamo il risultato complessivo.
-          RESULT="${{ needs.toolkit-check.result }}"
-          echo "| **Overall** | **$RESULT** |" >> "$GITHUB_STEP_SUMMARY"
-          echo "" >> "$GITHUB_STEP_SUMMARY"
-
-          if [ "$RESULT" = "success" ]; then
-            echo "✅ All candidates passed preflight + run sample-rows" >> "$GITHUB_STEP_SUMMARY"
-          else
-            echo "❌ Some candidates failed — individual artifacts in 'pr-toolkit-*' above" >> "$GITHUB_STEP_SUMMARY"
-            echo "" >> "$GITHUB_STEP_SUMMARY"
-            echo "> Il run con sample-rows valida esecuzione reale (download + clean + mart)." >> "$GITHUB_STEP_SUMMARY"
-            echo "> I fallimenti possono essere dovuti a fonte irraggiungibile (retry x2)." >> "$GITHUB_STEP_SUMMARY"
-          fi
+  validate-config:
+    uses: dataciviclab/.github/.github/workflows/dataset-config-check-reusable.yml@main
+    with:
+      install: "pip install -r requirements.txt"
+      globs: "candidates compose support_datasets"
+      years: "from-config"

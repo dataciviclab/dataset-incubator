@@ -1,18 +1,15 @@
-# Post-Merge Candidate Registry — dataset-incubator
+# Post-merge pipeline — dataset-incubator
 #
-# Pattern job unico (eurostat/dcl-bologna pipeline.yml): dopo il merge di una
-# PR che tocca candidates/compose/support_datasets, o su workflow_dispatch:
-#   1. detect — dir cambiate (slug manuale o diff della PR, esclusi doc-only)
-#   2. run — run COMPLETO dei dataset cambiati (parquet + run record locali)
-#   3. sync GCS — gsutil rsync dei parquet clean/mart
-#   4. toolkit registry build --write — registry.json (fusion ADR) dai
-#      parquet/run appena generati (stesso runner → i run nuovi entrano subito)
-#   5. PR draft "chore(post-merge)" col registry aggiornato (maintainer mergia)
+# Dopo il merge di una PR che tocca candidate/compose/support_datasets:
+#   1. run dei dataset cambiati (toolkit, anni dal config)
+#   2. sync GCS (clean + mart) via gcs-auth
+#   3. registry → draft PR (composite action registry-update-pr, nello
+#      stesso job del run — il registry deriva le entry dai parquet locali)
 #
-# La CI NON committa su main: apre una PR draft col registry aggiornato.
-# Un unico job garantisce che `toolkit registry build` veda parquet e run record.
+# Modello ADR-001 (pattern rna-aiuti-stato / eurostat): workflow orchestratore,
+# logica nei componenti condivisi.
 
-name: Post-Merge Candidate Registry
+name: Post-merge pipeline
 
 on:
   pull_request:
@@ -24,16 +21,15 @@ on:
   workflow_dispatch:
     inputs:
       slug:
-        description: "Slug del dataset da processare (es. inps-cig)"
+        description: "Slug del dataset da processare (es. inpa-bandi)"
         required: false
         type: string
 
 concurrency:
-  group: post-merge-candidate-${{ github.event.pull_request.number || github.ref }}
+  group: post-merge-pipeline-${{ github.event.pull_request.number || github.ref || 'dispatch' }}
   cancel-in-progress: false
 
 env:
-  DATACIVICLAB_WORKSPACE: ${{ github.workspace }}
   GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
   GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
 
@@ -52,26 +48,13 @@ jobs:
           ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
           fetch-depth: 0
 
-      - uses: actions/setup-python@v7
+      - uses: dataciviclab/.github/actions/python-setup@main
         with:
-          python-version: "3.12"
+          extra-packages: -e ".[dev]"
 
-      - name: Install toolkit + deps
-        run: |
-          pip install git+https://github.com/dataciviclab/toolkit.git
-          pip install -e ".[dev]"
-
-      - name: GCP Auth (for GCS push)
-        if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
-        uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
-
-      - name: Set up gcloud
-        if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
-        uses: google-github-actions/setup-gcloud@v3
-
+      # ── Determinare i dataset da processare ─────────────────────────
+      # gh diff: stessi path degli altri repo (candidates == datasets).
+      # Su workflow_dispatch con slug esplicito: solo quel dataset.
       - name: Detect changed dataset dirs
         id: detect
         env:
@@ -80,13 +63,10 @@ jobs:
           SLUG_INPUT: ${{ inputs.slug }}
         run: |
           if [ -n "$SLUG_INPUT" ]; then
-            # Prova candidates/, compose/, support_datasets/
             for base in candidates compose support_datasets; do
               [ -f "$base/$SLUG_INPUT/dataset.yml" ] && echo "$base/$SLUG_INPUT" >> changed_dirs.txt
             done
           else
-            # File non-pipeline (README/notes/notebook/immagini/out) non
-            # triggerano: una modifica a soli doc non deve rigenerare il registry.
             gh pr view "$PR_NUMBER" --json files --jq ".files[].path" | \
               grep -E '^(candidates|compose|support_datasets)/' | \
               grep -vE '\.(md|ipynb|png|jpg|jpeg|gif|svg)$' | \
@@ -105,22 +85,33 @@ jobs:
             echo "changed=false" >> "$GITHUB_OUTPUT"
           fi
 
-      - name: Run changed datasets (full)
+      # ── Run pipeline (toolkit, anni dal config) ─────────────────────
+      - name: Run changed datasets
         if: steps.detect.outputs.changed == 'true'
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: |
           for dir in $(cat changed_dirs_final.txt); do
             echo "=== $dir ==="
-            # run COMPLETO sugli anni dichiarati nel dataset.yml (nessun --years:
-            # il toolkit usa tutti gli anni del config — necessario per candidate
-            # con serie storica chiusa, es. bdap_pagamenti_stato 2014-2025, che
-            # non hanno l'anno corrente tra gli anni configurati).
             toolkit run -c "$dir/dataset.yml" || echo "⚠️  run fallito (skip): $dir"
           done
 
-      - name: Push changed datasets to GCS
-        if: steps.detect.outputs.changed == 'true' && env.GCP_WORKLOAD_IDENTITY_PROVIDER != ''
+      # ── GCS auth + sync (clean + mart) ──────────────────────────────
+      # DI usa workload identity (non SA key) — flusso google-github-actions.
+      - name: GCP Auth (workload identity)
+        id: gcp
+        if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
+        uses: google-github-actions/auth@v3
+        with:
+          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
+
+      - name: Set up gcloud
+        if: steps.gcp.outcome == 'success'
+        uses: google-github-actions/setup-gcloud@v3
+
+      - name: Sync clean + mart to GCS
+        if: steps.gcp.outcome == 'success' && steps.detect.outputs.changed == 'true'
         run: |
           for dir in $(cat changed_dirs_final.txt); do
             slug=$(grep '^  name:' "$dir/dataset.yml" | sed 's/.*: "//;s/"//')
@@ -137,50 +128,9 @@ jobs:
             done
           done
 
-      - name: Build registry
+      # ── Registry → draft PR (componente condiviso, stesso job) ──────
+      - name: Registry update PR
         if: steps.detect.outputs.changed == 'true'
-        env:
-          TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
-        run: toolkit registry build --write
-
-      - name: Check registry diff
-        id: diff
-        run: |
-          if git diff --quiet -- registry/; then
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          else
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-          fi
-
-      - name: Create draft registry PR
-        if: steps.diff.outputs.changed == 'true'
+        uses: dataciviclab/.github/actions/registry-update-pr@main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-        run: |
-          BRANCH="post-merge-candidate/pr-${PR_NUMBER}-registry"
-
-          git config user.name "github-actions[bot]"
-          git config user.email "github-actions[bot]@users.noreply.github.com"
-          git checkout -B "$BRANCH"
-
-          git add registry/
-          git commit -m "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}" || exit 0
-
-          git push --force-with-lease -u origin "$BRANCH"
-
-          EXISTING_PR=$(gh pr list --head "$BRANCH" --json number --jq '.[0].number // empty')
-          if [ -n "$EXISTING_PR" ]; then
-            gh pr edit "$EXISTING_PR" \
-              --title "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}" \
-              --body "Registry artifacts updated after merge of #${PR_NUMBER} (datasets changed)." \
-              --add-label post-merge
-          else
-            gh pr create \
-              --base main \
-              --head "$BRANCH" \
-              --title "chore(post-merge): aggiorna registry per PR #${PR_NUMBER}" \
-              --body "Registry artifacts updated after merge of #${PR_NUMBER} (datasets changed)." \
-              --label post-merge \
-              --draft
-          fi
