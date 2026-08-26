@@ -44,7 +44,7 @@ Il comando unico mostra: run status, righe/colonne per layer, raw hints e
 **verdict readiness con check**. Risponde a: il dataset è mai stato runnato?
 è pronto? cosa manca?
 
-Oppure MCP: `toolkit_status(config_path)` → sezione readiness.
+Oppure MCP: `toolkit_dataset(action="status", config_path=config_path)` → sezione readiness.
 
 ### 2. Run — un anno per volta
 
@@ -64,7 +64,7 @@ toolkit inspect -c candidates/{slug}/dataset.yml -y 2024
 # Ispezione dati — conta righe e campione
 toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m sql --sql "SELECT count(*) FROM data"
 toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m preview --limit 5
-# Oppure MCP: toolkit_layer(config_path, layer="clean", mode="preview", limit=5)
+# Oppure MCP: toolkit_query(action="run", datasets=["{slug}"], sql="SELECT * FROM data LIMIT 5", layer="clean")
 
 # Se c'è mart
 toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m sql --sql "SELECT count(*) FROM data"
@@ -80,10 +80,10 @@ da allineare al perimetro del dataset?
 
 ```bash
 # MCP (raccomandato)
-toolkit_layer(config_path, layer="raw", mode="profile")   → encoding/delimiter
-toolkit_layer(config_path, layer="clean", mode="schema")  → schema parquet
-toolkit_schema_diff(config_path)                           → drift colonne tra anni
-toolkit_list_runs(config_path, status="FAILED", limit=5)  → pattern di fallimento
+toolkit_dataset(action="overview", slug="{slug}", layer="raw", profile=True)   → encoding/delimiter
+toolkit_dataset(action="overview", slug="{slug}", layer="clean")              → schema parquet
+toolkit_dataset(action="schema-diff", config_path=config_path)                → drift colonne tra anni
+toolkit_pipeline(action="runs", config_path=config_path, status="FAILED", limit=5)  → pattern di fallimento
 
 # CLI equivalente
 toolkit inspect config -c candidates/{slug}/dataset.yml -l raw -m profile --json

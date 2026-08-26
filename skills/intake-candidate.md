@@ -48,15 +48,15 @@ Scopo: capire se la fonte è utilizzabile prima di generare scaffold.
 
 ```bash
 # Se è un portale CKAN:
-toolkit_ckan_package_show(endpoint="https://portale.it", package_id="dataset-slug")
+toolkit_source(action="ckan", endpoint="https://portale.it", package_id="dataset-slug")
 # → risorse, formato, DataStore, metadati
 
 # Se è un file diretto CSV/TSV:
-toolkit_preview_url("https://sito.it/dati.csv")
+toolkit_query(action="preview", url="https://sito.it/dati.csv")
 # → colonne, tipi, encoding, qualità
 
 # Se non sai cos'è:
-toolkit_probe_url_routed("https://sito.it/pagina")
+toolkit_source(action="probe", url="https://sito.it/pagina", routed=True)
 # → routing automatico: CKAN | HTML | file
 ```
 
@@ -112,7 +112,7 @@ toolkit inspect -c candidates/{slug}/dataset.yml -y 2024
 # 2. Dati — conta righe e vedi un campione
 toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m sql --sql "SELECT count(*) FROM data"
 toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m preview --limit 5
-# Oppure MCP: toolkit_layer(config_path, layer="clean", mode="preview", limit=5)
+# Oppure MCP: toolkit_query(action="run", datasets=["{slug}"], sql="SELECT * FROM data LIMIT 5", layer="clean")
 
 # 3. Se c'è mart, stessa verifica
 toolkit inspect config -c candidates/{slug}/dataset.yml -l mart -m sql --sql "SELECT count(*) FROM data"
@@ -128,9 +128,9 @@ Se la pipeline fallisce → diagnostica rapida:
 
 ```bash
 # MCP
-toolkit_layer(config_path, layer="raw", mode="profile")   → encoding/delimiter
-toolkit_layer(config_path, layer="clean", mode="schema")  → schema parquet
-toolkit_schema_diff(config_path)                          → drift colonne tra anni
+toolkit_dataset(action="overview", slug="{slug}", layer="raw", profile=True)   → encoding/delimiter
+toolkit_dataset(action="overview", slug="{slug}", layer="clean")              → schema parquet
+toolkit_dataset(action="schema-diff", config_path=config_path)                → drift colonne tra anni
 
 # CLI
 toolkit inspect config -c candidates/{slug}/dataset.yml -l raw -m profile --json
