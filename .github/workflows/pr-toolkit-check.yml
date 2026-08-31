@@ -13,7 +13,6 @@ on:
       - "candidates/**"
       - "compose/**"
       - "support_datasets/**"
-      - ".github/workflows/pr-toolkit-check.yml"
 
 jobs:
   validate-config:
