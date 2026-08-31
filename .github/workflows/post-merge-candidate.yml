@@ -1,13 +1,10 @@
 # Post-merge pipeline — dataset-incubator
 #
 # Dopo il merge di una PR che tocca candidate/compose/support_datasets:
-#   1. run dei dataset cambiati (toolkit, anni dal config)
-#   2. sync GCS (clean + mart) via gcs-auth
-#   3. registry → draft PR (composite action registry-update-pr, nello
-#      stesso job del run — il registry deriva le entry dai parquet locali)
-#
-# Modello ADR-001 (pattern rna-aiuti-stato / eurostat): workflow orchestratore,
-# logica nei componenti condivisi.
+#   1. detect dei dataset cambiati (composite action condivisa)
+#   2. run (toolkit, anni dal config)
+#   3. sync GCS (clean + mart) via WIF
+#   4. registry → draft PR (composite action registry-update-pr)
 
 name: Post-merge pipeline
 
@@ -52,52 +49,25 @@ jobs:
         with:
           extra-packages: -e ".[dev]"
 
-      # ── Determinare i dataset da processare ─────────────────────────
-      # gh diff: stessi path degli altri repo (candidates == datasets).
-      # Su workflow_dispatch con slug esplicito: solo quel dataset.
-      - name: Detect changed dataset dirs
+      # ── Detect dataset cambiati ─────────────────────────────────────
+      - uses: dataciviclab/.github/actions/detect-changed-datasets@main
         id: detect
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          PR_NUMBER: ${{ github.event.pull_request.number }}
-          SLUG_INPUT: ${{ inputs.slug }}
-        run: |
-          if [ -n "$SLUG_INPUT" ]; then
-            for base in candidates compose support_datasets; do
-              [ -f "$base/$SLUG_INPUT/dataset.yml" ] && echo "$base/$SLUG_INPUT" >> changed_dirs.txt
-            done
-          else
-            gh pr view "$PR_NUMBER" --json files --jq ".files[].path" | \
-              grep -E '^(candidates|compose|support_datasets)/' | \
-              grep -vE '\.(md|ipynb|png|jpg|jpeg|gif|svg)$' | \
-              grep -vE '/(out|__pycache__)/' | \
-              cut -d/ -f1-2 | sort -u > changed_dirs.txt
-          fi
-          # Filtra solo dir con dataset.yml
-          DIRS=""
-          while read -r d; do
-            [ -n "$d" ] && [ -f "$d/dataset.yml" ] && DIRS="$DIRS $d"
-          done < changed_dirs.txt
-          if [ -n "$DIRS" ]; then
-            echo "changed=true" >> "$GITHUB_OUTPUT"
-            echo "$DIRS" > changed_dirs_final.txt
-          else
-            echo "changed=false" >> "$GITHUB_OUTPUT"
-          fi
+        with:
+          paths: "candidates compose support_datasets"
+          slug-input: "${{ inputs.slug }}"
 
       # ── Run pipeline (toolkit, anni dal config) ─────────────────────
       - name: Run changed datasets
-        if: steps.detect.outputs.changed == 'true'
+        if: steps.detect.outputs.found == 'true'
         env:
           TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
         run: |
-          for dir in $(cat changed_dirs_final.txt); do
+          for dir in ${{ steps.detect.outputs.dirs }}; do
             echo "=== $dir ==="
             toolkit run -c "$dir/dataset.yml" || echo "⚠️  run fallito (skip): $dir"
           done
 
       # ── GCS auth + sync (clean + mart) ──────────────────────────────
-      # DI usa workload identity (non SA key) — flusso google-github-actions.
       - name: GCP Auth (workload identity)
         id: gcp
         if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
@@ -111,9 +81,9 @@ jobs:
         uses: google-github-actions/setup-gcloud@v3
 
       - name: Sync clean + mart to GCS
-        if: steps.gcp.outcome == 'success' && steps.detect.outputs.changed == 'true'
+        if: steps.gcp.outcome == 'success' && steps.detect.outputs.found == 'true'
         run: |
-          for dir in $(cat changed_dirs_final.txt); do
+          for dir in ${{ steps.detect.outputs.dirs }}; do
             slug=$(grep '^  name:' "$dir/dataset.yml" | sed 's/.*: "//;s/"//')
             [ -z "$slug" ] && continue
             for year in $(ls "out/data/clean/$slug/" 2>/dev/null); do
@@ -128,9 +98,9 @@ jobs:
             done
           done
 
-      # ── Registry → draft PR (componente condiviso, stesso job) ──────
+      # ── Registry → draft PR (componente condiviso) ──────────────────
       - name: Registry update PR
-        if: steps.detect.outputs.changed == 'true'
+        if: steps.detect.outputs.found == 'true'
         uses: dataciviclab/.github/actions/registry-update-pr@main
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

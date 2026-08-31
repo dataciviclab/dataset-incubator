@@ -1,9 +1,7 @@
 # PR check — preflight dei dataset in candidates/compose/support_datasets
 #
-# ADR-001: workflow orchestratore, logica nei componenti condivisi.
-# Il preflight (config valida + fonte raggiungibile + quality score) è
-# delegato al reusable `dataset-config-check-reusable`. Il run completo
-# avviene post-merge (pipeline.yml).
+# Detect: dataciviclab/.github/actions/detect-changed-datasets
+# Preflight: dataciviclab/.github/.github/workflows/dataset-config-check-reusable
 
 name: PR check
 
@@ -15,9 +13,24 @@ on:
       - "support_datasets/**"
 
 jobs:
+  detect:
+    runs-on: ubuntu-latest
+    outputs:
+      dirs: ${{ steps.detect.outputs.dirs }}
+      count: ${{ steps.detect.outputs.count }}
+      found: ${{ steps.detect.outputs.found }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dataciviclab/.github/actions/detect-changed-datasets@main
+        id: detect
+        with:
+          paths: "candidates compose support_datasets"
+
   validate-config:
+    needs: detect
+    if: needs.detect.outputs.found == 'true'
     uses: dataciviclab/.github/.github/workflows/dataset-config-check-reusable.yml@main
     with:
       install: "pip install -r requirements.txt"
-      globs: "candidates compose support_datasets"
+      configs: ${{ needs.detect.outputs.dirs }}
       years: "from-config"
