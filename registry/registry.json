@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-08-16",
+  "updated_at": "2026-09-07",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -13012,42 +13012,12 @@
       }
     },
     {
-      "slug": "bdap_entrate_stato__mart_entrate_titolo_natura_anno",
-      "dataset": "bdap_entrate_stato",
-      "table": "mart_entrate_titolo_natura_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/bdap_entrate_stato/2024/mart_entrate_titolo_natura_anno.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "bdap_lea__mart_spesa_enti",
       "dataset": "bdap_lea",
       "table": "mart_spesa_enti",
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/bdap_lea/2024/mart_spesa_enti.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "bdap_pagamenti_stato__mart_pagamenti_missione_categoria",
-      "dataset": "bdap_pagamenti_stato",
-      "table": "mart_pagamenti_missione_categoria",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/bdap_pagamenti_stato/2025/mart_pagamenti_missione_categoria.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "bdap_spese_stato__mart_spese_missione_anno",
-      "dataset": "bdap_spese_stato",
-      "table": "mart_spese_missione_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/bdap_spese_stato/2024/mart_spese_missione_anno.parquet",
         "multi_file": false
       }
     },
@@ -13892,46 +13862,6 @@
       }
     },
     {
-      "slug": "opencivitas_fsc_2025_rso__mart_compose_comuni",
-      "dataset": "opencivitas_fsc_2025_rso",
-      "table": "mart_compose_comuni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/opencivitas_fsc_2025_rso/2025/mart_compose_comuni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "opencivitas_fsc_enti_rso__mart_enti",
-      "dataset": "opencivitas_fsc_enti_rso",
-      "table": "mart_enti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/opencivitas_fsc_enti_rso/2025/mart_enti.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "opencivitas_glossario__mart_metadati",
-      "dataset": "opencivitas_glossario",
-      "table": "mart_metadati",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/opencivitas_glossario/2022/mart_metadati.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "opencivitas_indicatori__mart_indicatori",
-      "dataset": "opencivitas_indicatori",
-      "table": "mart_indicatori",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/opencivitas_indicatori/2022/mart_indicatori.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "opencoesione_progetti__mart_macroarea_tema",
       "dataset": "opencoesione_progetti",
       "table": "mart_macroarea_tema",
@@ -14368,7 +14298,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260801T133743Z_75b44ded",
+        "run_id": "20260907T165805Z_0b8cb7fa",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -14377,34 +14307,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 22176,
-          "clean": 22176,
-          "mart": 2362
+          "raw": 22974,
+          "clean": 22974,
+          "mart": 2364
         },
         "output_bytes": {
-          "raw": 798721,
-          "clean": 46089,
-          "mart": 11914
+          "raw": 826946,
+          "clean": 47541,
+          "mart": 11965
         },
-        "started_at": "2026-08-01T13:37:43.676108+00:00",
-        "finished_at": "2026-08-01T13:37:45.384535+00:00",
-        "duration_seconds": 1.708
-      }
-    },
-    {
-      "id": "bdap_entrate_stato",
-      "source_id": "openbdap",
-      "status": "ok",
-      "label": "bdap_entrate_stato",
-      "detail": "anno 2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260731T163739Z_1a473287",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:39.488090+00:00",
-        "finished_at": "2026-07-31T16:37:39.494379+00:00",
-        "duration_seconds": 0.006
+        "started_at": "2026-09-07T16:58:05.487535+00:00",
+        "finished_at": "2026-09-07T16:58:06.058513+00:00",
+        "duration_seconds": 0.571
       }
     },
     {
@@ -14420,53 +14334,6 @@
         "status": "DRY_RUN",
         "started_at": "2026-07-31T16:37:44.040306+00:00",
         "finished_at": "2026-07-31T16:37:44.044617+00:00",
-        "duration_seconds": 0.004
-      }
-    },
-    {
-      "id": "bdap_pagamenti_stato",
-      "source_id": "openbdap",
-      "status": "ok",
-      "label": "bdap_pagamenti_stato",
-      "detail": "anni 2014-2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260816T082045Z_786bab73",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 542,
-          "clean": 542,
-          "mart": 542
-        },
-        "output_bytes": {
-          "raw": 117921,
-          "clean": 19845,
-          "mart": 7827
-        },
-        "started_at": "2026-08-16T08:20:45.346498+00:00",
-        "finished_at": "2026-08-16T08:20:46.918325+00:00",
-        "duration_seconds": 1.572
-      }
-    },
-    {
-      "id": "bdap_spese_stato",
-      "source_id": "openbdap",
-      "status": "ok",
-      "label": "bdap_spese_stato",
-      "detail": "anno 2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260731T163747Z_7aea68b1",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:47.439580+00:00",
-        "finished_at": "2026-07-31T16:37:47.443667+00:00",
         "duration_seconds": 0.004
       }
     },
@@ -15180,39 +15047,6 @@
       "action": ""
     },
     {
-      "id": "opencivitas_fsc_2025_rso",
-      "source_id": "opencivitas",
-      "status": "ok",
-      "label": "opencivitas_fsc_2025_rso",
-      "detail": "anni 2022-2025 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "opencivitas_indicatori",
-      "source_id": "opencivitas",
-      "status": "ok",
-      "label": "opencivitas_indicatori",
-      "detail": "anni 2015-2022 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260728T085206Z_2551b510",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 90
-        },
-        "output_rows": {
-          "mart": 2659122
-        },
-        "output_bytes": {
-          "mart": 41736110
-        },
-        "started_at": "2026-07-28T08:52:06.876449+00:00",
-        "finished_at": "2026-07-28T08:52:16.688673+00:00",
-        "duration_seconds": 9.812
-      }
-    },
-    {
       "id": "opencoesione_progetti",
       "source_id": "opencoesione",
       "status": "ok",
@@ -15543,132 +15377,12 @@
       }
     },
     {
-      "id": "compose:conto_annuale_profilo_ente",
-      "source_id": "rgs_conto_annuale",
-      "status": "ok",
-      "label": "conto_annuale_profilo_ente",
-      "detail": "anni 2020-2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260727T181422Z_2e14ed72",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 90,
-          "mart": 85
-        },
-        "output_rows": {
-          "clean": 10885,
-          "mart": 8294
-        },
-        "output_bytes": {
-          "raw": 1085952,
-          "clean": 571529,
-          "mart": 420788
-        },
-        "started_at": "2026-07-27T18:14:22.788009+00:00",
-        "finished_at": "2026-07-27T18:14:30.384220+00:00",
-        "duration_seconds": 7.596
-      }
-    },
-    {
       "id": "compose:costituzione_master",
       "source_id": "costituzione-italiana",
       "status": "ok",
       "label": "costituzione_master",
       "detail": "anno 2026 — mart: si",
       "action": ""
-    },
-    {
-      "id": "compose:eurostat_demography",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "eurostat_demography",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260727T090737Z_986b13bc",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 20949,
-          "mart": 1284
-        },
-        "output_bytes": {
-          "raw": 189099,
-          "clean": 384373,
-          "mart": 31386
-        },
-        "started_at": "2026-07-27T09:07:37.475085+00:00",
-        "finished_at": "2026-07-27T09:07:41.498542+00:00",
-        "duration_seconds": 4.023
-      }
-    },
-    {
-      "id": "compose:eurostat_economy",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "eurostat_economy",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260727T090658Z_8f8bd230",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 41709,
-          "mart": 2568
-        },
-        "output_bytes": {
-          "raw": 189099,
-          "clean": 2280716,
-          "mart": 167310
-        },
-        "started_at": "2026-07-27T09:06:58.133700+00:00",
-        "finished_at": "2026-07-27T09:07:03.043263+00:00",
-        "duration_seconds": 4.91
-      }
-    },
-    {
-      "id": "compose:eurostat_territory",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "eurostat_territory",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260727T090743Z_7f7ef8c6",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 30495,
-          "mart": 2174
-        },
-        "output_bytes": {
-          "raw": 189099,
-          "clean": 318447,
-          "mart": 24404
-        },
-        "started_at": "2026-07-27T09:07:43.327742+00:00",
-        "finished_at": "2026-07-27T09:07:47.044512+00:00",
-        "duration_seconds": 3.717
-      }
     },
     {
       "id": "compose:ispra_ru_costi_kg_compose",
@@ -15685,36 +15399,6 @@
       "label": "malasanita_compose",
       "detail": "anno 2022 — mart: si",
       "action": ""
-    },
-    {
-      "id": "compose:unified_comuni",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "unified_comuni",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260815T162530Z_de3bede1",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 52540,
-          "mart": 52540
-        },
-        "output_bytes": {
-          "raw": 857542,
-          "clean": 4749707,
-          "mart": 4749833
-        },
-        "started_at": "2026-08-15T16:25:30.209124+00:00",
-        "finished_at": "2026-08-15T16:27:00.490842+00:00",
-        "duration_seconds": 90.282
-      }
     },
     {
       "id": "compose:who_is_who_pa",
@@ -15873,28 +15557,6 @@
         "finished_at": "2026-08-02T17:09:32.630233+00:00",
         "duration_seconds": 11.491
       }
-    },
-    {
-      "id": "opencivitas_fsc_enti_rso",
-      "source_id": "opencivitas",
-      "status": "ok",
-      "label": "opencivitas_fsc_enti_rso",
-      "detail": "anno 2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260729T120941Z_6c07cd84",
-        "year": 2025,
-        "status": "RUNNING",
-        "started_at": "2026-07-29T12:09:41.401993+00:00"
-      }
-    },
-    {
-      "id": "opencivitas_glossario",
-      "source_id": "opencivitas",
-      "status": "ok",
-      "label": "opencivitas_glossario",
-      "detail": "anni 2015-2022 — mart: si",
-      "action": ""
     },
     {
       "id": "popolazione_istat_comunale_2019_2025",
@@ -16260,12 +15922,6 @@
             "semantic_type": "municipality_name"
           },
           {
-            "slug": "unified_comuni",
-            "name": "Unified Comuni — metriche multi-dominio",
-            "column": "codice_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
             "slug": "who_is_who_pa",
             "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
             "column": "codice_istat",
@@ -16285,8 +15941,8 @@
           }
         ],
         "types": {
-          "municipality_name": 19,
-          "municipality_code": 25,
+          "municipality_name": 18,
+          "municipality_code": 23,
           "cadastral_code": 8
         }
       },
@@ -16420,12 +16076,6 @@
             "semantic_type": "fiscal_code"
           },
           {
-            "slug": "conto_annuale_profilo_ente",
-            "name": "Conto Annuale — Profilo Ente PA",
-            "column": "codi_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
             "slug": "farmacie",
             "name": "Farmacie — Anagrafica farmacie italiane (Ministero Salute)",
             "column": "p_iva",
@@ -16481,7 +16131,7 @@
           }
         ],
         "types": {
-          "fiscal_code": 23
+          "fiscal_code": 19
         }
       },
       "Ente sanitario": {
@@ -16952,40 +16602,16 @@
             "name": "Terna Electricity By Source",
             "column": "provincia",
             "semantic_type": "province_code"
-          },
-          {
-            "slug": "unified_comuni",
-            "name": "Unified Comuni — metriche multi-dominio",
-            "column": "sigla_provincia",
-            "semantic_type": "province_code"
           }
         ],
         "types": {
-          "province_code": 37
+          "province_code": 35
         }
       },
       "Provincia (tramite NUTS3)": {
         "entity": "Provincia (tramite NUTS3)",
         "label": "Provincia (tramite NUTS3)",
         "datasets": [
-          {
-            "slug": "eurostat_demography",
-            "name": "Indicatori demografici regionali EU (popolazione, densità, struttura età, bilancio)",
-            "column": "geo",
-            "semantic_type": "nuts_code"
-          },
-          {
-            "slug": "eurostat_economy",
-            "name": "Indicatori economici regionali EU (PIL, GVA, occupazione, produttività)",
-            "column": "geo",
-            "semantic_type": "nuts_code"
-          },
-          {
-            "slug": "eurostat_territory",
-            "name": "Indicatori territoriali regionali EU (superficie, turismo, criminalità, incidenti)",
-            "column": "geo",
-            "semantic_type": "nuts_code"
-          },
           {
             "slug": "fts_eu_grants",
             "name": "Grant UE erogati in Italia (FTS EU Grants)",
@@ -16994,7 +16620,7 @@
           }
         ],
         "types": {
-          "nuts_code": 4
+          "nuts_code": 1
         }
       },
       "Regione": {
@@ -17246,16 +16872,10 @@
             "name": "Terna Electricity By Source",
             "column": "regione",
             "semantic_type": "region_code"
-          },
-          {
-            "slug": "unified_comuni",
-            "name": "Unified Comuni — metriche multi-dominio",
-            "column": "regione",
-            "semantic_type": "region_code"
           }
         ],
         "types": {
-          "region_code": 43
+          "region_code": 41
         }
       },
       "Scuola": {
@@ -17347,27 +16967,9 @@
             "semantic_type": "month"
           },
           {
-            "slug": "bdap_entrate_stato",
-            "name": "BDAP Entrate Stato - Serie Storica",
-            "column": "esercizio_finanziario",
-            "semantic_type": "year"
-          },
-          {
             "slug": "bdap_lea",
             "name": "Bdap Lea",
             "column": "anno_riferimento",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "bdap_pagamenti_stato",
-            "name": "Bdap Pagamenti Stato",
-            "column": "esercizio_finanziario",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "bdap_spese_stato",
-            "name": "BDAP Spese Stato",
-            "column": "esercizio_finanziario",
             "semantic_type": "year"
           },
           {
@@ -17389,33 +16991,9 @@
             "semantic_type": "year"
           },
           {
-            "slug": "conto_annuale_profilo_ente",
-            "name": "Conto Annuale — Profilo Ente PA",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
             "slug": "dipendenti_pubblici",
             "name": "Dipendenti Pubblici - Occupazione e Turnover",
             "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "eurostat_demography",
-            "name": "Indicatori demografici regionali EU (popolazione, densità, struttura età, bilancio)",
-            "column": "year",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "eurostat_economy",
-            "name": "Indicatori economici regionali EU (PIL, GVA, occupazione, produttività)",
-            "column": "year",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "eurostat_territory",
-            "name": "Indicatori territoriali regionali EU (superficie, turismo, criminalità, incidenti)",
-            "column": "year",
             "semantic_type": "year"
           },
           {
@@ -17735,16 +17313,10 @@
             "name": "Terna Electricity By Source",
             "column": "anno",
             "semantic_type": "year"
-          },
-          {
-            "slug": "unified_comuni",
-            "name": "Unified Comuni — metriche multi-dominio",
-            "column": "anno",
-            "semantic_type": "year"
           }
         ],
         "types": {
-          "year": 69,
+          "year": 58,
           "month": 7
         }
       }
