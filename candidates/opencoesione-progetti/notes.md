@@ -4,9 +4,9 @@
 
 - **Ente**: PCM — Dipartimento Politiche di Coesione / OpenCoesione
 - **Portale di riferimento**: dati.gov.it (organization: pcm-opencoesione)
-- **File**: `progetti_20260228.parquet` (2.3M righe, 95 colonne)
+- **File**: `progetti_20260430.parquet` (2.3M righe, 95 colonne)
 - **Licenza**: CC BY 4.0
-- **Aggiornamento**: 2026-02-28 (data dump)
+- **Aggiornamento**: 2026-04-30 (data dump)
 - **Issue intake**: #440
 
 ## Differenze dal vecchio candidato
@@ -47,7 +47,7 @@ Tabella `mart_macroarea_tema`:
 
 ## Prossimi passi
 
-- [ ] Run `toolkit run full` per verificare la pipeline
+- [x] Run `toolkit run` per verificare la pipeline
 - [ ] Creare notebook v0 con visualizzazione macroarea × tema
 - [ ] Valutare se aggiungere `soggetti` e `pagamenti` come support dataset
 - [ ] Valutare switch a CSV esteso per granularità regionale in v1

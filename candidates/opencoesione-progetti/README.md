@@ -19,5 +19,5 @@ File Parquet scaricabile da opencoesione.gov.it. Licenza CC BY 4.0.
 ## Uso
 
 ```bash
-toolkit run full --config candidates/opencoesione-progetti/dataset.yml
+toolkit run --config candidates/opencoesione-progetti/dataset.yml
 ```
