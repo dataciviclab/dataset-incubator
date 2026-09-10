@@ -9030,10 +9030,10 @@
           "semantic_type": "cup_code"
         },
         {
-          "name": "OC_COD_CICLO",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Codice del ciclo di programmazione"
+           "name": "OC_COD_CICLO",
+           "type": "INTEGER",
+           "role": "dimension",
+           "description": "Codice del ciclo di programmazione"
         },
         {
           "name": "OC_DESCR_CICLO",
@@ -9054,10 +9054,10 @@
           "description": "Macroarea geografica (Centro-Nord, Mezzogiorno, ...)"
         },
         {
-          "name": "OC_COD_SLL",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": "Codice Sistema Locale del Lavoro"
+           "name": "OC_COD_SLL",
+           "type": "BIGINT",
+           "role": "dimension",
+           "description": "Codice Sistema Locale del Lavoro"
         },
         {
           "name": "OC_DENOMINAZIONE_SLL",
@@ -9090,22 +9090,22 @@
           "description": "Stato procedurale del progetto"
         },
         {
-          "name": "OC_DATA_INIZIO_PROGETTO",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Data inizio progetto (YYYYMMDD)"
+           "name": "OC_DATA_INIZIO_PROGETTO",
+           "type": "INTEGER",
+           "role": "dimension",
+           "description": "Data inizio progetto (YYYYMMDD)"
         },
         {
-          "name": "OC_DATA_FINE_PROGETTO_PREVISTA",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Data fine progetto prevista (YYYYMMDD)"
+           "name": "OC_DATA_FINE_PROGETTO_PREVISTA",
+           "type": "INTEGER",
+           "role": "dimension",
+           "description": "Data fine progetto prevista (YYYYMMDD)"
         },
         {
-          "name": "OC_DATA_FINE_PROGETTO_EFFETTIVA",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Data fine progetto effettiva (YYYYMMDD)"
+           "name": "OC_DATA_FINE_PROGETTO_EFFETTIVA",
+           "type": "INTEGER",
+           "role": "dimension",
+           "description": "Data fine progetto effettiva (YYYYMMDD)"
         },
         {
           "name": "FINANZ_UE",
@@ -9203,10 +9203,10 @@
           "description": ""
         },
         {
-          "name": "SOGG_COD_RUOLO",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": ""
+           "name": "SOGG_COD_RUOLO",
+           "type": "BIGINT",
+           "role": "dimension",
+           "description": ""
         },
         {
           "name": "SOGG_DESCR_RUOLO",
