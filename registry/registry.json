@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-09-07",
+  "updated_at": "2026-09-10",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -9032,7 +9032,7 @@
         {
           "name": "OC_COD_CICLO",
           "type": "INTEGER",
-          "role": "dimension",
+          "role": "metric",
           "description": "Codice del ciclo di programmazione"
         },
         {
@@ -9056,7 +9056,7 @@
         {
           "name": "OC_COD_SLL",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "Codice Sistema Locale del Lavoro"
         },
         {
@@ -9092,19 +9092,19 @@
         {
           "name": "OC_DATA_INIZIO_PROGETTO",
           "type": "INTEGER",
-          "role": "dimension",
+          "role": "metric",
           "description": "Data inizio progetto (YYYYMMDD)"
         },
         {
           "name": "OC_DATA_FINE_PROGETTO_PREVISTA",
           "type": "INTEGER",
-          "role": "dimension",
+          "role": "metric",
           "description": "Data fine progetto prevista (YYYYMMDD)"
         },
         {
           "name": "OC_DATA_FINE_PROGETTO_EFFETTIVA",
           "type": "INTEGER",
-          "role": "dimension",
+          "role": "metric",
           "description": "Data fine progetto effettiva (YYYYMMDD)"
         },
         {
@@ -9173,7 +9173,135 @@
         "path": "gs://dataciviclab-clean/opencoesione_progetti/2026/opencoesione_progetti_2026_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "opencoesione_progetti__mart_macroarea_tema"
+      ]
+    },
+    {
+      "slug": "opencoesione_soggetti",
+      "name": "Opencoesione Soggetti",
+      "description": "",
+      "source": "",
+      "source_id": "opencoesione",
+      "period": {
+        "start": 2007,
+        "end": 2027
+      },
+      "tags": [
+        "finanza-pubblica",
+        "opencoesione",
+        "soggetti",
+        "beneficiari"
+      ],
+      "category": "finanza-pubblica",
+      "columns": [
+        {
+          "name": "COD_LOCALE_PROGETTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "SOGG_COD_RUOLO",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "SOGG_DESCR_RUOLO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "OC_CODICE_FISCALE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "OC_DENOMINAZIONE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "COD_FORMA_GIURIDICA_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "DESCR_FORMA_GIURIDICA_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "COD_COMUNE_SEDE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "INDIRIZZO_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "CAP_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "COD_ATECO_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "DESCRIZIONE_ATECO_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "COD_DIMENSIONE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "DESCR_DIMENSIONE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "CODICE_FISCALE_SOGGETTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "DENOMINAZIONE_SOGGETTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/opencoesione_soggetti/2026/opencoesione_soggetti_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "opencoesione_soggetti__mart_beneficiari"
+      ]
     },
     {
       "slug": "openga_ricorsi_appalto",
@@ -13622,76 +13750,6 @@
       }
     },
     {
-      "slug": "mef_partecipazioni__mart_sintesi_regione",
-      "dataset": "mef_partecipazioni",
-      "table": "mart_sintesi_regione",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_partecipazioni/2023/mart_sintesi_regione.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_partecipazioni__mart_top_amministrazioni",
-      "dataset": "mef_partecipazioni",
-      "table": "mart_top_amministrazioni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_partecipazioni/2023/mart_top_amministrazioni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_partecipazioni__mart_trend_anno",
-      "dataset": "mef_partecipazioni",
-      "table": "mart_trend_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_partecipazioni/mart_trend_anno.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_rappresentanti_partecipate__mart_gender_gap",
-      "dataset": "mef_rappresentanti_partecipate",
-      "table": "mart_gender_gap",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_gender_gap.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_rappresentanti_partecipate__mart_sintesi_incarico",
-      "dataset": "mef_rappresentanti_partecipate",
-      "table": "mart_sintesi_incarico",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_sintesi_incarico.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_rappresentanti_partecipate__mart_top_amministrazioni",
-      "dataset": "mef_rappresentanti_partecipate",
-      "table": "mart_top_amministrazioni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_top_amministrazioni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_rappresentanti_partecipate__mart_trend_anno",
-      "dataset": "mef_rappresentanti_partecipate",
-      "table": "mart_trend_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/mart_trend_anno.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "mim_alunni_corso_eta__mart_comune",
       "dataset": "mim_alunni_corso_eta",
       "table": "mart_comune",
@@ -13868,6 +13926,16 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/opencoesione_progetti/2026/mart_macroarea_tema.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "opencoesione_soggetti__mart_beneficiari",
+      "dataset": "opencoesione_soggetti",
+      "table": "mart_beneficiari",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/opencoesione_soggetti/2026/mart_beneficiari.parquet",
         "multi_file": false
       }
     },
@@ -14845,68 +14913,6 @@
       "action": ""
     },
     {
-      "id": "mef_partecipazioni",
-      "source_id": "mef_tesoro",
-      "status": "ok",
-      "label": "mef_partecipazioni",
-      "detail": "anni 2020-2023 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260802T180319Z_432e868a",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 53656,
-          "clean": 53656,
-          "mart": 8557
-        },
-        "output_bytes": {
-          "raw": 35046757,
-          "clean": 2629582,
-          "mart": 144002
-        },
-        "started_at": "2026-08-02T18:03:19.213223+00:00",
-        "finished_at": "2026-08-02T18:03:57.083600+00:00",
-        "duration_seconds": 37.87
-      }
-    },
-    {
-      "id": "mef_rappresentanti_partecipate",
-      "source_id": "mef_tesoro",
-      "status": "ok",
-      "label": "mef_rappresentanti_partecipate",
-      "detail": "anni 2018-2023 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260803T104219Z_ba17250b",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 16785,
-          "clean": 16785,
-          "mart": 1961
-        },
-        "output_bytes": {
-          "raw": 8188766,
-          "clean": 543610,
-          "mart": 46456
-        },
-        "started_at": "2026-08-03T10:42:19.829537+00:00",
-        "finished_at": "2026-08-03T10:42:34.022082+00:00",
-        "duration_seconds": 14.193
-      }
-    },
-    {
       "id": "mim_alunni_corso_eta",
       "source_id": "mim_opendata",
       "status": "ok",
@@ -15052,7 +15058,59 @@
       "status": "ok",
       "label": "opencoesione_progetti",
       "detail": "anno 2026 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20260910T130331Z_956b2ace",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 2320817,
+          "mart": 149
+        },
+        "output_bytes": {
+          "raw": 240554560,
+          "clean": 81058087,
+          "mart": 11734
+        },
+        "started_at": "2026-09-10T13:03:31.613853+00:00",
+        "finished_at": "2026-09-10T13:03:44.947198+00:00",
+        "duration_seconds": 13.333
+      }
+    },
+    {
+      "id": "opencoesione_soggetti",
+      "source_id": "opencoesione",
+      "status": "ok",
+      "label": "opencoesione_soggetti",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260910T130346Z_9117c19d",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 7195885,
+          "mart": 534306
+        },
+        "output_bytes": {
+          "raw": 104288695,
+          "clean": 80256665,
+          "mart": 11015164
+        },
+        "started_at": "2026-09-10T13:03:46.111979+00:00",
+        "finished_at": "2026-09-10T13:04:01.352032+00:00",
+        "duration_seconds": 15.24
+      }
     },
     {
       "id": "openga_ricorsi_appalto",
