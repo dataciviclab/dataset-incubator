@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-09-10",
+  "updated_at": "2026-09-12",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -11640,16 +11640,6 @@
       }
     },
     {
-      "slug": "ade_cinque_per_mille__ade_cinque_per_mille",
-      "dataset": "ade_cinque_per_mille",
-      "table": "ade_cinque_per_mille",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/ade_cinque_per_mille/2025/ade_cinque_per_mille.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "aifa_spesa_consumo__mart_mensile_regione_atc4",
       "dataset": "aifa_spesa_consumo",
       "table": "mart_mensile_regione_atc4",
@@ -12820,36 +12810,6 @@
       "action": ""
     },
     {
-      "id": "ade_cinque_per_mille",
-      "source_id": "ade",
-      "status": "ok",
-      "label": "ade_cinque_per_mille",
-      "detail": "anni 2023-2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260728T140724Z_2d4d475f",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 85,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 95977,
-          "mart": 21
-        },
-        "output_bytes": {
-          "raw": 10784519,
-          "clean": 3172301,
-          "mart": 3268
-        },
-        "started_at": "2026-07-28T14:07:24.076485+00:00",
-        "finished_at": "2026-07-28T14:07:46.805591+00:00",
-        "duration_seconds": 22.729
-      }
-    },
-    {
       "id": "aifa_spesa_consumo",
       "source_id": "aifa",
       "status": "ok",
@@ -12887,7 +12847,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260907T165805Z_0b8cb7fa",
+        "run_id": "20260912T175654Z_5b765d8f",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -12896,18 +12856,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 22974,
-          "clean": 22974,
+          "raw": 23007,
+          "clean": 23007,
           "mart": 2364
         },
         "output_bytes": {
-          "raw": 826946,
-          "clean": 47541,
-          "mart": 11965
+          "raw": 828251,
+          "clean": 47505,
+          "mart": 11971
         },
-        "started_at": "2026-09-07T16:58:05.487535+00:00",
-        "finished_at": "2026-09-07T16:58:06.058513+00:00",
-        "duration_seconds": 0.571
+        "started_at": "2026-09-12T17:56:54.623777+00:00",
+        "finished_at": "2026-09-12T17:56:55.571201+00:00",
+        "duration_seconds": 0.947
       }
     },
     {
@@ -14432,7 +14392,7 @@
         ],
         "types": {
           "municipality_name": 18,
-          "municipality_code": 23,
+          "municipality_code": 22,
           "cadastral_code": 8
         }
       },
@@ -14585,7 +14545,7 @@
           }
         ],
         "types": {
-          "fiscal_code": 19
+          "fiscal_code": 13
         }
       },
       "Ente sanitario": {
@@ -14633,7 +14593,7 @@
           }
         ],
         "types": {
-          "cig_code": 15
+          "cig_code": 3
         }
       },
       "Nazione": {
@@ -14648,7 +14608,7 @@
           }
         ],
         "types": {
-          "country_code": 3
+          "country_code": 1
         }
       },
       "Procedimento": {
@@ -14744,7 +14704,7 @@
           }
         ],
         "types": {
-          "cup_code": 8
+          "cup_code": 6
         }
       },
       "Provincia": {
@@ -14951,7 +14911,7 @@
           }
         ],
         "types": {
-          "province_code": 35
+          "province_code": 33
         }
       },
       "Provincia (tramite NUTS3)": {
@@ -15641,7 +15601,7 @@
           }
         ],
         "types": {
-          "year": 58,
+          "year": 57,
           "month": 7
         }
       }
@@ -15688,6 +15648,19 @@
       },
       {
         "from": {
+          "entity": "Progetto",
+          "dataset": "mit_opere_incompiute_2020",
+          "via": "cup_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "anac_cup",
+          "on": "cup",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
           "entity": "Ente",
           "dataset": "opencivitas_fsc_2025_rso",
           "via": "sogei_code"
@@ -15723,6 +15696,97 @@
           "bridge": "opencivitas_fsc_enti_rso",
           "on": "username",
           "semantic_type": "municipality_name"
+        }
+      },
+      {
+        "from": {
+          "entity": "Progetto",
+          "dataset": "opencoesione_progetti",
+          "via": "cup_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "anac_cup",
+          "on": "cup",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Gara",
+          "dataset": "openga_ricorsi_appalto",
+          "via": "cig_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "anac_bandi_gara",
+          "on": "cig",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Progetto",
+          "dataset": "pnrr_gare",
+          "via": "cup_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "anac_cup",
+          "on": "cup",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Gara",
+          "dataset": "pnrr_gare",
+          "via": "cig_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "anac_bandi_gara",
+          "on": "cig",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Progetto",
+          "dataset": "pnrr_pagamenti",
+          "via": "cup_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "anac_cup",
+          "on": "cup",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Progetto",
+          "dataset": "pnrr_progetti",
+          "via": "cup_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "anac_cup",
+          "on": "cup",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Progetto",
+          "dataset": "silos_infrastrutture",
+          "via": "cup_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "anac_cup",
+          "on": "cup",
+          "semantic_type": "municipality_code"
         }
       }
     ]
