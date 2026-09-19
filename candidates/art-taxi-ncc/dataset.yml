@@ -1,0 +1,53 @@
+# ART D32 — Diffusione TAXI e NCC per comune (2024)
+# Fonte: Autorità di Regolazione dei Trasporti via dati.gov.it
+# Issue intake: #665
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "art_taxi_ncc"
+  source_id: "art_opendata"
+  tags: [mobilita, taxi, trasporti, comuni]
+  category: mobilita
+  years: [2024]
+
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "art-taxi-ncc_source"
+      type: "http_file"
+      args:
+        url: "https://bdt.autorita-trasporti.it/wp-content/uploads/dcat/D32-Diffusione-TAXI-NCC-2024-v2.csv"
+        filename: "D32-Diffusione-TAXI-NCC-2024-v2.csv"
+      primary: true
+
+clean:
+  read:
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    # columns: auto-detected from header
+  required_columns: ["comune", "taxi", "ncc", "popolazione_residente"]
+  sql: "sql/clean.sql"
+  validate:
+    not_null: [comune, popolazione_residente]
+    primary_key: [comune]
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_taxi_ncc_per_capite"
+      sql: "sql/mart_taxi_ncc_per_capite.sql"
+  required_tables:
+    - "mart_taxi_ncc_per_capite"
+  validate:
+    table_rules:
+      mart_taxi_ncc_per_capite:
+        required_columns: [comune, taxi, ncc, popolazione_residente, taxi_per_10k, ncc_per_10k]
+        primary_key: [comune]
+        min_rows: 100
+
+validation:
+  fail_on_error: true
