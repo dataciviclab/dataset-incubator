@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-08-16",
+  "updated_at": "2026-09-17",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -346,1296 +346,6 @@
       "mart_refs": [
         "aifa_spesa_consumo__mart_mensile_regione_atc4"
       ]
-    },
-    {
-      "slug": "anac_aggiudicatari",
-      "name": "ANAC Aggiudicatari",
-      "description": "Anagrafica degli operatori economici aggiudicatari di appalti ordinari pubblicati: denominazione, codice fiscale, ruolo e tipo soggetto. Fonte ANAC, dump cumulativo. Join via id_aggiudicazione con anac_aggiudicazioni.",
-      "source": "ANAC - Autorità Nazionale Anticorruzione",
-      "source_id": "anac",
-      "period": {
-        "start": 2000,
-        "end": 2026
-      },
-      "tags": [
-        "appalti",
-        "anac",
-        "aggiudicatari"
-      ],
-      "category": "appalti",
-      "columns": [
-        {
-          "name": "cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG — join con anac_bandi_gara e anac_aggiudicazioni",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "ruolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Ruolo dell'operatore (OPERATORE ECONOMICO MONOSOGGETTIVO, IMPRESA AUSILIARIA, ecc.)"
-        },
-        {
-          "name": "codice_fiscale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale / partita IVA dell'operatore economico",
-          "semantic_type": "fiscal_code"
-        },
-        {
-          "name": "denominazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Ragione sociale dell'operatore economico"
-        },
-        {
-          "name": "tipo_soggetto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo soggetto (IMPRESA, DITTA INDIVIDUALE, STAZIONE APPALTANTE, ecc.)"
-        },
-        {
-          "name": "id_aggiudicazione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "ID aggiudicazione — join con anac_aggiudicazioni"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_aggiudicatari/2026/anac_aggiudicatari_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "anac_aggiudicazioni",
-      "name": "ANAC Aggiudicazioni",
-      "description": "Aggiudicazioni degli appalti ordinari pubblicati dalle stazioni appaltanti italiane: importo, esito, criteri di aggiudicazione, partecipazione (offerte ammesse/escluse, imprese offerenti), flag subappalto e asta elettronica. Fonte ANAC, dump cumulativo 2000-2026.",
-      "source": "ANAC - Autorità Nazionale Anticorruzione",
-      "source_id": "anac",
-      "period": {
-        "start": 2000,
-        "end": 2026
-      },
-      "tags": [
-        "appalti",
-        "anac",
-        "aggiudicazioni"
-      ],
-      "category": "appalti",
-      "columns": [
-        {
-          "name": "cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice Identificativo Gara — chiave di join con anac_bandi_gara",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "data_aggiudicazione_definitiva",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di aggiudicazione definitiva"
-        },
-        {
-          "name": "esito",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Esito dell'aggiudicazione (AGGIUDICATA, NON AGGIUDICATA, ANNULLATA, ecc.)"
-        },
-        {
-          "name": "criterio_aggiudicazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Criterio di aggiudicazione (minor prezzo, OEPV, qualità, ecc.)"
-        },
-        {
-          "name": "data_comunicazione_esito",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di comunicazione dell'esito"
-        },
-        {
-          "name": "numero_offerte_ammesse",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di offerte ammesse alla gara"
-        },
-        {
-          "name": "numero_offerte_escluse",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di offerte escluse dalla gara"
-        },
-        {
-          "name": "importo_aggiudicazione",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo di aggiudicazione in euro"
-        },
-        {
-          "name": "ribasso_aggiudicazione",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Ribasso percentuale offerto in sede di aggiudicazione"
-        },
-        {
-          "name": "num_imprese_offerenti",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di imprese che hanno presentato offerta"
-        },
-        {
-          "name": "flag_subappalto",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "Indicatore di subappalto autorizzato"
-        },
-        {
-          "name": "id_aggiudicazione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Identificativo univoco dell'aggiudicazione — join con aggiudicatari"
-        },
-        {
-          "name": "cod_esito",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice numerico dell'esito"
-        },
-        {
-          "name": "num_imprese_richiedenti",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di imprese richiedenti (per procedure ristrette)"
-        },
-        {
-          "name": "asta_elettronica",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "Flag asta elettronica"
-        },
-        {
-          "name": "num_imprese_invitate",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di imprese invitate (per procedure ristrette/negoziate)"
-        },
-        {
-          "name": "massimo_ribasso",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Massimo ribasso offerto"
-        },
-        {
-          "name": "minimo_ribasso",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Minimo ribasso offerto"
-        },
-        {
-          "name": "FLAG_SCOMPUTO",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Flag scomputo degli oneri di sicurezza"
-        },
-        {
-          "name": "COD_PRESTAZIONI_COMPRESE",
-          "type": "DOUBLE",
-          "role": "dimension",
-          "description": "Codice delle prestazioni comprese nell'aggiudicazione"
-        },
-        {
-          "name": "PRESTAZIONI_COMPRESE",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione delle prestazioni comprese (es. SOLA ESECUZIONE)"
-        },
-        {
-          "name": "CIG_PROG_ESTERNA",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG di programmazione esterna",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "DATA_INCARICO_PROG",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di incarico di programmazione"
-        },
-        {
-          "name": "DATA_CONS_PROG",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di consegna della programmazione"
-        },
-        {
-          "name": "COD_MODO_RIAGGIUDICAZIONE",
-          "type": "DOUBLE",
-          "role": "dimension",
-          "description": "Codice della modalità di riaggiudicazione"
-        },
-        {
-          "name": "MODO_RIAGGIUDICAZIONE",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Modalità di riaggiudicazione"
-        },
-        {
-          "name": "FLAG_PROC_ACCELERATA",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "Flag procedura accelerata"
-        },
-        {
-          "name": "N_MANIF_INTERESSE",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di manifestazioni di interesse ricevute"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_aggiudicazioni/2026/anac_aggiudicazioni_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "anac_appalti_master",
-      "name": "ANAC Appalti Master",
-      "description": "Compose di 8 dataset ANAC: bando → aggiudicazione → vincitore → collaudo, con partecipazione, subappalti, SAL e CUP. 6,08M CIG (2016-2025), grana 1 riga per CIG.",
-      "source": "DataCivicLab (composite: ANAC, 8 dataset)",
-      "source_id": "dataciviclab_composite",
-      "period": {
-        "start": 2016,
-        "end": 2025
-      },
-      "tags": [
-        "appalti",
-        "anac",
-        "master"
-      ],
-      "category": "appalti",
-      "columns": [
-        {
-          "name": "cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG — chiave primaria",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di pubblicazione del bando",
-          "semantic_type": "year"
-        },
-        {
-          "name": "oggetto_gara",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Oggetto della gara"
-        },
-        {
-          "name": "importo_complessivo_gara",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo complessivo del bando (include accordi quadro!)"
-        },
-        {
-          "name": "oggetto_principale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Settore: LAVORI / SERVIZI / FORNITURE"
-        },
-        {
-          "name": "stato",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Stato del bando (ATTIVO, ANNULLATO, ecc.)",
-          "semantic_type": "country_code"
-        },
-        {
-          "name": "esito_bando",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Esito del bando"
-        },
-        {
-          "name": "flag_pnrr",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "Bando legato al PNRR/PNC"
-        },
-        {
-          "name": "cod_cpv",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice CPV",
-          "semantic_type": "cpv_code"
-        },
-        {
-          "name": "descr_cpv",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione CPV"
-        },
-        {
-          "name": "amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione stazione appaltante"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia del luogo di esecuzione",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "sezione_regionale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sezione regionale ANAC"
-        },
-        {
-          "name": "importo_agg",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo di aggiudicazione (€)"
-        },
-        {
-          "name": "data_agg",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di aggiudicazione"
-        },
-        {
-          "name": "ribasso",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Ribasso percentuale di aggiudicazione"
-        },
-        {
-          "name": "offerte_ammesse",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di offerte ammesse"
-        },
-        {
-          "name": "flag_subappalto",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "Subappalto autorizzato"
-        },
-        {
-          "name": "criterio_agg",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Criterio di aggiudicazione"
-        },
-        {
-          "name": "operatore",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione operatore economico vincitore"
-        },
-        {
-          "name": "cf",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CF/P.IVA operatore vincitore",
-          "semantic_type": "fiscal_code"
-        },
-        {
-          "name": "tipo_soggetto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo soggetto vincitore"
-        },
-        {
-          "name": "n_operatori",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero operatori per CIG (ATI/RTI)"
-        },
-        {
-          "name": "n_partecipanti",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero partecipanti alla gara"
-        },
-        {
-          "name": "n_imprese_partecipanti",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero imprese distinte partecipanti"
-        },
-        {
-          "name": "n_subappalti",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero subappalti autorizzati"
-        },
-        {
-          "name": "n_subappaltatori",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero subappaltatori distinti"
-        },
-        {
-          "name": "esito_collaudo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Esito collaudo (POSITIVO / NEGATIVO)"
-        },
-        {
-          "name": "data_collaudo",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data collaudo"
-        },
-        {
-          "name": "riserve_avanzate",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Riserve avanzate (€)"
-        },
-        {
-          "name": "contenzioso",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo contenzioso risolto (€)"
-        },
-        {
-          "name": "n_sal",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero SAL registrati"
-        },
-        {
-          "name": "importo_totale_sal",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo totale SAL (€)"
-        },
-        {
-          "name": "scostamento_medio",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Scostamento medio giorni dal cronoprogramma"
-        },
-        {
-          "name": "cup",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CUP — bridge verso PNRR/OpenCUP",
-          "semantic_type": "cup_code"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_appalti_master/2026/anac_appalti_master_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "anac_bandi_gara",
-      "name": "ANAC Bandi di Gara (CIG)",
-      "description": "Bandi di gara pubblici italiani (CIG): oggetto, importi, stazione appaltante, territorio, CPV, esito e flag PNRR/urgenza/delega. Fonte ANAC, serie annuale 2016-2025.",
-      "source": "ANAC - Autorità Nazionale Anticorruzione",
-      "source_id": "anac",
-      "period": {
-        "start": 2016,
-        "end": 2025
-      },
-      "tags": [
-        "appalti",
-        "anac",
-        "bandi",
-        "gara"
-      ],
-      "category": "appalti",
-      "columns": [
-        {
-          "name": "cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice Identificativo Gara",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "cig_accordo_quadro",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG dell'accordo quadro di riferimento",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "CIG_COLLEGAMENTO",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG originario in caso di varianti/modifiche",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "CUI_PROGRAMMA",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice Unico di Programma — join con OpenCoesione"
-        },
-        {
-          "name": "numero_gara",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Numero identificativo della gara"
-        },
-        {
-          "name": "oggetto_gara",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Oggetto/descrizione della gara"
-        },
-        {
-          "name": "importo_complessivo_gara",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo complessivo della gara (intero, non per lotto)"
-        },
-        {
-          "name": "n_lotti_componenti",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di lotti in cui è suddivisa la gara"
-        },
-        {
-          "name": "oggetto_lotto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Oggetto/descrizione del singolo lotto"
-        },
-        {
-          "name": "importo_lotto",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo del singolo lotto"
-        },
-        {
-          "name": "oggetto_principale_contratto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Categoria principale del contratto (LAVORI/SERVIZI/FORNITURE)"
-        },
-        {
-          "name": "stato",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Stato della gara (ATTIVO, ANNULLATO, ecc.)",
-          "semantic_type": "country_code"
-        },
-        {
-          "name": "settore",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Settore (SETTORI ORDINARI, SETTORI SPECIALI)"
-        },
-        {
-          "name": "codice_istat_luogo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT del luogo di esecuzione",
-          "semantic_type": "municipality_code"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia del luogo di esecuzione",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "data_pubblicazione",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di pubblicazione del bando"
-        },
-        {
-          "name": "data_scadenza_offerta",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di scadenza per la presentazione delle offerte"
-        },
-        {
-          "name": "cod_tipo_scelta_contraente",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": "Codice della procedura di scelta del contraente"
-        },
-        {
-          "name": "tipo_scelta_contraente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo di procedura (APERTA, NEGOZIATA, AFFIDAMENTO DIRETTO, ecc.)"
-        },
-        {
-          "name": "cod_modalita_realizzazione",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": "Codice modalità di realizzazione"
-        },
-        {
-          "name": "modalita_realizzazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Modalità di realizzazione (CONTRATTO D'APPALTO, CONCESSIONE, ecc.)"
-        },
-        {
-          "name": "codice_ausa",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice AUSA (Anagrafe Unica Stazioni Appaltanti)",
-          "semantic_type": "ausa_code"
-        },
-        {
-          "name": "cf_amministrazione_appaltante",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale della stazione appaltante",
-          "semantic_type": "fiscal_code"
-        },
-        {
-          "name": "denominazione_amministrazione_appaltante",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione della stazione appaltante"
-        },
-        {
-          "name": "sezione_regionale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sezione regionale ANAC competente"
-        },
-        {
-          "name": "id_centro_costo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Identificativo del centro di costo"
-        },
-        {
-          "name": "denominazione_centro_costo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione del centro di costo"
-        },
-        {
-          "name": "anno_pubblicazione",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Anno di pubblicazione del bando"
-        },
-        {
-          "name": "mese_pubblicazione",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Mese di pubblicazione del bando"
-        },
-        {
-          "name": "cod_cpv",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice CPV (Vocabolario comune per gli appalti pubblici)",
-          "semantic_type": "cpv_code"
-        },
-        {
-          "name": "descrizione_cpv",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione del codice CPV"
-        },
-        {
-          "name": "flag_pnrr",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "Indicatore PNRR/PNC (Vero se la gara è legata al Piano)"
-        },
-        {
-          "name": "flag_urgenza",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "Indicatore di urgenza"
-        },
-        {
-          "name": "flag_delega",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "Indicatore di delega a centrale di committenza"
-        },
-        {
-          "name": "COD_MODALITA_INDIZIONE_SPECIALI",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "(raw) Codice modalità indizione speciali"
-        },
-        {
-          "name": "MODALITA_INDIZIONE_SPECIALI",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "(raw) Modalità indizione speciali"
-        },
-        {
-          "name": "COD_MODALITA_INDIZIONE_SERVIZI",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "(raw) Codice modalità indizione servizi"
-        },
-        {
-          "name": "MODALITA_INDIZIONE_SERVIZI",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "(raw) Modalità indizione servizi"
-        },
-        {
-          "name": "durata_prevista",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Durata prevista del contratto (mesi)"
-        },
-        {
-          "name": "COD_STRUMENTO_SVOLGIMENTO",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "(raw) Codice strumento di svolgimento"
-        },
-        {
-          "name": "STRUMENTO_SVOLGIMENTO",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "(raw) Strumento di svolgimento"
-        },
-        {
-          "name": "COD_MOTIVO_URGENZA",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "(raw) Codice motivo urgenza"
-        },
-        {
-          "name": "motivo_urgenza",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Motivo dell'urgenza dichiarata (normalizzato UPPER)"
-        },
-        {
-          "name": "funzioni_delegate",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Funzioni delegate alla centrale di committenza (normalizzato UPPER)"
-        },
-        {
-          "name": "CF_SA_DELEGANTE",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale stazione appaltante delegante"
-        },
-        {
-          "name": "DENOMINAZIONE_SA_DELEGANTE",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione stazione appaltante delegante"
-        },
-        {
-          "name": "CF_SA_DELEGATA",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale stazione appaltante delegata"
-        },
-        {
-          "name": "DENOMINAZIONE_SA_DELEGATA",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione stazione appaltante delegata"
-        },
-        {
-          "name": "importo_sicurezza",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo per oneri di sicurezza"
-        },
-        {
-          "name": "COD_ESITO",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "(raw) Codice esito della gara"
-        },
-        {
-          "name": "ESITO",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Esito della gara (AGGIUDICATA, NON AGGIUDICATA, ecc.)"
-        },
-        {
-          "name": "data_comunicazione_esito",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di comunicazione dell'esito"
-        },
-        {
-          "name": "data_cancellazione",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di cancellazione della gara (se annullata)"
-        },
-        {
-          "name": "COD_MOTIVO_CANCELLAZIONE",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Codice motivo cancellazione"
-        },
-        {
-          "name": "MOTIVO_CANCELLAZIONE",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "(raw) Motivo della cancellazione"
-        },
-        {
-          "name": "TIPO_APPALTO_RISERVATO",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo di appalto riservato (cooperative sociali, inclusione)"
-        },
-        {
-          "name": "data_ultimo_perfezionamento",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data ultimo perfezionamento"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_bandi_gara/*/anac_bandi_gara_*_clean.parquet",
-        "multi_file": true
-      },
-      "stage": "published",
-      "mart_refs": [
-        "anac_bandi_gara__mart_bandi_annuale",
-        "anac_bandi_gara__mart_trend_pnrr",
-        "anac_bandi_gara__mart_top_stazioni",
-        "anac_bandi_gara__mart_esiti_per_procedura",
-        "anac_bandi_gara__mart_trend_settore"
-      ]
-    },
-    {
-      "slug": "anac_collaudo",
-      "name": "ANAC Collaudo",
-      "description": "Certificazioni di collaudo (o regolare esecuzione) degli appalti ordinari: esito, date, riserve e contenzioso. Fonte ANAC. Join via cig + id_aggiudicazione con anac_aggiudicazioni. Chiude il ciclo di vita del contratto.",
-      "source": "ANAC - Autorità Nazionale Anticorruzione",
-      "source_id": "anac",
-      "period": {
-        "start": 2000,
-        "end": 2026
-      },
-      "tags": [
-        "appalti",
-        "anac",
-        "collaudo"
-      ],
-      "category": "appalti",
-      "columns": [
-        {
-          "name": "cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG del contratto — join con anac_bandi_gara e anac_aggiudicazioni",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "data_delibera",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data delibera collaudo"
-        },
-        {
-          "name": "data_cert_collaudo",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data certificato collaudo"
-        },
-        {
-          "name": "esito_collaudo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Esito collaudo (POSITIVO / NEGATIVO)"
-        },
-        {
-          "name": "data_inizio_oper",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data inizio operatività"
-        },
-        {
-          "name": "data_regolare_esec",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data regolare esecuzione"
-        },
-        {
-          "name": "data_nomina_coll",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data nomina collaudatore"
-        },
-        {
-          "name": "data_collaudo_stat",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data collaudo statico"
-        },
-        {
-          "name": "id_aggiudicazione",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "ID aggiudicazione — join con anac_aggiudicazioni"
-        },
-        {
-          "name": "riserve_avanzate",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Riserve avanzate (€)"
-        },
-        {
-          "name": "riserve_definite",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Riserve definite (€)"
-        },
-        {
-          "name": "importo_contenz_risolto",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo contenzioso risolto (€)"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_collaudo/2026/anac_collaudo_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "anac_cup",
-      "name": "ANAC CUP",
-      "description": "Bridge table CIG→CUP: associa ogni CIG (Codice Identificativo Gara) al suo CUP (Codice Unico di Progetto). Collega l'universo ANAC (appalti) ai progetti (OpenCUP, PNRR, BDAP MOP). 7,12M righe.",
-      "source": "ANAC - Autorità Nazionale Anticorruzione",
-      "source_id": "anac",
-      "period": {
-        "start": 2000,
-        "end": 2026
-      },
-      "tags": [
-        "appalti",
-        "anac",
-        "cup"
-      ],
-      "category": "appalti",
-      "columns": [
-        {
-          "name": "cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG — join con tutti i dataset ANAC",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "cup",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CUP — join con PNRR, OpenCUP, BDAP MOP",
-          "semantic_type": "cup_code"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_cup/2026/anac_cup_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "anac_partecipanti",
-      "name": "ANAC Partecipanti",
-      "description": "Anagrafica dei partecipanti alle gare pubbliche (non solo vincitori): denominazione, codice fiscale, ruolo e tipo soggetto. Fonte ANAC. Join via cig con anac_bandi_gara e anac_aggiudicazioni, via codice_fiscale con anac_aggiudicatari.",
-      "source": "ANAC - Autorità Nazionale Anticorruzione",
-      "source_id": "anac",
-      "period": {
-        "start": 2023,
-        "end": 2026
-      },
-      "tags": [
-        "appalti",
-        "anac",
-        "partecipanti"
-      ],
-      "category": "appalti",
-      "columns": [
-        {
-          "name": "cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG della gara — join con anac_bandi_gara e anac_aggiudicazioni",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "ruolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Ruolo del partecipante"
-        },
-        {
-          "name": "codice_fiscale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale / partita IVA del partecipante",
-          "semantic_type": "fiscal_code"
-        },
-        {
-          "name": "denominazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Ragione sociale del partecipante"
-        },
-        {
-          "name": "tipo_soggetto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo soggetto (IMPRESA, DITTA INDIVIDUALE, ecc.)"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_partecipanti/2026/anac_partecipanti_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "anac_stati_avanzamento",
-      "name": "ANAC Stati Avanzamento",
-      "description": "Stati di Avanzamento Lavori (SAL) degli appalti ordinari: importi, date, ritardi e scostamenti dal cronoprogramma. Fonte ANAC. 1,27M righe, ~3,7 SAL per CIG. Join via cig + id_aggiudicazione con anac_aggiudicazioni.",
-      "source": "ANAC - Autorità Nazionale Anticorruzione",
-      "source_id": "anac",
-      "period": {
-        "start": 2000,
-        "end": 2026
-      },
-      "tags": [
-        "appalti",
-        "anac",
-        "stati",
-        "avanzamento"
-      ],
-      "category": "appalti",
-      "columns": [
-        {
-          "name": "cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG del contratto — join con anac_bandi_gara e anac_aggiudicazioni",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "denominazione_sal",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione SAL"
-        },
-        {
-          "name": "flag_ritardo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "IN LINEA / IN RITARDO / IN ANTICIPO"
-        },
-        {
-          "name": "data_emissione_sal",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data emissione SAL"
-        },
-        {
-          "name": "importo_sal",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo del SAL (€)"
-        },
-        {
-          "name": "n_giorni_scostamento",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Giorni di scostamento dal cronoprogramma"
-        },
-        {
-          "name": "progressivo_sal",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero progressivo del SAL"
-        },
-        {
-          "name": "id_aggiudicazione",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "ID aggiudicazione — join con anac_aggiudicazioni"
-        },
-        {
-          "name": "data_cert_pagamento",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data certificato di pagamento"
-        },
-        {
-          "name": "importo_cert_pagamento",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo certificato di pagamento (€)"
-        },
-        {
-          "name": "giorni_proroga",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Giorni di proroga concessi"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_stati_avanzamento/2026/anac_stati_avanzamento_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "anac_subappalti",
-      "name": "ANAC Subappalti",
-      "description": "Autorizzazioni al subappalto negli appalti ordinari pubblicati: chi subappalta a chi, per quali lavori, in quali categorie e CPV. Fonte ANAC. Join via cig con anac_bandi_gara e anac_aggiudicazioni, via codice_fiscale con anac_aggiudicatari.",
-      "source": "ANAC - Autorità Nazionale Anticorruzione",
-      "source_id": "anac",
-      "period": {
-        "start": 2020,
-        "end": 2026
-      },
-      "tags": [
-        "appalti",
-        "anac",
-        "subappalti"
-      ],
-      "category": "appalti",
-      "columns": [
-        {
-          "name": "cig",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CIG del contratto principale — join con bandi e aggiudicazioni",
-          "semantic_type": "cig_code"
-        },
-        {
-          "name": "id_subappalto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "ID univoco del subappalto"
-        },
-        {
-          "name": "cf_subappaltante",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CF dell'aggiudicatario che subappalta (join con aggiudicatari)",
-          "semantic_type": "fiscal_code"
-        },
-        {
-          "name": "data_autorizzazione",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di autorizzazione del subappalto"
-        },
-        {
-          "name": "oggetto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Oggetto del subappalto"
-        },
-        {
-          "name": "cod_categoria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice categoria lavori del subappalto"
-        },
-        {
-          "name": "descrizione_categoria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione della categoria lavori"
-        },
-        {
-          "name": "classe_importo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Classe di importo del subappalto"
-        },
-        {
-          "name": "descrizione_tipo_categoria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo categoria (PREVALENTE, ecc.)"
-        },
-        {
-          "name": "cod_cpv",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice CPV del subappalto",
-          "semantic_type": "cpv_code"
-        },
-        {
-          "name": "descrizione_cpv",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione del CPV"
-        },
-        {
-          "name": "codice_fiscale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "CF dell'operatore che esegue il subappalto",
-          "semantic_type": "fiscal_code"
-        },
-        {
-          "name": "denominazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Ragione sociale dell'esecutore del subappalto"
-        },
-        {
-          "name": "ruolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Ruolo dell'operatore nel subappalto"
-        },
-        {
-          "name": "tipo_soggetto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo soggetto dell'esecutore"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/anac_subappalti/2026/anac_subappalti_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
     },
     {
       "slug": "anpr_mobilita_residenziale",
@@ -2128,98 +838,6 @@
       "stage": "published"
     },
     {
-      "slug": "bdap_entrate_stato",
-      "name": "BDAP Entrate Stato - Serie Storica",
-      "description": "Entrate statali da BDAP, aggregate per titolo, natura, tipologia, provento",
-      "source": "MEF-BDAP",
-      "source_id": "openbdap",
-      "period": {
-        "start": 2008,
-        "end": 2024
-      },
-      "tags": [
-        "finanza-pubblica",
-        "bdap",
-        "entrate"
-      ],
-      "category": "finanza-pubblica",
-      "columns": [
-        {
-          "name": "esercizio_finanziario",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "codice_titolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice del titolo di entrata"
-        },
-        {
-          "name": "titolo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione del titolo (es: TITOLO I - ENTRATE TRIBUTARIE)"
-        },
-        {
-          "name": "codice_natura",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice della natura"
-        },
-        {
-          "name": "natura",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione della natura (es: Entrate ricorrenti)"
-        },
-        {
-          "name": "codice_tipologia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice della tipologia"
-        },
-        {
-          "name": "tipologia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione della tipologia"
-        },
-        {
-          "name": "codice_provento",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice del provento"
-        },
-        {
-          "name": "provento",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione del provento"
-        },
-        {
-          "name": "previsioni_definitive_cp",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Previsioni definitive competenze di cassa"
-        },
-        {
-          "name": "previsioni_definitive_cs",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Previsioni definitive competenze di competenza"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_entrate_stato/2024/bdap_entrate_stato_2024_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
       "slug": "bdap_lea",
       "name": "Bdap Lea",
       "description": "Spesa sanitaria enti SSN per regione — Modello LEA (BDAP RGS MEF). Consumi, personale, servizi e altre voci di costo delle ASL italiane.",
@@ -2382,231 +1000,6 @@
         "type": "gcs",
         "path": "gs://dataciviclab-clean/bdap_lea/*/bdap_lea_*_clean.parquet",
         "multi_file": true
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "bdap_pagamenti_stato",
-      "name": "Pagamenti Bilancio dello Stato (consuntivo)",
-      "description": "Consuntivo dei pagamenti del bilancio dello Stato per amministrazione, missione e categoria economica, 2014-2025. Fonte: MEF RGS OpenBDAP. Completa il triangolo previsione (BDAP spese) → stima (OCPI) → consuntivo; include la missione \"Debito pubblico\" con interessi e rimborsi pagati realmente.",
-      "source": "MEF — Ragioneria Generale dello Stato / OpenBDAP",
-      "source_id": "openbdap",
-      "period": {
-        "start": 2014,
-        "end": 2025
-      },
-      "tags": [
-        "finanza-pubblica",
-        "bdap",
-        "pagamenti",
-        "consuntivo",
-        "bilancio-stato"
-      ],
-      "category": "finanza-pubblica",
-      "columns": [
-        {
-          "name": "esercizio_finanziario",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno contabile",
-          "semantic_type": "year"
-        },
-        {
-          "name": "codice_stp",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ministero (STP)"
-        },
-        {
-          "name": "amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Amministrazione dello Stato"
-        },
-        {
-          "name": "codice_missione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice missione"
-        },
-        {
-          "name": "missione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Missione di spesa"
-        },
-        {
-          "name": "codice_categoria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice categoria economica"
-        },
-        {
-          "name": "categoria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Categoria economica"
-        },
-        {
-          "name": "op_erario",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Pagamenti per ordini di pagamento (erario)"
-        },
-        {
-          "name": "op_tesoreria",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Pagamenti per ordini di pagamento (tesoreria)"
-        },
-        {
-          "name": "op_esterno",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Pagamenti per ordini di pagamento (esterno)"
-        },
-        {
-          "name": "oa_tesoreria",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Pagamenti per ordini di accreditamento (tesoreria)"
-        },
-        {
-          "name": "oa_spesa_funz_deleg",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Pagamenti per spese funzionali delegate"
-        },
-        {
-          "name": "rsf_stipendi",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Pagamenti ruoli di spesa fissa — stipendi"
-        },
-        {
-          "name": "rsf_altro",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Pagamenti ruoli di spesa fissa — altro"
-        },
-        {
-          "name": "note_imputazione",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Pagamenti via note di imputazione"
-        },
-        {
-          "name": "totale_pagato",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Totale pagato (somma canali)"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_pagamenti_stato/*/bdap_pagamenti_stato_*_clean.parquet",
-        "multi_file": true
-      },
-      "stage": "incubating",
-      "mart_refs": [
-        "bdap_pagamenti_stato__mart_pagamenti_missione_categoria"
-      ]
-    },
-    {
-      "slug": "bdap_spese_stato",
-      "name": "BDAP Spese Stato",
-      "description": "Spese statali da BDAP, aggregate per amministrazione, missione, programma, macroaggregato",
-      "source": "MEF-BDAP",
-      "source_id": "openbdap",
-      "period": {
-        "start": 2008,
-        "end": 2024
-      },
-      "tags": [
-        "finanza-pubblica",
-        "bdap",
-        "spese"
-      ],
-      "category": "finanza-pubblica",
-      "columns": [
-        {
-          "name": "esercizio_finanziario",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "stato_previsione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Stato della previsione (Previsioni definitive)"
-        },
-        {
-          "name": "amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Amministrazione dello Stato"
-        },
-        {
-          "name": "missione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Missione di spesa"
-        },
-        {
-          "name": "programma",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Programma di spesa"
-        },
-        {
-          "name": "udv_livello_1",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Unità di voto livello 1"
-        },
-        {
-          "name": "udv_livello_2",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Unità di voto livello 2"
-        },
-        {
-          "name": "udv_livello_3",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Unità di voto livello 3"
-        },
-        {
-          "name": "codice_puntato_udv",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice puntato unità di voto"
-        },
-        {
-          "name": "macroaggregato",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Macroaggregato economico"
-        },
-        {
-          "name": "previsioni_definitive_cp",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Previsioni definitive competenze di cassa"
-        },
-        {
-          "name": "previsioni_definitive_cs",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Previsioni definitive competenze di competenza"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/bdap_spese_stato/2024/bdap_spese_stato_2024_clean.parquet",
-        "multi_file": false
       },
       "stage": "published"
     },
@@ -7787,676 +6180,6 @@
       ]
     },
     {
-      "slug": "mef_patrimonio_detenzioni",
-      "name": "MEF — Detenzioni a favore di terzi di immobili pubblici",
-      "description": "Detenzioni a favore di terzi di immobili pubblici dichiarate dalle PA. Include tipo detenzione, canone annuo, decorrenza/scadenza, soggetto ricevente. Fonte: MEF Dipartimento Economia, censimento immobili pubblici (art.2 c.222 L.191/2009).",
-      "source": "MEF — Dipartimento dell'Economia (Open Data Immobili PA)",
-      "source_id": "mef_de",
-      "period": {
-        "start": 2022,
-        "end": 2023
-      },
-      "tags": [
-        "finanza-pubblica",
-        "mef",
-        "patrimonio",
-        "detenzioni"
-      ],
-      "category": "finanza-pubblica",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento del censimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "id_variazione",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Identificativo univoco della variazione/detenzione"
-        },
-        {
-          "name": "settore_istituzionale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Settore istituzionale dell'ente dichiarante (S13/NON S13)"
-        },
-        {
-          "name": "macrocategoria_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Macrocategoria dell'ente dichiarante"
-        },
-        {
-          "name": "tipologia_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia dell'ente dichiarante (Comuni, Regioni, ASL, ...)"
-        },
-        {
-          "name": "amministrazione_denominazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione dell'ente che cede in detenzione"
-        },
-        {
-          "name": "amministrazione_codice_fiscale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale dell'ente cedente",
-          "semantic_type": "fiscal_code"
-        },
-        {
-          "name": "reg_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Regione dell'ente cedente"
-        },
-        {
-          "name": "prov_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia dell'ente cedente"
-        },
-        {
-          "name": "comune_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Comune dell'ente cedente"
-        },
-        {
-          "name": "codice_comune_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT del comune dell'ente cedente"
-        },
-        {
-          "name": "tipo_detenzione_terzi",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo detenzione: in locazione, uso gratuito, concessione, gestione per conto di"
-        },
-        {
-          "name": "detenzione_intera_ui",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Indica se la detenzione riguarda l'intera unità immobiliare (Sì/No)"
-        },
-        {
-          "name": "superficie_detenzione_mq",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Superficie in detenzione in metri quadri"
-        },
-        {
-          "name": "canone_annuale",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Canone annuo in euro"
-        },
-        {
-          "name": "data_decorrenza",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di decorrenza della detenzione"
-        },
-        {
-          "name": "data_scadenza",
-          "type": "DATE",
-          "role": "dimension",
-          "description": "Data di scadenza della detenzione (null se aperta)"
-        },
-        {
-          "name": "soggetto_ricevente_tipo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo soggetto ricevente: PF (persona fisica) o PG (persona giuridica)"
-        },
-        {
-          "name": "soggetto_ricevente_denominazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione del soggetto che beneficia della detenzione"
-        },
-        {
-          "name": "soggetto_ricevente_cf",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale del soggetto ricevente"
-        },
-        {
-          "name": "soggetto_ricevente_pa",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "True se il soggetto ricevente è una pubblica amministrazione"
-        },
-        {
-          "name": "finalita_pf",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Finalità della detenzione per persona fisica"
-        },
-        {
-          "name": "id_bene",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Identificativo del bene immobile (FK → mef_patrimonio_immobili)"
-        },
-        {
-          "name": "natura_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Natura del bene: FABBRICATO o TERRENO"
-        },
-        {
-          "name": "tipologia_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia del bene immobile (ufficio, abitazione, terreno agricolo, ...)"
-        },
-        {
-          "name": "superficie_riferimento_mq",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Superficie di riferimento del bene in metri quadri"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/mef_patrimonio_detenzioni/*/mef_patrimonio_detenzioni_*_clean.parquet",
-        "multi_file": true
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "mef_patrimonio_enti",
-      "name": "MEF — Enti adempienti e non adempienti censimento immobili",
-      "description": "Anagrafe degli enti pubblici con stato di adempimento al censimento immobiliare MEF. Include obbligo di comunicazione, invio, dichiarazione negativa, e numero di beni dichiarati. Fonte: MEF Dipartimento Economia.",
-      "source": "MEF — Dipartimento dell'Economia (Open Data Immobili PA)",
-      "source_id": "mef_de",
-      "period": {
-        "start": 2022,
-        "end": 2023
-      },
-      "tags": [
-        "finanza-pubblica",
-        "mef",
-        "patrimonio",
-        "enti"
-      ],
-      "category": "finanza-pubblica",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento del censimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "settore_istituzionale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Settore istituzionale dell'ente (S13/NON S13)"
-        },
-        {
-          "name": "macrocategoria_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Macrocategoria: Amministrazioni Locali, Centrali, ..."
-        },
-        {
-          "name": "tipologia_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia ente: Comuni, Regioni, ASL, Università, ..."
-        },
-        {
-          "name": "amministrazione_denominazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione dell'amministrazione"
-        },
-        {
-          "name": "amministrazione_codice_fiscale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale dell'amministrazione",
-          "semantic_type": "fiscal_code"
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Regione dell'amministrazione",
-          "semantic_type": "region_code"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia dell'amministrazione",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Comune dell'amministrazione",
-          "semantic_type": "municipality_name"
-        },
-        {
-          "name": "codice_comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT del comune",
-          "semantic_type": "municipality_code"
-        },
-        {
-          "name": "num_beni_proprieta",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": "Numero di beni immobili in proprietà dichiarati"
-        },
-        {
-          "name": "num_beni_detenzione",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": "Numero di beni immobili in detenzione dichiarati"
-        },
-        {
-          "name": "dichiarazione_negativa",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "True se l'ente ha dichiarato di non possedere beni"
-        },
-        {
-          "name": "dichiarazione_completezza",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "True se l'ente ha dichiarato completezza dei dati"
-        },
-        {
-          "name": "invio_comunicazione",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "True se l'ente ha inviato la comunicazione"
-        },
-        {
-          "name": "obbligo_comunicazione",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": "True se l'ente aveva obbligo di comunicazione"
-        },
-        {
-          "name": "nome_sezione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Nome della sezione di appartenenza"
-        },
-        {
-          "name": "nome_file_immobili",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Nome del file ZIP contenente i dati immobiliari"
-        },
-        {
-          "name": "nome_file_detenzioni",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Nome del file ZIP contenente le detenzioni"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/mef_patrimonio_enti/*/mef_patrimonio_enti_*_clean.parquet",
-        "multi_file": true
-      },
-      "stage": "published"
-    },
-    {
-      "slug": "mef_patrimonio_immobili",
-      "name": "MEF — Catalogo immobili pubblici italiani",
-      "description": "Catalogo completo degli immobili pubblici italiani dichiarati dalle PA. 51 colonne: anagrafica ente, dati catastali, coordinate geografiche (100% georeferenziato), superficie, destinazione d'uso, stato d'uso, vincoli. Fonte: MEF Dipartimento Economia, censimento immobili pubblici.",
-      "source": "MEF — Dipartimento dell'Economia (Open Data Immobili PA)",
-      "source_id": "mef_de",
-      "period": {
-        "start": 2022,
-        "end": 2023
-      },
-      "tags": [
-        "finanza-pubblica",
-        "mef",
-        "patrimonio",
-        "immobili"
-      ],
-      "category": "finanza-pubblica",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento del censimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "settore_istituzionale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Settore istituzionale dell'ente proprietario/detentore"
-        },
-        {
-          "name": "macrocategoria_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Macrocategoria dell'ente proprietario/detentore"
-        },
-        {
-          "name": "tipologia_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia dell'ente proprietario/detentore"
-        },
-        {
-          "name": "amministrazione_denominazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione dell'ente proprietario/detentore"
-        },
-        {
-          "name": "amministrazione_codice_fiscale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale dell'ente",
-          "semantic_type": "fiscal_code"
-        },
-        {
-          "name": "reg_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Regione dell'ente"
-        },
-        {
-          "name": "prov_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia dell'ente"
-        },
-        {
-          "name": "comune_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Comune dell'ente"
-        },
-        {
-          "name": "codice_comune_amministrazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT del comune dell'ente"
-        },
-        {
-          "name": "titolo_proprieta",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Titolo di proprietà del bene"
-        },
-        {
-          "name": "quota_proprieta",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Quota di proprietà in percentuale"
-        },
-        {
-          "name": "titolo_detenzione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Titolo di detenzione del bene"
-        },
-        {
-          "name": "detenzione_intera_ui",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Detenzione sull'intera unità immobiliare (Sì/No)"
-        },
-        {
-          "name": "superficie_detenzione_mq",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Superficie in detenzione in metri quadri"
-        },
-        {
-          "name": "canone_annuale",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Canone annuale in euro"
-        },
-        {
-          "name": "soggetto_cedente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione del soggetto cedente"
-        },
-        {
-          "name": "soggetto_cedente_cf",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice fiscale del soggetto cedente"
-        },
-        {
-          "name": "id_bene",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Identificativo univoco del bene (PK, FK → mef_patrimonio_detenzioni)"
-        },
-        {
-          "name": "natura_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Natura del bene: FABBRICATO o TERRENO"
-        },
-        {
-          "name": "stato_accatastamento",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Stato di accatastamento del bene"
-        },
-        {
-          "name": "sistema_catastale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sistema catastale di riferimento"
-        },
-        {
-          "name": "regione_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Regione in cui si trova il bene"
-        },
-        {
-          "name": "provincia_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia in cui si trova il bene"
-        },
-        {
-          "name": "comune_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Comune in cui si trova il bene"
-        },
-        {
-          "name": "codice_comune_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT del comune del bene"
-        },
-        {
-          "name": "indirizzo",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Indirizzo del bene"
-        },
-        {
-          "name": "numero_civico",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Numero civico del bene"
-        },
-        {
-          "name": "fonte_georef",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Fonte della georeferenziazione"
-        },
-        {
-          "name": "precisione_georef",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Precisione della georeferenziazione"
-        },
-        {
-          "name": "immobile_georef",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Indica se l'immobile è georeferenziato (Sì/No)"
-        },
-        {
-          "name": "latitudine",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Latitudine del bene (WGS84)"
-        },
-        {
-          "name": "longitudine",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Longitudine del bene (WGS84)"
-        },
-        {
-          "name": "identificativo_catastale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Identificativo catastale del bene"
-        },
-        {
-          "name": "codice_bene_non_accatastato",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice del bene se non accatastato"
-        },
-        {
-          "name": "tipologia_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia del bene (ufficio, abitazione, terreno, ...)"
-        },
-        {
-          "name": "superficie_mq",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Superficie in metri quadri"
-        },
-        {
-          "name": "cubatura_mc",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Cubatura in metri cubi"
-        },
-        {
-          "name": "sup_aree_pertinenziali_mq",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Superficie delle aree pertinenziali in metri quadri"
-        },
-        {
-          "name": "superficie_riferimento_mq",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Superficie di riferimento in metri quadri"
-        },
-        {
-          "name": "epoca_costruzione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Epoca di costruzione del bene"
-        },
-        {
-          "name": "vincoli",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Vincoli culturali/paesaggistici presenti"
-        },
-        {
-          "name": "natura_giuridica_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Natura giuridica del bene"
-        },
-        {
-          "name": "diritto_gravante_terreno",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Diritto gravante sul terreno"
-        },
-        {
-          "name": "id_compendio",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Identificativo del compendio immobiliare"
-        },
-        {
-          "name": "descrizione_compendio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione del compendio immobiliare"
-        },
-        {
-          "name": "tipologia_compendio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia del compendio immobiliare"
-        },
-        {
-          "name": "utilizzo_bene",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Stato d'uso del bene (Utilizzato, Non utilizzato, Inutilizzabile, ...)"
-        },
-        {
-          "name": "finalita",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Finalità d'uso del bene (attività amministrativa, didattica, culturale, ...)"
-        },
-        {
-          "name": "altra_finalita",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Altra finalità d'uso del bene"
-        },
-        {
-          "name": "ui_data_interamente_terzi",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "UI data interamente a terzi (Sì/No)"
-        },
-        {
-          "name": "ui_data_parzialmente_terzi",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "UI data parzialmente a terzi (Sì/No)"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/mef_patrimonio_immobili/*/mef_patrimonio_immobili_*_clean.parquet",
-        "multi_file": true
-      },
-      "stage": "published"
-    },
-    {
       "slug": "mef_rappresentanti_partecipate",
       "name": "MEF — Compensi Rappresentanti PA nelle Partecipate (2018-2023)",
       "description": "Compensi dei rappresentanti nominati dalle pubbliche amministrazioni nei consigli di amministrazione di societa partecipate. Include amministrazione, societa, rappresentante (nome e cognome), tipo incarico, importi. Fonte MEF Tesoro, 6 anni.",
@@ -10160,7 +7883,135 @@
         "path": "gs://dataciviclab-clean/opencoesione_progetti/2026/opencoesione_progetti_2026_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "opencoesione_progetti__mart_macroarea_tema"
+      ]
+    },
+    {
+      "slug": "opencoesione_soggetti",
+      "name": "Opencoesione Soggetti",
+      "description": "",
+      "source": "",
+      "source_id": "opencoesione",
+      "period": {
+        "start": 2007,
+        "end": 2027
+      },
+      "tags": [
+        "finanza-pubblica",
+        "opencoesione",
+        "soggetti",
+        "beneficiari"
+      ],
+      "category": "finanza-pubblica",
+      "columns": [
+        {
+          "name": "COD_LOCALE_PROGETTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "SOGG_COD_RUOLO",
+          "type": "BIGINT",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "SOGG_DESCR_RUOLO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "OC_CODICE_FISCALE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "OC_DENOMINAZIONE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "COD_FORMA_GIURIDICA_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "DESCR_FORMA_GIURIDICA_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "COD_COMUNE_SEDE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "INDIRIZZO_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "CAP_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "COD_ATECO_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "DESCRIZIONE_ATECO_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "COD_DIMENSIONE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "DESCR_DIMENSIONE_SOGG",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "CODICE_FISCALE_SOGGETTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "DENOMINAZIONE_SOGGETTO",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/opencoesione_soggetti/2026/opencoesione_soggetti_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "opencoesione_soggetti__mart_beneficiari"
+      ]
     },
     {
       "slug": "openga_ricorsi_appalto",
@@ -12366,123 +10217,6 @@
       "stage": "published"
     },
     {
-      "slug": "silos_infrastrutture",
-      "name": "Infrastrutture strategiche e prioritarie (SILOS)",
-      "description": "Censimento delle infrastrutture strategiche e prioritarie in Italia. Report annuale del Servizio Studi della Camera dei Deputati. Per ogni opera: CUP, denominazione, soggetto competente, localizzazione, stato di attuazione, costi, disponibilità finanziaria e fabbisogno residuo in milioni di euro.",
-      "source": "https://dati.camera.it/ocd/dump/silos/PISRapportoCSV2024.zip",
-      "source_id": "dati_camera",
-      "period": {
-        "start": 2004,
-        "end": 2024
-      },
-      "tags": [
-        "ambiente",
-        "silos",
-        "infrastrutture"
-      ],
-      "category": "ambiente",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento del report",
-          "semantic_type": "year"
-        },
-        {
-          "name": "link_scheda",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "URL della scheda opera su silos.infrastrutturestrategiche.it"
-        },
-        {
-          "name": "progressivo",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero progressivo dell'intervento nel report"
-        },
-        {
-          "name": "livello",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Livello gerarchico nella struttura ad albero del report"
-        },
-        {
-          "name": "flag_commissariato_pnrr",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Indicatore se l'opera è commissariata o legata a PNRR/PNC"
-        },
-        {
-          "name": "sistema_infrastrutturale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sistema infrastrutturale di appartenenza (Ferrovie, Strade, Porti, ecc.)"
-        },
-        {
-          "name": "cup",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice Unico di Progetto (CUP) dell'intervento",
-          "semantic_type": "cup_code"
-        },
-        {
-          "name": "denominazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione dell'intervento"
-        },
-        {
-          "name": "soggetto_competente",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Soggetto competente alla realizzazione (es. RFI, ANAS, TELT)"
-        },
-        {
-          "name": "luogo_lavori",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Localizzazione geografica principale dell'opera"
-        },
-        {
-          "name": "stato_attuazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Stato di attuazione (Lavori in corso, Conclusi, Progettazione, Bloccato, ecc.)"
-        },
-        {
-          "name": "anno_ultimazione_previsto",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno previsto per l'ultimazione dei lavori"
-        },
-        {
-          "name": "costi_mln_euro",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Costi totali dell'opera in milioni di euro"
-        },
-        {
-          "name": "disponibilita_mln_euro",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Disponibilità finanziaria in milioni di euro"
-        },
-        {
-          "name": "fabbisogno_mln_euro",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Fabbisogno residuo in milioni di euro"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/silos_infrastrutture/2024/silos_infrastrutture_2024_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
       "slug": "strutture_asl",
       "name": "Strutture Asl",
       "description": "Strutture e attività delle ASL — medici di base, pediatri, popolazione residente, servizi territoriali e presidi per regione — Ministero della Salute 2022",
@@ -13789,172 +11523,12 @@
       }
     },
     {
-      "slug": "ade_cinque_per_mille__ade_cinque_per_mille",
-      "dataset": "ade_cinque_per_mille",
-      "table": "ade_cinque_per_mille",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/ade_cinque_per_mille/2025/ade_cinque_per_mille.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "aifa_spesa_consumo__mart_mensile_regione_atc4",
       "dataset": "aifa_spesa_consumo",
       "table": "mart_mensile_regione_atc4",
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/aifa_spesa_consumo/2024/mart_mensile_regione_atc4.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_aggiudicatari__mart_aggiudicatari",
-      "dataset": "anac_aggiudicatari",
-      "table": "mart_aggiudicatari",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_aggiudicatari/2026/mart_aggiudicatari.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_aggiudicazioni__mart_aggiudicazioni_annuale",
-      "dataset": "anac_aggiudicazioni",
-      "table": "mart_aggiudicazioni_annuale",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_aggiudicazioni/2026/mart_aggiudicazioni_annuale.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_aggiudicazioni__mart_aggiudicazioni_dettaglio",
-      "dataset": "anac_aggiudicazioni",
-      "table": "mart_aggiudicazioni_dettaglio",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_aggiudicazioni/2026/mart_aggiudicazioni_dettaglio.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_appalti_master__mart_top_sa",
-      "dataset": "anac_appalti_master",
-      "table": "mart_top_sa",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_appalti_master/2026/mart_top_sa.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_appalti_master__mart_trend_annuale",
-      "dataset": "anac_appalti_master",
-      "table": "mart_trend_annuale",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_appalti_master/2026/mart_trend_annuale.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_bandi_gara__mart_bandi_annuale",
-      "dataset": "anac_bandi_gara",
-      "table": "mart_bandi_annuale",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_bandi_annuale.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_bandi_gara__mart_esiti_per_procedura",
-      "dataset": "anac_bandi_gara",
-      "table": "mart_esiti_per_procedura",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_esiti_per_procedura.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_bandi_gara__mart_top_stazioni",
-      "dataset": "anac_bandi_gara",
-      "table": "mart_top_stazioni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_top_stazioni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_bandi_gara__mart_trend_pnrr",
-      "dataset": "anac_bandi_gara",
-      "table": "mart_trend_pnrr",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_trend_pnrr.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_bandi_gara__mart_trend_settore",
-      "dataset": "anac_bandi_gara",
-      "table": "mart_trend_settore",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_bandi_gara/2025/mart_trend_settore.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_collaudo__mart_collaudo",
-      "dataset": "anac_collaudo",
-      "table": "mart_collaudo",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_collaudo/2026/mart_collaudo.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_cup__mart_cup",
-      "dataset": "anac_cup",
-      "table": "mart_cup",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_cup/2026/mart_cup.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_partecipanti__mart_partecipanti",
-      "dataset": "anac_partecipanti",
-      "table": "mart_partecipanti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_partecipanti/2026/mart_partecipanti.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_stati_avanzamento__mart_stati_avanzamento",
-      "dataset": "anac_stati_avanzamento",
-      "table": "mart_stati_avanzamento",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_stati_avanzamento/2026/mart_stati_avanzamento.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "anac_subappalti__mart_subappalti",
-      "dataset": "anac_subappalti",
-      "table": "mart_subappalti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/anac_subappalti/2026/mart_subappalti.parquet",
         "multi_file": false
       }
     },
@@ -13999,42 +11573,12 @@
       }
     },
     {
-      "slug": "bdap_entrate_stato__mart_entrate_titolo_natura_anno",
-      "dataset": "bdap_entrate_stato",
-      "table": "mart_entrate_titolo_natura_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/bdap_entrate_stato/2024/mart_entrate_titolo_natura_anno.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "bdap_lea__mart_spesa_enti",
       "dataset": "bdap_lea",
       "table": "mart_spesa_enti",
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/bdap_lea/2024/mart_spesa_enti.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "bdap_pagamenti_stato__mart_pagamenti_missione_categoria",
-      "dataset": "bdap_pagamenti_stato",
-      "table": "mart_pagamenti_missione_categoria",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/bdap_pagamenti_stato/2025/mart_pagamenti_missione_categoria.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "bdap_spese_stato__mart_spese_missione_anno",
-      "dataset": "bdap_spese_stato",
-      "table": "mart_spese_missione_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/bdap_spese_stato/2024/mart_spese_missione_anno.parquet",
         "multi_file": false
       }
     },
@@ -14305,36 +11849,6 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/intercettazioni/2025/intercettazioni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "ipa_aree_organizzative_omogenee__ipa_aree_organizzative_omogenee",
-      "dataset": "ipa_aree_organizzative_omogenee",
-      "table": "ipa_aree_organizzative_omogenee",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/ipa_aree_organizzative_omogenee/2026/ipa_aree_organizzative_omogenee.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "ipa_enti__ipa_enti",
-      "dataset": "ipa_enti",
-      "table": "ipa_enti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/ipa_enti/2026/ipa_enti.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "ipa_unita_organizzative__ipa_unita_organizzative",
-      "dataset": "ipa_unita_organizzative",
-      "table": "ipa_unita_organizzative",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/ipa_unita_organizzative/2026/ipa_unita_organizzative.parquet",
         "multi_file": false
       }
     },
@@ -14639,106 +12153,6 @@
       }
     },
     {
-      "slug": "mef_partecipazioni__mart_sintesi_regione",
-      "dataset": "mef_partecipazioni",
-      "table": "mart_sintesi_regione",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_partecipazioni/2023/mart_sintesi_regione.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_partecipazioni__mart_top_amministrazioni",
-      "dataset": "mef_partecipazioni",
-      "table": "mart_top_amministrazioni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_partecipazioni/2023/mart_top_amministrazioni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_partecipazioni__mart_trend_anno",
-      "dataset": "mef_partecipazioni",
-      "table": "mart_trend_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_partecipazioni/mart_trend_anno.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_patrimonio_detenzioni__mef_patrimonio_detenzioni",
-      "dataset": "mef_patrimonio_detenzioni",
-      "table": "mef_patrimonio_detenzioni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_patrimonio_detenzioni/2023/mef_patrimonio_detenzioni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_patrimonio_enti__mef_patrimonio_enti",
-      "dataset": "mef_patrimonio_enti",
-      "table": "mef_patrimonio_enti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_patrimonio_enti/2023/mef_patrimonio_enti.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_patrimonio_immobili__mef_patrimonio_immobili",
-      "dataset": "mef_patrimonio_immobili",
-      "table": "mef_patrimonio_immobili",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_patrimonio_immobili/2023/mef_patrimonio_immobili.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_rappresentanti_partecipate__mart_gender_gap",
-      "dataset": "mef_rappresentanti_partecipate",
-      "table": "mart_gender_gap",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_gender_gap.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_rappresentanti_partecipate__mart_sintesi_incarico",
-      "dataset": "mef_rappresentanti_partecipate",
-      "table": "mart_sintesi_incarico",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_sintesi_incarico.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_rappresentanti_partecipate__mart_top_amministrazioni",
-      "dataset": "mef_rappresentanti_partecipate",
-      "table": "mart_top_amministrazioni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/2023/mart_top_amministrazioni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mef_rappresentanti_partecipate__mart_trend_anno",
-      "dataset": "mef_rappresentanti_partecipate",
-      "table": "mart_trend_anno",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mef_rappresentanti_partecipate/mart_trend_anno.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "mim_alunni_corso_eta__mart_comune",
       "dataset": "mim_alunni_corso_eta",
       "table": "mart_comune",
@@ -14909,52 +12323,22 @@
       }
     },
     {
-      "slug": "opencivitas_fsc_2025_rso__mart_compose_comuni",
-      "dataset": "opencivitas_fsc_2025_rso",
-      "table": "mart_compose_comuni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/opencivitas_fsc_2025_rso/2025/mart_compose_comuni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "opencivitas_fsc_enti_rso__mart_enti",
-      "dataset": "opencivitas_fsc_enti_rso",
-      "table": "mart_enti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/opencivitas_fsc_enti_rso/2025/mart_enti.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "opencivitas_glossario__mart_metadati",
-      "dataset": "opencivitas_glossario",
-      "table": "mart_metadati",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/opencivitas_glossario/2022/mart_metadati.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "opencivitas_indicatori__mart_indicatori",
-      "dataset": "opencivitas_indicatori",
-      "table": "mart_indicatori",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/opencivitas_indicatori/2022/mart_indicatori.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "opencoesione_progetti__mart_macroarea_tema",
       "dataset": "opencoesione_progetti",
       "table": "mart_macroarea_tema",
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/opencoesione_progetti/2026/mart_macroarea_tema.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "opencoesione_soggetti__mart_beneficiari",
+      "dataset": "opencoesione_soggetti",
+      "table": "mart_beneficiari",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/opencoesione_soggetti/2026/mart_beneficiari.parquet",
         "multi_file": false
       }
     },
@@ -15189,16 +12573,6 @@
       }
     },
     {
-      "slug": "silos_infrastrutture__silos_infrastrutture",
-      "dataset": "silos_infrastrutture",
-      "table": "silos_infrastrutture",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/silos_infrastrutture/2024/silos_infrastrutture.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "strutture_asl__mart_regioni",
       "dataset": "strutture_asl",
       "table": "mart_regioni",
@@ -15257,16 +12631,6 @@
         "path": "gs://dataciviclab-mart/terna_electricity_by_source/2024/mart_mix_regioni.parquet",
         "multi_file": false
       }
-    },
-    {
-      "slug": "who_is_who_pa__who_is_who_pa",
-      "dataset": "who_is_who_pa",
-      "table": "who_is_who_pa",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/who_is_who_pa/2026/who_is_who_pa.parquet",
-        "multi_file": false
-      }
     }
   ],
   "signals": [
@@ -15277,36 +12641,6 @@
       "label": "aci_prime_iscrizioni_autovetture",
       "detail": "anno 2024 — mart: si",
       "action": ""
-    },
-    {
-      "id": "ade_cinque_per_mille",
-      "source_id": "ade",
-      "status": "ok",
-      "label": "ade_cinque_per_mille",
-      "detail": "anni 2023-2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260728T140724Z_2d4d475f",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 85,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 95977,
-          "mart": 21
-        },
-        "output_bytes": {
-          "raw": 10784519,
-          "clean": 3172301,
-          "mart": 3268
-        },
-        "started_at": "2026-07-28T14:07:24.076485+00:00",
-        "finished_at": "2026-07-28T14:07:46.805591+00:00",
-        "duration_seconds": 22.729
-      }
     },
     {
       "id": "aifa_spesa_consumo",
@@ -15339,45 +12673,6 @@
       }
     },
     {
-      "id": "anac_aggiudicazioni",
-      "source_id": "anac",
-      "status": "ok",
-      "label": "anac_aggiudicazioni",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "anac_bandi_gara",
-      "source_id": "anac",
-      "status": "ok",
-      "label": "anac_bandi_gara",
-      "detail": "anni 2016-2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260728T093933Z_e87c8a52",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 80,
-          "mart": 75
-        },
-        "output_rows": {
-          "raw": 1228909,
-          "clean": 1228909,
-          "mart": 419803
-        },
-        "output_bytes": {
-          "raw": 980659088,
-          "clean": 151704174,
-          "mart": 7643797
-        },
-        "started_at": "2026-07-28T09:39:33.538892+00:00",
-        "finished_at": "2026-07-28T09:42:56.910622+00:00",
-        "duration_seconds": 203.372
-      }
-    },
-    {
       "id": "anpr_mobilita_residenziale",
       "source_id": "anpr",
       "status": "ok",
@@ -15385,7 +12680,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260801T133743Z_75b44ded",
+        "run_id": "20260917T141937Z_1e9ff6a7",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -15394,34 +12689,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 22176,
-          "clean": 22176,
-          "mart": 2362
+          "raw": 23015,
+          "clean": 23015,
+          "mart": 2364
         },
         "output_bytes": {
-          "raw": 798721,
-          "clean": 46089,
-          "mart": 11914
+          "raw": 828622,
+          "clean": 47509,
+          "mart": 11887
         },
-        "started_at": "2026-08-01T13:37:43.676108+00:00",
-        "finished_at": "2026-08-01T13:37:45.384535+00:00",
-        "duration_seconds": 1.708
-      }
-    },
-    {
-      "id": "bdap_entrate_stato",
-      "source_id": "openbdap",
-      "status": "ok",
-      "label": "bdap_entrate_stato",
-      "detail": "anno 2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260731T163739Z_1a473287",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:39.488090+00:00",
-        "finished_at": "2026-07-31T16:37:39.494379+00:00",
-        "duration_seconds": 0.006
+        "started_at": "2026-09-17T14:19:37.037656+00:00",
+        "finished_at": "2026-09-17T14:19:38.129633+00:00",
+        "duration_seconds": 1.092
       }
     },
     {
@@ -15437,53 +12716,6 @@
         "status": "DRY_RUN",
         "started_at": "2026-07-31T16:37:44.040306+00:00",
         "finished_at": "2026-07-31T16:37:44.044617+00:00",
-        "duration_seconds": 0.004
-      }
-    },
-    {
-      "id": "bdap_pagamenti_stato",
-      "source_id": "openbdap",
-      "status": "ok",
-      "label": "bdap_pagamenti_stato",
-      "detail": "anni 2014-2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260816T082045Z_786bab73",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 542,
-          "clean": 542,
-          "mart": 542
-        },
-        "output_bytes": {
-          "raw": 117921,
-          "clean": 19845,
-          "mart": 7827
-        },
-        "started_at": "2026-08-16T08:20:45.346498+00:00",
-        "finished_at": "2026-08-16T08:20:46.918325+00:00",
-        "duration_seconds": 1.572
-      }
-    },
-    {
-      "id": "bdap_spese_stato",
-      "source_id": "openbdap",
-      "status": "ok",
-      "label": "bdap_spese_stato",
-      "detail": "anno 2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260731T163747Z_7aea68b1",
-        "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:47.439580+00:00",
-        "finished_at": "2026-07-31T16:37:47.443667+00:00",
         "duration_seconds": 0.004
       }
     },
@@ -15995,92 +13227,6 @@
       "action": ""
     },
     {
-      "id": "mef_partecipazioni",
-      "source_id": "mef_tesoro",
-      "status": "ok",
-      "label": "mef_partecipazioni",
-      "detail": "anni 2020-2023 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260802T180319Z_432e868a",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 53656,
-          "clean": 53656,
-          "mart": 8557
-        },
-        "output_bytes": {
-          "raw": 35046757,
-          "clean": 2629582,
-          "mart": 144002
-        },
-        "started_at": "2026-08-02T18:03:19.213223+00:00",
-        "finished_at": "2026-08-02T18:03:57.083600+00:00",
-        "duration_seconds": 37.87
-      }
-    },
-    {
-      "id": "mef_patrimonio_detenzioni",
-      "source_id": "mef_de",
-      "status": "ok",
-      "label": "mef_patrimonio_detenzioni",
-      "detail": "anni 2022-2023 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "mef_patrimonio_enti",
-      "source_id": "mef_de",
-      "status": "ok",
-      "label": "mef_patrimonio_enti",
-      "detail": "anni 2022-2023 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "mef_patrimonio_immobili",
-      "source_id": "mef_de",
-      "status": "ok",
-      "label": "mef_patrimonio_immobili",
-      "detail": "anni 2022-2023 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "mef_rappresentanti_partecipate",
-      "source_id": "mef_tesoro",
-      "status": "ok",
-      "label": "mef_rappresentanti_partecipate",
-      "detail": "anni 2018-2023 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260803T104219Z_ba17250b",
-        "year": 2023,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 16785,
-          "clean": 16785,
-          "mart": 1961
-        },
-        "output_bytes": {
-          "raw": 8188766,
-          "clean": 543610,
-          "mart": 46456
-        },
-        "started_at": "2026-08-03T10:42:19.829537+00:00",
-        "finished_at": "2026-08-03T10:42:34.022082+00:00",
-        "duration_seconds": 14.193
-      }
-    },
-    {
       "id": "mim_alunni_corso_eta",
       "source_id": "mim_opendata",
       "status": "ok",
@@ -16221,45 +13367,64 @@
       "action": ""
     },
     {
-      "id": "opencivitas_fsc_2025_rso",
-      "source_id": "opencivitas",
-      "status": "ok",
-      "label": "opencivitas_fsc_2025_rso",
-      "detail": "anni 2022-2025 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "opencivitas_indicatori",
-      "source_id": "opencivitas",
-      "status": "ok",
-      "label": "opencivitas_indicatori",
-      "detail": "anni 2015-2022 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260728T085206Z_2551b510",
-        "year": 2022,
-        "status": "SUCCESS",
-        "quality_score": {
-          "mart": 90
-        },
-        "output_rows": {
-          "mart": 2659122
-        },
-        "output_bytes": {
-          "mart": 41736110
-        },
-        "started_at": "2026-07-28T08:52:06.876449+00:00",
-        "finished_at": "2026-07-28T08:52:16.688673+00:00",
-        "duration_seconds": 9.812
-      }
-    },
-    {
       "id": "opencoesione_progetti",
       "source_id": "opencoesione",
       "status": "ok",
       "label": "opencoesione_progetti",
       "detail": "anno 2026 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20260910T130331Z_956b2ace",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 2320817,
+          "mart": 149
+        },
+        "output_bytes": {
+          "raw": 240554560,
+          "clean": 81058087,
+          "mart": 11734
+        },
+        "started_at": "2026-09-10T13:03:31.613853+00:00",
+        "finished_at": "2026-09-10T13:03:44.947198+00:00",
+        "duration_seconds": 13.333
+      }
+    },
+    {
+      "id": "opencoesione_soggetti",
+      "source_id": "opencoesione",
+      "status": "ok",
+      "label": "opencoesione_soggetti",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20260910T130346Z_9117c19d",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 7195885,
+          "mart": 534306
+        },
+        "output_bytes": {
+          "raw": 104288695,
+          "clean": 80256665,
+          "mart": 11015164
+        },
+        "started_at": "2026-09-10T13:03:46.111979+00:00",
+        "finished_at": "2026-09-10T13:04:01.352032+00:00",
+        "duration_seconds": 15.24
+      }
     },
     {
       "id": "openga_ricorsi_appalto",
@@ -16473,14 +13638,6 @@
       "action": ""
     },
     {
-      "id": "silos_infrastrutture",
-      "source_id": "dati_camera",
-      "status": "ok",
-      "label": "silos_infrastrutture",
-      "detail": "anno 2024 — mart: si",
-      "action": ""
-    },
-    {
       "id": "strutture_asl",
       "source_id": "ministero_salute",
       "status": "ok",
@@ -16560,14 +13717,6 @@
       }
     },
     {
-      "id": "compose:anac_appalti_master",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "anac_appalti_master",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
       "id": "compose:comuni_master",
       "source_id": "istat_situas",
       "status": "ok",
@@ -16584,132 +13733,12 @@
       }
     },
     {
-      "id": "compose:conto_annuale_profilo_ente",
-      "source_id": "rgs_conto_annuale",
-      "status": "ok",
-      "label": "conto_annuale_profilo_ente",
-      "detail": "anni 2020-2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260727T181422Z_2e14ed72",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 90,
-          "mart": 85
-        },
-        "output_rows": {
-          "clean": 10885,
-          "mart": 8294
-        },
-        "output_bytes": {
-          "raw": 1085952,
-          "clean": 571529,
-          "mart": 420788
-        },
-        "started_at": "2026-07-27T18:14:22.788009+00:00",
-        "finished_at": "2026-07-27T18:14:30.384220+00:00",
-        "duration_seconds": 7.596
-      }
-    },
-    {
       "id": "compose:costituzione_master",
       "source_id": "costituzione-italiana",
       "status": "ok",
       "label": "costituzione_master",
       "detail": "anno 2026 — mart: si",
       "action": ""
-    },
-    {
-      "id": "compose:eurostat_demography",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "eurostat_demography",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260727T090737Z_986b13bc",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 20949,
-          "mart": 1284
-        },
-        "output_bytes": {
-          "raw": 189099,
-          "clean": 384373,
-          "mart": 31386
-        },
-        "started_at": "2026-07-27T09:07:37.475085+00:00",
-        "finished_at": "2026-07-27T09:07:41.498542+00:00",
-        "duration_seconds": 4.023
-      }
-    },
-    {
-      "id": "compose:eurostat_economy",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "eurostat_economy",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260727T090658Z_8f8bd230",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 41709,
-          "mart": 2568
-        },
-        "output_bytes": {
-          "raw": 189099,
-          "clean": 2280716,
-          "mart": 167310
-        },
-        "started_at": "2026-07-27T09:06:58.133700+00:00",
-        "finished_at": "2026-07-27T09:07:03.043263+00:00",
-        "duration_seconds": 4.91
-      }
-    },
-    {
-      "id": "compose:eurostat_territory",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "eurostat_territory",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260727T090743Z_7f7ef8c6",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 30495,
-          "mart": 2174
-        },
-        "output_bytes": {
-          "raw": 189099,
-          "clean": 318447,
-          "mart": 24404
-        },
-        "started_at": "2026-07-27T09:07:43.327742+00:00",
-        "finished_at": "2026-07-27T09:07:47.044512+00:00",
-        "duration_seconds": 3.717
-      }
     },
     {
       "id": "compose:ispra_ru_costi_kg_compose",
@@ -16728,120 +13757,10 @@
       "action": ""
     },
     {
-      "id": "compose:unified_comuni",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "unified_comuni",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260815T162530Z_de3bede1",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 52540,
-          "mart": 52540
-        },
-        "output_bytes": {
-          "raw": 857542,
-          "clean": 4749707,
-          "mart": 4749833
-        },
-        "started_at": "2026-08-15T16:25:30.209124+00:00",
-        "finished_at": "2026-08-15T16:27:00.490842+00:00",
-        "duration_seconds": 90.282
-      }
-    },
-    {
-      "id": "compose:who_is_who_pa",
-      "source_id": "dataciviclab_composite",
-      "status": "ok",
-      "label": "who_is_who_pa",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "anac_aggiudicatari",
-      "source_id": "anac",
-      "status": "ok",
-      "label": "anac_aggiudicatari",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "anac_collaudo",
-      "source_id": "anac",
-      "status": "ok",
-      "label": "anac_collaudo",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "anac_cup",
-      "source_id": "anac",
-      "status": "ok",
-      "label": "anac_cup",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "anac_partecipanti",
-      "source_id": "anac",
-      "status": "ok",
-      "label": "anac_partecipanti",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "anac_stati_avanzamento",
-      "source_id": "anac",
-      "status": "ok",
-      "label": "anac_stati_avanzamento",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "anac_subappalti",
-      "source_id": "anac",
-      "status": "ok",
-      "label": "anac_subappalti",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
       "id": "bdap_anagrafe_enti",
       "source_id": "openbdap",
       "status": "ok",
       "label": "bdap_anagrafe_enti",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "ipa_aree_organizzative_omogenee",
-      "source_id": "agid",
-      "status": "ok",
-      "label": "ipa_aree_organizzative_omogenee",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "ipa_enti",
-      "source_id": "agid",
-      "status": "ok",
-      "label": "ipa_enti",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "ipa_unita_organizzative",
-      "source_id": "agid",
-      "status": "ok",
-      "label": "ipa_unita_organizzative",
       "detail": "anno 2026 — mart: si",
       "action": ""
     },
@@ -16916,28 +13835,6 @@
       }
     },
     {
-      "id": "opencivitas_fsc_enti_rso",
-      "source_id": "opencivitas",
-      "status": "ok",
-      "label": "opencivitas_fsc_enti_rso",
-      "detail": "anno 2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260729T120941Z_6c07cd84",
-        "year": 2025,
-        "status": "RUNNING",
-        "started_at": "2026-07-29T12:09:41.401993+00:00"
-      }
-    },
-    {
-      "id": "opencivitas_glossario",
-      "source_id": "opencivitas",
-      "status": "ok",
-      "label": "opencivitas_glossario",
-      "detail": "anni 2015-2022 — mart: si",
-      "action": ""
-    },
-    {
       "id": "popolazione_istat_comunale_2019_2025",
       "source_id": "istat_sdmx",
       "status": "ok",
@@ -16993,33 +13890,6 @@
           "ateco_code": 2
         }
       },
-      "Categoria merceologica": {
-        "entity": "Categoria merceologica",
-        "label": "Categoria merceologica",
-        "datasets": [
-          {
-            "slug": "anac_appalti_master",
-            "name": "ANAC Appalti Master",
-            "column": "cod_cpv",
-            "semantic_type": "cpv_code"
-          },
-          {
-            "slug": "anac_bandi_gara",
-            "name": "ANAC Bandi di Gara (CIG)",
-            "column": "cod_cpv",
-            "semantic_type": "cpv_code"
-          },
-          {
-            "slug": "anac_subappalti",
-            "name": "ANAC Subappalti",
-            "column": "cod_cpv",
-            "semantic_type": "cpv_code"
-          }
-        ],
-        "types": {
-          "cpv_code": 3
-        }
-      },
       "Comune": {
         "entity": "Comune",
         "label": "Comune (ISTAT)",
@@ -17035,12 +13905,6 @@
             "name": "5x1000 — Beneficiari e importi per ente",
             "column": "comune",
             "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "anac_bandi_gara",
-            "name": "ANAC Bandi di Gara (CIG)",
-            "column": "codice_istat_luogo",
-            "semantic_type": "municipality_code"
           },
           {
             "slug": "bdap_anagrafe_enti",
@@ -17205,18 +14069,6 @@
             "semantic_type": "cadastral_code"
           },
           {
-            "slug": "mef_patrimonio_enti",
-            "name": "MEF — Enti adempienti e non adempienti censimento immobili",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "mef_patrimonio_enti",
-            "name": "MEF — Enti adempienti e non adempienti censimento immobili",
-            "column": "codice_comune",
-            "semantic_type": "municipality_code"
-          },
-          {
             "slug": "mim_alunni_corso_eta",
             "name": "Alunni per corso ed età — MIM",
             "column": "comune",
@@ -17313,12 +14165,6 @@
             "semantic_type": "municipality_name"
           },
           {
-            "slug": "unified_comuni",
-            "name": "Unified Comuni — metriche multi-dominio",
-            "column": "codice_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
             "slug": "who_is_who_pa",
             "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
             "column": "codice_istat",
@@ -17338,8 +14184,8 @@
           }
         ],
         "types": {
-          "municipality_name": 19,
-          "municipality_code": 25,
+          "municipality_name": 18,
+          "municipality_code": 22,
           "cadastral_code": 8
         }
       },
@@ -17419,42 +14265,6 @@
             "semantic_type": "fiscal_code"
           },
           {
-            "slug": "anac_aggiudicatari",
-            "name": "ANAC Aggiudicatari",
-            "column": "codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "anac_appalti_master",
-            "name": "ANAC Appalti Master",
-            "column": "cf",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "anac_bandi_gara",
-            "name": "ANAC Bandi di Gara (CIG)",
-            "column": "cf_amministrazione_appaltante",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "anac_partecipanti",
-            "name": "ANAC Partecipanti",
-            "column": "codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "anac_subappalti",
-            "name": "ANAC Subappalti",
-            "column": "cf_subappaltante",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "anac_subappalti",
-            "name": "ANAC Subappalti",
-            "column": "codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
             "slug": "bdap_anagrafe_enti",
             "name": "BDAP Anagrafe Enti Pubblici",
             "column": "cf",
@@ -17470,12 +14280,6 @@
             "slug": "comuni_master",
             "name": "Comuni Master — hub territoriale completo",
             "column": "codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "conto_annuale_profilo_ente",
-            "name": "Conto Annuale — Profilo Ente PA",
-            "column": "codi_fiscale",
             "semantic_type": "fiscal_code"
           },
           {
@@ -17509,24 +14313,6 @@
             "semantic_type": "fiscal_code"
           },
           {
-            "slug": "mef_patrimonio_detenzioni",
-            "name": "MEF — Detenzioni a favore di terzi di immobili pubblici",
-            "column": "amministrazione_codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "mef_patrimonio_enti",
-            "name": "MEF — Enti adempienti e non adempienti censimento immobili",
-            "column": "amministrazione_codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "mef_patrimonio_immobili",
-            "name": "MEF — Catalogo immobili pubblici italiani",
-            "column": "amministrazione_codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
             "slug": "mit_opere_incompiute_2020",
             "name": "MIT Opere Pubbliche Incompiute",
             "column": "codice_fiscale",
@@ -17552,7 +14338,7 @@
           }
         ],
         "types": {
-          "fiscal_code": 23
+          "fiscal_code": 13
         }
       },
       "Ente sanitario": {
@@ -17581,78 +14367,6 @@
         "label": "Gara / Appalto",
         "datasets": [
           {
-            "slug": "anac_aggiudicatari",
-            "name": "ANAC Aggiudicatari",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_aggiudicazioni",
-            "name": "ANAC Aggiudicazioni",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_aggiudicazioni",
-            "name": "ANAC Aggiudicazioni",
-            "column": "CIG_PROG_ESTERNA",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_appalti_master",
-            "name": "ANAC Appalti Master",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_bandi_gara",
-            "name": "ANAC Bandi di Gara (CIG)",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_bandi_gara",
-            "name": "ANAC Bandi di Gara (CIG)",
-            "column": "cig_accordo_quadro",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_bandi_gara",
-            "name": "ANAC Bandi di Gara (CIG)",
-            "column": "CIG_COLLEGAMENTO",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_collaudo",
-            "name": "ANAC Collaudo",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_cup",
-            "name": "ANAC CUP",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_partecipanti",
-            "name": "ANAC Partecipanti",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_stati_avanzamento",
-            "name": "ANAC Stati Avanzamento",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "anac_subappalti",
-            "name": "ANAC Subappalti",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
             "slug": "openga_ricorsi_appalto",
             "name": "Ricorsi Appalto (OpenGA — 31 sedi)",
             "column": "codice_cig",
@@ -17672,25 +14386,13 @@
           }
         ],
         "types": {
-          "cig_code": 15
+          "cig_code": 3
         }
       },
       "Nazione": {
         "entity": "Nazione",
         "label": "Nazione",
         "datasets": [
-          {
-            "slug": "anac_appalti_master",
-            "name": "ANAC Appalti Master",
-            "column": "stato",
-            "semantic_type": "country_code"
-          },
-          {
-            "slug": "anac_bandi_gara",
-            "name": "ANAC Bandi di Gara (CIG)",
-            "column": "stato",
-            "semantic_type": "country_code"
-          },
           {
             "slug": "ted_contract_notices",
             "name": "Bandi di gara UE in Italia (TED Contract Notices)",
@@ -17699,7 +14401,7 @@
           }
         ],
         "types": {
-          "country_code": 3
+          "country_code": 1
         }
       },
       "Procedimento": {
@@ -17758,18 +14460,6 @@
         "label": "Progetto",
         "datasets": [
           {
-            "slug": "anac_appalti_master",
-            "name": "ANAC Appalti Master",
-            "column": "cup",
-            "semantic_type": "cup_code"
-          },
-          {
-            "slug": "anac_cup",
-            "name": "ANAC CUP",
-            "column": "cup",
-            "semantic_type": "cup_code"
-          },
-          {
             "slug": "mit_opere_incompiute_2020",
             "name": "MIT Opere Pubbliche Incompiute",
             "column": "codice_cup",
@@ -17807,7 +14497,7 @@
           }
         ],
         "types": {
-          "cup_code": 8
+          "cup_code": 6
         }
       },
       "Provincia": {
@@ -17824,18 +14514,6 @@
             "slug": "ade_cinque_per_mille",
             "name": "5x1000 — Beneficiari e importi per ente",
             "column": "sigla_provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "anac_appalti_master",
-            "name": "ANAC Appalti Master",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "anac_bandi_gara",
-            "name": "ANAC Bandi di Gara (CIG)",
-            "column": "provincia",
             "semantic_type": "province_code"
           },
           {
@@ -17935,12 +14613,6 @@
             "semantic_type": "province_code"
           },
           {
-            "slug": "mef_patrimonio_enti",
-            "name": "MEF — Enti adempienti e non adempienti censimento immobili",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
             "slug": "mim_alunni_corso_eta",
             "name": "Alunni per corso ed età — MIM",
             "column": "provincia",
@@ -18029,40 +14701,16 @@
             "name": "Terna Electricity By Source",
             "column": "provincia",
             "semantic_type": "province_code"
-          },
-          {
-            "slug": "unified_comuni",
-            "name": "Unified Comuni — metriche multi-dominio",
-            "column": "sigla_provincia",
-            "semantic_type": "province_code"
           }
         ],
         "types": {
-          "province_code": 37
+          "province_code": 33
         }
       },
       "Provincia (tramite NUTS3)": {
         "entity": "Provincia (tramite NUTS3)",
         "label": "Provincia (tramite NUTS3)",
         "datasets": [
-          {
-            "slug": "eurostat_demography",
-            "name": "Indicatori demografici regionali EU (popolazione, densità, struttura età, bilancio)",
-            "column": "geo",
-            "semantic_type": "nuts_code"
-          },
-          {
-            "slug": "eurostat_economy",
-            "name": "Indicatori economici regionali EU (PIL, GVA, occupazione, produttività)",
-            "column": "geo",
-            "semantic_type": "nuts_code"
-          },
-          {
-            "slug": "eurostat_territory",
-            "name": "Indicatori territoriali regionali EU (superficie, turismo, criminalità, incidenti)",
-            "column": "geo",
-            "semantic_type": "nuts_code"
-          },
           {
             "slug": "fts_eu_grants",
             "name": "Grant UE erogati in Italia (FTS EU Grants)",
@@ -18071,7 +14719,7 @@
           }
         ],
         "types": {
-          "nuts_code": 4
+          "nuts_code": 1
         }
       },
       "Regione": {
@@ -18199,12 +14847,6 @@
             "semantic_type": "region_code"
           },
           {
-            "slug": "mef_patrimonio_enti",
-            "name": "MEF — Enti adempienti e non adempienti censimento immobili",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
             "slug": "mim_alunni_corso_eta",
             "name": "Alunni per corso ed età — MIM",
             "column": "regione",
@@ -18329,16 +14971,10 @@
             "name": "Terna Electricity By Source",
             "column": "regione",
             "semantic_type": "region_code"
-          },
-          {
-            "slug": "unified_comuni",
-            "name": "Unified Comuni — metriche multi-dominio",
-            "column": "regione",
-            "semantic_type": "region_code"
           }
         ],
         "types": {
-          "region_code": 43
+          "region_code": 41
         }
       },
       "Scuola": {
@@ -18366,21 +15002,6 @@
         ],
         "types": {
           "school_code": 3
-        }
-      },
-      "Stazione Appaltante": {
-        "entity": "Stazione Appaltante",
-        "label": "Stazione Appaltante",
-        "datasets": [
-          {
-            "slug": "anac_bandi_gara",
-            "name": "ANAC Bandi di Gara (CIG)",
-            "column": "codice_ausa",
-            "semantic_type": "ausa_code"
-          }
-        ],
-        "types": {
-          "ausa_code": 1
         }
       },
       "Tempo": {
@@ -18412,12 +15033,6 @@
             "semantic_type": "month"
           },
           {
-            "slug": "anac_appalti_master",
-            "name": "ANAC Appalti Master",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
             "slug": "anpr_mobilita_residenziale",
             "name": "ANPR — Mobilita Residenziale Interregionale (2022-2026)",
             "column": "anno",
@@ -18430,27 +15045,9 @@
             "semantic_type": "month"
           },
           {
-            "slug": "bdap_entrate_stato",
-            "name": "BDAP Entrate Stato - Serie Storica",
-            "column": "esercizio_finanziario",
-            "semantic_type": "year"
-          },
-          {
             "slug": "bdap_lea",
             "name": "Bdap Lea",
             "column": "anno_riferimento",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "bdap_pagamenti_stato",
-            "name": "Bdap Pagamenti Stato",
-            "column": "esercizio_finanziario",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "bdap_spese_stato",
-            "name": "BDAP Spese Stato",
-            "column": "esercizio_finanziario",
             "semantic_type": "year"
           },
           {
@@ -18472,33 +15069,9 @@
             "semantic_type": "year"
           },
           {
-            "slug": "conto_annuale_profilo_ente",
-            "name": "Conto Annuale — Profilo Ente PA",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
             "slug": "dipendenti_pubblici",
             "name": "Dipendenti Pubblici - Occupazione e Turnover",
             "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "eurostat_demography",
-            "name": "Indicatori demografici regionali EU (popolazione, densità, struttura età, bilancio)",
-            "column": "year",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "eurostat_economy",
-            "name": "Indicatori economici regionali EU (PIL, GVA, occupazione, produttività)",
-            "column": "year",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "eurostat_territory",
-            "name": "Indicatori territoriali regionali EU (superficie, turismo, criminalità, incidenti)",
-            "column": "year",
             "semantic_type": "year"
           },
           {
@@ -18642,24 +15215,6 @@
           {
             "slug": "mef_partecipazioni",
             "name": "MEF Partecipazioni Pubbliche",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "mef_patrimonio_detenzioni",
-            "name": "MEF — Detenzioni a favore di terzi di immobili pubblici",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "mef_patrimonio_enti",
-            "name": "MEF — Enti adempienti e non adempienti censimento immobili",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "mef_patrimonio_immobili",
-            "name": "MEF — Catalogo immobili pubblici italiani",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -18836,177 +15391,15 @@
             "name": "Terna Electricity By Source",
             "column": "anno",
             "semantic_type": "year"
-          },
-          {
-            "slug": "unified_comuni",
-            "name": "Unified Comuni — metriche multi-dominio",
-            "column": "anno",
-            "semantic_type": "year"
           }
         ],
         "types": {
-          "year": 69,
+          "year": 57,
           "month": 7
         }
       }
     },
     "bridges": [
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "anac_aggiudicatari",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "anac_aggiudicazioni",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "anac_appalti_master",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Progetto",
-          "dataset": "anac_appalti_master",
-          "via": "cup_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_cup",
-          "on": "cup",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "anac_bandi_gara",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Stazione Appaltante",
-          "dataset": "anac_bandi_gara",
-          "via": "ausa_code"
-        },
-        "to": {
-          "entity": "Ente (o Impresa)",
-          "bridge": "bdap_anagrafe_enti",
-          "on": "codice_ente_ipa",
-          "semantic_type": "fiscal_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "anac_collaudo",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "anac_cup",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Progetto",
-          "dataset": "anac_cup",
-          "via": "cup_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_cup",
-          "on": "cup",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "anac_partecipanti",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "anac_stati_avanzamento",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "anac_subappalti",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
       {
         "from": {
           "entity": "Ente",
