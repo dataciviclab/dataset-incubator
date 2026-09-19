@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-09-19",
+  "updated_at": "2026-09-17",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -443,7 +443,7 @@
         {
           "name": "id_ente",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Identificativo univoco ente (chiave primaria)"
         },
         {
@@ -494,7 +494,7 @@
         {
           "name": "codice_forma_giuridica",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice forma giuridica"
         },
         {
@@ -614,7 +614,7 @@
         {
           "name": "codice_zona",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice zona geografica"
         },
         {
@@ -638,7 +638,7 @@
         {
           "name": "id_tipologia_siope",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "ID tipologia SIOPE"
         },
         {
@@ -674,7 +674,7 @@
         {
           "name": "id_categoria_ipa",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "ID categoria IPA"
         },
         {
@@ -723,7 +723,7 @@
         {
           "name": "id_tipologia_miur",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "ID tipologia MIUR"
         },
         {
@@ -741,13 +741,13 @@
         {
           "name": "id_tipologia_dt",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "ID tipologia DT"
         },
         {
           "name": "codice_tipologia_dt",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice tipologia DT"
         },
         {
@@ -766,19 +766,19 @@
         {
           "name": "codice_ente_istat_s13",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice ISTAT S13 ente"
         },
         {
           "name": "id_tipologia_istat_s13",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "ID tipologia ISTAT S13"
         },
         {
           "name": "codice_tipologia_istat_s13",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice tipologia ISTAT S13"
         },
         {
@@ -802,7 +802,7 @@
         {
           "name": "id_tipologia_dlgs_118_2011",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "ID tipologia DLGS 118/2011"
         },
         {
@@ -835,10 +835,7 @@
         "path": "gs://dataciviclab-clean/bdap_anagrafe_enti/2026/bdap_anagrafe_enti_2026_clean.parquet",
         "multi_file": false
       },
-      "stage": "published",
-      "mart_refs": [
-        "bdap_anagrafe_enti__mart_anagrafe_enti"
-      ]
+      "stage": "published"
     },
     {
       "slug": "bdap_lea",
@@ -7745,7 +7742,7 @@
         {
           "name": "OC_COD_CICLO",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice del ciclo di programmazione"
         },
         {
@@ -7769,7 +7766,7 @@
         {
           "name": "OC_COD_SLL",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": "Codice Sistema Locale del Lavoro"
         },
         {
@@ -7805,19 +7802,19 @@
         {
           "name": "OC_DATA_INIZIO_PROGETTO",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Data inizio progetto (YYYYMMDD)"
         },
         {
           "name": "OC_DATA_FINE_PROGETTO_PREVISTA",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Data fine progetto prevista (YYYYMMDD)"
         },
         {
           "name": "OC_DATA_FINE_PROGETTO_EFFETTIVA",
           "type": "INTEGER",
-          "role": "metric",
+          "role": "dimension",
           "description": "Data fine progetto effettiva (YYYYMMDD)"
         },
         {
@@ -7918,7 +7915,7 @@
         {
           "name": "SOGG_COD_RUOLO",
           "type": "BIGINT",
-          "role": "metric",
+          "role": "dimension",
           "description": ""
         },
         {
@@ -12683,24 +12680,27 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260917T191735Z_356f6b5e",
+        "run_id": "20260917T141937Z_1e9ff6a7",
         "year": 2026,
-        "status": "FAILED",
+        "status": "SUCCESS",
         "quality_score": {
           "raw": 100,
-          "clean": 75
+          "clean": 100,
+          "mart": 100
         },
         "output_rows": {
           "raw": 23015,
-          "clean": 23015
+          "clean": 23015,
+          "mart": 2364
         },
         "output_bytes": {
           "raw": 828622,
-          "clean": 47509
+          "clean": 47509,
+          "mart": 11887
         },
-        "started_at": "2026-09-17T19:17:35.846150+00:00",
-        "finished_at": "2026-09-17T19:17:38.436523+00:00",
-        "duration_seconds": 2.59
+        "started_at": "2026-09-17T14:19:37.037656+00:00",
+        "finished_at": "2026-09-17T14:19:38.129633+00:00",
+        "duration_seconds": 1.092
       }
     },
     {
@@ -12796,27 +12796,12 @@
       "detail": "anni 2010-2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260818T102432Z_b679842f",
+        "run_id": "20260731T163751Z_089f4aa1",
         "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 40521,
-          "clean": 40521,
-          "mart": 581
-        },
-        "output_bytes": {
-          "raw": 11013269,
-          "clean": 432000,
-          "mart": 23285
-        },
-        "started_at": "2026-08-18T10:24:32.079043+00:00",
-        "finished_at": "2026-08-18T10:24:54.500025+00:00",
-        "duration_seconds": 22.421
+        "status": "DRY_RUN",
+        "started_at": "2026-07-31T16:37:51.902532+00:00",
+        "finished_at": "2026-07-31T16:37:51.906743+00:00",
+        "duration_seconds": 0.004
       }
     },
     {
@@ -12825,30 +12810,7 @@
       "status": "ok",
       "label": "farmacie",
       "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260810T140241Z_61ebb55b",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 95
-        },
-        "output_rows": {
-          "raw": 58691,
-          "clean": 58691,
-          "mart": 8277
-        },
-        "output_bytes": {
-          "raw": 10967530,
-          "clean": 1761239,
-          "mart": 102930
-        },
-        "started_at": "2026-08-10T14:02:41.437210+00:00",
-        "finished_at": "2026-08-10T14:02:46.107223+00:00",
-        "duration_seconds": 4.67
-      }
+      "action": ""
     },
     {
       "id": "fts_eu_grants",
@@ -13122,12 +13084,27 @@
       "detail": "anno 2023 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260810T135823Z_a066d566",
+        "run_id": "20260801T103200Z_4dc2cbf5",
         "year": 2023,
-        "status": "FAILED",
-        "started_at": "2026-08-10T13:58:23.934594+00:00",
-        "finished_at": "2026-08-10T13:58:23.957439+00:00",
-        "duration_seconds": 0.023
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 34,
+          "clean": 34,
+          "mart": 141
+        },
+        "output_bytes": {
+          "raw": 3479,
+          "clean": 2397,
+          "mart": 4286
+        },
+        "started_at": "2026-08-01T10:32:00.800427+00:00",
+        "finished_at": "2026-08-01T10:32:02.250921+00:00",
+        "duration_seconds": 1.45
       }
     },
     {
@@ -13168,13 +13145,7 @@
       "status": "ok",
       "label": "istat_asia_ul",
       "detail": "anno 2020 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260901T110817Z_e910101e",
-        "year": 2020,
-        "status": "RUNNING",
-        "started_at": "2026-09-01T11:08:17.140100+00:00"
-      }
+      "action": ""
     },
     {
       "id": "istat_gini_regionale",
@@ -13403,7 +13374,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260910T125327Z_843ccb26",
+        "run_id": "20260910T130331Z_956b2ace",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -13417,12 +13388,12 @@
         },
         "output_bytes": {
           "raw": 240554560,
-          "clean": 81056155,
-          "mart": 11714
+          "clean": 81058087,
+          "mart": 11734
         },
-        "started_at": "2026-09-10T12:53:27.568268+00:00",
-        "finished_at": "2026-09-10T12:53:57.471343+00:00",
-        "duration_seconds": 29.903
+        "started_at": "2026-09-10T13:03:31.613853+00:00",
+        "finished_at": "2026-09-10T13:03:44.947198+00:00",
+        "duration_seconds": 13.333
       }
     },
     {
@@ -13433,7 +13404,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260910T125408Z_e38f4b16",
+        "run_id": "20260910T130346Z_9117c19d",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -13447,12 +13418,12 @@
         },
         "output_bytes": {
           "raw": 104288695,
-          "clean": 80260247,
-          "mart": 10931167
+          "clean": 80256665,
+          "mart": 11015164
         },
-        "started_at": "2026-09-10T12:54:08.015061+00:00",
-        "finished_at": "2026-09-10T12:55:28.459161+00:00",
-        "duration_seconds": 80.444
+        "started_at": "2026-09-10T13:03:46.111979+00:00",
+        "finished_at": "2026-09-10T13:04:01.352032+00:00",
+        "duration_seconds": 15.24
       }
     },
     {
@@ -13531,15 +13502,7 @@
       "status": "ok",
       "label": "personale_ssn",
       "detail": "anno 2021 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260810T135218Z_d763043b",
-        "year": 2021,
-        "status": "FAILED",
-        "started_at": "2026-08-10T13:52:18.920840+00:00",
-        "finished_at": "2026-08-10T13:52:18.936514+00:00",
-        "duration_seconds": 0.016
-      }
+      "action": ""
     },
     {
       "id": "pnrr_gare",
@@ -13664,30 +13627,7 @@
       "status": "ok",
       "label": "sai_strutture_italia",
       "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260810T141602Z_3eb24e6b",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 95
-        },
-        "output_rows": {
-          "raw": 46299,
-          "clean": 46299,
-          "mart": 1103
-        },
-        "output_bytes": {
-          "raw": 8461303,
-          "clean": 771773,
-          "mart": 9121
-        },
-        "started_at": "2026-08-10T14:16:02.297956+00:00",
-        "finished_at": "2026-08-10T14:16:05.490732+00:00",
-        "duration_seconds": 3.193
-      }
+      "action": ""
     },
     {
       "id": "sbarchi_migranti_italia",
@@ -13822,30 +13762,7 @@
       "status": "ok",
       "label": "bdap_anagrafe_enti",
       "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260904T103345Z_1eec6640",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 38295,
-          "clean": 38295,
-          "mart": 38295
-        },
-        "output_bytes": {
-          "raw": 23079294,
-          "clean": 3327012,
-          "mart": 3327012
-        },
-        "started_at": "2026-09-04T10:33:45.740493+00:00",
-        "finished_at": "2026-09-04T10:34:30.782516+00:00",
-        "duration_seconds": 45.042
-      }
+      "action": ""
     },
     {
       "id": "istat_elenco_comuni",
@@ -14571,10 +14488,16 @@
             "name": "PNRR Progetti — Italia Domani",
             "column": "cup",
             "semantic_type": "cup_code"
+          },
+          {
+            "slug": "silos_infrastrutture",
+            "name": "Infrastrutture strategiche e prioritarie (SILOS)",
+            "column": "cup",
+            "semantic_type": "cup_code"
           }
         ],
         "types": {
-          "cup_code": 5
+          "cup_code": 6
         }
       },
       "Provincia": {
@@ -15434,6 +15357,12 @@
             "semantic_type": "year"
           },
           {
+            "slug": "silos_infrastrutture",
+            "name": "Infrastrutture strategiche e prioritarie (SILOS)",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "strutture_asl",
             "name": "Strutture Asl",
             "column": "anno",
@@ -15465,7 +15394,7 @@
           }
         ],
         "types": {
-          "year": 56,
+          "year": 57,
           "month": 7
         }
       }
@@ -15508,45 +15437,6 @@
           "bridge": "bdap_anagrafe_enti",
           "on": "codice_ente_ssn",
           "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Scuola",
-          "dataset": "mim_alunni_corso_eta",
-          "via": "school_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "mim_anagrafica_scuole_statali",
-          "on": "codice_comune_scuola",
-          "semantic_type": "cadastral_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Scuola",
-          "dataset": "mim_anagrafica_scuole_statali",
-          "via": "school_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "mim_anagrafica_scuole_statali",
-          "on": "codice_comune_scuola",
-          "semantic_type": "cadastral_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Scuola",
-          "dataset": "mim_scuola_infanzia",
-          "via": "school_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "mim_anagrafica_scuole_statali",
-          "on": "codice_comune_scuola",
-          "semantic_type": "cadastral_code"
         }
       },
       {
@@ -15670,6 +15560,19 @@
         "from": {
           "entity": "Progetto",
           "dataset": "pnrr_progetti",
+          "via": "cup_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "anac_cup",
+          "on": "cup",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Progetto",
+          "dataset": "silos_infrastrutture",
           "via": "cup_code"
         },
         "to": {
