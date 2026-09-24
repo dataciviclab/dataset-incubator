@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-09-20",
+  "updated_at": "2026-09-24",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -9245,7 +9245,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260920T195648Z_d3bc1227",
+        "run_id": "20260924T180432Z_21553806",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -9254,18 +9254,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 23018,
-          "clean": 23018,
+          "raw": 23022,
+          "clean": 23022,
           "mart": 2364
         },
         "output_bytes": {
-          "raw": 828748,
-          "clean": 47499,
-          "mart": 11940
+          "raw": 828936,
+          "clean": 47523,
+          "mart": 11938
         },
-        "started_at": "2026-09-20T19:56:48.624568+00:00",
-        "finished_at": "2026-09-20T19:56:49.520921+00:00",
-        "duration_seconds": 0.896
+        "started_at": "2026-09-24T18:04:32.935691+00:00",
+        "finished_at": "2026-09-24T18:04:33.784486+00:00",
+        "duration_seconds": 0.849
       }
     },
     {
@@ -9351,37 +9351,6 @@
         "started_at": "2026-07-31T11:47:31.726712+00:00",
         "finished_at": "2026-07-31T11:48:42.007615+00:00",
         "duration_seconds": 70.281
-      }
-    },
-    {
-      "id": "consip_consumi_convenzione",
-      "source_id": "consip_open_data",
-      "status": "ok",
-      "label": "consip_consumi_convenzione",
-      "detail": "anni 2023-2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260728T141049Z_6e9fd376",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 95
-        },
-        "output_rows": {
-          "raw": 7115,
-          "clean": 7115,
-          "mart": 3778
-        },
-        "output_bytes": {
-          "raw": 1096932,
-          "clean": 79910,
-          "mart": 38236
-        },
-        "started_at": "2026-07-28T14:10:49.622969+00:00",
-        "finished_at": "2026-07-28T14:10:52.081123+00:00",
-        "duration_seconds": 2.458
       }
     },
     {
@@ -9531,36 +9500,6 @@
         "started_at": "2026-07-31T11:48:51.291161+00:00",
         "finished_at": "2026-07-31T11:48:53.648463+00:00",
         "duration_seconds": 2.357
-      }
-    },
-    {
-      "id": "ispra_consumo_suolo",
-      "source_id": "ispra_linked_data",
-      "status": "ok",
-      "label": "ispra_consumo_suolo",
-      "detail": "anno 2024 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260727T225500Z_9ccedea6",
-        "year": 2024,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 90,
-          "mart": 95
-        },
-        "output_rows": {
-          "clean": 86856,
-          "mart": 88008
-        },
-        "output_bytes": {
-          "raw": 1725183,
-          "clean": 1225921,
-          "mart": 2034884
-        },
-        "started_at": "2026-07-27T22:55:00.864542+00:00",
-        "finished_at": "2026-07-27T22:55:17.710967+00:00",
-        "duration_seconds": 16.846
       }
     },
     {
@@ -10069,16 +10008,10 @@
             "name": "BDAP Anagrafe Enti Pubblici",
             "column": "codice_ateco",
             "semantic_type": "ateco_code"
-          },
-          {
-            "slug": "ipa_enti",
-            "name": "Anagrafica Enti PA (IndicePA)",
-            "column": "codice_ateco",
-            "semantic_type": "ateco_code"
           }
         ],
         "types": {
-          "ateco_code": 2
+          "ateco_code": 1
         }
       },
       "Comune": {
@@ -10088,12 +10021,6 @@
           {
             "slug": "aci_prime_iscrizioni_autovetture",
             "name": "Aci Prime Iscrizioni Autovetture",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "ade_cinque_per_mille",
-            "name": "5x1000 — Beneficiari e importi per ente",
             "column": "comune",
             "semantic_type": "municipality_name"
           },
@@ -10170,30 +10097,6 @@
             "semantic_type": "municipality_name"
           },
           {
-            "slug": "ipa_aree_organizzative_omogenee",
-            "name": "Aree Organizzative Omogenee (IPA)",
-            "column": "codice_comune_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "ipa_enti",
-            "name": "Anagrafica Enti PA (IndicePA)",
-            "column": "codice_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "ipa_enti",
-            "name": "Anagrafica Enti PA (IndicePA)",
-            "column": "codice_comune_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "ipa_unita_organizzative",
-            "name": "Unità Organizzative (IPA)",
-            "column": "codice_comune_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
             "slug": "irpef_comunale",
             "name": "Irpef Comunale",
             "column": "codice_catastale",
@@ -10209,18 +10112,6 @@
             "slug": "irpef_comunale",
             "name": "Irpef Comunale",
             "column": "denominazione_comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "ispra_consumo_suolo",
-            "name": "ISPRA — Consumo di Suolo (serie 2006-2024)",
-            "column": "pro_com",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "ispra_consumo_suolo",
-            "name": "ISPRA — Consumo di Suolo (serie 2006-2024)",
-            "column": "comune",
             "semantic_type": "municipality_name"
           },
           {
@@ -10308,12 +10199,6 @@
             "semantic_type": "municipality_code"
           },
           {
-            "slug": "opencivitas_fsc_2025_rso",
-            "name": "Opencivitas Fsc 2025 Rso",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
             "slug": "popolazione_istat_comunale_2019_2025",
             "name": "Popolazione ISTAT Comunale",
             "column": "codice_comune",
@@ -10360,29 +10245,11 @@
             "name": "Strutture Ricovero Asl",
             "column": "comune",
             "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "who_is_who_pa",
-            "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
-            "column": "codice_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "who_is_who_pa",
-            "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
-            "column": "codice_comune_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "who_is_who_pa",
-            "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
-            "column": "ente_codice_comune_istat",
-            "semantic_type": "municipality_code"
           }
         ],
         "types": {
-          "municipality_name": 19,
-          "municipality_code": 22,
+          "municipality_name": 16,
+          "municipality_code": 14,
           "cadastral_code": 8
         }
       },
@@ -10401,66 +10268,17 @@
             "name": "Comuni Master — hub territoriale completo",
             "column": "codice_ipa",
             "semantic_type": "ipa_code"
-          },
-          {
-            "slug": "ipa_aree_organizzative_omogenee",
-            "name": "Aree Organizzative Omogenee (IPA)",
-            "column": "codice_ipa",
-            "semantic_type": "ipa_code"
-          },
-          {
-            "slug": "ipa_enti",
-            "name": "Anagrafica Enti PA (IndicePA)",
-            "column": "codice_ipa",
-            "semantic_type": "ipa_code"
-          },
-          {
-            "slug": "ipa_unita_organizzative",
-            "name": "Unità Organizzative (IPA)",
-            "column": "codice_ipa",
-            "semantic_type": "ipa_code"
-          },
-          {
-            "slug": "opencivitas_fsc_2025_rso",
-            "name": "Opencivitas Fsc 2025 Rso",
-            "column": "username",
-            "semantic_type": "sogei_code"
-          },
-          {
-            "slug": "opencivitas_fsc_enti_rso",
-            "name": "Opencivitas Fsc Enti Rso",
-            "column": "username",
-            "semantic_type": "sogei_code"
-          },
-          {
-            "slug": "opencivitas_indicatori",
-            "name": "Indicatori di performance dei comuni",
-            "column": "username",
-            "semantic_type": "sogei_code"
-          },
-          {
-            "slug": "who_is_who_pa",
-            "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
-            "column": "codice_ipa",
-            "semantic_type": "ipa_code"
           }
         ],
         "types": {
           "miur_code": 1,
-          "ipa_code": 5,
-          "sogei_code": 3
+          "ipa_code": 1
         }
       },
       "Ente (o Impresa)": {
         "entity": "Ente (o Impresa)",
         "label": "Ente (o Impresa)",
         "datasets": [
-          {
-            "slug": "ade_cinque_per_mille",
-            "name": "5x1000 — Beneficiari e importi per ente",
-            "column": "codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
           {
             "slug": "bdap_anagrafe_enti",
             "name": "BDAP Anagrafe Enti Pubblici",
@@ -10486,39 +10304,9 @@
             "semantic_type": "fiscal_code"
           },
           {
-            "slug": "ipa_aree_organizzative_omogenee",
-            "name": "Aree Organizzative Omogenee (IPA)",
-            "column": "codice_fiscale_ente",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "ipa_enti",
-            "name": "Anagrafica Enti PA (IndicePA)",
-            "column": "codice_fiscale_ente",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "ipa_unita_organizzative",
-            "name": "Unità Organizzative (IPA)",
-            "column": "codice_fiscale_ente",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "mef_partecipazioni",
-            "name": "MEF Partecipazioni Pubbliche",
-            "column": "amministrazione_codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
             "slug": "mit_opere_incompiute_2020",
             "name": "MIT Opere Pubbliche Incompiute",
             "column": "codice_fiscale",
-            "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "openga_ricorsi_appalto",
-            "name": "Ricorsi Appalto (OpenGA — 31 sedi)",
-            "column": "cf_amministrazione_appaltante",
             "semantic_type": "fiscal_code"
           },
           {
@@ -10526,16 +10314,10 @@
             "name": "PNRR Progetti — Italia Domani",
             "column": "cf_soggetto_attuatore",
             "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "who_is_who_pa",
-            "name": "Who Is Who PA — anagrafica enti, vertici, uffici, contatti",
-            "column": "codice_fiscale_ente",
-            "semantic_type": "fiscal_code"
           }
         ],
         "types": {
-          "fiscal_code": 13
+          "fiscal_code": 6
         }
       },
       "Ente sanitario": {
@@ -10564,12 +10346,6 @@
         "label": "Gara / Appalto",
         "datasets": [
           {
-            "slug": "openga_ricorsi_appalto",
-            "name": "Ricorsi Appalto (OpenGA — 31 sedi)",
-            "column": "codice_cig",
-            "semantic_type": "cig_code"
-          },
-          {
             "slug": "pnrr_gare",
             "name": "PNRR Gare — Italia Domani",
             "column": "cig",
@@ -10583,7 +10359,7 @@
           }
         ],
         "types": {
-          "cig_code": 3
+          "cig_code": 2
         }
       },
       "Nazione": {
@@ -10599,57 +10375,6 @@
         ],
         "types": {
           "country_code": 1
-        }
-      },
-      "Procedimento": {
-        "entity": "Procedimento",
-        "label": "Procedimento giudiziario",
-        "datasets": [
-          {
-            "slug": "ga_decreti",
-            "name": "Ga Decreti",
-            "column": "numero_provvedimento",
-            "semantic_type": "ricorso_number"
-          },
-          {
-            "slug": "ga_decreti",
-            "name": "Ga Decreti",
-            "column": "numero_ricorso",
-            "semantic_type": "ricorso_number"
-          },
-          {
-            "slug": "ga_ordinanze",
-            "name": "Ga Ordinanze",
-            "column": "numero_provvedimento",
-            "semantic_type": "ricorso_number"
-          },
-          {
-            "slug": "ga_ordinanze",
-            "name": "Ga Ordinanze",
-            "column": "numero_ricorso",
-            "semantic_type": "ricorso_number"
-          },
-          {
-            "slug": "ga_sentenze",
-            "name": "Sentenze Giustizia Amministrativa (OpenGA)",
-            "column": "numero_provvedimento",
-            "semantic_type": "ricorso_number"
-          },
-          {
-            "slug": "ga_sentenze",
-            "name": "Sentenze Giustizia Amministrativa (OpenGA)",
-            "column": "numero_ricorso",
-            "semantic_type": "ricorso_number"
-          },
-          {
-            "slug": "openga_ricorsi_appalto",
-            "name": "Ricorsi Appalto (OpenGA — 31 sedi)",
-            "column": "numero_ricorso",
-            "semantic_type": "ricorso_number"
-          }
-        ],
-        "types": {
-          "ricorso_number": 7
         }
       },
       "Progetto": {
@@ -10702,12 +10427,6 @@
             "semantic_type": "province_code"
           },
           {
-            "slug": "ade_cinque_per_mille",
-            "name": "5x1000 — Beneficiari e importi per ente",
-            "column": "sigla_provincia",
-            "semantic_type": "province_code"
-          },
-          {
             "slug": "bdap_anagrafe_enti",
             "name": "BDAP Anagrafe Enti Pubblici",
             "column": "codice_provincia",
@@ -10729,12 +10448,6 @@
             "slug": "comuni_master",
             "name": "Comuni Master — hub territoriale completo",
             "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "consip_consumi_convenzione",
-            "name": "Consip Consumi Convenzione",
-            "column": "sigla_provincia_pa",
             "semantic_type": "province_code"
           },
           {
@@ -10765,12 +10478,6 @@
             "slug": "irpef_comunale",
             "name": "Irpef Comunale",
             "column": "sigla_provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "ispra_consumo_suolo",
-            "name": "ISPRA — Consumo di Suolo (serie 2006-2024)",
-            "column": "provincia",
             "semantic_type": "province_code"
           },
           {
@@ -10822,30 +10529,6 @@
             "semantic_type": "province_code"
           },
           {
-            "slug": "opencivitas_fsc_2025_rso",
-            "name": "Opencivitas Fsc 2025 Rso",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "opencivitas_fsc_enti_rso",
-            "name": "Opencivitas Fsc Enti Rso",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "opencivitas_indicatori",
-            "name": "Indicatori di performance dei comuni",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "openga_ricorsi_appalto",
-            "name": "Ricorsi Appalto (OpenGA — 31 sedi)",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
             "slug": "pensioni_pa_dag",
             "name": "Pensioni Pa Dag",
             "column": "sigla_provincia",
@@ -10874,28 +10557,10 @@
             "name": "Strutture Ricovero Asl",
             "column": "sigla_provincia_struttura",
             "semantic_type": "province_code"
-          },
-          {
-            "slug": "terna_capacita_rinnovabile",
-            "name": "Terna Capacita Rinnovabile",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "terna_electrical_energy_by_sector",
-            "name": "Consumi elettrici per settore e provincia (GWh)",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "terna_electricity_by_source",
-            "name": "Terna Electricity By Source",
-            "column": "provincia",
-            "semantic_type": "province_code"
           }
         ],
         "types": {
-          "province_code": 33
+          "province_code": 23
         }
       },
       "Provincia (tramite NUTS3)": {
@@ -10917,12 +10582,6 @@
         "entity": "Regione",
         "label": "Regione",
         "datasets": [
-          {
-            "slug": "ade_cinque_per_mille",
-            "name": "5x1000 — Beneficiari e importi per ente",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
           {
             "slug": "aifa_spesa_consumo",
             "name": "AIFA Spesa Farmaceutica Convenzionata",
@@ -10984,12 +10643,6 @@
             "semantic_type": "region_code"
           },
           {
-            "slug": "ispra_consumo_suolo",
-            "name": "ISPRA — Consumo di Suolo (serie 2006-2024)",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
             "slug": "ispra_ru_base",
             "name": "ISPRA - Rifiuti Urbani (dati base)",
             "column": "regione",
@@ -11032,12 +10685,6 @@
             "semantic_type": "region_code"
           },
           {
-            "slug": "mef_partecipazioni",
-            "name": "MEF Partecipazioni Pubbliche",
-            "column": "amministrazione_regione_sede",
-            "semantic_type": "region_code"
-          },
-          {
             "slug": "mim_alunni_corso_eta",
             "name": "Alunni per corso ed età — MIM",
             "column": "regione",
@@ -11053,42 +10700,6 @@
             "slug": "mim_scuola_infanzia",
             "name": "MIM — Bambini Scuola Infanzia per Cittadinanza (2018-2025)",
             "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "opencivitas_fsc_2025_rso",
-            "name": "Opencivitas Fsc 2025 Rso",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "opencivitas_fsc_2025_rso",
-            "name": "Opencivitas Fsc 2025 Rso",
-            "column": "regione_istat_cod",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "opencivitas_fsc_enti_rso",
-            "name": "Opencivitas Fsc Enti Rso",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "opencivitas_fsc_enti_rso",
-            "name": "Opencivitas Fsc Enti Rso",
-            "column": "regione_istat_cod",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "opencivitas_indicatori",
-            "name": "Indicatori di performance dei comuni",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "opencivitas_indicatori",
-            "name": "Indicatori di performance dei comuni",
-            "column": "regione_istat_cod",
             "semantic_type": "region_code"
           },
           {
@@ -11144,28 +10755,10 @@
             "name": "Strutture Ricovero Asl",
             "column": "regione",
             "semantic_type": "region_code"
-          },
-          {
-            "slug": "terna_capacita_rinnovabile",
-            "name": "Terna Capacita Rinnovabile",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "terna_electrical_energy_by_sector",
-            "name": "Consumi elettrici per settore e provincia (GWh)",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "terna_electricity_by_source",
-            "name": "Terna Electricity By Source",
-            "column": "regione",
-            "semantic_type": "region_code"
           }
         ],
         "types": {
-          "region_code": 41
+          "region_code": 29
         }
       },
       "Scuola": {
@@ -11202,12 +10795,6 @@
           {
             "slug": "aci_prime_iscrizioni_autovetture",
             "name": "Aci Prime Iscrizioni Autovetture",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "ade_cinque_per_mille",
-            "name": "5x1000 — Beneficiari e importi per ente",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -11260,12 +10847,6 @@
             "semantic_type": "year"
           },
           {
-            "slug": "consip_consumi_convenzione",
-            "name": "Consip Consumi Convenzione",
-            "column": "anno_riferimento",
-            "semantic_type": "year"
-          },
-          {
             "slug": "dipendenti_pubblici",
             "name": "Dipendenti Pubblici - Occupazione e Turnover",
             "column": "anno",
@@ -11280,24 +10861,6 @@
           {
             "slug": "fts_eu_grants",
             "name": "Grant UE erogati in Italia (FTS EU Grants)",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "ga_decreti",
-            "name": "Ga Decreti",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "ga_ordinanze",
-            "name": "Ga Ordinanze",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "ga_sentenze",
-            "name": "Sentenze Giustizia Amministrativa (OpenGA)",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -11329,18 +10892,6 @@
             "slug": "irpef_comunale",
             "name": "Irpef Comunale",
             "column": "anno_di_imposta",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "ispra_consumo_suolo",
-            "name": "ISPRA — Consumo di Suolo (serie 2006-2024)",
-            "column": "periodo",
-            "semantic_type": "month"
-          },
-          {
-            "slug": "ispra_consumo_suolo",
-            "name": "ISPRA — Consumo di Suolo (serie 2006-2024)",
-            "column": "anno",
             "semantic_type": "year"
           },
           {
@@ -11410,18 +10961,6 @@
             "semantic_type": "year"
           },
           {
-            "slug": "mef_partecipazioni",
-            "name": "MEF Partecipazioni Pubbliche",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "mef_rappresentanti_partecipate",
-            "name": "MEF — Compensi Rappresentanti PA nelle Partecipate (2018-2023)",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
             "slug": "mit_incidentalita_mensile",
             "name": "MIT Incidentalità Stradale Mensile",
             "column": "mese",
@@ -11462,42 +11001,6 @@
             "name": "Iscritti Universitari per Ateneo",
             "column": "anno",
             "semantic_type": "year"
-          },
-          {
-            "slug": "opencivitas_fsc_2025_rso",
-            "name": "Opencivitas Fsc 2025 Rso",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "opencivitas_glossario",
-            "name": "Glossario indicatori OpenCivitas",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "opencivitas_indicatori",
-            "name": "Indicatori di performance dei comuni",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "openga_ricorsi_appalto",
-            "name": "Ricorsi Appalto (OpenGA — 31 sedi)",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "openga_ricorsi_cds",
-            "name": "Openga Ricorsi Cds",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "openga_ricorsi_cds",
-            "name": "Openga Ricorsi Cds",
-            "column": "mese",
-            "semantic_type": "month"
           },
           {
             "slug": "penale_flussi",
@@ -11564,29 +11067,11 @@
             "name": "Strutture Ricovero Asl",
             "column": "anno",
             "semantic_type": "year"
-          },
-          {
-            "slug": "terna_capacita_rinnovabile",
-            "name": "Terna Capacita Rinnovabile",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "terna_electrical_energy_by_sector",
-            "name": "Consumi elettrici per settore e provincia (GWh)",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "terna_electricity_by_source",
-            "name": "Terna Electricity By Source",
-            "column": "anno",
-            "semantic_type": "year"
           }
         ],
         "types": {
-          "year": 57,
-          "month": 7
+          "year": 41,
+          "month": 5
         }
       }
     },
@@ -11684,45 +11169,6 @@
       },
       {
         "from": {
-          "entity": "Ente",
-          "dataset": "opencivitas_fsc_2025_rso",
-          "via": "sogei_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "opencivitas_fsc_enti_rso",
-          "on": "username",
-          "semantic_type": "municipality_name"
-        }
-      },
-      {
-        "from": {
-          "entity": "Ente",
-          "dataset": "opencivitas_fsc_enti_rso",
-          "via": "sogei_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "opencivitas_fsc_enti_rso",
-          "on": "username",
-          "semantic_type": "municipality_name"
-        }
-      },
-      {
-        "from": {
-          "entity": "Ente",
-          "dataset": "opencivitas_indicatori",
-          "via": "sogei_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "opencivitas_fsc_enti_rso",
-          "on": "username",
-          "semantic_type": "municipality_name"
-        }
-      },
-      {
-        "from": {
           "entity": "Progetto",
           "dataset": "opencoesione_progetti",
           "via": "cup_code"
@@ -11731,19 +11177,6 @@
           "entity": "Comune",
           "bridge": "anac_cup",
           "on": "cup",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "openga_ricorsi_appalto",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
           "semantic_type": "municipality_code"
         }
       },
