@@ -242,7 +242,7 @@ Vedi [test-policy.md](https://github.com/dataciviclab/lab-ops/blob/main/operatio
 
 Usa il template `promotion.yml` quando il filone sembra pronto per:
 
-- `dataciviclab/analisi/`
+- `data-explorer`
 - repo progetto dedicata
 - archiviazione
 

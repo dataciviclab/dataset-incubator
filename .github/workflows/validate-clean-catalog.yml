@@ -22,6 +22,7 @@ jobs:
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
         with:
+          install-extras: dev,pipeline
           extra-packages: mcp>=1.26.0 duckdb==1.5.1
 
       # Validate catalog structure (schema + contract) — sempre
