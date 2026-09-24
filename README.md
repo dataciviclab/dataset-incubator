@@ -31,7 +31,7 @@ Un filone entra in DI in due modi:
 
 Un filone esce da DI in tre modi:
 
-- **`dataciviclab/analisi/`** — quando è pronto per un primo layer pubblico (via skill `new-analysis` in `dataciviclab/skills/`)
+- **`data-explorer`** — quando il dataset è pronto per una pagina pubblica su explorer.dataciviclab.org
 - **repo progetto dedicata** — quando il filone merita una casa autonoma
 - **archiviazione** — quando il caso non regge o non è prioritario
 
@@ -124,13 +124,13 @@ I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia
 
 | Risorsa | Dove | Quando |
 |---|---|---|
-| `new-analysis` | `dataciviclab/skills/` | Quando un filone è pronto per `dataciviclab/analisi/` |
+| `add-to-explorer` | `data-explorer` | Quando un dataset è pronto per una pagina pubblica |
 
 ## Regole operative
 
 - Massimo 2-3 filoni attivi alla volta
 - Ogni filone ha: domanda, dataset, output minimo, criterio di uscita
-- I filoni escono verso `dataciviclab/analisi/` quando il dato è stabile e la domanda è pubblica
+- I filoni escono verso `data-explorer` quando il dato è stabile e la domanda è pubblica
 - I support dataset non entrano mai in `analisi/`
 
 ## Runtime locale
