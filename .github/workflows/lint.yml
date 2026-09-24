@@ -1,15 +1,11 @@
 name: Lint
 
-env:
-  TOOLKIT_VERSION: "from-requirements-txt"
-
 on:
   pull_request:
     branches: [main]
     paths:
       - ".github/workflows/**"
       - ".github/actions/**"
-      - "requirements.txt"
       - "scripts/**"
       - "tools/**"
       - "tests/**"
@@ -31,6 +27,7 @@ jobs:
       - name: Python setup
         uses: dataciviclab/.github/actions/python-setup@main
         with:
+          install-extras: dev,pipeline
           extra-packages: ruff mypy types-pyyaml types-requests pytest pytest-cov pytest-timeout mcp>=1.26.0 duckdb==1.5.1
 
       - name: Ruff
