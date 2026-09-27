@@ -234,7 +234,7 @@ I test usano i marker standard del Lab (definiti in `pyproject.toml`):
 - `pure_unit` — logica pura, zero side effect
 - `smoke` — golden path E2E (richiede connettività)
 
-La threshold di coverage CI è al 55%. Ogni test nuovo o modificato in PR deve avere uno e un solo marker — il workflow `test-audit.yml` lo verifica automaticamente.
+La threshold di coverage CI è al 55%. I marker dei test sono opzionali per i repo dati — vedi `tests.md` per i dettagli.
 
 Vedi [test-policy.md](https://github.com/dataciviclab/lab-ops/blob/main/operations/test-policy.md) per la policy completa.
 
