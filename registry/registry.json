@@ -1480,103 +1480,6 @@
       ]
     },
     {
-      "slug": "costituzione_master",
-      "name": "Costituzione Master",
-      "description": "Metriche aggregate per ogni articolo della Costituzione: modifiche costituzionali, giudizi di legittimità, esiti delle pronunce (accolte/respinte/inammissibili), citazioni nella legislazione ordinaria, e dataset del DataCivicLab che ne monitorano l'attuazione. Fonte: JOIN tra i 6 parquet di dataciviclab/costituzione-italiana.",
-      "source": "dataciviclab/costituzione-italiana",
-      "source_id": "costituzione-italiana",
-      "period": {
-        "start": 2026,
-        "end": 2026
-      },
-      "tags": [
-        "normativa",
-        "costituzione",
-        "master"
-      ],
-      "category": "normativa",
-      "columns": [
-        {
-          "name": "articolo",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero dell'articolo della Costituzione (1-139)"
-        },
-        {
-          "name": "parte",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Parte della Costituzione (es. Principi fondamentali, Parte prima, Parte seconda)"
-        },
-        {
-          "name": "heading",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Intestazione dell'articolo (es. Art. 1, Art. 32)"
-        },
-        {
-          "name": "testo_preview",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Primi 200 caratteri del testo dell'articolo"
-        },
-        {
-          "name": "n_modifiche",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di leggi di revisione costituzionale che hanno modificato l'articolo"
-        },
-        {
-          "name": "n_giudizi",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di volte che l'articolo è stato evocato come parametro in giudizi di legittimità costituzionale"
-        },
-        {
-          "name": "n_accolte",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di pronunce della Corte Costituzionale che hanno dichiarato l'illegittimità costituzionale in cui l'articolo è stato evocato (da massime.parquet)"
-        },
-        {
-          "name": "n_respinte",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di pronunce in cui l'articolo è stato evocato ma la questione è stata dichiarata non fondata (da massime.parquet)"
-        },
-        {
-          "name": "n_inammissibili",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di pronunce in cui l'articolo è stato evocato ma la questione è stata dichiarata inammissibile (da massime.parquet)"
-        },
-        {
-          "name": "n_citazioni_legislative",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di volte che l'articolo è citato nella legislazione ordinaria italiana (da citazioni-legislative.parquet)"
-        },
-        {
-          "name": "n_indicatori",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di dataset del DataCivicLab che monitorano l'attuazione dell'articolo"
-        },
-        {
-          "name": "dataset_slugs",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Lista degli slug dei dataset Lab collegati all'articolo"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/costituzione_master/2026/costituzione_master_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
       "slug": "dipendenti_pubblici",
       "name": "Dipendenti Pubblici - Occupazione e Turnover",
       "description": "Dipendenti pubblici per ente, comparto, categoria, genere e tipo di orario (2010-2023)",
@@ -8383,16 +8286,6 @@
       }
     },
     {
-      "slug": "costituzione_master__costituzione_master",
-      "dataset": "costituzione_master",
-      "table": "costituzione_master",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/costituzione_master/2026/costituzione_master.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "dipendenti_pubblici__mart_comparti_anno",
       "dataset": "dipendenti_pubblici",
       "table": "mart_comparti_anno",
@@ -9694,14 +9587,6 @@
         "finished_at": "2026-07-30T16:04:10.866765+00:00",
         "duration_seconds": 0.021
       }
-    },
-    {
-      "id": "compose:costituzione_master",
-      "source_id": "costituzione-italiana",
-      "status": "ok",
-      "label": "costituzione_master",
-      "detail": "anno 2026 — mart: si",
-      "action": ""
     },
     {
       "id": "compose:malasanita_compose",
