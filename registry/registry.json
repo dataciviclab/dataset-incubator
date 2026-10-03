@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-09-24",
+  "updated_at": "2026-10-03",
   "datasets": [
     {
       "slug": "aci_prime_iscrizioni_autovetture",
@@ -8716,36 +8716,6 @@
       }
     },
     {
-      "slug": "mur_contribuzione_universitaria__mart_gettito_ateneo_tipo",
-      "dataset": "mur_contribuzione_universitaria",
-      "table": "mart_gettito_ateneo_tipo",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mur_contribuzione_universitaria/2024/mart_gettito_ateneo_tipo.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mur_immatricolati__mart_immatricolati",
-      "dataset": "mur_immatricolati",
-      "table": "mart_immatricolati",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mur_immatricolati/2025/mart_immatricolati.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "mur_iscritti__mart_iscritti",
-      "dataset": "mur_iscritti",
-      "table": "mart_iscritti",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/mur_iscritti/2025/mart_iscritti.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "penale_flussi__penale_flussi",
       "dataset": "penale_flussi",
       "table": "penale_flussi",
@@ -8963,7 +8933,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260924T180432Z_21553806",
+        "run_id": "20261003T095812Z_6260faed",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -8972,18 +8942,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 23022,
-          "clean": 23022,
-          "mart": 2364
+          "raw": 23387,
+          "clean": 23387,
+          "mart": 2365
         },
         "output_bytes": {
-          "raw": 828936,
-          "clean": 47523,
-          "mart": 11938
+          "raw": 842031,
+          "clean": 48370,
+          "mart": 11968
         },
-        "started_at": "2026-09-24T18:04:32.935691+00:00",
-        "finished_at": "2026-09-24T18:04:33.784486+00:00",
-        "duration_seconds": 0.849
+        "started_at": "2026-10-03T09:58:12.551662+00:00",
+        "finished_at": "2026-10-03T09:58:13.974182+00:00",
+        "duration_seconds": 1.423
       }
     },
     {
@@ -9413,30 +9383,6 @@
       "status": "ok",
       "label": "mortalita_istat_evitabile",
       "detail": "anno 2022 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "mur_contribuzione_universitaria",
-      "source_id": "mur_ustat",
-      "status": "ok",
-      "label": "mur_contribuzione_universitaria",
-      "detail": "anni 2017-2024 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "mur_immatricolati",
-      "source_id": "mur_ustat",
-      "status": "ok",
-      "label": "mur_immatricolati",
-      "detail": "anno 2025 — mart: si",
-      "action": ""
-    },
-    {
-      "id": "mur_iscritti",
-      "source_id": "mur_ustat",
-      "status": "ok",
-      "label": "mur_iscritti",
-      "detail": "anno 2025 — mart: si",
       "action": ""
     },
     {
@@ -10695,24 +10641,6 @@
             "semantic_type": "month"
           },
           {
-            "slug": "mur_contribuzione_universitaria",
-            "name": "MUR - Gettito della contribuzione universitaria",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "mur_immatricolati",
-            "name": "Immatricolati Universitari",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "mur_iscritti",
-            "name": "Iscritti Universitari per Ateneo",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
             "slug": "penale_flussi",
             "name": "Penale Flussi",
             "column": "anno",
@@ -10780,7 +10708,7 @@
           }
         ],
         "types": {
-          "year": 41,
+          "year": 38,
           "month": 5
         }
       }
