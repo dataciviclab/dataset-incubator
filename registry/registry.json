@@ -5,66 +5,6 @@
   "updated_at": "2026-10-03",
   "datasets": [
     {
-      "slug": "aci_prime_iscrizioni_autovetture",
-      "name": "Aci Prime Iscrizioni Autovetture",
-      "description": "Prime iscrizioni di autovetture nuove in Italia per comune e tipo alimentazione (2017-2024). Fonte: ACI - Automobile Club Italia.",
-      "source": "ACI — Automobile Club Italia (lod.aci.it)",
-      "source_id": "aci",
-      "period": {
-        "start": 2017,
-        "end": 2024
-      },
-      "tags": [
-        "trasporti",
-        "aci",
-        "prime",
-        "iscrizioni",
-        "autovetture"
-      ],
-      "category": "trasporti",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di immatricolazione",
-          "semantic_type": "year"
-        },
-        {
-          "name": "comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Comune di immatricolazione",
-          "semantic_type": "municipality_name"
-        },
-        {
-          "name": "provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Provincia del comune",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "alimentazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo alimentazione (Benzina, Gasolio, Elettrica, Ibrido, ...)"
-        },
-        {
-          "name": "prime_iscrizioni",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di autovetture nuove immatricolate"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/aci_prime_iscrizioni_autovetture/2024/aci_prime_iscrizioni_autovetture_2024_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published"
-    },
-    {
       "slug": "aifa_spesa_consumo",
       "name": "AIFA Spesa Farmaceutica Convenzionata",
       "description": "Spesa e consumo farmaceutico convenzionato SSN per regione, mese, categoria ATC — AIFA 2018-2024",
@@ -1117,106 +1057,6 @@
       "stage": "published"
     },
     {
-      "slug": "civile_flussi",
-      "name": "Flussi Civile — Giustizia civile italiana",
-      "description": "Flussi della giustizia civile italiana: sopravvenuti, definiti e pendenti per anno, ufficio, distretto, materia. Serie storica 2014-2025 (file snapshot 2025).",
-      "source": "https://datiestatistiche.giustizia.it/ (Ministero della Giustizia — Direzione Generale di Statistica)",
-      "source_id": "giustizia_statistiche",
-      "period": {
-        "start": 2014,
-        "end": 2025
-      },
-      "tags": [
-        "giustizia",
-        "statistiche-giudiziarie"
-      ],
-      "category": "giustizia",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno giudiziario di riferimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "fonte",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Fonte del dato (DGM/ISTAT/altro)"
-        },
-        {
-          "name": "tipo_ufficio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia di ufficio giudiziario (Tribunale, Procura, ecc.)"
-        },
-        {
-          "name": "distretto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Distretto giudiziario di appartenenza"
-        },
-        {
-          "name": "sede",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sede centrale o distaccata del tribunale"
-        },
-        {
-          "name": "macromateria",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Macro-categoria della materia controversa"
-        },
-        {
-          "name": "materia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Materia specifica della controversia"
-        },
-        {
-          "name": "dettaglio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Dettaglio aggiuntivo della materia"
-        },
-        {
-          "name": "sopravvenuti",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero di cause sopravvenute nel periodo"
-        },
-        {
-          "name": "definiti_totale",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero di cause definite (totale, tutte le fasi)"
-        },
-        {
-          "name": "definiti_con_sentenza",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero di cause definite con sentenza"
-        },
-        {
-          "name": "pendenti_finali",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero di cause pendenti a fine periodo"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/civile_flussi/2025/civile_flussi_2025_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published",
-      "mart_refs": [
-        "civile_flussi__mart_summary"
-      ]
-    },
-    {
       "slug": "comuni_master",
       "name": "Comuni Master — hub territoriale completo",
       "description": "Golden record dei comuni italiani: codici ISTAT, catastale (Belfiore), IPA, fiscale, superficie, popolazione, NUTS 2021/2024, ripartizione geografica, flag capoluogo, tipologia UTS, codici storici 103/107/110 province, indirizzo e contatti. Fusione di istat-elenco-comuni (ISTAT SITUAS), ISTAT CSV (codici amministrativi) e ipa-enti (AgID IPA).",
@@ -2086,76 +1926,6 @@
       ]
     },
     {
-      "slug": "giustizia_penale_indicatori",
-      "name": "Giustizia Penale — Clearance Rate e Disposition Time",
-      "description": "Indicatori di efficienza della giustizia penale: clearance rate (casi definiti/casi sopravvenuti) e disposition time (durata media in giorni) per distretto e tipo ufficio. Sheet Tribunali, anni 2014-2024. Fonte: Ministero della Giustizia — DG Statistica.",
-      "source": "Ministero della Giustizia — Direzione Generale di Statistica e Analisi Organizzativa",
-      "source_id": "giustizia_statistiche",
-      "period": {
-        "start": 2014,
-        "end": 2025
-      },
-      "tags": [
-        "giustizia",
-        "statistiche-giudiziarie"
-      ],
-      "category": "giustizia",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "tipo_ufficio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo di ufficio giudiziario (es. Tribunale Ordinario, Tribunale per i Minorenni)"
-        },
-        {
-          "name": "distretto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Distretto di Corte d'Appello"
-        },
-        {
-          "name": "sede",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sede dell'ufficio giudiziario"
-        },
-        {
-          "name": "sezione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sezione dell'ufficio (es. Penale, GIP, Esecuzioni)"
-        },
-        {
-          "name": "clearance_rate",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Clearance rate: rapporto tra procedimenti definiti e sopravvenuti"
-        },
-        {
-          "name": "disposition_time_gg",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Durata media dei procedimenti in giorni"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/giustizia_penale_indicatori/2025/giustizia_penale_indicatori_2025_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
-      "mart_refs": [
-        "giustizia_penale_indicatori__giustizia_penale_indicatori"
-      ]
-    },
-    {
       "slug": "inps_pensioni_trimestrale",
       "name": "INPS Pensioni — trimestrale",
       "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2020-2024)",
@@ -2247,241 +2017,6 @@
         "multi_file": false
       },
       "stage": "published"
-    },
-    {
-      "slug": "inps_rdc_pdc",
-      "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
-      "description": "Nuclei familiari percettori di Reddito di Cittadinanza (RdC) e Pensione di Cittadinanza (PdC) per comune ISTAT. Snapshot luglio 2020. Include takeup rate, composizione familiare, genere e importo medio.",
-      "source": "INPS — Open Data (opendata.inps.it)",
-      "source_id": "inps_open_data",
-      "period": {
-        "start": 2020,
-        "end": 2020
-      },
-      "tags": [
-        "welfare-lavoro",
-        "inps",
-        "rdc",
-        "pdc"
-      ],
-      "category": "welfare-lavoro",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento (2020)",
-          "semantic_type": "year"
-        },
-        {
-          "name": "codice_catastale",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice catastale Belfiore del comune (dal CSV INPS, es. A001)",
-          "semantic_type": "cadastral_code"
-        },
-        {
-          "name": "codice_istat",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Codice ISTAT del comune (6 cifre)",
-          "semantic_type": "municipality_code"
-        },
-        {
-          "name": "comune",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Denominazione del comune",
-          "semantic_type": "municipality_name"
-        },
-        {
-          "name": "regione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Nome della regione di appartenenza (dal support istat_elenco_comuni)",
-          "semantic_type": "region_code"
-        },
-        {
-          "name": "sigla_provincia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sigla automobilistica della provincia (dal support istat_elenco_comuni)",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "codice_regione",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice ISTAT della regione",
-          "semantic_type": "region_code"
-        },
-        {
-          "name": "codice_provincia",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Codice ISTAT della provincia",
-          "semantic_type": "province_code"
-        },
-        {
-          "name": "superficie_km2",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Superficie territoriale del comune in km² (dal support istat_elenco_comuni)"
-        },
-        {
-          "name": "nuclei_rdc",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Nuclei familiari percettori di Reddito di Cittadinanza (luglio 2020)"
-        },
-        {
-          "name": "nuclei_pdc",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Nuclei familiari percettori di Pensione di Cittadinanza (luglio 2020)"
-        },
-        {
-          "name": "individui_coinvolti",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Individui coinvolti nei nuclei RdC/PdC"
-        },
-        {
-          "name": "componenti_per_famiglia",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero medio di componenti per nucleo familiare"
-        },
-        {
-          "name": "donne_per_famiglia",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero medio di donne per nucleo familiare"
-        },
-        {
-          "name": "minori_18_per_famiglia",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero medio di minori sotto i 18 anni per nucleo"
-        },
-        {
-          "name": "anziani_75_per_famiglia",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Numero medio di anziani sopra i 75 anni per nucleo"
-        },
-        {
-          "name": "importo_medio_mensile",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Importo medio mensile per nucleo (€)"
-        },
-        {
-          "name": "dev_standard_importo",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Deviazione standard dell'importo medio mensile"
-        },
-        {
-          "name": "uomini_residenti",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Uomini residenti al 1-1-2020"
-        },
-        {
-          "name": "donne_residenti",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Donne residenti al 1-1-2020"
-        },
-        {
-          "name": "popolazione_residente",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Popolazione residente al 1-1-2020"
-        },
-        {
-          "name": "takeup",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Takeup rate RdC (nuclei percettori / popolazione residente)"
-        },
-        {
-          "name": "takeup_donne",
-          "type": "DOUBLE",
-          "role": "metric",
-          "description": "Takeup rate RdC femminile (donne coinvolte / donne residenti)"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/inps_rdc_pdc/2020/inps_rdc_pdc_2020_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published",
-      "mart_refs": [
-        "inps_rdc_pdc__mart_incidenza_comune",
-        "inps_rdc_pdc__mart_sintesi_regione",
-        "inps_rdc_pdc__mart_top_comuni"
-      ]
-    },
-    {
-      "slug": "intercettazioni",
-      "name": "Intercettazioni",
-      "description": "Bersagli intercettazioni per tipologia (telefoniche, ambientali, informatiche, trojan), distretto e tipo ufficio. Fonte: Ministero della Giustizia — DG Statistica.",
-      "source": "Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)",
-      "source_id": "giustizia_statistiche",
-      "period": {
-        "start": 2014,
-        "end": 2025
-      },
-      "tags": [
-        "giustizia",
-        "statistiche-giudiziarie"
-      ],
-      "category": "giustizia",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "tipo_ufficio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo di procura (ordinaria, minorenni, generale)"
-        },
-        {
-          "name": "distretto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Distretto di Corte d'Appello"
-        },
-        {
-          "name": "tipologia_intercettazione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia di intercettazione (Telefoniche, Ambientali, Informatiche, Trojan)"
-        },
-        {
-          "name": "n_bersagli",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Numero di bersagli intercettati"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/intercettazioni/2025/intercettazioni_2025_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published",
-      "mart_refs": [
-        "intercettazioni__intercettazioni"
-      ]
     },
     {
       "slug": "irpef_comunale",
@@ -4951,101 +4486,6 @@
       "stage": "incubating"
     },
     {
-      "slug": "monitoraggio_mensile_civile",
-      "name": "Monitoraggio Mensile Civile",
-      "description": "Iscritti e definiti civili per mese, sede e materia. Monitoraggio mensile dei tribunali. Fonte: Ministero della Giustizia — DG Statistica.",
-      "source": "Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)",
-      "source_id": "giustizia_statistiche",
-      "period": {
-        "start": 2019,
-        "end": 2025
-      },
-      "tags": [
-        "giustizia",
-        "statistiche-giudiziarie"
-      ],
-      "category": "giustizia",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "mese",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Mese (01-12)",
-          "semantic_type": "month"
-        },
-        {
-          "name": "fonte",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sistema fonte (SICID/SIECIC)"
-        },
-        {
-          "name": "tipo_ufficio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo di ufficio (Tribunale)"
-        },
-        {
-          "name": "distretto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Distretto di Corte d'Appello"
-        },
-        {
-          "name": "sede",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sede dell'ufficio giudiziario"
-        },
-        {
-          "name": "materia",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Materia del contendere"
-        },
-        {
-          "name": "iscritti",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Procedimenti iscritti (nuovi)"
-        },
-        {
-          "name": "definiti",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Procedimenti definiti (chiusi)"
-        },
-        {
-          "name": "area",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Area geografica (Nord-ovest, Nord-est, Centro, Sud, Isole)"
-        },
-        {
-          "name": "flag_dato",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipologia dato (Consolidati/Provvisori)"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/monitoraggio_mensile_civile/2025/monitoraggio_mensile_civile_2025_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published",
-      "mart_refs": [
-        "monitoraggio_mensile_civile__monitoraggio_mensile_civile"
-      ]
-    },
-    {
       "slug": "opencoesione_progetti",
       "name": "Opencoesione Progetti",
       "description": "Progetti finanziati dalle politiche di coesione 2007-2027: finanziamenti, impegni e pagamenti per macroarea, tema e ciclo di programmazione",
@@ -5347,82 +4787,6 @@
       "stage": "incubating",
       "mart_refs": [
         "opencoesione_soggetti__mart_beneficiari"
-      ]
-    },
-    {
-      "slug": "penale_flussi",
-      "name": "Penale Flussi",
-      "description": "Flussi dei procedimenti penali: sopravvenuti, definiti e pendenti per ufficio giudiziario. Fonte: Ministero della Giustizia — DG Statistica.",
-      "source": "Ministero della Giustizia — DG Statistica (datiestatistiche.giustizia.it)",
-      "source_id": "giustizia_statistiche",
-      "period": {
-        "start": 2014,
-        "end": 2025
-      },
-      "tags": [
-        "giustizia",
-        "statistiche-giudiziarie"
-      ],
-      "category": "giustizia",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Anno di riferimento",
-          "semantic_type": "year"
-        },
-        {
-          "name": "tipo_ufficio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Tipo di ufficio giudiziario"
-        },
-        {
-          "name": "sezione",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Sezione/attività dell'ufficio"
-        },
-        {
-          "name": "distretto",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Distretto di Corte d'Appello"
-        },
-        {
-          "name": "sede",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Circondario/sede dell'ufficio"
-        },
-        {
-          "name": "sopravvenuti",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Procedimenti sopravvenuti (iscritti)"
-        },
-        {
-          "name": "definiti_totale",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Procedimenti definiti (chiusi)"
-        },
-        {
-          "name": "pendenti_finali",
-          "type": "INTEGER",
-          "role": "metric",
-          "description": "Procedimenti pendenti a fine periodo"
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/penale_flussi/2025/penale_flussi_2025_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "published",
-      "mart_refs": [
-        "penale_flussi__penale_flussi"
       ]
     },
     {
@@ -8176,16 +7540,6 @@
   ],
   "marts": [
     {
-      "slug": "aci_prime_iscrizioni_autovetture__mart_anno_alimentazione",
-      "dataset": "aci_prime_iscrizioni_autovetture",
-      "table": "mart_anno_alimentazione",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/aci_prime_iscrizioni_autovetture/2024/mart_anno_alimentazione.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "aifa_spesa_consumo__mart_mensile_regione_atc4",
       "dataset": "aifa_spesa_consumo",
       "table": "mart_mensile_regione_atc4",
@@ -8262,16 +7616,6 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/centri_accoglienza_italia/2026/centri_accoglienza_italia.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "civile_flussi__mart_summary",
-      "dataset": "civile_flussi",
-      "table": "mart_summary",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/civile_flussi/2025/mart_summary.parquet",
         "multi_file": false
       }
     },
@@ -8386,62 +7730,12 @@
       }
     },
     {
-      "slug": "giustizia_penale_indicatori__giustizia_penale_indicatori",
-      "dataset": "giustizia_penale_indicatori",
-      "table": "giustizia_penale_indicatori",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/giustizia_penale_indicatori/2025/giustizia_penale_indicatori.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "inps_pensioni_trimestrale__mart_pensioni_regione_importo",
       "dataset": "inps_pensioni_trimestrale",
       "table": "mart_pensioni_regione_importo",
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/inps_pensioni_trimestrale/2024/mart_pensioni_regione_importo.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "inps_rdc_pdc__mart_incidenza_comune",
-      "dataset": "inps_rdc_pdc",
-      "table": "mart_incidenza_comune",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inps_rdc_pdc/2020/mart_incidenza_comune.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "inps_rdc_pdc__mart_sintesi_regione",
-      "dataset": "inps_rdc_pdc",
-      "table": "mart_sintesi_regione",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inps_rdc_pdc/2020/mart_sintesi_regione.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "inps_rdc_pdc__mart_top_comuni",
-      "dataset": "inps_rdc_pdc",
-      "table": "mart_top_comuni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/inps_rdc_pdc/2020/mart_top_comuni.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "intercettazioni__intercettazioni",
-      "dataset": "intercettazioni",
-      "table": "intercettazioni",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/intercettazioni/2025/intercettazioni.parquet",
         "multi_file": false
       }
     },
@@ -8676,16 +7970,6 @@
       }
     },
     {
-      "slug": "monitoraggio_mensile_civile__monitoraggio_mensile_civile",
-      "dataset": "monitoraggio_mensile_civile",
-      "table": "monitoraggio_mensile_civile",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/monitoraggio_mensile_civile/2025/monitoraggio_mensile_civile.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "mortalita_istat_evitabile__mart_regioni_v1",
       "dataset": "mortalita_istat_evitabile",
       "table": "mart_regioni_v1",
@@ -8712,16 +7996,6 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/mortalita_istat_evitabile/2022/mart_regioni_v3.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "penale_flussi__penale_flussi",
-      "dataset": "penale_flussi",
-      "table": "penale_flussi",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/penale_flussi/2025/penale_flussi.parquet",
         "multi_file": false
       }
     },
@@ -8888,14 +8162,6 @@
   ],
   "signals": [
     {
-      "id": "aci_prime_iscrizioni_autovetture",
-      "source_id": "aci",
-      "status": "ok",
-      "label": "aci_prime_iscrizioni_autovetture",
-      "detail": "anno 2024 — mart: si",
-      "action": ""
-    },
-    {
       "id": "aifa_spesa_consumo",
       "source_id": "aifa",
       "status": "ok",
@@ -9012,36 +8278,6 @@
       "action": ""
     },
     {
-      "id": "civile_flussi",
-      "source_id": "giustizia_statistiche",
-      "status": "ok",
-      "label": "civile_flussi",
-      "detail": "anno 2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260731T114731Z_3dec8a0d",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 123203,
-          "mart": 324
-        },
-        "output_bytes": {
-          "raw": 6716220,
-          "clean": 698682,
-          "mart": 6090
-        },
-        "started_at": "2026-07-31T11:47:31.726712+00:00",
-        "finished_at": "2026-07-31T11:48:42.007615+00:00",
-        "duration_seconds": 70.281
-      }
-    },
-    {
       "id": "dipendenti_pubblici",
       "source_id": "openbdap",
       "status": "ok",
@@ -9091,104 +8327,12 @@
       }
     },
     {
-      "id": "giustizia_penale_indicatori",
-      "source_id": "giustizia_statistiche",
-      "status": "ok",
-      "label": "giustizia_penale_indicatori",
-      "detail": "anno 2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260731T114716Z_f5866314",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 10488,
-          "clean": 10478,
-          "mart": 1251
-        },
-        "output_bytes": {
-          "raw": 914617,
-          "clean": 134681,
-          "mart": 53189
-        },
-        "started_at": "2026-07-31T11:47:16.516103+00:00",
-        "finished_at": "2026-07-31T11:47:21.231718+00:00",
-        "duration_seconds": 4.716
-      }
-    },
-    {
       "id": "inps_pensioni_trimestrale",
       "source_id": "inps",
       "status": "ok",
       "label": "inps_pensioni_trimestrale",
       "detail": "anno 2024 — mart: si",
       "action": ""
-    },
-    {
-      "id": "inps_rdc_pdc",
-      "source_id": "inps_open_data",
-      "status": "ok",
-      "label": "inps_rdc_pdc",
-      "detail": "anno 2020 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260802T144644Z_466a9d69",
-        "year": 2020,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 7976,
-          "clean": 7976,
-          "mart": 15848
-        },
-        "output_bytes": {
-          "raw": 872051,
-          "clean": 328980,
-          "mart": 423879
-        },
-        "started_at": "2026-08-02T14:46:44.923044+00:00",
-        "finished_at": "2026-08-02T14:46:47.376092+00:00",
-        "duration_seconds": 2.453
-      }
-    },
-    {
-      "id": "intercettazioni",
-      "source_id": "giustizia_statistiche",
-      "status": "ok",
-      "label": "intercettazioni",
-      "detail": "anno 2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260731T114851Z_0639a702",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 3952,
-          "mart": 1560
-        },
-        "output_bytes": {
-          "raw": 213981,
-          "clean": 8386,
-          "mart": 5417
-        },
-        "started_at": "2026-07-31T11:48:51.291161+00:00",
-        "finished_at": "2026-07-31T11:48:53.648463+00:00",
-        "duration_seconds": 2.357
-      }
     },
     {
       "id": "ispra_emissioni_ghg",
@@ -9348,72 +8492,12 @@
       "action": ""
     },
     {
-      "id": "monitoraggio_mensile_civile",
-      "source_id": "giustizia_statistiche",
-      "status": "ok",
-      "label": "monitoraggio_mensile_civile",
-      "detail": "anno 2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260731T115219Z_a7c39d31",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 95,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 140969,
-          "mart": 2340
-        },
-        "output_bytes": {
-          "raw": 7180289,
-          "clean": 415055,
-          "mart": 24453
-        },
-        "started_at": "2026-07-31T11:52:19.225482+00:00",
-        "finished_at": "2026-07-31T11:53:38.894285+00:00",
-        "duration_seconds": 79.669
-      }
-    },
-    {
       "id": "mortalita_istat_evitabile",
       "source_id": "istat_situas",
       "status": "ok",
       "label": "mortalita_istat_evitabile",
       "detail": "anno 2022 — mart: si",
       "action": ""
-    },
-    {
-      "id": "penale_flussi",
-      "source_id": "giustizia_statistiche",
-      "status": "ok",
-      "label": "penale_flussi",
-      "detail": "anno 2025 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20260731T115341Z_c860293c",
-        "year": 2025,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "clean": 17652,
-          "mart": 2196
-        },
-        "output_bytes": {
-          "raw": 779334,
-          "clean": 103098,
-          "mart": 19745
-        },
-        "started_at": "2026-07-31T11:53:41.149534+00:00",
-        "finished_at": "2026-07-31T11:53:49.224335+00:00",
-        "duration_seconds": 8.075
-      }
     },
     {
       "id": "pensioni_pa_dag",
@@ -9675,12 +8759,6 @@
         "label": "Comune (ISTAT)",
         "datasets": [
           {
-            "slug": "aci_prime_iscrizioni_autovetture",
-            "name": "Aci Prime Iscrizioni Autovetture",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
             "slug": "art_taxi_ncc",
             "name": "Art Taxi Ncc",
             "column": "comune",
@@ -9731,24 +8809,6 @@
           {
             "slug": "farmacie",
             "name": "Farmacie — Anagrafica farmacie italiane (Ministero Salute)",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "inps_rdc_pdc",
-            "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
-            "column": "codice_catastale",
-            "semantic_type": "cadastral_code"
-          },
-          {
-            "slug": "inps_rdc_pdc",
-            "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
-            "column": "codice_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "inps_rdc_pdc",
-            "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
             "column": "comune",
             "semantic_type": "municipality_name"
           },
@@ -10077,12 +9137,6 @@
         "label": "Provincia",
         "datasets": [
           {
-            "slug": "aci_prime_iscrizioni_autovetture",
-            "name": "Aci Prime Iscrizioni Autovetture",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
             "slug": "bdap_anagrafe_enti",
             "name": "BDAP Anagrafe Enti Pubblici",
             "column": "codice_provincia",
@@ -10116,18 +9170,6 @@
             "slug": "farmacie",
             "name": "Farmacie — Anagrafica farmacie italiane (Ministero Salute)",
             "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "inps_rdc_pdc",
-            "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
-            "column": "sigla_provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "inps_rdc_pdc",
-            "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
-            "column": "codice_provincia",
             "semantic_type": "province_code"
           },
           {
@@ -10278,18 +9320,6 @@
             "slug": "inps_pensioni_trimestrale",
             "name": "INPS Pensioni — trimestrale",
             "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "inps_rdc_pdc",
-            "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "inps_rdc_pdc",
-            "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
-            "column": "codice_regione",
             "semantic_type": "region_code"
           },
           {
@@ -10449,12 +9479,6 @@
         "label": "Tempo / data",
         "datasets": [
           {
-            "slug": "aci_prime_iscrizioni_autovetture",
-            "name": "Aci Prime Iscrizioni Autovetture",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
             "slug": "aifa_spesa_consumo",
             "name": "AIFA Spesa Farmaceutica Convenzionata",
             "column": "anno",
@@ -10497,12 +9521,6 @@
             "semantic_type": "year"
           },
           {
-            "slug": "civile_flussi",
-            "name": "Flussi Civile — Giustizia civile italiana",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
             "slug": "dipendenti_pubblici",
             "name": "Dipendenti Pubblici - Occupazione e Turnover",
             "column": "anno",
@@ -10521,26 +9539,8 @@
             "semantic_type": "year"
           },
           {
-            "slug": "giustizia_penale_indicatori",
-            "name": "Giustizia Penale — Clearance Rate e Disposition Time",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
             "slug": "inps_pensioni_trimestrale",
             "name": "INPS Pensioni — trimestrale",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "inps_rdc_pdc",
-            "name": "INPS RdC/PdC — Nuclei percettori per comune (2020)",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "intercettazioni",
-            "name": "Intercettazioni",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -10625,24 +9625,6 @@
           {
             "slug": "mit_incidentalita_mensile",
             "name": "MIT Incidentalità Stradale Mensile",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "monitoraggio_mensile_civile",
-            "name": "Monitoraggio Mensile Civile",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "monitoraggio_mensile_civile",
-            "name": "Monitoraggio Mensile Civile",
-            "column": "mese",
-            "semantic_type": "month"
-          },
-          {
-            "slug": "penale_flussi",
-            "name": "Penale Flussi",
             "column": "anno",
             "semantic_type": "year"
           },
