@@ -1,0 +1,119 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "adm_accertato_accise"
+  source_id: "adm_opendata"
+  tags: [finanza-pubblica, accise, dogane, fiscalita, energia, regioni]
+  category: finanza-pubblica
+  years: [2024]
+  time_coverage:
+    start_year: 2022
+    end_year: 2024
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "prodotti_energetici"
+      type: "http_file"
+      args:
+        url: "https://www.dati.gov.it/sites/default/files/agdogane_accertato-dell-accisa-sui-prodotti-energetici.csv"
+        filename: "accertato_energetici.csv"
+      inject_column:
+        settore: "prodotti_energetici"
+      primary: true
+    - name: "gas_naturale"
+      type: "http_file"
+      args:
+        url: "https://www.dati.gov.it/sites/default/files/agdogane_accertato-dell-accisa-sul-gas-naturale.csv"
+        filename: "accertato_gas.csv"
+      inject_column:
+        settore: "gas_naturale"
+    - name: "energia_elettrica"
+      type: "http_file"
+      args:
+        url: "https://www.dati.gov.it/sites/default/files/agdogane_accertato-dell-accisa-sull-energia-elettrica.csv"
+        filename: "accertato_energia_elettrica.csv"
+      inject_column:
+        settore: "energia_elettrica"
+    - name: "prodotti_alcolici"
+      type: "http_file"
+      args:
+        url: "https://www.dati.gov.it/sites/default/files/agdogane_accertato-dell-accisa-sui-prodotti-alcolici.csv"
+        filename: "accertato_alcolici.csv"
+      inject_column:
+        settore: "prodotti_alcolici"
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+    trim_whitespace: true
+    # Forza VARCHAR: il cast auto a DOUBLE mangia i codici capitolo
+    # (1.410 -> 1.41) e mescola formati con/senza punto tra anni.
+    columns:
+      "ANNO": "VARCHAR"
+      "CODICE CAPITOLO": "VARCHAR"
+      "CODICE ARTICOLO": "VARCHAR"
+      "REGIONE": "VARCHAR"
+      "DIREZIONE REGIONALE": "VARCHAR"
+      "DESCRIZIONE TIPO TRIBUTO": "VARCHAR"
+      "DESCRIZIONE ACCISE": "VARCHAR"
+      "ACCERTATO": "VARCHAR"
+  required_columns:
+    - anno
+    - settore
+    - regione
+    - direzione_regionale
+    - codice_capitolo
+    - codice_articolo
+    - descrizione_tributo
+    - descrizione_accisa
+    - accertato
+  validate:
+    min_rows: 100
+    not_null:
+      - anno
+      - settore
+      - regione
+      - accertato
+    primary_key:
+      - anno
+      - settore
+      - regione
+      - codice_capitolo
+      - codice_articolo
+
+mart:
+  tables:
+    - name: "mart_accertato_regione_anno"
+      sql: "sql/mart_regione_anno.sql"
+    - name: "mart_sintesi_area"
+      sql: "sql/mart_sintesi_area.sql"
+    - name: "mart_trend_regioni"
+      sql: "sql/mart_trend_regioni.sql"
+  required_tables:
+    - "mart_accertato_regione_anno"
+    - "mart_sintesi_area"
+    - "mart_trend_regioni"
+  validate:
+    table_rules:
+      mart_accertato_regione_anno:
+        required_columns: [anno, settore, regione, area, accertato_totale, quota_pct_naz, rank_settore]
+        primary_key: [anno, settore, regione]
+        min_rows: 50
+      mart_sintesi_area:
+        required_columns: [anno, area, settore, accertato_totale, quota_pct]
+        primary_key: [anno, area, settore]
+        min_rows: 10
+      mart_trend_regioni:
+        required_columns: [regione, area, accertato_2022, accertato_ultimo, delta_pct, rank_2022, rank_ultimo]
+        primary_key: [regione]
+        min_rows: 15
+
+validation:
+  fail_on_error: true
