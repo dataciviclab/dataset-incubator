@@ -3609,6 +3609,184 @@
       ]
     },
     {
+      "slug": "mase_prezzi_carburanti_mensili",
+      "name": "Mase Prezzi Carburanti Mensili",
+      "description": "",
+      "source": "",
+      "source_id": "mase_dgsaie",
+      "period": {
+        "start": 1996,
+        "end": 2026
+      },
+      "tags": [
+        "energia",
+        "carburanti",
+        "prezzi",
+        "accise",
+        "fiscalita",
+        "serie-storica"
+      ],
+      "category": "energia",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "month"
+        },
+        {
+          "name": "nome_mese",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_prodotto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "prodotto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "prezzo_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "accisa_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "iva_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "netto_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "quota_accisa_pct",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mase_prezzi_carburanti_mensili/2026/mase_prezzi_carburanti_mensili_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "mase_prezzi_carburanti_mensili__mart_mensile_prodotto"
+      ]
+    },
+    {
+      "slug": "mase_prezzi_carburanti_settimanali",
+      "name": "Mase Prezzi Carburanti Settimanali",
+      "description": "",
+      "source": "",
+      "source_id": "mase_dgsaie",
+      "period": {
+        "start": 2005,
+        "end": 2026
+      },
+      "tags": [
+        "energia",
+        "carburanti",
+        "prezzi",
+        "accise",
+        "fiscalita"
+      ],
+      "category": "energia",
+      "columns": [
+        {
+          "name": "data_rilevazione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_prodotto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "prodotto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "prezzo_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "accisa_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "iva_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "netto_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "variazione_eur",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "quota_accisa_pct",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mase_prezzi_carburanti_settimanali/2026/mase_prezzi_carburanti_settimanali_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "mase_prezzi_carburanti_settimanali__mart_settimanale_prodotto",
+        "mase_prezzi_carburanti_settimanali__mart_tagli_accisa"
+      ]
+    },
+    {
       "slug": "mef_irpef_regionale",
       "name": "MEF - Irpef Regionale",
       "description": "Redditi dichiarati per regione e classe, contribuenti e ammontare per tipo di reddito. Anni 2017-2025. Fonte: Ministero dell'Economia e delle Finanze.",
@@ -7989,6 +8167,36 @@
       }
     },
     {
+      "slug": "mase_prezzi_carburanti_mensili__mart_mensile_prodotto",
+      "dataset": "mase_prezzi_carburanti_mensili",
+      "table": "mart_mensile_prodotto",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_prezzi_carburanti_mensili/2026/mart_mensile_prodotto.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_prezzi_carburanti_settimanali__mart_settimanale_prodotto",
+      "dataset": "mase_prezzi_carburanti_settimanali",
+      "table": "mart_settimanale_prodotto",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_prezzi_carburanti_settimanali/2026/mart_settimanale_prodotto.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_prezzi_carburanti_settimanali__mart_tagli_accisa",
+      "dataset": "mase_prezzi_carburanti_settimanali",
+      "table": "mart_tagli_accisa",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_prezzi_carburanti_settimanali/2026/mart_tagli_accisa.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "mim_alunni_corso_eta__mart_comune",
       "dataset": "mim_alunni_corso_eta",
       "table": "mart_comune",
@@ -8561,6 +8769,68 @@
         "started_at": "2026-08-06T10:32:46.528792+00:00",
         "finished_at": "2026-08-06T10:34:59.409896+00:00",
         "duration_seconds": 132.881
+      }
+    },
+    {
+      "id": "mase_prezzi_carburanti_mensili",
+      "source_id": "mase_dgsaie",
+      "status": "ok",
+      "label": "mase_prezzi_carburanti_mensili",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261011T130824Z_b25b0ef3",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 3226,
+          "clean": 2282,
+          "mart": 2282
+        },
+        "output_bytes": {
+          "raw": 215153,
+          "clean": 62120,
+          "mart": 62120
+        },
+        "started_at": "2026-10-11T13:08:24.435544+00:00",
+        "finished_at": "2026-10-11T13:08:30.497325+00:00",
+        "duration_seconds": 6.062
+      }
+    },
+    {
+      "id": "mase_prezzi_carburanti_settimanali",
+      "source_id": "mase_dgsaie",
+      "status": "ok",
+      "label": "mase_prezzi_carburanti_settimanali",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261011T130831Z_53730c4c",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 6880,
+          "clean": 6880,
+          "mart": 6910
+        },
+        "output_bytes": {
+          "raw": 473331,
+          "clean": 188978,
+          "mart": 192303
+        },
+        "started_at": "2026-10-11T13:08:31.866126+00:00",
+        "finished_at": "2026-10-11T13:08:36.720287+00:00",
+        "duration_seconds": 4.854
       }
     },
     {
@@ -9773,6 +10043,18 @@
             "semantic_type": "year"
           },
           {
+            "slug": "mase_prezzi_carburanti_mensili",
+            "name": "Mase Prezzi Carburanti Mensili",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "mase_prezzi_carburanti_mensili",
+            "name": "Mase Prezzi Carburanti Mensili",
+            "column": "mese",
+            "semantic_type": "month"
+          },
+          {
             "slug": "mef_irpef_regionale",
             "name": "MEF - Irpef Regionale",
             "column": "anno_di_imposta",
@@ -9852,8 +10134,8 @@
           }
         ],
         "types": {
-          "year": 32,
-          "month": 4
+          "year": 33,
+          "month": 5
         }
       }
     },
