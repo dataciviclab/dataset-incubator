@@ -25,7 +25,8 @@ MASE — DGSAIE (Statistiche energetiche), API open non catalogate su dati.gov.i
 ## Output minimo atteso
 
 - Clean in €/L con `quota_accisa_pct`
-- Mart = clean arricchito (serie pronta per analisi/trend)
+- `mart_settimanale_prodotto`: serie pronta per analisi/trend
+- `mart_tagli_accisa`: discontinuità accisa (tagli/aumenti >= 0,02 €/L)
 
 ## Criterio di promozione
 

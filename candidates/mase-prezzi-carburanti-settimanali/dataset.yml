@@ -63,14 +63,21 @@ mart:
   tables:
     - name: "mart_settimanale_prodotto"
       sql: "sql/mart_settimanale.sql"
+    - name: "mart_tagli_accisa"
+      sql: "sql/mart_tagli_accisa.sql"
   required_tables:
     - "mart_settimanale_prodotto"
+    - "mart_tagli_accisa"
   validate:
     table_rules:
       mart_settimanale_prodotto:
         required_columns: [data_rilevazione, codice_prodotto, prodotto, prezzo_eur, accisa_eur, quota_accisa_pct]
         primary_key: [data_rilevazione, codice_prodotto]
         min_rows: 1000
+      mart_tagli_accisa:
+        required_columns: [data_taglio, codice_prodotto, prodotto, delta_accisa, tipo_variazione]
+        primary_key: [data_taglio, codice_prodotto]
+        min_rows: 4
 
 validation:
   fail_on_error: true

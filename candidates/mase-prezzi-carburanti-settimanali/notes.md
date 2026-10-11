@@ -21,3 +21,9 @@
 ## Limite semantico
 
 - Media **nazionale** del prezzo praticato, non consumo e non gettito regionale
+
+## mart_tagli_accisa
+
+- Soglia 0,02 €/L su delta accisa settimanale per prodotto
+- Cattura i tagli policy 2022 e 2026 e gli adeguamenti minimi
+- `tipo_variazione` = taglio | aumento
