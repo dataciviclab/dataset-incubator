@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_housing_crowding"
-  source_id: "istat_dbnomics"
+  source_id: "istat_sdmx"
   tags: [welfare-lavoro, istat, housing, crowding]
   category: welfare-lavoro
   years: [2024]
@@ -11,37 +11,28 @@ dataset:
     start_year: 2004
     end_year: 2025
 
-# Crowding index Italia — 33_179 via type: dbnomics
-# ABITAZ_AFFOLL_MED · componenti per 100 mq · titolo godimento 1/2
+# Crowding index Italia — 33_179 via type: sdmx (canale diretto esploradati)
+# ABITAZ_AFFOLL_MED · componenti per 100 mq · titolo godimento 1=rent 2=property
+# Le dimensioni breakdown non sono filtrate in raw (key vuota = all): richiede
+# toolkit con fix #444 (key completa da datastructure, PR toolkit #501).
 
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_dbnomics_housing"
-      type: "dbnomics"
+    - name: "istat_sdmx_housing_crowding"
+      type: "sdmx"
       client:
         timeout: 120
         retries: 2
       args:
-        provider: ISTAT
-        dataset: "33_179"
-        dimensions:
-          FREQ: [A]
-          REF_AREA: [IT]
-          DATA_TYPE: [ABITAZ_AFFOLL_MED]
-          MEASURE: ["10"]
-          TENURE_STATUS: ["1", "2"]
-          NUMBER_HOUSEHOLD_COMP: ["99"]
-          HOUSEHOLD_TYPOLOGY: ["99"]
-          NUMB_OF_CHILDREN: ["9"]
-          NUMB_OF_ELDERLY: ["9"]
-          FIFTH_EQUIV_HOUSE_INC: ["9"]
-          SEX_MAIN_PERCEPTOR: ["9"]
-          AGE_MAIN_EARNIER: ["9"]
-          EDU_LEV_MAIN_EARN: ["99"]
-          LABPROF_STATUS_C_MAIN_EARNER: ["99"]
-        page_size: 100
-        max_pages: 10
+        agency: "IT1"
+        flow: "33_179"
+        version: "1.0"
+        filters:
+          FREQ: "A"
+          REF_AREA: "IT"
+          DATA_TYPE: "ABITAZ_AFFOLL_MED"
+          MEASURE: "10"
         filename: "istat_housing_crowding_series.csv"
       primary: true
 
@@ -50,9 +41,12 @@ clean:
   required_columns:
     - anno
     - ref_area_codice
-    - ref_area
     - titolo_godimento_codice
     - titolo_godimento
+    - numero_componenti_nucleo
+    - tipologia_nucleo_codice
+    - numero_figli
+    - quintile_reddito_codice
     - componenti_per_100mq
   read:
     source: "auto"
@@ -62,7 +56,7 @@ clean:
     header: true
   validate:
     not_null: [anno, titolo_godimento_codice]
-    min_rows: 20
+    min_rows: 100
 
 mart:
   tables:
