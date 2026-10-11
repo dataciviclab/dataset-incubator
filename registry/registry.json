@@ -2,8 +2,97 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-10-03",
+  "updated_at": "2026-10-11",
   "datasets": [
+    {
+      "slug": "adm_accertato_accise",
+      "name": "Adm Accertato Accise",
+      "description": "",
+      "source": "",
+      "source_id": "adm_opendata",
+      "period": {
+        "start": 2022,
+        "end": 2024
+      },
+      "tags": [
+        "finanza-pubblica",
+        "accise",
+        "dogane",
+        "fiscalita",
+        "energia",
+        "regioni"
+      ],
+      "category": "finanza-pubblica",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "settore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "direzione_regionale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_capitolo",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "codice_articolo",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "descrizione_tributo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_accisa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "accertato",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/adm_accertato_accise/2024/adm_accertato_accise_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "adm_accertato_accise__mart_accertato_regione_anno",
+        "adm_accertato_accise__mart_sintesi_area",
+        "adm_accertato_accise__mart_trend_regioni"
+      ]
+    },
     {
       "slug": "aifa_spesa_consumo",
       "name": "AIFA Spesa Farmaceutica Convenzionata",
@@ -7540,6 +7629,36 @@
   ],
   "marts": [
     {
+      "slug": "adm_accertato_accise__mart_accertato_regione_anno",
+      "dataset": "adm_accertato_accise",
+      "table": "mart_accertato_regione_anno",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/adm_accertato_accise/2024/mart_accertato_regione_anno.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "adm_accertato_accise__mart_sintesi_area",
+      "dataset": "adm_accertato_accise",
+      "table": "mart_sintesi_area",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/adm_accertato_accise/2024/mart_sintesi_area.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "adm_accertato_accise__mart_trend_regioni",
+      "dataset": "adm_accertato_accise",
+      "table": "mart_trend_regioni",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/adm_accertato_accise/2024/mart_trend_regioni.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "aifa_spesa_consumo__mart_mensile_regione_atc4",
       "dataset": "aifa_spesa_consumo",
       "table": "mart_mensile_regione_atc4",
@@ -8161,6 +8280,37 @@
     }
   ],
   "signals": [
+    {
+      "id": "adm_accertato_accise",
+      "source_id": "adm_opendata",
+      "status": "ok",
+      "label": "adm_accertato_accise",
+      "detail": "anno 2024 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261011T120816Z_cdeb5079",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 322,
+          "clean": 713,
+          "mart": 284
+        },
+        "output_bytes": {
+          "raw": 71075,
+          "clean": 8435,
+          "mart": 9672
+        },
+        "started_at": "2026-10-11T12:08:16.711204+00:00",
+        "finished_at": "2026-10-11T12:08:18.866976+00:00",
+        "duration_seconds": 2.156
+      }
+    },
     {
       "id": "aifa_spesa_consumo",
       "source_id": "aifa",
@@ -8964,9 +9114,9 @@
           }
         ],
         "types": {
-          "municipality_name": 16,
-          "municipality_code": 14,
-          "cadastral_code": 8
+          "municipality_name": 14,
+          "municipality_code": 13,
+          "cadastral_code": 7
         }
       },
       "Ente": {
@@ -9258,7 +9408,7 @@
           }
         ],
         "types": {
-          "province_code": 23
+          "province_code": 20
         }
       },
       "Provincia (tramite NUTS3)": {
@@ -9280,6 +9430,12 @@
         "entity": "Regione",
         "label": "Regione",
         "datasets": [
+          {
+            "slug": "adm_accertato_accise",
+            "name": "Adm Accertato Accise",
+            "column": "regione",
+            "semantic_type": "region_code"
+          },
           {
             "slug": "aifa_spesa_consumo",
             "name": "AIFA Spesa Farmaceutica Convenzionata",
@@ -9444,7 +9600,7 @@
           }
         ],
         "types": {
-          "region_code": 29
+          "region_code": 28
         }
       },
       "Scuola": {
@@ -9478,6 +9634,12 @@
         "entity": "Tempo",
         "label": "Tempo / data",
         "datasets": [
+          {
+            "slug": "adm_accertato_accise",
+            "name": "Adm Accertato Accise",
+            "column": "anno",
+            "semantic_type": "year"
+          },
           {
             "slug": "aifa_spesa_consumo",
             "name": "AIFA Spesa Farmaceutica Convenzionata",
@@ -9690,8 +9852,8 @@
           }
         ],
         "types": {
-          "year": 38,
-          "month": 5
+          "year": 32,
+          "month": 4
         }
       }
     },
