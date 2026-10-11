@@ -1,5 +1,6 @@
 -- clean.sql: tasso occupazione province (150_915)
--- Canale dbnomics · macros toolkit (normalize_string / cast_int / cast_double)
+-- Canale SDMX diretto (esploradati) · macros toolkit (normalize_string / cast_int / cast_double)
+-- Colonna valore: `value` dal canale SDMX (dbnomics usava OBS_VALUE)
 -- territorio: label NUTS3 da codelist ESTAT GEO (statica nel clean; NUTS stabili)
 
 SELECT
@@ -131,7 +132,7 @@ SELECT
         when 'Y55-64' then '55-64 anni'
         else normalize_string(AGE)
     end AS eta,
-    cast_double(OBS_VALUE) AS valore
+    cast_double(value) AS valore
 FROM raw_input
 WHERE
     normalize_string(FREQ) = 'A'
@@ -139,6 +140,6 @@ WHERE
     AND normalize_string(CITIZENSHIP) = 'TOTAL'
     AND normalize_string(EDU_LEV_HIGHEST) = '99'
     AND normalize_string(AGE) IN ('Y15-64', 'Y15-24', 'Y25-34', 'Y35-44', 'Y45-54', 'Y55-64')
-    AND normalize_string(DATA_TYPE) IN ('EMP_R', 'UNEM_R')
+    AND normalize_string(DATA_TYPE) = 'EMP_R'
     AND anno IS NOT NULL
-    AND cast_double(OBS_VALUE) IS NOT NULL
+    AND cast_double(value) IS NOT NULL

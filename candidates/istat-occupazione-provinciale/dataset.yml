@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_occupazione_provinciale"
-  source_id: "istat_dbnomics"
+  source_id: "istat_sdmx"
   tags: [welfare-lavoro, istat, occupazione]
   category: welfare-lavoro
   years: [2025]
@@ -11,29 +11,29 @@ dataset:
     start_year: 2018
     end_year: 2025
 
-# Tasso occupazione/disoccupazione province — ISTAT 150_915 via type: dbnomics
-# Filtri: EMP_R/UNEM_R · cittadinanza totale · istruzione totale · classi età principali
-# NUTS3: LENGTH(REF_AREA)=5
+# Tasso occupazione/disoccupazione province — ISTAT 150_915 via type: sdmx
+# Remigrazione post-fix toolkit key SDMX (#444). EMP_R: UNEM_R non esiste in
+# 150_915 (né mirror né SDMX — solo employment rate; era una voce fantasma
+# nella config dbnomics, audit issue #873).
+# NUTS3: LENGTH(REF_AREA)=5 filtrato nel clean · AGE: classi filtrate nel clean
 
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_dbnomics_occupazione"
-      type: "dbnomics"
+    - name: "istat_sdmx_occupazione"
+      type: "sdmx"
       client:
         timeout: 180
         retries: 2
       args:
-        provider: ISTAT
-        dataset: "150_915"
-        dimensions:
-          FREQ: [A]
-          DATA_TYPE: [EMP_R, UNEM_R]
-          CITIZENSHIP: [TOTAL]
-          EDU_LEV_HIGHEST: ["99"]
-          AGE: [Y15-64, Y15-24, Y25-34, Y35-44, Y45-54, Y55-64]
-        page_size: 1000
-        max_pages: 20
+        agency: "IT1"
+        flow: "150_915"
+        version: "1.0"
+        filters:
+          FREQ: "A"
+          DATA_TYPE: "EMP_R"
+          CITIZENSHIP: "TOTAL"
+          EDU_LEV_HIGHEST: "99"
         filename: "istat_occupazione_serie.csv"
       primary: true
 

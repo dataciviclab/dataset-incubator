@@ -1,14 +1,20 @@
 -- ISTAT 93_498 — PIL/VA/imposte lato offerta
--- Canale dbnomics · macros toolkit (normalize_string / cast_int / cast_double)
+-- Canale SDMX diretto (esploradati) · macros toolkit (normalize_string / cast_int / cast_double)
 -- territorio_nome: label NUTS da codelist ESTAT GEO (statica; NUTS stabili)
--- Ultima edizione per REF_AREA × DATA_TYPE_AGGR
+-- Ultima edizione per REF_AREA × DATA_TYPE_AGGR (colonna `value` dal canale SDMX)
 
 with
 edizione_max as (
     select
         normalize_string(REF_AREA) as REF_AREA,
         normalize_string(DATA_TYPE_AGGR) as DATA_TYPE_AGGR,
-        max(normalize_string(EDITION)) as max_ed
+        -- Ordinamento numerico YYYYMmm: max su stringa sbaglia
+        -- ("2025M12" < "2025M6" lessicographicamente → esce M6).
+        arg_max(
+            normalize_string(EDITION),
+            cast(substr(normalize_string(EDITION), 6) as integer)
+                + 12 * cast(substr(normalize_string(EDITION), 1, 4) as integer)
+        ) as max_ed
     from raw_input
     group by 1, 2
 )
@@ -176,7 +182,7 @@ select
     normalize_string(r.VALUATION) as valutazione_codice,
     'prezzi correnti' as valutazione,
     cast_int(r.TIME_PERIOD) as anno,
-    cast_double(r.OBS_VALUE) as valore_mln_eu
+    cast_double(r.value) as valore_mln_eu
 from raw_input r
 join edizione_max e
   on normalize_string(r.REF_AREA) = e.REF_AREA
@@ -185,4 +191,4 @@ join edizione_max e
 where normalize_string(r.VALUATION) = 'V'
   and normalize_string(r.ADJUSTMENT) = 'N'
   and anno is not null
-  and cast_double(OBS_VALUE) is not null
+  and cast_double(value) is not null

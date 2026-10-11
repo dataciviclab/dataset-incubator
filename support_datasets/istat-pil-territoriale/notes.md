@@ -5,16 +5,19 @@ Support dataset per normalizzazione PIL e Valore Aggiunto territoriale.
 
 ## Stato operativo (2026-10-11)
 
-- **Canale**: toolkit `type: dbnomics` (CI-safe, no rate-limit SDMX)
-- **Dataset**: `ISTAT/93_498` · B1GQ / B1G / D21X31 · VALUATION=V · ADJUSTMENT=N
-- **Copertura**: nazionale/macro-aree/regioni 1995–2023; province ~2000–2022
+- **Canale**: toolkit `type: sdmx` (canale diretto esploradati) — remigrazione
+  post-fix toolkit key SDMX (#444). Il mirror dbnomics era un'edizione
+  indietro (2025M6, max 2023): audit collegato a #873
+- **Dataset**: `IT1/93_498` v1.0 · B1GQ / B1G / D21X31 · VALUATION=V · ADJUSTMENT=N
+- **Copertura**: nazionale/macro-aree/regioni 1995–2024 (edizione 2025M12);
+  province ~2000–2023. L'edizione è esplicita nel raw, il clean fa `arg_max`
+  con ordinamento numerico YYYYMmm (max su stringa sbaglia: "2025M12" < "2025M6")
 - **Metriche**: solo PIL, VA, imposte nette. Niente branche ATECO.
-- **Clean**: ultima edizione per REF_AREA×metrica (i valori possono differire per edizione)
-- **SDMX live**: non usare come canale di run (rate-limit/ban); solo se mirror indietro
 
 ## Rate limit ISTAT
 
-ISTAT SDMX: **~5 query al minuto**, ban temporanei. Preferire sempre DBnomics.
+ISTAT SDMX: **~5 query al minuto**, ban temporanei. Il fetch è single-shot
+(1 request + retries/backoff del plugin); in caso di 429 il run va riprovato.
 
 ## Rischi noti
 
