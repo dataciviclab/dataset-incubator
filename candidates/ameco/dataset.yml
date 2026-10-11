@@ -1,0 +1,60 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "ameco"
+  source_id: "ec_ameco"
+  tags: [economia, previsioni, commissione-europea, debito, pil, ameco]
+  category: economia
+  years: [2026]
+  time_coverage:
+    start_year: 1960
+    end_year: 2027
+
+raw:
+  output_policy: overwrite
+  extractor:
+    type: unzip_all
+  sources:
+    - name: "ameco_zip"
+      type: "http_file"
+      args:
+        url: "https://ec.europa.eu/economy_finance/db_indicators/ameco/documents/ameco0_csv.zip"
+        filename: "ameco0_csv.zip"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all
+    delim: ","
+    # Alcuni CSV del bundle sono ISO-8859 (AMECO11 ecc.), altri UTF-8:
+    # latin1 copre entrambi senza errori di decode.
+    encoding: "latin1"
+    header: true
+    trim_whitespace: true
+  required_columns: [paese, paese_nome, serie, titolo, unita, anno, valore, tipo_dato]
+  validate:
+    min_rows: 1000
+    not_null: [paese, serie, anno, valore]
+    primary_key: [paese, serie, anno]
+    promotion:
+      max_row_drop_pct: 100.0
+      fail_on_row_drop_exceeded: false
+
+mart:
+  tables:
+    - name: "mart_sintesi_paese"
+      sql: "sql/mart_sintesi.sql"
+  required_tables:
+    - "mart_sintesi_paese"
+  validate:
+    table_rules:
+      mart_sintesi_paese:
+        required_columns: [paese, paese_nome, serie, titolo, unita, anno_ultimo, valore_ultimo, valore_2025, valore_2026, valore_2027]
+        primary_key: [paese, serie]
+        min_rows: 30
+
+validation:
+  fail_on_error: true
