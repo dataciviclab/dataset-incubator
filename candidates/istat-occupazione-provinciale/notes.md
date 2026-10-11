@@ -26,3 +26,11 @@ python -m toolkit.cli.app run raw   -c dataset.yml -y 2025 --root ../../out
 python -m toolkit.cli.app run clean -c dataset.yml -y 2025 --root ../../out
 python -m toolkit.cli.app run mart  -c dataset.yml -y 2025 --root ../../out
 ```
+
+## Label territoriali (2026-10-11)
+
+`territorio` / `territorio_nome` usano un **CASE NUTS statico** nel clean
+(codelist ESTAT GEO, nomi italiani). NUTS stabili — aggiornamento solo se
+cambiano confini. Codici speciali ISTAT non in GEO (`IT108`–`IT111`)
+restano come codice (fallback `else`). Aggregati ISTAT (`ITCD`, `ITDA`,
+`ITFG`, `ITCDE`) mappati a label descrittive.

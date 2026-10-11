@@ -28,3 +28,11 @@ ISTAT SDMX: **~5 query al minuto**, ban temporanei. Preferire sempre DBnomics.
 - Valore aggiunto per branca ATECO → vedi experiment `istat-va-branca` (93_1227)
 - PIL concatenato (L_2020) per serie reali
 - Dati trimestrali
+
+## Label territoriali (2026-10-11)
+
+`territorio` / `territorio_nome` usano un **CASE NUTS statico** nel clean
+(codelist ESTAT GEO, nomi italiani). NUTS stabili — aggiornamento solo se
+cambiano confini. Codici speciali ISTAT non in GEO (`IT108`–`IT111`)
+restano come codice (fallback `else`). Aggregati ISTAT (`ITCD`, `ITDA`,
+`ITFG`, `ITCDE`) mappati a label descrittive.
