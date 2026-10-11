@@ -3042,13 +3042,13 @@
         },
         {
           "name": "pres_aff_imp",
-          "type": "BIGINT",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Serie: 1=con fitti imputati, 2=senza fitti imputati"
         },
         {
           "name": "anno",
-          "type": "BIGINT",
+          "type": "INTEGER",
           "role": "dimension",
           "description": "Anno di riferimento (2003-2024)",
           "semantic_type": "year"
@@ -3065,7 +3065,10 @@
         "path": "gs://dataciviclab-clean/istat_gini_regionale/2023/istat_gini_regionale_2023_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "istat_gini_regionale__mart_gini_regionale"
+      ]
     },
     {
       "slug": "istat_housing_crowding",
@@ -3111,26 +3114,14 @@
           "description": "Codice dell'indicatore SDMX (ABITAZ_AFFOLL_MED)"
         },
         {
-          "name": "indicatore",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Nome dell'indicatore"
-        },
-        {
           "name": "misura_codice",
-          "type": "BIGINT",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Codice della misura (10 = per hundred values)"
         },
         {
-          "name": "misura",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Descrizione della misura"
-        },
-        {
           "name": "titolo_godimento_codice",
-          "type": "BIGINT",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Codice titolo di godimento: 1=owner-occupied, 2=rent"
         },
@@ -3139,114 +3130,6 @@
           "type": "VARCHAR",
           "role": "dimension",
           "description": "Titolo di godimento: proprieta o affitto"
-        },
-        {
-          "name": "numero_componenti_nucleo",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero di componenti del nucleo familiare"
-        },
-        {
-          "name": "numero_componenti_nucleo_label",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Label numero componenti nucleo"
-        },
-        {
-          "name": "tipologia_nucleo_codice",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice tipologia nucleo"
-        },
-        {
-          "name": "tipologia_nucleo_label",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Label tipologia nucleo"
-        },
-        {
-          "name": "numero_figli",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero di figli"
-        },
-        {
-          "name": "numero_figli_label",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Label numero figli"
-        },
-        {
-          "name": "numero_anziani",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "Numero di anziani nel nucleo"
-        },
-        {
-          "name": "numero_anziani_label",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Label numero anziani"
-        },
-        {
-          "name": "quintile_reddito_codice",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice quintile di reddito"
-        },
-        {
-          "name": "quintile_reddito_label",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Label quintile di reddito"
-        },
-        {
-          "name": "sesso_percettore_principale_codice",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice sesso percettore principale"
-        },
-        {
-          "name": "sesso_percettore_principale_label",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Label sesso percettore principale"
-        },
-        {
-          "name": "eta_percettore_principale_codice",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice eta percettore principale"
-        },
-        {
-          "name": "eta_percettore_principale_label",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Label eta percettore principale"
-        },
-        {
-          "name": "titolo_studio_percettore_codice",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice titolo di studio"
-        },
-        {
-          "name": "titolo_studio_percettore_label",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Label titolo di studio"
-        },
-        {
-          "name": "condizione_professionale_percettore_codice",
-          "type": "BIGINT",
-          "role": "dimension",
-          "description": "Codice condizione professionale"
-        },
-        {
-          "name": "condizione_professionale_percettore_label",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": "Label condizione professionale"
         },
         {
           "name": "componenti_per_100mq",
@@ -3260,7 +3143,10 @@
         "path": "gs://dataciviclab-clean/istat_housing_crowding/2024/istat_housing_crowding_2024_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "istat_housing_crowding__mart_crowding_tenure_italy"
+      ]
     },
     {
       "slug": "istat_ipab_aree",
@@ -3328,7 +3214,10 @@
         "path": "gs://dataciviclab-clean/istat_ipab_aree/2024/istat_ipab_aree_2024_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "istat_ipab_aree__ipab_aree"
+      ]
     },
     {
       "slug": "istat_occupazione_provinciale",
@@ -3370,11 +3259,12 @@
           "name": "indicatore",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Tipo di indicatore: EMP_R = tasso di occupazione"
+          "description": "Tipo di indicatore: EMP_R = tasso di occupazione",
+          "semantic_type": "indicatore_code"
         },
         {
           "name": "sesso_codice",
-          "type": "BIGINT",
+          "type": "VARCHAR",
           "role": "dimension",
           "description": "Codice sesso: 1=maschi, 2=femmine, 9=totale"
         },
@@ -3408,7 +3298,10 @@
         "path": "gs://dataciviclab-clean/istat_occupazione_provinciale/2025/istat_occupazione_provinciale_2025_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "istat_occupazione_provinciale__mart_occupazione_provinciale"
+      ]
     },
     {
       "slug": "istat_pil_territoriale",
@@ -3489,7 +3382,10 @@
         "path": "gs://dataciviclab-clean/istat_pil_territoriale/2024/istat_pil_territoriale_2024_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "istat_pil_territoriale__pil_territoriale"
+      ]
     },
     {
       "slug": "iva_regionale",
@@ -8733,42 +8629,126 @@
     },
     {
       "id": "istat_gini_regionale",
-      "source_id": "istat_sdmx",
+      "source_id": "istat_dbnomics",
       "status": "ok",
       "label": "istat_gini_regionale",
       "detail": "anno 2023 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20261011T184330Z_8671f9dd",
+        "year": 2023,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 1232,
+          "clean": 968,
+          "mart": 968
+        },
+        "output_bytes": {
+          "raw": 106518,
+          "clean": 3864,
+          "mart": 3618
+        },
+        "started_at": "2026-10-11T18:43:30.225986+00:00",
+        "finished_at": "2026-10-11T18:43:32.535760+00:00",
+        "duration_seconds": 2.31
+      }
     },
     {
       "id": "istat_housing_crowding",
-      "source_id": "istat_sdmx",
+      "source_id": "istat_dbnomics",
       "status": "ok",
       "label": "istat_housing_crowding",
       "detail": "anno 2024 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20261011T184332Z_af9cbeb3",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 95
+        },
+        "output_rows": {
+          "raw": 44,
+          "clean": 44,
+          "mart": 44
+        },
+        "output_bytes": {
+          "raw": 5689,
+          "clean": 1987,
+          "mart": 1006
+        },
+        "started_at": "2026-10-11T18:43:32.944882+00:00",
+        "finished_at": "2026-10-11T18:43:34.297584+00:00",
+        "duration_seconds": 1.353
+      }
     },
     {
       "id": "istat_ipab_aree",
-      "source_id": "istat_sdmx",
+      "source_id": "istat_dbnomics",
       "status": "ok",
       "label": "istat_ipab_aree",
       "detail": "anno 2024 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20261011T184334Z_88a7e363",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 1024,
+          "clean": 1024,
+          "mart": 1024
+        },
+        "output_bytes": {
+          "raw": 68973,
+          "clean": 4488,
+          "mart": 4548
+        },
+        "started_at": "2026-10-11T18:43:34.708034+00:00",
+        "finished_at": "2026-10-11T18:43:36.294714+00:00",
+        "duration_seconds": 1.587
+      }
     },
     {
       "id": "istat_occupazione_provinciale",
-      "source_id": "istat_sdmx",
+      "source_id": "istat_dbnomics",
       "status": "ok",
       "label": "istat_occupazione_provinciale",
       "detail": "anno 2025 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260806T103246Z_04b24585",
+        "run_id": "20261011T184336Z_2fe88ab7",
         "year": 2025,
-        "status": "FAILED",
-        "started_at": "2026-08-06T10:32:46.528792+00:00",
-        "finished_at": "2026-08-06T10:34:59.409896+00:00",
-        "duration_seconds": 132.881
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 19906,
+          "clean": 15118,
+          "mart": 15118
+        },
+        "output_bytes": {
+          "raw": 1856398,
+          "clean": 107970,
+          "mart": 49064
+        },
+        "started_at": "2026-10-11T18:43:36.696379+00:00",
+        "finished_at": "2026-10-11T18:44:01.483001+00:00",
+        "duration_seconds": 24.787
       }
     },
     {
@@ -9087,11 +9067,34 @@
     },
     {
       "id": "istat_pil_territoriale",
-      "source_id": "istat_sdmx",
+      "source_id": "istat_dbnomics",
       "status": "ok",
       "label": "istat_pil_territoriale",
       "detail": "anno 2024 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20261011T184401Z_f21b9006",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 11097,
+          "clean": 10167,
+          "mart": 3360
+        },
+        "output_bytes": {
+          "raw": 1002847,
+          "clean": 47771,
+          "mart": 38570
+        },
+        "started_at": "2026-10-11T18:44:01.887942+00:00",
+        "finished_at": "2026-10-11T18:44:10.732195+00:00",
+        "duration_seconds": 8.844
+      }
     },
     {
       "id": "mim_anagrafica_scuole_statali",
@@ -9496,6 +9499,21 @@
         ],
         "types": {
           "cig_code": 2
+        }
+      },
+      "Indicatore": {
+        "entity": "Indicatore",
+        "label": "Indicatore",
+        "datasets": [
+          {
+            "slug": "istat_occupazione_provinciale",
+            "name": "ISTAT — Tasso di Occupazione Provinciale (2018-2025)",
+            "column": "indicatore",
+            "semantic_type": "indicatore_code"
+          }
+        ],
+        "types": {
+          "indicatore_code": 1
         }
       },
       "Nazione": {
@@ -10177,6 +10195,19 @@
           "bridge": "bdap_anagrafe_enti",
           "on": "codice_ente_ssn",
           "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Indicatore",
+          "dataset": "istat_occupazione_provinciale",
+          "via": "indicatore_code"
+        },
+        "to": {
+          "entity": "Progetto",
+          "bridge": "pnrr_indicatori_target",
+          "on": "cup",
+          "semantic_type": "cup_code"
         }
       },
       {
