@@ -2852,10 +2852,17 @@
         "economia",
         "istat",
         "asia",
-        "ul"
+        "ul",
+        "comuni"
       ],
       "category": "economia",
       "columns": [
+        {
+          "name": "data_type",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
         {
           "name": "codice_comune",
           "type": "VARCHAR",
@@ -2877,10 +2884,30 @@
           "description": "Sezione ATECO 2007 (lettera o codice aggregato)"
         },
         {
-          "name": "unita_locali",
+          "name": "valore",
           "type": "DOUBLE",
           "role": "metric",
-          "description": "Numero di unitÃ  locali"
+          "description": ""
+        },
+        {
+          "name": "denominazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "sigla_provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "province_code"
         }
       ],
       "location": {
@@ -2888,7 +2915,10 @@
         "path": "gs://dataciviclab-clean/istat_asia_ul/2020/istat_asia_ul_2020_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "istat_asia_ul__mart_asia_ul_comuni"
+      ]
     },
     {
       "slug": "istat_elenco_comuni",
@@ -8625,7 +8655,30 @@
       "status": "ok",
       "label": "istat_asia_ul",
       "detail": "anno 2020 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20261011T190348Z_e8649e60",
+        "year": 2020,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 743052,
+          "clean": 662890,
+          "mart": 331445
+        },
+        "output_bytes": {
+          "raw": 20099431,
+          "clean": 2606910,
+          "mart": 1016818
+        },
+        "started_at": "2026-10-11T19:03:48.113950+00:00",
+        "finished_at": "2026-10-11T19:19:37.523667+00:00",
+        "duration_seconds": 949.41
+      }
     },
     {
       "id": "istat_gini_regionale",
@@ -9635,6 +9688,12 @@
             "semantic_type": "province_code"
           },
           {
+            "slug": "istat_asia_ul",
+            "name": "Istat Asia Ul",
+            "column": "sigla_provincia",
+            "semantic_type": "province_code"
+          },
+          {
             "slug": "istat_elenco_comuni",
             "name": "Elenco comuni italiani (codici ISTAT, catastali, superficie km²)",
             "column": "provincia",
@@ -9696,7 +9755,7 @@
           }
         ],
         "types": {
-          "province_code": 20
+          "province_code": 21
         }
       },
       "Provincia (tramite NUTS3)": {
@@ -9775,6 +9834,12 @@
           {
             "slug": "ispra_ru_base",
             "name": "ISPRA - Rifiuti Urbani (dati base)",
+            "column": "regione",
+            "semantic_type": "region_code"
+          },
+          {
+            "slug": "istat_asia_ul",
+            "name": "Istat Asia Ul",
             "column": "regione",
             "semantic_type": "region_code"
           },
@@ -9888,7 +9953,7 @@
           }
         ],
         "types": {
-          "region_code": 28
+          "region_code": 29
         }
       },
       "Scuola": {
