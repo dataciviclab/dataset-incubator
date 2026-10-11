@@ -21,9 +21,7 @@ WITH raw AS (
 ),
 
 comuni AS (
-    SELECT * FROM read_parquet(
-        'https://storage.googleapis.com/dataciviclab-clean/istat_elenco_comuni/2026/istat_elenco_comuni_2026_clean.parquet'
-    )
+    SELECT * FROM read_parquet({support.comuni.clean})
 )
 
 SELECT

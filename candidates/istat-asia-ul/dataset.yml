@@ -18,6 +18,17 @@ dataset:
 # CI: TOOLKIT_ALLOW_SCRIPT_SOURCE=1 già nel post-merge workflow
 # SDMX live: non usare (rate-limit ISTAT)
 
+# ASIA UL comune × ATECO — canale script (preprocess parallelo DBnomics)
+# Join anagrafica comuni via support external (ADR-005), non hardcoded nel SQL
+
+support:
+  - name: comuni
+    type: external
+    repo: dataset-incubator
+    slug: istat_elenco_comuni
+    layer: clean
+    years: [2026]
+
 raw:
   output_policy: overwrite
   sources:
