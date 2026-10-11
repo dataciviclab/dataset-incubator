@@ -1,0 +1,76 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mase_prezzi_carburanti_settimanali"
+  source_id: "mase_dgsaie"
+  tags: [energia, carburanti, prezzi, accise, fiscalita]
+  category: energia
+  years: [2026]
+  time_coverage:
+    start_year: 2005
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "weekly_prices_all"
+      type: "http_file"
+      args:
+        url: "https://sisen.mase.gov.it/dgsaie/api/v1/weekly-prices/report/export?type=ALL&format=CSV&lang=it"
+        filename: "weekly_prices_all.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ","
+    encoding: "latin-1"
+    header: true
+    decimal: ","
+    trim_whitespace: true
+    columns:
+      "DATA_RILEVAZIONE": "VARCHAR"
+      "CODICE_PRODOTTO": "VARCHAR"
+      "NOME_PRODOTTO": "VARCHAR"
+      "PREZZO": "VARCHAR"
+      "ACCISA": "VARCHAR"
+      "IVA": "VARCHAR"
+      "NETTO": "VARCHAR"
+      "VARIAZIONE": "VARCHAR"
+  required_columns:
+    - data_rilevazione
+    - codice_prodotto
+    - prodotto
+    - prezzo_eur
+    - accisa_eur
+    - iva_eur
+    - netto_eur
+    - quota_accisa_pct
+  validate:
+    min_rows: 1000
+    not_null:
+      - data_rilevazione
+      - codice_prodotto
+      - prezzo_eur
+    primary_key:
+      - data_rilevazione
+      - codice_prodotto
+
+mart:
+  tables:
+    - name: "mart_settimanale_prodotto"
+      sql: "sql/mart_settimanale.sql"
+  required_tables:
+    - "mart_settimanale_prodotto"
+  validate:
+    table_rules:
+      mart_settimanale_prodotto:
+        required_columns: [data_rilevazione, codice_prodotto, prodotto, prezzo_eur, accisa_eur, quota_accisa_pct]
+        primary_key: [data_rilevazione, codice_prodotto]
+        min_rows: 1000
+
+validation:
+  fail_on_error: true

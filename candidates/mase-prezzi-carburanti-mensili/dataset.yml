@@ -1,0 +1,81 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mase_prezzi_carburanti_mensili"
+  source_id: "mase_dgsaie"
+  tags: [energia, carburanti, prezzi, accise, fiscalita, serie-storica]
+  category: energia
+  years: [2026]
+  time_coverage:
+    start_year: 1996
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "monthly_prices"
+      type: "http_file"
+      args:
+        url: "https://sisen.mase.gov.it/dgsaie/api/v1/monthly-prices/export?format=CSV&lang=it"
+        filename: "monthly_prices.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ","
+    encoding: "latin-1"
+    header: true
+    decimal: ","
+    trim_whitespace: true
+    columns:
+      "ANNO": "VARCHAR"
+      "CODICE_MESE": "VARCHAR"
+      "NOME_MESE": "VARCHAR"
+      "CODICE_PRODOTTO": "VARCHAR"
+      "NOME_PRODOTTO": "VARCHAR"
+      "PREZZO": "VARCHAR"
+      "IVA": "VARCHAR"
+      "ACCISA": "VARCHAR"
+      "NETTO": "VARCHAR"
+  required_columns:
+    - anno
+    - mese
+    - nome_mese
+    - codice_prodotto
+    - prodotto
+    - prezzo_eur
+    - accisa_eur
+    - iva_eur
+    - netto_eur
+    - quota_accisa_pct
+  validate:
+    min_rows: 2000
+    not_null:
+      - anno
+      - mese
+      - codice_prodotto
+      - prezzo_eur
+    primary_key:
+      - anno
+      - mese
+      - codice_prodotto
+
+mart:
+  tables:
+    - name: "mart_mensile_prodotto"
+      sql: "sql/mart_mensile.sql"
+  required_tables:
+    - "mart_mensile_prodotto"
+  validate:
+    table_rules:
+      mart_mensile_prodotto:
+        required_columns: [anno, mese, codice_prodotto, prodotto, prezzo_eur, accisa_eur, quota_accisa_pct]
+        primary_key: [anno, mese, codice_prodotto]
+        min_rows: 2000
+
+validation:
+  fail_on_error: true
