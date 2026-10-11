@@ -1,5 +1,4 @@
--- API DGSAIE: valori in millesimi di euro (es. 1115,75 => 1,11575 €/L).
--- Solo mesi 1-12: CODICE_MESE 13-17 sono aggregati Anno/Trimestre (fuori clean).
+-- API DGSAIE weekly type=ALL: valori in millesimi di euro (es. 1115,75 => 1,11575 €/L).
 
 SELECT
     TRY_CAST(DATA_RILEVAZIONE AS DATE) AS data_rilevazione,
