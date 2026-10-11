@@ -24,3 +24,8 @@
 
 - Entrambe le serie `IMPUTED_RENTS` (1=con fitti imputati, 2=senza) vanno tenute nel mart e documentate.
 - Granularità regionale (NUTS2), non provinciale.
+
+## Label territoriali (2026-10-11)
+
+CASE NUTS statico nel clean (ETAT GEO, nomi IT) + aggregati ISTAT
+(`ITCD`/`ITDA`/`ITFG`/`ITCDE`). Fallback `else` → codice.

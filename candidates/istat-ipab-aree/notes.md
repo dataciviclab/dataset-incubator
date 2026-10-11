@@ -19,3 +19,8 @@ python -m toolkit.cli.app run raw   -c dataset.yml -y 2024 --root ../../out
 python -m toolkit.cli.app run clean -c dataset.yml -y 2024 --root ../../out
 python -m toolkit.cli.app run mart  -c dataset.yml -y 2024 --root ../../out
 ```
+
+## Label territoriali (2026-10-11)
+
+CASE NUTS statico nel clean (ETAT GEO, nomi IT) + aggregati ISTAT
+(`ITCD`/`ITDA`/`ITFG`/`ITCDE`). Fallback `else` → codice.

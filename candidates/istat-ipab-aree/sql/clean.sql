@@ -5,6 +5,18 @@ select
     normalize_string(REF_AREA) as area_codice,
     case normalize_string(REF_AREA)
         when 'IT' then 'Italia'
+        when 'ITC' then 'Nord-Ovest'
+        when 'ITD' then 'Nord-Est'
+        when 'ITE' then 'Centro'
+        when 'ITF' then 'Sud'
+        when 'ITG' then 'Isole'
+        when 'ITC11' then 'Torino'
+        when 'ITC45' then 'Milano'
+        when 'ITE43' then 'Roma'
+        when 'ITCD' then 'Centro (aggregato ISTAT)'
+        when 'ITDA' then 'Sud (aggregato ISTAT)'
+        when 'ITFG' then 'Isole (aggregato ISTAT)'
+        when 'ITCDE' then 'Centro-Est (aggregato ISTAT)'
         else normalize_string(REF_AREA)
     end as area,
     case length(normalize_string(REF_AREA))

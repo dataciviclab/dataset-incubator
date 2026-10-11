@@ -26,6 +26,10 @@ select
         when 'ITF6' then 'Calabria'
         when 'ITG1' then 'Sicilia'
         when 'ITG2' then 'Sardegna'
+        when 'ITDA' then 'Sud (aggregato ISTAT)'
+        when 'ITCD' then 'Centro (aggregato ISTAT)'
+        when 'ITFG' then 'Isole (aggregato ISTAT)'
+        when 'ITCDE' then 'Centro-Est (aggregato ISTAT)'
         else normalize_string(REF_AREA)
     end as regione,
     normalize_string(DATA_TYPE) as tipo_dato,
