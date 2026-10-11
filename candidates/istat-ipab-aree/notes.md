@@ -1,17 +1,21 @@
 # Note candidate - ISTAT IPAB aree
 
-## Parametri tecnici
-- Flow ISTAT: `143_497` (IPAB - Indice Prezzi Abitazioni)
-- Base URL SDMX: `https://esploradati.istat.it/SDMXWS/rest`
-- Dimensioni usate nel fetch: `DATA_TYPE=59`, `MEASURE=4`, `PURCHASES_DWELLINGS = NEW_DW/EXST_DW`, `FREQ=Q`
-- Copertura osservata nel v0: Italia, 4 macro-aree e 3 citta
-- Perimetro v0: serie trimestrale completa 2010-2025 su aree aggregate, non su regioni NUTS2
+## Canale (2026-10-11)
 
-## Caveat
-- `/all` fragile su questo flow: slicing obbligatorio, evitare richieste senza filtri.
-- `NEW_DW` e `EXST_DW` vanno letti separatamente (nuove costruzioni vs abitazioni esistenti).
-- L'indice misura variazione relativa rispetto alla base ISTAT, non prezzo assoluto.
-- La copertura non e regionale: il dato non consente confronti diretti tra singole regioni.
+- toolkit `type: dbnomics` · `ISTAT/143_497`
+- SDMX live: solo se mirror indietro; evitare `/all`
 
-## Collegamento
-- Discussion: https://github.com/orgs/dataciviclab/discussions/148
+## Parametri
+
+- `DATA_TYPE=59`, `MEASURE=4`, `PURCHASES_DWELLINGS=NEW_DW|EXST_DW`, `FREQ=Q`
+- Livelli: Italia + macro-aree + città (aggregate, non NUTS2)
+- Indice = variazione relativa base, non prezzo assoluto
+
+## Run
+
+```bash
+cd candidates/istat-ipab-aree
+python -m toolkit.cli.app run raw   -c dataset.yml -y 2024 --root ../../out
+python -m toolkit.cli.app run clean -c dataset.yml -y 2024 --root ../../out
+python -m toolkit.cli.app run mart  -c dataset.yml -y 2024 --root ../../out
+```

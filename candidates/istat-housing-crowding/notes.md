@@ -1,33 +1,20 @@
 # Note tecniche - istat-housing-crowding
 
-## Perimetro v0 scelto
+## Canale (2026-10-11)
 
-- `REF_AREA=IT`
-- `TENURE_STATUS=1+2`
-- tutte le altre dimensioni su totale
-- serie storica completa disponibile nel flow
+- toolkit `type: dbnomics` · `ISTAT/33_179`
+- SDMX live solo se mirror indietro (forzare sempre `esploradati`, non `sdmx.istat.it`)
 
-## Nota semantica
+## Perimetro v0
 
-`ABITAZ_AFFOLL_MED` non e il tasso EU-SILC di sovraffollamento.
-Qui il pilot usa un indicatore di densita abitativa media (`componenti per 100 mq`).
-La formulazione e ancorata alle label SDMX osservate nel flow:
+- `REF_AREA=IT`, `TENURE_STATUS=1+2`, altre dimensioni su totale
+- `ABITAZ_AFFOLL_MED` = componenti per 100 mq (non EU-SILC crowding rate)
 
-- `DATA_TYPE_label = household crowding index (number of components of household per square meter)`
-- `MEASURE_label = per hundred values`
+## Run
 
-## Nota tecnica importante
-
-Per il dataflow `33_179`, `https://sdmx.istat.it/SDMXWS/rest/dataflow/IT1/33_179`
-restituisce `500` nel setup attuale, mentre `https://esploradati.istat.it/SDMXWS/rest`
-risponde correttamente sia per metadata sia per data.
-
-Per questo il candidate forza:
-
-- `client.metadata_base_url = https://esploradati.istat.it/SDMXWS/rest`
-- `client.data_base_url = https://esploradati.istat.it/SDMXWS/rest`
-
-## Rischi residui
-
-- alcuni filtri multi-valore sul flow restituiscono `404`; il pilot evita per ora query piu larghe
-- resta da capire se il flow supporta bene il fetch regionale in modo stabile dal plugin
+```bash
+cd candidates/istat-housing-crowding
+python -m toolkit.cli.app run raw   -c dataset.yml -y 2024 --root ../../out
+python -m toolkit.cli.app run clean -c dataset.yml -y 2024 --root ../../out
+python -m toolkit.cli.app run mart  -c dataset.yml -y 2024 --root ../../out
+```

@@ -3,33 +3,51 @@ schema_version: 1
 
 dataset:
   name: "istat_pil_territoriale"
-  source_id: "istat_sdmx"
+  source_id: "istat_dbnomics"
   tags: [economia, istat, pil, territoriale]
   category: economia
+  # Anno del run (non la copertura dati).
+  # Copertura: nazionale/macro-aree/regioni 1995-2023, province 2000-2022.
   years: [2024]
   time_coverage:
     start_year: 1995
-    end_year: 2024
+    end_year: 2023
+
+# PIL/VA/imposte lato offerta — ISTAT 93_498 via type: dbnomics
+# CI-safe: plugin builtin (no rate-limit SDMX, no local_file)
+# Solo 3 metriche ESA: B1GQ, B1G, D21X31 · prezzi correnti V · grezzi N
 
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_sdmx_pil"
-      type: "sdmx"
+    - name: "istat_dbnomics_pil"
+      type: "dbnomics"
       client:
-        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
-        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
-        timeout: 120
-        retries: 3
+        timeout: 180
+        retries: 2
       args:
-        agency: "IT1"
-        flow: "93_498"
-        version: "1.0"
+        provider: ISTAT
+        dataset: "93_498"
+        dimensions:
+          FREQ: [A]
+          DATA_TYPE_AGGR: [B1GQ_B_W2_S1, B1G_B_W2_S1, D21X31_C_W2_S1]
+          VALUATION: [V]
+          ADJUSTMENT: [N]
+        page_size: 1000
+        max_pages: 50
         filename: "istat_pil_territoriale_series.csv"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
+  required_columns:
+    - territorio_codice
+    - territorio_nome
+    - livello
+    - tipo_dato_codice
+    - valutazione_codice
+    - anno
+    - valore_mln_eu
   read:
     source: "auto"
     mode: "latest"

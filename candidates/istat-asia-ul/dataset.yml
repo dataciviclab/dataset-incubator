@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "istat_asia_ul"
   source_id: "istat_dbnomics"
-  tags: [economia, istat, asia, ul]
+  tags: [economia, istat, asia, ul, comuni]
   category: economia
   years: [2020]
   time_coverage:
@@ -12,10 +12,19 @@ dataset:
     start_year: 2018
     end_year: 2020
 
+# ASIA unità locali + addetti — 183_1163 TERRIFDATA_3
+# Canale: type: script + preprocess.py parallelo (per ATECO)
+# Motivo: ~280k serie comuni×ATECO×2 tipi — plugin dbnomics seriale troppo lento per CI
+# CI: TOOLKIT_ALLOW_SCRIPT_SOURCE=1 già nel post-merge workflow
+# SDMX live: non usare (rate-limit ISTAT)
+
 raw:
   output_policy: overwrite
   sources:
-    - type: script
+    - name: "istat_dbnomics_asia_ul"
+      type: "script"
+      client:
+        timeout: 3000
       args:
         command: "python preprocess.py {year} raw_input.csv"
         output: "raw_input.csv"
@@ -24,7 +33,15 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [codice_comune, anno, ateco_sezione]
+  required_columns:
+    - data_type
+    - codice_comune
+    - anno
+    - ateco_sezione
+    - valore
+    - denominazione
+    - regione
+    - sigla_provincia
   read:
     source: "auto"
     mode: "latest"
@@ -32,7 +49,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    not_null: [anno]
+    not_null: [anno, codice_comune]
     min_rows: 100000
 
 mart:
@@ -44,6 +61,8 @@ mart:
   validate:
     table_rules:
       mart_asia_ul_comuni:
+        not_null: [anno, codice_comune, ateco_sezione]
+        primary_key: [anno, codice_comune, ateco_sezione]
         min_rows: 100000
 
 validation:

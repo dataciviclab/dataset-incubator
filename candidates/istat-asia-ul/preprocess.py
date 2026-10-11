@@ -1,10 +1,11 @@
 #!/usr/bin/env python3
-"""Scarica Unità Locali ASIA da DBnomics API (parallelo).
+"""Scarica ASIA UL + Addetti da DBnomics API (parallelo).
 
 Uso: python preprocess.py {year} {output.csv}
 
 Dataset: ISTAT/183_1163_DF_DICA_ASIAULP_TERRIFDATA_3
 Dati a livello comunale, anni 2018-2020.
+Scarica sia Unità Locali (LU) che Addetti media annua (EM).
 """
 
 import csv
@@ -39,7 +40,7 @@ ATECO = [
     "S",
 ]
 
-DATA_TYPE = "LU"
+DATA_TYPES = ["LU", "LUEMPDAA"]  # Unità Locali + Addetti media annua
 SIZE_CLASS = "TOTAL"
 FREQ = "A"
 
@@ -67,27 +68,27 @@ def api_request(data_type: str, ateco: str, offset: int = 0) -> dict:
     return json.loads(resp.read())
 
 
-def fetch_ateco(ateco: str) -> list[list]:
-    """Scarica tutte le pagine per un singolo ATECO, restituisce righe."""
+def fetch_ateco(data_type: str, ateco: str) -> list[list]:
+    """Scarica tutte le pagine per un singolo data_type × ATECO."""
     rows = []
     try:
-        resp = api_request(DATA_TYPE, ateco, 0)
+        resp = api_request(data_type, ateco, 0)
     except Exception as e:
-        print(f"  {ateco}: ERR {e}", flush=True)
+        print(f"  {data_type}/{ateco}: ERR {e}", flush=True)
         return rows
 
     num_found = resp["series"]["num_found"]
     if num_found == 0:
         return rows
 
-    print(f"  {ateco}: {num_found} series", flush=True)
+    print(f"  {data_type}/{ateco}: {num_found} series", flush=True)
     offset = 0
     while offset < num_found:
         if offset > 0:
             try:
-                resp = api_request(DATA_TYPE, ateco, offset)
+                resp = api_request(data_type, ateco, offset)
             except Exception as e:
-                print(f"    {ateco} offset={offset}: ERR {e}", flush=True)
+                print(f"    {data_type}/{ateco} offset={offset}: ERR {e}", flush=True)
                 break
         docs = resp["series"].get("docs", [])
         for d in docs:
@@ -97,7 +98,7 @@ def fetch_ateco(ateco: str) -> list[list]:
             value_list = d.get("value", [])
             for p, v in zip(period_list, value_list):
                 if v is not None:
-                    rows.append([ref_area, int(p), ateco, float(v)])
+                    rows.append([data_type, ref_area, int(p), ateco, float(v)])
         if len(docs) < PAGE_SIZE:
             break
         offset += PAGE_SIZE
@@ -111,9 +112,11 @@ def main():
     output_path = sys.argv[2]
 
     all_rows = []
-    print("Download ASIA UL (parallelo)...", flush=True)
+    # Scarica entrambi i data type in parallelo
+    tasks = [(dt, a) for dt in DATA_TYPES for a in ATECO]
+    print(f"Download ASIA UL+EM ({len(tasks)} task)...", flush=True)
     with ThreadPoolExecutor(max_workers=6) as pool:
-        futuri = {pool.submit(fetch_ateco, a): a for a in ATECO}
+        futuri = {pool.submit(fetch_ateco, dt, a): (dt, a) for dt, a in tasks}
         for f in as_completed(futuri):
             all_rows.extend(f.result())
 
@@ -123,7 +126,7 @@ def main():
 
     with open(output_path, "w", newline="", encoding="utf-8") as f:
         w = csv.writer(f)
-        w.writerow(["ref_area", "anno", "ateco_sezione", "valore"])
+        w.writerow(["data_type", "ref_area", "anno", "ateco_sezione", "valore"])
         w.writerows(all_rows)
 
     print(f"\nFatto: {len(all_rows)} righe scritte in {output_path}", flush=True)

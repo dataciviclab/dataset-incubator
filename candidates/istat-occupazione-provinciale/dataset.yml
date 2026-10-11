@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_occupazione_provinciale"
-  source_id: "istat_sdmx"
+  source_id: "istat_dbnomics"
   tags: [welfare-lavoro, istat, occupazione]
   category: welfare-lavoro
   years: [2025]
@@ -11,30 +11,35 @@ dataset:
     start_year: 2018
     end_year: 2025
 
+# Tasso occupazione/disoccupazione province — ISTAT 150_915 via type: dbnomics
+# Filtri: EMP_R/UNEM_R · cittadinanza totale · istruzione totale · classi età principali
+# NUTS3: LENGTH(REF_AREA)=5
+
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_sdmx_occupazione"
-      type: "sdmx"
+    - name: "istat_dbnomics_occupazione"
+      type: "dbnomics"
       client:
-        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
-        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        timeout: 180
+        retries: 2
       args:
-        agency: "IT1"
-        flow: "150_915"
-        version: "1.0"
-        filters:
-          FREQ: "A"
-          DATA_TYPE: "EMP_R"
-          CITIZENSHIP: "TOTAL"
-          EDU_LEV_HIGHEST: "99"
-        year: "2025"
+        provider: ISTAT
+        dataset: "150_915"
+        dimensions:
+          FREQ: [A]
+          DATA_TYPE: [EMP_R, UNEM_R]
+          CITIZENSHIP: [TOTAL]
+          EDU_LEV_HIGHEST: ["99"]
+          AGE: [Y15-64, Y15-24, Y25-34, Y35-44, Y45-54, Y55-64]
+        page_size: 1000
+        max_pages: 20
         filename: "istat_occupazione_serie.csv"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [ref_area, territorio, anno, indicatore, sesso_codice, sesso, eta_codice, eta]
+  required_columns: [ref_area, territorio, anno, indicatore, sesso_codice, sesso, eta_codice, valore]
   read:
     source: "auto"
     mode: "latest"
@@ -42,7 +47,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    not_null: [anno]
+    not_null: [anno, ref_area]
     min_rows: 10000
     promotion:
       max_row_drop_pct: 80
