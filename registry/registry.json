@@ -9018,13 +9018,13 @@
     },
     {
       "id": "istat_occupazione_provinciale",
-      "source_id": "istat_dbnomics",
+      "source_id": "istat_sdmx",
       "status": "ok",
       "label": "istat_occupazione_provinciale",
       "detail": "anno 2025 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261011T184336Z_2fe88ab7",
+        "run_id": "20261011T210307Z_b4d6e811",
         "year": 2025,
         "status": "SUCCESS",
         "quality_score": {
@@ -9033,18 +9033,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 19906,
+          "raw": 53842,
           "clean": 15118,
           "mart": 15118
         },
         "output_bytes": {
-          "raw": 1856398,
+          "raw": 6234485,
           "clean": 107970,
           "mart": 49064
         },
-        "started_at": "2026-10-11T18:43:36.696379+00:00",
-        "finished_at": "2026-10-11T18:44:01.483001+00:00",
-        "duration_seconds": 24.787
+        "started_at": "2026-10-11T21:03:07.643067+00:00",
+        "finished_at": "2026-10-11T21:03:21.403110+00:00",
+        "duration_seconds": 13.76
       }
     },
     {
@@ -9363,13 +9363,13 @@
     },
     {
       "id": "istat_pil_territoriale",
-      "source_id": "istat_dbnomics",
+      "source_id": "istat_sdmx",
       "status": "ok",
       "label": "istat_pil_territoriale",
       "detail": "anno 2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261011T184401Z_f21b9006",
+        "run_id": "20261011T210321Z_9107a4b4",
         "year": 2024,
         "status": "SUCCESS",
         "quality_score": {
@@ -9378,18 +9378,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 11097,
-          "clean": 10167,
-          "mart": 3360
+          "raw": 21681,
+          "clean": 10584,
+          "mart": 3498
         },
         "output_bytes": {
-          "raw": 1002847,
-          "clean": 47771,
-          "mart": 38570
+          "raw": 2831751,
+          "clean": 49629,
+          "mart": 39945
         },
-        "started_at": "2026-10-11T18:44:01.887942+00:00",
-        "finished_at": "2026-10-11T18:44:10.732195+00:00",
-        "duration_seconds": 8.844
+        "started_at": "2026-10-11T21:03:21.839119+00:00",
+        "finished_at": "2026-10-11T21:03:29.465657+00:00",
+        "duration_seconds": 7.627
       }
     },
     {
