@@ -25,4 +25,4 @@ WHERE
     AND normalize_string(AGE) IN ('Y15-64', 'Y15-24', 'Y25-34', 'Y35-44', 'Y45-54', 'Y55-64')
     AND normalize_string(DATA_TYPE) IN ('EMP_R', 'UNEM_R')
     AND anno IS NOT NULL
-    AND valore IS NOT NULL
+    AND cast_double(OBS_VALUE) IS NOT NULL

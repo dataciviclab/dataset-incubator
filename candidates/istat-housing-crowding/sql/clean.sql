@@ -21,4 +21,4 @@ from raw_input
 where cast_int(TIME_PERIOD) is not null
   and normalize_string(DATA_TYPE) = 'ABITAZ_AFFOLL_MED'
   and normalize_string(TENURE_STATUS) in ('1', '2')
-  and componenti_per_100mq is not null
+  and cast_double(OBS_VALUE) is not null

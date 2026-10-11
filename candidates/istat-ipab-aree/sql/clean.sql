@@ -26,4 +26,4 @@ from raw_input
 where normalize_string(DATA_TYPE) = '59'
   and normalize_string(MEASURE) = '4'
   and normalize_string(TIME_PERIOD) is not null
-  and indice_prezzi is not null
+  and cast_double(OBS_VALUE) is not null

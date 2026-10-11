@@ -46,4 +46,4 @@ join edizione_max e
 where normalize_string(r.VALUATION) = 'V'
   and normalize_string(r.ADJUSTMENT) = 'N'
   and anno is not null
-  and valore_mln_eu is not null
+  and cast_double(OBS_VALUE) is not null

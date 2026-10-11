@@ -1,31 +1,21 @@
-# istat_asia_ul
+# ASIA UL — Unità Locali e Addetti delle imprese attive
 
-Candidate DI — ASIA unità locali + addetti per comune × sezione ATECO.
+Fonte: **ISTAT** — Archivo Statistico delle Imprese Attive (ASIA), Unità Locali (UL).
 
-| | |
-|---|---|
-| Fonte | DBnomics `ISTAT/183_1163_DF_DICA_ASIAULP_TERRIFDATA_3` |
-| Copertura | 2018–2020 · 7.980 comuni × ATECO sezione |
-| Metriche | `LU` unità locali · `LUEMPDAA` addetti media annua |
-| Mart | `mart_asia_ul_comuni` (LU + addetti + denominazione/regione/provincia) |
-| Run | clean 662.890 · mart 331.445 (2026-10-11) |
+Dataset DBnomics: `ISTAT/183_1163_DF_DICA_ASIAULP_TERRIFDATA_3`
 
-## Nota freschezza
+Contiene il numero di **unità locali** (LU) e **addetti** (AENTEMPDAA, media annua) per comune,
+sezione ATECO 2007 e classe di addetti, anni 2018-2020.
 
-Sul mirror DBnomics il grano **comune × ATECO** si ferma al **2020** (`TERRIFDATA_3`).  
-Serie più recenti: IT/NUTS1 fino a 2023–2024 (`TERRIFDATA_1` / `183_277`) — vedi `istat-asia-imprese-addetti` experiment.
+## Dimensione territoriale
 
-## Run
+La versione `_3` del dataset contiene dati a livello comunale (codice ISTAT 6 cifre).
+La versione `_1` (Key data, 2018-2023) contiene solo classi di ampiezza demografica.
 
-```bash
-export TOOLKIT_ALLOW_SCRIPT_SOURCE=1   # solo se raw type: script
-# default attuale: local_file su raw_input.csv in candidates/
-cd candidates/istat-asia-ul
-python -m toolkit.cli.app run raw   -c dataset.yml -y 2020 --root ../../out
-python -m toolkit.cli.app run clean -c dataset.yml -y 2020 --root ../../out
-python -m toolkit.cli.app run mart  -c dataset.yml -y 2020 --root ../../out
-```
+## Note
 
-Refresh DBnomics: `python preprocess.py 2020 raw_input.csv` e ripristinare `type: script` in `dataset.yml`.
-
-Note tecniche: `notes.md`.
+- Anni disponibili: 2018-2020 (dati territoriali completi)
+- Per anni successivi (2021-2023) usare la versione Key data `_1` o attendere il rilascio
+  del dato territoriale completo
+- I codici ATECO sono le sezioni A-S della classificazione ATECO 2007 + 0010 (totale economia)
+- La classe di addetti è TOTAL (totale, senza suddivisione per classe dimensionale)

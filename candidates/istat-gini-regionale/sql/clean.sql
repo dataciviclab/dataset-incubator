@@ -36,4 +36,4 @@ from raw_input
 where normalize_string(DATA_TYPE) = 'DISUG_REDDNET_GINI'
   and normalize_string(IMPUTED_RENTS) in ('1', '2')
   and length(normalize_string(REF_AREA)) = 4
-  and gini is not null
+  and cast_double(OBS_VALUE) is not null
