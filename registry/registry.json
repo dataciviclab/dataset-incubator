@@ -3225,10 +3225,23 @@
           "description": "Codice dell'indicatore SDMX (ABITAZ_AFFOLL_MED)"
         },
         {
+          "name": "indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "indicatore_code"
+        },
+        {
           "name": "misura_codice",
           "type": "VARCHAR",
           "role": "dimension",
           "description": "Codice della misura (10 = per hundred values)"
+        },
+        {
+          "name": "misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         },
         {
           "name": "titolo_godimento_codice",
@@ -3241,6 +3254,114 @@
           "type": "VARCHAR",
           "role": "dimension",
           "description": "Titolo di godimento: proprieta o affitto"
+        },
+        {
+          "name": "numero_componenti_nucleo",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_componenti_nucleo_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_nucleo_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_nucleo_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "numero_figli",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_figli_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "numero_anziani",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_anziani_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "quintile_reddito_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "quintile_reddito_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sesso_percettore_principale_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sesso_percettore_principale_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "eta_percettore_principale_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "eta_percettore_principale_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo_studio_percettore_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo_studio_percettore_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "condizione_professionale_percettore_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "condizione_professionale_percettore_label",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         },
         {
           "name": "componenti_per_100mq",
@@ -8835,33 +8956,33 @@
     },
     {
       "id": "istat_housing_crowding",
-      "source_id": "istat_dbnomics",
+      "source_id": "istat_sdmx",
       "status": "ok",
       "label": "istat_housing_crowding",
       "detail": "anno 2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261011T184332Z_af9cbeb3",
+        "run_id": "20261011T205153Z_844bf376",
         "year": 2024,
         "status": "SUCCESS",
         "quality_score": {
           "raw": 100,
           "clean": 95,
-          "mart": 95
+          "mart": 100
         },
         "output_rows": {
-          "raw": 44,
-          "clean": 44,
+          "raw": 990,
+          "clean": 990,
           "mart": 44
         },
         "output_bytes": {
-          "raw": 5689,
-          "clean": 1987,
-          "mart": 1006
+          "raw": 245569,
+          "clean": 9466,
+          "mart": 1460
         },
-        "started_at": "2026-10-11T18:43:32.944882+00:00",
-        "finished_at": "2026-10-11T18:43:34.297584+00:00",
-        "duration_seconds": 1.353
+        "started_at": "2026-10-11T20:51:53.373119+00:00",
+        "finished_at": "2026-10-11T20:52:44.360104+00:00",
+        "duration_seconds": 50.987
       }
     },
     {
@@ -9681,6 +9802,12 @@
         "label": "Indicatore",
         "datasets": [
           {
+            "slug": "istat_housing_crowding",
+            "name": "Istat Housing Crowding",
+            "column": "indicatore",
+            "semantic_type": "indicatore_code"
+          },
+          {
             "slug": "istat_occupazione_provinciale",
             "name": "ISTAT — Tasso di Occupazione Provinciale (2018-2025)",
             "column": "indicatore",
@@ -9688,7 +9815,7 @@
           }
         ],
         "types": {
-          "indicatore_code": 1
+          "indicatore_code": 2
         }
       },
       "Nazione": {
@@ -10394,6 +10521,19 @@
           "bridge": "bdap_anagrafe_enti",
           "on": "codice_ente_ssn",
           "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Indicatore",
+          "dataset": "istat_housing_crowding",
+          "via": "indicatore_code"
+        },
+        "to": {
+          "entity": "Progetto",
+          "bridge": "pnrr_indicatori_target",
+          "on": "cup",
+          "semantic_type": "cup_code"
         }
       },
       {
