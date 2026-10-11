@@ -106,6 +106,10 @@ SELECT
         when 'ITG26' then 'Nuoro'
         when 'ITG27' then 'Cagliari'
         when 'ITG28' then 'Oristano'
+        when 'IT108' then 'Monza e della Brianza'
+        when 'IT109' then 'Fermo'
+        when 'IT110' then 'Barletta-Andria-Trani'
+        when 'IT111' then 'Sud Sardegna'
         else normalize_string(REF_AREA)
     end AS territorio,
     cast_int(TIME_PERIOD) AS anno,
@@ -118,7 +122,15 @@ SELECT
         else normalize_string(SEX)
     end AS sesso,
     normalize_string(AGE) AS eta_codice,
-    normalize_string(AGE) AS eta,
+    case normalize_string(AGE)
+        when 'Y15-24' then '15-24 anni'
+        when 'Y15-64' then '15-64 anni'
+        when 'Y25-34' then '25-34 anni'
+        when 'Y35-44' then '35-44 anni'
+        when 'Y45-54' then '45-54 anni'
+        when 'Y55-64' then '55-64 anni'
+        else normalize_string(AGE)
+    end AS eta,
     cast_double(OBS_VALUE) AS valore
 FROM raw_input
 WHERE

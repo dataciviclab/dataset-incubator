@@ -33,6 +33,6 @@ ISTAT SDMX: **~5 query al minuto**, ban temporanei. Preferire sempre DBnomics.
 
 `territorio` / `territorio_nome` usano un **CASE NUTS statico** nel clean
 (codelist ESTAT GEO, nomi italiani). NUTS stabili — aggiornamento solo se
-cambiano confini. Codici speciali ISTAT non in GEO (`IT108`–`IT111`)
-restano come codice (fallback `else`). Aggregati ISTAT (`ITCD`, `ITDA`,
+cambiano confini. Codici ISTAT IT1xx (province post-2004, non in GEO 2021) (`IT108`–`IT111`)
+mappati: IT108=Monza e della Brianza, IT109=Fermo, IT110=Barletta-Andria-Trani, IT111=Sud Sardegna. Aggregati ISTAT (`ITCD`, `ITDA`,
 `ITFG`, `ITCDE`) mappati a label descrittive.

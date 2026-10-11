@@ -149,6 +149,10 @@ select
         when 'ITG26' then 'Nuoro'
         when 'ITG27' then 'Cagliari'
         when 'ITG28' then 'Oristano'
+        when 'IT108' then 'Monza e della Brianza'
+        when 'IT109' then 'Fermo'
+        when 'IT110' then 'Barletta-Andria-Trani'
+        when 'IT111' then 'Sud Sardegna'
         when 'ITZ' then 'Extra-Regio'
         else normalize_string(r.REF_AREA)
     end as territorio_nome,
