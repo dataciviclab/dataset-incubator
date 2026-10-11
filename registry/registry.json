@@ -228,6 +228,87 @@
       ]
     },
     {
+      "slug": "ameco",
+      "name": "Ameco",
+      "description": "",
+      "source": "",
+      "source_id": "ec_ameco",
+      "period": {
+        "start": 1960,
+        "end": 2027
+      },
+      "tags": [
+        "economia",
+        "previsioni",
+        "commissione-europea",
+        "debito",
+        "pil",
+        "ameco"
+      ],
+      "category": "economia",
+      "columns": [
+        {
+          "name": "paese",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "country_code"
+        },
+        {
+          "name": "paese_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "serie",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "unita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tipo_dato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/ameco/2026/ameco_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "ameco__mart_sintesi_paese"
+      ]
+    },
+    {
       "slug": "anpr_mobilita_residenziale",
       "name": "ANPR — Mobilita Residenziale Interregionale (2022-2026)",
       "description": "Flussi mensili di cambio residenza tra regioni italiane, da ANPR (Anagrafe Nazionale della Popolazione Residente). Serie mensile 2022-2026, aggiornata quasi in tempo reale via GitHub Actions.",
@@ -7773,6 +7854,16 @@
       }
     },
     {
+      "slug": "ameco__mart_sintesi_paese",
+      "dataset": "ameco",
+      "table": "mart_sintesi_paese",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/ameco/2026/mart_sintesi_paese.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "anpr_mobilita_residenziale__mart_corridoi",
       "dataset": "anpr_mobilita_residenziale",
       "table": "mart_corridoi",
@@ -8473,6 +8564,37 @@
         "started_at": "2026-07-30T08:49:48.164156+00:00",
         "finished_at": "2026-07-30T08:50:08.017957+00:00",
         "duration_seconds": 19.854
+      }
+    },
+    {
+      "id": "ameco",
+      "source_id": "ec_ameco",
+      "status": "ok",
+      "label": "ameco",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261011T201002Z_4dcd29d4",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 881,
+          "clean": 1475,
+          "mart": 36
+        },
+        "output_bytes": {
+          "raw": 21233982,
+          "clean": 13056,
+          "mart": 4278
+        },
+        "started_at": "2026-10-11T20:10:02.198630+00:00",
+        "finished_at": "2026-10-11T20:10:18.365816+00:00",
+        "duration_seconds": 16.167
       }
     },
     {
@@ -9574,6 +9696,12 @@
         "label": "Nazione",
         "datasets": [
           {
+            "slug": "ameco",
+            "name": "Ameco",
+            "column": "paese",
+            "semantic_type": "country_code"
+          },
+          {
             "slug": "ted_contract_notices",
             "name": "Bandi di gara UE in Italia (TED Contract Notices)",
             "column": "paese",
@@ -9581,7 +9709,7 @@
           }
         ],
         "types": {
-          "country_code": 1
+          "country_code": 2
         }
       },
       "Progetto": {
@@ -10006,6 +10134,12 @@
             "semantic_type": "month"
           },
           {
+            "slug": "ameco",
+            "name": "Ameco",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "anpr_mobilita_residenziale",
             "name": "ANPR — Mobilita Residenziale Interregionale (2022-2026)",
             "column": "anno",
@@ -10217,7 +10351,7 @@
           }
         ],
         "types": {
-          "year": 33,
+          "year": 34,
           "month": 5
         }
       }
