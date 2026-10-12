@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-10-11",
+  "updated_at": "2026-10-12",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -4567,6 +4567,242 @@
       ]
     },
     {
+      "slug": "minlavoro_agevolazioni",
+      "name": "Minlavoro Agevolazioni",
+      "description": "Agevolazioni fiscali all'assunzione (decontribuzione, detassazione, altre) dichiarate dalle imprese. Cross-section e serie regionali 2016-2024. Join naturale con minlavoro-flussi su (regione, anno).",
+      "source": "",
+      "source_id": "lavoro_opendata",
+      "period": {
+        "start": 2016,
+        "end": 2024
+      },
+      "tags": [
+        "welfare-lavoro",
+        "minlavoro",
+        "agevolazioni",
+        "decontribuzione",
+        "detassazione",
+        "incentivi"
+      ],
+      "category": "welfare-lavoro",
+      "columns": [
+        {
+          "name": "tabella_id",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_agevolazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "mese",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "month"
+        },
+        {
+          "name": "settore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_contratto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "categoria",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "indicatore_code"
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/minlavoro_agevolazioni/2024/minlavoro_agevolazioni_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "minlavoro_agevolazioni__mart_agevolazioni_regione",
+        "minlavoro_agevolazioni__mart_agevolazioni_anno"
+      ]
+    },
+    {
+      "slug": "minlavoro_flussi",
+      "name": "Minlavoro Flussi",
+      "description": "Comunicazioni obbligatorie MinLavoro: attivazioni, cessazioni, trasformazioni, tirocini e somministrazione. Fonde Nota trimestrale (2019-2023) e Rapporto Annuale (2021-2023) in schema long unico.",
+      "source": "",
+      "source_id": "lavoro_opendata",
+      "period": {
+        "start": 2019,
+        "end": 2023
+      },
+      "tags": [
+        "welfare-lavoro",
+        "minlavoro",
+        "flussi",
+        "assunzioni",
+        "cessazioni",
+        "tirocini",
+        "somministrazione"
+      ],
+      "category": "welfare-lavoro",
+      "columns": [
+        {
+          "name": "fonte",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tabella_id",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_flusso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "trimestre",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "geo_level",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "geo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "nuts_code"
+        },
+        {
+          "name": "genere",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "is_totale_genere",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipologia_contratto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "settore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "classe_eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "motivo_cessazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "durata_fascia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "qualifica",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "indicatore_code"
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/minlavoro_flussi/2023/minlavoro_flussi_2023_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "minlavoro_flussi__mart_flussi_anno",
+        "minlavoro_flussi__mart_flussi_regione",
+        "minlavoro_flussi__mart_trasformazioni",
+        "minlavoro_flussi__mart_gap_genere"
+      ]
+    },
+    {
       "slug": "mit_incidentalita_mensile",
       "name": "MIT Incidentalità Stradale Mensile",
       "description": "Serie mensile di incidenti stradali, morti, feriti e indicatori di mortalità/gravità/lesività — Italia 2001-2018, 216 mesi",
@@ -8415,6 +8651,66 @@
       }
     },
     {
+      "slug": "minlavoro_agevolazioni__mart_agevolazioni_anno",
+      "dataset": "minlavoro_agevolazioni",
+      "table": "mart_agevolazioni_anno",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/minlavoro_agevolazioni/2024/mart_agevolazioni_anno.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "minlavoro_agevolazioni__mart_agevolazioni_regione",
+      "dataset": "minlavoro_agevolazioni",
+      "table": "mart_agevolazioni_regione",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/minlavoro_agevolazioni/2024/mart_agevolazioni_regione.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "minlavoro_flussi__mart_flussi_anno",
+      "dataset": "minlavoro_flussi",
+      "table": "mart_flussi_anno",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/minlavoro_flussi/2023/mart_flussi_anno.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "minlavoro_flussi__mart_flussi_regione",
+      "dataset": "minlavoro_flussi",
+      "table": "mart_flussi_regione",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/minlavoro_flussi/2023/mart_flussi_regione.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "minlavoro_flussi__mart_gap_genere",
+      "dataset": "minlavoro_flussi",
+      "table": "mart_gap_genere",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/minlavoro_flussi/2023/mart_gap_genere.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "minlavoro_flussi__mart_trasformazioni",
+      "dataset": "minlavoro_flussi",
+      "table": "mart_trasformazioni",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/minlavoro_flussi/2023/mart_trasformazioni.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "mit_incidentalita_mensile__mart_mensile",
       "dataset": "mit_incidentalita_mensile",
       "table": "mart_mensile",
@@ -9172,6 +9468,68 @@
       }
     },
     {
+      "id": "minlavoro_agevolazioni",
+      "source_id": "lavoro_opendata",
+      "status": "ok",
+      "label": "minlavoro_agevolazioni",
+      "detail": "anno 2024 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261012T103903Z_b2e57534",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 3136,
+          "clean": 2868,
+          "mart": 359
+        },
+        "output_bytes": {
+          "raw": 258703,
+          "clean": 7163,
+          "mart": 3075
+        },
+        "started_at": "2026-10-12T10:39:03.514901+00:00",
+        "finished_at": "2026-10-12T10:39:58.731544+00:00",
+        "duration_seconds": 55.217
+      }
+    },
+    {
+      "id": "minlavoro_flussi",
+      "source_id": "lavoro_opendata",
+      "status": "ok",
+      "label": "minlavoro_flussi",
+      "detail": "anno 2023 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261012T103959Z_7ac53a2d",
+        "year": 2023,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 23598,
+          "clean": 23598,
+          "mart": 308
+        },
+        "output_bytes": {
+          "raw": 2811817,
+          "clean": 90323,
+          "mart": 6668
+        },
+        "started_at": "2026-10-12T10:39:59.059592+00:00",
+        "finished_at": "2026-10-12T10:41:05.345209+00:00",
+        "duration_seconds": 66.286
+      }
+    },
+    {
       "id": "mit_incidentalita_mensile",
       "source_id": "mit_opendata",
       "status": "ok",
@@ -9812,10 +10170,22 @@
             "name": "ISTAT — Tasso di Occupazione Provinciale (2018-2025)",
             "column": "indicatore",
             "semantic_type": "indicatore_code"
+          },
+          {
+            "slug": "minlavoro_agevolazioni",
+            "name": "Minlavoro Agevolazioni",
+            "column": "indicatore",
+            "semantic_type": "indicatore_code"
+          },
+          {
+            "slug": "minlavoro_flussi",
+            "name": "Minlavoro Flussi",
+            "column": "indicatore",
+            "semantic_type": "indicatore_code"
           }
         ],
         "types": {
-          "indicatore_code": 2
+          "indicatore_code": 4
         }
       },
       "Nazione": {
@@ -10022,10 +10392,16 @@
             "name": "Grant UE erogati in Italia (FTS EU Grants)",
             "column": "nuts2",
             "semantic_type": "nuts_code"
+          },
+          {
+            "slug": "minlavoro_flussi",
+            "name": "Minlavoro Flussi",
+            "column": "geo",
+            "semantic_type": "nuts_code"
           }
         ],
         "types": {
-          "nuts_code": 1
+          "nuts_code": 2
         }
       },
       "Regione": {
@@ -10153,6 +10529,12 @@
             "semantic_type": "region_code"
           },
           {
+            "slug": "minlavoro_agevolazioni",
+            "name": "Minlavoro Agevolazioni",
+            "column": "regione",
+            "semantic_type": "region_code"
+          },
+          {
             "slug": "pensioni_pa_dag",
             "name": "Pensioni Pa Dag",
             "column": "regione",
@@ -10208,7 +10590,7 @@
           }
         ],
         "types": {
-          "region_code": 29
+          "region_code": 30
         }
       },
       "Scuola": {
@@ -10405,6 +10787,24 @@
             "semantic_type": "year"
           },
           {
+            "slug": "minlavoro_agevolazioni",
+            "name": "Minlavoro Agevolazioni",
+            "column": "mese",
+            "semantic_type": "month"
+          },
+          {
+            "slug": "minlavoro_agevolazioni",
+            "name": "Minlavoro Agevolazioni",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "minlavoro_flussi",
+            "name": "Minlavoro Flussi",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "mit_incidentalita_mensile",
             "name": "MIT Incidentalità Stradale Mensile",
             "column": "mese",
@@ -10478,8 +10878,8 @@
           }
         ],
         "types": {
-          "year": 34,
-          "month": 5
+          "year": 36,
+          "month": 6
         }
       }
     },
@@ -10586,6 +10986,32 @@
           "bridge": "mim_anagrafica_scuole_statali",
           "on": "codice_comune_scuola",
           "semantic_type": "cadastral_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Indicatore",
+          "dataset": "minlavoro_agevolazioni",
+          "via": "indicatore_code"
+        },
+        "to": {
+          "entity": "Progetto",
+          "bridge": "pnrr_indicatori_target",
+          "on": "cup",
+          "semantic_type": "cup_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Indicatore",
+          "dataset": "minlavoro_flussi",
+          "via": "indicatore_code"
+        },
+        "to": {
+          "entity": "Progetto",
+          "bridge": "pnrr_indicatori_target",
+          "on": "cup",
+          "semantic_type": "cup_code"
         }
       },
       {
