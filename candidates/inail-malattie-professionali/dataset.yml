@@ -1,0 +1,90 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "inail_malattie_professionali"
+  source_id: "inail_opendata"
+  tags: [welfare-lavoro, inail, malattie-professionali, sicurezza-lavoro, settore, icd10]
+  category: welfare-lavoro
+  description: "Malattie professionali denunciate all'INAIL: settore, agente causale, ICD10, grado menomazione, indennizzo. Snapshot semestrale con 24 colonne."
+  years: [2026]
+  time_coverage:
+    start_year: 2020
+    end_year: 2026
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "inail_malattie_semestrali_data_prot"
+      type: "http_file"
+      args:
+        url: "https://dati.inail.it/opendata/downloads/datisemestralimalattieprofessionali/csv/DatiSemestraliMalattieProfessionaliDataProtItalia.csv"
+        filename: "malattie_semestrali_italia.csv"
+      client:
+        timeout: 300
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ";"
+    encoding: "utf-8"
+    header: true
+  required_columns:
+    - data_rilevazione
+    - data_protocollo
+    - sede_inail
+    - genere
+    - settore_correlato
+    - icd10_denunciato
+    - icd10_accertato
+    - agente_causale
+    - grado_menomazione_caso
+    - giorni_indennizzati
+    - gestione
+  validate:
+    min_rows: 10000
+    not_null:
+      - data_rilevazione
+      - genere
+      - icd10_denunciato
+
+mart:
+  tables:
+    - name: "mart_casi_settore"
+      sql: "sql/mart_casi_settore.sql"
+    - name: "mart_casi_agente"
+      sql: "sql/mart_casi_agente.sql"
+    - name: "mart_menomazione"
+      sql: "sql/mart_menomazione.sql"
+    - name: "mart_genere"
+      sql: "sql/mart_genere.sql"
+  required_tables:
+    - "mart_casi_settore"
+    - "mart_casi_agente"
+  validate:
+    table_rules:
+      mart_casi_settore:
+        required_columns: [settore_correlato, n_casi, pct_casi]
+        primary_key: [settore_correlato]
+        min_rows: 5
+      mart_casi_agente:
+        required_columns: [agente_causale, settore_correlato, n_casi]
+        primary_key: [agente_causale, settore_correlato]
+        min_rows: 20
+      mart_menomazione:
+        required_columns: [grado_menomazione_caso, n_casi, pct_casi]
+        primary_key: [grado_menomazione_caso]
+        min_rows: 5
+      mart_genere:
+        required_columns: [genere, n_casi, pct_casi]
+        primary_key: [genere]
+        min_rows: 2
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "standard"
