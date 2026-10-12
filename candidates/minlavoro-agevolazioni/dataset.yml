@@ -1,0 +1,64 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "minlavoro_agevolazioni"
+  source_id: "lavoro_opendata"
+  tags: [welfare-lavoro, minlavoro, agevolazioni, decontribuzione, detassazione, incentivi]
+  category: welfare-lavoro
+  description: "Agevolazioni fiscali all'assunzione (decontribuzione, detassazione, altre) dichiarate dalle imprese. Cross-section e serie regionali 2017-2024. Join naturale con minlavoro-flussi su (regione, anno)."
+  years: [2024]
+  time_coverage:
+    start_year: 2017
+    end_year: 2024
+
+# Canale: type: script (extract.py) — 6 tabelle OData eterogenee fuse in un raw.csv long.
+# Fonte primaria: CSV locali in data/ (gitignored, cache fetch_minlavoro).
+# Fallback: OData API dati.lavoro.gov.it con retry.
+# CI: TOOLKIT_ALLOW_SCRIPT_SOURCE=1 già nel post-merge workflow.
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "minlavoro_odata_agevolazioni"
+      type: "script"
+      args:
+        command: "python3 extract.py raw.csv"
+        output: "raw.csv"
+      client:
+        timeout: 300
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: all
+    header: true
+    encoding: "utf-8"
+  required_columns: [tabella_id, tipo_agevolazione, indicatore, valore]
+  validate:
+    min_rows: 100
+    not_null: [tabella_id, tipo_agevolazione, valore]
+    # primary_key deroga: schema long fuso — tabelle eterogenee con dimensioni
+    # parziali. L'unicità è garantita a livello di (tabella_id, dimensioni).
+
+mart:
+  tables:
+    - name: "mart_agevolazioni_regione"
+      sql: "sql/mart_agevolazioni_regione.sql"
+    - name: "mart_agevolazioni_anno"
+      sql: "sql/mart_agevolazioni_anno.sql"
+  required_tables: [mart_agevolazioni_regione]
+  validate:
+    table_rules:
+      mart_agevolazioni_regione:
+        required_columns: [regione, anno, tipo_agevolazione, n_dichiarazioni]
+        primary_key: [regione, anno, tipo_agevolazione]
+        min_rows: 50
+
+validation:
+  fail_on_error: true
+
+output:
+  artifacts: "standard"
