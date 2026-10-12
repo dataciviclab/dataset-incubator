@@ -2096,6 +2096,172 @@
       ]
     },
     {
+      "slug": "inail_malattie_professionali",
+      "name": "Inail Malattie Professionali",
+      "description": "Malattie professionali denunciate all'INAIL: settore, agente causale, ICD10, grado menomazione, indennizzo. Snapshot al 2026-04-30 con protocolli 2021-2025.",
+      "source": "",
+      "source_id": "inail_opendata",
+      "period": {
+        "start": 2021,
+        "end": 2025
+      },
+      "tags": [
+        "welfare-lavoro",
+        "inail",
+        "malattie-professionali",
+        "sicurezza-lavoro",
+        "settore",
+        "icd10"
+      ],
+      "category": "welfare-lavoro",
+      "columns": [
+        {
+          "name": "data_rilevazione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_protocollo",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_definizione",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_morte",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sede_inail",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "genere",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "luogo_nascita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "settore_correlato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sub_settore_correlato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "icd10_denunciato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "icd10_accertato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "agente_causale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "qualificazione_legge",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "malattia_asbesto_correlata",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "definizione_caso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "definizione_lavoratore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "esito_mortale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indennizzo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "grado_menomazione_lavoratore",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "grado_menomazione_caso",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "giorni_indennizzati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "gestione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/inail_malattie_professionali/2026/inail_malattie_professionali_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "inail_malattie_professionali__mart_casi_settore",
+        "inail_malattie_professionali__mart_casi_agente",
+        "inail_malattie_professionali__mart_menomazione",
+        "inail_malattie_professionali__mart_genere"
+      ]
+    },
+    {
       "slug": "inps_pensioni_trimestrale",
       "name": "INPS Pensioni — trimestrale",
       "description": "Numero di pensioni INPS per gestione, regione, classe eta e importo (2020-2024)",
@@ -8401,6 +8567,46 @@
       }
     },
     {
+      "slug": "inail_malattie_professionali__mart_casi_agente",
+      "dataset": "inail_malattie_professionali",
+      "table": "mart_casi_agente",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/inail_malattie_professionali/2026/mart_casi_agente.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "inail_malattie_professionali__mart_casi_settore",
+      "dataset": "inail_malattie_professionali",
+      "table": "mart_casi_settore",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/inail_malattie_professionali/2026/mart_casi_settore.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "inail_malattie_professionali__mart_genere",
+      "dataset": "inail_malattie_professionali",
+      "table": "mart_genere",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/inail_malattie_professionali/2026/mart_genere.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "inail_malattie_professionali__mart_menomazione",
+      "dataset": "inail_malattie_professionali",
+      "table": "mart_menomazione",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/inail_malattie_professionali/2026/mart_menomazione.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "inps_pensioni_trimestrale__mart_pensioni_regione_importo",
       "dataset": "inps_pensioni_trimestrale",
       "table": "mart_pensioni_regione_importo",
@@ -9147,6 +9353,37 @@
         "started_at": "2026-08-03T14:26:18.297828+00:00",
         "finished_at": "2026-08-03T14:26:18.530459+00:00",
         "duration_seconds": 0.233
+      }
+    },
+    {
+      "id": "inail_malattie_professionali",
+      "source_id": "inail_opendata",
+      "status": "ok",
+      "label": "inail_malattie_professionali",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261012T171021Z_c7ffdf6d",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 375046,
+          "clean": 375046,
+          "mart": 430
+        },
+        "output_bytes": {
+          "raw": 40679682,
+          "clean": 3244580,
+          "mart": 6891
+        },
+        "started_at": "2026-10-12T17:10:21.920145+00:00",
+        "finished_at": "2026-10-12T17:11:12.666343+00:00",
+        "duration_seconds": 50.746
       }
     },
     {
