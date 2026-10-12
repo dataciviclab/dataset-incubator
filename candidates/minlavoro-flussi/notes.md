@@ -19,6 +19,7 @@
 - La fonte è un portale CKAN government con WAF: rate-limit possibile in CI.
 - I CSV in `data/` sono cache locale del fetch OData (gitignored). In CI l'extract fa fetch diretto.
 - La copertura 2024+ dipende dalla pubblicazione del prossimo Rapporto Annuale.
+- `required_tables` elenca solo `mart_flussi_anno` e `mart_flussi_regione` (le 2 tabelle essenziali). `mart_trasformazioni` e `mart_gap_genere` sono analitiche di secondo livello: se falliscono non bloccano il run, ma vanno monitorate.
 
 ## Confronto con open-inps
 

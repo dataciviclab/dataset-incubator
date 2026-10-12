@@ -6,10 +6,10 @@ dataset:
   source_id: "lavoro_opendata"
   tags: [welfare-lavoro, minlavoro, agevolazioni, decontribuzione, detassazione, incentivi]
   category: welfare-lavoro
-  description: "Agevolazioni fiscali all'assunzione (decontribuzione, detassazione, altre) dichiarate dalle imprese. Cross-section e serie regionali 2017-2024. Join naturale con minlavoro-flussi su (regione, anno)."
+  description: "Agevolazioni fiscali all'assunzione (decontribuzione, detassazione, altre) dichiarate dalle imprese. Cross-section e serie regionali 2016-2024. Join naturale con minlavoro-flussi su (regione, anno)."
   years: [2024]
   time_coverage:
-    start_year: 2017
+    start_year: 2016
     end_year: 2024
 
 # Canale: type: script (extract.py) — 6 tabelle OData eterogenee fuse in un raw.csv long.

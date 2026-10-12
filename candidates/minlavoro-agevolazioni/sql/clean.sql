@@ -1,4 +1,6 @@
 -- MinLavoro agevolazioni — CLEAN
+-- Esclude righe senza anno (tabelle cross-section senza serie storica:
+-- altre_agevolazioni, obiettivi decontribuzione, contratti attivi detassazione).
 
 SELECT
     normalize_string(tabella_id) AS tabella_id,
@@ -13,3 +15,4 @@ SELECT
     cast_double(valore) AS valore
 FROM raw_input
 WHERE cast_double(valore) IS NOT NULL
+  AND cast_int(anno) IS NOT NULL

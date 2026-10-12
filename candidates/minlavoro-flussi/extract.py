@@ -222,14 +222,18 @@ def normalize_row(row: dict, fonte: str, tabella_id: str, tipo_flusso: str) -> d
     }
 
 
-def read_local_csvs(writer: csv.DictWriter) -> tuple[int, int]:
+def read_local_csvs(
+    writer: csv.DictWriter, skip_nota: bool = False, skip_ra: bool = False
+) -> tuple[int, int]:
     """Legge i CSV locali già scaricati. Restituisce (rows, skipped)."""
     n_rows = 0
     n_skipped = 0
-    for fonte, local_dir in (
-        ("nota_trimestrale", LOCAL_NOTA),
-        ("rapporto_annuale", LOCAL_RA),
+    for fonte, local_dir, skip in (
+        ("nota_trimestrale", LOCAL_NOTA, skip_nota),
+        ("rapporto_annuale", LOCAL_RA, skip_ra),
     ):
+        if skip:
+            continue
         if not local_dir.is_dir():
             print(f"  WARN: directory locale assente: {local_dir}")
             continue
@@ -285,8 +289,11 @@ def fetch_odata_rows(pkg_id: str, res_id: str, page_size: int = 100) -> list[dic
     return all_rows
 
 
-def fetch_odata(writer: csv.DictWriter) -> tuple[int, int]:
-    """Fetch OData con retry. Fallback se i locali non ci sono."""
+def fetch_odata(
+    writer: csv.DictWriter, only_missing: tuple[bool, bool] = (False, False)
+) -> tuple[int, int]:
+    """Fetch OData con retry. only_missing=(nota_presente, ra_presente) salta le fonti già in cache."""
+    skip_nota, skip_ra = only_missing
     catalog = fetch_json(CATALOG_URL)
     packages = catalog.get("packageMap", {})
 
@@ -299,6 +306,10 @@ def fetch_odata(writer: csv.DictWriter) -> tuple[int, int]:
                 fonte = "nota_trimestrale" if prefix.startswith("Nota") else "rapporto_annuale"
                 break
         if fonte is None:
+            continue
+        if fonte == "nota_trimestrale" and skip_nota:
+            continue
+        if fonte == "rapporto_annuale" and skip_ra:
             continue
         odata_res = None
         for rid in pkg.get("resourceIdentifiers", []):
@@ -336,16 +347,24 @@ def main() -> None:
     out_path = Path(sys.argv[1])
     out_path.parent.mkdir(parents=True, exist_ok=True)
 
-    use_local = LOCAL_NOTA.is_dir() and LOCAL_RA.is_dir()
-    print(f"Sorgente: {'CSV locali' if use_local else 'OData API'}")
+    # Legge indipendentemente ogni cartella locale presente;
+    # fetch OData solo per le fonti mancanti.
+    has_nota = LOCAL_NOTA.is_dir() and any(LOCAL_NOTA.glob("*.csv"))
+    has_ra = LOCAL_RA.is_dir() and any(LOCAL_RA.glob("*.csv"))
+    print(f"Cache locale: nota={'sì' if has_nota else 'no'} ra={'sì' if has_ra else 'no'}")
 
+    n_rows = 0
+    n_skipped = 0
     with open(out_path, "w", newline="", encoding="utf-8") as f:
         writer = csv.DictWriter(f, fieldnames=FIELDNAMES)
         writer.writeheader()
-        if use_local:
-            n_rows, n_skipped = read_local_csvs(writer)
-        else:
-            n_rows, n_skipped = fetch_odata(writer)
+        if has_nota or has_ra:
+            n_rows, n_skipped = read_local_csvs(writer, skip_nota=not has_nota, skip_ra=not has_ra)
+        if not has_nota or not has_ra:
+            print("Fetch OData per fonti mancanti…")
+            o_rows, o_skipped = fetch_odata(writer, only_missing=(has_nota, has_ra))
+            n_rows += o_rows
+            n_skipped += o_skipped
 
     print(f"Totale: {n_rows} righe → {out_path} ({n_skipped} scartate)")
 
