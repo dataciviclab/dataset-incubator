@@ -37,10 +37,25 @@ SELECT
     tipo_finanziamento::VARCHAR AS tipo_finanziamento,
     codice_gruppo_beneficiario::VARCHAR AS codice_gruppo_beneficiario,
     tipo_beneficiario::VARCHAR AS tipo_beneficiario,
-    TRY_CAST(data_inizio_progetto AS DATE) AS data_inizio_progetto,
-    TRY_CAST(data_fine_progetto AS DATE) AS data_fine_progetto,
+    TRY_CAST(normalize_string(data_inizio_progetto) AS DATE) AS data_inizio_progetto,
+    TRY_CAST(normalize_string(data_fine_progetto) AS DATE) AS data_fine_progetto,
     tipo_contratto::VARCHAR AS tipo_contratto,
     tipo_gestione::VARCHAR AS tipo_gestione,
-    paese_beneficiante::VARCHAR AS paese_beneficiante
+    paese_beneficiante::VARCHAR AS paese_beneficiante,
+    -- Catena con SEDIA/F&T Portal: chiavi opzionali.
+    -- "N/A - Not applicable" e "-" normalizzati a NULL (2021-2024 sono tutti N/A;
+    -- solo 2025 ha call_id reali).
+    CASE
+        WHEN normalize_string(call_id) IS NULL THEN NULL
+        WHEN normalize_string(call_id) LIKE 'N/A%' THEN NULL
+        WHEN normalize_string(call_id) = '-' THEN NULL
+        ELSE normalize_string(call_id)
+    END AS call_id,
+    CASE
+        WHEN normalize_string(project_id) IS NULL THEN NULL
+        WHEN normalize_string(project_id) LIKE 'N/A%' THEN NULL
+        WHEN normalize_string(project_id) = '-' THEN NULL
+        ELSE normalize_string(project_id)
+    END AS project_id
 FROM raw_input
 WHERE UPPER(paese_beneficiario::VARCHAR) = 'ITALY'

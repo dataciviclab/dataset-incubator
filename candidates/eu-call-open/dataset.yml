@@ -1,0 +1,65 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "eu_call_open"
+  description: "Call UE aperte e in arrivo (Funding & Tenders Portal / SEDIA) con deadline e budget"
+  source_id: "sedia"
+  tags: [finanza-pubblica, eu, grants, bandi, sedia, funding-tenders]
+  category: finanza-pubblica
+  years: [2026]
+  time_coverage: {start_year: 2021, end_year: 2027}
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "sedia_search"
+      type: "script"
+      client:
+        timeout: 300
+      args:
+        command: "python scripts/extract_sedia.py --output eu_call_open.csv --statuses open,forthcoming"
+        output: "eu_call_open.csv"
+        filename: "eu_call_open.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns: [identifier, call_identifier, call_title, title, status, status_label, framework_programme, framework_label, programme_period, types_of_action, start_date, deadline_date, deadline_model, budget_total_eur, expected_grants, url, giorni_alla_scadenza, ha_scadenza_futura]
+  read:
+    source: auto
+    mode: latest
+    header: true
+    delim: ","
+    encoding: "utf-8"
+    quote: '"'
+    escape: '"'
+    strict_mode: false
+    ignore_errors: true
+  validate:
+    not_null: [identifier, title]
+    primary_key: [identifier]
+    min_rows: 500
+
+mart:
+  tables:
+    - name: "mart_scadenze"
+      sql: "sql/mart_scadenze.sql"
+    - name: "mart_per_programma"
+      sql: "sql/mart_per_programma.sql"
+  required_tables:
+    - "mart_scadenze"
+    - "mart_per_programma"
+  validate:
+    table_rules:
+      mart_scadenze:
+        required_columns: [deadline_date, giorni_alla_scadenza, identifier, call_identifier, title, framework_label, budget_total_eur, url]
+        primary_key: [identifier]
+        min_rows: 50
+      mart_per_programma:
+        required_columns: [framework_programme, framework_label, n_call, n_con_budget, budget_totale_eur]
+        primary_key: [framework_programme]
+        min_rows: 5
+
+validation:
+  fail_on_error: true
