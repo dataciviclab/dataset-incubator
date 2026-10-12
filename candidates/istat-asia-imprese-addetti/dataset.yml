@@ -1,0 +1,103 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_asia_imprese_addetti"
+  source_id: "istat_dbnomics"
+  tags: [economia, istat, asia, imprese, addetti, nace, nuts1]
+  category: economia
+  years: [2024]
+  time_coverage:
+    start_year: 2012
+    end_year: 2024
+
+# ASIA imprese + addetti — 183_277_DF_DICA_ASIAUE1P_1 via type: dbnomics
+# Filtro totale: LEGAL_FORM=TOT · Y_ENTER_WITH_EMPLOYEES=9 · Y_CRAFTMEN=9
+# Grano: IT + NUTS1 × NACE totale/sezioni B–S
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_dbnomics_asia_imprese"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        provider: ISTAT
+        dataset: "183_277_DF_DICA_ASIAUE1P_1"
+        dimensions:
+          FREQ: [A]
+          REF_AREA:
+            - IT
+            - ITC1
+            - ITC2
+            - ITC3
+            - ITC4
+            - ITD1
+            - ITD2
+            - ITD3
+            - ITD4
+            - ITD5
+            - ITE1
+            - ITE2
+            - ITE3
+            - ITE4
+            - ITF1
+            - ITF2
+            - ITF3
+            - ITF4
+            - ITF5
+            - ITF6
+            - ITG1
+            - ITG2
+          DATA_TYPE: [AENTN, AENTEMPDAA]
+          ECON_ACTIVITY_NACE_2007: ["0010", B, C, D, E, F, G, H, I, J, K, L, M, N, P, Q, R, S]
+          LEGAL_FORM: [TOT]
+          Y_ENTER_WITH_EMPLOYEES: ["9"]
+          Y_CRAFTMEN: ["9"]
+          PERS_EMPL_SIZE_CLASS: [TOTAL]
+        page_size: 1000
+        max_pages: 50
+        filename: "istat_asia_imprese_addetti_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - anno
+    - territorio_codice
+    - territorio
+    - livello
+    - nace_codice
+    - nace
+    - indicatore_codice
+    - indicatore
+    - valore
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    not_null: [anno, territorio_codice, indicatore_codice]
+    primary_key: [anno, territorio_codice, nace_codice, indicatore_codice]
+    min_rows: 200
+
+mart:
+  tables:
+    - name: "mart_asia_imprese_anno"
+      sql: "sql/mart_asia_imprese_anno.sql"
+  required_tables:
+    - "mart_asia_imprese_anno"
+  validate:
+    table_rules:
+      mart_asia_imprese_anno:
+        required_columns: [anno, territorio_codice, nace_codice, indicatore_codice, valore]
+        not_null: [anno, territorio_codice, nace_codice, indicatore_codice]
+        primary_key: [anno, territorio_codice, nace_codice, indicatore_codice]
+        min_rows: 200
+
+validation:
+  fail_on_error: true

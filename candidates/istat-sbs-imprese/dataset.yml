@@ -1,0 +1,104 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_sbs_imprese"
+  source_id: "istat_dbnomics"
+  tags: [economia, istat, sbs, imprese, fatturato, valore-aggiunto]
+  category: economia
+  years: [2023]
+  time_coverage:
+    start_year: 2008
+    end_year: 2023
+
+# SBS — Structural Business Statistics ISTAT via type: dbnomics
+# 161_267 nazionale key data + 161_268 regionali NUTS1
+# inject_column grain: nazionale | regionale
+# Unità: MIGLIAIA di euro (valore/1000 = mln€) — vedi clean
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sbs_naz"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      inject_column:
+        grain: "nazionale"
+      args:
+        provider: ISTAT
+        dataset: "161_267_DF_DCSP_SBSNAZ_1"
+        dimensions:
+          FREQ: [A]
+          REF_AREA: [IT]
+          DATA_TYPE: ["12110", "12150", "12120"]
+          ECON_ACTIVITY_NACE_2007: ["0010", B, C, D, E, F, G, H, I, J, K, L, M, N, P, Q, R, S]
+          PERS_EMPL_SIZE_CLASS: [TOTAL]
+          TURNOVER_CLASS: ["9"]
+          ENVIROM_DOMAIN: ["9"]
+        page_size: 1000
+        max_pages: 20
+        filename: "istat_sbs_naz.csv"
+      primary: true
+    - name: "istat_sbs_reg"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      inject_column:
+        grain: "regionale"
+      args:
+        provider: ISTAT
+        dataset: "161_268_DF_DCSP_SBSREG_1"
+        dimensions:
+          FREQ: [A]
+          REF_AREA: [ITC1, ITC2, ITC3, ITC4, ITD1, ITD2, ITD3, ITD4, ITD5, ITE1, ITE2, ITE3, ITE4, ITF1, ITF2, ITF3, ITF4, ITF5, ITF6, ITG1, ITG2]
+          DATA_TYPE: ["12110", "12150", "13310", "11210"]
+          ECON_ACTIVITY_NACE_2007: ["0010", B, C, D, E, F, G, H, I, J, K, L, M, N, P, Q, R, S]
+        page_size: 1000
+        max_pages: 20
+        filename: "istat_sbs_reg.csv"
+      primary: false
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - anno
+    - territorio_codice
+    - territorio
+    - grain
+    - nace_codice
+    - nace
+    - indicatore_codice
+    - indicatore
+    - valore
+    - unita_misura
+  read:
+    source: "auto"
+    # mode: all → legge TUTTI i file raw (naz + reg), non solo il primary
+    mode: "all"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    not_null: [anno, territorio_codice, indicatore_codice, grain]
+    primary_key: [anno, territorio_codice, grain, nace_codice, indicatore_codice]
+    min_rows: 200
+
+mart:
+  tables:
+    - name: "mart_sbs_anno"
+      sql: "sql/mart_sbs_anno.sql"
+  required_tables:
+    - "mart_sbs_anno"
+  validate:
+    table_rules:
+      mart_sbs_anno:
+        required_columns: [anno, territorio_codice, nace_codice, indicatore_codice, valore]
+        not_null: [anno, territorio_codice, nace_codice, indicatore_codice]
+        primary_key: [anno, territorio_codice, grain, nace_codice, indicatore_codice]
+        min_rows: 200
+
+validation:
+  fail_on_error: true
