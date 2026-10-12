@@ -13,8 +13,8 @@
 ## Decisioni metodologiche
 
 - **Solo il file Italia**: i CSV per-regione hanno lo stesso schema. Il file Italia è il censimento completo.
-- **Snapshot, non serie storica**: il semestrale è uno snapshot al momento della pubblicazione. Ogni run sovrascrive. La serie storica si costruisce con i run multi-anno (toolkit gestisce).
-- **4 mart**: settore, agente causale, menomazione, genere — le 4 dimensioni analitiche principali.
+- **Snapshot unico**: `data_rilevazione` è tutta 2026-04-30 (momento dello snapshot); `data_protocollo` copre 2021-2025 (5 anni di denunce). La serie storica si costruisce con i run multi-anni (toolkit gestisce).
+- **4 mart**: settore, agente causale, menomazione, genere — le 4 dimensioni analitiche principali. `required_tables` elenca solo mart_casi_settore e mart_casi_agente (le 2 essenziali); menomazione e genere sono analitiche di secondo livello, non bloccanti.
 - **primary_key nei mart**: derivata dal GROUP BY di ciascuna query.
 
 ## Rischi noti
@@ -23,3 +23,4 @@
 - **Fonte instabile**: INAIL ha periodi di manutenzione (il sito è stato down durante lo scouting). Il timeout del raw è 300s.
 - **Snapshot unico**: senza storico, un'analisi temporale richiede più run nel tempo.
 - **Codici regione INAIL**: numerici (es. "19" = Lombardia), non ISO. Il clean usa `SedeInailCompetente` come stringa libera.
+- **Valori sentinella**: `grado_menomazione_caso = -1` appare in 1 riga — valore sentinella della fonte per "non calcolabile". Non bloccante, filtrato nei mart per `IS NOT NULL` ma non per `> 0`.

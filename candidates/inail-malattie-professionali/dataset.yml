@@ -6,11 +6,11 @@ dataset:
   source_id: "inail_opendata"
   tags: [welfare-lavoro, inail, malattie-professionali, sicurezza-lavoro, settore, icd10]
   category: welfare-lavoro
-  description: "Malattie professionali denunciate all'INAIL: settore, agente causale, ICD10, grado menomazione, indennizzo. Snapshot semestrale con 24 colonne."
+  description: "Malattie professionali denunciate all'INAIL: settore, agente causale, ICD10, grado menomazione, indennizzo. Snapshot al 2026-04-30 con protocolli 2021-2025."
   years: [2026]
   time_coverage:
-    start_year: 2020
-    end_year: 2026
+    start_year: 2021
+    end_year: 2025
 
 raw:
   output_policy: overwrite
