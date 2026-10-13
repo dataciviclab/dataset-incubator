@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-10-12",
+  "updated_at": "2026-10-13",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -3086,6 +3086,94 @@
       "stage": "incubating"
     },
     {
+      "slug": "istat_asia_imprese_addetti",
+      "name": "Istat Asia Imprese Addetti",
+      "description": "",
+      "source": "",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 2012,
+        "end": 2024
+      },
+      "tags": [
+        "economia",
+        "istat",
+        "asia",
+        "imprese",
+        "addetti",
+        "nace",
+        "nuts1"
+      ],
+      "category": "economia",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nace_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nace",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indicatore_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "indicatore_code"
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_asia_imprese_addetti/2024/istat_asia_imprese_addetti_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_asia_imprese_addetti__mart_asia_imprese_anno"
+      ]
+    },
+    {
       "slug": "istat_asia_ul",
       "name": "Istat Asia Ul",
       "description": "UnitÃ  Locali delle imprese attive (ASIA UL) per comune e sezione ATECO (2018-2020). Fonte: ISTAT via DBnomics.",
@@ -3783,6 +3871,187 @@
       "stage": "published",
       "mart_refs": [
         "istat_pil_territoriale__pil_territoriale"
+      ]
+    },
+    {
+      "slug": "istat_sbs_imprese",
+      "name": "Istat Sbs Imprese",
+      "description": "",
+      "source": "",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 2008,
+        "end": 2023
+      },
+      "tags": [
+        "economia",
+        "istat",
+        "sbs",
+        "imprese",
+        "fatturato",
+        "valore-aggiunto"
+      ],
+      "category": "economia",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "grain",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nace_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "nace",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indicatore_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "indicatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "indicatore_code"
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "unita_misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_sbs_imprese/2023/istat_sbs_imprese_2023_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_sbs_imprese__mart_sbs_anno"
+      ]
+    },
+    {
+      "slug": "istat_va_branca",
+      "name": "Istat Va Branca",
+      "description": "",
+      "source": "",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 1995,
+        "end": 2023
+      },
+      "tags": [
+        "economia",
+        "istat",
+        "va",
+        "pil",
+        "branca",
+        "nace",
+        "conti-territoriali"
+      ],
+      "category": "economia",
+      "columns": [
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "territorio_nome",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "nace_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_dato_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_dato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "valutazione_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "valore_mln_eu",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_va_branca/2023/istat_va_branca_2023_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_va_branca__mart_va_branca",
+        "istat_va_branca__mart_va_branca_share"
       ]
     },
     {
@@ -8637,6 +8906,16 @@
       }
     },
     {
+      "slug": "istat_asia_imprese_addetti__mart_asia_imprese_anno",
+      "dataset": "istat_asia_imprese_addetti",
+      "table": "mart_asia_imprese_anno",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_asia_imprese_addetti/2024/mart_asia_imprese_anno.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "istat_asia_ul__mart_asia_ul_comuni",
       "dataset": "istat_asia_ul",
       "table": "mart_asia_ul_comuni",
@@ -8713,6 +8992,36 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/istat_pil_territoriale/2024/pil_territoriale.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_sbs_imprese__mart_sbs_anno",
+      "dataset": "istat_sbs_imprese",
+      "table": "mart_sbs_anno",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_sbs_imprese/2023/mart_sbs_anno.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_va_branca__mart_va_branca",
+      "dataset": "istat_va_branca",
+      "table": "mart_va_branca",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_va_branca/2023/mart_va_branca.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_va_branca__mart_va_branca_share",
+      "dataset": "istat_va_branca",
+      "table": "mart_va_branca_share",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_va_branca/2023/mart_va_branca_share.parquet",
         "multi_file": false
       }
     },
@@ -9426,6 +9735,37 @@
       }
     },
     {
+      "id": "istat_asia_imprese_addetti",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat_asia_imprese_addetti",
+      "detail": "anno 2024 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261013T090325Z_1e0baba4",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 10296,
+          "clean": 10296,
+          "mart": 10296
+        },
+        "output_bytes": {
+          "raw": 1133433,
+          "clean": 41052,
+          "mart": 42313
+        },
+        "started_at": "2026-10-13T09:03:25.808511+00:00",
+        "finished_at": "2026-10-13T09:03:36.052093+00:00",
+        "duration_seconds": 10.244
+      }
+    },
+    {
       "id": "istat_asia_ul",
       "source_id": "istat_dbnomics",
       "status": "ok",
@@ -9578,6 +9918,68 @@
         "started_at": "2026-10-11T21:03:07.643067+00:00",
         "finished_at": "2026-10-11T21:03:21.403110+00:00",
         "duration_seconds": 13.76
+      }
+    },
+    {
+      "id": "istat_sbs_imprese",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat_sbs_imprese",
+      "detail": "anno 2023 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261013T090336Z_b667eff1",
+        "year": 2023,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 816,
+          "clean": 20796,
+          "mart": 20796
+        },
+        "output_bytes": {
+          "raw": 1599128,
+          "clean": 77347,
+          "mart": 80170
+        },
+        "started_at": "2026-10-13T09:03:36.345763+00:00",
+        "finished_at": "2026-10-13T09:03:51.138433+00:00",
+        "duration_seconds": 14.793
+      }
+    },
+    {
+      "id": "istat_va_branca",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat_va_branca",
+      "detail": "anno 2023 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261013T090351Z_83ee4762",
+        "year": 2023,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 49770,
+          "clean": 49770,
+          "mart": 60984
+        },
+        "output_bytes": {
+          "raw": 6279506,
+          "clean": 162936,
+          "mart": 239699
+        },
+        "started_at": "2026-10-13T09:03:51.427682+00:00",
+        "finished_at": "2026-10-13T09:04:08.538447+00:00",
+        "duration_seconds": 17.111
       }
     },
     {
@@ -10397,6 +10799,12 @@
         "label": "Indicatore",
         "datasets": [
           {
+            "slug": "istat_asia_imprese_addetti",
+            "name": "Istat Asia Imprese Addetti",
+            "column": "indicatore",
+            "semantic_type": "indicatore_code"
+          },
+          {
             "slug": "istat_housing_crowding",
             "name": "Istat Housing Crowding",
             "column": "indicatore",
@@ -10405,6 +10813,12 @@
           {
             "slug": "istat_occupazione_provinciale",
             "name": "ISTAT — Tasso di Occupazione Provinciale (2018-2025)",
+            "column": "indicatore",
+            "semantic_type": "indicatore_code"
+          },
+          {
+            "slug": "istat_sbs_imprese",
+            "name": "Istat Sbs Imprese",
             "column": "indicatore",
             "semantic_type": "indicatore_code"
           },
@@ -10422,7 +10836,7 @@
           }
         ],
         "types": {
-          "indicatore_code": 4
+          "indicatore_code": 6
         }
       },
       "Nazione": {
@@ -10970,6 +11384,12 @@
             "semantic_type": "year"
           },
           {
+            "slug": "istat_asia_imprese_addetti",
+            "name": "Istat Asia Imprese Addetti",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "istat_asia_ul",
             "name": "Istat Asia Ul",
             "column": "anno",
@@ -10996,6 +11416,18 @@
           {
             "slug": "istat_pil_territoriale",
             "name": "PIL regionale e provinciale",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "istat_sbs_imprese",
+            "name": "Istat Sbs Imprese",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "istat_va_branca",
+            "name": "Istat Va Branca",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -11115,7 +11547,7 @@
           }
         ],
         "types": {
-          "year": 36,
+          "year": 39,
           "month": 6
         }
       }
@@ -11163,6 +11595,19 @@
       {
         "from": {
           "entity": "Indicatore",
+          "dataset": "istat_asia_imprese_addetti",
+          "via": "indicatore_code"
+        },
+        "to": {
+          "entity": "Progetto",
+          "bridge": "pnrr_indicatori_target",
+          "on": "cup",
+          "semantic_type": "cup_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Indicatore",
           "dataset": "istat_housing_crowding",
           "via": "indicatore_code"
         },
@@ -11177,6 +11622,19 @@
         "from": {
           "entity": "Indicatore",
           "dataset": "istat_occupazione_provinciale",
+          "via": "indicatore_code"
+        },
+        "to": {
+          "entity": "Progetto",
+          "bridge": "pnrr_indicatori_target",
+          "on": "cup",
+          "semantic_type": "cup_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Indicatore",
+          "dataset": "istat_sbs_imprese",
           "via": "indicatore_code"
         },
         "to": {
