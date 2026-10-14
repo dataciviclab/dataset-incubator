@@ -1,11 +1,15 @@
--- Mart: popolazione proiettata (componente=popolazione_inizio_anno)
--- Grano: territorio × anno
+-- Mart: popolazione proiettata per età × sesso × regione × anno
+-- Grano: territorio × sesso × età × anno (scenario mediano)
 SELECT
     anno,
     territorio_codice,
-    territorio,
+    sesso,
+    eta,
     valore AS popolazione
 FROM clean_input
-WHERE componente_codice = 'popolazione_inizio_anno'
+WHERE grano = 'eta_sesso'
+  AND componente_codice = 'popolazione'
+  AND sesso != 'totale'  -- escludi totali sesso (duplicati)
+  AND eta != 'Totale'    -- escludi totali età (duplicati)
   AND valore IS NOT NULL
-ORDER BY territorio_codice, anno
+ORDER BY territorio_codice, sesso, eta, anno

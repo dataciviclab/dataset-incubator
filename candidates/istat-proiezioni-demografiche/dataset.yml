@@ -33,10 +33,10 @@ raw:
 clean:
   sql: "sql/clean.sql"
   required_columns:
-    - anno
+    - grano
     - territorio_codice
-    - territorio
     - componente_codice
+    - anno
     - valore
   read:
     source: "auto"
@@ -45,8 +45,8 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    not_null: [anno, territorio_codice, componente_codice, valore]
-    primary_key: [anno, territorio_codice, componente_codice]
+    not_null: [anno, territorio_codice, grano, valore]
+    primary_key: [grano, territorio_codice, componente_codice, anno, sesso, eta]
     min_rows: 100
 
 mart:
@@ -61,10 +61,10 @@ mart:
   validate:
     table_rules:
       mart_popolazione_anno:
-        required_columns: [anno, territorio_codice, popolazione]
-        not_null: [anno, territorio_codice, popolazione]
-        primary_key: [anno, territorio_codice]
-        min_rows: 50
+        required_columns: [anno, territorio_codice, sesso, eta, popolazione]
+        not_null: [anno, territorio_codice, sesso, eta, popolazione]
+        primary_key: [anno, territorio_codice, sesso, eta]
+        min_rows: 100
       mart_componenti_anno:
         required_columns: [anno, territorio_codice, componente_codice, valore]
         not_null: [anno, territorio_codice, componente_codice]

@@ -1,24 +1,28 @@
 #!/usr/bin/env python3
-"""Fetch proiezioni demografiche ISTAT da demo.istat.it (RPCCerca.php).
+"""Fetch proiezioni demografiche ISTAT base 2025 → 2080.
 
-Canale: SPA demo.istat.it — POST RPCCerca.php (JSON).
-Sostituisce SDMX (flaky) con l'API interna della piattaforma Demo.
+Due canali:
+1. ZIP demo.istat.it → popolazione per età × sesso × regione (median + IC)
+2. RPCCerca.php → componenti bilancio (nati, morti, saldi) per Italia + ripartizioni + regioni
 
-Usage: python preprocess.py <year> <output.csv>
-  year: anno base delle proiezioni (default 2025)
-  output: path CSV di output (raw_input.csv)
+Usage: python preprocess.py <output_dir>
+  output_dir: directory per raw_input.csv e raw_eta_sesso.csv
 """
 
 from __future__ import annotations
 
 import csv
+import io
 import json
 import sys
 import time
 import urllib.parse
 import urllib.request
+import zipfile
+from pathlib import Path
 
 BASE = "https://demo.istat.it/app"
+ZIP_URL = "https://demo.istat.it/data/previsioni/Previsioni-Popolazione_per_eta-Regioni.zip"
 HEADERS = {
     "Content-Type": "application/x-www-form-urlencoded",
     "X-Requested-With": "XMLHttpRequest",
@@ -27,7 +31,7 @@ HEADERS = {
     "User-Agent": "DataCivicLab/1.0",
 }
 
-# regioni demo → (codice NUTS2, nome, ripartizione parent)
+# regioni demo → (codice NUTS2, nome, ripartizione parent per RPC)
 REGIONI = {
     "1": ("ITC1", "Piemonte", "27"),
     "2": ("ITC2", "Valle d'Aosta", "27"),
@@ -52,7 +56,32 @@ REGIONI = {
     "22": ("ITH2", "P.A. Trento", "28"),
 }
 
-# ripartizioni aggregate (codici custom, univoci — non NUTS)
+# nome file ZIP → NUTS2
+ZIP_MAP = {
+    "Abruzzo": "ITF1",
+    "Basilicata": "ITF5",
+    "Calabria": "ITF6",
+    "Campania": "ITF3",
+    "Emilia-Romagna": "ITH5",
+    "Friuli-Venezia_Giulia": "ITH4",
+    "Lazio": "ITI4",
+    "Liguria": "ITC3",
+    "Lombardia": "ITC4",
+    "Marche": "ITI3",
+    "Molise": "ITF2",
+    "Piemonte": "ITC1",
+    "Provincia_autonoma_di_Bolzano": "ITH1",
+    "Provincia_autonoma_di_Trento": "ITH2",
+    "Puglia": "ITF4",
+    "Sardegna": "ITG2",
+    "Sicilia": "ITG1",
+    "Toscana": "ITI1",
+    "Trentino-Alto_Adige": "ITH",
+    "Umbria": "ITI2",
+    "Valle_d_Aosta-Vallee_d_Aoste": "ITC2",
+    "Veneto": "ITH3",
+}
+
 RIPARTIZIONI = {
     "26": ("IT", "Italia"),
     "23": ("RIP_NORD", "Nord"),
@@ -72,9 +101,10 @@ COMPONENTI = {
     "10": "saldo_migratorio_interno",
 }
 
+SESSO_MAP = {"Maschi": "maschi", "Femmine": "femmine", "Totale": "totale"}
+
 
 def rpc(form: dict) -> list[dict]:
-    """POST a RPCCerca.php e restituisce le righe del datatable."""
     data = urllib.parse.urlencode(form).encode()
     req = urllib.request.Request(f"{BASE}/RPCCerca.php", data=data, headers=HEADERS)
     with urllib.request.urlopen(req, timeout=120) as resp:
@@ -85,8 +115,7 @@ def rpc(form: dict) -> list[dict]:
 
 
 def fetch_componenti(rip_code: str, comp_code: str, reg_code: str = "") -> list[dict]:
-    """Fetch bilancio demografico per una ripartizione (o regione) e componente."""
-    rows = rpc(
+    return rpc(
         {
             "componenti": comp_code,
             "annoda": str(YEARS[0]),
@@ -102,76 +131,102 @@ def fetch_componenti(rip_code: str, comp_code: str, reg_code: str = "") -> list[
             "btnricerca-1": "Cerca",
         }
     )
-    return rows
+
+
+def fetch_eta_sesso(fout) -> int:
+    """Download ZIP e parse CSV regionali → raw_input.csv (grano=eta_sesso)."""
+    print("download ZIP...", file=sys.stderr)
+    with urllib.request.urlopen(
+        urllib.request.Request(ZIP_URL, headers={"User-Agent": "DataCivicLab/1.0"}), timeout=120
+    ) as r:
+        zip_bytes = r.read()
+
+    n = 0
+    w = csv.writer(fout)
+    with zipfile.ZipFile(io.BytesIO(zip_bytes)) as zf:
+        for name in sorted(zf.namelist()):
+            if not name.endswith(".csv"):
+                continue
+            stem = Path(name).stem.replace("it-Popolazione_per_eta_-_Regione_", "")
+            nuts = ZIP_MAP.get(stem)
+            if not nuts:
+                print(f"  SKIP {stem}: no NUTS mapping", file=sys.stderr)
+                continue
+            with zf.open(name) as fh:
+                text = io.TextIOWrapper(fh, encoding="utf-8-sig")
+                lines = text.readlines()
+            reader = csv.DictReader(io.StringIO("".join(lines[2:])), delimiter=";")
+            for r in reader:
+                anno = r.get("Anno")
+                sesso = SESSO_MAP.get(r.get("Sesso", ""), "")
+                eta = r.get("Età", "")
+                val = r.get("Scenario mediano", "")
+                if not anno or not sesso or eta == "" or val == "":
+                    continue
+                w.writerow(["eta_sesso", nuts, "popolazione", anno, sesso, eta, val])
+                n += 1
+            print(f"  {stem} ({nuts}) ok", file=sys.stderr)
+    return n
+
+
+def fetch_componenti_all(fout) -> int:
+    """RPC bilancio demografico per Italia + ripartizioni + regioni → raw_input.csv (grano=componenti)."""
+    n = 0
+    w = csv.writer(fout)
+    for rip_code, (nuts, nome) in RIPARTIZIONI.items():
+        for comp_code, comp_name in COMPONENTI.items():
+            try:
+                rows = fetch_componenti(rip_code, comp_code)
+            except Exception as e:
+                print(f"  SKIP {nome}/{comp_name}: {e}", file=sys.stderr)
+                continue
+            for r in rows:
+                if r.get("anno") and r.get("median") not in (None, ""):
+                    w.writerow(["componenti", nuts, comp_name, r["anno"], "", "", r["median"]])
+                    n += 1
+            time.sleep(0.3)
+        print(f"  {nome} ({nuts}) ok", file=sys.stderr)
+    for reg_id, (nuts, nome, parent) in REGIONI.items():
+        for comp_code, comp_name in COMPONENTI.items():
+            try:
+                rows = fetch_componenti(parent, comp_code, reg_code=reg_id)
+            except Exception as e:
+                print(f"  SKIP {nome}/{comp_name}: {e}", file=sys.stderr)
+                continue
+            for r in rows:
+                if r.get("anno") and r.get("median") not in (None, ""):
+                    w.writerow(["componenti", nuts, comp_name, r["anno"], "", "", r["median"]])
+                    n += 1
+            time.sleep(0.3)
+        print(f"  {nome} ({nuts}) ok", file=sys.stderr)
+    return n
 
 
 def main() -> None:
-    out_path = sys.argv[1] if len(sys.argv) > 1 else "raw_input.csv"
-    fieldnames = [
-        "territorio_codice",
-        "territorio",
-        "componente_codice",
-        "componente",
-        "anno",
-        "valore",
-    ]
-    n = 0
-    with open(out_path, "w", newline="", encoding="utf-8") as f:
-        w = csv.DictWriter(f, fieldnames=fieldnames)
-        w.writeheader()
-        # ripartizioni aggregate (ripartizione=X, regione vuota)
-        for rip_code, (nuts, nome) in RIPARTIZIONI.items():
-            for comp_code, comp_name in COMPONENTI.items():
-                try:
-                    rows = fetch_componenti(rip_code, comp_code)
-                except Exception as e:
-                    print(f"  SKIP {nome}/{comp_name}: {e}", file=sys.stderr)
-                    continue
-                for r in rows:
-                    anno = r.get("anno")
-                    val = r.get("median")
-                    if anno is None or val in (None, ""):
-                        continue
-                    w.writerow(
-                        {
-                            "territorio_codice": nuts,
-                            "territorio": nome,
-                            "componente_codice": comp_name,
-                            "componente": comp_name.replace("_", " ").title(),
-                            "anno": anno,
-                            "valore": val,
-                        }
-                    )
-                    n += 1
-                time.sleep(0.3)
-            print(f"  {nome} ({nuts}) ok", file=sys.stderr)
-        # regioni (ripartizione=parent, regione=id)
-        for reg_id, (nuts, nome, parent) in REGIONI.items():
-            for comp_code, comp_name in COMPONENTI.items():
-                try:
-                    rows = fetch_componenti(parent, comp_code, reg_code=reg_id)
-                except Exception as e:
-                    print(f"  SKIP {nome}/{comp_name}: {e}", file=sys.stderr)
-                    continue
-                for r in rows:
-                    anno = r.get("anno")
-                    val = r.get("median")
-                    if anno is None or val in (None, ""):
-                        continue
-                    w.writerow(
-                        {
-                            "territorio_codice": nuts,
-                            "territorio": nome,
-                            "componente_codice": comp_name,
-                            "componente": comp_name.replace("_", " ").title(),
-                            "anno": anno,
-                            "valore": val,
-                        }
-                    )
-                    n += 1
-                time.sleep(0.3)
-            print(f"  {nome} ({nuts}) ok", file=sys.stderr)
-    print(f"raw written: {n} rows -> {out_path}", file=sys.stderr)
+    # argv[1] può essere un file CSV (dal toolkit) o una directory
+    arg = sys.argv[1] if len(sys.argv) > 1 else "raw_input.csv"
+    if arg.endswith(".csv"):
+        raw_path = Path(arg)
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+    else:
+        raw_path = Path(arg) / "raw_input.csv"
+        raw_path.parent.mkdir(parents=True, exist_ok=True)
+
+    with open(raw_path, "w", newline="", encoding="utf-8") as fout:
+        w = csv.writer(fout)
+        w.writerow(
+            ["grano", "territorio_codice", "componente_codice", "anno", "sesso", "eta", "valore"]
+        )
+
+        print("=== età × sesso (ZIP) ===", file=sys.stderr)
+        n_eta = fetch_eta_sesso(fout)
+        print(f"eta_sesso: {n_eta} rows", file=sys.stderr)
+
+        print("=== componenti bilancio (RPC) ===", file=sys.stderr)
+        n_comp = fetch_componenti_all(fout)
+        print(f"componenti: {n_comp} rows", file=sys.stderr)
+
+    print(f"TOTAL raw: {n_eta + n_comp} rows -> {raw_path}", file=sys.stderr)
 
 
 if __name__ == "__main__":
