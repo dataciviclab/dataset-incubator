@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_proiezioni_demografiche"
-  source_id: "istat_sdmx"
+  source_id: "istat_demo"
   tags: [demografia, welfare-lavoro, istat, proiezioni, popolazione, forecast]
   category: welfare-lavoro
   years: [2025]
@@ -12,29 +12,22 @@ dataset:
     end_year: 2080
 
 # Proiezioni demografiche ISTAT — base 1/1/2025, orizzonte 2080
-# Fonte: IstatData dataflow 165_889 (DCIS_PREVDEM1)
+# Canale: demo.istat.it (RPCCerca.php) — SPA API JSON, niente SDMX
+# Fonte alternativa: IstatData dataflow 165_889 (DCIS_PREVDEM1) — flaky
 # Comunicato: https://www.istat.it/comunicato-stampa/previsioni-della-popolazione-residente-delle-famiglie-e-delle-forze-di-lavoro-base-1-1-2025/
-# Anche su demo.istat.it (PPR) — ma SPA, non scaricabile via HTTP diretto
 #
-# ATTENZIONE: SDMX ISTAT è flaky (timeout/redirect). Se il run fallisce,
-# riprovare o usare snapshot manuale da demo.istat.it.
-# Output: scenario mediano + intervalli confidenza 50/80/90%, per sesso × età × regione.
+# preprocess.py: fetch bilancio demografico (popolazione, nati, morti, saldi)
+# per Italia + ripartizioni + 21 regioni, anni 2025-2080, scenario mediano.
 
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_sdmx_proiezioni"
-      type: "sdmx"
-      client:
-        timeout: 180
-        retries: 3
+    - name: "istat_demo_proiezioni"
+      type: "script"
       args:
-        agency: "IT1"
-        flow: "165_889"
-        version: "1.0"
-        # key vuota = tutte le serie; il clean filtra scenario/età
-        filters: {}
-        filename: "istat_proiezioni_demografiche.csv"
+        command: "python preprocess.py raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
       primary: true
 
 clean:
@@ -43,9 +36,8 @@ clean:
     - anno
     - territorio_codice
     - territorio
-    - sesso
-    - eta
-    - popolazione
+    - componente_codice
+    - valore
   read:
     source: "auto"
     mode: "latest"
@@ -53,31 +45,31 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    not_null: [anno, territorio_codice, popolazione]
-    primary_key: [anno, territorio_codice, sesso, eta]
+    not_null: [anno, territorio_codice, componente_codice, valore]
+    primary_key: [anno, territorio_codice, componente_codice]
     min_rows: 100
 
 mart:
   tables:
-    - name: "mart_proiezioni_anno"
-      sql: "sql/mart_proiezioni_anno.sql"
-    - name: "mart_proiezioni_ripartizione"
-      sql: "sql/mart_proiezioni_ripartizione.sql"
+    - name: "mart_popolazione_anno"
+      sql: "sql/mart_popolazione_anno.sql"
+    - name: "mart_componenti_anno"
+      sql: "sql/mart_componenti_anno.sql"
   required_tables:
-    - "mart_proiezioni_anno"
-    - "mart_proiezioni_ripartizione"
+    - "mart_popolazione_anno"
+    - "mart_componenti_anno"
   validate:
     table_rules:
-      mart_proiezioni_anno:
+      mart_popolazione_anno:
         required_columns: [anno, territorio_codice, popolazione]
         not_null: [anno, territorio_codice, popolazione]
-        primary_key: [anno, territorio_codice, sesso, eta]
+        primary_key: [anno, territorio_codice]
+        min_rows: 50
+      mart_componenti_anno:
+        required_columns: [anno, territorio_codice, componente_codice, valore]
+        not_null: [anno, territorio_codice, componente_codice]
+        primary_key: [anno, territorio_codice, componente_codice]
         min_rows: 100
-      mart_proiezioni_ripartizione:
-        required_columns: [anno, ripartizione, popolazione]
-        not_null: [anno, ripartizione, popolazione]
-        primary_key: [anno, ripartizione]
-        min_rows: 5
 
 validation:
   fail_on_error: true

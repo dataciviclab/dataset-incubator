@@ -1,29 +1,42 @@
 # Note tecniche — istat-proiezioni-demografiche
 
-## Canale
+## Canale (2026-10-14)
 
-- `type: sdmx` · agency `IT1` · flow `165_889` (`DCIS_PREVDEM1`) v1.0
-- endpoint: esploradati.istat.it (default toolkit post-fix #444)
-- **SDMX ISTAT è flaky**: timeout/redirect frequenti. Il config ha `retries: 3` e `timeout: 180`.
+- **demo.istat.it** (`RPCCerca.php`) — SPA API JSON, POST form-encoded
+- SDMX ISTAT (`165_889` / `DCIS_PREVDEM1`) è flaky da ore — non usato
+- `preprocess.py` fetch: Italia + ripartizioni + 21 regioni × 6 componenti × 56 anni
+- ~168 chiamate RPC, rate-limit 0.3s → ~2 min
 
-## Fonti alternative se SDMX fallisce
+## API demo.istat.it
 
-1. **demo.istat.it** (`?i=PPR`): SPA, download manuale dal browser
-2. **IstatData**: stesso dataflow, download manuale CSV
-3. Comunicato stampa ISTAT 2026: prospetti riassuntivi
+```
+POST https://demo.istat.it/app/RPCCerca.php
+Content-Type: application/x-www-form-urlencoded
+X-Requested-With: XMLHttpRequest
 
-## Dopo il primo run
+componenti=1&annoda=2025&annoa=2080&ripartizione=26&regione=
+&hid-i=PPR&hid-a=2025&hid-l=it&hid-cat=PPR
+&hid-dati=dati-form-1&hid-tavola=tavola-form-1&btnricerca-1=Cerca
+```
 
-- Verificare le colonne raw (DSD): `SEX`, `AGE`, eventuali `SCENARIO` / `CI_LEVEL`
-- Adattare il filtro scenario nel clean (default: tutto, poi restringere a mediano)
-- `AGE`: se classi quinquennali, il `primary_key` del clean è corretto; se totale, adattare
+Risposta: JSON con `datatable.data[]` — colonne: `denominazione`, `anno`, `inf90/80/50`, `median`, `sup50/80/90`.
 
-## Copertura attesa
+Form-1 `componenti`: 1=popolazione, 2=nati, 3=morti, 8=saldo_naturale, 9=saldo_migr_estero, 10=saldo_migr_interno.
+
+Codici ripartizione: 26=Italia, 23=Nord, 27=Nord-ovest, 28=Nord-est, 24=Centro, 25=Mezzogiorno.
+
+Codici regione (RRPC.php): 1-22 (mappa in preprocess.py).
+
+## Copertura
 
 - anni: 2025–2080 (orizzonte lungo)
-- territori: IT + 20 regioni NUTS2
-- sesso: maschi / femmine
-- età: classi (da verificare dopo primo run)
+- scenario: mediano (median)
+- territori: 27 (Italia + ripartizioni + regioni)
+- componenti: 6
+
+## SDMX alternativa
+
+`165_889` (`DCIS_PREVDEM1`) — se SDMX torna, si può aggiungere come seconda source o sostituire il preprocess.
 
 ## Intake
 
