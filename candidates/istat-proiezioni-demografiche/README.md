@@ -3,29 +3,23 @@
 ## Domanda
 
 - Quanti saremo in Italia nel 2050 e nel 2080?
-- Come cambia il bilancio demografico (nati, morti, saldi)?
+- Come cambia la struttura per età e sesso?
 
 ## Dataset
 
-- fonte: [demo.istat.it](https://demo.istat.it/app/?i=PPR&l=it) — piattaforma tematica ISTAT
-- canale: **SPA API** (`RPCCerca.php`) — niente SDMX (flaky)
+- fonte: [demo.istat.it](https://demo.istat.it/app/?i=PPR&l=it) — ZIP ufficiale ISTAT
+- file: `Previsioni-Popolazione_per_eta-Regioni.zip`
 - base: 1° gennaio 2025 · orizzonte: 2080
-- scenario mediano + intervalli confidenza (50/80/90%)
-- territori: Italia + 5 ripartizioni + 21 regioni NUTS2
-- componenti: popolazione, nati, morti, saldo naturale, saldo migratorio
+- scenario mediano
+- grano: 22 regioni NUTS2 × sesso × età (0–110+) × anno
 
 ## Perché vale la pena
 
 - dati ufficiali ISTAT, aggiornati annualmente
 - unico dataset che copre l'intero orizzonte 2050–2080
-- canale stabile (API JSON, no rate-limit ISTAT)
+- canale stabile (ZIP statico, no rate-limit)
 
 ## Output
 
-- `mart_popolazione_anno`: popolazione proiettata per territorio × anno
-- `mart_componenti_anno`: nati, morti, saldi per territorio × componente × anno
-
-## Canale
-
-`preprocess.py` fa POST a `RPCCerca.php` (form-1: componenti bilancio).
-SDMX IstatData (`165_889`) resta come alternativa documentata in notes.md.
+- `mart_regioni`: popolazione per regione × sesso × età × anno
+- `mart_italia`: popolazione Italia (somma regioni) × sesso × età × anno

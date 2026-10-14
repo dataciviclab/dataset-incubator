@@ -12,12 +12,8 @@ dataset:
     end_year: 2080
 
 # Proiezioni demografiche ISTAT — base 1/1/2025, orizzonte 2080
-# Canale: demo.istat.it (RPCCerca.php) — SPA API JSON, niente SDMX
-# Fonte alternativa: IstatData dataflow 165_889 (DCIS_PREVDEM1) — flaky
-# Comunicato: https://www.istat.it/comunicato-stampa/previsioni-della-popolazione-residente-delle-famiglie-e-delle-forze-di-lavoro-base-1-1-2025/
-#
-# preprocess.py: fetch bilancio demografico (popolazione, nati, morti, saldi)
-# per Italia + ripartizioni + 21 regioni, anni 2025-2080, scenario mediano.
+# Fonte: demo.istat.it ZIP ufficiale (età × sesso × regione)
+# Scenario mediano. Italia calcolata sommando le regioni nel mart.
 
 raw:
   output_policy: overwrite
@@ -33,11 +29,11 @@ raw:
 clean:
   sql: "sql/clean.sql"
   required_columns:
-    - grano
     - territorio_codice
-    - componente_codice
     - anno
-    - valore
+    - sesso
+    - eta
+    - popolazione
   read:
     source: "auto"
     mode: "latest"
@@ -45,30 +41,30 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    not_null: [anno, territorio_codice, grano, valore]
-    primary_key: [grano, territorio_codice, componente_codice, anno, sesso, eta]
-    min_rows: 100
+    not_null: [territorio_codice, anno, sesso, eta, popolazione]
+    primary_key: [territorio_codice, anno, sesso, eta]
+    min_rows: 1000
 
 mart:
   tables:
-    - name: "mart_popolazione_anno"
-      sql: "sql/mart_popolazione_anno.sql"
-    - name: "mart_componenti_anno"
-      sql: "sql/mart_componenti_anno.sql"
+    - name: "mart_regioni"
+      sql: "sql/mart_regioni.sql"
+    - name: "mart_italia"
+      sql: "sql/mart_italia.sql"
   required_tables:
-    - "mart_popolazione_anno"
-    - "mart_componenti_anno"
+    - "mart_regioni"
+    - "mart_italia"
   validate:
     table_rules:
-      mart_popolazione_anno:
-        required_columns: [anno, territorio_codice, sesso, eta, popolazione]
-        not_null: [anno, territorio_codice, sesso, eta, popolazione]
-        primary_key: [anno, territorio_codice, sesso, eta]
-        min_rows: 100
-      mart_componenti_anno:
-        required_columns: [anno, territorio_codice, componente_codice, valore]
-        not_null: [anno, territorio_codice, componente_codice]
-        primary_key: [anno, territorio_codice, componente_codice]
+      mart_regioni:
+        required_columns: [territorio_codice, anno, sesso, eta, popolazione]
+        not_null: [territorio_codice, anno, sesso, eta, popolazione]
+        primary_key: [territorio_codice, anno, sesso, eta]
+        min_rows: 1000
+      mart_italia:
+        required_columns: [anno, sesso, eta, popolazione]
+        not_null: [anno, sesso, eta, popolazione]
+        primary_key: [anno, sesso, eta]
         min_rows: 100
 
 validation:
