@@ -1,0 +1,83 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_proiezioni_demografiche"
+  source_id: "istat_sdmx"
+  tags: [demografia, welfare-lavoro, istat, proiezioni, popolazione, forecast]
+  category: welfare-lavoro
+  years: [2025]
+  time_coverage:
+    start_year: 2025
+    end_year: 2080
+
+# Proiezioni demografiche ISTAT — base 1/1/2025, orizzonte 2080
+# Fonte: IstatData dataflow 165_889 (DCIS_PREVDEM1)
+# Comunicato: https://www.istat.it/comunicato-stampa/previsioni-della-popolazione-residente-delle-famiglie-e-delle-forze-di-lavoro-base-1-1-2025/
+# Anche su demo.istat.it (PPR) — ma SPA, non scaricabile via HTTP diretto
+#
+# ATTENZIONE: SDMX ISTAT è flaky (timeout/redirect). Se il run fallisce,
+# riprovare o usare snapshot manuale da demo.istat.it.
+# Output: scenario mediano + intervalli confidenza 50/80/90%, per sesso × età × regione.
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sdmx_proiezioni"
+      type: "sdmx"
+      client:
+        timeout: 180
+        retries: 3
+      args:
+        agency: "IT1"
+        flow: "165_889"
+        version: "1.0"
+        # key vuota = tutte le serie; il clean filtra scenario/età
+        filters: {}
+        filename: "istat_proiezioni_demografiche.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - anno
+    - territorio_codice
+    - territorio
+    - sesso
+    - eta
+    - popolazione
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    not_null: [anno, territorio_codice, popolazione]
+    primary_key: [anno, territorio_codice, sesso, eta]
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_proiezioni_anno"
+      sql: "sql/mart_proiezioni_anno.sql"
+    - name: "mart_proiezioni_ripartizione"
+      sql: "sql/mart_proiezioni_ripartizione.sql"
+  required_tables:
+    - "mart_proiezioni_anno"
+    - "mart_proiezioni_ripartizione"
+  validate:
+    table_rules:
+      mart_proiezioni_anno:
+        required_columns: [anno, territorio_codice, popolazione]
+        not_null: [anno, territorio_codice, popolazione]
+        primary_key: [anno, territorio_codice, sesso, eta]
+        min_rows: 100
+      mart_proiezioni_ripartizione:
+        required_columns: [anno, ripartizione, popolazione]
+        not_null: [anno, ripartizione, popolazione]
+        primary_key: [anno, ripartizione]
+        min_rows: 5
+
+validation:
+  fail_on_error: true
