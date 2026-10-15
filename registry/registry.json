@@ -7525,7 +7525,7 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261003T095812Z_6260faed",
+        "run_id": "20261015T182438Z_5ea1f974",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -7534,18 +7534,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 23387,
-          "clean": 23387,
+          "raw": 23447,
+          "clean": 23447,
           "mart": 2365
         },
         "output_bytes": {
-          "raw": 842031,
-          "clean": 48370,
-          "mart": 11968
+          "raw": 844530,
+          "clean": 48320,
+          "mart": 11947
         },
-        "started_at": "2026-10-03T09:58:12.551662+00:00",
-        "finished_at": "2026-10-03T09:58:13.974182+00:00",
-        "duration_seconds": 1.423
+        "started_at": "2026-10-15T18:24:38.266719+00:00",
+        "finished_at": "2026-10-15T18:24:39.289955+00:00",
+        "duration_seconds": 1.023
       }
     },
     {
@@ -8548,48 +8548,6 @@
             "semantic_type": "municipality_name"
           },
           {
-            "slug": "irpef_comunale",
-            "name": "Irpef Comunale",
-            "column": "codice_catastale",
-            "semantic_type": "cadastral_code"
-          },
-          {
-            "slug": "irpef_comunale",
-            "name": "Irpef Comunale",
-            "column": "codice_istat_comune",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "irpef_comunale",
-            "name": "Irpef Comunale",
-            "column": "denominazione_comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "ispra_ru_base",
-            "name": "ISPRA - Rifiuti Urbani (dati base)",
-            "column": "codice_comune_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "ispra_ru_base",
-            "name": "ISPRA - Rifiuti Urbani (dati base)",
-            "column": "comune",
-            "semantic_type": "municipality_name"
-          },
-          {
-            "slug": "ispra_ru_costi_kg",
-            "name": "ISPRA - Costi gestione rifiuti (EUR/kg)",
-            "column": "codice_comune_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
-            "slug": "ispra_ru_costi_procapite",
-            "name": "ISPRA - Costi gestione rifiuti (EUR/abitante)",
-            "column": "codice_comune_istat",
-            "semantic_type": "municipality_code"
-          },
-          {
             "slug": "istat_asia_ul",
             "name": "Istat Asia Ul",
             "column": "codice_comune",
@@ -8699,9 +8657,9 @@
           }
         ],
         "types": {
-          "municipality_name": 14,
-          "municipality_code": 13,
-          "cadastral_code": 7
+          "municipality_name": 12,
+          "municipality_code": 9,
+          "cadastral_code": 6
         }
       },
       "Ente": {
@@ -8759,16 +8717,10 @@
             "name": "MIT Opere Pubbliche Incompiute",
             "column": "codice_fiscale",
             "semantic_type": "fiscal_code"
-          },
-          {
-            "slug": "pnrr_progetti",
-            "name": "PNRR Progetti — Italia Domani",
-            "column": "cf_soggetto_attuatore",
-            "semantic_type": "fiscal_code"
           }
         ],
         "types": {
-          "fiscal_code": 6
+          "fiscal_code": 5
         }
       },
       "Ente sanitario": {
@@ -8790,27 +8742,6 @@
         ],
         "types": {
           "ssn_code": 2
-        }
-      },
-      "Gara": {
-        "entity": "Gara",
-        "label": "Gara / Appalto",
-        "datasets": [
-          {
-            "slug": "pnrr_gare",
-            "name": "PNRR Gare — Italia Domani",
-            "column": "cig",
-            "semantic_type": "cig_code"
-          },
-          {
-            "slug": "pnrr_gare",
-            "name": "PNRR Gare — Italia Domani",
-            "column": "cig_accordo_quadro",
-            "semantic_type": "cig_code"
-          }
-        ],
-        "types": {
-          "cig_code": 2
         }
       },
       "Indicatore": {
@@ -8888,34 +8819,10 @@
             "name": "MIT Opere Pubbliche Incompiute",
             "column": "codice_cup",
             "semantic_type": "cup_code"
-          },
-          {
-            "slug": "opencoesione_progetti",
-            "name": "Opencoesione Progetti",
-            "column": "CUP",
-            "semantic_type": "cup_code"
-          },
-          {
-            "slug": "pnrr_gare",
-            "name": "PNRR Gare — Italia Domani",
-            "column": "cup",
-            "semantic_type": "cup_code"
-          },
-          {
-            "slug": "pnrr_pagamenti",
-            "name": "PNRR Pagamenti — Italia Domani",
-            "column": "cup",
-            "semantic_type": "cup_code"
-          },
-          {
-            "slug": "pnrr_progetti",
-            "name": "PNRR Progetti — Italia Domani",
-            "column": "cup",
-            "semantic_type": "cup_code"
           }
         ],
         "types": {
-          "cup_code": 5
+          "cup_code": 1
         }
       },
       "Provincia": {
@@ -8955,30 +8862,6 @@
           {
             "slug": "farmacie",
             "name": "Farmacie — Anagrafica farmacie italiane (Ministero Salute)",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "irpef_comunale",
-            "name": "Irpef Comunale",
-            "column": "sigla_provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "ispra_ru_base",
-            "name": "ISPRA - Rifiuti Urbani (dati base)",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "ispra_ru_costi_kg",
-            "name": "ISPRA - Costi gestione rifiuti (EUR/kg)",
-            "column": "provincia",
-            "semantic_type": "province_code"
-          },
-          {
-            "slug": "ispra_ru_costi_procapite",
-            "name": "ISPRA - Costi gestione rifiuti (EUR/abitante)",
             "column": "provincia",
             "semantic_type": "province_code"
           },
@@ -9050,7 +8933,7 @@
           }
         ],
         "types": {
-          "province_code": 21
+          "province_code": 17
         }
       },
       "Provincia (tramite NUTS3)": {
@@ -9127,18 +9010,6 @@
             "semantic_type": "region_code"
           },
           {
-            "slug": "irpef_comunale",
-            "name": "Irpef Comunale",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "ispra_ru_base",
-            "name": "ISPRA - Rifiuti Urbani (dati base)",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
             "slug": "istat_asia_ul",
             "name": "Istat Asia Ul",
             "column": "regione",
@@ -9159,24 +9030,6 @@
           {
             "slug": "istat_gini_regionale",
             "name": "ISTAT - Indice di Gini regionale",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "iva_regionale",
-            "name": "MEF — IVA Regionale: Volume Affari e VA fiscale (2014-2023)",
-            "column": "regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "iva_regionale",
-            "name": "MEF — IVA Regionale: Volume Affari e VA fiscale (2014-2023)",
-            "column": "cod_regione",
-            "semantic_type": "region_code"
-          },
-          {
-            "slug": "mef_irpef_regionale",
-            "name": "MEF - Irpef Regionale",
             "column": "regione",
             "semantic_type": "region_code"
           },
@@ -9260,7 +9113,7 @@
           }
         ],
         "types": {
-          "region_code": 30
+          "region_code": 25
         }
       },
       "Scuola": {
@@ -9373,32 +9226,8 @@
             "semantic_type": "year"
           },
           {
-            "slug": "irpef_comunale",
-            "name": "Irpef Comunale",
-            "column": "anno_di_imposta",
-            "semantic_type": "year"
-          },
-          {
             "slug": "ispra_emissioni_ghg",
             "name": "ISPRA — Emissioni GHG da processi energetici per settore (1990-2023)",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "ispra_ru_base",
-            "name": "ISPRA - Rifiuti Urbani (dati base)",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "ispra_ru_costi_kg",
-            "name": "ISPRA - Costi gestione rifiuti (EUR/kg)",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "ispra_ru_costi_procapite",
-            "name": "ISPRA - Costi gestione rifiuti (EUR/abitante)",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -9457,12 +9286,6 @@
             "semantic_type": "year"
           },
           {
-            "slug": "iva_regionale",
-            "name": "MEF — IVA Regionale: Volume Affari e VA fiscale (2014-2023)",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
             "slug": "mase_prezzi_carburanti_mensili",
             "name": "Mase Prezzi Carburanti Mensili",
             "column": "anno",
@@ -9473,12 +9296,6 @@
             "name": "Mase Prezzi Carburanti Mensili",
             "column": "mese",
             "semantic_type": "month"
-          },
-          {
-            "slug": "mef_irpef_regionale",
-            "name": "MEF - Irpef Regionale",
-            "column": "anno_di_imposta",
-            "semantic_type": "year"
           },
           {
             "slug": "minlavoro_agevolazioni",
@@ -9572,7 +9389,7 @@
           }
         ],
         "types": {
-          "year": 40,
+          "year": 34,
           "month": 6
         }
       }
@@ -9738,71 +9555,6 @@
         "from": {
           "entity": "Progetto",
           "dataset": "mit_opere_incompiute_2020",
-          "via": "cup_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_cup",
-          "on": "cup",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Progetto",
-          "dataset": "opencoesione_progetti",
-          "via": "cup_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_cup",
-          "on": "cup",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Progetto",
-          "dataset": "pnrr_gare",
-          "via": "cup_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_cup",
-          "on": "cup",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Gara",
-          "dataset": "pnrr_gare",
-          "via": "cig_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_bandi_gara",
-          "on": "cig",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Progetto",
-          "dataset": "pnrr_pagamenti",
-          "via": "cup_code"
-        },
-        "to": {
-          "entity": "Comune",
-          "bridge": "anac_cup",
-          "on": "cup",
-          "semantic_type": "municipality_code"
-        }
-      },
-      {
-        "from": {
-          "entity": "Progetto",
-          "dataset": "pnrr_progetti",
           "via": "cup_code"
         },
         "to": {
