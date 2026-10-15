@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-10-13",
+  "updated_at": "2026-10-15",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -3871,6 +3871,69 @@
       "stage": "published",
       "mart_refs": [
         "istat_pil_territoriale__pil_territoriale"
+      ]
+    },
+    {
+      "slug": "istat_proiezioni_demografiche",
+      "name": "Istat Proiezioni Demografiche",
+      "description": "",
+      "source": "",
+      "source_id": "istat_demo",
+      "period": {
+        "start": 2025,
+        "end": 2080
+      },
+      "tags": [
+        "demografia",
+        "welfare-lavoro",
+        "istat",
+        "proiezioni",
+        "popolazione",
+        "forecast"
+      ],
+      "category": "welfare-lavoro",
+      "columns": [
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "popolazione",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_proiezioni_demografiche/2025/istat_proiezioni_demografiche_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_proiezioni_demografiche__mart_regioni",
+        "istat_proiezioni_demografiche__mart_italia"
       ]
     },
     {
@@ -8996,6 +9059,26 @@
       }
     },
     {
+      "slug": "istat_proiezioni_demografiche__mart_italia",
+      "dataset": "istat_proiezioni_demografiche",
+      "table": "mart_italia",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_proiezioni_demografiche/2025/mart_italia.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_proiezioni_demografiche__mart_regioni",
+      "dataset": "istat_proiezioni_demografiche",
+      "table": "mart_regioni",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_proiezioni_demografiche/2025/mart_regioni.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "istat_sbs_imprese__mart_sbs_anno",
       "dataset": "istat_sbs_imprese",
       "table": "mart_sbs_anno",
@@ -9918,6 +10001,37 @@
         "started_at": "2026-10-11T21:03:07.643067+00:00",
         "finished_at": "2026-10-11T21:03:21.403110+00:00",
         "duration_seconds": 13.76
+      }
+    },
+    {
+      "id": "istat_proiezioni_demografiche",
+      "source_id": "istat_demo",
+      "status": "ok",
+      "label": "istat_proiezioni_demografiche",
+      "detail": "anno 2025 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261015T095150Z_86e289c4",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 413952,
+          "clean": 413952,
+          "mart": 285936
+        },
+        "output_bytes": {
+          "raw": 10999901,
+          "clean": 997759,
+          "mart": 639207
+        },
+        "started_at": "2026-10-15T09:51:50.803428+00:00",
+        "finished_at": "2026-10-15T09:52:09.613928+00:00",
+        "duration_seconds": 18.811
       }
     },
     {
@@ -11420,6 +11534,12 @@
             "semantic_type": "year"
           },
           {
+            "slug": "istat_proiezioni_demografiche",
+            "name": "Istat Proiezioni Demografiche",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "istat_sbs_imprese",
             "name": "Istat Sbs Imprese",
             "column": "anno",
@@ -11547,7 +11667,7 @@
           }
         ],
         "types": {
-          "year": 39,
+          "year": 40,
           "month": 6
         }
       }
