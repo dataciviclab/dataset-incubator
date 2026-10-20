@@ -55,22 +55,38 @@ select
     normalize_string(DATA_TYPE) as indicatore_codice,
     case normalize_string(DATA_TYPE)
         when '12110' then 'Fatturato'
-        when '12150' then 'Valore aggiunto al costo fattore'
         when '12120' then 'Valore della produzione'
+        when '12150' then 'Valore aggiunto al costo fattore'
+        when '12170' then 'Risultato lordo di gestione'
         when '13310' then 'Costi del personale'
+        when '13320' then 'Salari e stipendi'
+        when '13330' then 'Contributi sociali'
+        when '15110' then 'Investimenti fissi lordi'
+        when '16150' then 'Ore lavorate'
+        when '11110' then 'Imprese'
         when '11210' then 'Unità locali'
         else normalize_string(DATA_TYPE)
     end as indicatore,
     cast_double(OBS_VALUE) as valore,
     case normalize_string(DATA_TYPE)
         when '12110' then 'mila_eur'
-        when '12150' then 'mila_eur'
         when '12120' then 'mila_eur'
+        when '12150' then 'mila_eur'
+        when '12170' then 'mila_eur'
         when '13310' then 'mila_eur'
+        when '13320' then 'mila_eur'
+        when '13330' then 'mila_eur'
+        when '15110' then 'mila_eur'
+        when '16150' then 'migliaia_ore'
+        when '11110' then 'conte'
         when '11210' then 'conte'
         else 'nd'
     end as unita_misura
 from raw_input
 where cast_int(TIME_PERIOD) is not null
-  and normalize_string(DATA_TYPE) in ('12110', '12150', '12120', '13310', '11210')
+  and normalize_string(DATA_TYPE) in (
+      '12110', '12120', '12150', '12170',
+      '13310', '13320', '13330',
+      '15110', '16150', '11110', '11210'
+  )
   AND cast_double(OBS_VALUE) IS NOT NULL

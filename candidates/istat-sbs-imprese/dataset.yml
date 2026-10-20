@@ -4,12 +4,12 @@ schema_version: 1
 dataset:
   name: "istat_sbs_imprese"
   source_id: "istat_dbnomics"
-  tags: [economia, istat, sbs, imprese, fatturato, valore-aggiunto]
+  tags: [economia, istat, sbs, imprese, fatturato, valore-aggiunto, ore-lavorate, costo-lavoro]
   category: economia
-  years: [2023]
+  years: [2024]
   time_coverage:
     start_year: 2008
-    end_year: 2023
+    end_year: 2024
 
 # SBS — Structural Business Statistics ISTAT via type: dbnomics
 # 161_267 nazionale key data + 161_268 regionali NUTS1
@@ -32,7 +32,18 @@ raw:
         dimensions:
           FREQ: [A]
           REF_AREA: [IT]
-          DATA_TYPE: ["12110", "12150", "12120"]
+          DATA_TYPE:
+            - "12110"
+            - "12120"
+            - "12150"
+            - "12170"
+            - "13310"
+            - "13320"
+            - "13330"
+            - "15110"
+            - "16150"
+            - "11110"
+            - "11210"
           ECON_ACTIVITY_NACE_2007: ["0010", B, C, D, E, F, G, H, I, J, K, L, M, N, P, Q, R, S]
           PERS_EMPL_SIZE_CLASS: [TOTAL]
           TURNOVER_CLASS: ["9"]
@@ -54,7 +65,7 @@ raw:
         dimensions:
           FREQ: [A]
           REF_AREA: [ITC1, ITC2, ITC3, ITC4, ITD1, ITD2, ITD3, ITD4, ITD5, ITE1, ITE2, ITE3, ITE4, ITF1, ITF2, ITF3, ITF4, ITF5, ITF6, ITG1, ITG2]
-          DATA_TYPE: ["12110", "12150", "13310", "11210"]
+          DATA_TYPE: ["12110", "12150", "13310", "13320", "11210"]
           ECON_ACTIVITY_NACE_2007: ["0010", B, C, D, E, F, G, H, I, J, K, L, M, N, P, Q, R, S]
         page_size: 1000
         max_pages: 20
@@ -90,8 +101,11 @@ mart:
   tables:
     - name: "mart_sbs_anno"
       sql: "sql/mart_sbs_anno.sql"
+    - name: "mart_sbs_settore"
+      sql: "sql/mart_sbs_settore.sql"
   required_tables:
     - "mart_sbs_anno"
+    - "mart_sbs_settore"
   validate:
     table_rules:
       mart_sbs_anno:
@@ -99,6 +113,21 @@ mart:
         not_null: [anno, territorio_codice, nace_codice, indicatore_codice]
         primary_key: [anno, territorio_codice, grain, nace_codice, indicatore_codice]
         min_rows: 200
+      mart_sbs_settore:
+        required_columns:
+          [anno, nace_codice, nace, va_mila_eur, costo_lavoro_mila_eur, ore_migliaia, quota_lavoro_pct]
+        not_null: [anno, nace_codice, nace]
+        primary_key: [anno, nace_codice]
+        min_rows: 100
+        ranges:
+          quota_lavoro_pct: {min: 0, max: 100}
+          gos_su_va_pct: {min: -200, max: 100}
+          investimenti_su_va_pct: {min: 0, max: 300}
+          va_per_ora_eur: {min: 1, max: 2000}
+          costo_lavoro_per_ora_eur: {min: 1, max: 500}
+          salario_per_ora_eur: {min: 1, max: 500}
+          salari_su_costo_lavoro_pct: {min: 0, max: 100}
+          contributi_su_costo_lavoro_pct: {min: 0, max: 100}
 
 validation:
   fail_on_error: true
