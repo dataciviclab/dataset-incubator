@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-10-15",
+  "updated_at": "2026-10-20",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -3280,7 +3280,7 @@
       "source_id": "istat_dbnomics",
       "period": {
         "start": 2008,
-        "end": 2023
+        "end": 2024
       },
       "tags": [
         "economia",
@@ -3288,7 +3288,9 @@
         "sbs",
         "imprese",
         "fatturato",
-        "valore-aggiunto"
+        "valore-aggiunto",
+        "ore-lavorate",
+        "costo-lavoro"
       ],
       "category": "economia",
       "columns": [
@@ -3357,12 +3359,13 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/istat_sbs_imprese/2023/istat_sbs_imprese_2023_clean.parquet",
+        "path": "gs://dataciviclab-clean/istat_sbs_imprese/2024/istat_sbs_imprese_2024_clean.parquet",
         "multi_file": false
       },
       "stage": "incubating",
       "mart_refs": [
-        "istat_sbs_imprese__mart_sbs_anno"
+        "istat_sbs_imprese__mart_sbs_anno",
+        "istat_sbs_imprese__mart_sbs_settore"
       ]
     },
     {
@@ -6989,7 +6992,17 @@
       "table": "mart_sbs_anno",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/istat_sbs_imprese/2023/mart_sbs_anno.parquet",
+        "path": "gs://dataciviclab-mart/istat_sbs_imprese/2024/mart_sbs_anno.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_sbs_imprese__mart_sbs_settore",
+      "dataset": "istat_sbs_imprese",
+      "table": "mart_sbs_settore",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_sbs_imprese/2024/mart_sbs_settore.parquet",
         "multi_file": false
       }
     },
@@ -7944,11 +7957,11 @@
       "source_id": "istat_dbnomics",
       "status": "ok",
       "label": "istat_sbs_imprese",
-      "detail": "anno 2023 — mart: si",
+      "detail": "anno 2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261013T090336Z_b667eff1",
-        "year": 2023,
+        "run_id": "20261020T170836Z_c0c6b46d",
+        "year": 2024,
         "status": "SUCCESS",
         "quality_score": {
           "raw": 100,
@@ -7956,18 +7969,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 816,
-          "clean": 20796,
-          "mart": 20796
+          "raw": 2890,
+          "clean": 28578,
+          "mart": 28850
         },
         "output_bytes": {
-          "raw": 1599128,
-          "clean": 77347,
-          "mart": 80170
+          "raw": 2228194,
+          "clean": 106166,
+          "mart": 137275
         },
-        "started_at": "2026-10-13T09:03:36.345763+00:00",
-        "finished_at": "2026-10-13T09:03:51.138433+00:00",
-        "duration_seconds": 14.793
+        "started_at": "2026-10-20T17:08:36.290874+00:00",
+        "finished_at": "2026-10-20T17:08:49.534904+00:00",
+        "duration_seconds": 13.244
       }
     },
     {
