@@ -2,24 +2,72 @@
 
 ## Domanda
 
-- Quali settori NACE generano più fatturato e valore aggiunto in Italia?
-- Come si distribuiscono tra Italia e regioni?
+- Quali settori NACE generano più valore aggiunto, occupazione e investimenti in Italia?
+- Quanto valore resta al lavoro e quanto al capitale?
+- Come cambiano produttività per ora e costo del lavoro per ora?
 
 ## Dataset
 
 - fonte: ISTAT via DBnomics (`type: dbnomics`)
 - dataflow nazionale: `161_267_DF_DCSP_SBSNAZ_1`
 - dataflow regionale: `161_268_DF_DCSP_SBSREG_1`
-- indicatori: fatturato (12110), valore aggiunto (12150), produzione (12120), costi personale (13310), unità locali (11210)
-- unità monetarie: **migliaia di euro** (`valore / 1000 = mln €`)
+- copertura: **2008–2024**
 - grano: Italia + 21 regioni NUTS1 × NACE sezioni B–S
+- unità: **migliaia di euro** (`valore / 1000 = mln €`), **migliaia di ore**, conte
+- dimensioni fissate: `PERS_EMPL_SIZE_CLASS=TOTAL`, `TURNOVER_CLASS=9`, `ENVIROM_DOMAIN=9`
+
+## Indicatori
+
+| Codice | Indicatore | Unità | Uso |
+|---|---|---|---|
+| `12110` | Fatturato | migliaia € | Margini, dimensione |
+| `12120` | Valore della produzione | migliaia € | Produzione |
+| `12150` | Valore aggiunto al costo fattore | migliaia € | Produttività, quota lavoro |
+| `12170` | Risultato lordo di gestione | migliaia € | Proxy di redditività (GOS/VA) |
+| `13310` | Costi del personale | migliaia € | Quota lavoro, ULC |
+| `13320` | Salari e stipendi | migliaia € | Costo del lavoro, confronto INPS |
+| `13330` | Contributi sociali | migliaia € | Costo azienda vs netto |
+| `15110` | Investimenti fissi lordi | migliaia € | Investimenti/VA |
+| `16150` | Ore lavorate dai dipendenti | migliaia ore | Produttività oraria, costo orario |
+| `11110` | Imprese | conte | Numerosità |
+| `11210` | Unità locali | conte | Numerosità |
+
+## Copertura nazionale vs regionale
+
+- **Nazionale**: tutti gli indicatori tranne `11210` (unità locali, disponibile solo a livello regionale), 2008–2024.
+- **Regionale**: set lean (`12110`, `12150`, `13310`, `13320`, `11210`). Alcune serie regionali sono più corte o non disponibili nel dataflow regionale (es. ore lavorate, GOS, contributi sociali, investimenti dopo il 2015). Il livello nazionale è quello da usare per la matrice settoriale completa.
 
 ## Perché vale la pena
 
-- confronto nazionale/regionale dello stesso indicatore SBS
-- grano NACE sezione, utile per policy industriali
-- serie storica 2008–2023
+- **Ore + costi del personale + VA** permettono di calcolare produttività per ora, costo del lavoro per ora, quota lavoro e costo del lavoro per unità di valore aggiunto — con unità coerenti.
+- **GOS** aggiunge un proxy di redditività, più solido del solo margine IVA.
+- **Investimenti** permettono di leggere il rapporto investimenti/VA per settore.
+- **Classi dimensionali e quartili** (follow-up) permettono di studiare eterogeneità dentro i settori senza bilanci firm-level.
 
 ## Output
 
-- `mart_sbs_anno`: `anno × territorio × grain × NACE × indicatore`
+- `mart_sbs_anno`: `anno × territorio × grain × NACE × indicatore` con `valore` e `unita_misura` (long format, nazionale + regionale).
+- `mart_sbs_settore`: matrice nazionale `anno × NACE` (wide) con VA, costo del lavoro, salari, contributi, GOS, investimenti, ore e indicatori derivati:
+  - `va_per_ora_eur`, `costo_lavoro_per_ora_eur`, `salario_per_ora_eur`
+  - `quota_lavoro_pct`, `gos_su_va_pct`, `investimenti_su_va_pct`
+  - `salari_su_costo_lavoro_pct`, `contributi_su_costo_lavoro_pct`
+
+La matrice è il contratto pronto per l’analisi settoriale; il long format resta la base per altri usi e per il livello regionale.
+
+## Limiti
+
+- **Copertura**: SBS copre industria, costruzioni, commercio e servizi di mercato; **finanza (K) e PA (O) non sono coperte**. Per quei settori usare Eurostat GVA/occupazione.
+- **GOS non è profitto netto**: è un risultato lordo, prima di interessi, tasse e dividendi.
+- **Ore lavorate = dipendenti**: non includono gli autonomi; non sono ore effettive, ma ore lavorate dichiarate.
+- **Costi del personale** includono salari e contributi sociali, non solo retribuzioni nette.
+- **Dati survey**: non sono bilanci firm-level; per quello servono AIDA/Cerved/Registro Imprese XBRL.
+- **2024** può essere provvisorio.
+
+## Run
+
+```bash
+cd candidates/istat-sbs-imprese
+python -m toolkit.cli.app run raw   -c dataset.yml -y 2024 --root ../../out
+python -m toolkit.cli.app run clean -c dataset.yml -y 2024 --root ../../out
+python -m toolkit.cli.app run mart  -c dataset.yml -y 2024 --root ../../out
+```

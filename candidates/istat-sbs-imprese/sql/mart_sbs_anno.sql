@@ -18,9 +18,15 @@ select
     valore,
     case indicatore_codice
         when '12110' then 'fatturato'
-        when '12150' then 'valore_aggiunto'
         when '12120' then 'valore_produzione'
+        when '12150' then 'valore_aggiunto'
+        when '12170' then 'risultato_lordo_gestione'
         when '13310' then 'costi_personale'
+        when '13320' then 'salari_stipendi'
+        when '13330' then 'contributi_sociali'
+        when '15110' then 'investimenti_fissi_lordi'
+        when '16150' then 'ore_lavorate'
+        when '11110' then 'imprese'
         when '11210' then 'unita_locali'
         else indicatore_codice
     end as indicatore_slug,
