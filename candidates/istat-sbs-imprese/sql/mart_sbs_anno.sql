@@ -28,8 +28,18 @@ select
         when '16150' then 'ore_lavorate'
         when '11110' then 'imprese'
         when '11210' then 'unita_locali'
+        when 'E12150_PER_ADD_Q1' then 'va_per_addetto_q1'
+        when 'E12150_PER_ADD_Q2' then 'va_per_addetto_q2'
+        when 'E12150_PER_ADD_Q3' then 'va_per_addetto_q3'
+        when 'E13310_PER_DIP_Q1' then 'costo_personale_dipendente_q1'
+        when 'E13310_PER_DIP_Q2' then 'costo_personale_dipendente_q2'
+        when 'E13310_PER_DIP_Q3' then 'costo_personale_dipendente_q3'
+        when 'N00001_Q1' then 'wage_adjusted_labour_productivity_q1'
+        when 'N00001_Q2' then 'wage_adjusted_labour_productivity_q2'
+        when 'N00001_Q3' then 'wage_adjusted_labour_productivity_q3'
         else indicatore_codice
     end as indicatore_slug,
     coalesce(unita_misura, 'nd') as unita_misura
 from clean_input
+where size_class = 'Totale'
 order by grain, territorio_codice, nace_codice, anno, indicatore_codice

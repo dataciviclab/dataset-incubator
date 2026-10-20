@@ -45,10 +45,22 @@ su `ITC4/C` le serie `12170`, `13330`, `16150`, `11110` risultano vuote e
 `15110` si ferma al 2015. La matrice settoriale completa va quindi costruita
 sul livello nazionale.
 
-Follow-up possibile dallo stesso dataflow: quartili `E12150_PER_ADD_*`,
-`E13310_PER_DIP_*`, `N00001_*` (wage-adjusted labour productivity) e classi
-dimensionali `PERS_EMPL_SIZE_CLASS` (micro, piccole, medie, grandi). Oggi il
-perimetro resta su `TOTAL` per non moltiplicare le righe.
+## Mappatura completa (2026-10)
+
+Il dataflow nazionale espone 118 `DATA_TYPE`. La mappatura completa — codice,
+etichetta, unità e perimetro — è in [`MAPPING.md`](MAPPING.md). Il dataset
+estrae il set analitico:
+
+- **core 11** (`12110`, `12120`, `12150`, `12170`, `13310`, `13320`, `13330`,
+  `15110`, `16150`, `11110`, `11210`)
+- **quartili 9** (`E12150_PER_ADD_Q1/Q2/Q3`, `E13310_PER_DIP_Q1/Q2/Q3`,
+  `N00001_Q1/Q2/Q3`)
+- **classi dimensionali** per i core: `0-9`, `10-19`, `20-49`, `50-249`, `250+`
+
+I 98 indicatori restanti restano documentati in `MAPPING.md` ma non estratti:
+sono varianti granulari (fatturato per attività, investimenti per asset,
+quartili di altri indicatori). Attivarne uno richiede solo aggiungere il codice
+alla lista `DATA_TYPE`, non una nuova scoperta della fonte.
 
 ## Mart settoriale
 
@@ -77,3 +89,17 @@ rapporti e valori orari.
 - `11210` (unità locali) non è nel nazionale; `mart_sbs_filiere` include `11110`
   (imprese) e non le unità locali.
 - Unità invariate: migliaia di euro, migliaia di ore, euro/ora, percentuali.
+
+## Mart classi dimensionali e distribuzione (2026-10)
+
+- `mart_sbs_size`: matrice nazionale `anno × NACE × size_class` per le classi
+  `0-9`, `10-19`, `20-49`, `50-249`, `250+`. Stessi indicatori e rapporti di
+  `mart_sbs_settore`, ma per classe dimensionale. Include anche i NACE a 2
+  cifre delle filiere, se disponibili.
+- `mart_sbs_distribuzione`: matrice nazionale `anno × NACE` con Q1/Q2/Q3 di VA
+  per addetto, costo per dipendente e wage-adjusted labour productivity, più i
+  rapporti Q3/Q1.
+- `mart_sbs_settore` e `mart_sbs_filiere` filtrano `size_class = 'Totale'` per
+  non duplicare le righe delle classi dimensionali.
+- `mart_sbs_anno` resta la vista long, filtrata su `size_class = 'Totale'`.
+- Il clean aggiunge `size_class` e la primary key include la dimensione.

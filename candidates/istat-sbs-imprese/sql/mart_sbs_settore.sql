@@ -19,6 +19,7 @@ with x as (
         max(case when indicatore_codice = '16150' then valore end) as ore_migliaia
     from clean_input
     where grain = 'nazionale'
+      and size_class = 'Totale'
       and nace_codice <> '0010'
       and length(nace_codice) = 1
     group by anno, nace_codice, nace

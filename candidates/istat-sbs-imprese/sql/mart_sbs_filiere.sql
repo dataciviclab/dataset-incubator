@@ -19,6 +19,7 @@ with x as (
         max(case when indicatore_codice = '11110' then valore end) as imprese
     from clean_input
     where grain = 'nazionale'
+      and size_class = 'Totale'
       and nace_codice in ('10', '11', '12', '47')
     group by anno, nace_codice, nace
 )

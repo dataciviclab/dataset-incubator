@@ -1,5 +1,6 @@
--- clean.sql: SBS imprese ISTAT — dbnomics (naz + reg via inject grain)
--- Valori monetari: MIGLIAIA di euro · macros toolkit
+-- clean.sql: SBS imprese ISTAT — dbnomics (naz + size + quartili + reg via inject grain)
+-- Valori monetari: MIGLIAIA di euro · macro toolkit
+-- size_class: Totale, 0-9, 10-19, 20-49, 50-249, 250+
 
 select
     cast_int(TIME_PERIOD) as anno,
@@ -69,6 +70,15 @@ select
         when '16150' then 'Ore lavorate'
         when '11110' then 'Imprese'
         when '11210' then 'Unità locali'
+        when 'E12150_PER_ADD_Q1' then 'VA per addetto Q1'
+        when 'E12150_PER_ADD_Q2' then 'VA per addetto Q2'
+        when 'E12150_PER_ADD_Q3' then 'VA per addetto Q3'
+        when 'E13310_PER_DIP_Q1' then 'Costo del personale per dipendente Q1'
+        when 'E13310_PER_DIP_Q2' then 'Costo del personale per dipendente Q2'
+        when 'E13310_PER_DIP_Q3' then 'Costo del personale per dipendente Q3'
+        when 'N00001_Q1' then 'Wage-adjusted labour productivity Q1'
+        when 'N00001_Q2' then 'Wage-adjusted labour productivity Q2'
+        when 'N00001_Q3' then 'Wage-adjusted labour productivity Q3'
         else normalize_string(DATA_TYPE)
     end as indicatore,
     cast_double(OBS_VALUE) as valore,
@@ -84,13 +94,34 @@ select
         when '16150' then 'migliaia_ore'
         when '11110' then 'conte'
         when '11210' then 'conte'
+        when 'E12150_PER_ADD_Q1' then 'mila_eur'
+        when 'E12150_PER_ADD_Q2' then 'mila_eur'
+        when 'E12150_PER_ADD_Q3' then 'mila_eur'
+        when 'E13310_PER_DIP_Q1' then 'mila_eur'
+        when 'E13310_PER_DIP_Q2' then 'mila_eur'
+        when 'E13310_PER_DIP_Q3' then 'mila_eur'
+        when 'N00001_Q1' then 'indice'
+        when 'N00001_Q2' then 'indice'
+        when 'N00001_Q3' then 'indice'
         else 'nd'
-    end as unita_misura
+    end as unita_misura,
+    case normalize_string(PERS_EMPL_SIZE_CLASS)
+        when 'TOTAL' then 'Totale'
+        when 'W0_9' then '0-9'
+        when 'W10_19' then '10-19'
+        when 'W20_49' then '20-49'
+        when 'W50_249' then '50-249'
+        when 'W_GE250' then '250+'
+        else coalesce(normalize_string(PERS_EMPL_SIZE_CLASS), 'Totale')
+    end as size_class
 from raw_input
 where cast_int(TIME_PERIOD) is not null
   and normalize_string(DATA_TYPE) in (
       '12110', '12120', '12150', '12170',
       '13310', '13320', '13330',
-      '15110', '16150', '11110', '11210'
+      '15110', '16150', '11110', '11210',
+      'E12150_PER_ADD_Q1', 'E12150_PER_ADD_Q2', 'E12150_PER_ADD_Q3',
+      'E13310_PER_DIP_Q1', 'E13310_PER_DIP_Q2', 'E13310_PER_DIP_Q3',
+      'N00001_Q1', 'N00001_Q2', 'N00001_Q3'
   )
   AND cast_double(OBS_VALUE) IS NOT NULL
