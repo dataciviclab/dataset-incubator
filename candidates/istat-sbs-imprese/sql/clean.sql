@@ -50,6 +50,10 @@ select
         when 'Q' then 'Salute sociale'
         when 'R' then 'Arte/spettacolo'
         when 'S' then 'Altro servizi'
+        when '10' then 'Industria alimentare'
+        when '11' then 'Industria delle bevande'
+        when '12' then 'Industria del tabacco'
+        when '47' then 'Commercio al dettaglio'
         else normalize_string(ECON_ACTIVITY_NACE_2007)
     end as nace,
     normalize_string(DATA_TYPE) as indicatore_codice,

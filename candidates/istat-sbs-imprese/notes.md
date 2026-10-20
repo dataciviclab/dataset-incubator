@@ -63,3 +63,17 @@ ore; i rapporti `*_per_ora_eur` sono euro/ora e le quote sono percentuali.
 
 Il mart è validato con `primary_key [anno, nace_codice]` e range su quote,
 rapporti e valori orari.
+
+## Estensione filiere (2026-10)
+
+- Aggiunti al dataflow nazionale `161_267_DF_DCSP_SBSNAZ_1` i NACE `10`, `11`,
+  `12`, `47`.
+- Il regionale resta lean e sections-only: il dettaglio 2 cifre è nazionale.
+- `mart_sbs_settore` filtra `length(nace_codice) = 1` per non mescolare sezioni
+  e codici a 2 cifre.
+- `mart_sbs_filiere` copre industria alimentare (`10`), bevande (`11`), tabacco
+  (`12`) e commercio al dettaglio (`47`).
+- Agricoltura (`A`/`01`) non disponibile in SBS per `12150`: resta su RICA.
+- `11210` (unità locali) non è nel nazionale; `mart_sbs_filiere` include `11110`
+  (imprese) e non le unità locali.
+- Unità invariate: migliaia di euro, migliaia di ore, euro/ora, percentuali.

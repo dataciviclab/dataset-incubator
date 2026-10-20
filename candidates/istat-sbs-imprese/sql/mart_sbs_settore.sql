@@ -2,7 +2,8 @@
 -- Matrice settoriale nazionale: un rigo per anno × sezione NACE.
 -- Unità: migliaia di euro (mila_eur), migliaia di ore (migliaia),
 -- euro per ora e percentuali.
--- Solo grain nazionale; esclude il totale 0010.
+-- Solo grain nazionale; esclude il totale 0010 e i codici NACE a 2 cifre
+-- (10/11/12/47), che vivono in mart_sbs_filiere.
 
 with x as (
     select
@@ -19,6 +20,7 @@ with x as (
     from clean_input
     where grain = 'nazionale'
       and nace_codice <> '0010'
+      and length(nace_codice) = 1
     group by anno, nace_codice, nace
 )
 select
