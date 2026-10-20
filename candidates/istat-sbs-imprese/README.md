@@ -12,9 +12,10 @@
 - dataflow nazionale: `161_267_DF_DCSP_SBSNAZ_1`
 - dataflow regionale: `161_268_DF_DCSP_SBSREG_1`
 - copertura: **2008–2024**
-- grano: Italia + 21 regioni NUTS1 × NACE sezioni B–S
+- grano: Italia + 21 regioni NUTS1 × NACE sezioni B–S; livello nazionale esteso a NACE 10/11/12/47 per le filiere
 - unità: **migliaia di euro** (`valore / 1000 = mln €`), **migliaia di ore**, conte
-- dimensioni fissate: `PERS_EMPL_SIZE_CLASS=TOTAL`, `TURNOVER_CLASS=9`, `ENVIROM_DOMAIN=9`
+- dimensioni: `PERS_EMPL_SIZE_CLASS` = Totale + classi `0-9`, `10-19`, `20-49`, `50-249`, `250+` (nazionale); `TURNOVER_CLASS=9`, `ENVIROM_DOMAIN=9`
+- codebook completo del dataflow: [`MAPPING.md`](MAPPING.md)
 
 ## Indicatori
 
@@ -36,23 +37,52 @@
 
 - **Nazionale**: tutti gli indicatori tranne `11210` (unità locali, disponibile solo a livello regionale), 2008–2024.
 - **Regionale**: set lean (`12110`, `12150`, `13310`, `13320`, `11210`). Alcune serie regionali sono più corte o non disponibili nel dataflow regionale (es. ore lavorate, GOS, contributi sociali, investimenti dopo il 2015). Il livello nazionale è quello da usare per la matrice settoriale completa.
+- **Classi dimensionali e quartili**: solo nazionale. Il regionale resta lean.
+
+## Classi dimensionali e quartili
+
+Il nazionale estrae anche:
+
+- **Classi dimensionali** per i core indicator: `0-9`, `10-19`, `20-49`, `50-249`, `250+`.
+- **Quartili** (2013–2024, classe Totale):
+  - `E12150_PER_ADD_Q1/Q2/Q3` — VA per addetto
+  - `E13310_PER_DIP_Q1/Q2/Q3` — costo del personale per dipendente
+  - `N00001_Q1/Q2/Q3` — wage-adjusted labour productivity
+
+I quartili descrivono la distribuzione **dentro** il settore e non sono additivi: non vanno sommati tra loro.
+
+## Filiere agroalimentari
+
+Il livello nazionale include anche i codici NACE a 2 cifre utili al quadro filiera:
+
+- `10` industria alimentare
+- `11` industria delle bevande
+- `12` industria del tabacco
+- `47` commercio al dettaglio
+
+SBS **non copre l'agricoltura** (`A`/`01`): per il primo stadio della filiera
+usare RICA. `mart_sbs_filiere` è la matrice dedicata; `mart_sbs_settore` resta
+sulle sezioni.
 
 ## Perché vale la pena
 
 - **Ore + costi del personale + VA** permettono di calcolare produttività per ora, costo del lavoro per ora, quota lavoro e costo del lavoro per unità di valore aggiunto — con unità coerenti.
 - **GOS** aggiunge un proxy di redditività, più solido del solo margine IVA.
 - **Investimenti** permettono di leggere il rapporto investimenti/VA per settore.
-- **Classi dimensionali e quartili** (follow-up) permettono di studiare eterogeneità dentro i settori senza bilanci firm-level.
+- **Classi dimensionali e quartili** permettono di studiare eterogeneità dentro i settori senza bilanci firm-level.
 
 ## Output
 
 - `mart_sbs_anno`: `anno × territorio × grain × NACE × indicatore` con `valore` e `unita_misura` (long format, nazionale + regionale).
-- `mart_sbs_settore`: matrice nazionale `anno × NACE` (wide) con VA, costo del lavoro, salari, contributi, GOS, investimenti, ore e indicatori derivati:
+- `mart_sbs_filiere`: matrice nazionale `anno × NACE` per `10/11/12/47`, con VA, costo del lavoro, salari, contributi, GOS, investimenti, ore, imprese e indicatori derivati.
+- `mart_sbs_settore`: matrice nazionale `anno × NACE` (wide, sole sezioni) con VA, costo del lavoro, salari, contributi, GOS, investimenti, ore e indicatori derivati:
   - `va_per_ora_eur`, `costo_lavoro_per_ora_eur`, `salario_per_ora_eur`
   - `quota_lavoro_pct`, `gos_su_va_pct`, `investimenti_su_va_pct`
   - `salari_su_costo_lavoro_pct`, `contributi_su_costo_lavoro_pct`
+- `mart_sbs_size`: matrice nazionale `anno × NACE × size_class` con gli stessi indicatori e rapporti, per le classi `0-9`, `10-19`, `20-49`, `50-249`, `250+`.
+- `mart_sbs_distribuzione`: matrice nazionale `anno × NACE` con i quartili Q1/Q2/Q3 di VA per addetto, costo per dipendente e wage-adjusted labour productivity, più i rapporti Q3/Q1.
 
-La matrice è il contratto pronto per l’analisi settoriale; il long format resta la base per altri usi e per il livello regionale.
+Le matrici sono il contratto pronto per l’analisi settoriale e dentro-settore; il long format resta la base per altri usi e per il livello regionale.
 
 ## Limiti
 
@@ -61,6 +91,9 @@ La matrice è il contratto pronto per l’analisi settoriale; il long format res
 - **Ore lavorate = dipendenti**: non includono gli autonomi; non sono ore effettive, ma ore lavorate dichiarate.
 - **Costi del personale** includono salari e contributi sociali, non solo retribuzioni nette.
 - **Dati survey**: non sono bilanci firm-level; per quello servono AIDA/Cerved/Registro Imprese XBRL.
+- **Agricoltura assente**: SBS non copre `A`/`01`; il dettaglio filiera è trasformazione (10/11/12) e retail (47), non produzione agricola.
+- **Classi dimensionali e quartili solo nazionale**: il livello regionale resta lean.
+- **Quartili 2013–2024**: la serie è più corta del core 2008–2024.
 - **2024** può essere provvisorio.
 
 ## Run

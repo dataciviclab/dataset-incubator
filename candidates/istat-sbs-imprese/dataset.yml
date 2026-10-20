@@ -4,7 +4,7 @@ schema_version: 1
 dataset:
   name: "istat_sbs_imprese"
   source_id: "istat_dbnomics"
-  tags: [economia, istat, sbs, imprese, fatturato, valore-aggiunto, ore-lavorate, costo-lavoro]
+  tags: [economia, istat, sbs, imprese, fatturato, valore-aggiunto, ore-lavorate, costo-lavoro, classi-dimensionali, quartili]
   category: economia
   years: [2024]
   time_coverage:
@@ -44,7 +44,7 @@ raw:
             - "16150"
             - "11110"
             - "11210"
-          ECON_ACTIVITY_NACE_2007: ["0010", B, C, D, E, F, G, H, I, J, K, L, M, N, P, Q, R, S]
+          ECON_ACTIVITY_NACE_2007: ["0010", B, C, D, E, F, G, H, I, J, K, L, M, N, P, Q, R, S, "10", "11", "12", "47"]
           PERS_EMPL_SIZE_CLASS: [TOTAL]
           TURNOVER_CLASS: ["9"]
           ENVIROM_DOMAIN: ["9"]
@@ -52,6 +52,70 @@ raw:
         max_pages: 20
         filename: "istat_sbs_naz.csv"
       primary: true
+    - name: "istat_sbs_naz_size"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      inject_column:
+        grain: "nazionale"
+      args:
+        provider: ISTAT
+        dataset: "161_267_DF_DCSP_SBSNAZ_1"
+        dimensions:
+          FREQ: [A]
+          REF_AREA: [IT]
+          DATA_TYPE:
+            - "12110"
+            - "12120"
+            - "12150"
+            - "12170"
+            - "13310"
+            - "13320"
+            - "13330"
+            - "15110"
+            - "16150"
+            - "11110"
+            - "11210"
+          ECON_ACTIVITY_NACE_2007: ["0010", B, C, D, E, F, G, H, I, J, K, L, M, N, P, Q, R, S, "10", "11", "12", "47"]
+          PERS_EMPL_SIZE_CLASS: [W0_9, W10_19, W20_49, W50_249, W_GE250]
+          TURNOVER_CLASS: ["9"]
+          ENVIROM_DOMAIN: ["9"]
+        page_size: 1000
+        max_pages: 20
+        filename: "istat_sbs_naz_size.csv"
+      primary: false
+    - name: "istat_sbs_naz_quartili"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      inject_column:
+        grain: "nazionale"
+      args:
+        provider: ISTAT
+        dataset: "161_267_DF_DCSP_SBSNAZ_1"
+        dimensions:
+          FREQ: [A]
+          REF_AREA: [IT]
+          DATA_TYPE:
+            - "E12150_PER_ADD_Q1"
+            - "E12150_PER_ADD_Q2"
+            - "E12150_PER_ADD_Q3"
+            - "E13310_PER_DIP_Q1"
+            - "E13310_PER_DIP_Q2"
+            - "E13310_PER_DIP_Q3"
+            - "N00001_Q1"
+            - "N00001_Q2"
+            - "N00001_Q3"
+          ECON_ACTIVITY_NACE_2007: ["0010", B, C, D, E, F, G, H, I, J, K, L, M, N, P, Q, R, S, "10", "11", "12", "47"]
+          PERS_EMPL_SIZE_CLASS: [TOTAL]
+          TURNOVER_CLASS: ["9"]
+          ENVIROM_DOMAIN: ["9"]
+        page_size: 1000
+        max_pages: 20
+        filename: "istat_sbs_naz_quartili.csv"
+      primary: false
     - name: "istat_sbs_reg"
       type: "dbnomics"
       client:
@@ -83,19 +147,19 @@ clean:
     - nace
     - indicatore_codice
     - indicatore
-    - valore
     - unita_misura
+    - size_class
   read:
     source: "auto"
-    # mode: all → legge TUTTI i file raw (naz + reg), non solo il primary
+    # mode: all → legge TUTTI i file raw (naz, size, quartili, reg), non solo il primary
     mode: "all"
     delim: ","
     encoding: "utf-8"
     header: true
   validate:
-    not_null: [anno, territorio_codice, indicatore_codice, grain]
-    primary_key: [anno, territorio_codice, grain, nace_codice, indicatore_codice]
-    min_rows: 200
+    not_null: [anno, territorio_codice, indicatore_codice, grain, size_class]
+    primary_key: [anno, territorio_codice, grain, nace_codice, indicatore_codice, size_class]
+    min_rows: 5000
 
 mart:
   tables:
@@ -103,9 +167,18 @@ mart:
       sql: "sql/mart_sbs_anno.sql"
     - name: "mart_sbs_settore"
       sql: "sql/mart_sbs_settore.sql"
+    - name: "mart_sbs_filiere"
+      sql: "sql/mart_sbs_filiere.sql"
+    - name: "mart_sbs_size"
+      sql: "sql/mart_sbs_size.sql"
+    - name: "mart_sbs_distribuzione"
+      sql: "sql/mart_sbs_distribuzione.sql"
   required_tables:
     - "mart_sbs_anno"
     - "mart_sbs_settore"
+    - "mart_sbs_filiere"
+    - "mart_sbs_size"
+    - "mart_sbs_distribuzione"
   validate:
     table_rules:
       mart_sbs_anno:
@@ -128,6 +201,44 @@ mart:
           salario_per_ora_eur: {min: 1, max: 500}
           salari_su_costo_lavoro_pct: {min: 0, max: 100}
           contributi_su_costo_lavoro_pct: {min: 0, max: 100}
+      mart_sbs_filiere:
+        required_columns:
+          [anno, nace_codice, nace, va_mila_eur, costo_lavoro_mila_eur, ore_migliaia, quota_lavoro_pct]
+        not_null: [anno, nace_codice, nace]
+        primary_key: [anno, nace_codice]
+        min_rows: 50
+        ranges:
+          quota_lavoro_pct: {min: 0, max: 100}
+          gos_su_va_pct: {min: -200, max: 100}
+          investimenti_su_va_pct: {min: 0, max: 300}
+          va_per_ora_eur: {min: 1, max: 2000}
+          costo_lavoro_per_ora_eur: {min: 1, max: 500}
+          salario_per_ora_eur: {min: 1, max: 500}
+          salari_su_costo_lavoro_pct: {min: 0, max: 100}
+          contributi_su_costo_lavoro_pct: {min: 0, max: 100}
+      mart_sbs_size:
+        required_columns:
+          [anno, nace_codice, nace, size_class, va_mila_eur, costo_lavoro_mila_eur, ore_migliaia, quota_lavoro_pct]
+        not_null: [anno, nace_codice, size_class]
+        primary_key: [anno, nace_codice, size_class]
+        min_rows: 500
+        # Nelle classi piccole quote >100% e investimenti/VA elevati sono
+        # possibili per arrotondamenti e valori di VA molto bassi.
+        ranges:
+          quota_lavoro_pct: {min: -200, max: 300}
+          gos_su_va_pct: {min: -300, max: 300}
+          investimenti_su_va_pct: {min: -100, max: 1000}
+          va_per_ora_eur: {min: -2000, max: 2000}
+          costo_lavoro_per_ora_eur: {min: 0, max: 1000}
+          salario_per_ora_eur: {min: 0, max: 1000}
+          salari_su_costo_lavoro_pct: {min: 0, max: 100}
+          contributi_su_costo_lavoro_pct: {min: 0, max: 100}
+      mart_sbs_distribuzione:
+        required_columns:
+          [anno, nace_codice, nace, va_per_addetto_q1, va_per_addetto_q2, va_per_addetto_q3]
+        not_null: [anno, nace_codice, nace]
+        primary_key: [anno, nace_codice]
+        min_rows: 50
 
 validation:
   fail_on_error: true
