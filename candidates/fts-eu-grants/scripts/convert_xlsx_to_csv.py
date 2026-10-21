@@ -69,6 +69,11 @@ FTS_OUTPUT_COLUMNS = [
     "tipo_contratto",
     "tipo_gestione",
     "paese_beneficiante",
+    # Chiavi di catena verso SEDIA/F&T Portal (assenti in alcuni anni):
+    # 2020-2023: "Call for proposals Reference" / "Project / Contract Reference"
+    # 2025: "Call ID" / "Project ID"
+    "call_id",
+    "project_id",
 ]
 
 # Mappa nome inglese -> colonna italiana (per NOME, robusta al drift di schema)
@@ -113,6 +118,11 @@ FTS_COLUMN_MAP = {
     "Type of contract*": "tipo_contratto",
     "Management type": "tipo_gestione",
     "Benefiting country": "paese_beneficiante",
+    # Catena con SEDIA/F&T (vari per anno — assenti => colonna vuota)
+    "Call for proposals Reference": "call_id",  # 2020-2023
+    "Call ID": "call_id",  # 2025
+    "Project / Contract Reference": "project_id",  # 2020-2023
+    "Project ID": "project_id",  # 2025
 }
 
 # Colonne importo (in formato internazionale: punto decimale, nessuna virgola)

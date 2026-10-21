@@ -54,6 +54,15 @@ Il filtro `paese_beneficiario = 'Italy'` usa il nome completo del paese (non ISO
 - **OpenCoesione** copre i fondi strutturali (gestione condivisa con Stati membri)
 - **RNA** copre gli aiuti di Stato (erogati da enti italiani, non UE)
 
+### Catena con SEDIA / Funding & Tenders Portal (2026-10-12)
+
+Il clean espone `call_id` e `project_id` per il join con le call del portale F&T (dataset `eu_call_open`):
+
+- 2020-2023: da `Call for proposals Reference` / `Project / Contract Reference`
+- 2025: da `Call ID` / `Project ID`
+- 2024: colonne assenti nello XLSX → `call_id`/`project_id` nulli (backward-compatible)
+- Join: `fts.call_id = sedia.call_identifier` — ha senso solo sui call chiusi/progetti assegnati, non sugli open topic
+
 ## Colonne notevoli
 
 - `beneficiario_nome`: può contenere `*****` per motivi di privacy (persone fisiche)
