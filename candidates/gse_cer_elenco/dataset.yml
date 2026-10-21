@@ -1,0 +1,57 @@
+id: gse_cer_elenco
+title: "Elenco Nazionale Comunità Energetiche Rinnovabili (2025)"
+description: "Mappatura delle Comunità Energetiche Rinnovabili (CER) accreditate presso il GSE al 31/12/2025."
+license: "CC BY 3.0 IT"
+publisher:
+  name: "GSE - Gestore dei Servizi Energetici"
+  url: "https://www.gse.it"
+
+resources:
+  - name: "gse_cer_elenco_raw"
+    path: "data/raw/elenco_comunita_energetiche_rinnovabili.xlsx"
+    format: "xlsx"
+  - name: "gse_cer_elenco_clean"
+    path: "data/clean/gse_cer_elenco.parquet"
+    format: "parquet"
+
+schema:
+  fields:
+    - name: tipologia_di_configurazione
+      type: string
+      description: "Tipologia della configurazione (es. Comunità energetica rinnovabile)"
+    - name: denominazione_comunità
+      type: string
+      description: "Nome ufficiale della CER"
+    - name: potenza_totale_kw
+      type: number
+      description: "Potenza totale installata in kW"
+    - name: numero_impianti
+      type: integer
+      description: "Numero di impianti afferenti alla configurazione"
+    - name: numero_utenze
+      type: integer
+      description: "Numero di utenti/membri associati"
+    - name: comune
+      type: string
+      description: "Comune in cui è ubicata la CER"
+    - name: provincia
+      type: string
+      description: "Sigla della provincia"
+    - name: regione
+      type: string
+      description: "Regione di appartenenza"
+    - name: latitudine
+      type: number
+      description: "Coordinata geografica - Latitudine (WGS84)"
+    - name: longitudine
+      type: number
+      description: "Coordinata geografica - Longitudine (WGS84)"
+    - name: area_convenzionale
+      type: string
+      description: "Area di convenzione GSE"
+    - name: ragione_sociale_gdr
+      type: string
+      description: "Gestore della rete di distribuzione (es. e-distribuzione S.p.A.)"
+    - name: data_di_aggiornamento
+      type: date
+      description: "Data dello snapshot dei dati (YYYY-MM-DD)"
