@@ -22,7 +22,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno, budget, rif_impegno_giuridico, rif_bilancio, beneficiario_nome, beneficiario_partita_iva, flag_no_profit, flag_ong, flag_coordinatore, beneficiario_indirizzo, beneficiario_citta, beneficiario_cap, paese_beneficiario, nuts2, zona_geografica, luogo_azione, importo_contrattato, importo_contrattato_stimato, importo_consumato_stimato, impegno_importo_a, importo_aggiuntivo_ridotto_b, impegno_totale_a_plus_b, impegno_consumato, fonte_dettaglio, tipo_spesa, oggetto_contributo, dipartimento_responsabile, linea_bilancio_codice, linea_bilancio_nome, nome_programma, is_rrf, tipo_finanziamento, codice_gruppo_beneficiario, tipo_beneficiario, data_inizio_progetto, data_fine_progetto, tipo_contratto, tipo_gestione, paese_beneficiante]
+  required_columns: [anno, budget, rif_impegno_giuridico, rif_bilancio, beneficiario_nome, beneficiario_partita_iva, flag_no_profit, flag_ong, flag_coordinatore, beneficiario_indirizzo, beneficiario_citta, beneficiario_cap, paese_beneficiario, nuts2, zona_geografica, luogo_azione, importo_contrattato, importo_contrattato_stimato, importo_consumato_stimato, impegno_importo_a, importo_aggiuntivo_ridotto_b, impegno_totale_a_plus_b, impegno_consumato, fonte_dettaglio, tipo_spesa, oggetto_contributo, dipartimento_responsabile, linea_bilancio_codice, linea_bilancio_nome, nome_programma, is_rrf, tipo_finanziamento, codice_gruppo_beneficiario, tipo_beneficiario, data_inizio_progetto, data_fine_progetto, tipo_contratto, tipo_gestione, paese_beneficiante, call_id, project_id]
   read:
     source: auto
     mode: latest
@@ -59,11 +59,16 @@ mart:
     # Top beneficiari per importo contrattato
     - name: "mart_top_beneficiari"
       sql: "sql/mart_top_beneficiari.sql"
+    # Top call per importo (usa call_id — utile solo dal 2025)
+    - name: "mart_top_call"
+      sql: "sql/mart_top_call.sql"
+      years: [2025]
   required_tables:
     - "mart_trend_anno"
     - "mart_sintesi_programma"
     - "mart_sintesi_beneficiario"
     - "mart_top_beneficiari"
+    - "mart_top_call"
   validate:
     table_rules:
       mart_trend_anno:
@@ -82,6 +87,10 @@ mart:
         required_columns: [anno, beneficiario_nome, n_grant, importo_contrattato_totale]
         primary_key: [anno, beneficiario_nome]
         min_rows: 300
+      mart_top_call:
+        required_columns: [call_id, n_grant, n_beneficiari, importo_contrattato_totale, importo_medio]
+        primary_key: [call_id]
+        min_rows: 20
 
 validation:
   fail_on_error: true
