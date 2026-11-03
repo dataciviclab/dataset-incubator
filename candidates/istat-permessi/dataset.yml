@@ -62,14 +62,22 @@ clean:
 mart:
   tables:
     - name: "mart_permessi"
-      sql: "sql/mart.sql"
+      sql: "sql/mart_permessi.sql"
+    - name: "mart_permessi_serie"
+      sql: "sql/mart_permessi_serie.sql"
   required_tables:
     - "mart_permessi"
+    - "mart_permessi_serie"
   validate:
     table_rules:
       mart_permessi:
-        not_null: [anno, territorio_codice, livello, permessi]
+        required_columns: [anno, territorio_codice, cittadinanza_codice, permessi, quota_pct]
+        primary_key: [anno, territorio_codice, cittadinanza_codice]
         min_rows: 100
+      mart_permessi_serie:
+        required_columns: [anno, permessi_italia]
+        primary_key: [anno]
+        min_rows: 5
 
 validation:
   fail_on_error: true

@@ -59,14 +59,29 @@ clean:
 mart:
   tables:
     - name: "mart_cittadinanze"
-      sql: "sql/mart.sql"
+      sql: "sql/mart_cittadinanze.sql"
+    - name: "mart_cittadinanze_processo"
+      sql: "sql/mart_cittadinanze_processo.sql"
+    - name: "mart_cittadinanze_serie"
+      sql: "sql/mart_cittadinanze_serie.sql"
   required_tables:
     - "mart_cittadinanze"
+    - "mart_cittadinanze_processo"
+    - "mart_cittadinanze_serie"
   validate:
     table_rules:
       mart_cittadinanze:
-        not_null: [anno, territorio_codice, livello, acquisizioni]
+        required_columns: [anno, territorio_codice, cittadinanza_codice, acquisizioni, quota_pct]
+        primary_key: [anno, territorio_codice, cittadinanza_codice]
         min_rows: 100
+      mart_cittadinanze_processo:
+        required_columns: [anno, territorio_codice, processo_codice, acquisizioni, quota_pct]
+        primary_key: [anno, territorio_codice, processo_codice]
+        min_rows: 100
+      mart_cittadinanze_serie:
+        required_columns: [anno, processo_codice, acquisizioni_italia]
+        primary_key: [anno, processo_codice]
+        min_rows: 5
 
 validation:
   fail_on_error: true

@@ -58,14 +58,22 @@ clean:
 mart:
   tables:
     - name: "mart_stranieri_residenti"
-      sql: "sql/mart.sql"
+      sql: "sql/mart_stranieri_residenti.sql"
+    - name: "mart_stranieri_residenti_serie"
+      sql: "sql/mart_stranieri_residenti_serie.sql"
   required_tables:
     - "mart_stranieri_residenti"
+    - "mart_stranieri_residenti_serie"
   validate:
     table_rules:
       mart_stranieri_residenti:
-        not_null: [anno, territorio_codice, livello, residenti]
+        required_columns: [anno, territorio_codice, cittadinanza_codice, residenti, quota_pct]
+        primary_key: [anno, territorio_codice, cittadinanza_codice]
         min_rows: 100
+      mart_stranieri_residenti_serie:
+        required_columns: [anno, residenti_italia]
+        primary_key: [anno]
+        min_rows: 5
 
 validation:
   fail_on_error: true

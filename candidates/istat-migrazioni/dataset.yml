@@ -60,14 +60,22 @@ clean:
 mart:
   tables:
     - name: "mart_migrazioni"
-      sql: "sql/mart.sql"
+      sql: "sql/mart_migrazioni.sql"
+    - name: "mart_migrazioni_serie"
+      sql: "sql/mart_migrazioni_serie.sql"
   required_tables:
     - "mart_migrazioni"
+    - "mart_migrazioni_serie"
   validate:
     table_rules:
       mart_migrazioni:
-        not_null: [anno, territorio_codice, livello, immigrazioni]
+        required_columns: [anno, territorio_codice, immigrazioni, quota_pct]
+        primary_key: [anno, territorio_codice]
         min_rows: 100
+      mart_migrazioni_serie:
+        required_columns: [anno, immigrazioni_italia]
+        primary_key: [anno]
+        min_rows: 5
 
 validation:
   fail_on_error: true
