@@ -1,0 +1,48 @@
+# GSE — Elenco Nazionale Comunità Energetiche Rinnovabili (2025)
+# Fonte: GSE (Gestore dei Servizi Energetici), download diretto
+# Issue intake: #720
+
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "gse_cer_elenco"
+  source_id: "gse_opendata"
+  tags: [energia, cer, comunita-energetiche, rinnovabili, pnrr]
+  category: energia
+  years: [2025]
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "gse_cer_elenco_source"
+      type: "http_file"
+      args:
+        url: "https://www.gse.it/servizi-per-te_site/autoconsumo_site/Documents/Elenco%20Comunit%C3%A0%20Energetiche%20Rinnovabili.xlsx"
+        filename: "Elenco Comunità Energetiche Rinnovabili.xlsx"
+      primary: true
+
+clean:
+  read:
+    encoding: "utf-8"
+  required_columns: ["denominazione", "potenza_kw", "n_impianti", "n_utenze", "comune", "provincia", "regione"]
+  sql: "sql/clean.sql"
+  validate:
+    not_null: [denominazione, comune, regione]
+    min_rows: 800
+
+mart:
+  tables:
+    - name: "mart_cer_riepilogo"
+      sql: "sql/mart_cer_riepilogo.sql"
+  required_tables:
+    - "mart_cer_riepilogo"
+  validate:
+    table_rules:
+      mart_cer_riepilogo:
+        required_columns: [regione, n_cer, potenza_kw_totale, n_impianti_totale, n_utenze_totale]
+        primary_key: [regione]
+        min_rows: 15
+
+validation:
+  fail_on_error: true
