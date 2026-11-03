@@ -1,0 +1,65 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_trasporto_merci_strada"
+  source_id: "istat_dbnomics"
+  tags: [trasporti, merci, strada, istat, dbnomics, origine-destinazione]
+  category: trasporti
+  years: [2026]
+  time_coverage:
+    start_year: 2008
+    end_year: 2024
+
+# Trasporto merci su strada — ISTAT 121_330 via DBnomics.
+# Contiene REG_LOADING / REG_UNLOADING: l'origine-destinazione regionale che
+# Eurostat non pubblica. Mirror DBnomics per evitare il rate limit SDMX ISTAT.
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_dbnomics_merci_strada"
+      type: "dbnomics"
+      client:
+        timeout: 240
+        retries: 2
+      args:
+        provider: ISTAT
+        dataset: "121_330"
+        page_size: 1000
+        max_pages: 10
+        filename: "istat_merci_strada_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns: [anno, regione_carico, regione_scarico, merce_nst, tipo_trasporto, unita, valore]
+  read:
+    source: auto
+    mode: latest
+    delim: ","
+    encoding: utf-8
+    header: true
+  validate:
+    not_null: [anno]
+    min_rows: 1000
+
+mart:
+  tables:
+    - name: "mart_merci_per_direttrice"
+      sql: "sql/mart_merci_per_direttrice.sql"
+  required_tables:
+    - "mart_merci_per_direttrice"
+  validate:
+    table_rules:
+      mart_merci_per_direttrice:
+        required_columns: [anno, regione_carico, regione_scarico, tonnellate_km]
+        min_rows: 100
+
+validation:
+  fail_on_error: true
+
+registry:
+  theme: "Trasporto merci su strada per origine e destinazione"
+  dimensions: ["REG_LOADING", "REG_UNLOADING", "GOODS_TRANSPORT_NST_2007", "DATA_TYPE"]
+  description: "ISTAT 121_330 via DBnomics — tonnellate-km per regione di carico e scarico"
