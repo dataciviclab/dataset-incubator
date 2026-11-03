@@ -45,13 +45,13 @@ clean:
 
 mart:
   tables:
-    - name: "mart_aeroporti"
-      sql: "sql/mart_aeroporti.sql"
+    - name: "mart_copertura_aeroporti"
+      sql: "sql/mart_copertura_aeroporti.sql"
   required_tables:
-    - "mart_aeroporti"
+    - "mart_copertura_aeroporti"
   validate:
     table_rules:
-      mart_aeroporti:
+      mart_copertura_aeroporti:
         required_columns: [aeroporto, unita, osservazioni, primo, ultimo]
         min_rows: 5
         primary_key: [aeroporto, unita]

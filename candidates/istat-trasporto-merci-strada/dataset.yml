@@ -53,7 +53,8 @@ mart:
   validate:
     table_rules:
       mart_merci_per_direttrice:
-        required_columns: [anno, regione_carico, regione_scarico, tonnellate_km]
+        required_columns: [anno, regione, tkm_movimentati, quota_pct]
+        primary_key: [anno, regione]
         min_rows: 100
 
 validation:

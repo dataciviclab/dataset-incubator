@@ -1,11 +1,14 @@
--- mart_ferrovia_intermodale.sql: merci ferroviarie per unita di carico intermodale.
+-- mart_ferrovia_intermodale.sql: quanto del trasporto ferroviario merci e'
+-- intermodale. `TOT_INTERMODAL` e' il subtotale delle unita di carico pubblicato
+-- dalla fonte: usarlo come numeratore evita di sommare le singole tipologie
+-- (containers, semi-rimorchi) che sono sottoinsiemi tra loro non disgiunti.
 select
     anno,
-    unita_carico,
-    sum(valore) as tonnellate_km
+    sum(case when unita_carico = 'TOT_INTERMODAL' then valore else 0 end) as tkm_intermodale,
+    sum(case when unita_carico = 'ALL' then valore else 0 end)            as tkm_totali,
+    round(100.0 * sum(case when unita_carico = 'TOT_INTERMODAL' then valore else 0 end)
+          / nullif(sum(case when unita_carico = 'ALL' then valore else 0 end), 0), 2) as quota_intermodale_pct
 from clean_input
 where unita = 'GC_TKM'
-  and unita_carico is not null
-  and unita_carico <> 'ALL'
-group by 1, 2
-order by anno, tonnellate_km desc
+group by anno
+order by anno

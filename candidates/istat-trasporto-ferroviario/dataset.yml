@@ -53,7 +53,8 @@ mart:
   validate:
     table_rules:
       mart_ferrovia_intermodale:
-        required_columns: [anno, unita_carico, tonnellate_km]
+        required_columns: [anno, quota_intermodale_pct]
+        primary_key: [anno]
         min_rows: 5
 
 validation:

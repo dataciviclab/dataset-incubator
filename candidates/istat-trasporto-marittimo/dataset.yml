@@ -42,13 +42,13 @@ clean:
 
 mart:
   tables:
-    - name: "mart_porti_regione"
-      sql: "sql/mart_porti_regione.sql"
+    - name: "mart_copertura_porti"
+      sql: "sql/mart_copertura_porti.sql"
   required_tables:
-    - "mart_porti_regione"
+    - "mart_copertura_porti"
   validate:
     table_rules:
-      mart_porti_regione:
+      mart_copertura_porti:
         required_columns: [regione_sbarco, unita, osservazioni, primo, ultimo]
         min_rows: 5
         primary_key: [regione_sbarco, unita]
