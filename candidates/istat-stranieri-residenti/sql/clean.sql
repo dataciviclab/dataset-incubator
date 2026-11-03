@@ -1,8 +1,8 @@
 -- clean.sql: stranieri residenti al 1 gennaio per provincia x cittadinanza
 -- (ISTAT 29_317_DF_DCIS_POPSTRCIT1_1 via DBnomics)
 --
--- Grano: anno x territorio (nazionale/ripartizione/regione/provincia) x
--- cittadinanza. Nomi da codelist locali (estratte dal metadata DBnomics).
+-- `aggregato` = la riga non e' un "leaf": territorio macro (nazionale/
+-- ripartizione o Trentino-Alto Adige) OPPURE cittadinanza non-paese.
 
 select
     cast_int(r.TIME_PERIOD) as anno,
@@ -11,6 +11,7 @@ select
     t.livello as livello,
     normalize_string(r.CITIZENSHIP) as cittadinanza_codice,
     c.nome as cittadinanza,
+    (cast(t.aggregato as boolean) or c.tipo = 'aggregato') as aggregato,
     cast_int(r.OBS_VALUE) as residenti
 from raw_input r
 left join read_csv(

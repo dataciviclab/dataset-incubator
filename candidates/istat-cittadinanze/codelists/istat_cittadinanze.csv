@@ -1,20 +1,20 @@
-codice,nome
-AL,Albania
-AR,Argentina
-BD,Bangladesh
-BR,Brazil
-EC,Ecuador
-EG,Egypt
-GH,Ghana
-IN,India
-MA,Morocco
-MD,Moldova
-MK,"Former Yugoslav Republic of Macedonia, the"
-PE,Peru
-PK,Pakistan
-RO,Romania
-SN,Senegal
-TN,Tunisia
-UA,Ukraine
-WORLD,All countries of the world
-X777,Other countries
+codice,nome,tipo
+AL,Albania,paese
+AR,Argentina,paese
+BD,Bangladesh,paese
+BR,Brazil,paese
+EC,Ecuador,paese
+EG,Egypt,paese
+GH,Ghana,paese
+IN,India,paese
+MA,Morocco,paese
+MD,Moldova,paese
+MK,"Former Yugoslav Republic of Macedonia, the",paese
+PE,Peru,paese
+PK,Pakistan,paese
+RO,Romania,paese
+SN,Senegal,paese
+TN,Tunisia,paese
+UA,Ukraine,paese
+WORLD,All countries of the world,aggregato
+X777,Other countries,paese

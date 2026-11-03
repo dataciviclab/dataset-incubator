@@ -28,9 +28,13 @@ La tensione: gli sbarchi e gli "arrivi" dominano il dibattito, ma la presenza re
 
 ## Perimetro v0
 
-- Tutti i livelli territoriali, marcati in `livello` → per sommare senza doppio conteggio filtrare un solo livello
-- Solo lo stock totale (`RESPER`): sesso/età/motivo/durata/stato civile = totale
-- La dimensione cittadinanza include **aggregati** (aree geopolitiche + totale): per i singoli paesi filtrare i codici ISO-3166 alpha-2 (2 lettere)
+- Tutti i livelli territoriali, marcati in `livello`; la colonna **`aggregato`** marca le righe che NON sono "foglie" (territorio macro o cittadinanza non-paese)
+- **Ricetta per numeri corretti** (il mart è un cubo multi-livello con aggregati sovrapposti):
+  - **Totale nazionale**: `livello='nazionale' AND cittadinanza_codice='WORLD'`
+  - **Dettaglio sommabile**: `livello='provincia' AND NOT aggregato` (provincia × paese)
+  - ⚠️ **Non sommare senza entrambi i filtri**: `WHERE NOT aggregato` da solo somma regione **e** provincia (2×); `livello='nazionale'` da solo include `WORLD` **e** i paesi (2×)
+- Sesso/età/motivo/durata/stato civile = totale
+- Residuo noto: la somma delle foglie supera `WORLD` di **552** (gli apolidi `999` sono conteggiati anche in `X777` "altri paesi")
 
 ## Criterio di promozione
 

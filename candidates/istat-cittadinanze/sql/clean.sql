@@ -2,8 +2,9 @@
 --
 -- Grano: anno x territorio (nazionale/ripartizione/regione/provincia) x
 -- ex-cittadinanza x processo di acquisizione.
--- I nomi di territori e cittadinanze vengono da codelist locali (estratte dal
--- metadata DBnomics), per non dipendere da label hardcoded nel SQL.
+-- `aggregato` = la riga non e' un "leaf": territorio macro (nazionale/
+-- ripartizione o Trentino-Alto Adige) OPPURE cittadinanza non-paese
+-- (aree geopolitiche, WORLD, X777).
 
 select
     cast_int(r.TIME_PERIOD) as anno,
@@ -20,6 +21,7 @@ select
         when 'TRS' then 'Altro'
         else normalize_string(r.ACQUISITION_PROCESS)
     end as processo,
+    (cast(t.aggregato as boolean) or c.tipo = 'aggregato') as aggregato,
     cast_int(r.OBS_VALUE) as acquisizioni
 from raw_input r
 left join read_csv(

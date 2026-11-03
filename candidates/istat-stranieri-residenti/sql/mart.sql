@@ -1,12 +1,10 @@
 -- mart_stranieri_residenti: stranieri residenti al 1 gennaio per anno x
 -- territorio x cittadinanza.
 --
--- Il mart contiene TUTTI i livelli territoriali (nazionale, ripartizione,
--- regione, provincia), marcati in `livello`: per sommare senza doppio
--- conteggio filtrare `WHERE livello = 'provincia'` (o il livello desiderato).
--- ATTENZIONE: la dimensione cittadinanza include anche AGGREGATI (aree
--- geopolitiche + totale). Per i singoli paesi filtrare i codici ISO-3166
--- alpha-2 (2 lettere).
+-- `aggregato` = true per le righe che NON sono "leaf" (territorio macro o
+-- cittadinanza non-paese). Per numeri non gonfiati:
+--   - TOTALE nazionale: `livello='nazionale' AND cittadinanza_codice='WORLD'`
+--   - dettaglio sommabile: `WHERE NOT aggregato` (provincia x paese reale)
 
 select
     anno,
@@ -15,6 +13,7 @@ select
     territorio,
     cittadinanza_codice,
     cittadinanza,
+    aggregato,
     residenti
 from clean_input
 where residenti is not null

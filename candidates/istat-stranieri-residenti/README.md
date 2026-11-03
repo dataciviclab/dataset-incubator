@@ -6,7 +6,7 @@
 
 Dove vivono gli stranieri residenti in Italia, e di quale cittadinanza? Lo stock della popolazione straniera è il denominatore di tutto il resto (permessi, lavoro, scuola, cittadinanza acquisita): senza la sua geografia, ogni tasso resta nazionale.
 
-La tensione: la popolazione straniera è **9,1% del totale** (2025), ma è distribuita in modo molto disomogeneo tra province — e la sua composizione per cittadinanza cambia da territorio a territorio.
+La tensione: la popolazione straniera è **9,1% del totale** (dato Eurostat `MIGR_POP1CTZ` 2025 — questo candidate copre 2019-2023), ma è distribuita in modo molto disomogeneo tra province — e la sua composizione per cittadinanza cambia da territorio a territorio.
 
 ## Fonte
 
@@ -27,9 +27,12 @@ La tensione: la popolazione straniera è **9,1% del totale** (2025), ma è distr
 
 ## Perimetro v0
 
-- Tutti i livelli territoriali, marcati in `livello` → per sommare senza doppio conteggio filtrare un solo livello
+- Tutti i livelli territoriali, marcati in `livello`; la colonna **`aggregato`** marca le righe che NON sono "foglie" (territorio macro o cittadinanza non-paese)
+- **Ricetta per numeri corretti** (cubo multi-livello con aggregati sovrapposti):
+  - **Totale nazionale**: `livello='nazionale' AND cittadinanza_codice='WORLD'`
+  - **Dettaglio sommabile**: `livello='provincia' AND NOT aggregato` (provincia × paese)
+  - ⚠️ **Non sommare senza entrambi i filtri**: `WHERE NOT aggregato` da solo somma regione **e** provincia (2×); `livello='nazionale'` da solo include `WORLD` **e** i paesi (2×)
 - Sesso = totale (`SEX=9`)
-- La dimensione cittadinanza include **aggregati** (aree geopolitiche + totale): per i singoli paesi filtrare i codici ISO-3166 alpha-2 (2 lettere)
 
 ## Criterio di promozione
 

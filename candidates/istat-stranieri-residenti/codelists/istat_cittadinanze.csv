@@ -1,213 +1,213 @@
-codice,nome
-999,Stateless
-AD,Andorra
-AE,United Arab Emirates
-AF,Afghanistan
-AFR_C_S,Central and South Africa
-AFR_E,Eastern Africa
-AFR_N,Northern Africa
-AFR_W,Western Africa
-AG,Antigua and Barbuda
-AL,Albania
-AM,Armenia
-AME_C_S,Central and South America
-AME_N,Northern America
-AO,Angola
-AR,Argentina
-ASI_E,Eastern Asia
-ASI_W,Western Asia
-AT,Austria
-AU,Australia
-AZ,Azerbaijan
-BA,Bosnia and Herzegovina
-BB,Barbados
-BD,Bangladesh
-BE,Belgium
-BF,Burkina Faso
-BG,Bulgaria
-BH,Bahrain
-BI,Burundi
-BJ,Benin
-BN,Brunei Darussalam
-BO,Bolivia
-BR,Brazil
-BS,Bahamas
-BT,Bhutan
-BW,Botswana
-BY,Belarus
-BZ,Belize
-CA,Canada
-CD,Democratic Republic of the Congo
-CF,Central African Republic
-CG,Congo
-CH,Switzerland
-CI,Côte d'Ivoire
-CL,Chile
-CM,Cameroon
-CN,China
-CO,Colombia
-CR,Costa Rica
-CU,Cuba
-CV,Cape Verde
-CW,Curaçao
-CY,Cyprus
-CZ,Czech Republic
-DE,Germany
-DJ,Djibouti
-DK,Denmark
-DM,Dominica
-DO,Dominican Republic
-DZ,Algeria
-EC,Ecuador
-EE,Estonia
-EG,Egypt
-ER,Eritrea
-ES,Spain
-ET,Ethiopia
-EU28,European Union (28 Countries)
-FI,Finland
-FJ,Fiji
-FM,Federated States of Micronesia
-FR,France
-GA,Gabon
-GD,Grenada
-GE,Georgia
-GH,Ghana
-GM,Gambia
-GN,Guinea
-GQ,Equatorial Guinea
-GR,Greece
-GT,Guatemala
-GW,Guinea-Bissau
-GY,Guyana
-HN,Honduras
-HR,Croatia
-HT,Haiti
-HU,Hungary
-ID,Indonesia
-IE,Ireland
-IL,Israel
-IN,India
-IQ,Iraq
-IR,Iran
-IS,Iceland
-JM,Jamaica
-JO,Jordan
-JP,Japan
-KE,Kenya
-KG,Kyrgyzstan
-KH,Cambodia
-KI,Kiribati
-KM,Comoros
-KN,Saint Kitts and Nevis
-KP,North Korea
-KR,South Korea
-KW,Kuwait
-KZ,Kazakhstan
-LA,Laos
-LB,Lebanon
-LC,Saint Lucia
-LI,Liechtenstein
-LK,Sri Lanka
-LR,Liberia
-LS,Lesotho
-LT,Lithuania
-LU,Luxembourg
-LV,Latvia
-LY,Libya
-MA,Morocco
-MC,Monaco
-MD,Moldova
-ME,Montenegro
-MG,Madagascar
-MH,Marshall Islands
-MK,"Former Yugoslav Republic of Macedonia, the"
-ML,Mali
-MM,Myanmar
-MN,Mongolia
-MR,Mauritania
-MT,Malta
-MU,Mauritius
-MV,Maldives
-MW,Malawi
-MX,Mexico
-MY,Malaysia
-MZ,Mozambique
-NA,Namibia
-NE,Niger
-NG,Nigeria
-NI,Nicaragua
-NL,Netherlands
-NO,Norway
-NP,Nepal
-NR,Nauru
-NZ,New Zealand
-OCE,Oceania
-OM,Oman
-PA,Panama
-PE,Peru
-PG,Papua New Guinea
-PH,Philippines
-PK,Pakistan
-PL,Poland
-PS,Palestinian territory
-PT,Portugal
-PW,Palau
-PY,Paraguay
-QA,Qatar
-RO,Romania
-RS,Serbia
-RU,Russia
-RW,Rwanda
-SA,Saudi Arabia
-SB,Solomon Islands
-SC,Seychelles
-SD,Sudan
-SE,Sweden
-SG,Singapore
-SI,Slovenia
-SK,Slovakia
-SL,Sierra Leone
-SM,San Marino
-SN,Senegal
-SO,Somalia
-SR,Suriname
-ST,São Tomé e Principe
-SV,El Salvador
-SY,Syria
-SZ,Swaziland
-TD,Chad
-TG,Togo
-TH,Thailand
-TJ,Tajikistan
-TL,Timor-Leste
-TM,Turkmenistan
-TN,Tunisia
-TO,Tonga
-TR,Turkey
-TT,Trinidad and Tobago
-TV,Tuvalu
-TW,Taiwan
-TZ,Tanzania
-UA,Ukraine
-UG,Uganda
-UK,United Kingdom
-US,United States
-UY,Uruguay
-UZ,Uzbekistan
-VA,Vatican City State
-VC,Saint Vincent and the Grenadines
-VE,Venezuela
-VN,Vietnam
-VU,Vanuatu
-WORLD,All countries of the world
-WS,Samoa
-X95,Kosovo
-XASI_C_S,Central and South Asia
-XEUR_NEU28_OTH,Other European non-EU-28 countries (aggregate changing according to the context)
-XSD_S,South Sudan (Repubblic of)
-X_RNC_LV,Recognized non-citizens (Latvia)
-YE,Yemen
-ZA,South Africa
-ZM,Zambia
-ZW,Zimbabwe
+codice,nome,tipo
+999,Stateless,paese
+AD,Andorra,paese
+AE,United Arab Emirates,paese
+AF,Afghanistan,paese
+AFR_C_S,Central and South Africa,aggregato
+AFR_E,Eastern Africa,aggregato
+AFR_N,Northern Africa,aggregato
+AFR_W,Western Africa,aggregato
+AG,Antigua and Barbuda,paese
+AL,Albania,paese
+AM,Armenia,paese
+AME_C_S,Central and South America,aggregato
+AME_N,Northern America,aggregato
+AO,Angola,paese
+AR,Argentina,paese
+ASI_E,Eastern Asia,aggregato
+ASI_W,Western Asia,aggregato
+AT,Austria,paese
+AU,Australia,paese
+AZ,Azerbaijan,paese
+BA,Bosnia and Herzegovina,paese
+BB,Barbados,paese
+BD,Bangladesh,paese
+BE,Belgium,paese
+BF,Burkina Faso,paese
+BG,Bulgaria,paese
+BH,Bahrain,paese
+BI,Burundi,paese
+BJ,Benin,paese
+BN,Brunei Darussalam,paese
+BO,Bolivia,paese
+BR,Brazil,paese
+BS,Bahamas,paese
+BT,Bhutan,paese
+BW,Botswana,paese
+BY,Belarus,paese
+BZ,Belize,paese
+CA,Canada,paese
+CD,Democratic Republic of the Congo,paese
+CF,Central African Republic,paese
+CG,Congo,paese
+CH,Switzerland,paese
+CI,Côte d'Ivoire,paese
+CL,Chile,paese
+CM,Cameroon,paese
+CN,China,paese
+CO,Colombia,paese
+CR,Costa Rica,paese
+CU,Cuba,paese
+CV,Cape Verde,paese
+CW,Curaçao,paese
+CY,Cyprus,paese
+CZ,Czech Republic,paese
+DE,Germany,paese
+DJ,Djibouti,paese
+DK,Denmark,paese
+DM,Dominica,paese
+DO,Dominican Republic,paese
+DZ,Algeria,paese
+EC,Ecuador,paese
+EE,Estonia,paese
+EG,Egypt,paese
+ER,Eritrea,paese
+ES,Spain,paese
+ET,Ethiopia,paese
+EU28,European Union (28 Countries),aggregato
+FI,Finland,paese
+FJ,Fiji,paese
+FM,Federated States of Micronesia,paese
+FR,France,paese
+GA,Gabon,paese
+GD,Grenada,paese
+GE,Georgia,paese
+GH,Ghana,paese
+GM,Gambia,paese
+GN,Guinea,paese
+GQ,Equatorial Guinea,paese
+GR,Greece,paese
+GT,Guatemala,paese
+GW,Guinea-Bissau,paese
+GY,Guyana,paese
+HN,Honduras,paese
+HR,Croatia,paese
+HT,Haiti,paese
+HU,Hungary,paese
+ID,Indonesia,paese
+IE,Ireland,paese
+IL,Israel,paese
+IN,India,paese
+IQ,Iraq,paese
+IR,Iran,paese
+IS,Iceland,paese
+JM,Jamaica,paese
+JO,Jordan,paese
+JP,Japan,paese
+KE,Kenya,paese
+KG,Kyrgyzstan,paese
+KH,Cambodia,paese
+KI,Kiribati,paese
+KM,Comoros,paese
+KN,Saint Kitts and Nevis,paese
+KP,North Korea,paese
+KR,South Korea,paese
+KW,Kuwait,paese
+KZ,Kazakhstan,paese
+LA,Laos,paese
+LB,Lebanon,paese
+LC,Saint Lucia,paese
+LI,Liechtenstein,paese
+LK,Sri Lanka,paese
+LR,Liberia,paese
+LS,Lesotho,paese
+LT,Lithuania,paese
+LU,Luxembourg,paese
+LV,Latvia,paese
+LY,Libya,paese
+MA,Morocco,paese
+MC,Monaco,paese
+MD,Moldova,paese
+ME,Montenegro,paese
+MG,Madagascar,paese
+MH,Marshall Islands,paese
+MK,"Former Yugoslav Republic of Macedonia, the",paese
+ML,Mali,paese
+MM,Myanmar,paese
+MN,Mongolia,paese
+MR,Mauritania,paese
+MT,Malta,paese
+MU,Mauritius,paese
+MV,Maldives,paese
+MW,Malawi,paese
+MX,Mexico,paese
+MY,Malaysia,paese
+MZ,Mozambique,paese
+NA,Namibia,paese
+NE,Niger,paese
+NG,Nigeria,paese
+NI,Nicaragua,paese
+NL,Netherlands,paese
+NO,Norway,paese
+NP,Nepal,paese
+NR,Nauru,paese
+NZ,New Zealand,paese
+OCE,Oceania,aggregato
+OM,Oman,paese
+PA,Panama,paese
+PE,Peru,paese
+PG,Papua New Guinea,paese
+PH,Philippines,paese
+PK,Pakistan,paese
+PL,Poland,paese
+PS,Palestinian territory,paese
+PT,Portugal,paese
+PW,Palau,paese
+PY,Paraguay,paese
+QA,Qatar,paese
+RO,Romania,paese
+RS,Serbia,paese
+RU,Russia,paese
+RW,Rwanda,paese
+SA,Saudi Arabia,paese
+SB,Solomon Islands,paese
+SC,Seychelles,paese
+SD,Sudan,paese
+SE,Sweden,paese
+SG,Singapore,paese
+SI,Slovenia,paese
+SK,Slovakia,paese
+SL,Sierra Leone,paese
+SM,San Marino,paese
+SN,Senegal,paese
+SO,Somalia,paese
+SR,Suriname,paese
+ST,São Tomé e Principe,paese
+SV,El Salvador,paese
+SY,Syria,paese
+SZ,Swaziland,paese
+TD,Chad,paese
+TG,Togo,paese
+TH,Thailand,paese
+TJ,Tajikistan,paese
+TL,Timor-Leste,paese
+TM,Turkmenistan,paese
+TN,Tunisia,paese
+TO,Tonga,paese
+TR,Turkey,paese
+TT,Trinidad and Tobago,paese
+TV,Tuvalu,paese
+TW,Taiwan,paese
+TZ,Tanzania,paese
+UA,Ukraine,paese
+UG,Uganda,paese
+UK,United Kingdom,paese
+US,United States,paese
+UY,Uruguay,paese
+UZ,Uzbekistan,paese
+VA,Vatican City State,paese
+VC,Saint Vincent and the Grenadines,paese
+VE,Venezuela,paese
+VN,Vietnam,paese
+VU,Vanuatu,paese
+WORLD,All countries of the world,aggregato
+WS,Samoa,paese
+X95,Kosovo,paese
+XASI_C_S,Central and South Asia,aggregato
+XEUR_NEU28_OTH,Other European non-EU-28 countries (aggregate changing according to the context),aggregato
+XSD_S,South Sudan (Repubblic of),paese
+X_RNC_LV,Recognized non-citizens (Latvia),aggregato
+YE,Yemen,paese
+ZA,South Africa,paese
+ZM,Zambia,paese
+ZW,Zimbabwe,paese

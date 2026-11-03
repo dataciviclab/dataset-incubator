@@ -1,15 +1,15 @@
 -- clean.sql: immigrazioni per provincia di destinazione (ISTAT
 -- 28_185_DF_DCIS_MIGRAZIONI_4 via DBnomics)
 --
--- Grano: anno x territorio di destinazione (nazionale/ripartizione/regione/
--- provincia). Nomi da codelist locale (estratto dal metadata DBnomics).
--- Slice: cittadinanza/età/sesso/motivo = totale (solo il totale dei flussi).
+-- `aggregato` = true per i territori macro (nazionale/ripartizione, Trentino-
+-- Alto Adige, ITTOT): le foglie sommabili sono le province.
 
 select
     cast_int(r.TIME_PERIOD) as anno,
     normalize_string(r.TERRITORY_NEXT_RESID) as territorio_codice,
     t.nome as territorio,
     t.livello as livello,
+    cast(t.aggregato as boolean) as aggregato,
     cast_int(r.OBS_VALUE) as immigrazioni
 from raw_input r
 left join read_csv(

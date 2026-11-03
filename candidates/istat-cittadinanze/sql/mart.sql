@@ -1,9 +1,10 @@
 -- mart_cittadinanze: acquisizioni di cittadinanza italiana per anno x
--- territorio x ex-cittadinanza x processo di acquisizione.
+-- territorio x ex-cittadinanza x processo.
 --
--- Il mart contiene TUTTI i livelli territoriali (nazionale, ripartizione,
--- regione, provincia), marcati in `livello`: per sommare senza doppio
--- conteggio filtrare `WHERE livello = 'provincia'` (o il livello desiderato).
+-- `aggregato` = true per le righe che NON sono "leaf" (territorio macro o
+-- cittadinanza non-paese). Per numeri non gonfiati:
+--   - TOTALE nazionale: `livello='nazionale' AND cittadinanza_codice='WORLD' AND processo_codice='ALL'`
+--   - dettaglio sommabile: `WHERE NOT aggregato` (regione x paese reale)
 -- `processo` include la riga aggregata 'Totale' oltre a Matrimonio/Residenza/Altro.
 
 select
@@ -15,6 +16,7 @@ select
     cittadinanza,
     processo_codice,
     processo,
+    aggregato,
     acquisizioni
 from clean_input
 where acquisizioni is not null

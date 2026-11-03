@@ -17,7 +17,7 @@ La tensione: il dibattito misura "gli stranieri" e gli arrivi, ma il dato che ra
 
 ## Perché vale la pena
 
-- **Territorio**: Eurostat copre la cittadinanza acquisita solo a livello **nazionale** (`MIGR_ACQ`); ISTAT scende a **provincia**.
+- **Territorio**: Eurostat copre la cittadinanza acquisita solo a livello **nazionale** (`MIGR_ACQ`); ISTAT scende a **regione** per l'ex-cittadinanza e a **provincia** per i totali.
 - **Processo**: distingue matrimonio / residenza / altro — assente in Eurostat.
 - **Cross-check**: IT 2023 = **213.567** acquisizioni, **identico** a Eurostat `MIGR_ACQ` 2023 → le due fonti concordano.
 
@@ -28,8 +28,13 @@ La tensione: il dibattito misura "gli stranieri" e gli arrivi, ma il dato che ra
 
 ## Perimetro v0
 
-- Tutti i livelli territoriali, marcati in `livello` (nazionale / ripartizione / regione / provincia) → per sommare senza doppio conteggio filtrare un solo livello
-- `processo` include la riga aggregata `Totale` oltre a Matrimonio / Residenza / Altro
+- Tutti i livelli territoriali, marcati in `livello`; la colonna **`aggregato`** marca le righe che NON sono "foglie" (territorio macro o cittadinanza non-paese)
+- **Ricetta per numeri corretti**:
+  - **Totale nazionale**: `livello='nazionale' AND cittadinanza_codice='WORLD' AND processo_codice='ALL'`
+  - **Dettaglio per ex-cittadinanza**: `livello='regione' AND NOT aggregato AND processo_codice='ALL'`
+  - ⚠️ **Non sommare senza entrambi i filtri**: `livello='nazionale'` da solo include `WORLD` **e** i paesi (2×)
+- **Copertura reale (importante)**: l'ex-cittadinanza è disponibile **solo a nazionale / ripartizione / regione**, e solo per **10 paesi** (più `WORLD`); a **provincia c'è solo il totale** (`WORLD`). La somma dei 10 paesi a regione (2023: 209.877) è quindi **minore** del totale nazionale (213.567): è un dettaglio parziale, non un errore.
+- `processo` include la riga aggregata `Totale` oltre a Matrimonio/Residenza/Altro
 - Solo conteggi (`ACQCITIZ`); esclude `ACQCITIZRATE` (tasso per 1000 abitanti)
 
 ## Criterio di promozione

@@ -1,132 +1,132 @@
-ref_area,nome,livello
-IT,Italy,nazionale
-ITC,Nord-ovest,ripartizione
-ITC1,Piemonte,regione
-ITC11,Torino,provincia
-ITC12,Vercelli,provincia
-ITC13,Biella,provincia
-ITC14,Verbano-Cusio-Ossola,provincia
-ITC15,Novara,provincia
-ITC16,Cuneo,provincia
-ITC17,Asti,provincia
-ITC18,Alessandria,provincia
-ITC2,Valle d'Aosta / Vallée d'Aoste,regione
-ITC20,Valle d'Aosta / Vallée d'Aoste,provincia
-ITC3,Liguria,regione
-ITC31,Imperia,provincia
-ITC32,Savona,provincia
-ITC33,Genova,provincia
-ITC34,La Spezia,provincia
-ITC4,Lombardia,regione
-ITC41,Varese,provincia
-ITC42,Como,provincia
-ITC43,Lecco,provincia
-ITC44,Sondrio,provincia
-ITC45,Milano,provincia
-ITC46,Bergamo,provincia
-ITC47,Brescia,provincia
-ITC48,Pavia,provincia
-ITC49,Lodi,provincia
-ITC4A,Cremona,provincia
-ITC4B,Mantova,provincia
-ITD,Nord-est,ripartizione
-ITD1,Provincia Autonoma Bolzano / Bozen,regione
-ITD10,Bolzano / Bozen,provincia
-ITD2,Provincia Autonoma Trento,regione
-ITD20,Trento,provincia
-ITD3,Veneto,regione
-ITD31,Verona,provincia
-ITD32,Vicenza,provincia
-ITD33,Belluno,provincia
-ITD34,Treviso,provincia
-ITD35,Venezia,provincia
-ITD36,Padova,provincia
-ITD37,Rovigo,provincia
-ITD4,Friuli-Venezia Giulia,regione
-ITD41,Pordenone,provincia
-ITD42,Udine,provincia
-ITD43,Gorizia,provincia
-ITD44,Trieste,provincia
-ITD5,Emilia-Romagna,regione
-ITD51,Piacenza,provincia
-ITD52,Parma,provincia
-ITD53,Reggio nell'Emilia,provincia
-ITD54,Modena,provincia
-ITD55,Bologna,provincia
-ITD56,Ferrara,provincia
-ITD57,Ravenna,provincia
-ITD58,Forlì-Cesena,provincia
-ITD59,Rimini,provincia
-ITDA,Trentino Alto Adige / Südtirol,regione
-ITE,Centro (I),ripartizione
-ITE1,Toscana,regione
-ITE11,Massa-Carrara,provincia
-ITE12,Lucca,provincia
-ITE13,Pistoia,provincia
-ITE14,Firenze,provincia
-ITE15,Prato,provincia
-ITE16,Livorno,provincia
-ITE17,Pisa,provincia
-ITE18,Arezzo,provincia
-ITE19,Siena,provincia
-ITE1A,Grosseto,provincia
-ITE2,Umbria,regione
-ITE21,Perugia,provincia
-ITE22,Terni,provincia
-ITE3,Marche,regione
-ITE31,Pesaro e Urbino,provincia
-ITE32,Ancona,provincia
-ITE33,Macerata,provincia
-ITE34,Ascoli Piceno,provincia
-ITE4,Lazio,regione
-ITE41,Viterbo,provincia
-ITE42,Rieti,provincia
-ITE43,Roma,provincia
-ITE44,Latina,provincia
-ITE45,Frosinone,provincia
-ITF,Sud,ripartizione
-ITF1,Abruzzo,regione
-ITF11,L'Aquila,provincia
-ITF12,Teramo,provincia
-ITF13,Pescara,provincia
-ITF14,Chieti,provincia
-ITF2,Molise,regione
-ITF21,Isernia,provincia
-ITF22,Campobasso,provincia
-ITF3,Campania,regione
-ITF31,Caserta,provincia
-ITF32,Benevento,provincia
-ITF33,Napoli,provincia
-ITF34,Avellino,provincia
-ITF35,Salerno,provincia
-ITF4,Puglia,regione
-ITF41,Foggia,provincia
-ITF42,Bari,provincia
-ITF43,Taranto,provincia
-ITF44,Brindisi,provincia
-ITF45,Lecce,provincia
-ITF5,Basilicata,regione
-ITF51,Potenza,provincia
-ITF52,Matera,provincia
-ITF6,Calabria,regione
-ITF61,Cosenza,provincia
-ITF62,Crotone,provincia
-ITF63,Catanzaro,provincia
-ITF64,Vibo Valentia,provincia
-ITF65,Reggio di Calabria,provincia
-ITG,Isole,ripartizione
-ITG1,Sicilia,regione
-ITG11,Trapani,provincia
-ITG12,Palermo,provincia
-ITG13,Messina,provincia
-ITG14,Agrigento,provincia
-ITG15,Caltanissetta,provincia
-ITG16,Enna,provincia
-ITG17,Catania,provincia
-ITG18,Ragusa,provincia
-ITG19,Siracusa,provincia
-ITG2,Sardegna,regione
-ITG25,Sassari,provincia
-ITG26,Nuoro,provincia
-ITG27,Cagliari,provincia
-ITG28,Oristano,provincia
+ref_area,nome,livello,aggregato
+IT,Italy,nazionale,true
+ITC,Nord-ovest,ripartizione,true
+ITC1,Piemonte,regione,false
+ITC11,Torino,provincia,false
+ITC12,Vercelli,provincia,false
+ITC13,Biella,provincia,false
+ITC14,Verbano-Cusio-Ossola,provincia,false
+ITC15,Novara,provincia,false
+ITC16,Cuneo,provincia,false
+ITC17,Asti,provincia,false
+ITC18,Alessandria,provincia,false
+ITC2,Valle d'Aosta / Vallée d'Aoste,regione,false
+ITC20,Valle d'Aosta / Vallée d'Aoste,provincia,false
+ITC3,Liguria,regione,false
+ITC31,Imperia,provincia,false
+ITC32,Savona,provincia,false
+ITC33,Genova,provincia,false
+ITC34,La Spezia,provincia,false
+ITC4,Lombardia,regione,false
+ITC41,Varese,provincia,false
+ITC42,Como,provincia,false
+ITC43,Lecco,provincia,false
+ITC44,Sondrio,provincia,false
+ITC45,Milano,provincia,false
+ITC46,Bergamo,provincia,false
+ITC47,Brescia,provincia,false
+ITC48,Pavia,provincia,false
+ITC49,Lodi,provincia,false
+ITC4A,Cremona,provincia,false
+ITC4B,Mantova,provincia,false
+ITD,Nord-est,ripartizione,true
+ITD1,Provincia Autonoma Bolzano / Bozen,regione,false
+ITD10,Bolzano / Bozen,provincia,false
+ITD2,Provincia Autonoma Trento,regione,false
+ITD20,Trento,provincia,false
+ITD3,Veneto,regione,false
+ITD31,Verona,provincia,false
+ITD32,Vicenza,provincia,false
+ITD33,Belluno,provincia,false
+ITD34,Treviso,provincia,false
+ITD35,Venezia,provincia,false
+ITD36,Padova,provincia,false
+ITD37,Rovigo,provincia,false
+ITD4,Friuli-Venezia Giulia,regione,false
+ITD41,Pordenone,provincia,false
+ITD42,Udine,provincia,false
+ITD43,Gorizia,provincia,false
+ITD44,Trieste,provincia,false
+ITD5,Emilia-Romagna,regione,false
+ITD51,Piacenza,provincia,false
+ITD52,Parma,provincia,false
+ITD53,Reggio nell'Emilia,provincia,false
+ITD54,Modena,provincia,false
+ITD55,Bologna,provincia,false
+ITD56,Ferrara,provincia,false
+ITD57,Ravenna,provincia,false
+ITD58,Forlì-Cesena,provincia,false
+ITD59,Rimini,provincia,false
+ITDA,Trentino Alto Adige / Südtirol,regione,true
+ITE,Centro (I),ripartizione,true
+ITE1,Toscana,regione,false
+ITE11,Massa-Carrara,provincia,false
+ITE12,Lucca,provincia,false
+ITE13,Pistoia,provincia,false
+ITE14,Firenze,provincia,false
+ITE15,Prato,provincia,false
+ITE16,Livorno,provincia,false
+ITE17,Pisa,provincia,false
+ITE18,Arezzo,provincia,false
+ITE19,Siena,provincia,false
+ITE1A,Grosseto,provincia,false
+ITE2,Umbria,regione,false
+ITE21,Perugia,provincia,false
+ITE22,Terni,provincia,false
+ITE3,Marche,regione,false
+ITE31,Pesaro e Urbino,provincia,false
+ITE32,Ancona,provincia,false
+ITE33,Macerata,provincia,false
+ITE34,Ascoli Piceno,provincia,false
+ITE4,Lazio,regione,false
+ITE41,Viterbo,provincia,false
+ITE42,Rieti,provincia,false
+ITE43,Roma,provincia,false
+ITE44,Latina,provincia,false
+ITE45,Frosinone,provincia,false
+ITF,Sud,ripartizione,true
+ITF1,Abruzzo,regione,false
+ITF11,L'Aquila,provincia,false
+ITF12,Teramo,provincia,false
+ITF13,Pescara,provincia,false
+ITF14,Chieti,provincia,false
+ITF2,Molise,regione,false
+ITF21,Isernia,provincia,false
+ITF22,Campobasso,provincia,false
+ITF3,Campania,regione,false
+ITF31,Caserta,provincia,false
+ITF32,Benevento,provincia,false
+ITF33,Napoli,provincia,false
+ITF34,Avellino,provincia,false
+ITF35,Salerno,provincia,false
+ITF4,Puglia,regione,false
+ITF41,Foggia,provincia,false
+ITF42,Bari,provincia,false
+ITF43,Taranto,provincia,false
+ITF44,Brindisi,provincia,false
+ITF45,Lecce,provincia,false
+ITF5,Basilicata,regione,false
+ITF51,Potenza,provincia,false
+ITF52,Matera,provincia,false
+ITF6,Calabria,regione,false
+ITF61,Cosenza,provincia,false
+ITF62,Crotone,provincia,false
+ITF63,Catanzaro,provincia,false
+ITF64,Vibo Valentia,provincia,false
+ITF65,Reggio di Calabria,provincia,false
+ITG,Isole,ripartizione,true
+ITG1,Sicilia,regione,false
+ITG11,Trapani,provincia,false
+ITG12,Palermo,provincia,false
+ITG13,Messina,provincia,false
+ITG14,Agrigento,provincia,false
+ITG15,Caltanissetta,provincia,false
+ITG16,Enna,provincia,false
+ITG17,Catania,provincia,false
+ITG18,Ragusa,provincia,false
+ITG19,Siracusa,provincia,false
+ITG2,Sardegna,regione,false
+ITG25,Sassari,provincia,false
+ITG26,Nuoro,provincia,false
+ITG27,Cagliari,provincia,false
+ITG28,Oristano,provincia,false
