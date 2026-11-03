@@ -27,6 +27,7 @@ import re
 import sys
 import urllib.parse
 import urllib.request
+from collections import Counter
 from pathlib import Path
 
 import pandas as pd
@@ -40,6 +41,40 @@ TOTALE_PREFIX = "TOTALE"
 JUNK_PREFIXES = ("ELABORAZIONE", "FONTE", "MINISTERO", "*", "(*)")
 COL_REGIONE, COL_PROVINCIA = 0, 1
 COL_INDUSTRIALE, COL_TERMOELETTRICO, COL_RETI = 2, 4, 5
+
+# Le etichette della fonte cambiano tra gli anni: senza normalizzazione la serie
+# di una regione/provincia si spezza in due. Verificato sui dati 2004-2025.
+REGION_ALIAS = {
+    "ABBRUZZO": "ABRUZZO",  # refuso nella fonte, presente in 11 anni su 22
+}
+PROVINCE_ALIAS = {
+    "MONZA-BRIANZA": "MONZA",  # 2010-2013; dal 2014 la fonte usa "MONZA"
+}
+
+# Le 20 regioni attese dopo la normalizzazione. Guardia: se la fonte introduce
+# una variante nuova, il run fallisce invece di pubblicare una serie spezzata.
+EXPECTED_REGIONS = {
+    "ABRUZZO",
+    "BASILICATA",
+    "CALABRIA",
+    "CAMPANIA",
+    "EMILIA ROMAGNA",
+    "FRIULI VENEZIA GIULIA",
+    "LAZIO",
+    "LIGURIA",
+    "LOMBARDIA",
+    "MARCHE",
+    "MOLISE",
+    "PIEMONTE",
+    "PUGLIA",
+    "SARDEGNA",
+    "SICILIA",
+    "TOSCANA",
+    "TRENTINO ALTO ADIGE",
+    "UMBRIA",
+    "VALLE D'AOSTA",
+    "VENETO",
+}
 
 
 def _fetch(url: str) -> bytes:
@@ -70,6 +105,20 @@ def _is_junk(label) -> bool:
     return not text or text.startswith(JUNK_PREFIXES)
 
 
+def _normalize_region(label) -> str | None:
+    if not isinstance(label, str):
+        return None
+    text = re.sub(r"\s+", " ", label).strip().upper()
+    if not text or text.startswith(JUNK_PREFIXES):
+        return None
+    return REGION_ALIAS.get(text, text)
+
+
+def _normalize_province(label) -> str:
+    text = re.sub(r"\s+", " ", str(label)).strip().upper()
+    return PROVINCE_ALIAS.get(text, text)
+
+
 def _parse(data: bytes, file_name: str, anno: int) -> list[tuple]:
     sheets = pd.read_excel(
         io.BytesIO(data), sheet_name=None, header=None, engine=_engine(file_name)
@@ -95,19 +144,17 @@ def _parse(data: bytes, file_name: str, anno: int) -> list[tuple]:
                 # riga di fonte/testo a piè di foglio
                 continue
             if provincia.strip().upper().startswith(TOTALE_PREFIX):
-                nome_regione = str(regione).strip() if isinstance(regione, str) else None
-                if _is_junk(nome_regione):
-                    nome_regione = None
+                nome_regione = _normalize_region(regione)
                 rows.extend((anno, nome_regione, p, ind, ter, ret) for p, ind, ter, ret in block)
                 block = []
                 continue
-            ind = _to_float(frame.iat[r, COL_INDUSTRIALE])
-            ter = _to_float(frame.iat[r, COL_TERMOELETTRICO])
-            ret = _to_float(frame.iat[r, COL_RETI])
-            if ind is None and ter is None and ret is None:
-                # riga senza dati (piè di foglio)
-                continue
-            block.append((provincia.strip(), ind, ter, ret))
+            # Nella fonte un componente vuoto vale 0: il TOTALE GENERALE della riga
+            # è la somma dei componenti non nulli (es. RAGUSA 2013: 14,3 + NULL +
+            # 43,2 = 57,5). Coercizione a 0, così le serie non hanno buchi.
+            ind = _to_float(frame.iat[r, COL_INDUSTRIALE]) or 0.0
+            ter = _to_float(frame.iat[r, COL_TERMOELETTRICO]) or 0.0
+            ret = _to_float(frame.iat[r, COL_RETI]) or 0.0
+            block.append((_normalize_province(provincia), ind, ter, ret))
         rows.extend((anno, None, p, ind, ter, ret) for p, ind, ter, ret in block)
     return rows
 
@@ -137,6 +184,24 @@ def main() -> None:
         )
 
     output.parent.mkdir(parents=True, exist_ok=True)
+
+    # Guardie: senza queste, una variante nuova nella fonte pubblicherebbe una
+    # serie regionale spezzata (è successo con ABBRUZZO/ABRUZZO).
+    regioni = {r[1] for r in rows}
+    if regioni != EXPECTED_REGIONS:
+        mancanti = sorted(EXPECTED_REGIONS - regioni)
+        inattese = sorted(regioni - EXPECTED_REGIONS)
+        raise SystemExit(
+            "regioni inattese dopo la normalizzazione: "
+            f"mancanti={mancanti} inattese={inattese}. "
+            "Aggiungi la variante a REGION_ALIAS se è un refuso della fonte."
+        )
+    duplicati = sorted(coppia for coppia, n in Counter((r[0], r[2]) for r in rows).items() if n > 1)
+    if duplicati:
+        raise SystemExit(
+            f"province duplicate per anno (variante non normalizzata?): {duplicati[:10]}"
+        )
+
     with output.open("w", newline="", encoding="utf-8") as handle:
         import csv
 
@@ -147,7 +212,7 @@ def main() -> None:
 
     anni = sorted({r[0] for r in rows})
     print(
-        f"raw_input.csv: {len(rows)} righe, anni {anni[0]}-{anni[-1]}",
+        f"raw_input.csv: {len(rows)} righe, anni {anni[0]}-{anni[-1]}, {len(regioni)} regioni",
         file=sys.stderr,
     )
 

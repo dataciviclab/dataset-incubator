@@ -53,7 +53,15 @@ risale dal 2021 (il gas torna a fare elettricità).
 
 ## Limiti noti
 
-- Il numero di province varia nel tempo (102 → 104 → 106 → 110): riflette le
-  riorganizzazioni amministrative, non un buco nei dati
+- **Geografia pre-2016**: la fonte pubblica ancora le 8 province sarde storiche
+  anche nel 2024-2025 e **non** ha `SUD SARDEGNA` → 110 "province" invece delle 107
+  attuali; le 4 abolite nel 2016 restano con consumo 0
+- **Sardegna 2013**: componenti NULL nella fonte con totale 0; il preprocess
+  coercizza a 0 (nella fonte NULL vale 0, verificato sul totale di riga)
+- Il numero di province varia nel tempo (104 → 106 → 110): riorganizzazioni
+  amministrative, non un buco nei dati
 - La fonte contiene una riga `TOTALE` per regione: esclusa, il totale è ricalcolato
+- **Etichette regione/provincia normalizzate** (`ABBRUZZO`→`ABRUZZO`,
+  `MONZA-BRIANZA`→`MONZA`): senza, la serie si spezza. Il preprocess ha guardie
+  che fanno fallire il run se compare una variante nuova
 - Licenza MASE non dichiarata sul portale → da chiarire prima della pubblicazione

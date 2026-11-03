@@ -32,11 +32,47 @@ riga 6+    province (colonna REGIONE vuota)
 - Riga di fonte a piè di foglio (`MINISTERO DELLO SVILUPPO ECONOMICO - …`):
   esclusa sia per prefisso sia perché senza valori.
 
+## Normalizzazione etichette regione/provincia
+
+Le etichette **cambiano tra gli anni** nella fonte. Senza normalizzazione la serie
+di una regione si spezza in due (era il caso di `ABBRUZZO`/`ABRUZZO`).
+
+| Etichetta grezza | Canonica | Anni |
+|---|---|---|
+| `ABBRUZZO` | `ABRUZZO` | 11 anni su 22 (refuso nella fonte) |
+| `MONZA-BRIANZA` | `MONZA` | 2010-2013 (dal 2014 la fonte usa `MONZA`) |
+
+`MONZA` e `MONZA-BRIANZA` **non coesistono mai** nello stesso anno → l'alias non
+crea doppioni.
+
+## Guardie nel preprocess
+
+Due controlli fanno fallire il run invece di pubblicare una serie rotta:
+
+1. **regioni attese**: dopo la normalizzazione le regioni devono essere esattamente
+   le 20 in `EXPECTED_REGIONS`. Una variante nuova → errore con l'elenco.
+2. **province duplicate per anno**: se una variante non normalizzata produce due
+   righe per la stessa `(anno, provincia)` → errore.
+
+Aggiungere una variante alla mappa (`REGION_ALIAS` / `PROVINCE_ALIAS`) è la fix.
+
+## Sardegna: due cose da sapere
+
+- **2013**: la fonte pubblica le 4 province sarde con componenti **NULL** e
+  `TOTALE GENERALE` = 0. Nella fonte un componente vuoto **vale 0**: il totale
+  della riga è la somma dei componenti non nulli (es. RAGUSA 2013: 14,3 + NULL +
+  43,2 = 57,5). Il preprocess coercizza a 0, così la serie non ha buchi.
+- **Geografia pre-2016**: la fonte pubblica ancora le 8 province sarde storiche
+  (Carbonia-Iglesias, Medio Campidano, Ogliastra, Olbia-Tempio) anche nel 2024-2025,
+  e **non** ha `SUD SARDEGNA`. Quindi 110 "province" invece delle 107 attuali.
+  Le 4 abolite nel 2016 restano con consumo 0. È un limite della fonte, non nostro.
+
 ## Controlli di coerenza
 
 - 2024: somma province = **60.831 M Sm³** = `TOTALE GENERALE` del file ✓
 - Somma province per regione = riga `TOTALE` regionale (es. PIEMONTE 6.535,1) ✓
-- 2.364 righe grezze (wide) → 7.048 nel clean (unpivot 3 settori)
+- 2.368 righe grezze (wide) → 7.104 nel clean (unpivot 3 settori, 2.368 × 3)
+- Province per anno: 104 / 106 / 110 (riorganizzazioni amministrative)
 
 ## Perché non c'è il file regionale
 

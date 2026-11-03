@@ -14,15 +14,18 @@ dipendenza dai fornitori? ([Discussion #462](https://github.com/orgs/datacivicla
 - **Periodo**: **1990-2024** (annuale 1990-2001, mensile 2002-2024)
 - **Unità**: paese di origine × anno (× mese dal 2002)
 - **Metrica**: `import_msmc` — milioni di Sm³ (PCS 10,57275 kWh/Sm³)
-- **34 paesi**, incluse le voci aggregate (`ALTRI UE`, `ALTRI NON UE`, `NON SPECIFICATO`)
+- **34 paesi**, incluse le voci aggregate: `ALTRI UE`, `ALTRI NON UE`,
+  `NON SPECIFICATO` (1990-2001) e `SCONOSCIUTO` (2013-2017) — le ultime due sono lo
+  stesso tipo di residuo, ma la fonte usa nomi diversi in periodi diversi
 
 ## Output
 
 - `clean` — `anno, mese, granularita, paese_origine, import_msmc`
   (`mese` NULL sugli anni annuali; `granularita` ∈ `mensile` | `annuale`)
-- `mart_import_paese` — granularità nativa + `quota_pct` sul periodo
-- `mart_import_annuale` — una riga per anno × paese + `quota_pct` (la tabella per
-  leggere l'evoluzione del mix dal 1990)
+- `mart_import_paese` — granularità nativa + `quota_periodo_pct` sul periodo nativo
+  (anno-mese se mensile, anno se annuale)
+- `mart_import_annuale` — una riga per anno × paese + `quota_pct` (quota sempre
+  annua: la tabella per leggere l'evoluzione del mix dal 1990)
 
 ## Come girare
 

@@ -55,6 +55,9 @@ La benzina si è **quasi dimezzata** dal 2002 al 2013, poi si è stabilizzata e 
 
 ## Limiti noti
 
+- ⚠️ **`totale prodotti principali` è una riga di sintesi nei mart**: un
+  `SUM(consumo_kt)` ingenuo dà **91.024** invece di 45.513 (doppio conteggio).
+  Filtrare `prodotto <> 'totale prodotti principali'` per aggregare
 - Estratti i **prodotti di sintesi**; le ripartizioni "di cui" (rete/extrarète,
   autotrazione, termoelettrica) sono nel foglio ma non nel v0
 - Alcuni file contengono **più anni in fogli diversi** (es. 2023 → 2021, 2022, 2023):

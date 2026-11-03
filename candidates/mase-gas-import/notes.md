@@ -71,6 +71,26 @@ I marcatori di nota `(*)` e le virgolette sono rimossi. Righe `Totale`,
 - `2012` è presente nei file *per paese* (il buco 2012 è nei file *per punto di ingresso*)
 - Il 2022 ha `_rev1`: il preprocess preferisce la revisione
 
+## Bucket "non noto": due nomi diversi
+
+La fonte usa **due etichette** per il residuo non attribuito, in periodi che non
+si sovrappongono:
+
+| Etichetta | Periodo | Note |
+|---|---|---|
+| `NON SPECIFICATO` | 1990-2001 | dall'inglese "Not elsewhere specified" (serie annuale) |
+| `SCONOSCIUTO` | 2013-2017 | etichetta MASE dei file mensili |
+
+**Non** sono unite: il dataset le tiene distinte perché la fonte le distingue.
+Chi aggrega per "dipendenza estera" dovrebbe escluderle entrambe insieme ad
+`ALTRI UE` / `ALTRI NON UE`.
+
+## `quota_periodo_pct` cambia significato con `granularita`
+
+In `mart_import_paese` la colonna è la quota sul **periodo nativo**: anno-mese per
+le righe `mensile`, anno per le `annuale`. Il nome lo dichiara; per la serie
+omogenea usare `mart_import_annuale` (quota sempre annua).
+
 ## Piste collegate
 
 - `importazioni/` **per punto di ingresso** (2002-2024) → secondo asse, dataset separato

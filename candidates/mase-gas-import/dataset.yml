@@ -52,7 +52,7 @@ mart:
   validate:
     table_rules:
       mart_import_paese:
-        required_columns: [anno, mese, granularita, paese_origine, import_msmc, quota_pct]
+        required_columns: [anno, mese, granularita, paese_origine, import_msmc, quota_periodo_pct]
         primary_key: [anno, granularita, mese, paese_origine]
         min_rows: 3000
       mart_import_annuale:
