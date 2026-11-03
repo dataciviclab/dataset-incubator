@@ -1,7 +1,6 @@
 -- Consumi petroliferi mensili per prodotto.
 -- `quota_pct` è calcolata sui 7 prodotti reali, escludendo la riga di totale
--- (`totale prodotti principali`), che è una vista di sintesi e non una voce:
--- per quella riga la quota è NULL.
+-- (`totale prodotti principali`), che è una vista di sintesi: per quella è NULL.
 
 SELECT
     anno,

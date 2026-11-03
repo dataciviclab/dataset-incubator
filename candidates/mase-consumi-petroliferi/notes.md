@@ -2,63 +2,62 @@
 
 ## Fonte e accesso
 
-Stessa fonte degli altri candidate MASE (SISEN, API CMIS senza autenticazione).
+Stessa fonte degli altri candidate MASE (SISEN, API CMIS pubblica, nessuna auth).
 
-| Cartella | File | Copertura | N |
-|---|---|---|---|
-| `consumi_petroliferi/definitivi/` | `Consumi_Petroliferi_Definitivi_YYYY.xls(x)` | 2002-2025 (annuale) | 24 |
-| `consumi_petroliferi/preconsuntivi/{anno}/` | `Consumi_Petrolio_YYYY_MM.xls` | 2022-2026 (mensile) | ~81 |
+- Cartella usata: `consumi_petroliferi/definitivi` — `Consumi_Petroliferi_Definitivi_YYYY.xls(x)`,
+  **2002-2025**, 24 file
+- `consumi_petroliferi/preconsuntivi/{anno}/` (`Consumi_Petrolio_YYYY_MM.xls`) è un'altra
+  forma (mensile con confronto anno precedente + YTD): **fuori dal v0**
 
-- ID 2025 definitivi: `0900fde8800e07e4`
-- **v0 usa i definitivi**: un file = un anno completo (12 mesi), self-contained
-- I preconsuntivi sono un'altra forma (mensile, con confronto anno precedente + YTD);
-  cartelle `2020_old`, `2021_old` e anni normali 2022-2026
+## Layout (stabile; variano foglio, formato e righe di titolo)
 
-## Shape del file (verificato 2025)
+```
+riga titolo   CONSUMI PETROLIFERI  ANNO YYYY
+riga          I° SEMESTRE                       2°SEMESTRE
+riga header   PRODOTTO | <dett> | GEN. | FEB. | GEN.FEB | …   PRODOTTO | <dett> | LUG. | …
+righe dati    BENZINA | AUTO TOTALE | 652 | 620 | 1272 | …    BENZINA | AUTO TOTALE | 873 | …
+```
 
-Foglio `CONSUMI PETROLIFERI`, report a **blocchi affiancati**:
+- Due blocchi affiancati (I°/II° semestre), ciascuno con la propria colonna PRODOTTO
+- Colonne mese (0-based): `2,3,5,7,9,11` (GEN..GIU) e `15,17,19,21,23,25` (LUG..DIC).
+  Le colonne **cumulative** (`GEN.FEB`, `GEN.MAR`, …) sono ignorate.
+- Il nome prodotto è solo sulla prima riga del blocco; le righe successive hanno
+  celle vuote o i marcatori `DI CUI:` / `=` → forward-fill che li ignora
+- **Il parser individua la riga di intestazione** (cerca `PRODOTTO` + una cella `GEN*`)
+  invece di assumere un offset: l'offset cambia tra le ere (riga 3 nel 2002, riga 4 dal 2020)
 
-- I° SEMESTRE: colonne 0-12 (prodotto, dettaglio, GEN, FEB, GEN.FEB, MAR, GEN.MAR, …)
-- II° SEMESTRE: colonne 13-26 (prodotto, dettaglio, LUG, GEN.LUG, AGO, GEN.AGO, …)
-- righe 0-3 = titolo / anno / intestazioni / mesi → `read.skip=4`, `header: false`
-- il nome prodotto (col0) è solo sulla prima riga del blocco; le righe successive
-  hanno celle vuote o i marcatori `DI CUI:` / `=` → forward-fill che li ignora
-- le colonne **cumulative** (`GEN.FEB`, `GEN.MAR`, …) vanno ignorate: si usano solo
-  le colonne mese
-- unità: **migliaia di tonnellate** (,000 tonn.)
+## Insidie risolte
 
-## Tipi colonna — nota toolkit
+### Anno dal titolo, non dal nome file
+Alcuni file contengono **più anni in fogli diversi**:
+`Consumi_Petroliferi_Definitivi_2023.xlsx` ha 3 fogli → 2021, 2022, 2023.
+Il preprocess legge l'anno dal **titolo del foglio** e tiene solo le righe dell'anno
+del file, scartando i fogli extra (loggato a ogni run).
 
-Le colonne mese arrivano con **tipi misti** (VARCHAR/DOUBLE): basta una cella vuota o
-una stringa perché DuckDB tipizzi `gen` come VARCHAR e `feb` come DOUBLE. `UNPIVOT`
-richiede tipi uniformi e fallisce senza cast.
+### Etichette prodotto variabili
+| Etichetta grezza | Canonica |
+|---|---|
+| `CARBOT.` / `CARBOTURBO` | carboturbo |
+| `OLIO COMB.` / `OLIO COMB.LE` / `OLIO COMBUSTIBILE` | olio combustibile |
+| `G.P.L.` / `GPL` | gpl |
+| `LUBRIFICANTI TOTALE` | lubrificanti |
+| `TOTALE PRODOTTI PRINCIPALI` | totale prodotti principali |
 
-- `clean.read.all_varchar` **non si applica ai file Excel**: è gestito solo nel path CSV
-  (`core/csv_read.py`). Il path Excel (`core/read_excel.py`) non lo legge → viene
-  **ignorato silenziosamente**. Candidato a miglioramento del toolkit.
-- `clean.read.columns` per Excel **rinomina** soltanto: il tipo dichiarato è ignorato
-  (`read_excel.py` usa solo `parse_column_value(...)[0]`).
-- Soluzione adottata: `SELECT COLUMNS(*)::VARCHAR` in una CTE di `clean.sql`. Una riga
-  invece di 12 cast. E nessuna mapping `columns`: con `header: false` il reader nomina
-  già `col0..colN`.
+E le varianti della riga di totale (`TOTALE`, `TOTALE (A)`, `TOTALE GASOLI`,
+`T O T A L E`) sono allineate a `TOTALE`. I marcatori di nota `(*)` sono rimossi
+(`BENZINA(*)` → `BENZINA`).
 
-## Controlli di coerenza (2025)
+## Controlli di coerenza
 
-- benzina = 8.937 kt, carboturbo = 5.081 kt → coincidono con i totali `GEN.DIC` del foglio
-- 8 prodotti × 12 mesi = 96 righe; nessun null
+- 2025: benzina 8.937 kt, gasolio 25.799 kt → coincidono col foglio (`GEN.DIC`) ✓
+- 24 anni × 8 prodotti × 12 mesi = **2.304 righe** clean ✓
+- `SUM(quota_pct)` = 100 per ogni anno ✓
 
-## Insidie
+## Insidie residue
 
-- Il numero di colonne lette dipende dal foglio: se cambia, il riferimento posizionale
-  `col2..col25` va rivisto → verificare `toolkit inspect` a ogni nuovo anno
-- Le etichette prodotto hanno **doppie spaziature** (`AUTO  TOTALE`, `TOTALE  GASOLI`)
-  → normalizzate con `regexp_replace(x, ' +', ' ', 'g')`
-- Anche `LUBRIFICANTI TOTALE` è un prodotto senza dettaglio (come GPL, BITUMI)
-
-## Multi-anno (next step)
-
-Come per gli altri candidate MASE: un file per anno con ID non deterministico → serve
-una `raw` di tipo `script` che enumera la cartella e scarica ogni file.
+- Le ripartizioni "di cui" (rete/extrarète, autotrazione, termoelettrica) sono nel
+  raw ma non selezionate dal clean: disponibili per un'estensione
+- `min_rows` va rivisto se si aggiungono anni
 
 ## Licenza
 
