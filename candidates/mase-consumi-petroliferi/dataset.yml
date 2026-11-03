@@ -1,0 +1,66 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mase_consumi_petroliferi"
+  source_id: "mase_dgsaie"
+  tags: [energia, petrolio, carburanti, consumi, serie-storica]
+  category: energia
+  years: [2025]
+  time_coverage:
+    start_year: 2002
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "consumi_petroliferi_definitivi"
+      type: "http_file"
+      args:
+        url: "https://sisen.mase.gov.it/dgsaie/api/v1/cmis/documents/0900fde8800e07e4"
+        filename: "consumi_petroliferi_definitivi_2025.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    sheet_name: "CONSUMI PETROLIFERI"
+    header: false
+    skip: 4
+    trim_whitespace: true
+    # Nessuna mapping `columns`: con header:false il reader Excel nomina le
+    # colonne col0..colN. Il cast a VARCHAR lo fa clean.sql con COLUMNS(*)::VARCHAR.
+  required_columns:
+    - anno
+    - mese
+    - prodotto
+    - consumo_kt
+  validate:
+    min_rows: 90
+    not_null:
+      - anno
+      - mese
+      - prodotto
+      - consumo_kt
+    primary_key:
+      - anno
+      - mese
+      - prodotto
+
+mart:
+  tables:
+    - name: "mart_consumi_mensili"
+      sql: "sql/mart_consumi_mensili.sql"
+  required_tables:
+    - "mart_consumi_mensili"
+  validate:
+    table_rules:
+      mart_consumi_mensili:
+        required_columns: [anno, mese, prodotto, consumo_kt, quota_pct]
+        primary_key: [anno, mese, prodotto]
+        min_rows: 90
+
+validation:
+  fail_on_error: true

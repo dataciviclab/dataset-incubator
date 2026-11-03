@@ -1,0 +1,79 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mase_gas_import"
+  source_id: "mase_dgsaie"
+  tags: [energia, gas, import, dipendenza-energetica, serie-storica]
+  category: energia
+  years: [2024]
+  time_coverage:
+    start_year: 2002
+    end_year: 2024
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "import_paese_origine"
+      type: "http_file"
+      args:
+        url: "https://sisen.mase.gov.it/dgsaie/api/v1/cmis/documents/0900fde8800d9bcd"
+        filename: "importazioni_gas_paese_origine_2024.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    sheet_name: "Foglio2"
+    header: true
+    skip: 4
+    trim_whitespace: true
+    columns:
+      "paese": "VARCHAR"
+      "gen": "VARCHAR"
+      "feb": "VARCHAR"
+      "mar": "VARCHAR"
+      "apr": "VARCHAR"
+      "mag": "VARCHAR"
+      "giu": "VARCHAR"
+      "lug": "VARCHAR"
+      "ago": "VARCHAR"
+      "set": "VARCHAR"
+      "ott": "VARCHAR"
+      "nov": "VARCHAR"
+      "dic": "VARCHAR"
+      "totale": "VARCHAR"
+      "peso_pct": "VARCHAR"
+  required_columns:
+    - anno
+    - mese
+    - paese_origine
+    - import_msmc
+  validate:
+    min_rows: 250
+    not_null:
+      - anno
+      - mese
+      - paese_origine
+    primary_key:
+      - anno
+      - mese
+      - paese_origine
+
+mart:
+  tables:
+    - name: "mart_import_paese_mensile"
+      sql: "sql/mart_import_paese.sql"
+  required_tables:
+    - "mart_import_paese_mensile"
+  validate:
+    table_rules:
+      mart_import_paese_mensile:
+        required_columns: [anno, mese, paese_origine, import_msmc, quota_pct]
+        primary_key: [anno, mese, paese_origine]
+        min_rows: 250
+
+validation:
+  fail_on_error: true

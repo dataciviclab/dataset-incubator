@@ -1,0 +1,80 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mase_gas_consumi"
+  source_id: "mase_dgsaie"
+  tags: [energia, gas, consumi, territorio, provincia, serie-storica]
+  category: energia
+  years: [2024]
+  time_coverage:
+    start_year: 2004
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "gas_distribuito_province"
+      type: "http_file"
+      args:
+        url: "https://sisen.mase.gov.it/dgsaie/api/v1/cmis/documents/0900fde8800c6a4f"
+        filename: "gas_distribuito_province_2024.xlsx"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    sheet_name: "Foglio1"
+    header: true
+    skip: 4
+    trim_whitespace: true
+    columns:
+      "regione_raw": "VARCHAR"
+      "provincia_raw": "VARCHAR"
+      "industriale": "VARCHAR"
+      "col_d": "VARCHAR"
+      "termoelettrico": "VARCHAR"
+      "reti": "VARCHAR"
+      "totale_generale": "VARCHAR"
+  required_columns:
+    - anno
+    - regione
+    - provincia
+    - settore
+    - consumo_msmc
+  validate:
+    min_rows: 300
+    not_null:
+      - anno
+      - regione
+      - provincia
+      - settore
+    primary_key:
+      - anno
+      - provincia
+      - settore
+
+mart:
+  tables:
+    - name: "mart_consumo_provincia"
+      sql: "sql/mart_consumo_provincia.sql"
+    - name: "mart_consumo_regione"
+      sql: "sql/mart_consumo_regione.sql"
+  required_tables:
+    - "mart_consumo_provincia"
+    - "mart_consumo_regione"
+  validate:
+    table_rules:
+      mart_consumo_provincia:
+        required_columns: [anno, regione, provincia, settore, consumo_msmc]
+        primary_key: [anno, provincia, settore]
+        min_rows: 300
+      mart_consumo_regione:
+        required_columns: [anno, regione, settore, consumo_msmc]
+        primary_key: [anno, regione, settore]
+        min_rows: 50
+
+validation:
+  fail_on_error: true
