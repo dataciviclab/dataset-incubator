@@ -1,10 +1,12 @@
--- Import mensile per paese di origine + quota % sul mese.
--- Anno-mese x paese. Il totale mensile è la somma dei paesi (la riga
--- "Totale complessivo" del foglio è esclusa nel clean).
+-- Import per paese, alla granularità nativa della fonte:
+-- mensile 2002-2024, annuale 1990-2001.
+-- `quota_pct` è la quota sul totale del periodo (anno-mese per il mensile,
+-- anno per l'annuale).
 
 SELECT
     anno,
     mese,
+    granularita,
     paese_origine,
     import_msmc,
     CASE

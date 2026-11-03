@@ -2,68 +2,80 @@
 
 ## Fonte e accesso
 
-- Portale: https://sisen.mase.gov.it/dgsaie/bilancio-gas-naturale (SPA React, i dati non sono nell'HTML)
-- API CMIS, **nessuna autenticazione**:
+- Portale: https://sisen.mase.gov.it/dgsaie/bilancio-gas-naturale (SPA React)
+- API CMIS pubblica, **nessuna autenticazione**:
   - lista cartelle: `GET /dgsaie/api/v1/cmis/folders?folder={path}`
-  - lista documenti: `GET /dgsaie/api/v1/cmis/documents?folder={path}` (param `folder` = **path**, non ID)
+  - lista documenti: `GET /dgsaie/api/v1/cmis/documents?folder={path}` (param `folder` = **path**)
   - download: `GET /dgsaie/api/v1/cmis/documents/{id}`
-- Cartelle gas: `importazioni/`, `consumi/regionali/`, `consumi/provinciali/`, `bilancio/{anno}/`
+- **Non esiste** un download per nome/path (testato: 404/401). Gli ID sono opachi →
+  niente `{year}` in un `http_file` → serve il `script`.
 
-## Shape del file (verificato)
+## Perché `script` e non multi-source
 
-`ImportazioniGasMensiliPerPaeseDiOrigine_2024.xlsx`, foglio `Foglio2`:
+Il layout **cambia tra le ere**:
 
-| Riga/col | Contenuto |
+| Era | Foglio | Struttura |
+|---|---|---|
+| 2002-2012 `.xls` | `Importazioni Paese Origine` | 2002-2009: **8 blocchi-anno impilati** in un file |
+| 2013-2015 | `Foglio1` | un anno per file |
+| 2016+ `.xlsx` | `Foglio2` | un anno per file |
+
+Un `raw.sources[]` con N `http_file` + `mode: all` esplode sul concat (fogli e
+blocchi diversi). `preprocess.py` individua le righe-titolo
+(`IMPORTAZIONI DI GAS NATURALE … ANNO YYYY`) e legge da lì: titolo → `MESE` →
+nomi mesi → dati, fino alla riga `Totale`. Vale per tutte le ere.
+
+## Anomalia di unità 2013-2014
+
+I due file hanno titolo **"Miliardi di standard metri cubi"** ma i valori sono in
+**Sm³ grezzi**: RUSSIA gen-2013 = `2.462.201.248` (cioè 2,46 miliardi Sm³).
+Il titolo è errato nella fonte.
+
+Rilevazione: somma del blocco-anno `> 500.000` → riscala di `1e-6`.
+Somme rilevate: 2013 = 61.966.186.694, 2014 = 55.851.968.603 → riscalate a
+61.966 e 55.852 M Sm³. Il preprocess **logga** la correzione a ogni run.
+
+> Se in futuro un file supera quella soglia per un motivo diverso, la soglia va rivista.
+
+## Normalizzazione etichette paese
+
+Le ere usano italiano e inglese, con varianti e refusi:
+
+| Etichetta grezza | Canonica |
 |---|---|
-| A3 | titolo (dichiara l'anno) |
-| B4 | "MESE" |
-| riga 5 | nomi mesi (Gennaio…Dicembre) + `Totale` + `Peso %` |
-| riga 6+ | paese in colonna A, valori mensili in M Sm³ |
-| ultima riga | `Totale complessivo` (esclusa nel clean) |
+| Russian Federation | RUSSIA |
+| Netherlands / Norway / Libya | OLANDA / NORVEGIA / LIBIA |
+| QUATAR | QATAR |
+| USA | U.S.A. |
+| UK | REGNO UNITO |
+| TRINIDAD TOBAGO | TRINIDAD |
+| ALRI UE (refuso) | ALTRI UE |
+| ALTRI Unione Europea / ALTRI non Unione Europea | ALTRI UE / ALTRI NON UE |
+| `AUSTRIA (*)`, `PERU'` | AUSTRIA, PERU |
 
-- `read.skip=4` + `header=true` → header = riga 5; colonna 0 = paese (rinominata `paese`)
-- `Foglio1` è un pivot ausiliario con dati sparsi: ignorato via `sheet_name: Foglio2`
-- Le colonne mese arrivano con **tipi misti** (VARCHAR/DOUBLE) → cast a VARCHAR prima di `UNPIVOT`
+I marcatori di nota `(*)` e le virgolette sono rimossi. Righe `Totale`,
+`FONTE:`, `(*) …` sono escluse (il totale si ricalcola nei mart).
 
-## Run v0 (2024)
+## Controlli di coerenza
 
-`toolkit run -c candidates/mase-gas-import/dataset.yml --year 2024` → **passed**, `readiness: ready (8/8)`.
-
-- raw: 27 righe × 15 col (foglio `Foglio2`)
-- clean: **265 righe × 4 col**
-- mart: **265 righe**, 23 paesi, totale 2024 = **59.304 M Sm³** (coincide col "Totale complessivo" del file)
-- controllo: `SUM(quota_pct)` = 100,0 per ogni mese; i totali mensili coincidono col file
-
-**Warning attesi (non blocker)**:
-- `transition:clean` segnala `-881,5% righe` e 11 colonne rimosse: è l'effetto dell'`UNPIVOT`
-  (27 righe × 12 mesi → 265) e della selezione di 4 colonne su 15. Non è una perdita di dati.
+- Totali per anno confrontati con il `Totale` del file: 1990 = 30.470, 2000 = 57.447,
+  2010 = 75.354, 2024 = 59.304 M Sm³ ✓
+- 2021: 72.996 (dai file mensili) vs 72.728 (file annuale) → differenza nota,
+  il mensile è la fonte più fine e prevale
+- 3.984 righe clean; 3.660 mensili (23 anni) + 324 annuali (12 anni)
 
 ## Insidie
 
-- L'header del file 2024 dichiara `Totale 2022` → **bug di template MASE**, i valori sono 2024
-- `ImportazioniGasMensiliPerPuntoIngresso` **manca il 2012**; il 2022 ha `_rev1` (usare la rev)
-- Formati misti: `.xls` (2002-2019) vs `.xlsx` (2014+) → due engine (xlrd/openpyxl)
-- Valori `0` legittimi (paesi senza import in un mese): non sono null
-
-## Multi-anno (next step)
-
-La fonte espone **un documento per anno**, con ID non deterministico. Il v0 usa l'ID del 2024.
-Per il multi-anno serve una `raw` di tipo `script` che:
-1. chiama `GET /cmis/documents?folder=/sg_dgsaie/gas_naturale/importazioni`
-2. filtra i file `ImportazioniGasMensiliPerPaeseDiOrigine_YYYY` (preferendo `_rev1`)
-3. scarica ogni file via `GET /cmis/documents/{id}`
-
-Il layout `.xls` pre-2014 va verificato: `skip`/`sheet_name` possono differire.
+- Le etichette cambiano nel tempo: ogni nuovo anno va verificato
+- I file hanno colonne extra oltre i 12 mesi (`Totale`, `Peso %`): ignorate
+- `2012` è presente nei file *per paese* (il buco 2012 è nei file *per punto di ingresso*)
+- Il 2022 ha `_rev1`: il preprocess preferisce la revisione
 
 ## Piste collegate
 
-- `consumi/regionali/` (2002+) e `consumi/provinciali/` (2004+) → candidate separato
-  (`mase-gas-consumi-territoriali`), incrociabile con `comuni_master`
-- `importazioni/` **per punto di ingresso** → secondo asse dello stesso tema
-- Flussi giornalieri ENTSOG (Snam Rete Gas `IT-TSO-0001`, 2021+) → support, ma licenza ambigua
-  (T&C Rev 3 vs pagina corporate ENTSOG)
+- `importazioni/` **per punto di ingresso** (2002-2024) → secondo asse, dataset separato
+- `mase_gas_consumi` (provincia × settore) e `mase_consumi_petroliferi` (mensile)
 
 ## Licenza
 
-Non dichiarata sul portale MASE. Da chiarire prima di pubblicare il dataset sull'Explorer.
-Il dataset gemello `mase-prezzi-carburanti-mensili` usa la stessa fonte `mase_dgsaie`.
+Non dichiarata sul portale MASE. Da chiarire prima della pubblicazione sull'Explorer.
