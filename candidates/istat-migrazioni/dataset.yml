@@ -1,0 +1,68 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_migrazioni"
+  source_id: "istat_dbnomics"
+  tags: [immigrazione, flussi, istat, province]
+  category: immigrazione
+  years: [2026]
+  time_coverage:
+    start_year: 2002
+    end_year: 2024
+
+# Immigrazioni per provincia di destinazione — ISTAT 28_185_DF_DCIS_MIGRAZIONI_4
+# via type: dbnomics (mirror, no rate-limit SDMX).
+# Slice: cittadinanza/eta/sesso/motivo = totale, provincia = tutte.
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_dbnomics_migrazioni"
+      type: "dbnomics"
+      client:
+        timeout: 240
+        retries: 2
+      args:
+        provider: ISTAT
+        dataset: "28_185_DF_DCIS_MIGRAZIONI_4"
+        dimensions:
+          DATA_TYPE: [TREG]
+          CITIZENSHIP: [TOTAL]
+          SEX: ["9"]
+          AGE: [TOTAL]
+          CHANGE_OF_RESIDENCE: [FREIGN]
+          COUNTRY_PREV_RESID: [X1033]
+          COUNTRY_NEXT_RESID: [X1033]
+        page_size: 1000
+        max_pages: 20
+        filename: "istat_migrazioni_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  required_columns: [anno, territorio_codice, territorio, livello, immigrazioni]
+  validate:
+    not_null: [anno, territorio_codice, livello, immigrazioni]
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_migrazioni"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_migrazioni"
+  validate:
+    table_rules:
+      mart_migrazioni:
+        not_null: [anno, territorio_codice, livello, immigrazioni]
+        min_rows: 100
+
+validation:
+  fail_on_error: true
