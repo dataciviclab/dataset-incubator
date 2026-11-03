@@ -37,13 +37,11 @@ raw:
 
 support:
   - name: territori
-    type: dataset
-    config: "../../support_datasets/istat-territori/dataset.yml"
-    years: [2026]
+    type: file
+    path: "../../codelists/istat_territori.csv"
   - name: cittadinanze
-    type: dataset
-    config: "../../support_datasets/istat-cittadinanze-codelist/dataset.yml"
-    years: [2026]
+    type: file
+    path: "../../codelists/istat_cittadinanze.csv"
 
 clean:
   sql: "sql/clean.sql"

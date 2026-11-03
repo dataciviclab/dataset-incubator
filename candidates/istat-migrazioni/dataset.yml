@@ -41,9 +41,8 @@ raw:
 
 support:
   - name: territori
-    type: dataset
-    config: "../../support_datasets/istat-territori/dataset.yml"
-    years: [2026]
+    type: file
+    path: "../../codelists/istat_territori.csv"
 
 clean:
   sql: "sql/clean.sql"

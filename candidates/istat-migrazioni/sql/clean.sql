@@ -13,6 +13,6 @@ select
     (t.livello = 'aggregato') as aggregato,
     cast_int(r.OBS_VALUE) as immigrazioni
 from raw_input r
-left join read_parquet('{support.territori.clean}') t
+left join read_csv('{support.territori.path}', auto_detect=true, header=true) t
     on t.ref_area = normalize_string(r.TERRITORY_NEXT_RESID)
 where cast_int(r.OBS_VALUE) is not null
