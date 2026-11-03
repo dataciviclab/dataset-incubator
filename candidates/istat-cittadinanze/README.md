@@ -23,7 +23,7 @@ La tensione: il dibattito misura "gli stranieri" e gli arrivi, ma il dato che ra
 
 ## Output minimo atteso
 
-- Clean parquet + mart `mart_cittadinanze` (anno × territorio × livello × ex-cittadinanza × processo)
+- Clean parquet + mart analitici: `mart_cittadinanze` (anno × regione × ex-cittadinanza, **quota %**), `mart_cittadinanze_processo` (anno × regione × processo), `mart_cittadinanze_serie` (Italia per anno × processo)
 - Numeri chiave: Italia da 65.383 (2012) a 213.567 (2023); top ex-cittadinanze 2023: Albania (31.728), Marocco (27.901), Argentina (16.076); top province: Milano (19.788), Roma (10.875), Torino (7.344)
 
 ## Perimetro v0

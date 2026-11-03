@@ -22,7 +22,7 @@ La tensione: la popolazione straniera è **9,1% del totale** (dato Eurostat `MIG
 
 ## Output minimo atteso
 
-- Clean parquet + mart `mart_stranieri_residenti` (anno × territorio × livello × cittadinanza)
+- Clean parquet + mart analitici: `mart_stranieri_residenti` (anno × regione × cittadinanza, **quota %**), `mart_stranieri_residenti_serie` (Italia per anno)
 - Numeri chiave 2023: Italia 5.141.341; top cittadinanze: Romania (1.081.836), Albania (416.829), Marocco (415.088), Cina (307.038), Ucraina (249.613); top province: Roma (511.332), Milano (475.171), Torino (214.860), Brescia (150.383), Firenze (128.290)
 
 ## Perimetro v0

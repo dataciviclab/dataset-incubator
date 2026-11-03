@@ -23,7 +23,7 @@ La tensione: il dibattito misura gli **arrivi via mare** (nazionali, concentrati
 
 ## Output minimo atteso
 
-- Clean parquet + mart `mart_migrazioni` (anno × territorio × livello)
+- Clean parquet + mart analitici: `mart_migrazioni` (anno × regione, **quota %** sull'Italia), `mart_migrazioni_serie` (Italia per anno)
 - Numeri chiave 2024: Italia 434.579; top province: Milano (32.814), Roma (25.097), Torino (18.591), Napoli (11.383), Brescia (10.713)
 
 ## Perimetro v0

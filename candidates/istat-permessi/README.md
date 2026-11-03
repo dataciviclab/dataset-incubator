@@ -23,7 +23,7 @@ La tensione: gli sbarchi e gli "arrivi" dominano il dibattito, ma la presenza re
 
 ## Output minimo atteso
 
-- Clean parquet + mart `mart_permessi` (anno × territorio × livello × cittadinanza)
+- Clean parquet + mart analitici: `mart_permessi` (anno × regione × cittadinanza, **quota %** sul totale regionale), `mart_permessi_serie` (Italia per anno)
 - Numeri chiave 2024: Italia ~3,6M permessi validi; top cittadinanze: Ucraina (385.819), Marocco (371.809), Albania (359.442), Cina (267.090); top province: Milano (467.638), Roma (337.457), Brescia (114.186), Torino (110.575), Napoli (105.871)
 
 ## Perimetro v0
