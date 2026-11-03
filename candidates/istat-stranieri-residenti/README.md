@@ -30,8 +30,10 @@ La tensione: la popolazione straniera è **9,1% del totale** (dato Eurostat `MIG
 - Tutti i livelli territoriali, marcati in `livello`; la colonna **`aggregato`** marca le righe che NON sono "foglie" (territorio macro o cittadinanza non-paese)
 - **Ricetta per numeri corretti** (cubo multi-livello con aggregati sovrapposti):
   - **Totale nazionale**: `livello='nazionale' AND cittadinanza_codice='WORLD'`
-  - **Dettaglio sommabile**: `livello='provincia' AND NOT aggregato` (provincia × paese)
+  - **Dettaglio sommabile**: `livello='regione' AND NOT aggregato`
   - ⚠️ **Non sommare senza entrambi i filtri**: `WHERE NOT aggregato` da solo somma regione **e** provincia (2×); `livello='nazionale'` da solo include `WORLD` **e** i paesi (2×)
+  - ⚠️ **Il livello `provincia` è parziale**: per una sommatoria completa usare `livello='regione'`
+  - Residuo noto: la somma a regione è 5.140.698 (−643 apolidi `999`); l'apolidia è a volte inclusa in `X777` "altri paesi", a volte no (0,01%)
 - Sesso = totale (`SEX=9`)
 
 ## Criterio di promozione

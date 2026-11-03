@@ -2,9 +2,10 @@
 --
 -- Grano: anno x territorio (nazionale/ripartizione/regione/provincia) x
 -- ex-cittadinanza x processo di acquisizione.
--- `aggregato` = la riga non e' un "leaf": territorio macro (nazionale/
--- ripartizione o Trentino-Alto Adige) OPPURE cittadinanza non-paese
--- (aree geopolitiche, WORLD, X777).
+-- `aggregato` = la riga non e' una "foglia": territorio non-standard
+-- (livello='aggregato': macro-aree ITCD/ITFG, ITDA, ...) OPPURE cittadinanza
+-- non-paese (aree geopolitiche, WORLD, 999).
+-- Nomi e classificazione da support condivisi (istat_territori, istat_cittadinanze).
 
 select
     cast_int(r.TIME_PERIOD) as anno,
@@ -21,15 +22,11 @@ select
         when 'TRS' then 'Altro'
         else normalize_string(r.ACQUISITION_PROCESS)
     end as processo,
-    (cast(t.aggregato as boolean) or c.tipo = 'aggregato') as aggregato,
+    (t.livello = 'aggregato' or c.tipo = 'aggregato') as aggregato,
     cast_int(r.OBS_VALUE) as acquisizioni
 from raw_input r
-left join read_csv(
-    'candidates/istat-cittadinanze/codelists/istat_territori.csv',
-    auto_detect=true, header=true
-) t on t.ref_area = normalize_string(r.REF_AREA)
-left join read_csv(
-    'candidates/istat-cittadinanze/codelists/istat_cittadinanze.csv',
-    auto_detect=true, header=true
-) c on c.codice = normalize_string(r.MOSTREL_CCITENSHIP)
+left join read_parquet('{support.territori.clean}') t
+    on t.ref_area = normalize_string(r.REF_AREA)
+left join read_parquet('{support.cittadinanze.clean}') c
+    on c.codice = normalize_string(r.MOSTREL_CCITENSHIP)
 where cast_int(r.OBS_VALUE) is not null

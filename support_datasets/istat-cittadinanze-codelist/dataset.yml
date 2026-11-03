@@ -1,0 +1,52 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_cittadinanze_codelist"
+  source_id: "istat_sdmx"
+  tags: [pa, istat, cittadinanza, codelist]
+  category: pa
+  years: [2026]
+
+# Codelist cittadinanza ISTAT, support condiviso (unione dei dataflow migrazione
+# 29_849 / 29_348 / 29_317). Nomi dal metadata DBnomics (etichette di fonte).
+# `tipo`: 'paese' = foglia sommabile (ISO-2 + residui reali X95/X94/X777/Sud
+# Sudan); 'aggregato' = area geopolitica, WORLD o categoria sovrapposta (999).
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_cittadinanze_codelist"
+      type: "local_file"
+      args:
+        path: "raw/istat_cittadinanze_raw.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+    delim: ","
+    encoding: "utf-8"
+  required_columns: [codice, nome, tipo]
+  validate:
+    not_null: [codice, nome, tipo]
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_cittadinanze"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_cittadinanze"
+  validate:
+    table_rules:
+      mart_cittadinanze:
+        required_columns: [codice, nome, tipo]
+        not_null: [codice, nome, tipo]
+        min_rows: 100
+
+validation:
+  fail_on_error: true

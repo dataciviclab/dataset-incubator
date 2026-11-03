@@ -31,8 +31,9 @@ La tensione: il dibattito misura gli **arrivi via mare** (nazionali, concentrati
 - Tutti i livelli territoriali, marcati in `livello`; la colonna **`aggregato`** marca le righe che NON sono "foglie" (territorio macro o cittadinanza non-paese)
 - **Ricetta per numeri corretti**:
   - **Totale nazionale**: `livello='nazionale' AND territorio_codice='IT'`
-  - **Dettaglio sommabile**: `livello='provincia' AND NOT aggregato`
+  - **Dettaglio sommabile**: `livello='regione' AND NOT aggregato`
   - ⚠️ **Non sommare senza entrambi i filtri**: `WHERE NOT aggregato` da solo somma regione **e** provincia (2×)
+  - ⚠️ **Il livello `provincia` è parziale** (2023: 421.080 vs 439.658 a regione): per una sommatoria completa usare `livello='regione'`
 - Solo immigrazioni **dall'estero** (`FREIGN`): `CHANGE_OF_RESIDENCE=ALL` includerebbe anche le migrazioni **interne** tra comuni italiani (≈5× più grandi)
 - Cittadinanza/età/sesso = totale (dettaglio non disponibile a livello provinciale in questo dataflow)
 - **Emigrazioni per provincia di origine** (`DF_DCIS_MIGRAZIONI_7`) → estensione futura

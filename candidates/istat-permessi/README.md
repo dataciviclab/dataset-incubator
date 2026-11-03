@@ -31,8 +31,9 @@ La tensione: gli sbarchi e gli "arrivi" dominano il dibattito, ma la presenza re
 - Tutti i livelli territoriali, marcati in `livello`; la colonna **`aggregato`** marca le righe che NON sono "foglie" (territorio macro o cittadinanza non-paese)
 - **Ricetta per numeri corretti** (il mart è un cubo multi-livello con aggregati sovrapposti):
   - **Totale nazionale**: `livello='nazionale' AND cittadinanza_codice='WORLD'`
-  - **Dettaglio sommabile**: `livello='provincia' AND NOT aggregato` (provincia × paese)
+  - **Dettaglio sommabile**: `livello='regione' AND NOT aggregato`
   - ⚠️ **Non sommare senza entrambi i filtri**: `WHERE NOT aggregato` da solo somma regione **e** provincia (2×); `livello='nazionale'` da solo include `WORLD` **e** i paesi (2×)
+  - ⚠️ **Il livello `provincia` è parziale**: il dato non scende al 100% a provincia (2021: 3.220.771 vs 3.373.876 a regione). Per una sommatoria completa usare `livello='regione'`
 - Sesso/età/motivo/durata/stato civile = totale
 - Residuo noto: la somma delle foglie supera `WORLD` di **552** (gli apolidi `999` sono conteggiati anche in `X777` "altri paesi")
 

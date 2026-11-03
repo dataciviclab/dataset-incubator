@@ -39,6 +39,12 @@ raw:
         filename: "istat_migrazioni_series.csv"
       primary: true
 
+support:
+  - name: territori
+    type: dataset
+    config: "../../support_datasets/istat-territori/dataset.yml"
+    years: [2026]
+
 clean:
   sql: "sql/clean.sql"
   read:

@@ -1,8 +1,9 @@
 codice,nome,tipo
-999,Stateless,paese
+999,Stateless,aggregato
 AD,Andorra,paese
 AE,United Arab Emirates,paese
 AF,Afghanistan,paese
+AFR,Africa,aggregato
 AFR_C_S,Central and South Africa,aggregato
 AFR_E,Eastern Africa,aggregato
 AFR_N,Northern Africa,aggregato
@@ -10,10 +11,12 @@ AFR_W,Western Africa,aggregato
 AG,Antigua and Barbuda,paese
 AL,Albania,paese
 AM,Armenia,paese
+AME,America,aggregato
 AME_C_S,Central and South America,aggregato
 AME_N,Northern America,aggregato
 AO,Angola,paese
 AR,Argentina,paese
+ASI,Asia,aggregato
 ASI_E,Eastern Asia,aggregato
 ASI_W,Western Asia,aggregato
 AT,Austria,paese
@@ -65,6 +68,9 @@ ER,Eritrea,paese
 ES,Spain,paese
 ET,Ethiopia,paese
 EU28,European Union (28 Countries),aggregato
+EUR,Europe,aggregato
+EUR_C_E,Central and Eastern Europe,aggregato
+EUR_OTH,Other european countries,aggregato
 FI,Finland,paese
 FJ,Fiji,paese
 FM,Federated States of Micronesia,paese
@@ -202,6 +208,8 @@ VN,Vietnam,paese
 VU,Vanuatu,paese
 WORLD,All countries of the world,aggregato
 WS,Samoa,paese
+X777,Other countries,paese
+X94,Serbia and Montenegro,paese
 X95,Kosovo,paese
 XASI_C_S,Central and South Asia,aggregato
 XEUR_NEU28_OTH,Other European non-EU-28 countries (aggregate changing according to the context),aggregato

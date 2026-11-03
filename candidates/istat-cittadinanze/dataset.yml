@@ -35,6 +35,16 @@ raw:
         filename: "istat_cittadinanze_series.csv"
       primary: true
 
+support:
+  - name: territori
+    type: dataset
+    config: "../../support_datasets/istat-territori/dataset.yml"
+    years: [2026]
+  - name: cittadinanze
+    type: dataset
+    config: "../../support_datasets/istat-cittadinanze-codelist/dataset.yml"
+    years: [2026]
+
 clean:
   sql: "sql/clean.sql"
   read:
