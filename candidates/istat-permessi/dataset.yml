@@ -1,0 +1,67 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_permessi"
+  source_id: "istat_dbnomics"
+  tags: [immigrazione, permessi-soggiorno, istat, province]
+  category: immigrazione
+  years: [2026]
+  time_coverage:
+    start_year: 2008
+    end_year: 2024
+
+# Permessi di soggiorno validi (stock) per provincia x cittadinanza —
+# ISTAT 29_348_DF_DCIS_PERMSOGG1_5 via type: dbnomics (mirror, no rate-limit SDMX).
+# Slice: DATA_TYPE=RESPER, sesso/eta/stato civile/motivo/durata = totale.
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_dbnomics_permessi"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        provider: ISTAT
+        dataset: "29_348_DF_DCIS_PERMSOGG1_5"
+        dimensions:
+          DATA_TYPE: [RESPER]
+          SEX: ["9"]
+          AGE: [TOTAL]
+          TYPE_RES_PERMIT: [TOTAL]
+          TYPE_RES_PERMIT_REASON: [ALL]
+          MARITAL_STATUS: ["99"]
+        page_size: 1000
+        max_pages: 40
+        filename: "istat_permessi_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  required_columns: [anno, territorio_codice, territorio, livello, cittadinanza_codice, cittadinanza, permessi]
+  validate:
+    not_null: [anno, territorio_codice, livello, permessi]
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_permessi"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_permessi"
+  validate:
+    table_rules:
+      mart_permessi:
+        not_null: [anno, territorio_codice, livello, permessi]
+        min_rows: 100
+
+validation:
+  fail_on_error: true
