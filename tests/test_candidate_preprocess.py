@@ -2,7 +2,8 @@
 
 I preprocess gestiscono fogli con celle unite, blocchi affiancati, refusi e
 cambi di unità: è il codice dove un errore è silenzioso e finisce pubblicato.
-Il job `lint` non copre `candidates/`, quindi questi test sono l'unico gate.
+Il job `lint` non li copre con `mypy`, e le guardie interne (regioni attese,
+conteggio province, duplicati) girano solo a runtime: questi test le fissano.
 
 Prova del fuoco: senza il test su `ABBRUZZO → ABRUZZO` la serie regionale
 dell'Abruzzo si spezza in due senza che nessun gate se ne accorga.
@@ -79,6 +80,21 @@ class TestGasConsumiEtichette:
             assert canonica in gas_consumi.EXPECTED_REGIONS, variante
         for variante, canonica in gas_consumi.PROVINCE_ALIAS.items():
             assert variante != canonica
+
+    @pytest.mark.policy
+    def test_conteggio_province_copre_tutti_gli_anni(self, gas_consumi: ModuleType) -> None:
+        """Guardia: una riga estranea nel blocco sposta il conteggio e fa fallire il run.
+
+        Deve esistere un conteggio atteso per ogni anno della serie, senza buchi.
+        """
+        coperti = {
+            a for start, end, _ in gas_consumi.EXPECTED_PROVINCES for a in range(start, end + 1)
+        }
+        assert {2004, 2013, 2025} <= coperti
+        assert coperti == set(range(min(coperti), max(coperti) + 1))
+        for start, end, atteso in gas_consumi.EXPECTED_PROVINCES:
+            assert start <= end
+            assert atteso > 0
 
 
 class TestGasImportEtichette:

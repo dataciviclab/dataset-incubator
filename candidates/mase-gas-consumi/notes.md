@@ -47,14 +47,20 @@ crea doppioni.
 
 ## Guardie nel preprocess
 
-Due controlli fanno fallire il run invece di pubblicare una serie rotta:
+Tre controlli fanno fallire il run invece di pubblicare una serie rotta:
 
 1. **regioni attese**: dopo la normalizzazione le regioni devono essere esattamente
    le 20 in `EXPECTED_REGIONS`. Una variante nuova → errore con l'elenco.
 2. **province duplicate per anno**: se una variante non normalizzata produce due
    righe per la stessa `(anno, provincia)` → errore.
+3. **conteggio province per anno** (`EXPECTED_PROVINCES`, 104/106/110): una riga di
+   testo dentro un blocco, o una variante non normalizzata, sposta il conteggio e
+   fa fallire il run. Serve perché la coercizione `NULL → 0` ha rimosso il vecchio
+   guard "riga vuota → skip": una riga estranea entrerebbe come provincia a 0,0,0
+   senza che le guardie 1 e 2 se ne accorgano.
 
-Aggiungere una variante alla mappa (`REGION_ALIAS` / `PROVINCE_ALIAS`) è la fix.
+Aggiungere una variante alla mappa (`REGION_ALIAS` / `PROVINCE_ALIAS`) è la fix;
+per un anno nuovo va aggiunto il conteggio atteso in `EXPECTED_PROVINCES`.
 
 ## Sardegna: due cose da sapere
 

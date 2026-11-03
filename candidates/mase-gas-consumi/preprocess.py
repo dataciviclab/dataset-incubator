@@ -51,6 +51,15 @@ PROVINCE_ALIAS = {
     "MONZA-BRIANZA": "MONZA",  # 2010-2013; dal 2014 la fonte usa "MONZA"
 }
 
+# Conteggio province atteso per anno (riorganizzazioni amministrative). Guardia:
+# una riga di testo dentro un blocco, o una variante non normalizzata, sposta il
+# conteggio e fa fallire il run invece di entrare come provincia a 0,0,0.
+EXPECTED_PROVINCES = [
+    (2004, 2009, 104),
+    (2010, 2013, 106),
+    (2014, 2025, 110),
+]
+
 # Le 20 regioni attese dopo la normalizzazione. Guardia: se la fonte introduce
 # una variante nuova, il run fallisce invece di pubblicare una serie spezzata.
 EXPECTED_REGIONS = {
@@ -201,6 +210,24 @@ def main() -> None:
         raise SystemExit(
             f"province duplicate per anno (variante non normalizzata?): {duplicati[:10]}"
         )
+
+    attesi = {a: n for start, end, n in EXPECTED_PROVINCES for a in range(start, end + 1)}
+    province_per_anno: dict[int, set[str]] = {}
+    for anno, _, provincia, *_ in rows:
+        province_per_anno.setdefault(anno, set()).add(provincia)
+    for anno in sorted(province_per_anno):
+        atteso = attesi.get(anno)
+        if atteso is None:
+            raise SystemExit(
+                f"anno {anno} non previsto in EXPECTED_PROVINCES: "
+                "aggiungi il conteggio atteso dopo aver verificato la fonte"
+            )
+        trovate = len(province_per_anno[anno])
+        if trovate != atteso:
+            raise SystemExit(
+                f"{anno}: {trovate} province, attese {atteso} — "
+                "riga estranea nel blocco o variante non normalizzata?"
+            )
 
     with output.open("w", newline="", encoding="utf-8") as handle:
         import csv
