@@ -22,6 +22,8 @@ industria, centrali elettriche e riscaldamento?
 - `clean` — `anno, regione, provincia, settore, consumo_msmc`
 - `mart_consumo_provincia` — come clean + `quota_pct` sul totale provinciale
 - `mart_consumo_regione` — rollup regionale + `quota_pct`
+- **`mart_trend_regione`** — per regione: delta 2004→2025, delta %, CAGR, picco e minimo
+- **`mart_trend_provincia`** — come sopra, per provincia
 
 ## Come girare
 

@@ -24,8 +24,11 @@ dipendenza dai fornitori? ([Discussion #462](https://github.com/orgs/datacivicla
   (`mese` NULL sugli anni annuali; `granularita` ∈ `mensile` | `annuale`)
 - `mart_import_paese` — granularità nativa + `quota_periodo_pct` sul periodo nativo
   (anno-mese se mensile, anno se annuale)
-- `mart_import_annuale` — una riga per anno × paese + `quota_pct` (quota sempre
-  annua: la tabella per leggere l'evoluzione del mix dal 1990)
+- `mart_import_annuale` — una riga per anno × paese + `quota_pct` (quota sempre annua)
+- **`mart_trend_paese`** — per paese: primo/ultimo anno **con import > 0**, delta
+  assoluto e %, CAGR, picco e minimo con anno
+- **`mart_concentrazione`** — per anno: **HHI**, quote top-1/3/5, numero di fornitori
+  attivi e di paesi reali. È la misura della dipendenza
 
 ## Come girare
 
@@ -41,7 +44,11 @@ toolkit inspect -c candidates/mase-gas-import/dataset.yml -y 2024
 ## Il numero che racconta la storia
 
 Quota della Russia sul totale import: **45,9% (1990) → 47,1% (2019) → 4,1% (2024)**.
-Sostituita da Azerbaigian (0% → 17,4%, via TAP), Qatar e USA (GNL), Norvegia.
+Sostituita da Azerbaigian (dal 2020, via TAP), Qatar e USA (GNL), Norvegia.
+
+La concentrazione resta alta ma scende: **HHI 0,37 (1990) → 0,28 (2019) → 0,22 (2024)**,
+con i fornitori attivi che passano da **3 a 22**. Soglia convenzionale di mercato
+concentrato: HHI > 0,25 — l'Italia ci è rimasta fino al 2021.
 
 ## Incroci disponibili in Lab
 

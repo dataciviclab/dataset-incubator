@@ -23,6 +23,9 @@ gasolio, GPL e bitumi? La transizione si vede nei consumi?
 - `clean` — `anno, mese, prodotto, consumo_kt`
 - `mart_consumi_mensili` — come clean + `quota_pct` sul totale mensile
 - `mart_consumi_annuali` — aggregato annuo + `quota_pct`
+- **`mart_trend_prodotto`** — per prodotto: delta 2002→2025, delta %, CAGR, picco
+- **`mart_stagionalita`** — per prodotto × mese: quota media e `indice` vs un anno
+  piatto (benzina picco a luglio 1,13 · GPL a dicembre 1,32)
 
 ## Come girare
 

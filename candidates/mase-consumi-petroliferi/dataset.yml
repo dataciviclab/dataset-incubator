@@ -43,9 +43,15 @@ mart:
       sql: "sql/mart_consumi_mensili.sql"
     - name: "mart_consumi_annuali"
       sql: "sql/mart_consumi_annuali.sql"
+    - name: "mart_trend_prodotto"
+      sql: "sql/mart_trend_prodotto.sql"
+    - name: "mart_stagionalita"
+      sql: "sql/mart_stagionalita.sql"
   required_tables:
     - "mart_consumi_mensili"
     - "mart_consumi_annuali"
+    - "mart_trend_prodotto"
+    - "mart_stagionalita"
   validate:
     table_rules:
       mart_consumi_mensili:
@@ -56,6 +62,14 @@ mart:
         required_columns: [anno, prodotto, consumo_kt, quota_pct]
         primary_key: [anno, prodotto]
         min_rows: 150
+      mart_trend_prodotto:
+        required_columns: [prodotto, anno_primo, anno_ultimo, delta_pct, cagr]
+        primary_key: [prodotto]
+        min_rows: 7
+      mart_stagionalita:
+        required_columns: [prodotto, mese, quota_mese_media_pct, indice]
+        primary_key: [prodotto, mese]
+        min_rows: 80
 
 validation:
   fail_on_error: true

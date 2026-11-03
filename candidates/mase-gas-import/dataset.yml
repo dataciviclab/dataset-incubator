@@ -46,9 +46,15 @@ mart:
       sql: "sql/mart_import_paese.sql"
     - name: "mart_import_annuale"
       sql: "sql/mart_import_annuale.sql"
+    - name: "mart_trend_paese"
+      sql: "sql/mart_trend_paese.sql"
+    - name: "mart_concentrazione"
+      sql: "sql/mart_concentrazione.sql"
   required_tables:
     - "mart_import_paese"
     - "mart_import_annuale"
+    - "mart_trend_paese"
+    - "mart_concentrazione"
   validate:
     table_rules:
       mart_import_paese:
@@ -59,6 +65,14 @@ mart:
         required_columns: [anno, paese_origine, import_msmc, quota_pct]
         primary_key: [anno, paese_origine]
         min_rows: 500
+      mart_trend_paese:
+        required_columns: [paese_origine, anno_primo, anno_ultimo, delta_pct, cagr]
+        primary_key: [paese_origine]
+        min_rows: 30
+      mart_concentrazione:
+        required_columns: [anno, hhi, top3_pct, n_paesi_reali]
+        primary_key: [anno]
+        min_rows: 30
 
 validation:
   fail_on_error: true
