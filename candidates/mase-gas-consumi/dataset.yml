@@ -6,19 +6,20 @@ dataset:
   source_id: "mase_dgsaie"
   tags: [energia, gas, consumi, territorio, provincia, serie-storica]
   category: energia
-  years: [2024]
-  time_coverage:
-    start_year: 2004
-    end_year: 2025
+  years: [2025]
+  # Anno nominale: il preprocess scarica l'intera serie (2004-2025) in un unico
+  # raw_input.csv. Non esistono file separati per anno: 2025 e' il rilascio piu recente.
+  time_coverage: {start_year: 2004, end_year: 2025}
 
 raw:
   output_policy: overwrite
   sources:
-    - name: "gas_distribuito_province"
-      type: "http_file"
+    - name: "mase_gas_consumi_cmis"
+      type: script
       args:
-        url: "https://sisen.mase.gov.it/dgsaie/api/v1/cmis/documents/0900fde8800c6a4f"
-        filename: "gas_distribuito_province_2024.xlsx"
+        command: "python preprocess.py raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
       primary: true
 
 clean:
@@ -26,35 +27,15 @@ clean:
   read:
     source: auto
     mode: latest
-    sheet_name: "Foglio1"
+    delim: ","
+    encoding: "utf-8"
     header: true
-    skip: 4
-    trim_whitespace: true
-    columns:
-      "regione_raw": "VARCHAR"
-      "provincia_raw": "VARCHAR"
-      "industriale": "VARCHAR"
-      "col_d": "VARCHAR"
-      "termoelettrico": "VARCHAR"
-      "reti": "VARCHAR"
-      "totale_generale": "VARCHAR"
-  required_columns:
-    - anno
-    - regione
-    - provincia
-    - settore
-    - consumo_msmc
+    all_varchar: true
+  required_columns: [anno, regione, provincia, settore, consumo_msmc]
   validate:
-    min_rows: 300
-    not_null:
-      - anno
-      - regione
-      - provincia
-      - settore
-    primary_key:
-      - anno
-      - provincia
-      - settore
+    min_rows: 6000
+    not_null: [anno, regione, provincia, settore, consumo_msmc]
+    primary_key: [anno, provincia, settore]
 
 mart:
   tables:
@@ -68,13 +49,13 @@ mart:
   validate:
     table_rules:
       mart_consumo_provincia:
-        required_columns: [anno, regione, provincia, settore, consumo_msmc]
+        required_columns: [anno, regione, provincia, settore, consumo_msmc, quota_pct]
         primary_key: [anno, provincia, settore]
-        min_rows: 300
+        min_rows: 6000
       mart_consumo_regione:
-        required_columns: [anno, regione, settore, consumo_msmc]
+        required_columns: [anno, regione, settore, consumo_msmc, quota_pct]
         primary_key: [anno, regione, settore]
-        min_rows: 50
+        min_rows: 1000
 
 validation:
   fail_on_error: true
