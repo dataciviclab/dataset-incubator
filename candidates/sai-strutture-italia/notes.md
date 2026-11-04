@@ -12,6 +12,9 @@
 
 ## Cautele
 
-- Capienza zero per rilevazioni storiche (pre-2020)
-- `sai_struttura_id` non univoco: più rilevazioni per stessa struttura
+- Capienza e presenze sono **NULL per interi anni** (2018, 2019, 2021): in quegli
+  anni è valido solo il conteggio delle strutture. Il mart non filtra su
+  `capienza` (altrimenti perderebbe quegli anni) — `SUM` ignora i NULL.
+- `sai_struttura_id` è univoco per rilevazione annuale, non nel file intero
+  (9.907 strutture ricorrono in più anni).
 - `data_fine` è VARCHAR (valori vuoti)
