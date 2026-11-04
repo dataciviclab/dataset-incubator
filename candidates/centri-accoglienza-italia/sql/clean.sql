@@ -1,8 +1,13 @@
 -- Centri di accoglienza per migranti (CAS, CPA, Hotspot) — clean
 -- Fonte: Centri d'Italia (ActionAid Italia + Fondazione Openpolis), CC-BY 4.0
--- Un record = un centro in una data di rilevazione; `anno` derivato da rilevazione_data.
+-- Un record = un centro x convenzione in una data di rilevazione (uno snapshot
+-- per anno, al 31/12); `anno` derivato da rilevazione_data. Lo stesso `centro_id`
+-- compare piu' volte (piu' convenzioni/contratti con capienza e date diverse).
+--
+-- SELECT DISTINCT rimuove le righe esatte duplicate della fonte (206 su 47.419,
+-- concentrate nel 2023-2024: stesso centro, stessa convenzione, stessi valori).
 
-SELECT
+SELECT DISTINCT
     CAST(substr(CAST("rilevazione_data" AS VARCHAR), 1, 4) AS INTEGER) AS anno,
     trim(CAST("rilevazione_data" AS VARCHAR)) AS rilevazione_data,
     TRY_CAST("centro_id" AS BIGINT) AS centro_id,
