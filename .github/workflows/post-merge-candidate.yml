@@ -17,8 +17,8 @@ on:
       - "support_datasets/**"
   workflow_dispatch:
     inputs:
-      slug:
-        description: "Slug del dataset da processare (es. inpa-bandi)"
+      datasets:
+        description: "Uno o più slug separati da virgola (es. 'mase-gas-import,mase-gas-consumi'). Vuoto = nessuno. Vedi ADR-002."
         required: false
         type: string
 
@@ -56,7 +56,7 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           paths: "candidates compose support_datasets"
-          slug-input: "${{ inputs.slug }}"
+          datasets: "${{ inputs.datasets }}"
 
       # ── Run pipeline (toolkit, anni dal config) ─────────────────────
       - name: Run changed datasets
