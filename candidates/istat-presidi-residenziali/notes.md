@@ -13,7 +13,7 @@
 | Toolkit | `type: sdmx` — agency `IT1`, flow `49_37`, version `1.0` |
 | Endpoint | `https://esploradati.istat.it/SDMXWS/rest` |
 | Container | `49_37` restituisce tutte le unità di servizio con le 11 dimensioni del DSD `DCIS_PRESIDI1` |
-| Grano | IT + 5 ripartizioni + 20 regioni/province autonome (28 codici `REF_AREA`) |
+| Grano | fonte: 28 codici `REF_AREA` (IT + 5 ripartizioni + 20 regioni/PA); mart: Italia + 20 regioni |
 | Anni | 2009–2023 (verificato) |
 
 ## Rischi tecnici
@@ -38,6 +38,15 @@
   (Trentino-Alto Adige) per evitare doppi conteggi con le regioni.
 - **`ITD1`/`ITD2`** = Bolzano/Bozen e Trento: sono le unità statistiche ISTAT,
   tenute come "regioni".
+- **ELD × livello assistenza è solo nazionale**: per l'Italia ISTAT pubblica
+  `ELD` con `ABS`/`LOW`/`MED`/`HIGH`; per le regioni `ELD` esiste solo con
+  `livello_assistenza = ALL`. Il dettaglio per livello, a livello regionale, è
+  disponibile solo sull'utenza `TOT`. Quindi il perimetro RSA "anziani ×
+  intensità" è nazionale; il divario regionale si legge su posti letto/100k e
+  quota anziani.
+- **`is_aggregato` in `mart_posti_letto_regione`**: true se `tipo_utenza = TOT`
+  o `livello_assistenza = ALL`. Evita il doppio conteggio quando si somma
+  (IT 2023 ELD: `ALL` 315.899 = ABS+LOW+MED+HIGH).
 
 ## Mappature codici (codelist ISTAT)
 

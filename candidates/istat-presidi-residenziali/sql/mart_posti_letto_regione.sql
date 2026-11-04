@@ -11,7 +11,10 @@ select
     tipo_utenza,
     livello_assistenza_codice,
     livello_assistenza,
-    valore as posti_letto
+    valore as posti_letto,
+    -- true sulle righe di totale (utenza TOT o livello ALL): non sommare
+    -- insieme alle righe di dettaglio (doppio conteggio).
+    (tipo_utenza_codice = 'TOT' or livello_assistenza_codice = 'ALL') as is_aggregato
 from clean_input
 where tipo_dato_codice = '73'
   and tipo_residenzialita_codice = 'ALL'

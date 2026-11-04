@@ -115,6 +115,7 @@ mart:
           - tipo_utenza_codice
           - livello_assistenza_codice
           - posti_letto
+          - is_aggregato
         primary_key: [anno, ref_area_codice, tipo_utenza_codice, livello_assistenza_codice]
         min_rows: 3000
       mart_trend:
