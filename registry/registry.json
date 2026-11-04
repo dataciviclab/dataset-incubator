@@ -3498,6 +3498,197 @@
       ]
     },
     {
+      "slug": "mase_consumi_petroliferi",
+      "name": "Mase Consumi Petroliferi",
+      "description": "",
+      "source": "",
+      "source_id": "mase_dgsaie",
+      "period": {
+        "start": 2002,
+        "end": 2025
+      },
+      "tags": [
+        "energia",
+        "petrolio",
+        "carburanti",
+        "consumi",
+        "serie-storica"
+      ],
+      "category": "energia",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "month"
+        },
+        {
+          "name": "prodotto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "consumo_kt",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mase_consumi_petroliferi/2025/mase_consumi_petroliferi_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "mase_consumi_petroliferi__mart_consumi_mensili",
+        "mase_consumi_petroliferi__mart_consumi_annuali",
+        "mase_consumi_petroliferi__mart_trend_prodotto",
+        "mase_consumi_petroliferi__mart_stagionalita"
+      ]
+    },
+    {
+      "slug": "mase_gas_consumi",
+      "name": "Mase Gas Consumi",
+      "description": "",
+      "source": "",
+      "source_id": "mase_dgsaie",
+      "period": {
+        "start": 2004,
+        "end": 2025
+      },
+      "tags": [
+        "energia",
+        "gas",
+        "consumi",
+        "territorio",
+        "provincia",
+        "serie-storica"
+      ],
+      "category": "energia",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "province_code"
+        },
+        {
+          "name": "settore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "consumo_msmc",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mase_gas_consumi/2025/mase_gas_consumi_2025_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "mase_gas_consumi__mart_consumo_provincia",
+        "mase_gas_consumi__mart_consumo_regione",
+        "mase_gas_consumi__mart_trend_regione",
+        "mase_gas_consumi__mart_trend_provincia"
+      ]
+    },
+    {
+      "slug": "mase_gas_import",
+      "name": "Mase Gas Import",
+      "description": "",
+      "source": "",
+      "source_id": "mase_dgsaie",
+      "period": {
+        "start": 1990,
+        "end": 2024
+      },
+      "tags": [
+        "energia",
+        "gas",
+        "import",
+        "dipendenza-energetica",
+        "serie-storica"
+      ],
+      "category": "energia",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "month"
+        },
+        {
+          "name": "granularita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "paese_origine",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "import_msmc",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mase_gas_import/2024/mase_gas_import_2024_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "mase_gas_import__mart_import_paese",
+        "mase_gas_import__mart_import_annuale",
+        "mase_gas_import__mart_trend_paese",
+        "mase_gas_import__mart_concentrazione"
+      ]
+    },
+    {
       "slug": "mase_prezzi_carburanti_mensili",
       "name": "Mase Prezzi Carburanti Mensili",
       "description": "",
@@ -6848,6 +7039,126 @@
       }
     },
     {
+      "slug": "mase_consumi_petroliferi__mart_consumi_annuali",
+      "dataset": "mase_consumi_petroliferi",
+      "table": "mart_consumi_annuali",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_consumi_petroliferi/2025/mart_consumi_annuali.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_consumi_petroliferi__mart_consumi_mensili",
+      "dataset": "mase_consumi_petroliferi",
+      "table": "mart_consumi_mensili",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_consumi_petroliferi/2025/mart_consumi_mensili.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_consumi_petroliferi__mart_stagionalita",
+      "dataset": "mase_consumi_petroliferi",
+      "table": "mart_stagionalita",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_consumi_petroliferi/2025/mart_stagionalita.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_consumi_petroliferi__mart_trend_prodotto",
+      "dataset": "mase_consumi_petroliferi",
+      "table": "mart_trend_prodotto",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_consumi_petroliferi/2025/mart_trend_prodotto.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_gas_consumi__mart_consumo_provincia",
+      "dataset": "mase_gas_consumi",
+      "table": "mart_consumo_provincia",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_gas_consumi/2025/mart_consumo_provincia.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_gas_consumi__mart_consumo_regione",
+      "dataset": "mase_gas_consumi",
+      "table": "mart_consumo_regione",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_gas_consumi/2025/mart_consumo_regione.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_gas_consumi__mart_trend_provincia",
+      "dataset": "mase_gas_consumi",
+      "table": "mart_trend_provincia",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_gas_consumi/2025/mart_trend_provincia.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_gas_consumi__mart_trend_regione",
+      "dataset": "mase_gas_consumi",
+      "table": "mart_trend_regione",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_gas_consumi/2025/mart_trend_regione.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_gas_import__mart_concentrazione",
+      "dataset": "mase_gas_import",
+      "table": "mart_concentrazione",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_gas_import/2024/mart_concentrazione.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_gas_import__mart_import_annuale",
+      "dataset": "mase_gas_import",
+      "table": "mart_import_annuale",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_gas_import/2024/mart_import_annuale.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_gas_import__mart_import_paese",
+      "dataset": "mase_gas_import",
+      "table": "mart_import_paese",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_gas_import/2024/mart_import_paese.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mase_gas_import__mart_trend_paese",
+      "dataset": "mase_gas_import",
+      "table": "mart_trend_paese",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mase_gas_import/2024/mart_trend_paese.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "mase_prezzi_carburanti_mensili__mart_mensile_prodotto",
       "dataset": "mase_prezzi_carburanti_mensili",
       "table": "mart_mensile_prodotto",
@@ -7769,6 +8080,99 @@
       }
     },
     {
+      "id": "mase_consumi_petroliferi",
+      "source_id": "mase_dgsaie",
+      "status": "ok",
+      "label": "mase_consumi_petroliferi",
+      "detail": "anno 2025 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T152903Z_5c2ab7f6",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 12230,
+          "clean": 2304,
+          "mart": 2587
+        },
+        "output_bytes": {
+          "raw": 417154,
+          "clean": 6567,
+          "mart": 29675
+        },
+        "started_at": "2026-11-04T15:29:03.653488+00:00",
+        "finished_at": "2026-11-04T15:29:41.543450+00:00",
+        "duration_seconds": 37.89
+      }
+    },
+    {
+      "id": "mase_gas_consumi",
+      "source_id": "mase_dgsaie",
+      "status": "ok",
+      "label": "mase_gas_consumi",
+      "detail": "anno 2025 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T152942Z_eff284d3",
+        "year": 2025,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 2368,
+          "clean": 7104,
+          "mart": 8554
+        },
+        "output_bytes": {
+          "raw": 95751,
+          "clean": 24274,
+          "mart": 93743
+        },
+        "started_at": "2026-11-04T15:29:42.046256+00:00",
+        "finished_at": "2026-11-04T15:30:18.837847+00:00",
+        "duration_seconds": 36.792
+      }
+    },
+    {
+      "id": "mase_gas_import",
+      "source_id": "mase_dgsaie",
+      "status": "ok",
+      "label": "mase_gas_import",
+      "detail": "anno 2024 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T153019Z_db388cf4",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 3984,
+          "clean": 3984,
+          "mart": 4693
+        },
+        "output_bytes": {
+          "raw": 98906,
+          "clean": 19847,
+          "mart": 57212
+        },
+        "started_at": "2026-11-04T15:30:19.409461+00:00",
+        "finished_at": "2026-11-04T15:30:42.640477+00:00",
+        "duration_seconds": 23.231
+      }
+    },
+    {
       "id": "mase_prezzi_carburanti_mensili",
       "source_id": "mase_dgsaie",
       "status": "ok",
@@ -8664,6 +9068,12 @@
             "semantic_type": "province_code"
           },
           {
+            "slug": "mase_gas_consumi",
+            "name": "Mase Gas Consumi",
+            "column": "provincia",
+            "semantic_type": "province_code"
+          },
+          {
             "slug": "pensioni_pa_dag",
             "name": "Pensioni Pa Dag",
             "column": "sigla_provincia",
@@ -8707,7 +9117,7 @@
           }
         ],
         "types": {
-          "province_code": 17
+          "province_code": 18
         }
       },
       "Provincia (tramite NUTS3)": {
@@ -8814,6 +9224,12 @@
             "semantic_type": "region_code"
           },
           {
+            "slug": "mase_gas_consumi",
+            "name": "Mase Gas Consumi",
+            "column": "regione",
+            "semantic_type": "region_code"
+          },
+          {
             "slug": "minlavoro_agevolazioni",
             "name": "Minlavoro Agevolazioni",
             "column": "regione",
@@ -8887,7 +9303,7 @@
           }
         ],
         "types": {
-          "region_code": 25
+          "region_code": 26
         }
       },
       "Tempo": {
@@ -9033,6 +9449,36 @@
             "semantic_type": "year"
           },
           {
+            "slug": "mase_consumi_petroliferi",
+            "name": "Mase Consumi Petroliferi",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "mase_consumi_petroliferi",
+            "name": "Mase Consumi Petroliferi",
+            "column": "mese",
+            "semantic_type": "month"
+          },
+          {
+            "slug": "mase_gas_consumi",
+            "name": "Mase Gas Consumi",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "mase_gas_import",
+            "name": "Mase Gas Import",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "mase_gas_import",
+            "name": "Mase Gas Import",
+            "column": "mese",
+            "semantic_type": "month"
+          },
+          {
             "slug": "mase_prezzi_carburanti_mensili",
             "name": "Mase Prezzi Carburanti Mensili",
             "column": "anno",
@@ -9142,8 +9588,8 @@
           }
         ],
         "types": {
-          "year": 35,
-          "month": 6
+          "year": 38,
+          "month": 8
         }
       }
     },
