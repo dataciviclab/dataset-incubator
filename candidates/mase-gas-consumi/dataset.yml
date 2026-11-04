@@ -1,0 +1,75 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mase_gas_consumi"
+  source_id: "mase_dgsaie"
+  tags: [energia, gas, consumi, territorio, provincia, serie-storica]
+  category: energia
+  years: [2025]
+  # Anno nominale: il preprocess scarica l'intera serie (2004-2025) in un unico
+  # raw_input.csv. Non esistono file separati per anno: 2025 e' il rilascio piu recente.
+  time_coverage: {start_year: 2004, end_year: 2025}
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "mase_gas_consumi_cmis"
+      type: script
+      args:
+        command: "python preprocess.py raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    all_varchar: true
+  required_columns: [anno, regione, provincia, settore, consumo_msmc]
+  validate:
+    min_rows: 6000
+    not_null: [anno, regione, provincia, settore, consumo_msmc]
+    primary_key: [anno, provincia, settore]
+
+mart:
+  tables:
+    - name: "mart_consumo_provincia"
+      sql: "sql/mart_consumo_provincia.sql"
+    - name: "mart_consumo_regione"
+      sql: "sql/mart_consumo_regione.sql"
+    - name: "mart_trend_regione"
+      sql: "sql/mart_trend_regione.sql"
+    - name: "mart_trend_provincia"
+      sql: "sql/mart_trend_provincia.sql"
+  required_tables:
+    - "mart_consumo_provincia"
+    - "mart_consumo_regione"
+    - "mart_trend_regione"
+    - "mart_trend_provincia"
+  validate:
+    table_rules:
+      mart_consumo_provincia:
+        required_columns: [anno, regione, provincia, settore, consumo_msmc, quota_pct]
+        primary_key: [anno, provincia, settore]
+        min_rows: 6000
+      mart_consumo_regione:
+        required_columns: [anno, regione, settore, consumo_msmc, quota_pct]
+        primary_key: [anno, regione, settore]
+        min_rows: 1000
+      mart_trend_regione:
+        required_columns: [regione, anno_primo, anno_ultimo, delta_pct, cagr]
+        primary_key: [regione]
+        min_rows: 20
+      mart_trend_provincia:
+        required_columns: [provincia, regione, anno_primo, anno_ultimo, delta_pct, cagr]
+        primary_key: [provincia]
+        min_rows: 100
+
+validation:
+  fail_on_error: true

@@ -1,0 +1,75 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mase_consumi_petroliferi"
+  source_id: "mase_dgsaie"
+  tags: [energia, petrolio, carburanti, consumi, serie-storica]
+  category: energia
+  years: [2025]
+  # Anno nominale: il preprocess scarica l'intera serie (2002-2025) in un unico
+  # raw_input.csv. Non esistono file separati per anno: 2025 e' il rilascio piu recente.
+  time_coverage: {start_year: 2002, end_year: 2025}
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "mase_consumi_petroliferi_cmis"
+      type: script
+      args:
+        command: "python preprocess.py raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    all_varchar: true
+  required_columns: [anno, mese, prodotto, consumo_kt]
+  validate:
+    min_rows: 2000
+    not_null: [anno, mese, prodotto, consumo_kt]
+    primary_key: [anno, mese, prodotto]
+
+mart:
+  tables:
+    - name: "mart_consumi_mensili"
+      sql: "sql/mart_consumi_mensili.sql"
+    - name: "mart_consumi_annuali"
+      sql: "sql/mart_consumi_annuali.sql"
+    - name: "mart_trend_prodotto"
+      sql: "sql/mart_trend_prodotto.sql"
+    - name: "mart_stagionalita"
+      sql: "sql/mart_stagionalita.sql"
+  required_tables:
+    - "mart_consumi_mensili"
+    - "mart_consumi_annuali"
+    - "mart_trend_prodotto"
+    - "mart_stagionalita"
+  validate:
+    table_rules:
+      mart_consumi_mensili:
+        required_columns: [anno, mese, prodotto, consumo_kt, quota_pct]
+        primary_key: [anno, mese, prodotto]
+        min_rows: 2000
+      mart_consumi_annuali:
+        required_columns: [anno, prodotto, consumo_kt, quota_pct]
+        primary_key: [anno, prodotto]
+        min_rows: 150
+      mart_trend_prodotto:
+        required_columns: [prodotto, anno_primo, anno_ultimo, delta_pct, cagr]
+        primary_key: [prodotto]
+        min_rows: 7
+      mart_stagionalita:
+        required_columns: [prodotto, mese, quota_mese_media_pct, indice]
+        primary_key: [prodotto, mese]
+        min_rows: 80
+
+validation:
+  fail_on_error: true

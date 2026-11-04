@@ -31,7 +31,12 @@ jobs:
           extra-packages: ruff mypy types-pyyaml types-requests pytest pytest-cov pytest-timeout mcp>=1.26.0 duckdb==1.5.1
 
       - name: Ruff
-        run: ruff check scripts/
+        run: |
+          ruff check scripts/
+          # candidates/ e support_datasets/ contengono i preprocess.py: parser di
+          # layout non tabellari, il codice dove un errore è silenzioso.
+          # Solo *.py (i notebook hanno lint proprio e issue pre-esistenti).
+          find candidates support_datasets -name '*.py' -print0 | xargs -0 -r ruff check
 
       - name: Mypy
         run: mypy scripts/

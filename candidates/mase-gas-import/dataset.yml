@@ -1,0 +1,78 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mase_gas_import"
+  source_id: "mase_dgsaie"
+  tags: [energia, gas, import, dipendenza-energetica, serie-storica]
+  category: energia
+  years: [2024]
+  # Anno nominale: il preprocess scarica l'intera serie in un unico raw_input.csv
+  # (1990-2001 annuale dal file aggregato, 2002-2024 mensile dai file per anno).
+  # Non esistono file separati per anno: 2024 e' il rilascio piu recente.
+  time_coverage: {start_year: 1990, end_year: 2024}
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "mase_gas_import_cmis"
+      type: script
+      args:
+        command: "python preprocess.py raw_input.csv"
+        output: "raw_input.csv"
+        filename: "raw_input.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: auto
+    mode: latest
+    delim: ","
+    encoding: "utf-8"
+    header: true
+    # CSV: all_varchar evita che lo sniffing tipizzi `mese` (vuoto sugli anni
+    # annuali) e che le macro di normalizzazione corrompano i valori.
+    all_varchar: true
+  required_columns: [anno, mese, granularita, paese_origine, import_msmc]
+  validate:
+    min_rows: 3000
+    not_null: [anno, granularita, paese_origine, import_msmc]
+    primary_key: [anno, granularita, mese, paese_origine]
+
+mart:
+  tables:
+    - name: "mart_import_paese"
+      sql: "sql/mart_import_paese.sql"
+    - name: "mart_import_annuale"
+      sql: "sql/mart_import_annuale.sql"
+    - name: "mart_trend_paese"
+      sql: "sql/mart_trend_paese.sql"
+    - name: "mart_concentrazione"
+      sql: "sql/mart_concentrazione.sql"
+  required_tables:
+    - "mart_import_paese"
+    - "mart_import_annuale"
+    - "mart_trend_paese"
+    - "mart_concentrazione"
+  validate:
+    table_rules:
+      mart_import_paese:
+        required_columns: [anno, mese, granularita, paese_origine, import_msmc, quota_periodo_pct]
+        primary_key: [anno, granularita, mese, paese_origine]
+        min_rows: 3000
+      mart_import_annuale:
+        required_columns: [anno, paese_origine, import_msmc, quota_pct]
+        primary_key: [anno, paese_origine]
+        min_rows: 500
+      mart_trend_paese:
+        required_columns: [paese_origine, anno_primo, anno_ultimo, delta_pct, cagr]
+        primary_key: [paese_origine]
+        min_rows: 30
+      mart_concentrazione:
+        required_columns: [anno, hhi, top3_pct, n_paesi_reali]
+        primary_key: [anno]
+        min_rows: 30
+
+validation:
+  fail_on_error: true
