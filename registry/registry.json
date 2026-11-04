@@ -5505,85 +5505,6 @@
       "stage": "published"
     },
     {
-      "slug": "richiedenti_asilo_italia",
-      "name": "Richiedenti Asilo Italia",
-      "description": "",
-      "source": "",
-      "source_id": "eurostat",
-      "period": {
-        "start": 2008,
-        "end": 2025
-      },
-      "tags": [
-        "immigrazione",
-        "asilo",
-        "protezione-internazionale",
-        "richiedenti-asilo"
-      ],
-      "category": "immigrazione",
-      "columns": [
-        {
-          "name": "anno",
-          "type": "INTEGER",
-          "role": "dimension",
-          "description": "",
-          "semantic_type": "year"
-        },
-        {
-          "name": "cittadinanza_codice",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "cittadinanza",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "misura",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "dettaglio_codice",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "dettaglio",
-          "type": "VARCHAR",
-          "role": "dimension",
-          "description": ""
-        },
-        {
-          "name": "valore",
-          "type": "BIGINT",
-          "role": "metric",
-          "description": ""
-        },
-        {
-          "name": "aggregato",
-          "type": "BOOLEAN",
-          "role": "dimension",
-          "description": ""
-        }
-      ],
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-clean/richiedenti_asilo_italia/2026/richiedenti_asilo_italia_2026_clean.parquet",
-        "multi_file": false
-      },
-      "stage": "incubating",
-      "mart_refs": [
-        "richiedenti_asilo_italia__mart_asilo_annuale",
-        "richiedenti_asilo_italia__mart_asilo_italia"
-      ]
-    },
-    {
       "slug": "sai_progetti_italia",
       "name": "SAI Progetti — Progetti del Sistema Accoglienza e Integrazione (2018-2024)",
       "description": "Progetti del Sistema Accoglienza e Integrazione (SAI) per migranti in Italia. Ogni riga è un progetto finanziato a un ente locale, con tipologia (ordinario, minori, dimissioni), capienza, presenze e geografia. Fonte: Centri d'Italia (ActionAid/Openpolis), CC-BY 4.0.",
@@ -7806,26 +7727,6 @@
       }
     },
     {
-      "slug": "richiedenti_asilo_italia__mart_asilo_annuale",
-      "dataset": "richiedenti_asilo_italia",
-      "table": "mart_asilo_annuale",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/richiedenti_asilo_italia/2026/mart_asilo_annuale.parquet",
-        "multi_file": false
-      }
-    },
-    {
-      "slug": "richiedenti_asilo_italia__mart_asilo_italia",
-      "dataset": "richiedenti_asilo_italia",
-      "table": "mart_asilo_italia",
-      "location": {
-        "type": "gcs",
-        "path": "gs://dataciviclab-mart/richiedenti_asilo_italia/2026/mart_asilo_italia.parquet",
-        "multi_file": false
-      }
-    },
-    {
       "slug": "sai_progetti_italia__progetti_regione",
       "dataset": "sai_progetti_italia",
       "table": "progetti_regione",
@@ -8882,37 +8783,6 @@
       "label": "reparti_ricovero",
       "detail": "anno 2022 — mart: si",
       "action": ""
-    },
-    {
-      "id": "richiedenti_asilo_italia",
-      "source_id": "eurostat",
-      "status": "ok",
-      "label": "richiedenti_asilo_italia",
-      "detail": "anno 2026 — mart: si",
-      "action": "",
-      "run": {
-        "run_id": "20261021T111715Z_44f01359",
-        "year": 2026,
-        "status": "SUCCESS",
-        "quality_score": {
-          "raw": 100,
-          "clean": 100,
-          "mart": 100
-        },
-        "output_rows": {
-          "raw": 30454,
-          "clean": 30454,
-          "mart": 3636
-        },
-        "output_bytes": {
-          "raw": 1115267,
-          "clean": 27767,
-          "mart": 49498
-        },
-        "started_at": "2026-10-21T11:17:15.945146+00:00",
-        "finished_at": "2026-10-21T11:17:18.916968+00:00",
-        "duration_seconds": 2.972
-      }
     },
     {
       "id": "sai_progetti_italia",
@@ -10111,12 +9981,6 @@
           {
             "slug": "reparti_ricovero",
             "name": "Reparti Ricovero",
-            "column": "anno",
-            "semantic_type": "year"
-          },
-          {
-            "slug": "richiedenti_asilo_italia",
-            "name": "Richiedenti Asilo Italia",
             "column": "anno",
             "semantic_type": "year"
           },
