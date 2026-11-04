@@ -45,7 +45,12 @@ dev = [
   "twine>=5.0.0",
 ]
 pipeline = [
-  "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git",
+  # L'extra [pandas] del toolkit porta openpyxl/xlrd/odfpy: senza, ogni
+  # candidate che legge Excel (clean.read su .xlsx/.xls o preprocess.py con
+  # pd.read_excel) fallisce in CI con ImportError da pandas.compat._optional.
+  # pandas arriva comunque per via transitiva, quindi l'errore e' silenzioso
+  # fino al primo read_excel.
+  "dataciviclab-toolkit[pandas] @ git+https://github.com/dataciviclab/toolkit.git",
 ]
 
 [project.urls]
