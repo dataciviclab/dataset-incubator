@@ -3704,6 +3704,172 @@
       ]
     },
     {
+      "slug": "istat_trasporto_ferroviario",
+      "name": "Istat Trasporto Ferroviario",
+      "description": "ISTAT 117_1057 via DBnomics",
+      "source": "",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 2004,
+        "end": 2024
+      },
+      "tags": [
+        "trasporti",
+        "ferrovia",
+        "merci",
+        "intermodale",
+        "istat",
+        "dbnomics"
+      ],
+      "category": "trasporti",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "area",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "unita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "merce_nst",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "unita_carico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "paese_origine",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "paese_destinazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "categoria_trasporto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_trasporto_ferroviario/2026/istat_trasporto_ferroviario_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_trasporto_ferroviario__mart_ferrovia_intermodale"
+      ]
+    },
+    {
+      "slug": "istat_trasporto_merci_strada",
+      "name": "Istat Trasporto Merci Strada",
+      "description": "ISTAT 121_330 via DBnomics — tonnellate-km per regione di carico e scarico",
+      "source": "",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 2008,
+        "end": 2024
+      },
+      "tags": [
+        "trasporti",
+        "merci",
+        "strada",
+        "istat",
+        "dbnomics",
+        "origine-destinazione"
+      ],
+      "category": "trasporti",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "regione_carico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "regione_scarico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "merce_nst",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_trasporto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "unita",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "classe_distanza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_trasporto_merci_strada/2026/istat_trasporto_merci_strada_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_trasporto_merci_strada__mart_merci_per_direttrice"
+      ]
+    },
+    {
       "slug": "istat_va_branca",
       "name": "Istat Va Branca",
       "description": "",
@@ -7317,6 +7483,26 @@
       }
     },
     {
+      "slug": "istat_trasporto_ferroviario__mart_ferrovia_intermodale",
+      "dataset": "istat_trasporto_ferroviario",
+      "table": "mart_ferrovia_intermodale",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_trasporto_ferroviario/2026/mart_ferrovia_intermodale.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_trasporto_merci_strada__mart_merci_per_direttrice",
+      "dataset": "istat_trasporto_merci_strada",
+      "table": "mart_merci_per_direttrice",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_trasporto_merci_strada/2026/mart_merci_per_direttrice.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "istat_va_branca__mart_va_branca",
       "dataset": "istat_va_branca",
       "table": "mart_va_branca",
@@ -8478,6 +8664,68 @@
         "started_at": "2026-11-04T17:33:23.132812+00:00",
         "finished_at": "2026-11-04T17:40:37.511607+00:00",
         "duration_seconds": 434.379
+      }
+    },
+    {
+      "id": "istat_trasporto_ferroviario",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat_trasporto_ferroviario",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T215902Z_d9291979",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 4114,
+          "clean": 4114,
+          "mart": 21
+        },
+        "output_bytes": {
+          "raw": 688796,
+          "clean": 16916,
+          "mart": 1045
+        },
+        "started_at": "2026-11-04T21:59:02.276293+00:00",
+        "finished_at": "2026-11-04T21:59:07.004285+00:00",
+        "duration_seconds": 4.728
+      }
+    },
+    {
+      "id": "istat_trasporto_merci_strada",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat_trasporto_merci_strada",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T215907Z_a4e5d3e4",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 93899,
+          "clean": 93899,
+          "mart": 374
+        },
+        "output_bytes": {
+          "raw": 9320593,
+          "clean": 343792,
+          "mart": 8734
+        },
+        "started_at": "2026-11-04T21:59:07.440112+00:00",
+        "finished_at": "2026-11-04T22:01:33.277571+00:00",
+        "duration_seconds": 145.837
       }
     },
     {
@@ -9871,6 +10119,18 @@
             "semantic_type": "year"
           },
           {
+            "slug": "istat_trasporto_ferroviario",
+            "name": "Istat Trasporto Ferroviario",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "istat_trasporto_merci_strada",
+            "name": "Istat Trasporto Merci Strada",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "istat_va_branca",
             "name": "Istat Va Branca",
             "column": "anno",
@@ -10010,7 +10270,7 @@
           }
         ],
         "types": {
-          "year": 42,
+          "year": 43,
           "month": 8
         }
       }
