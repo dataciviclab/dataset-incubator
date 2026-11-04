@@ -1,16 +1,24 @@
+# Sbarchi di migranti via mare in Italia — serie giornaliera (onData / liberiamoli-tutti)
+# Fonte: https://github.com/ondata/liberiamoli-tutti (dati dal Ministero dell'Interno)
+# File unico multi-anno, aggiornato in continuo: la fonte viene consolidata nel tempo,
+# quindi i totali degli anni recenti possono cambiare tra una rilevazione e l'altra.
+
 root: "../../out"
 schema_version: 1
 
 dataset:
   name: "sbarchi_migranti_italia"
   source_id: "liberiamoli_tutti"
-  years: [2025]
+  # years = edizione del source file; i dati coprono l'intera serie (full_series).
+  years: [2026]
   tags: [immigrazione, migranti, sbarchi]
   category: immigrazione
+  # La fonte pubblica l'intera serie: se aggiunge un anno va aggiornato end_year,
+  # altrimenti il metadato resta indietro rispetto ai dati.
   time_coverage:
     mode: "full_series"
     start_year: 2019
-    end_year: 2025
+    end_year: 2026
 
 raw:
   sources:
@@ -23,7 +31,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [data_sbarchi, note, fonte]
+  required_columns: [data_sbarchi, valore, note, fonte]
   read:
     delim: ","
     encoding: "utf-8"
@@ -31,7 +39,11 @@ clean:
     trim_whitespace: true
     mode: all
   validate:
-    not_null: [data_sbarchi]
+    not_null: [data_sbarchi, valore]
+    # clean.sql deduplica i report (una riga per giorno): la PK lo rende un gate.
+    primary_key: [data_sbarchi]
+    # serie continua e verificata (0 giorni mancanti): soglia vicina al reale (2.465)
+    min_rows: 2300
 
 mart:
   tables:
