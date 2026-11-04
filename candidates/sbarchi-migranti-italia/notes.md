@@ -24,7 +24,9 @@ essere **rivisto** nei consolidamenti (172 date su 2.465 hanno valori diversi tr
 i report).
 
 Il `clean.sql` tiene **una riga per giorno** — quella del report più recente
-(`row_number() OVER (PARTITION BY Data ORDER BY Data_Report DESC)`). Il gate
+**con valore non nullo** (`WHERE valore IS NOT NULL` *prima* del
+`row_number() OVER (PARTITION BY Data ORDER BY Data_Report DESC)`), così un
+report futuro con valore vuoto non fa sparire un giorno già consolidato. Il gate
 `clean.validate.primary_key: [data_sbarchi]` protegge la dedup.
 
 | | righe | arrivi |

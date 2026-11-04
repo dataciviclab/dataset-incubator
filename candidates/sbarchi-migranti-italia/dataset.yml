@@ -31,7 +31,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [data_sbarchi, note, fonte]
+  required_columns: [data_sbarchi, valore, note, fonte]
   read:
     delim: ","
     encoding: "utf-8"
@@ -39,10 +39,11 @@ clean:
     trim_whitespace: true
     mode: all
   validate:
-    not_null: [data_sbarchi]
+    not_null: [data_sbarchi, valore]
     # clean.sql deduplica i report (una riga per giorno): la PK lo rende un gate.
     primary_key: [data_sbarchi]
-    min_rows: 2000
+    # serie continua e verificata (0 giorni mancanti): soglia vicina al reale (2.465)
+    min_rows: 2300
 
 mart:
   tables:
