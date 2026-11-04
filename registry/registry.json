@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-10-21",
+  "updated_at": "2026-11-04",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -1058,7 +1058,7 @@
         {
           "name": "centro_id",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "Identificativo univoco del centro di accoglienza"
         },
         {
@@ -1070,7 +1070,7 @@
         {
           "name": "comune_id",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID interno del comune sede del centro"
         },
         {
@@ -1084,7 +1084,8 @@
           "name": "comune_codice_istat",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice ISTAT del comune (6 cifre, join con comuni_master)"
+          "description": "Codice ISTAT del comune (6 cifre, join con comuni_master)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune_abitanti",
@@ -1096,12 +1097,13 @@
           "name": "comune_codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale Belfiore del comune"
+          "description": "Codice catastale Belfiore del comune",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "provincia_cm_id",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID interno della provincia"
         },
         {
@@ -1114,7 +1116,8 @@
           "name": "provincia_cm_codice_istat",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice ISTAT della provincia"
+          "description": "Codice ISTAT della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "provincia_cm_abitanti",
@@ -1131,7 +1134,7 @@
         {
           "name": "regione_id",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID interno della regione"
         },
         {
@@ -1144,7 +1147,8 @@
           "name": "regione_codice_istat",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice ISTAT della regione (2 cifre)"
+          "description": "Codice ISTAT della regione (2 cifre)",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione_abitanti",
@@ -1224,7 +1228,10 @@
         "path": "gs://dataciviclab-clean/centri_accoglienza_italia/2026/centri_accoglienza_italia_2026_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "centri_accoglienza_italia__centri_regione"
+      ]
     },
     {
       "slug": "comuni_master",
@@ -5131,7 +5138,7 @@
         {
           "name": "comune_id",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID interno del comune capofila"
         },
         {
@@ -5145,7 +5152,8 @@
           "name": "comune_codice_istat",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice ISTAT del comune (6 cifre, join con comuni_master)"
+          "description": "Codice ISTAT del comune (6 cifre, join con comuni_master)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune_abitanti",
@@ -5157,12 +5165,13 @@
           "name": "comune_codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale Belfiore del comune"
+          "description": "Codice catastale Belfiore del comune",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "provincia_cm_id",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID interno della provincia"
         },
         {
@@ -5175,7 +5184,8 @@
           "name": "provincia_cm_codice_istat",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice ISTAT della provincia"
+          "description": "Codice ISTAT della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "provincia_cm_abitanti",
@@ -5192,7 +5202,7 @@
         {
           "name": "regione_id",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID interno della regione"
         },
         {
@@ -5205,7 +5215,8 @@
           "name": "regione_codice_istat",
           "type": "BIGINT",
           "role": "dimension",
-          "description": "Codice ISTAT della regione (2 cifre)"
+          "description": "Codice ISTAT della regione (2 cifre)",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione_abitanti",
@@ -5219,7 +5230,10 @@
         "path": "gs://dataciviclab-clean/sai_progetti_italia/2026/sai_progetti_italia_2026_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "sai_progetti_italia__progetti_regione"
+      ]
     },
     {
       "slug": "sai_strutture_italia",
@@ -5273,8 +5287,9 @@
         {
           "name": "comune_codice_istat",
           "type": "BIGINT",
-          "role": "metric",
-          "description": "Codice ISTAT del comune (6 cifre, join con comuni_master)"
+          "role": "dimension",
+          "description": "Codice ISTAT del comune (6 cifre, join con comuni_master)",
+          "semantic_type": "municipality_code"
         },
         {
           "name": "comune_abitanti",
@@ -5286,7 +5301,8 @@
           "name": "comune_codice_catastale",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale Belfiore del comune"
+          "description": "Codice catastale Belfiore del comune",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "provincia_cm_id",
@@ -5303,8 +5319,9 @@
         {
           "name": "provincia_cm_codice_istat",
           "type": "BIGINT",
-          "role": "metric",
-          "description": "Codice ISTAT della provincia"
+          "role": "dimension",
+          "description": "Codice ISTAT della provincia",
+          "semantic_type": "province_code"
         },
         {
           "name": "provincia_cm_abitanti",
@@ -5333,8 +5350,9 @@
         {
           "name": "regione_codice_istat",
           "type": "BIGINT",
-          "role": "metric",
-          "description": "Codice ISTAT della regione (2 cifre)"
+          "role": "dimension",
+          "description": "Codice ISTAT della regione (2 cifre)",
+          "semantic_type": "region_code"
         },
         {
           "name": "regione_abitanti",
@@ -5415,7 +5433,7 @@
       "source_id": "liberiamoli_tutti",
       "period": {
         "start": 2019,
-        "end": 2025
+        "end": 2026
       },
       "tags": [
         "immigrazione",
@@ -5451,10 +5469,13 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/sbarchi_migranti_italia/2025/sbarchi_migranti_italia_2025_clean.parquet",
+        "path": "gs://dataciviclab-clean/sbarchi_migranti_italia/2026/sbarchi_migranti_italia_2026_clean.parquet",
         "multi_file": false
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "sbarchi_migranti_italia__mart_sbarchi_mensili"
+      ]
     },
     {
       "slug": "strutture_asl",
@@ -6352,8 +6373,8 @@
       "table": "mart_mensile_regione_atc4",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/aifa_spesa_consumo/2024/mart_mensile_regione_atc4.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/aifa_spesa_consumo/*/mart_mensile_regione_atc4.parquet",
+        "multi_file": true
       }
     },
     {
@@ -6422,17 +6443,17 @@
       "table": "mart_spesa_enti",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/bdap_lea/2024/mart_spesa_enti.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/bdap_lea/*/mart_spesa_enti.parquet",
+        "multi_file": true
       }
     },
     {
-      "slug": "centri_accoglienza_italia__centri_accoglienza_italia",
+      "slug": "centri_accoglienza_italia__centri_regione",
       "dataset": "centri_accoglienza_italia",
-      "table": "centri_accoglienza_italia",
+      "table": "centri_regione",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/centri_accoglienza_italia/2026/centri_accoglienza_italia.parquet",
+        "path": "gs://dataciviclab-mart/centri_accoglienza_italia/2026/centri_regione.parquet",
         "multi_file": false
       }
     },
@@ -6452,8 +6473,8 @@
       "table": "mart_comparti_anno",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_comparti_anno.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/dipendenti_pubblici/*/mart_comparti_anno.parquet",
+        "multi_file": true
       }
     },
     {
@@ -6462,8 +6483,8 @@
       "table": "mart_genere_categoria",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_genere_categoria.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/dipendenti_pubblici/*/mart_genere_categoria.parquet",
+        "multi_file": true
       }
     },
     {
@@ -6472,8 +6493,8 @@
       "table": "mart_part_time",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_part_time.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/dipendenti_pubblici/*/mart_part_time.parquet",
+        "multi_file": true
       }
     },
     {
@@ -6482,8 +6503,8 @@
       "table": "mart_tipo_istituzione",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_tipo_istituzione.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/dipendenti_pubblici/*/mart_tipo_istituzione.parquet",
+        "multi_file": true
       }
     },
     {
@@ -6492,8 +6513,8 @@
       "table": "mart_turnover_enti",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/dipendenti_pubblici/2024/mart_turnover_enti.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/dipendenti_pubblici/*/mart_turnover_enti.parquet",
+        "multi_file": true
       }
     },
     {
@@ -6512,8 +6533,8 @@
       "table": "mart_sintesi_beneficiario",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/fts_eu_grants/2025/mart_sintesi_beneficiario.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/fts_eu_grants/*/mart_sintesi_beneficiario.parquet",
+        "multi_file": true
       }
     },
     {
@@ -6522,8 +6543,8 @@
       "table": "mart_sintesi_programma",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/fts_eu_grants/2025/mart_sintesi_programma.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/fts_eu_grants/*/mart_sintesi_programma.parquet",
+        "multi_file": true
       }
     },
     {
@@ -6532,8 +6553,8 @@
       "table": "mart_top_beneficiari",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/fts_eu_grants/2025/mart_top_beneficiari.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/fts_eu_grants/*/mart_top_beneficiari.parquet",
+        "multi_file": true
       }
     },
     {
@@ -6992,8 +7013,8 @@
       "table": "popolazione_by_comune",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_by_comune.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/*/popolazione_by_comune.parquet",
+        "multi_file": true
       }
     },
     {
@@ -7002,8 +7023,8 @@
       "table": "popolazione_by_eta",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_by_eta.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/*/popolazione_by_eta.parquet",
+        "multi_file": true
       }
     },
     {
@@ -7012,8 +7033,8 @@
       "table": "popolazione_by_provincia",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_by_provincia.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/*/popolazione_by_provincia.parquet",
+        "multi_file": true
       }
     },
     {
@@ -7022,8 +7043,8 @@
       "table": "popolazione_by_regione",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_by_regione.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/*/popolazione_by_regione.parquet",
+        "multi_file": true
       }
     },
     {
@@ -7032,8 +7053,8 @@
       "table": "popolazione_indicatori",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/2025/popolazione_indicatori.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/popolazione_istat_comunale_2019_2025/*/popolazione_indicatori.parquet",
+        "multi_file": true
       }
     },
     {
@@ -7042,8 +7063,8 @@
       "table": "mart_regioni_disciplina",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/posti_letto_stabilimento/2023/mart_regioni_disciplina.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/posti_letto_stabilimento/*/mart_regioni_disciplina.parquet",
+        "multi_file": true
       }
     },
     {
@@ -7112,7 +7133,7 @@
       "table": "mart_sbarchi_mensili",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/sbarchi_migranti_italia/2025/mart_sbarchi_mensili.parquet",
+        "path": "gs://dataciviclab-mart/sbarchi_migranti_italia/2026/mart_sbarchi_mensili.parquet",
         "multi_file": false
       }
     },
@@ -7142,8 +7163,8 @@
       "table": "mart_bandi_ue_italia",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/ted_contract_notices/2023/mart_bandi_ue_italia.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-mart/ted_contract_notices/*/mart_bandi_ue_italia.parquet",
+        "multi_file": true
       }
     }
   ],
@@ -7324,7 +7345,30 @@
       "status": "ok",
       "label": "centri_accoglienza_italia",
       "detail": "anno 2026 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20261104T105356Z_1bb063bc",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 95
+        },
+        "output_rows": {
+          "raw": 47419,
+          "clean": 47213,
+          "mart": 250
+        },
+        "output_bytes": {
+          "raw": 11479096,
+          "clean": 1278992,
+          "mart": 7545
+        },
+        "started_at": "2026-11-04T10:53:56.108771+00:00",
+        "finished_at": "2026-11-04T10:53:59.132376+00:00",
+        "duration_seconds": 3.024
+      }
     },
     {
       "id": "dipendenti_pubblici",
@@ -7941,7 +7985,30 @@
       "status": "ok",
       "label": "sai_progetti_italia",
       "detail": "anno 2026 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20261104T105402Z_df59f622",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 95
+        },
+        "output_rows": {
+          "raw": 6103,
+          "clean": 6103,
+          "mart": 343
+        },
+        "output_bytes": {
+          "raw": 834265,
+          "clean": 134047,
+          "mart": 5603
+        },
+        "started_at": "2026-11-04T10:54:02.227574+00:00",
+        "finished_at": "2026-11-04T10:54:04.035476+00:00",
+        "duration_seconds": 1.808
+      }
     },
     {
       "id": "sai_strutture_italia",
@@ -7949,15 +8016,61 @@
       "status": "ok",
       "label": "sai_strutture_italia",
       "detail": "anno 2026 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20261104T105407Z_81cdbf59",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 95
+        },
+        "output_rows": {
+          "raw": 46299,
+          "clean": 46299,
+          "mart": 1684
+        },
+        "output_bytes": {
+          "raw": 8461303,
+          "clean": 772025,
+          "mart": 10970
+        },
+        "started_at": "2026-11-04T10:54:07.221172+00:00",
+        "finished_at": "2026-11-04T10:54:10.028753+00:00",
+        "duration_seconds": 2.808
+      }
     },
     {
       "id": "sbarchi_migranti_italia",
       "source_id": "liberiamoli_tutti",
       "status": "ok",
       "label": "sbarchi_migranti_italia",
-      "detail": "anno 2025 — mart: si",
-      "action": ""
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T105411Z_9d96c8c6",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 3699,
+          "clean": 2465,
+          "mart": 81
+        },
+        "output_bytes": {
+          "raw": 829322,
+          "clean": 10868,
+          "mart": 2606
+        },
+        "started_at": "2026-11-04T10:54:11.090447+00:00",
+        "finished_at": "2026-11-04T10:54:11.621822+00:00",
+        "duration_seconds": 0.531
+      }
     },
     {
       "id": "strutture_asl",
@@ -8185,6 +8298,18 @@
             "semantic_type": "municipality_name"
           },
           {
+            "slug": "centri_accoglienza_italia",
+            "name": "Centri di accoglienza migranti — CAS, CPA, Hotspot (2018-2024)",
+            "column": "comune_codice_istat",
+            "semantic_type": "municipality_code"
+          },
+          {
+            "slug": "centri_accoglienza_italia",
+            "name": "Centri di accoglienza migranti — CAS, CPA, Hotspot (2018-2024)",
+            "column": "comune_codice_catastale",
+            "semantic_type": "cadastral_code"
+          },
+          {
             "slug": "comuni_master",
             "name": "Comuni Master — hub territoriale completo",
             "column": "codice_istat",
@@ -8269,10 +8394,34 @@
             "semantic_type": "municipality_name"
           },
           {
+            "slug": "sai_progetti_italia",
+            "name": "SAI Progetti — Progetti del Sistema Accoglienza e Integrazione (2018-2024)",
+            "column": "comune_codice_istat",
+            "semantic_type": "municipality_code"
+          },
+          {
+            "slug": "sai_progetti_italia",
+            "name": "SAI Progetti — Progetti del Sistema Accoglienza e Integrazione (2018-2024)",
+            "column": "comune_codice_catastale",
+            "semantic_type": "cadastral_code"
+          },
+          {
             "slug": "sai_strutture_italia",
             "name": "SAI Strutture — Strutture del Sistema Accoglienza e Integrazione (2018-2024)",
             "column": "comune_denominazione",
             "semantic_type": "municipality_name"
+          },
+          {
+            "slug": "sai_strutture_italia",
+            "name": "SAI Strutture — Strutture del Sistema Accoglienza e Integrazione (2018-2024)",
+            "column": "comune_codice_istat",
+            "semantic_type": "municipality_code"
+          },
+          {
+            "slug": "sai_strutture_italia",
+            "name": "SAI Strutture — Strutture del Sistema Accoglienza e Integrazione (2018-2024)",
+            "column": "comune_codice_catastale",
+            "semantic_type": "cadastral_code"
           },
           {
             "slug": "strutture_ricovero_asl",
@@ -8282,8 +8431,8 @@
           }
         ],
         "types": {
-          "municipality_name": 12,
-          "municipality_code": 9,
+          "municipality_name": 9,
+          "municipality_code": 12,
           "cadastral_code": 6
         }
       },
@@ -8467,6 +8616,12 @@
             "semantic_type": "province_code"
           },
           {
+            "slug": "centri_accoglienza_italia",
+            "name": "Centri di accoglienza migranti — CAS, CPA, Hotspot (2018-2024)",
+            "column": "provincia_cm_codice_istat",
+            "semantic_type": "province_code"
+          },
+          {
             "slug": "comuni_master",
             "name": "Comuni Master — hub territoriale completo",
             "column": "sigla_provincia",
@@ -8524,6 +8679,18 @@
             "slug": "reparti_ricovero",
             "name": "Reparti Ricovero",
             "column": "sigla_provincia",
+            "semantic_type": "province_code"
+          },
+          {
+            "slug": "sai_progetti_italia",
+            "name": "SAI Progetti — Progetti del Sistema Accoglienza e Integrazione (2018-2024)",
+            "column": "provincia_cm_codice_istat",
+            "semantic_type": "province_code"
+          },
+          {
+            "slug": "sai_strutture_italia",
+            "name": "SAI Strutture — Strutture del Sistema Accoglienza e Integrazione (2018-2024)",
+            "column": "provincia_cm_codice_istat",
             "semantic_type": "province_code"
           },
           {
@@ -8590,6 +8757,12 @@
             "slug": "bdap_lea",
             "name": "Bdap Lea",
             "column": "codice_regione",
+            "semantic_type": "region_code"
+          },
+          {
+            "slug": "centri_accoglienza_italia",
+            "name": "Centri di accoglienza migranti — CAS, CPA, Hotspot (2018-2024)",
+            "column": "regione_codice_istat",
             "semantic_type": "region_code"
           },
           {
@@ -8674,6 +8847,18 @@
             "slug": "reparti_ricovero",
             "name": "Reparti Ricovero",
             "column": "regione",
+            "semantic_type": "region_code"
+          },
+          {
+            "slug": "sai_progetti_italia",
+            "name": "SAI Progetti — Progetti del Sistema Accoglienza e Integrazione (2018-2024)",
+            "column": "regione_codice_istat",
+            "semantic_type": "region_code"
+          },
+          {
+            "slug": "sai_strutture_italia",
+            "name": "SAI Strutture — Strutture del Sistema Accoglienza e Integrazione (2018-2024)",
+            "column": "regione_codice_istat",
             "semantic_type": "region_code"
           },
           {
