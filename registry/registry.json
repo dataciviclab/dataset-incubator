@@ -2599,6 +2599,98 @@
       ]
     },
     {
+      "slug": "istat_cittadinanze",
+      "name": "Istat Cittadinanze",
+      "description": "",
+      "source": "",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 2012,
+        "end": 2023
+      },
+      "tags": [
+        "immigrazione",
+        "cittadinanza",
+        "istat",
+        "regioni"
+      ],
+      "category": "immigrazione",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cittadinanza_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cittadinanza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "processo_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "processo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "aggregato",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "acquisizioni",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_cittadinanze/2026/istat_cittadinanze_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_cittadinanze__mart_cittadinanze",
+        "istat_cittadinanze__mart_cittadinanze_processo",
+        "istat_cittadinanze__mart_cittadinanze_serie"
+      ]
+    },
+    {
       "slug": "istat_elenco_comuni",
       "name": "Elenco comuni italiani (codici ISTAT, catastali, superficie km²)",
       "description": "Elenco completo dei 7.894 comuni italiani con codici ISTAT (6 cifre), codici catastali Belfiore, superficie territoriale in km², popolazione residente e legale, e caratteristiche geografiche (regione, provincia, zona altimetrica, altitudine, litoraneità/insularità). Fonte: ISTAT SITUAS.",
@@ -3049,6 +3141,73 @@
       ]
     },
     {
+      "slug": "istat_migrazioni",
+      "name": "Istat Migrazioni",
+      "description": "",
+      "source": "",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 2002,
+        "end": 2024
+      },
+      "tags": [
+        "immigrazione",
+        "flussi",
+        "istat",
+        "province"
+      ],
+      "category": "immigrazione",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "aggregato",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "immigrazioni",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_migrazioni/2026/istat_migrazioni_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_migrazioni__mart_migrazioni",
+        "istat_migrazioni__mart_migrazioni_serie"
+      ]
+    },
+    {
       "slug": "istat_occupazione_provinciale",
       "name": "ISTAT — Tasso di Occupazione Provinciale (2018-2025)",
       "description": "Tasso di occupazione (EMP_R) per provincia italiana: serie annuale 2018-2025, per sesso e classe età. Fonte ISTAT SDMX flow 150_915. 105 province, 6 classi età.",
@@ -3130,6 +3289,85 @@
       "stage": "published",
       "mart_refs": [
         "istat_occupazione_provinciale__mart_occupazione_provinciale"
+      ]
+    },
+    {
+      "slug": "istat_permessi",
+      "name": "Istat Permessi",
+      "description": "",
+      "source": "",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 2008,
+        "end": 2024
+      },
+      "tags": [
+        "immigrazione",
+        "permessi-soggiorno",
+        "istat",
+        "province"
+      ],
+      "category": "immigrazione",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cittadinanza_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cittadinanza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "aggregato",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "permessi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_permessi/2026/istat_permessi_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_permessi__mart_permessi",
+        "istat_permessi__mart_permessi_serie"
       ]
     },
     {
@@ -3384,6 +3622,85 @@
         "istat_sbs_imprese__mart_sbs_filiere",
         "istat_sbs_imprese__mart_sbs_size",
         "istat_sbs_imprese__mart_sbs_distribuzione"
+      ]
+    },
+    {
+      "slug": "istat_stranieri_residenti",
+      "name": "Istat Stranieri Residenti",
+      "description": "",
+      "source": "",
+      "source_id": "istat_dbnomics",
+      "period": {
+        "start": 2019,
+        "end": 2023
+      },
+      "tags": [
+        "immigrazione",
+        "popolazione-straniera",
+        "istat",
+        "province"
+      ],
+      "category": "immigrazione",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cittadinanza_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cittadinanza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "aggregato",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "residenti",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_stranieri_residenti/2026/istat_stranieri_residenti_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_stranieri_residenti__mart_stranieri_residenti",
+        "istat_stranieri_residenti__mart_stranieri_residenti_serie"
       ]
     },
     {
@@ -6849,6 +7166,36 @@
       }
     },
     {
+      "slug": "istat_cittadinanze__mart_cittadinanze",
+      "dataset": "istat_cittadinanze",
+      "table": "mart_cittadinanze",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_cittadinanze/2026/mart_cittadinanze.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_cittadinanze__mart_cittadinanze_processo",
+      "dataset": "istat_cittadinanze",
+      "table": "mart_cittadinanze_processo",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_cittadinanze/2026/mart_cittadinanze_processo.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_cittadinanze__mart_cittadinanze_serie",
+      "dataset": "istat_cittadinanze",
+      "table": "mart_cittadinanze_serie",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_cittadinanze/2026/mart_cittadinanze_serie.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "istat_elenco_comuni__mart_codici_catastali",
       "dataset": "istat_elenco_comuni",
       "table": "mart_codici_catastali",
@@ -6899,12 +7246,52 @@
       }
     },
     {
+      "slug": "istat_migrazioni__mart_migrazioni",
+      "dataset": "istat_migrazioni",
+      "table": "mart_migrazioni",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_migrazioni/2026/mart_migrazioni.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_migrazioni__mart_migrazioni_serie",
+      "dataset": "istat_migrazioni",
+      "table": "mart_migrazioni_serie",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_migrazioni/2026/mart_migrazioni_serie.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "istat_occupazione_provinciale__mart_occupazione_provinciale",
       "dataset": "istat_occupazione_provinciale",
       "table": "mart_occupazione_provinciale",
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/istat_occupazione_provinciale/2025/mart_occupazione_provinciale.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_permessi__mart_permessi",
+      "dataset": "istat_permessi",
+      "table": "mart_permessi",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_permessi/2026/mart_permessi.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_permessi__mart_permessi_serie",
+      "dataset": "istat_permessi",
+      "table": "mart_permessi_serie",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_permessi/2026/mart_permessi_serie.parquet",
         "multi_file": false
       }
     },
@@ -6985,6 +7372,26 @@
       "location": {
         "type": "gcs",
         "path": "gs://dataciviclab-mart/istat_sbs_imprese/2024/mart_sbs_size.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_stranieri_residenti__mart_stranieri_residenti",
+      "dataset": "istat_stranieri_residenti",
+      "table": "mart_stranieri_residenti",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_stranieri_residenti/2026/mart_stranieri_residenti.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_stranieri_residenti__mart_stranieri_residenti_serie",
+      "dataset": "istat_stranieri_residenti",
+      "table": "mart_stranieri_residenti_serie",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_stranieri_residenti/2026/mart_stranieri_residenti_serie.parquet",
         "multi_file": false
       }
     },
@@ -7863,6 +8270,37 @@
       }
     },
     {
+      "id": "istat_cittadinanze",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat_cittadinanze",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T173140Z_c73f4735",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 5927,
+          "clean": 5927,
+          "mart": 3161
+        },
+        "output_bytes": {
+          "raw": 533044,
+          "clean": 18918,
+          "mart": 24218
+        },
+        "started_at": "2026-11-04T17:31:40.879504+00:00",
+        "finished_at": "2026-11-04T17:31:55.595797+00:00",
+        "duration_seconds": 14.716
+      }
+    },
+    {
       "id": "istat_gini_regionale",
       "source_id": "istat_dbnomics",
       "status": "ok",
@@ -7956,6 +8394,37 @@
       }
     },
     {
+      "id": "istat_migrazioni",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat_migrazioni",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T173156Z_bbb2e022",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 3179,
+          "clean": 3179,
+          "mart": 506
+        },
+        "output_bytes": {
+          "raw": 478733,
+          "clean": 11261,
+          "mart": 5275
+        },
+        "started_at": "2026-11-04T17:31:56.136255+00:00",
+        "finished_at": "2026-11-04T17:31:59.373270+00:00",
+        "duration_seconds": 3.237
+      }
+    },
+    {
       "id": "istat_occupazione_provinciale",
       "source_id": "istat_sdmx",
       "status": "ok",
@@ -7984,6 +8453,37 @@
         "started_at": "2026-10-11T21:03:07.643067+00:00",
         "finished_at": "2026-10-11T21:03:21.403110+00:00",
         "duration_seconds": 13.76
+      }
+    },
+    {
+      "id": "istat_permessi",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat_permessi",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T173159Z_82172401",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 145006,
+          "clean": 145006,
+          "mart": 17312
+        },
+        "output_bytes": {
+          "raw": 17990331,
+          "clean": 340597,
+          "mart": 89401
+        },
+        "started_at": "2026-11-04T17:31:59.875295+00:00",
+        "finished_at": "2026-11-04T17:33:22.627509+00:00",
+        "duration_seconds": 82.752
       }
     },
     {
@@ -8046,6 +8546,37 @@
         "started_at": "2026-10-20T18:27:04.565319+00:00",
         "finished_at": "2026-10-20T18:27:30.433564+00:00",
         "duration_seconds": 25.868
+      }
+    },
+    {
+      "id": "istat_stranieri_residenti",
+      "source_id": "istat_dbnomics",
+      "status": "ok",
+      "label": "istat_stranieri_residenti",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261104T173323Z_f55ab875",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 95,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 104619,
+          "clean": 104619,
+          "mart": 16818
+        },
+        "output_bytes": {
+          "raw": 8506319,
+          "clean": 219611,
+          "mart": 76734
+        },
+        "started_at": "2026-11-04T17:33:23.132812+00:00",
+        "finished_at": "2026-11-04T17:40:37.511607+00:00",
+        "duration_seconds": 434.379
       }
     },
     {
@@ -8649,7 +9180,10 @@
       }
     }
   ],
-  "codelists": [],
+  "codelists": [
+    "istat_cittadinanze",
+    "istat_territori"
+  ],
   "entities": {
     "entities": {
       "Attività economica": {
@@ -9407,6 +9941,12 @@
             "semantic_type": "year"
           },
           {
+            "slug": "istat_cittadinanze",
+            "name": "Istat Cittadinanze",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "istat_gini_regionale",
             "name": "ISTAT - Indice di Gini regionale",
             "column": "anno",
@@ -9419,8 +9959,20 @@
             "semantic_type": "year"
           },
           {
+            "slug": "istat_migrazioni",
+            "name": "Istat Migrazioni",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "istat_occupazione_provinciale",
             "name": "ISTAT — Tasso di Occupazione Provinciale (2018-2025)",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "istat_permessi",
+            "name": "Istat Permessi",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -9439,6 +9991,12 @@
           {
             "slug": "istat_sbs_imprese",
             "name": "Istat Sbs Imprese",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "istat_stranieri_residenti",
+            "name": "Istat Stranieri Residenti",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -9588,7 +10146,7 @@
           }
         ],
         "types": {
-          "year": 38,
+          "year": 42,
           "month": 8
         }
       }
