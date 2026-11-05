@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-04",
+  "updated_at": "2026-11-05",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -1504,7 +1504,7 @@
       "source_id": "openbdap",
       "period": {
         "start": 2010,
-        "end": 2023
+        "end": 2024
       },
       "tags": [
         "welfare-lavoro",
@@ -1535,8 +1535,9 @@
         {
           "name": "codice_ente_bdap",
           "type": "BIGINT",
-          "role": "metric",
-          "description": "Codice ente BDAP"
+          "role": "dimension",
+          "description": "Codice ente BDAP",
+          "semantic_type": "siope_code"
         },
         {
           "name": "ente",
@@ -8183,12 +8184,27 @@
       "detail": "anni 2010-2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260731T163751Z_089f4aa1",
+        "run_id": "20261105T125203Z_4ac41294",
         "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:51.902532+00:00",
-        "finished_at": "2026-07-31T16:37:51.906743+00:00",
-        "duration_seconds": 0.004
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 40521,
+          "clean": 40521,
+          "mart": 581
+        },
+        "output_bytes": {
+          "raw": 11013269,
+          "clean": 432066,
+          "mart": 23664
+        },
+        "started_at": "2026-11-05T12:52:03.393705+00:00",
+        "finished_at": "2026-11-05T12:52:23.279265+00:00",
+        "duration_seconds": 19.886
       }
     },
     {
@@ -9507,11 +9523,18 @@
             "name": "Comuni Master — hub territoriale completo",
             "column": "codice_ipa",
             "semantic_type": "ipa_code"
+          },
+          {
+            "slug": "dipendenti_pubblici",
+            "name": "Dipendenti Pubblici - Occupazione e Turnover",
+            "column": "codice_ente_bdap",
+            "semantic_type": "siope_code"
           }
         ],
         "types": {
           "miur_code": 1,
-          "ipa_code": 1
+          "ipa_code": 1,
+          "siope_code": 1
         }
       },
       "Ente (o Impresa)": {
@@ -10312,6 +10335,19 @@
           "entity": "Comune",
           "bridge": "bdap_anagrafe_enti",
           "on": "codice_ente_ssn",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Ente",
+          "dataset": "dipendenti_pubblici",
+          "via": "siope_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "bdap_anagrafe_enti",
+          "on": "codice_ente_siope",
           "semantic_type": "municipality_code"
         }
       },
