@@ -14,8 +14,9 @@ Se output_path non specificato, scrive in stdout.
 import sys
 import os
 import csv
-import requests
+
 import xlrd
+from lab_connectors.http import download
 
 URL = "https://indicatoriambientali.isprambiente.it/sites/default/files/indicatori_ambientali/2025-07-01/Tabella%201%20Emissioni_gas_serra_da_processi_energetici%20%286%29.xls"
 
@@ -30,10 +31,8 @@ HEADER = [
 
 
 def download_xls(url):
-    headers = {"User-Agent": "Mozilla/5.0"}
-    r = requests.get(url, timeout=30, headers=headers, verify=False)
-    r.raise_for_status()
-    return r.content
+    """Scarica l'XLS con la catena HTTP condivisa (retry + SSL fallback)."""
+    return download(url, timeout=30, user_agent="Mozilla/5.0")
 
 
 def convert_xls_to_csv(data, output):
