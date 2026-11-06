@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-05",
+  "updated_at": "2026-11-06",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -8287,7 +8287,7 @@
       "detail": "anno 2023 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260801T103200Z_4dc2cbf5",
+        "run_id": "20261106T213703Z_9ecfe5f1",
         "year": 2023,
         "status": "SUCCESS",
         "quality_score": {
@@ -8302,12 +8302,12 @@
         },
         "output_bytes": {
           "raw": 3479,
-          "clean": 2397,
-          "mart": 4286
+          "clean": 2424,
+          "mart": 4372
         },
-        "started_at": "2026-08-01T10:32:00.800427+00:00",
-        "finished_at": "2026-08-01T10:32:02.250921+00:00",
-        "duration_seconds": 1.45
+        "started_at": "2026-11-06T21:37:03.112534+00:00",
+        "finished_at": "2026-11-06T21:37:04.999144+00:00",
+        "duration_seconds": 1.887
       }
     },
     {
