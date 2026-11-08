@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-06",
+  "updated_at": "2026-11-08",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -1024,6 +1024,104 @@
         "multi_file": true
       },
       "stage": "published"
+    },
+    {
+      "slug": "bdap_ssn_conto_economico",
+      "name": "Bdap Ssn Conto Economico",
+      "description": "",
+      "source": "",
+      "source_id": "openbdap",
+      "period": {
+        "start": 2012,
+        "end": 2024
+      },
+      "tags": [
+        "sanita",
+        "bdap",
+        "ssn",
+        "conto-economico",
+        "bilanci"
+      ],
+      "category": "sanita",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "descrizione_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_voce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_voce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "riga_sintesi",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "voce_livello1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "importo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_aggiornamento",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/bdap_ssn_conto_economico/*/bdap_ssn_conto_economico_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "bdap_ssn_conto_economico__mart_composizione_regionale"
+      ]
     },
     {
       "slug": "centri_accoglienza_italia",
@@ -7047,6 +7145,16 @@
       }
     },
     {
+      "slug": "bdap_ssn_conto_economico__mart_composizione_regionale",
+      "dataset": "bdap_ssn_conto_economico",
+      "table": "mart_composizione_regionale",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/bdap_ssn_conto_economico/*/mart_composizione_regionale.parquet",
+        "multi_file": true
+      }
+    },
+    {
       "slug": "centri_accoglienza_italia__centri_regione",
       "dataset": "centri_accoglienza_italia",
       "table": "centri_regione",
@@ -8146,6 +8254,37 @@
         "started_at": "2026-07-31T16:37:44.040306+00:00",
         "finished_at": "2026-07-31T16:37:44.044617+00:00",
         "duration_seconds": 0.004
+      }
+    },
+    {
+      "id": "bdap_ssn_conto_economico",
+      "source_id": "openbdap",
+      "status": "ok",
+      "label": "bdap_ssn_conto_economico",
+      "detail": "anni 2012-2024 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261108T115832Z_5d54d30b",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 8144,
+          "clean": 8144,
+          "mart": 21
+        },
+        "output_bytes": {
+          "raw": 989055,
+          "clean": 75169,
+          "mart": 6610
+        },
+        "started_at": "2026-11-08T11:58:32.576088+00:00",
+        "finished_at": "2026-11-08T11:58:37.679176+00:00",
+        "duration_seconds": 5.103
       }
     },
     {
@@ -9871,6 +10010,12 @@
             "semantic_type": "region_code"
           },
           {
+            "slug": "bdap_ssn_conto_economico",
+            "name": "Bdap Ssn Conto Economico",
+            "column": "codice_regione",
+            "semantic_type": "region_code"
+          },
+          {
             "slug": "centri_accoglienza_italia",
             "name": "Centri di accoglienza migranti — CAS, CPA, Hotspot (2018-2024)",
             "column": "regione_codice_istat",
@@ -10004,7 +10149,7 @@
           }
         ],
         "types": {
-          "region_code": 26
+          "region_code": 27
         }
       },
       "Tempo": {
@@ -10057,6 +10202,12 @@
             "slug": "bdap_lea",
             "name": "Bdap Lea",
             "column": "anno_riferimento",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "bdap_ssn_conto_economico",
+            "name": "Bdap Ssn Conto Economico",
+            "column": "anno",
             "semantic_type": "year"
           },
           {
@@ -10319,7 +10470,7 @@
           }
         ],
         "types": {
-          "year": 43,
+          "year": 44,
           "month": 8
         }
       }
