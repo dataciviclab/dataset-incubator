@@ -328,6 +328,75 @@ class TestValidateEntry:
         assert failures == []
 
     @pytest.mark.contract
+    def test_primary_key_missing_is_recommendation_not_failure(self, tmp_path, patch_root):
+        """Senza primary_key il candidate resta valido: è una raccomandazione.
+
+        Lo standard candidate lo dichiara opzionale ("deroga se PK non
+        dichiarabile") e DI ha già la sua raccomandazione in
+        check_clean_validation_config. Promuoverlo a failure con strict
+        renderebbe rosso il gate per candidate legittimi a grana variabile.
+        """
+        from validate_candidate_structure import validate_entry
+        import yaml
+
+        base = patch_root / "candidates" / "ds"
+        sql = base / "sql"
+        sql.mkdir(parents=True)
+        _touch(base / "README.md")
+        _touch(base / "notes.md")
+        (sql / "clean.sql").write_text("SELECT 1", encoding="utf-8")
+        (sql / "mart.sql").write_text("SELECT 1", encoding="utf-8")
+        with open(base / "dataset.yml", "w", encoding="utf-8") as f:
+            yaml.dump(
+                {
+                    "dataset": {
+                        "name": "ds",
+                        "years": [2024],
+                        "source_id": "openga",
+                        "tags": ["giustizia"],
+                        "category": "giustizia",
+                    },
+                    "raw": {"sources": [{"name": "src", "type": "local_file"}]},
+                },
+                f,
+            )
+        failures: list[str] = []
+        warnings: list[str] = []
+        validate_entry(base, failures, warnings)
+        assert failures == []
+        assert any("primary_key" in w for w in warnings)
+
+    @pytest.mark.contract
+    def test_strict_still_fails_on_standard_fields(self, tmp_path, patch_root):
+        """I campi obbligatori dallo standard restano bloccanti con strict."""
+        from validate_candidate_structure import validate_entry
+        import yaml
+
+        base = patch_root / "candidates" / "ds"
+        sql = base / "sql"
+        sql.mkdir(parents=True)
+        _touch(base / "README.md")
+        _touch(base / "notes.md")
+        (sql / "clean.sql").write_text("SELECT 1", encoding="utf-8")
+        (sql / "mart.sql").write_text("SELECT 1", encoding="utf-8")
+        with open(base / "dataset.yml", "w", encoding="utf-8") as f:
+            yaml.dump(
+                {
+                    "dataset": {
+                        "name": "ds",
+                        "years": [2024],
+                        "source_id": "openga",
+                        "category": "giustizia",
+                    },
+                    "raw": {"sources": [{"name": "src", "type": "local_file"}]},
+                },
+                f,
+            )
+        failures: list[str] = []
+        validate_entry(base, failures)
+        assert any("'dataset.tags'" in f for f in failures)
+
+    @pytest.mark.contract
     def test_missing_docs(self, tmp_path, patch_root):
         from validate_candidate_structure import validate_entry
 
