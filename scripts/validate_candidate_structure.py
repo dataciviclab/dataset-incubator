@@ -10,6 +10,14 @@ from toolkit.core.config import load_config as load_config_model
 
 ROOT = Path(__file__).resolve().parents[1]
 
+# Warning di `validate_config` che lo standard candidate rende bloccanti.
+# Gli altri restano raccomandazioni (vedi `check_config_yml`).
+STRICT_CONFIG_WARNINGS = (
+    "'dataset.source_id'",
+    "'dataset.tags'",
+    "'dataset.category'",
+)
+
 LayoutType = Literal[
     "single-source",
     "multi-source",
@@ -274,9 +282,13 @@ def check_config_yml(
     warning source_id/tags/category) invece di duplicare i check in DI.
     Gli errori diventano failure; i warning finiscono nelle raccomandazioni.
 
-    Con ``strict=True`` (default operativo) i warning di config (source_id,
-    tags, category mancanti) diventano failure: lo standard candidate è
-    obbligatorio per tutti i dataset.
+    Con ``strict=True`` (default operativo) diventano failure **solo** i warning
+    sui campi che lo standard candidate rende obbligatori (source_id, tags,
+    category). Le altre raccomandazioni del toolkit — oggi ``primary_key`` —
+    restano warning: lo standard le considera opzionali ("deroga se PK non
+    dichiarabile") e DI ha già la sua raccomandazione in
+    ``check_clean_validation_config``. Promuoverle renderebbe rosso il gate per
+    candidate legittimi (es. clean a grana variabile senza chiave naturale).
     """
     from toolkit.core.dataset_loader import validate_config
 
@@ -284,11 +296,11 @@ def check_config_yml(
     if not result.get("ok"):
         for err in result.get("errors", []):
             failures.append(f"{yml_path.relative_to(ROOT)}: config: {err}")
-    if strict:
-        for warn in result.get("warnings", []):
+
+    for warn in result.get("warnings", []):
+        if strict and warn.startswith(STRICT_CONFIG_WARNINGS):
             failures.append(f"{yml_path.relative_to(ROOT)}: config: {warn}")
-    elif warnings is not None:
-        for warn in result.get("warnings", []):
+        elif warnings is not None:
             warnings.append(f"{yml_path.relative_to(ROOT)}: config: {warn}")
 
     # Vocabolario category chiuso: fuori lista = warning (non blocca), con
