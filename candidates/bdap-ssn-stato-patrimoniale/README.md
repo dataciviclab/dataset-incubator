@@ -25,7 +25,7 @@ https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/<uuid>.csv
 
 ## Schema
 
-`clean` (11 colonne, ~4.000 righe/anno):
+`clean` (12 colonne, ~4.000 righe/anno):
 
 | colonna | contenuto |
 |---|---|
@@ -34,8 +34,9 @@ https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/<uuid>.csv
 | `prospetto` | `attivo` / `passivo` (dal primo carattere del codice) |
 | `sezione` | primi due caratteri (`AA` immobilizzazioni, `AB` attivo circolante, `PA` patrimonio netto, `PD` debiti, ...) |
 | `riga_sintesi` | `true` per i totali di sezione (`*Z999`) |
-| `livello` / `voce_livello1` | profondità e voce di primo livello |
+| `livello` / `voce_livello1` | profondità e voce di primo livello (numerazione a cifre romane: `A.I`, `A.I.1.a`) |
 | `importo` | importo in euro |
+| `data_aggiornamento` | data dichiarata dalla fonte (stringa `gg/mm/aaaa`) |
 
 `mart_patrimonio_regionale`: `attivo`, `patrimonio_netto`, `fondi_rischi`, `tfr`,
 `debiti`, `ratei_attivi/passivi`, `passivo`, `utile_esercizio`, più i controlli

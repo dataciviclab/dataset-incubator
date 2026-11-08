@@ -21,9 +21,29 @@ derived as (
         case when substr(codice_voce, 1, 1) = 'A' then 'attivo' else 'passivo' end as prospetto,
         substr(codice_voce, 1, 2) as sezione,
         substr(codice_voce, 3, 1) = 'Z' as riga_sintesi,
-        regexp_extract(descrizione_voce, '^([A-Z]\.\d+(?:\.[A-Z0-9]+)*)', 1) as _prefisso,
-        regexp_extract(descrizione_voce, '^([A-Z]\.\d+)', 1) as voce_livello1
+        -- Il prospetto numera i livelli in cifre romane ("A.I)", "A.I.1.a)",
+        -- "B.II.7.e.1)"), non in cifre arabe come il Conto Economico.
+        regexp_extract(
+            descrizione_voce, '^([A-Z](?:\.[IVXLCDM]+|\.[0-9]+|\.[a-z])*)\)', 1
+        ) as _prefisso
     from base
+),
+
+livelli as (
+    select
+        *,
+        -- profondità: "A" -> 0 (sezione), "A.I" -> 1, "A.I.1.a" -> 3
+        case
+            when _prefisso = '' then null
+            else length(_prefisso) - length(replace(_prefisso, '.', ''))
+        end as livello,
+        -- voce di primo livello: "A.I", "B.II"; per le sezioni è la lettera
+        case
+            when _prefisso = '' then null
+            when strpos(_prefisso, '.') = 0 then _prefisso
+            else regexp_extract(_prefisso, '^([A-Z]\.[IVXLCDM]+|[A-Z]\.[0-9]+)', 1)
+        end as voce_livello1
+    from derived
 )
 
 select
@@ -35,14 +55,9 @@ select
     prospetto,
     sezione,
     riga_sintesi,
-    -- profondità della voce: "A.I)" -> 1, "A.I.1.a)" -> 2, ...
-    -- null per le righe di sintesi senza prefisso (es. "D) TOTALE ATTIVO").
-    case
-        when _prefisso = '' then null
-        else length(_prefisso) - length(replace(_prefisso, '.', ''))
-    end as livello,
-    nullif(voce_livello1, '') as voce_livello1,
+    livello,
+    voce_livello1,
     importo,
     data_aggiornamento
-from derived
+from livelli
 where anno is not null

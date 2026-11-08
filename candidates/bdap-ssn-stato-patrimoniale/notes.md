@@ -16,7 +16,8 @@ del SSN a livello Regionale"* — 13 package, 2012-2024, ~0,9 MB per anno.
 ## Scelte di mapping
 
 1. **Totali derivati, non letti.** La riga `AZZ999` (D. Totale attivo) manca in 9
-   regioni nel 2024, 11 nel 2020 e in tutte nel 2012. Lo stesso vale per `PZZ999`.
+   regioni nel 2024, 10 nel 2020 e in tutte nel 2012. Lo stesso vale per `PZZ999`
+   (mancante in 8 regioni nel 2024).
    Il mart somma i totali di sezione (`AAZ999`, `ABZ999`, `ACZ999` per l'attivo;
    `PAZ999`..`PEZ999` per il passivo), che invece ci sono quasi sempre (21/21 per
    l'attivo, 20/21 per il passivo — a Trento manca `PEZ999`, che vale zero).
@@ -26,8 +27,10 @@ del SSN a livello Regionale"* — 13 package, 2012-2024, ~0,9 MB per anno.
 
 3. **Codice a 6 caratteri.** Posizione 1 = prospetto (`A`/`P`), posizione 2 =
    sezione, posizione 3 = `Z` per i totali di sezione. Il clean espone `prospetto`,
-   `sezione`, `riga_sintesi`; `livello` e `voce_livello1` vengono dalla descrizione
-   (`A.I.1.a)`), come nel Conto Economico.
+   `sezione`, `riga_sintesi`; `livello` e `voce_livello1` vengono dalla descrizione, che qui usa
+   **cifre romane** (`A.I)`, `A.I.1.a)`, `B.II.7.e.1)`) — non le cifre arabe del
+   Conto Economico. `livello` = numero di punti del prefisso (`A` → 0, `A.I` → 1,
+   `A.I.1.a` → 3); `voce_livello1` = prime due componenti (`A.I`, `B.II`).
 
 4. **`riga_sintesi` invece di `is_totale`.** Il validator del toolkit segnala i
    nomi che suggeriscono un numero accanto a un booleano; stesso nome usato nel
