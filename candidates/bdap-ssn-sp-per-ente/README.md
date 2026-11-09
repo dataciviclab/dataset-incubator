@@ -70,7 +70,9 @@ fusioni e accorpamenti.
 1. **Consolidato = dataset regionale**: la somma delle righe `999` coincide con
    `bdap_ssn_stato_patrimoniale` **su tutte le 13 annualità, scarto 0,0 mln**.
 2. **Quadratura patrimoniale per ente**: attivo derivato = passivo derivato su
-   **216/217 enti** nel 2024; unico scarto 34,2 mln (Sardegna, difetto noto).
+   **210/217 enti** nel 2024 (i 7 restanti hanno residui di arrotondamento ≤ 4 €);
+   lo scarto di **34,2 mln** è sulla riga `consolidato` della Sardegna (difetto di
+   fonte noto), non su un ente.
 3. **Chiave**: `(anno, codice_ente_bdap, codice_ente_ssn, codice_voce)` **unica**
    (36.097 righe, 0 duplicati nel 2024). Serve il codice SSN perché uno stesso
    ente BDAP può avere più codici SSN (es. INRCA: 916, 920, 921).

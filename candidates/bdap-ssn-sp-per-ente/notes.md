@@ -12,7 +12,7 @@ del SSN"* (livello per ente, senza suffisso "a livello regionale") — 13 packag
 | schema | ✅ 10 colonne, `;`, `cp1252`, coda vuota |
 | chiave `(anno, bdap, ssn, voce)` | ✅ unica (0 duplicati nel 2024) |
 | consolidato (`999`) = dataset regionale | ✅ scarto 0,0 mln su 13/13 anni |
-| quadratura per ente | ✅ 216/217 enti a 0; Sardegna +34,2 mln |
+| quadratura per ente | ✅ 210/217 enti a 0 nel 2024 (max residuo 4 €); +34,2 mln sulla riga `consolidato` della Sardegna |
 | `AZZ999` disponibile | ⚠️ 140 enti su 217 (totale derivato dalle sezioni) |
 
 ## Scelte di mapping
@@ -27,7 +27,7 @@ del SSN"* (livello per ente, senza suffisso "a livello regionale") — 13 packag
    compare tre volte (916, 920, 921) con denominazioni diverse — sono unità
    contabili distinte (presidi) i cui importi si sommano. La chiave del clean è
    `(anno, codice_ente_bdap, codice_ente_ssn, codice_voce)`; senza il codice SSN
-   si perdono 1.196 righe in un pivot.
+   si perdono 1.196 righe nel solo 2024 (14.079 su 13 anni).
 
 3. **Totali derivati.** Come nel dataset regionale, `AZZ999`/`PZZ999` non sono
    affidabili (mancano per 77 enti su 217 nel 2024): attivo e passivo si sommano

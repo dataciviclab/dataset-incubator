@@ -72,6 +72,7 @@ clean:
       - anno
       - codice_regione
       - codice_ente_bdap
+      - codice_ente_ssn
       - codice_voce
       - importo
     primary_key:
