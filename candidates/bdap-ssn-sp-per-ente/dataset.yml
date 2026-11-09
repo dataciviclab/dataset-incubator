@@ -1,0 +1,105 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "bdap_ssn_sp_per_ente"
+  source_id: "openbdap"
+  tags: [sanita, bdap, ssn, stato-patrimoniale, bilanci, enti]
+  category: sanita
+  description: "Stato Patrimoniale delle singole aziende sanitarie: attivo, patrimonio netto e debiti per ente, regione e anno. Include le righe di consolidamento regionale (ente regione e totale)."
+  years: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+  time_coverage: {start_year: 2012, end_year: 2024}
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "bdap_ssn_sp_ente_csv"
+      type: "http_file"
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/"
+        filename: "bdap_ssn_sp_ente_{year}.csv"
+        # UUID del package "Modello di rilevazione dello Stato Patrimoniale
+        # degli enti del SSN" (livello per ente, uno per annualità).
+        url_suffix_by_year:
+          2012: "a1734baf-85bf-4db1-81c1-5834c0b35024.csv"
+          2013: "396fc12b-fa01-4a0a-9a95-ea8191cd4f4a.csv"
+          2014: "782cbf03-9e63-46bf-bab3-39713fe45059.csv"
+          2015: "206ac05d-18d9-4490-9480-aaec71ea28ba.csv"
+          2016: "6629c31a-ae13-4e7a-b5a8-c743cc12a2cc.csv"
+          2017: "249ab41a-9588-406d-b636-31a17c1637be.csv"
+          2018: "23eda2bc-3bfc-4f58-861a-1b8d82d93b71.csv"
+          2019: "8ffa3400-1f8f-417c-9804-f0504a81a073.csv"
+          2020: "bb39f1d2-eece-454e-b737-2c86935697f0.csv"
+          2021: "91e77a6e-8ca7-44a6-9fce-570b382651fc.csv"
+          2022: "a353a04d-da3d-4eb5-beea-66737956d537.csv"
+          2023: "1b4b82fa-aa71-4e84-bb43-c42c8ec6691d.csv"
+          2024: "02e25766-a300-43f9-8f9f-a07dcee27a28.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+    delim: ";"
+    encoding: "cp1252"
+    strict_mode: false
+    trim_whitespace: true
+    columns:
+      "Anno di Riferimento": "VARCHAR"
+      "Codice Regione": "VARCHAR"
+      "Descrizione Regione": "VARCHAR"
+      "Codice Ente SSN": "VARCHAR"
+      "Codice Ente BDAP": "VARCHAR"
+      "Descrizione Ente": "VARCHAR"
+      "Codice Voce Contabile": "VARCHAR"
+      "Descrizione Voce Contabile": "VARCHAR"
+      "Data Aggiornamento": "VARCHAR"
+      "Importo Totale": "VARCHAR"
+  required_columns:
+    - anno
+    - codice_regione
+    - codice_ente_ssn
+    - codice_ente_bdap
+    - descrizione_ente
+    - codice_voce
+    - prospetto
+    - importo
+  validate:
+    min_rows: 20000
+    not_null:
+      - anno
+      - codice_regione
+      - codice_ente_bdap
+      - codice_ente_ssn
+      - codice_voce
+      - importo
+    primary_key:
+      - anno
+      - codice_ente_bdap
+      - codice_ente_ssn
+      - codice_voce
+
+mart:
+  tables:
+    - name: "mart_patrimonio_ente"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_patrimonio_ente"
+  validate:
+    table_rules:
+      mart_patrimonio_ente:
+        required_columns:
+          - anno
+          - codice_ente_bdap
+          - attivo
+          - passivo
+          - patrimonio_netto
+          - debiti
+          - quadratura
+        primary_key:
+          - anno
+          - codice_ente_bdap
+          - codice_ente_ssn
+        min_rows: 100
