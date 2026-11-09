@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-08",
+  "updated_at": "2026-11-09",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -1121,6 +1121,110 @@
       "stage": "incubating",
       "mart_refs": [
         "bdap_ssn_conto_economico__mart_composizione_regionale"
+      ]
+    },
+    {
+      "slug": "bdap_ssn_stato_patrimoniale",
+      "name": "Bdap Ssn Stato Patrimoniale",
+      "description": "Stato Patrimoniale degli enti del SSN a livello regionale: attivo, patrimonio netto e debiti delle aziende sanitarie, per regione e anno.",
+      "source": "",
+      "source_id": "openbdap",
+      "period": {
+        "start": 2012,
+        "end": 2024
+      },
+      "tags": [
+        "sanita",
+        "bdap",
+        "ssn",
+        "stato-patrimoniale",
+        "bilanci"
+      ],
+      "category": "sanita",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "descrizione_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_voce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_voce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "prospetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "riga_sintesi",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "voce_livello1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "importo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_aggiornamento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/bdap_ssn_stato_patrimoniale/*/bdap_ssn_stato_patrimoniale_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "bdap_ssn_stato_patrimoniale__mart_patrimonio_regionale"
       ]
     },
     {
@@ -7155,6 +7259,16 @@
       }
     },
     {
+      "slug": "bdap_ssn_stato_patrimoniale__mart_patrimonio_regionale",
+      "dataset": "bdap_ssn_stato_patrimoniale",
+      "table": "mart_patrimonio_regionale",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/bdap_ssn_stato_patrimoniale/*/mart_patrimonio_regionale.parquet",
+        "multi_file": true
+      }
+    },
+    {
       "slug": "centri_accoglienza_italia__centri_regione",
       "dataset": "centri_accoglienza_italia",
       "table": "centri_regione",
@@ -8285,6 +8399,37 @@
         "started_at": "2026-11-08T11:58:32.576088+00:00",
         "finished_at": "2026-11-08T11:58:37.679176+00:00",
         "duration_seconds": 5.103
+      }
+    },
+    {
+      "id": "bdap_ssn_stato_patrimoniale",
+      "source_id": "openbdap",
+      "status": "ok",
+      "label": "bdap_ssn_stato_patrimoniale",
+      "detail": "anni 2012-2024 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261109T112026Z_b04fb6fe",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 4014,
+          "clean": 4014,
+          "mart": 21
+        },
+        "output_bytes": {
+          "raw": 426377,
+          "clean": 41486,
+          "mart": 5709
+        },
+        "started_at": "2026-11-09T11:20:26.520373+00:00",
+        "finished_at": "2026-11-09T11:20:29.535393+00:00",
+        "duration_seconds": 3.015
       }
     },
     {
@@ -10016,6 +10161,12 @@
             "semantic_type": "region_code"
           },
           {
+            "slug": "bdap_ssn_stato_patrimoniale",
+            "name": "Bdap Ssn Stato Patrimoniale",
+            "column": "codice_regione",
+            "semantic_type": "region_code"
+          },
+          {
             "slug": "centri_accoglienza_italia",
             "name": "Centri di accoglienza migranti — CAS, CPA, Hotspot (2018-2024)",
             "column": "regione_codice_istat",
@@ -10149,7 +10300,7 @@
           }
         ],
         "types": {
-          "region_code": 27
+          "region_code": 28
         }
       },
       "Tempo": {
@@ -10207,6 +10358,12 @@
           {
             "slug": "bdap_ssn_conto_economico",
             "name": "Bdap Ssn Conto Economico",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "bdap_ssn_stato_patrimoniale",
+            "name": "Bdap Ssn Stato Patrimoniale",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -10470,7 +10627,7 @@
           }
         ],
         "types": {
-          "year": 44,
+          "year": 45,
           "month": 8
         }
       }
