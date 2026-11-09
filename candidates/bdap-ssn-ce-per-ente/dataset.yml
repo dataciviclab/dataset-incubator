@@ -1,0 +1,106 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "bdap_ssn_ce_per_ente"
+  source_id: "openbdap"
+  tags: [sanita, bdap, ssn, conto-economico, bilanci, enti]
+  category: sanita
+  description: "Conto Economico delle singole aziende sanitarie: ricavi, costi, personale e risultato per ente, regione e anno. Include le righe di consolidamento regionale (ente regione e totale)."
+  years: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+  time_coverage: {start_year: 2012, end_year: 2024}
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "bdap_ssn_ce_ente_csv"
+      type: "http_file"
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/"
+        filename: "bdap_ssn_ce_ente_{year}.csv"
+        # UUID del package annuale "Modello di rilevazione del Conto Economico
+        # degli enti del SSN" (livello per ente). I trimestri sono package
+        # separati e restano fuori da questo dataset.
+        url_suffix_by_year:
+          2012: "5248fe9c-4b99-4220-9e9e-0a6c00ba30b0.csv"
+          2013: "5d9dfd84-04b4-47a3-bb73-a067a790d728.csv"
+          2014: "465e851b-b52e-40fe-9c70-d6a558debe2a.csv"
+          2015: "0aa5fab4-d4fe-40ec-a679-0c88309b0042.csv"
+          2016: "1911b316-cb99-4561-a065-6033f0345c26.csv"
+          2017: "e8e7721f-4871-49b7-afc6-1e5b97049891.csv"
+          2018: "df1a970c-e570-403d-8f9a-1b736ee7e88f.csv"
+          2019: "481179f0-2574-4e33-8479-8f1f5729090c.csv"
+          2020: "41838a8d-33a1-4f4c-a4e8-1cba74b81e03.csv"
+          2021: "7ed66089-fc41-4643-a110-d82dd2622f5b.csv"
+          2022: "5afc4cf8-a13e-4fb6-a81b-61896de5f9ea.csv"
+          2023: "57bb2cce-4fdd-4de1-88b5-8e7551408481.csv"
+          2024: "94083af2-a542-482d-8ad6-5877d04cd1ca.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+    delim: ";"
+    encoding: "cp1252"
+    strict_mode: false
+    trim_whitespace: true
+    columns:
+      "Anno di Riferimento": "VARCHAR"
+      "Codice Regione": "VARCHAR"
+      "Descrizione Regione": "VARCHAR"
+      "Tipo Rilevazione": "VARCHAR"
+      "Codice Ente SSN": "VARCHAR"
+      "Codice Ente BDAP": "VARCHAR"
+      "Descrizione Ente": "VARCHAR"
+      "Codice Voce Contabile": "VARCHAR"
+      "Descrizione Voce Contabile": "VARCHAR"
+      "Data Aggiornamento": "VARCHAR"
+      "Importo Totale": "VARCHAR"
+  required_columns:
+    - anno
+    - codice_regione
+    - codice_ente_ssn
+    - codice_ente_bdap
+    - descrizione_ente
+    - codice_voce
+    - sezione
+    - importo
+  validate:
+    min_rows: 40000
+    not_null:
+      - anno
+      - codice_regione
+      - codice_ente_bdap
+      - codice_ente_ssn
+      - codice_voce
+      - importo
+    primary_key:
+      - anno
+      - codice_ente_bdap
+      - codice_ente_ssn
+      - codice_voce
+
+mart:
+  tables:
+    - name: "mart_conto_economico_ente"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_conto_economico_ente"
+  validate:
+    table_rules:
+      mart_conto_economico_ente:
+        required_columns:
+          - anno
+          - codice_ente_bdap
+          - totale_ricavi
+          - totale_costi
+          - costo_personale
+          - risultato_esercizio
+        primary_key:
+          - anno
+          - codice_ente_bdap
+          - codice_ente_ssn
+        min_rows: 100
