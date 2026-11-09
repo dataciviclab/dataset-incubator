@@ -1124,6 +1124,137 @@
       ]
     },
     {
+      "slug": "bdap_ssn_sp_per_ente",
+      "name": "Bdap Ssn Sp Per Ente",
+      "description": "Stato Patrimoniale delle singole aziende sanitarie: attivo, patrimonio netto e debiti per ente, regione e anno. Include le righe di consolidamento regionale (ente regione e totale).",
+      "source": "",
+      "source_id": "openbdap",
+      "period": {
+        "start": 2012,
+        "end": 2024
+      },
+      "tags": [
+        "sanita",
+        "bdap",
+        "ssn",
+        "stato-patrimoniale",
+        "bilanci",
+        "enti"
+      ],
+      "category": "sanita",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "descrizione_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_ente_ssn",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "ssn_code"
+        },
+        {
+          "name": "codice_ente_bdap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "siope_code"
+        },
+        {
+          "name": "descrizione_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_riga",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_voce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_voce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "prospetto",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "riga_sintesi",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "voce_livello1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "importo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_aggiornamento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/bdap_ssn_sp_per_ente/*/bdap_ssn_sp_per_ente_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "bdap_ssn_sp_per_ente__mart_patrimonio_ente"
+      ]
+    },
+    {
       "slug": "bdap_ssn_stato_patrimoniale",
       "name": "Bdap Ssn Stato Patrimoniale",
       "description": "Stato Patrimoniale degli enti del SSN a livello regionale: attivo, patrimonio netto e debiti delle aziende sanitarie, per regione e anno.",
@@ -7259,6 +7390,16 @@
       }
     },
     {
+      "slug": "bdap_ssn_sp_per_ente__mart_patrimonio_ente",
+      "dataset": "bdap_ssn_sp_per_ente",
+      "table": "mart_patrimonio_ente",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/bdap_ssn_sp_per_ente/*/mart_patrimonio_ente.parquet",
+        "multi_file": true
+      }
+    },
+    {
       "slug": "bdap_ssn_stato_patrimoniale__mart_patrimonio_regionale",
       "dataset": "bdap_ssn_stato_patrimoniale",
       "table": "mart_patrimonio_regionale",
@@ -8399,6 +8540,37 @@
         "started_at": "2026-11-08T11:58:32.576088+00:00",
         "finished_at": "2026-11-08T11:58:37.679176+00:00",
         "duration_seconds": 5.103
+      }
+    },
+    {
+      "id": "bdap_ssn_sp_per_ente",
+      "source_id": "openbdap",
+      "status": "ok",
+      "label": "bdap_ssn_sp_per_ente",
+      "detail": "anni 2012-2024 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261109T143906Z_62310b0b",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 36097,
+          "clean": 36097,
+          "mart": 255
+        },
+        "output_bytes": {
+          "raw": 6420992,
+          "clean": 254290,
+          "mart": 31863
+        },
+        "started_at": "2026-11-09T14:39:06.825568+00:00",
+        "finished_at": "2026-11-09T14:39:16.309890+00:00",
+        "duration_seconds": 9.484
       }
     },
     {
@@ -9829,6 +10001,12 @@
             "semantic_type": "miur_code"
           },
           {
+            "slug": "bdap_ssn_sp_per_ente",
+            "name": "Bdap Ssn Sp Per Ente",
+            "column": "codice_ente_bdap",
+            "semantic_type": "siope_code"
+          },
+          {
             "slug": "comuni_master",
             "name": "Comuni Master — hub territoriale completo",
             "column": "codice_ipa",
@@ -9843,8 +10021,8 @@
         ],
         "types": {
           "miur_code": 1,
-          "ipa_code": 1,
-          "siope_code": 1
+          "siope_code": 2,
+          "ipa_code": 1
         }
       },
       "Ente (o Impresa)": {
@@ -9901,10 +10079,16 @@
             "name": "Bdap Lea",
             "column": "codice_ente_ssn",
             "semantic_type": "ssn_code"
+          },
+          {
+            "slug": "bdap_ssn_sp_per_ente",
+            "name": "Bdap Ssn Sp Per Ente",
+            "column": "codice_ente_ssn",
+            "semantic_type": "ssn_code"
           }
         ],
         "types": {
-          "ssn_code": 2
+          "ssn_code": 3
         }
       },
       "Indicatore": {
@@ -10161,6 +10345,12 @@
             "semantic_type": "region_code"
           },
           {
+            "slug": "bdap_ssn_sp_per_ente",
+            "name": "Bdap Ssn Sp Per Ente",
+            "column": "codice_regione",
+            "semantic_type": "region_code"
+          },
+          {
             "slug": "bdap_ssn_stato_patrimoniale",
             "name": "Bdap Ssn Stato Patrimoniale",
             "column": "codice_regione",
@@ -10300,7 +10490,7 @@
           }
         ],
         "types": {
-          "region_code": 28
+          "region_code": 29
         }
       },
       "Tempo": {
@@ -10358,6 +10548,12 @@
           {
             "slug": "bdap_ssn_conto_economico",
             "name": "Bdap Ssn Conto Economico",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "bdap_ssn_sp_per_ente",
+            "name": "Bdap Ssn Sp Per Ente",
             "column": "anno",
             "semantic_type": "year"
           },
@@ -10627,7 +10823,7 @@
           }
         ],
         "types": {
-          "year": 45,
+          "year": 46,
           "month": 8
         }
       }
@@ -10669,6 +10865,32 @@
           "entity": "Comune",
           "bridge": "bdap_anagrafe_enti",
           "on": "codice_ente_ssn",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Ente sanitario",
+          "dataset": "bdap_ssn_sp_per_ente",
+          "via": "ssn_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "bdap_anagrafe_enti",
+          "on": "codice_ente_ssn",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Ente",
+          "dataset": "bdap_ssn_sp_per_ente",
+          "via": "siope_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "bdap_anagrafe_enti",
+          "on": "codice_ente_siope",
           "semantic_type": "municipality_code"
         }
       },
