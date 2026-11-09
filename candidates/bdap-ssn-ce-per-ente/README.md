@@ -36,8 +36,8 @@ https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/<uuid>.csv
 | `tipo_riga` | `ente` / `regione` (`000`) / `consolidato` (`999`) |
 | `codice_voce`, `descrizione_voce` | voce del CE (es. `AA0010`, `BZ9999`) |
 | `sezione` | `A` ricavi, `B` costi, `C` finanziari, `D` rettifiche, `E` straordinari, `Y` imposte, `Z` risultato |
-| `riga_sintesi` | `true` per i totali di sezione (`*Z9999`) |
-| `livello`, `voce_livello1` | profondità e voce di primo livello (cifre arabe: `A.1`, `B.5`) |
+| `riga_sintesi` | `true` per i totali da non sommare: sezioni (`*Z9999`) e subtotali `XA0000`/`BA2080`/`BA2560` |
+| `livello`, `voce_livello1` | profondità e voce di primo livello (cifre arabe: `A.1`, `B.5`); **NULL sulle righe di sintesi** |
 | `importo`, `data_aggiornamento` | importo e data dichiarata |
 
 `mart_conto_economico_ente`: stesse misure del dataset regionale —
@@ -61,6 +61,12 @@ dalla regione, flussi che il consolidato elimina. Il **risultato** invece quadra
 Regola: **i volumi si leggono solo nel consolidato; il per-ente serve per
 confrontare e per il risultato.** Nello Stato Patrimoniale questa trappola non
 c'era: lì attivo e passivo quadravano per ente.
+
+Nota sulle voci: `riga_sintesi` marca i totali da non sommare — i totali di
+sezione (`*Z9999`) più i subtotali che la fonte pubblica senza codice Z
+(`XA0000` risultato ante imposte, `BA2080` costo del personale, `BA2560`
+ammortamenti). Su quelle righe `livello` e `voce_livello1` sono NULL per
+costruzione: il resto del dataset è coperto al 100%.
 
 ## Numeri
 

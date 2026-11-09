@@ -23,7 +23,14 @@ derived as (
     select
         *,
         substr(codice_voce, 1, 1) as sezione,
-        substr(codice_voce, 2, 1) = 'Z' as riga_sintesi,
+        -- Riga di sintesi: totali di sezione (*Z9999) più i subtotali che la
+        -- fonte pubblica senza codice Z e senza prefisso gerarchico nella
+        -- descrizione (XA0000 risultato ante imposte, BA2080 costo del
+        -- personale, BA2560 ammortamenti). Non vanno sommati.
+        (
+            substr(codice_voce, 2, 1) = 'Z'
+            or codice_voce in ('XA0000', 'BA2080', 'BA2560')
+        ) as riga_sintesi,
         -- 000 = ente regione, 999 = consolidato regionale. Convenzione
         -- invertita rispetto al modello LEA: qui 000 è un soggetto reale.
         case

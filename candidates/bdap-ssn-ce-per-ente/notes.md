@@ -15,6 +15,7 @@ SSN"* (livello per ente, package **annuale**) — 13 package, 2012-2024,
 | quadratura del risultato | ✅ `000` + enti ≈ `999` (2024: 1,739 − 2,586 = −0,847 vs −0,851) |
 | additività di ricavi/costi | ❌ **non additivi**: compensazioni interne (~20 mld nel 2024) |
 | `000` presente | ⚠️ 15 regioni su 21 nel 2024 |
+| `livello`/`voce_livello1` | ✅ 100% sulle righe di dettaglio; NULL su 2.148 righe di sintesi nel 2024 (totali `*Z9999` + `XA0000`/`BA2080`/`BA2560`) |
 
 ## Scelte di mapping
 
@@ -39,7 +40,10 @@ SSN"* (livello per ente, package **annuale**) — 13 package, 2012-2024,
    regionale già in produzione): nessuna derivazione necessaria.
 
 5. **Regex dei livelli in cifre arabe** (`A.1`, `A.1.A`, `B.10`), come il CE
-   regionale — non quella romana dello Stato Patrimoniale.
+   regionale — non quella romana dello Stato Patrimoniale. `livello` è NULL
+   solo sulle righe di sintesi: oltre ai totali `*Z9999`, la fonte ha tre
+   subtotali senza codice Z e senza prefisso (`XA0000`, `BA2080`, `BA2560`),
+   inclusi in `riga_sintesi`.
 
 ## Ponte verso SIOPE (verificato)
 
