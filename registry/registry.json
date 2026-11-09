@@ -1026,6 +1026,137 @@
       "stage": "published"
     },
     {
+      "slug": "bdap_ssn_ce_per_ente",
+      "name": "Bdap Ssn Ce Per Ente",
+      "description": "Conto Economico delle singole aziende sanitarie: ricavi, costi, personale e risultato per ente, regione e anno. Include le righe di consolidamento regionale (ente regione e totale).",
+      "source": "",
+      "source_id": "openbdap",
+      "period": {
+        "start": 2012,
+        "end": 2024
+      },
+      "tags": [
+        "sanita",
+        "bdap",
+        "ssn",
+        "conto-economico",
+        "bilanci",
+        "enti"
+      ],
+      "category": "sanita",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "codice_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "descrizione_regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_rilevazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_ente_ssn",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "ssn_code"
+        },
+        {
+          "name": "codice_ente_bdap",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "siope_code"
+        },
+        {
+          "name": "descrizione_ente",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_riga",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "codice_voce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "descrizione_voce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "sezione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "riga_sintesi",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "voce_livello1",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "importo",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_aggiornamento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/bdap_ssn_ce_per_ente/*/bdap_ssn_ce_per_ente_*_clean.parquet",
+        "multi_file": true
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "bdap_ssn_ce_per_ente__mart_conto_economico_ente"
+      ]
+    },
+    {
       "slug": "bdap_ssn_conto_economico",
       "name": "Bdap Ssn Conto Economico",
       "description": "",
@@ -7380,6 +7511,16 @@
       }
     },
     {
+      "slug": "bdap_ssn_ce_per_ente__mart_conto_economico_ente",
+      "dataset": "bdap_ssn_ce_per_ente",
+      "table": "mart_conto_economico_ente",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/bdap_ssn_ce_per_ente/*/mart_conto_economico_ente.parquet",
+        "multi_file": true
+      }
+    },
+    {
       "slug": "bdap_ssn_conto_economico__mart_composizione_regionale",
       "dataset": "bdap_ssn_conto_economico",
       "table": "mart_composizione_regionale",
@@ -8509,6 +8650,37 @@
         "started_at": "2026-07-31T16:37:44.040306+00:00",
         "finished_at": "2026-07-31T16:37:44.044617+00:00",
         "duration_seconds": 0.004
+      }
+    },
+    {
+      "id": "bdap_ssn_ce_per_ente",
+      "source_id": "openbdap",
+      "status": "ok",
+      "label": "bdap_ssn_ce_per_ente",
+      "detail": "anni 2012-2024 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261109T155825Z_b187e93e",
+        "year": 2024,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 76124,
+          "clean": 76124,
+          "mart": 253
+        },
+        "output_bytes": {
+          "raw": 15636428,
+          "clean": 501252,
+          "mart": 37627
+        },
+        "started_at": "2026-11-09T15:58:25.966125+00:00",
+        "finished_at": "2026-11-09T15:58:49.755459+00:00",
+        "duration_seconds": 23.789
       }
     },
     {
@@ -10001,6 +10173,12 @@
             "semantic_type": "miur_code"
           },
           {
+            "slug": "bdap_ssn_ce_per_ente",
+            "name": "Bdap Ssn Ce Per Ente",
+            "column": "codice_ente_bdap",
+            "semantic_type": "siope_code"
+          },
+          {
             "slug": "bdap_ssn_sp_per_ente",
             "name": "Bdap Ssn Sp Per Ente",
             "column": "codice_ente_bdap",
@@ -10021,7 +10199,7 @@
         ],
         "types": {
           "miur_code": 1,
-          "siope_code": 2,
+          "siope_code": 3,
           "ipa_code": 1
         }
       },
@@ -10081,6 +10259,12 @@
             "semantic_type": "ssn_code"
           },
           {
+            "slug": "bdap_ssn_ce_per_ente",
+            "name": "Bdap Ssn Ce Per Ente",
+            "column": "codice_ente_ssn",
+            "semantic_type": "ssn_code"
+          },
+          {
             "slug": "bdap_ssn_sp_per_ente",
             "name": "Bdap Ssn Sp Per Ente",
             "column": "codice_ente_ssn",
@@ -10088,7 +10272,7 @@
           }
         ],
         "types": {
-          "ssn_code": 3
+          "ssn_code": 4
         }
       },
       "Indicatore": {
@@ -10339,6 +10523,12 @@
             "semantic_type": "region_code"
           },
           {
+            "slug": "bdap_ssn_ce_per_ente",
+            "name": "Bdap Ssn Ce Per Ente",
+            "column": "codice_regione",
+            "semantic_type": "region_code"
+          },
+          {
             "slug": "bdap_ssn_conto_economico",
             "name": "Bdap Ssn Conto Economico",
             "column": "codice_regione",
@@ -10490,7 +10680,7 @@
           }
         ],
         "types": {
-          "region_code": 29
+          "region_code": 30
         }
       },
       "Tempo": {
@@ -10543,6 +10733,12 @@
             "slug": "bdap_lea",
             "name": "Bdap Lea",
             "column": "anno_riferimento",
+            "semantic_type": "year"
+          },
+          {
+            "slug": "bdap_ssn_ce_per_ente",
+            "name": "Bdap Ssn Ce Per Ente",
+            "column": "anno",
             "semantic_type": "year"
           },
           {
@@ -10823,7 +11019,7 @@
           }
         ],
         "types": {
-          "year": 46,
+          "year": 47,
           "month": 8
         }
       }
@@ -10865,6 +11061,32 @@
           "entity": "Comune",
           "bridge": "bdap_anagrafe_enti",
           "on": "codice_ente_ssn",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Ente sanitario",
+          "dataset": "bdap_ssn_ce_per_ente",
+          "via": "ssn_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "bdap_anagrafe_enti",
+          "on": "codice_ente_ssn",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Ente",
+          "dataset": "bdap_ssn_ce_per_ente",
+          "via": "siope_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "bdap_anagrafe_enti",
+          "on": "codice_ente_siope",
           "semantic_type": "municipality_code"
         }
       },
