@@ -76,9 +76,10 @@ La colonna `Oneri Finanziari` esiste solo in alcuni anni:
 Gestito con `normalize_rows_to_columns` + `align_by_header`: le colonne assenti
 diventano NULL invece di slittare le posizioni.
 
-Attenzione anche alla **rottura di modello del 2019**: le voci passano da 121 a
-109. I totali restano comparabili (`49999` esiste in tutti gli anni), ma il
-dettaglio no: un'analisi per singola voce va verificata anno per anno.
+Attenzione anche alla **rottura di modello del 2019**: le voci di dettaglio
+distinte passano da **117 a 104** (121 → 109 includendo i totali). I totali
+restano comparabili (`49999` esiste in tutti gli anni), ma il dettaglio no:
+un'analisi per singola voce va verificata anno per anno.
 
 ## Schema
 

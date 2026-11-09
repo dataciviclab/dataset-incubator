@@ -15,13 +15,16 @@ rendono il dataset sommabile, aggiunto un mart dei totali.
 
 2. **La serie sembrava rotta nel 2019.** Sommando il dettaglio: 204,8 mld (2018)
    → 330,1 mld (2019), un salto del 61%. In realtà è un artefatto: nel 2019 il
-   modello passa da 121 a 109 voci e cambia la gerarchia. Usando il totale
-   pubblicato la serie è continua: 141,9 (2018) → 146,2 (2019) → 174,2 (2024).
+   modello cambia la gerarchia: le voci di dettaglio distinte scendono da **117
+   a 104** (121 → 109 contando anche i totali). Usando il totale pubblicato la
+   serie è continua: 141,9 (2018) → 146,2 (2019) → 174,2 (2024).
 
 3. **`000` e `999` erano descritti al contrario.** Il README diceva «000 =
    aggregati regionali, 999 = enti regione». Verificato: `000` = **ente regione**
-   (soggetto reale, es. Abruzzo 148 mln nel 2024), `999` = **consolidato
-   regionale** (14,0 mld). Il comportamento del dataset era comunque corretto
+   (soggetto reale: Abruzzo 44,1 mln con la voce `49999` nel 2024), `999` =
+   **consolidato regionale** (3,32 mld con `49999`). Sommare tutte le righe
+   invece dà 148 mln e 13,96 mld: sono i numeri gonfiati dalla gerarchia, non
+   la grandezza dell'ente. Il comportamento del dataset era comunque corretto
    perché escludeva entrambi; ora è esplicito con `tipo_riga`.
 
 ## Scelte di mapping
@@ -45,8 +48,9 @@ rendono il dataset sommabile, aggiunto un mart dei totali.
 `Oneri Finanziari` esiste solo in 2019, 2021, 2022, 2024; assente in 2012-2018,
 2020 e 2023. Gestito con `align_by_header` (colonne assenti → NULL).
 
-Nel 2019 cambia anche il numero di voci (121 → 109): il dettaglio non è
-confrontabile tra il prima e il dopo, i totali sì.
+Nel 2019 cambia anche il numero di voci: il dettaglio passa da **117 a 104**
+voci distinte (121 → 109 includendo i totali). Il dettaglio non è confrontabile
+tra il prima e il dopo, i totali sì.
 
 ## Cosa resta aperto
 
