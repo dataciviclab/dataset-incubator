@@ -866,7 +866,7 @@
       "source": "BDAP LEA — Ragioneria Generale dello Stato (MEF)",
       "source_id": "openbdap",
       "period": {
-        "start": 2024,
+        "start": 2012,
         "end": 2024
       },
       "tags": [
@@ -907,7 +907,8 @@
           "name": "codice_ente_bdap",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice BDAP ente"
+          "description": "Codice BDAP ente",
+          "semantic_type": "siope_code"
         },
         {
           "name": "descrizione_ente",
@@ -1016,6 +1017,18 @@
           "type": "DOUBLE",
           "role": "metric",
           "description": "Importo totale della voce"
+        },
+        {
+          "name": "tipo_voce",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_riga",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
         }
       ],
       "location": {
@@ -1023,7 +1036,11 @@
         "path": "gs://dataciviclab-clean/bdap_lea/*/bdap_lea_*_clean.parquet",
         "multi_file": true
       },
-      "stage": "published"
+      "stage": "published",
+      "mart_refs": [
+        "bdap_lea__mart_spesa_enti",
+        "bdap_lea__mart_totale_ente"
+      ]
     },
     {
       "slug": "bdap_ssn_ce_per_ente",
@@ -7511,6 +7528,16 @@
       }
     },
     {
+      "slug": "bdap_lea__mart_totale_ente",
+      "dataset": "bdap_lea",
+      "table": "mart_totale_ente",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/bdap_lea/*/mart_totale_ente.parquet",
+        "multi_file": true
+      }
+    },
+    {
       "slug": "bdap_ssn_ce_per_ente__mart_conto_economico_ente",
       "dataset": "bdap_ssn_ce_per_ente",
       "table": "mart_conto_economico_ente",
@@ -8641,15 +8668,30 @@
       "source_id": "openbdap",
       "status": "ok",
       "label": "bdap_lea",
-      "detail": "anni 2019-2024 — mart: si",
+      "detail": "anni 2012-2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260731T163744Z_3e42196f",
+        "run_id": "20261109T160453Z_1ba1cea1",
         "year": 2024,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-31T16:37:44.040306+00:00",
-        "finished_at": "2026-07-31T16:37:44.044617+00:00",
-        "duration_seconds": 0.004
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 24813,
+          "clean": 24813,
+          "mart": 20253
+        },
+        "output_bytes": {
+          "raw": 7910309,
+          "clean": 990933,
+          "mart": 746997
+        },
+        "started_at": "2026-11-09T16:04:53.655023+00:00",
+        "finished_at": "2026-11-09T16:05:04.781369+00:00",
+        "duration_seconds": 11.126
       }
     },
     {
@@ -10173,6 +10215,12 @@
             "semantic_type": "miur_code"
           },
           {
+            "slug": "bdap_lea",
+            "name": "Bdap Lea",
+            "column": "codice_ente_bdap",
+            "semantic_type": "siope_code"
+          },
+          {
             "slug": "bdap_ssn_ce_per_ente",
             "name": "Bdap Ssn Ce Per Ente",
             "column": "codice_ente_bdap",
@@ -10199,7 +10247,7 @@
         ],
         "types": {
           "miur_code": 1,
-          "siope_code": 3,
+          "siope_code": 4,
           "ipa_code": 1
         }
       },
@@ -11061,6 +11109,19 @@
           "entity": "Comune",
           "bridge": "bdap_anagrafe_enti",
           "on": "codice_ente_ssn",
+          "semantic_type": "municipality_code"
+        }
+      },
+      {
+        "from": {
+          "entity": "Ente",
+          "dataset": "bdap_lea",
+          "via": "siope_code"
+        },
+        "to": {
+          "entity": "Comune",
+          "bridge": "bdap_anagrafe_enti",
+          "on": "codice_ente_siope",
           "semantic_type": "municipality_code"
         }
       },
