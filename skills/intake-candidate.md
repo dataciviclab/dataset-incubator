@@ -44,7 +44,7 @@ Se il candidate non esiste, continua con la fase 2.
 
 ### 2. Preview e decisione (1-2 chiamate)
 
-Scopo: capire se la fonte è utilizzabile prima di generare scaffold.
+Scopo: capire se la fonte è utilizzabile prima di creare il candidate.
 
 ```bash
 # Se è un portale CKAN:
@@ -66,14 +66,23 @@ Se la fonte è ok → prosegui. Se è borderline → documenta il rischio nell'i
 
 ```bash
 cd candidates
-toolkit scout https://sito.it/dati.csv --scaffold
+cp -r ../templates/candidate {slug}
 cd ..
 ```
 
-`toolkit scout --scaffold` (alias `-s`) genera: `dataset.yml`, `sql/clean.sql`,
-`sql/mart.sql`, `README.md`, `notes.md`.
+Il template è già completo di gate: compila `dataset.name`, `source_id`, `tags`,
+`category`, anni e fonte, poi `sql/clean.sql` e `sql/mart.sql`.
 
-Se il candidate esiste già ma vuoi rigenerare lo scaffold:
+Per i metadati di lettura (encoding, delimitatore, skip) usa il profilo del
+file remoto — stesso motore di `toolkit_query(preview)` e `run preflight`:
+
+```bash
+toolkit preview https://sito.it/dati.csv
+```
+
+Se il candidate esiste già ma manca `sql/clean.sql`, `toolkit run` lo genera
+dal profilo RAW:
+
 ```bash
 toolkit run raw -c candidates/{slug}/dataset.yml -y 2024
 ```
