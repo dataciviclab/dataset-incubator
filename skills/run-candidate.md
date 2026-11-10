@@ -82,13 +82,12 @@ da allineare al perimetro del dataset?
 # MCP (raccomandato)
 toolkit_dataset(action="overview", slug="{slug}", layer="raw", profile=True)   → encoding/delimiter
 toolkit_dataset(action="overview", slug="{slug}", layer="clean")              → schema parquet
-toolkit_dataset(action="schema-diff", config_path=config_path)                → drift colonne tra anni
 toolkit_pipeline(action="runs", config_path=config_path, status="FAILED", limit=5)  → pattern di fallimento
 
 # CLI equivalente
 toolkit inspect config -c candidates/{slug}/dataset.yml -l raw -m profile --json
 toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m schema --json
-toolkit inspect config -c candidates/{slug}/dataset.yml --diff --json
+toolkit inspect config -c candidates/{slug}/dataset.yml --diff --json          → drift colonne tra anni
 ```
 
 ### 5. Ciclo fino a ready

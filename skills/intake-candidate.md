@@ -130,12 +130,11 @@ Se la pipeline fallisce → diagnostica rapida:
 # MCP
 toolkit_dataset(action="overview", slug="{slug}", layer="raw", profile=True)   → encoding/delimiter
 toolkit_dataset(action="overview", slug="{slug}", layer="clean")              → schema parquet
-toolkit_dataset(action="schema-diff", config_path=config_path)                → drift colonne tra anni
 
 # CLI
 toolkit inspect config -c candidates/{slug}/dataset.yml -l raw -m profile --json
 toolkit inspect config -c candidates/{slug}/dataset.yml -l clean -m schema --json
-toolkit inspect config -c candidates/{slug}/dataset.yml --diff --json
+toolkit inspect config -c candidates/{slug}/dataset.yml --diff --json          → drift colonne tra anni
 ```
 
 Ciclo fix → run → inspect fino a `ready` (o blocker documentato).
