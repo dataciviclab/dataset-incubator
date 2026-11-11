@@ -3,23 +3,25 @@ schema_version: 1
 
 dataset:
   name: "istat_asia_ul"
-  source_id: "istat_dbnomics"
+  source_id: "istat_sdmx"
   tags: [economia, istat, asia, ul, comuni]
   category: economia
-  years: [2020]
+  description: "Unità locali e addetti delle imprese attive (ASIA UL) per comune e sezione ATECO (2018-2024). Fonte: ISTAT via SDMX."
+  years: [2024]
   time_coverage:
     mode: full_series
     start_year: 2018
-    end_year: 2020
+    end_year: 2024
 
-# ASIA unità locali + addetti — 183_1163 TERRIFDATA_3
-# Canale: type: script + preprocess.py parallelo (per ATECO)
-# Motivo: ~280k serie comuni×ATECO×2 tipi — plugin dbnomics seriale troppo lento per CI
-# CI: TOOLKIT_ALLOW_SCRIPT_SOURCE=1 già nel post-merge workflow
-# SDMX live: non usare (rate-limit ISTAT)
+# ASIA unità locali + addetti — ISTAT 183_1163 (DICA_ASIAULP_TERRIFDATA)
+# Canale: type: script + preprocess.py parallelo (per sezione ATECO) su SDMX live.
+# Motivo del canale script: ~280k serie comuni×ATECO×2 tipi — il plugin SDMX
+# fa una richiesta unica troppo grande/lenta. Lo script spezza in 36 richieste
+# rate-limited (~5 req/min) e scrive in streaming.
+# Il mirror DBnomics è fermo al 2020: non usarlo.
+# CI: TOOLKIT_ALLOW_SCRIPT_SOURCE=1 già nel post-merge workflow.
 
-# ASIA UL comune × ATECO — canale script (preprocess parallelo DBnomics)
-# Join anagrafica comuni via support external (ADR-005), non hardcoded nel SQL
+# ASIA UL comune × ATECO — join anagrafica comuni via support external (ADR-005)
 
 support:
   - name: comuni
@@ -32,7 +34,7 @@ support:
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_dbnomics_asia_ul"
+    - name: "istat_sdmx_asia_ul"
       type: "script"
       client:
         timeout: 3000
@@ -61,6 +63,7 @@ clean:
     header: true
   validate:
     not_null: [anno, codice_comune]
+    primary_key: [data_type, codice_comune, anno, ateco_sezione]
     min_rows: 100000
 
 mart:
@@ -78,3 +81,6 @@ mart:
 
 validation:
   fail_on_error: true
+
+output:
+  artifacts: "standard"

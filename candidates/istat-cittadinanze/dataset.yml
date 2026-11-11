@@ -3,35 +3,40 @@ schema_version: 1
 
 dataset:
   name: "istat_cittadinanze"
-  source_id: "istat_dbnomics"
+  source_id: "istat_sdmx"
   tags: [immigrazione, cittadinanza, istat, regioni]
   category: immigrazione
+  description: "Acquisizioni di cittadinanza italiana per territorio, ex-cittadinanza e processo (2012-2025). ISTAT 29_849 via SDMX."
   years: [2026]
   time_coverage:
     start_year: 2012
-    end_year: 2023
+    end_year: 2025
 
-# Acquisizioni di cittadinanza italiana — ISTAT 29_849 via type: dbnomics
-# (mirror DBnomics: nessun rate-limit SDMX). Serie per regione x ex-cittadinanza
-# x processo di acquisizione (matrimonio / residenza / altro).
+# Acquisizioni di cittadinanza italiana — ISTAT 29_849 via type: sdmx.
+# Serie per regione x ex-cittadinanza x processo di acquisizione
+# (matrimonio / residenza / altro).
+#
+# Canale: SDMX live (esploradati) — il mirror DBnomics è fermo al 2023
+# (ultimo indice 2024-10), mentre la fonte ISTAT espone 2024 e 2025.
+# La dimensione temporale non è nella key: si fetcha l'intera serie.
 
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_dbnomics_cittadinanze"
-      type: "dbnomics"
+    - name: "istat_sdmx_cittadinanze"
+      type: "sdmx"
       client:
-        timeout: 180
+        timeout: 300
         retries: 2
       args:
-        provider: ISTAT
-        dataset: "29_849"
-        dimensions:
-          DATA_TYPE: [ACQCITIZ]
-          SEX: ["9"]
-          AGE: [TOTAL]
-        page_size: 1000
-        max_pages: 10
+        agency: "IT1"
+        flow: "29_849"
+        version: "1.0"
+        filters:
+          FREQ: "A"
+          DATA_TYPE: "ACQCITIZ"
+          SEX: "9"
+          AGE: "TOTAL"
         filename: "istat_cittadinanze_series.csv"
       primary: true
 
@@ -54,6 +59,7 @@ clean:
   required_columns: [anno, territorio_codice, territorio, livello, cittadinanza_codice, cittadinanza, processo_codice, processo, acquisizioni]
   validate:
     not_null: [anno, territorio_codice, livello, acquisizioni]
+    primary_key: [anno, territorio_codice, cittadinanza_codice, processo_codice]
     min_rows: 100
 
 mart:
@@ -85,3 +91,6 @@ mart:
 
 validation:
   fail_on_error: true
+
+output:
+  artifacts: "standard"

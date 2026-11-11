@@ -1,4 +1,4 @@
--- clean.sql: acquisizioni di cittadinanza italiana (ISTAT 29_849 via DBnomics)
+-- clean.sql: acquisizioni di cittadinanza italiana (ISTAT 29_849 via SDMX)
 --
 -- Grano: anno x territorio (nazionale/ripartizione/regione/provincia) x
 -- ex-cittadinanza x processo di acquisizione.
@@ -23,10 +23,10 @@ select
         else normalize_string(r.ACQUISITION_PROCESS)
     end as processo,
     (t.livello = 'aggregato' or c.tipo = 'aggregato') as aggregato,
-    cast_int(r.OBS_VALUE) as acquisizioni
+    cast_int(r.value) as acquisizioni
 from raw_input r
 left join read_csv('{support.territori.path}', auto_detect=true, header=true) t
     on t.ref_area = normalize_string(r.REF_AREA)
 left join read_csv('{support.cittadinanze.path}', auto_detect=true, header=true) c
     on c.codice = normalize_string(r.MOSTREL_CCITENSHIP)
-where cast_int(r.OBS_VALUE) is not null
+where cast_int(r.value) is not null
