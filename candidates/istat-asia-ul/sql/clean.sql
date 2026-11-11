@@ -14,7 +14,7 @@ WITH raw AS (
         length(normalize_string(ref_area)) = 6
         AND cast_bigint(normalize_string(ref_area)) IS NOT NULL
         AND anno IS NOT NULL
-        AND anno BETWEEN 2018 AND 2020
+        AND anno BETWEEN 2018 AND 2024
         AND normalize_string(data_type) IN ('LU', 'LUEMPDAA')
         AND cast_double(valore) >= 0
         AND cast_double(valore) IS NOT NULL

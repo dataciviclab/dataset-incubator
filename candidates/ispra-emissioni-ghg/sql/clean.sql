@@ -1,7 +1,7 @@
 -- ISPRA Emissioni GHG per settore economico
 -- Fonte: Tabella 1 - Emissioni di gas serra da processi energetici per settore
 -- Unita: Mt CO2 equivalente
--- Periodo: 1990-2023
+-- Periodo: 1990-2024
 
 SELECT
     cast_int("anno") AS anno,
