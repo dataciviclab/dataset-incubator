@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-11T22:29:21.836096+00:00",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -7414,6 +7414,135 @@
         "multi_file": true
       },
       "stage": "published"
+    },
+    {
+      "slug": "mortalita_istat_evitabile",
+      "name": "Mortalità ISTAT per causa evitabile",
+      "description": "Mortalità per causa evitabile (Euro-2013 framework) per regione italiana, età 30+. Tre livelli: v1 baseline storica (cod_causa=25), v2 tasso grezzo cause evitabili, v3 age-standardization broad su 3 bande età (raccomandata).",
+      "source": "ISTAT — Tavole di mortalità per causa",
+      "source_id": "istat_situas",
+      "period": {
+        "start": 2022,
+        "end": 2022
+      },
+      "tags": [
+        "sanita",
+        "mortalita",
+        "istat",
+        "evitabile"
+      ],
+      "category": "sanita",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Anno di riferimento",
+          "semantic_type": "year"
+        },
+        {
+          "name": "cod_territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Codice territorio ISTAT",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Nome territorio",
+          "semantic_type": "region_name"
+        },
+        {
+          "name": "cod_sesso",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice sesso",
+          "semantic_type": "sex_code"
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Sesso",
+          "semantic_type": "sex"
+        },
+        {
+          "name": "cod_classe_eta",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice classe età",
+          "semantic_type": "age_class_code"
+        },
+        {
+          "name": "classe_eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Classe età",
+          "semantic_type": "age_class"
+        },
+        {
+          "name": "cod_titolo_studio",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice titolo di studio",
+          "semantic_type": "education_code"
+        },
+        {
+          "name": "titolo_studio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Titolo di studio",
+          "semantic_type": "education"
+        },
+        {
+          "name": "cod_causa",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "Codice causa di morte",
+          "semantic_type": "cause_of_death_code"
+        },
+        {
+          "name": "causa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "Causa di morte",
+          "semantic_type": "cause_of_death"
+        },
+        {
+          "name": "pop_media",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Popolazione media",
+          "semantic_type": "population"
+        },
+        {
+          "name": "decessi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": "Numero di decessi",
+          "semantic_type": "deaths_count"
+        },
+        {
+          "name": "tasso_std_10000",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": "Tasso standardizzato per 10.000",
+          "semantic_type": "rate_per_10k"
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mortalita_istat_evitabile/2022/mortalita_istat_evitabile_2022_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "published",
+      "mart_refs": [
+        "mortalita_istat_evitabile__mart_regioni_v1",
+        "mortalita_istat_evitabile__mart_regioni_v2",
+        "mortalita_istat_evitabile__mart_regioni_v3"
+      ]
     }
   ],
   "marts": [
