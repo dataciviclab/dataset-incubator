@@ -2,6 +2,9 @@
 -- Fonte: Tabella 1 - Emissioni di gas serra da processi energetici per settore
 -- Unita: Mt CO2 equivalente
 -- Periodo: 1990-2024
+-- NOTA: la colonna 3 mantiene il nome storico `residenziale_e_servizi`, ma dal
+-- rilascio 2026 ISPRA la pubblica come "Terziario e Residenziale + Agricoltura
+-- e Pesca" (perimetro piu' ampio). Confronto omogeneo solo tra rilasci 2026+.
 
 SELECT
     cast_int("anno") AS anno,

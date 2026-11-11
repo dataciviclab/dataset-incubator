@@ -15,7 +15,7 @@ Come si sono evolute le emissioni di gas serra da processi energetici in Italia 
 
 - **Copertura**: 1990-2024 (35 anni)
 - **Granularità**: nazionale, 4 settori energetici
-- **Settori**: Industrie energetiche, Industrie manifatturiere, Residenziale e servizi, Trasporti
+- **Settori**: Industrie energetiche, Industrie manifatturiere, Terziario e Residenziale + Agricoltura e Pesca (colonna storica `residenziale_e_servizi`), Trasporti
 - **Metrica**: Mt CO₂ equivalente (tutti i gas serra pesati)
 - **Colonne**: 6 (anno, 4 settori, totale)
 - **Fonte**: ISPRA — Inventario Nazionale, dati comunicati a UNFCCC, metodologia IPCC
@@ -26,7 +26,7 @@ Come si sono evolute le emissioni di gas serra da processi energetici in Italia 
 - **Gap totale colmato**: primo dataset su emissioni/clima nel catalogo Lab
 - **Tema caldissimo**: decarbonizzazione, Fit for 55, PNIEC, neutralità climatica
 - **Fonte autorevole**: ISPRA Inventario Nazionale, metodologia IPCC
-- **Serie storica lunga**: 34 anni di trend analysis
+- **Serie storica lunga**: 35 anni di trend analysis
 - **Sforzo intake minimo**: XLS già quasi-tidy
 
 ## Output minimo atteso
@@ -38,7 +38,7 @@ Come si sono evolute le emissioni di gas serra da processi energetici in Italia 
 ## Criterio di promozione
 
 - Run full passato (RAW→CLEAN→MART), readiness 5/5
-- 34 anni, 6 colonne, dati coerenti col trend atteso
+- 35 anni, 6 colonne, dati coerenti col trend atteso
 
 ## Limitazioni note
 
