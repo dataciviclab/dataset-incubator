@@ -2845,7 +2845,7 @@
     },
     {
       "slug": "ispra_emissioni_ghg",
-      "name": "ISPRA — Emissioni GHG da processi energetici per settore (1990-2023)",
+      "name": "ISPRA — Emissioni GHG da processi energetici per settore (1990-2024)",
       "description": "Emissioni di gas serra da processi energetici in Italia, per settore economico (industrie energetiche, manifatturiere, residenziale, trasporti). Fonte ISPRA Inventario Nazionale UNFCCC/EEA. Mt CO₂ equivalente.",
       "source": "ISPRA — Indicatori Ambientali",
       "source_id": "ispra",
@@ -3001,9 +3001,9 @@
     {
       "slug": "istat_asia_ul",
       "name": "Istat Asia Ul",
-      "description": "UnitÃ  Locali delle imprese attive (ASIA UL) per comune e sezione ATECO (2018-2020). Fonte: ISTAT via DBnomics.",
+      "description": "Unità Locali delle imprese attive (ASIA UL) per comune e sezione ATECO (2018-2024). Fonte: ISTAT via SDMX.",
       "source": "ISTAT — ASIA UL (Archivio Statistico Imprese Attive - UnitÃ  Locali)",
-      "source_id": "istat_dbnomics",
+      "source_id": "istat_sdmx",
       "period": {
         "start": 2018,
         "end": 2024
@@ -3084,8 +3084,8 @@
       "slug": "istat_cittadinanze",
       "name": "Istat Cittadinanze",
       "description": "Acquisizioni di cittadinanza italiana per territorio, ex-cittadinanza e processo (2012-2025). ISTAT 29_849 via SDMX.",
-      "source": "",
-      "source_id": "istat_dbnomics",
+      "source": "ISTAT — Acquisizioni di cittadinanza (29_849)",
+      "source_id": "istat_sdmx",
       "period": {
         "start": 2012,
         "end": 2025
