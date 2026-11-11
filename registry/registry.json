@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-09",
+  "updated_at": "2026-11-11",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -2851,7 +2851,7 @@
       "source_id": "ispra",
       "period": {
         "start": 1990,
-        "end": 2023
+        "end": 2024
       },
       "tags": [
         "ambiente",
@@ -2901,7 +2901,7 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/ispra_emissioni_ghg/2023/ispra_emissioni_ghg_2023_clean.parquet",
+        "path": "gs://dataciviclab-clean/ispra_emissioni_ghg/2024/ispra_emissioni_ghg_2024_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
@@ -3006,7 +3006,7 @@
       "source_id": "istat_dbnomics",
       "period": {
         "start": 2018,
-        "end": 2020
+        "end": 2024
       },
       "tags": [
         "economia",
@@ -3072,7 +3072,7 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/istat_asia_ul/2020/istat_asia_ul_2020_clean.parquet",
+        "path": "gs://dataciviclab-clean/istat_asia_ul/2024/istat_asia_ul_2024_clean.parquet",
         "multi_file": false
       },
       "stage": "published",
@@ -3083,12 +3083,12 @@
     {
       "slug": "istat_cittadinanze",
       "name": "Istat Cittadinanze",
-      "description": "",
+      "description": "Acquisizioni di cittadinanza italiana per territorio, ex-cittadinanza e processo (2012-2025). ISTAT 29_849 via SDMX.",
       "source": "",
       "source_id": "istat_dbnomics",
       "period": {
         "start": 2012,
-        "end": 2023
+        "end": 2025
       },
       "tags": [
         "immigrazione",
@@ -7753,7 +7753,7 @@
       "table": "mart_settori_anno",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/ispra_emissioni_ghg/2023/mart_settori_anno.parquet",
+        "path": "gs://dataciviclab-mart/ispra_emissioni_ghg/2024/mart_settori_anno.parquet",
         "multi_file": false
       }
     },
@@ -7763,7 +7763,7 @@
       "table": "mart_trend_settori",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/ispra_emissioni_ghg/2023/mart_trend_settori.parquet",
+        "path": "gs://dataciviclab-mart/ispra_emissioni_ghg/2024/mart_trend_settori.parquet",
         "multi_file": false
       }
     },
@@ -7783,7 +7783,7 @@
       "table": "mart_asia_ul_comuni",
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-mart/istat_asia_ul/2020/mart_asia_ul_comuni.parquet",
+        "path": "gs://dataciviclab-mart/istat_asia_ul/2024/mart_asia_ul_comuni.parquet",
         "multi_file": false
       }
     },
@@ -8957,11 +8957,11 @@
       "source_id": "ispra",
       "status": "ok",
       "label": "ispra_emissioni_ghg",
-      "detail": "anno 2023 — mart: si",
+      "detail": "anno 2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261106T213703Z_9ecfe5f1",
-        "year": 2023,
+        "run_id": "20261111T135140Z_c7ca3de8",
+        "year": 2024,
         "status": "SUCCESS",
         "quality_score": {
           "raw": 100,
@@ -8969,18 +8969,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 34,
-          "clean": 34,
-          "mart": 141
+          "raw": 35,
+          "clean": 35,
+          "mart": 145
         },
         "output_bytes": {
-          "raw": 3479,
-          "clean": 2424,
-          "mart": 4372
+          "raw": 3506,
+          "clean": 2466,
+          "mart": 4423
         },
-        "started_at": "2026-11-06T21:37:03.112534+00:00",
-        "finished_at": "2026-11-06T21:37:04.999144+00:00",
-        "duration_seconds": 1.887
+        "started_at": "2026-11-11T13:51:40.358020+00:00",
+        "finished_at": "2026-11-11T13:51:42.043104+00:00",
+        "duration_seconds": 1.685
       }
     },
     {
@@ -9016,14 +9016,14 @@
     },
     {
       "id": "istat_asia_ul",
-      "source_id": "istat_dbnomics",
+      "source_id": "istat_sdmx",
       "status": "ok",
       "label": "istat_asia_ul",
-      "detail": "anno 2020 — mart: si",
+      "detail": "anno 2024 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261011T190348Z_e8649e60",
-        "year": 2020,
+        "run_id": "20261111T135142Z_797c4277",
+        "year": 2024,
         "status": "SUCCESS",
         "quality_score": {
           "raw": 100,
@@ -9031,29 +9031,29 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 743052,
-          "clean": 662890,
-          "mart": 331445
+          "raw": 1558872,
+          "clean": 1558872,
+          "mart": 779441
         },
         "output_bytes": {
-          "raw": 20099431,
-          "clean": 2606910,
-          "mart": 1016818
+          "raw": 41108199,
+          "clean": 5849795,
+          "mart": 2248528
         },
-        "started_at": "2026-10-11T19:03:48.113950+00:00",
-        "finished_at": "2026-10-11T19:19:37.523667+00:00",
-        "duration_seconds": 949.41
+        "started_at": "2026-11-11T13:51:42.987612+00:00",
+        "finished_at": "2026-11-11T14:00:08.924498+00:00",
+        "duration_seconds": 505.937
       }
     },
     {
       "id": "istat_cittadinanze",
-      "source_id": "istat_dbnomics",
+      "source_id": "istat_sdmx",
       "status": "ok",
       "label": "istat_cittadinanze",
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20261104T173140Z_c73f4735",
+        "run_id": "20261111T140009Z_294f373a",
         "year": 2026,
         "status": "SUCCESS",
         "quality_score": {
@@ -9062,18 +9062,18 @@
           "mart": 100
         },
         "output_rows": {
-          "raw": 5927,
-          "clean": 5927,
-          "mart": 3161
+          "raw": 6923,
+          "clean": 6923,
+          "mart": 3699
         },
         "output_bytes": {
-          "raw": 533044,
-          "clean": 18918,
-          "mart": 24218
+          "raw": 1025344,
+          "clean": 21038,
+          "mart": 27266
         },
-        "started_at": "2026-11-04T17:31:40.879504+00:00",
-        "finished_at": "2026-11-04T17:31:55.595797+00:00",
-        "duration_seconds": 14.716
+        "started_at": "2026-11-11T14:00:09.473051+00:00",
+        "finished_at": "2026-11-11T14:00:36.016732+00:00",
+        "duration_seconds": 26.544
       }
     },
     {
