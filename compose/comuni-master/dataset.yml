@@ -23,6 +23,20 @@ raw:
         url: "https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv"
         filename: "istat_codici.csv"
 
+# Artifact di un altro repo, consumato in clean.sql. Forma dichiarativa
+# (repo+slug+layer): il path lo risolve il registry del produttore, quindi una
+# riorganizzazione GCS non rompe il dataset in silenzio. Era già successo:
+# il path hardcoded puntava a /ipa_enti/ mentre il reale è
+# /indice-pa/ipa_enti/, e il 404 non veniva intercettato da nessun preflight
+# perché la dipendenza non era dichiarata da nessuna parte.
+support:
+  - name: ipa_enti
+    type: external
+    repo: indice-pa
+    slug: ipa_enti
+    layer: clean
+    years: [2026]
+
 clean:
   sql: "sql/clean.sql"
   read:

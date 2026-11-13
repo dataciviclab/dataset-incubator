@@ -17,10 +17,12 @@
 
 WITH
 
--- Hub: dati territoriali da istat-elenco-comuni (SITUAS)
+-- Hub: dati territoriali da istat-elenco-comuni (SITUAS).
+-- Letto dal file scaricato dal raw layer, non dalla URL: così input, hash e
+-- provenienza nei metadata descrivono davvero il file usato.
 hub AS (
     SELECT * FROM read_parquet(
-        'https://storage.googleapis.com/dataciviclab-clean/istat_elenco_comuni/2026/istat_elenco_comuni_2026_clean.parquet',
+        '{root}/data/raw/{dataset}/{year}/istat_clean.parquet',
         union_by_name=true
     )
 ),
@@ -106,7 +108,7 @@ ipa AS (
         any_value(cap ORDER BY CASE WHEN lower(codice_ipa) LIKE 'c\_%' ESCAPE '\' THEN 0 ELSE 1 END, codice_ipa) AS cap,
         any_value(sito_istituzionale ORDER BY CASE WHEN lower(codice_ipa) LIKE 'c\_%' ESCAPE '\' THEN 0 ELSE 1 END, codice_ipa) AS sito_istituzionale
     FROM read_parquet(
-        'https://storage.googleapis.com/dataciviclab-clean/indice-pa/ipa_enti/2026/ipa_enti_2026_clean.parquet',
+        {support.ipa_enti.outputs},
         union_by_name=true
     )
     WHERE codice_categoria = 'L6'
