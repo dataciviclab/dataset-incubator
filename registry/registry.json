@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-11",
+  "updated_at": "2026-11-13",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -1934,13 +1934,15 @@
           "name": "codice_catastale_comune",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice catastale (da IPA)"
+          "description": "Codice catastale (da IPA)",
+          "semantic_type": "cadastral_code"
         },
         {
           "name": "codice_istat_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice ISTAT attribuito da IPA"
+          "description": "Codice ISTAT attribuito da IPA",
+          "semantic_type": "ipa_code"
         },
         {
           "name": "acronimo",
@@ -9892,12 +9894,26 @@
       "detail": "anno 2026 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260730T160410Z_a60f19f4",
+        "run_id": "20261113T151539Z_62ef3feb",
         "year": 2026,
-        "status": "DRY_RUN",
-        "started_at": "2026-07-30T16:04:10.845383+00:00",
-        "finished_at": "2026-07-30T16:04:10.866765+00:00",
-        "duration_seconds": 0.021
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 7894,
+          "mart": 7894
+        },
+        "output_bytes": {
+          "raw": 1406202,
+          "clean": 512917,
+          "mart": 512917
+        },
+        "started_at": "2026-11-13T15:15:39.866538+00:00",
+        "finished_at": "2026-11-13T15:15:46.789163+00:00",
+        "duration_seconds": 6.923
       }
     },
     {
@@ -10090,6 +10106,12 @@
             "semantic_type": "cadastral_code"
           },
           {
+            "slug": "comuni_master",
+            "name": "Comuni Master — hub territoriale completo",
+            "column": "codice_catastale_comune",
+            "semantic_type": "cadastral_code"
+          },
+          {
             "slug": "farmacie",
             "name": "Farmacie — Anagrafica farmacie italiane (Ministero Salute)",
             "column": "cod_comune",
@@ -10201,7 +10223,7 @@
         "types": {
           "municipality_name": 9,
           "municipality_code": 12,
-          "cadastral_code": 6
+          "cadastral_code": 7
         }
       },
       "Ente": {
@@ -10239,6 +10261,12 @@
             "semantic_type": "ipa_code"
           },
           {
+            "slug": "comuni_master",
+            "name": "Comuni Master — hub territoriale completo",
+            "column": "codice_istat_ipa",
+            "semantic_type": "ipa_code"
+          },
+          {
             "slug": "dipendenti_pubblici",
             "name": "Dipendenti Pubblici - Occupazione e Turnover",
             "column": "codice_ente_bdap",
@@ -10248,7 +10276,7 @@
         "types": {
           "miur_code": 1,
           "siope_code": 4,
-          "ipa_code": 1
+          "ipa_code": 2
         }
       },
       "Ente (o Impresa)": {
@@ -10839,7 +10867,7 @@
           },
           {
             "slug": "ispra_emissioni_ghg",
-            "name": "ISPRA — Emissioni GHG da processi energetici per settore (1990-2023)",
+            "name": "ISPRA — Emissioni GHG da processi energetici per settore (1990-2024)",
             "column": "anno",
             "semantic_type": "year"
           },
