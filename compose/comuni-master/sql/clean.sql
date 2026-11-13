@@ -4,27 +4,44 @@
 --   ISTAT CSV (da URL): codici NUTS, ripartizione, flag capoluogo, codici storici
 --   ipa-enti (AgID IPA, da GCS): codici IPA, fiscale, contatti
 -- Una riga per comune italiano con tutte le codifiche.
--- La chiave tra istat-elenco-comuni e ISTAT CSV è il codice ISTAT.
 -- La chiave con IPA è il codice catastale (Belfiore): universale e presente in
 -- entrambe le fonti (il codice ISTAT in IPA non coincide per tutte le regioni,
 -- es. Sardegna).
+-- Anche la join con l'ISTAT CSV usa il codice catastale (vedi JOIN finale), non
+-- il codice ISTAT: la descrizione precedente diceva "codice ISTAT" ed era
+-- fuorviante rispetto al codice.
+--
+-- ENCODING: il CSV ISTAT è CP1252, non UTF-8. Va letto con encoding='cp1252'
+-- (vedi read_csv sotto): senza, DuckDB scarta in silenzio le righe con accenti
+-- (Agliè, Ciriè, Vallée d'Aoste, toponimi tedeschi del Sudtirolo).
 
 WITH
 
--- Hub: dati territoriali da istat-elenco-comuni (SITUAS)
+-- Hub: dati territoriali da istat-elenco-comuni (SITUAS).
+-- Letto dal file scaricato dal raw layer, non dalla URL: così input, hash e
+-- provenienza nei metadata descrivono davvero il file usato.
 hub AS (
     SELECT * FROM read_parquet(
-        'https://storage.googleapis.com/dataciviclab-clean/istat_elenco_comuni/2026/istat_elenco_comuni_2026_clean.parquet',
+        '{root}/data/raw/{dataset}/{year}/istat_clean.parquet',
         union_by_name=true
     )
 ),
 
 -- ISTAT CSV: codici NUTS 2021/2024, ripartizione, flag capoluogo, tipologia UTS,
--- denominazione multilingue, codici storici per mapping tra sistemi provinciali
+-- denominazione multilingue, codici storici per mapping tra sistemi provinciali.
+--
+-- ATTENZIONE alla provenienza dei campi: il hub (SITUAS) è fermo alla
+-- riorganizzazione provinciale sarda 2005-2016 e usa per la Sardegna codici
+-- propri (112-119) con le province abolite (Gallura, Ogliastra, Medio
+-- Campidano, Sulcis Iglesiente). L'ISTAT CSV corrente ha 5 province
+-- (090/091/092/095/111). Per codice_istat, provincia e sigla vince il CSV,
+-- con fallback al hub per le righe non joinate.
 istat_nuts AS (
     SELECT
         lpad(trim(col_cod_istat), 6, '0') AS codice_istat,
         upper(trim(col_cod_catastale)) AS codice_catastale,
+        trim(col_sigla_provincia) AS sigla_provincia,
+        trim(col_denominazione_regione) AS regione,
         trim(col_nuts1_2021) AS nuts1_2021,
         trim(col_nuts2_2021) AS nuts2_2021,
         trim(col_nuts3_2021) AS nuts3_2021,
@@ -42,8 +59,20 @@ istat_nuts AS (
         lpad(trim(col_cod_103province), 6, '0') AS codice_103_province
     FROM read_csv(
         '{root}/data/raw/{dataset}/{year}/istat_codici.csv',
-        delim=';', header=false, skip=3,
-        strict_mode=false, ignore_errors=true, all_varchar=true,
+        -- skip=2: l'intestazione ISTAT è UNA riga logica che occupa 3 righe
+        -- fisiche (due campi quotati contengono un newline). Con skip=3 si
+        -- perdeva la prima riga dati (Agliè): verificato 7.895 vs 7.896 righe.
+        delim=';', header=false, skip=2,
+        -- encoding: il file ISTAT è CP1252, non UTF-8. Senza questa opzione
+        -- DuckDB leggeva come UTF-8 e scartava in silenzio (via
+        -- ignore_errors) le 512 righe con accenti: Agliè, Ciriè, Vallée
+        -- d'Aoste, i toponimi tedeschi del Sudtirolo.
+        encoding='cp1252',
+        -- Niente ignore_errors: uno scarto silenzioso qui significa comuni
+        -- mancanti nei mart, e il toolkit non può misurarlo (il probe B4
+        -- copre solo clean.read). La guardia in load_clean_sql lo rifiuta.
+        -- strict_mode=false serve per lo sniffing dell'intestazione multi-linea.
+        strict_mode=false, all_varchar=true,
         quote='"', escape='"', max_line_size=500000,
         columns = {
             'col_cod_regione': 'VARCHAR', 'col_uts': 'VARCHAR',
@@ -53,8 +82,7 @@ istat_nuts AS (
             'col_cod_ripartizione': 'VARCHAR', 'col_ripartizione': 'VARCHAR',
             'col_denominazione_regione': 'VARCHAR', 'col_denominazione_uts': 'VARCHAR',
             'col_tipologia_uts': 'VARCHAR', 'col_flag_capoluogo': 'VARCHAR',
-            'col_sigla_provincia': 'VARCHAR', 'col_cod_istat': 'VARCHAR',
-            'col_cod_110province': 'VARCHAR', 'col_cod_107province': 'VARCHAR',
+            'col_sigla_provincia': 'VARCHAR', 'col_cod_istat': 'VARCHAR',            'col_cod_110province': 'VARCHAR', 'col_cod_107province': 'VARCHAR',
             'col_cod_103province': 'VARCHAR', 'col_cod_catastale': 'VARCHAR',
             'col_nuts1_2021': 'VARCHAR', 'col_nuts2_2021': 'VARCHAR',
             'col_nuts3_2021': 'VARCHAR', 'col_nuts1_2024': 'VARCHAR',
@@ -80,7 +108,7 @@ ipa AS (
         any_value(cap ORDER BY CASE WHEN lower(codice_ipa) LIKE 'c\_%' ESCAPE '\' THEN 0 ELSE 1 END, codice_ipa) AS cap,
         any_value(sito_istituzionale ORDER BY CASE WHEN lower(codice_ipa) LIKE 'c\_%' ESCAPE '\' THEN 0 ELSE 1 END, codice_ipa) AS sito_istituzionale
     FROM read_parquet(
-        'https://storage.googleapis.com/dataciviclab-clean/ipa_enti/2026/ipa_enti_2026_clean.parquet',
+        {support.ipa_enti.outputs},
         union_by_name=true
     )
     WHERE codice_categoria = 'L6'
@@ -89,15 +117,17 @@ ipa AS (
 )
 
 SELECT
-    -- Chiave
-    h.codice_istat,
+    -- Chiave: codice ISTAT corrente (CSV), fallback al hub per le righe non
+    -- joinate. Il hub è più vecchio per la Sardegna (vedi nota su istat_nuts).
+    COALESCE(n.codice_istat, h.codice_istat) AS codice_istat,
 
-    -- Anagrafica comune (da hub)
+    -- Anagrafica comune: denominazione e catastale dal hub (fonte SITUAS),
+    -- attribuzione territoriale dall'ISTAT CSV corrente.
     h.denominazione,
     h.codice_catastale,
-    h.sigla_provincia,
-    h.provincia,
-    h.regione,
+    COALESCE(n.sigla_provincia, h.sigla_provincia) AS sigla_provincia,
+    COALESCE(n.denominazione_uts, h.provincia) AS provincia,
+    COALESCE(n.regione, h.regione) AS regione,
 
     -- Dati territoriali (da hub)
     h.superficie_km2,

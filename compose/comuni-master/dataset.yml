@@ -23,12 +23,43 @@ raw:
         url: "https://www.istat.it/storage/codici-unita-amministrative/Elenco-comuni-italiani.csv"
         filename: "istat_codici.csv"
 
+# Artifact di un altro repo, consumato in clean.sql. Forma dichiarativa
+# (repo+slug+layer): il path lo risolve il registry del produttore, quindi una
+# riorganizzazione GCS non rompe il dataset in silenzio. Era già successo:
+# il path hardcoded puntava a /ipa_enti/ mentre il reale è
+# /indice-pa/ipa_enti/, e il 404 non veniva intercettato da nessun preflight
+# perché la dipendenza non era dichiarata da nessuna parte.
+support:
+  - name: ipa_enti
+    type: external
+    repo: indice-pa
+    slug: ipa_enti
+    layer: clean
+    years: [2026]
+
 clean:
   sql: "sql/clean.sql"
   read:
     source: config_only
   validate:
-    min_rows: 7000
+    # L'output clean è guidato dall'hub (istat_elenco_comuni): 7.894 comuni.
+    # Il CSV ISTAT ne ha 7.896 — la differenza è un difetto dell'hub, vedi sotto.
+    min_rows: 7894
+    primary_key:
+      - codice_istat
+    not_null:
+      - regione
+    # Copertura della join con il CSV ISTAT. Prima del fix di encoding questa
+    # soglia non esisteva e 127 comuni uscivano con ripartizione NULL in
+    # silenzio (1,6%). Il valore 0,02% tollera UNA sola riga: il comune
+    # fantasma "Castegnero Nanto" (codice 024129, catastale M439) presente in
+    # istat_elenco_comuni ma assente dal CSV ISTAT, che invece ha Castegnero
+    # (24027) e Nanto (24071) separati. Finché l'hub non è corretto quella riga
+    # non può joinnare; qualunque regressione ≥2 righe fa fallire il gate.
+    max_null_pct:
+      ripartizione: 0.02
+      nuts2_2021: 0.02
+      nuts2_2024: 0.02
 
 mart:
   tables:
@@ -37,7 +68,7 @@ mart:
   validate:
     table_rules:
       mart_comuni_master:
-        min_rows: 7000
+        min_rows: 7894
 
 validation:
   fail_on_error: true
