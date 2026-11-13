@@ -1,0 +1,134 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_presidi_residenziali"
+  source_id: "istat_sdmx"
+  tags: [sanita, rsa, anziani, presidi-residenziali, posti-letto, istat]
+  category: sanita
+  years: [2023]
+  time_coverage:
+    start_year: 2009
+    end_year: 2023
+
+# Presidi residenziali socio-assistenziali e socio-sanitari — ISTAT 49_37
+# Canale SDMX diretto (esploradati). Il container 49_37 restituisce tutte le
+# unita' di servizio (strutture, posti letto, personale) con le 11 dimensioni
+# del DSD DCIS_PRESIDI1. Granularita' regionale (IT + ripartizioni + 20 regioni).
+#
+# ATTENZIONE: il plugin sdmx non supporta startPeriod/endPeriod, quindi il raw
+# scarica l'intera serie 2009-2023. Il clean NON filtra per anno: il parquet del
+# run contiene tutta la serie e i mart producono 2009-2023 con un solo fetch
+# (evita il rate-limit ISTAT, ~13s/chiamata).
+# Il container restituisce le dimensioni in ordine DSD; le label arrivano dal
+# payload JSON (profilo ISTAT), ma clean.sql mappa i codici esplicitamente.
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_sdmx_presidi"
+      type: "sdmx"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        agency: "IT1"
+        flow: "49_37"
+        version: "1.0"
+        filters:
+          FREQ: "A"
+        filename: "istat_presidi_residenziali_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - anno
+    - ref_area_codice
+    - regione
+    - tipo_dato_codice
+    - tipo_dato
+    - tipo_utenza_codice
+    - tipo_utenza
+    - livello_assistenza_codice
+    - livello_assistenza
+    - natura_giuridica_codice
+    - natura_giuridica
+    - tipo_residenzialita
+    - funzione_protezione_sociale
+    - tipo_gestore
+    - finanziamento_pubblico
+    - professione
+    - valore
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    not_null: [anno, ref_area_codice, tipo_dato_codice]
+    min_rows: 20000
+    primary_key:
+      - anno
+      - ref_area_codice
+      - tipo_dato_codice
+      - tipo_utenza_codice
+      - tipo_residenzialita_codice
+      - funzione_protezione_sociale_codice
+      - livello_assistenza_codice
+      - natura_giuridica_codice
+      - tipo_gestore_codice
+      - finanziamento_pubblico_codice
+      - professione_codice
+
+mart:
+  tables:
+    - name: "mart_sintesi_regione"
+      sql: "sql/mart_sintesi_regione.sql"
+    - name: "mart_posti_letto_regione"
+      sql: "sql/mart_posti_letto_regione.sql"
+    - name: "mart_trend"
+      sql: "sql/mart_trend.sql"
+  required_tables:
+    - "mart_sintesi_regione"
+    - "mart_posti_letto_regione"
+    - "mart_trend"
+  validate:
+    table_rules:
+      mart_sintesi_regione:
+        required_columns:
+          - anno
+          - ref_area_codice
+          - regione
+          - n_presidi
+          - posti_letto
+          - posti_letto_per_100k
+          - posti_letto_anziani
+        primary_key: [anno, ref_area_codice]
+        min_rows: 250
+      mart_posti_letto_regione:
+        required_columns:
+          - anno
+          - ref_area_codice
+          - regione
+          - tipo_utenza_codice
+          - livello_assistenza_codice
+          - posti_letto
+          - is_aggregato
+        primary_key: [anno, ref_area_codice, tipo_utenza_codice, livello_assistenza_codice]
+        min_rows: 3000
+      mart_trend:
+        required_columns:
+          - ref_area_codice
+          - regione
+          - first_year
+          - last_year
+          - posti_letto_per_100k_first
+          - posti_letto_per_100k_last
+          - cagr_pct
+        primary_key: [ref_area_codice]
+        min_rows: 15
+
+validation:
+  fail_on_error: true
