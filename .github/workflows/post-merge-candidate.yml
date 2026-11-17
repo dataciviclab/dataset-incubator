@@ -1,10 +1,15 @@
 # Post-merge pipeline — dataset-incubator
 #
 # Dopo il merge di una PR che tocca candidate/compose/support_datasets:
-#   1. detect dei dataset cambiati (composite action condivisa)
-#   2. run (toolkit, anni dal config)
+#   1. detect dei dataset cambiati (action condivisa)
+#   2. run (toolkit, anni dal config) via `make run-batch`
 #   3. sync GCS (clean + mart) via WIF
 #   4. registry → draft PR (composite action registry-update-pr)
+#
+# Tutta la logica sta in `pipeline-reusable.yml` e nei target del Makefile
+# (ADR-001). Questo file è solo l'orchestratore.
+#
+# ADR-002: `datasets` accetta uno o più slug separati da virgola; vuoto = tutti.
 
 name: Post-merge pipeline
 
@@ -18,91 +23,33 @@ on:
   workflow_dispatch:
     inputs:
       datasets:
-        description: "Uno o più slug separati da virgola (es. 'mase-gas-import,mase-gas-consumi'). Vuoto = nessuno. Vedi ADR-002."
+        description: "Uno o più slug separati da virgola (o path del dataset.yml). Vuoto = tutti. Vedi ADR-002."
         required: false
-        type: string
+        default: ""
 
 concurrency:
   group: post-merge-pipeline-${{ github.event.pull_request.number || github.ref || 'dispatch' }}
   cancel-in-progress: false
 
-env:
-  GCP_WORKLOAD_IDENTITY_PROVIDER: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-  GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}
-
 jobs:
   pipeline:
-    if: github.event.pull_request.merged == true || github.event_name == 'workflow_dispatch'
-    runs-on: ubuntu-latest
+    if: github.event.pull_request.merged == true || github.event_name != 'pull_request'
+    uses: dataciviclab/.github/.github/workflows/pipeline-reusable.yml@main
+    with:
+      repo-slug: "dataset-incubator"
+      # I candidate pubblicano alla RADICE del bucket
+      # (gs://dataciviclab-{clean,mart}/<slug>/<anno>/), non sotto un prefisso
+      # di repo come gli altri repo dati. Stringa vuota = nessun prefisso.
+      sync-prefix: ""
+      detect-paths: "candidates compose support_datasets"
+      run-command: >-
+        ${{ inputs.datasets == '' && 'make run-all'
+            || format('for d in $(echo "{0}" | tr "," " "); do toolkit run -c "$d" || echo "⚠️  run fallito (skip): $d"; done', inputs.datasets) }}
+      run-batch-command: "make run-batch"
+      # Alcuni candidate scaricano via script (non http_file): serve il flag.
+      extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"
     permissions:
       contents: write
       pull-requests: write
       id-token: write
-
-    steps:
-      - uses: actions/checkout@v7
-        with:
-          ref: ${{ github.event.pull_request.merge_commit_sha || github.ref }}
-          fetch-depth: 0
-
-      - uses: dataciviclab/.github/actions/python-setup@main
-        with:
-          install-extras: dev,pipeline
-
-      # ── Detect dataset cambiati ─────────────────────────────────────
-      - uses: dataciviclab/.github/actions/detect-changed-datasets@main
-        id: detect
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          paths: "candidates compose support_datasets"
-          datasets: "${{ inputs.datasets }}"
-
-      # ── Run pipeline (toolkit, anni dal config) ─────────────────────
-      - name: Run changed datasets
-        if: steps.detect.outputs.found == 'true'
-        env:
-          TOOLKIT_ALLOW_SCRIPT_SOURCE: "1"
-        run: |
-          for dir in ${{ steps.detect.outputs.dirs }}; do
-            echo "=== $dir ==="
-            toolkit run -c "$dir/dataset.yml" || echo "⚠️  run fallito (skip): $dir"
-          done
-
-      # ── GCS auth + sync (clean + mart) ──────────────────────────────
-      - name: GCP Auth (workload identity)
-        id: gcp
-        if: env.GCP_WORKLOAD_IDENTITY_PROVIDER != '' && env.GCP_SERVICE_ACCOUNT != ''
-        uses: google-github-actions/auth@v3
-        with:
-          workload_identity_provider: ${{ env.GCP_WORKLOAD_IDENTITY_PROVIDER }}
-          service_account: ${{ env.GCP_SERVICE_ACCOUNT }}
-
-      - name: Set up gcloud
-        if: steps.gcp.outcome == 'success'
-        uses: google-github-actions/setup-gcloud@v3
-
-      - name: Sync clean + mart to GCS
-        if: steps.gcp.outcome == 'success' && steps.detect.outputs.found == 'true'
-        run: |
-          for dir in ${{ steps.detect.outputs.dirs }}; do
-            slug=$(grep '^  name:' "$dir/dataset.yml" | sed 's/.*: "//;s/"//')
-            [ -z "$slug" ] && continue
-            for year in $(ls "out/data/clean/$slug/" 2>/dev/null); do
-              gsutil -m rsync -r -x ".*/_(run|validate)/.*" \
-                "out/data/clean/$slug/$year/" "gs://dataciviclab-clean/$slug/$year/" \
-                && echo "✅ $slug clean synced (anno $year)"
-            done
-            for year in $(ls "out/data/mart/$slug/" 2>/dev/null); do
-              gsutil -m rsync -r \
-                "out/data/mart/$slug/$year/" "gs://dataciviclab-mart/$slug/$year/" \
-                && echo "✅ $slug mart synced (anno $year)"
-            done
-          done
-
-      # ── Registry → draft PR (componente condiviso) ──────────────────
-      - name: Registry update PR
-        if: steps.detect.outputs.found == 'true'
-        uses: dataciviclab/.github/actions/registry-update-pr@main
-        env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    secrets: inherit
