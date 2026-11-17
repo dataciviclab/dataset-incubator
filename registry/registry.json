@@ -5388,6 +5388,122 @@
       "stage": "incubating"
     },
     {
+      "slug": "mortalita_istat_evitabile",
+      "name": "Mortalita Istat Evitabile",
+      "description": "",
+      "source": "",
+      "source_id": "istat_sdmx",
+      "period": {
+        "start": 2022,
+        "end": 2022
+      },
+      "tags": [
+        "sanita",
+        "mortalita",
+        "istat",
+        "evitabile"
+      ],
+      "category": "sanita",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "cod_territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "territorio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cod_sesso",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "sesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cod_classe_eta",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "classe_eta",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cod_titolo_studio",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "titolo_studio",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "cod_causa",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "causa",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "pop_media",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "decessi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "tasso_std_10000",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mortalita_istat_evitabile/2022/mortalita_istat_evitabile_2022_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "mortalita_istat_evitabile__mart_regioni_v1",
+        "mortalita_istat_evitabile__mart_regioni_v2",
+        "mortalita_istat_evitabile__mart_regioni_v3"
+      ]
+    },
+    {
       "slug": "pensioni_pa_dag",
       "name": "Pensioni Pa Dag",
       "description": "Pensioni PA: importi pensionistici per gestione, categoria e caratteristiche pensionato",
@@ -9710,11 +9826,33 @@
     },
     {
       "id": "mortalita_istat_evitabile",
-      "source_id": "istat_situas",
+      "source_id": "istat_sdmx",
       "status": "ok",
       "label": "mortalita_istat_evitabile",
       "detail": "anno 2022 — mart: si",
-      "action": ""
+      "action": "",
+      "run": {
+        "run_id": "20261117T180515Z_742994a4",
+        "year": 2022,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "clean": 31522,
+          "mart": 63
+        },
+        "output_bytes": {
+          "raw": 3131777,
+          "clean": 329657,
+          "mart": 5249
+        },
+        "started_at": "2026-11-17T18:05:15.152275+00:00",
+        "finished_at": "2026-11-17T18:05:26.741600+00:00",
+        "duration_seconds": 11.589
+      }
     },
     {
       "id": "pensioni_pa_dag",
@@ -11059,6 +11197,12 @@
             "semantic_type": "year"
           },
           {
+            "slug": "mortalita_istat_evitabile",
+            "name": "Mortalita Istat Evitabile",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "pensioni_pa_dag",
             "name": "Pensioni Pa Dag",
             "column": "anno",
@@ -11120,7 +11264,7 @@
           }
         ],
         "types": {
-          "year": 47,
+          "year": 48,
           "month": 8
         }
       }
