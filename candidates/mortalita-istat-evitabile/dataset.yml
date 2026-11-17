@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "mortalita_istat_evitabile"
-  source_id: "istat_tavole_mortalita"
+  source_id: "istat_sdmx"
   tags: [sanita, mortalita, istat, evitabile]
   category: sanita
   years: [2022]
