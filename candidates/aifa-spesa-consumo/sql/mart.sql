@@ -1,7 +1,8 @@
 -- mart.sql - aifa_spesa_consumo - mart_mensile_regione_atc4
--- Primo taglio analitico:
--- - usa solo flusso convenzionata (gia filtrato nel clean)
--- - aggrega a livello anno x mese x regione x atc4
+-- Taglio analitico: spesa e consumi della farmaceutica **convenzionata**
+-- - si filtra il flusso convenzionata: dal 2016 la fonte ha anche righe di
+--   sola tracciabilità (spesa_convenzionata NULL), che qui non servono
+-- - aggrega a livello anno x mese x regione x classe x atc4
 -- - calcola quota percentuale della spesa atc4 sul totale regionale del mese
 
 WITH base AS (
@@ -10,6 +11,7 @@ WITH base AS (
         mese,
         codreg,
         regione,
+        classe,
         atc1,
         descrizione_atc1,
         atc2,
@@ -21,8 +23,9 @@ WITH base AS (
         SUM(numero_confezioni_convenzionata)  AS num_confezioni,
         SUM(spesa_convenzionata)              AS spesa_convenzionata
     FROM clean_input
+    WHERE spesa_convenzionata IS NOT NULL
     GROUP BY
-        anno, mese, codreg, regione,
+        anno, mese, codreg, regione, classe,
         atc1, descrizione_atc1, atc2, descrizione_atc2, atc3, descrizione_atc3, atc4, descrizione_atc4
 ),
 totali_regione_mese AS (
@@ -39,6 +42,7 @@ SELECT
     b.mese,
     b.codreg,
     b.regione,
+    b.classe,
     b.atc1,
     b.descrizione_atc1,
     b.atc2,

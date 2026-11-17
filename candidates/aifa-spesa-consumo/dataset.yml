@@ -4,53 +4,146 @@ schema_version: 1
 dataset:
   name: "aifa_spesa_consumo"
   source_id: "aifa"
-  tags: [sanita, aifa, spesa, consumo]
+  tags: [sanita, aifa, spesa, consumo, farmaceutica, serie-storica]
   category: sanita
-  years: [ 2018, 2019, 2020, 2021, 2022, 2023, 2024 ]
+  years: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  time_coverage: {start_year: 2016, end_year: 2025}
 
 raw:
+  # Il run riscarica i file annuali: nessun raw va conservato tra un run e l'altro.
+  output_policy: overwrite
+  # Una sorgente per anno, con `year` che la attiva solo sul proprio run.
+  # AIFA non ha un template URL stabile: 2016-2024 sono `dati{year}_DD.MM.YYYY.csv`,
+  # dal 2025 diventa `dati_{year}_YYMMDD.zip` (ZIP con dentro un CSV). Con
+  # url_suffix_by_year servirebbe un solo estrattore per tutti gli anni, ma
+  # unzip_first_csv fallisce sui CSV: qui l'override sta solo sul 2025.
   sources:
-    - name: "aifa_spesa_consumo_csv"
+    - name: "aifa_2016"
       type: "http_file"
+      year: 2016
       args:
-        url: "https://www.aifa.gov.it/documents/20142/847578/dati{year}"
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati2016_100519.csv"
         extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
-        url_suffix_by_year:
-          2018: "_23.09.2020.csv"
-          2019: "_23.09.2020.csv"
-          2020: "_22.10.2021.csv"
-          2021: "_24.10.2022.csv"
-          2022: "_07.02.2024.csv"
-          2023: "_15.01.2025.csv"
-          2024: "_04.12.2025.csv"
+      primary: true
+    - name: "aifa_2017"
+      type: "http_file"
+      year: 2017
+      args:
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati2017_100519.csv"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
+      primary: true
+    - name: "aifa_2018"
+      type: "http_file"
+      year: 2018
+      args:
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati2018_23.09.2020.csv"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
+      primary: true
+    - name: "aifa_2019"
+      type: "http_file"
+      year: 2019
+      args:
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati2019_23.09.2020.csv"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
+      primary: true
+    - name: "aifa_2020"
+      type: "http_file"
+      year: 2020
+      args:
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati2020_22.10.2021.csv"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
+      primary: true
+    - name: "aifa_2021"
+      type: "http_file"
+      year: 2021
+      args:
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati2021_24.10.2022.csv"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
+      primary: true
+    - name: "aifa_2022"
+      type: "http_file"
+      year: 2022
+      args:
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati2022_07.02.2024.csv"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
+      primary: true
+    - name: "aifa_2023"
+      type: "http_file"
+      year: 2023
+      args:
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati2023_15.01.2025.csv"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
+      primary: true
+    - name: "aifa_2024"
+      type: "http_file"
+      year: 2024
+      args:
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati2024_04.12.2025.csv"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
+      primary: true
+    - name: "aifa_2025"
+      type: "http_file"
+      year: 2025
+      args:
+        url: "https://www.aifa.gov.it/documents/20142/847578/dati_2025_260514.zip"
+        extra_ca_cert_url: "http://cacert.actalis.it/certs/actalis-autdvg3"
+      # Dal 2025 AIFA pubblica uno ZIP con dentro un solo CSV.
+      extractor:
+        type: "unzip_first_csv"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno, mese, codreg, regione, classe, atc1, descrizione_atc1, atc2, descrizione_atc2, atc3, descrizione_atc3, atc4, descrizione_atc4]
+  required_columns: [anno, mese, codreg, regione, classe, atc1, descrizione_atc1, atc2, descrizione_atc2, atc3, descrizione_atc3, atc4, descrizione_atc4, numero_confezioni_traccia, spesa_flusso_tracciabilita, numero_confezioni_convenzionata, spesa_convenzionata]
   read:
-    source: config_only
+    source: auto
     mode: latest
     header: true
     delim: "|"
-    encoding: "utf-8"
-    ignore_errors: true
+    # Fonte in cp1252 (Windows-1252): 0x92 = apostrofo tipografico, 0xA0 = NBSP.
+    # `latin-1` non basta per DuckDB (rifiuta 0x92), `utf-8` fallisce già alla
+    # riga 148. `all_varchar` evita che lo sniffing tipizzi codreg perdendo lo
+    # zero iniziale ('010' -> 10).
+    encoding: "cp1252"
+    all_varchar: true
     trim_whitespace: true
   validate:
-    not_null: [anno]
+    # Solo le chiavi territoriali sono sempre valorizzate: `classe` e `atc4`
+    # mancano su poche righe reali (righe di sola tracciabilità senza ATC,
+    # 10 nel 2021 e 41 nel 2023). Hanno i volumi del flusso tracciabilità.
+    not_null: [anno, mese, codreg]
     min_rows: 80000
+    # primary_key NON dichiarata: 2016 e 2017 contengono più righe con la
+    # stessa (anno, mese, codreg, classe, atc4) e importi diversi — la fonte
+    # non espone la dimensione che le distingue. Il mart le somma nel GROUP BY
+    # e lì la chiave torna univoca (dichiarata in mart.validate).
 
 mart:
   tables:
     - name: "mart_mensile_regione_atc4"
       sql: "sql/mart.sql"
+    - name: "mart_sintesi_regione_anno"
+      sql: "sql/mart_sintesi.sql"
+    - name: "mart_trend_regione"
+      sql: "sql/mart_trend.sql"
   required_tables:
     - "mart_mensile_regione_atc4"
+    - "mart_sintesi_regione_anno"
+    - "mart_trend_regione"
   validate:
     table_rules:
       mart_mensile_regione_atc4:
+        required_columns: [anno, mese, codreg, regione, classe, atc4, num_confezioni, spesa_convenzionata, quota_spesa_regione_pct]
+        primary_key: [anno, mese, codreg, classe, atc4]
         min_rows: 10000
+      mart_sintesi_regione_anno:
+        required_columns: [anno, codreg, regione, spesa_convenzionata, num_confezioni, costo_medio_confezione, quota_nazionale_pct, rank_costo_medio]
+        primary_key: [anno, codreg]
+        min_rows: 21
+      mart_trend_regione:
+        required_columns: [codreg, regione, anno_primo, anno_ultimo, n_anni, spesa_primo_anno, spesa_ultimo_anno, delta_spesa_pct, cagr_spesa_pct, costo_medio_ultimo_anno]
+        primary_key: [codreg]
+        min_rows: 21
 
 validation:
   fail_on_error: true
-
