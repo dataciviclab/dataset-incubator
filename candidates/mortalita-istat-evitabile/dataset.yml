@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "mortalita_istat_evitabile"
-  source_id: "istat_situas"
+  source_id: "istat_sdmx"
   tags: [sanita, mortalita, istat, evitabile]
   category: sanita
   years: [2022]
@@ -30,6 +30,7 @@ clean:
   validate:
     min_rows: 1000
     not_null: [anno, cod_territorio]
+    primary_key: [anno, cod_territorio, cod_sesso, cod_classe_eta, cod_titolo_studio, cod_causa]
 
 mart:
   tables:
