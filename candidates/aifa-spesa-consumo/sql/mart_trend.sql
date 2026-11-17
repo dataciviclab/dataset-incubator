@@ -1,20 +1,26 @@
 -- mart_trend.sql - aifa_spesa_consumo - mart_trend_regione
--- Trend multi-anno: 1 riga = 1 regione sull'intera serie disponibile.
--- Legge TUTTI gli anni dal clean via glob (pattern toolkit {root}/{dataset}),
--- quindi il risultato non dipende dall'anno del run.
+-- Trend multi-anno: 1 riga = 1 regione sull'intera serie.
+--
+-- È una tabella multi-anno (`mart.tables[].years` in dataset.yml): il toolkit
+-- unisce i clean degli anni dichiarati in `clean_input` e scrive UN solo file
+-- a livello dataset, `data/mart/{dataset}/mart_trend_regione.parquet`.
+-- Non viene quindi duplicata una copia parziale in ogni cartella anno.
+--
+-- Conseguenza: il run deve includere tutti gli anni del config (il toolkit
+-- solleva FileNotFoundError se manca il clean di un anno dichiarato).
 
-WITH all_clean AS (
+WITH filtro AS (
+    -- La fonte usa NULL oppure 0 per le righe senza convenzionata, a seconda
+    -- dell'anno: stesso filtro dei mart per-anno.
     SELECT
         anno,
         codreg,
         regione,
         spesa_convenzionata,
         numero_confezioni_convenzionata
-    FROM read_parquet(
-        '{root}/data/clean/{dataset}/*/{dataset}_*_clean.parquet',
-        union_by_name = true
-    )
-    WHERE spesa_convenzionata IS NOT NULL
+    FROM clean_input
+    WHERE COALESCE(spesa_convenzionata, 0) <> 0
+       OR COALESCE(numero_confezioni_convenzionata, 0) <> 0
 ),
 anni AS (
     SELECT
@@ -23,7 +29,7 @@ anni AS (
         regione,
         SUM(spesa_convenzionata)             AS spesa,
         SUM(numero_confezioni_convenzionata) AS confezioni
-    FROM all_clean
+    FROM filtro
     GROUP BY anno, codreg, regione
 ),
 serie AS (

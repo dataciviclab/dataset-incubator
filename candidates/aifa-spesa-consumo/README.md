@@ -25,8 +25,11 @@ per il canale della farmaceutica convenzionata (prescrizioni SSN dispensate in f
 ## Perimetro
 
 **Convenzionata (focus analitico), tracciabilità (presente nel clean per completezza).**
-Il clean è raw-faithful e tiene tutte le 17 colonne; i mart usano solo la
-convenzionata e filtrano le righe dove `spesa_convenzionata` è NULL.
+Il clean è raw-faithful e tiene tutte le 17 colonne; i tre mart usano solo la
+convenzionata e scartano le righe senza alcuna misura convenzionata. La fonte
+segnala l'assenza in due modi diversi — NULL in alcuni anni, `0` in altri
+(2018 e 2021) — quindi il filtro guarda i valori, non solo i NULL. Dettaglio
+in `notes.md`.
 
 ## Output
 
@@ -36,7 +39,9 @@ convenzionata e filtrano le righe dove `spesa_convenzionata` è NULL.
 - `mart_sintesi_regione_anno` — regione × anno, con costo medio per confezione,
   quota nazionale e rank regionale
 - `mart_trend_regione` — una riga per regione sull'intera serie: delta %, CAGR,
-  costo medio dell'ultimo anno
+  costo medio dell'ultimo anno. È una tabella multi-anno: un solo file a livello
+  dataset (`data/mart/aifa_spesa_consumo/mart_trend_regione.parquet`), non una
+  copia per anno.
 
 ## Criterio di promozione
 

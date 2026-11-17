@@ -23,7 +23,13 @@ WITH base AS (
         SUM(numero_confezioni_convenzionata)  AS num_confezioni,
         SUM(spesa_convenzionata)              AS spesa_convenzionata
     FROM clean_input
-    WHERE spesa_convenzionata IS NOT NULL
+    -- Fuori le righe senza alcuna misura convenzionata. La fonte non è
+    -- coerente tra anni: dove non c'è convenzionata scrive NULL (2016-2017)
+    -- oppure 0 (2018 e 2021, ~80k righe 0/0). Con il solo `IS NOT NULL`
+    -- quegli anni hanno il doppio delle righe e i conteggi non sono
+    -- confrontabili tra annualità.
+    WHERE COALESCE(spesa_convenzionata, 0) <> 0
+       OR COALESCE(numero_confezioni_convenzionata, 0) <> 0
     GROUP BY
         anno, mese, codreg, regione, classe,
         atc1, descrizione_atc1, atc2, descrizione_atc2, atc3, descrizione_atc3, atc4, descrizione_atc4

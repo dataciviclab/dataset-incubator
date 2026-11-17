@@ -126,6 +126,11 @@ mart:
       sql: "sql/mart_sintesi.sql"
     - name: "mart_trend_regione"
       sql: "sql/mart_trend.sql"
+      # Tabella multi-anno: il toolkit unisce i clean di questi anni in
+      # `clean_input` e scrive un solo parquet a livello dataset
+      # (`data/mart/aifa_spesa_consumo/mart_trend_regione.parquet`).
+      # Va aggiornata quando si aggiunge un'annualità.
+      years: [2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
   required_tables:
     - "mart_mensile_regione_atc4"
     - "mart_sintesi_regione_anno"

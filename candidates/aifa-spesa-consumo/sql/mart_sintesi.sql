@@ -11,7 +11,10 @@ WITH base AS (
         SUM(spesa_convenzionata)              AS spesa,
         SUM(numero_confezioni_convenzionata)  AS confezioni
     FROM clean_input
-    WHERE spesa_convenzionata IS NOT NULL
+    -- Stesso filtro del mart mensile: la fonte usa NULL oppure 0 per le righe
+    -- senza convenzionata, a seconda dell'anno.
+    WHERE COALESCE(spesa_convenzionata, 0) <> 0
+       OR COALESCE(numero_confezioni_convenzionata, 0) <> 0
     GROUP BY anno, codreg, regione
 ),
 nazionale AS (

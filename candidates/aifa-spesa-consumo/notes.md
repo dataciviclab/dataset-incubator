@@ -71,20 +71,41 @@ Poche righe reali non hanno `classe`/`atc4` ma hanno i volumi del flusso
 tracciabilità (10 nel 2021, 41 nel 2023, 1 nel 2022). Non sono righe vuote:
 non vanno scartate. Per questo `not_null` copre solo `anno`, `mese`, `codreg`.
 
+Una di queste arriva nel mart: 2023, dicembre, Lombardia, `classe='Cnn'`,
+`atc4` NULL, **34 confezioni a spesa 0**. Resta perché ha confezioni non nulle,
+quindi nel mart mensile c'è una riga con chiave `atc4` NULL. La PK del mart
+passa (la chiave è unica), ma chi raggruppa per `atc4` deve aspettarsi un
+gruppo NULL.
+
 ## Flusso convenzionata
 
-Il mart analizza **solo** la convenzionata. Dal 2016 la fonte contiene anche
-righe di sola tracciabilità (`spesa_convenzionata` NULL):
+Il mart analizza **solo** la convenzionata. La fonte però non è coerente nel
+modo in cui segnala l'assenza: alcuni anni scrivono **NULL**, altri **0**.
 
-| Anno | Righe clean | Con convenzionata |
-|---|---:|---:|
-| 2016 | 164.195 | 97.889 |
-| 2019 | 176.770 | 92.711 |
-| 2024 | 177.749 | 92.225 |
-| 2025 | 177.635 | 90.970 |
+| Anno | Righe clean | Convenzionata NULL | Righe 0/0 | Righe mart |
+|---|---:|---:|---:|---:|
+| 2016 | 164.195 | 66.306 | 1.115 | 95.741 |
+| 2017 | 163.326 | 67.989 | 0 | 95.317 |
+| **2018** | 174.254 | 0 | **80.822** | 93.432 |
+| 2019 | 176.770 | 84.059 | 0 | 92.711 |
+| 2020 | 171.006 | 79.665 | 0 | 91.341 |
+| **2021** | 169.304 | 0 | **79.335** | 89.969 |
+| 2022 | 172.304 | 80.454 | 0 | 91.850 |
+| 2023 | 174.595 | 81.941 | 0 | 92.654 |
+| 2024 | 177.749 | 85.524 | 0 | 92.225 |
+| 2025 | 177.635 | 86.665 | 0 | 90.970 |
 
-Il clean è raw-faithful e le tiene tutte; il mart filtra
-`spesa_convenzionata IS NOT NULL`.
+Il clean è raw-faithful e tiene tutto. I tre mart scartano le righe senza
+alcuna misura convenzionata:
+
+```sql
+WHERE COALESCE(spesa_convenzionata, 0) <> 0
+   OR COALESCE(numero_confezioni_convenzionata, 0) <> 0
+```
+
+Con il solo `IS NOT NULL` il 2018 e il 2021 avrebbero ~80.000 righe in più
+(quelle a 0/0) e i conteggi non sarebbero confrontabili tra annualità. I
+totali non cambiano, perché sommano zeri: è la struttura del mart a cambiare.
 
 ## Numeri della serie (convenzionata)
 
@@ -115,8 +136,18 @@ crescita.
 2. `mart_sintesi_regione_anno` — regione × anno, con costo medio per confezione,
    quota nazionale e rank regionale del costo medio.
 3. `mart_trend_regione` — una riga per regione sull'intera serie: delta %,
-   CAGR e costo medio dell'ultimo anno. Legge tutti gli anni via glob, quindi
-   il risultato non dipende dall'anno del run.
+   CAGR e costo medio dell'ultimo anno.
+
+`mart_trend_regione` è una **tabella multi-anno** (`mart.tables[].years`): il
+toolkit unisce i clean degli anni dichiarati e scrive **un solo file a livello
+dataset**, `data/mart/aifa_spesa_consumo/mart_trend_regione.parquet`. Non esiste
+una copia parziale in ogni cartella anno, e `n_anni` è sempre il numero di anni
+del config (10 oggi).
+
+Conseguenza da ricordare: il run deve includere **tutti** gli anni dichiarati
+in `mart.tables[].years`. Se ne manca uno, il toolkit solleva
+`FileNotFoundError` invece di produrre un trend parziale. Quando si aggiunge
+un'annualità vanno aggiornati sia `dataset.years` sia quella lista.
 
 ## Quirk noti
 
