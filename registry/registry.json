@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-13",
+  "updated_at": "2026-11-17",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -100,14 +100,16 @@
       "source": "AIFA — Open Data Spesa e Consumo Farmaceutico",
       "source_id": "aifa",
       "period": {
-        "start": 2018,
-        "end": 2024
+        "start": 2016,
+        "end": 2025
       },
       "tags": [
         "sanita",
         "aifa",
         "spesa",
-        "consumo"
+        "consumo",
+        "farmaceutica",
+        "serie-storica"
       ],
       "category": "sanita",
       "columns": [
@@ -219,12 +221,14 @@
       ],
       "location": {
         "type": "gcs",
-        "path": "gs://dataciviclab-clean/aifa_spesa_consumo/2024/aifa_spesa_consumo_2024_clean.parquet",
-        "multi_file": false
+        "path": "gs://dataciviclab-clean/aifa_spesa_consumo/*/aifa_spesa_consumo_*_clean.parquet",
+        "multi_file": true
       },
       "stage": "published",
       "mart_refs": [
-        "aifa_spesa_consumo__mart_mensile_regione_atc4"
+        "aifa_spesa_consumo__mart_mensile_regione_atc4",
+        "aifa_spesa_consumo__mart_sintesi_regione_anno",
+        "aifa_spesa_consumo__mart_trend_regione"
       ]
     },
     {
@@ -7460,6 +7464,26 @@
       }
     },
     {
+      "slug": "aifa_spesa_consumo__mart_sintesi_regione_anno",
+      "dataset": "aifa_spesa_consumo",
+      "table": "mart_sintesi_regione_anno",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/aifa_spesa_consumo/*/mart_sintesi_regione_anno.parquet",
+        "multi_file": true
+      }
+    },
+    {
+      "slug": "aifa_spesa_consumo__mart_trend_regione",
+      "dataset": "aifa_spesa_consumo",
+      "table": "mart_trend_regione",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/aifa_spesa_consumo/mart_trend_regione.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "ameco__mart_sintesi_paese",
       "dataset": "ameco",
       "table": "mart_sintesi_paese",
@@ -8547,29 +8571,30 @@
       "source_id": "aifa",
       "status": "ok",
       "label": "aifa_spesa_consumo",
-      "detail": "anni 2018-2024 — mart: si",
+      "detail": "anni 2016-2025 — mart: si",
       "action": "",
       "run": {
-        "run_id": "20260730T084948Z_d12bb7c2",
-        "year": 2024,
+        "run_id": "20261117T174942Z_11072710",
+        "year": 2025,
         "status": "SUCCESS",
         "quality_score": {
           "raw": 100,
           "clean": 100,
-          "mart": 95
+          "mart": 100
         },
         "output_rows": {
-          "clean": 177500,
-          "mart": 123673
+          "raw": 177635,
+          "clean": 177635,
+          "mart": 90991
         },
         "output_bytes": {
-          "raw": 31895365,
-          "clean": 2076040,
-          "mart": 1644528
+          "raw": 31904892,
+          "clean": 2074588,
+          "mart": 1396113
         },
-        "started_at": "2026-07-30T08:49:48.164156+00:00",
-        "finished_at": "2026-07-30T08:50:08.017957+00:00",
-        "duration_seconds": 19.854
+        "started_at": "2026-11-17T17:49:42.081652+00:00",
+        "finished_at": "2026-11-17T17:49:46.893777+00:00",
+        "duration_seconds": 4.812
       }
     },
     {
