@@ -10,7 +10,8 @@ per il canale della farmaceutica convenzionata (prescrizioni SSN dispensate in f
 - fonte: AIFA — *Spesa e consumo relativi al flusso della farmaceutica
   convenzionata e degli acquisti diretti*
 - copertura: **2016-2025** (10 annualità)
-- run verificato: 2016-2025, tutti gli anni `passed`, readiness **8/8**
+- run verificato: 2016-2025, tutti gli anni `passed`; readiness **7/8** al primo
+  run su `out/` vuoto, **8/8** dal secondo run (bug toolkit#550)
 - formato sorgente: CSV pipe-separated (`|`), **cp1252**; dal 2025 ZIP con un CSV
 - granularità: anno × mese × regione × classe × ATC4
 - layout: single-source, una sorgente per anno (AIFA non ha URL template stabile)
@@ -53,7 +54,9 @@ in `notes.md`.
 
 ## Stato
 
-- **runnable e ready 8/8** su tutte le annualità 2016-2025
+- **runnable** su tutte le annualità 2016-2025: readiness 7/8 al primo run,
+  8/8 dal secondo. Il 7/8 è un falso negativo del toolkit (#550): il mart
+  multi-year viene scritto dopo il check per anno
 - GATE 1 (schema) e GATE 2 (download) risolti
 
 ## Gate aperti
