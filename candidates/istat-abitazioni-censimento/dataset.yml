@@ -1,0 +1,107 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_abitazioni_censimento"
+  source_id: "istat_sdmx"
+  tags: [welfare-lavoro, istat, housing, censimento, sfitto, abitazioni]
+  category: welfare-lavoro
+  years: [2021]
+  time_coverage:
+    start_year: 2019
+    end_year: 2021
+
+# Censimento permanente popolazione e abitazioni — bulk comunale ISTAT.
+# Il dataflow DCSS_BULK_ABITAZIONI e' annotato NonProductionDataflow: non compare
+# nel catalogo SDMX standard, l'unica via e' il file annidato in ATTACHED_DATA_FILES.
+# Stesso pattern DWL/PERMPOP/... della matrice pendolarismo.
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_abitazioni_censimento"
+      type: "http_file"
+      client:
+        timeout: 180
+        retries: 2
+      extractor:
+        type: "unzip_first_csv"
+      args:
+        url: "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MUN/DCSS_ABITAZIONI%20-%20Abitazioni%20-%20intero%20ds.csv.zip"
+        filename: "dcss_abitazioni.csv.zip"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - anno
+    - territorio_codice
+    - territorio
+    - livello_geografico
+    - misura_codice
+    - misura
+    - titolo_possesso_codice
+    - valore
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: "|"
+    header: true
+    encoding: "utf-8"
+    quote: '"'
+    # all_varchar obbligatorio: ITTER107 contiene codici con zeri iniziali
+    # (001001) che lo sniffing leggerebbe come interi, perdendoli.
+    all_varchar: true
+    trim_whitespace: true
+  validate:
+    primary_key: [anno, territorio_codice, misura_codice, titolo_possesso_codice]
+    not_null:
+      - anno
+      - territorio_codice
+      - territorio
+      - livello_geografico
+      - misura_codice
+      - misura
+      - titolo_possesso_codice
+      - titolo_possesso
+      - stanze_codice
+      - stanze
+      - superficie_codice
+      - superficie
+      - accessibilita_codice
+      - tipo_edificio_codice
+      - valore
+    min_rows: 5000
+    promotion:
+      # clean.sql rinomina esplicitamente tutte le 21 colonne raw: il monitor di
+      # transizione le legge come "rimosse" a ogni run (rumore, non segnale).
+      warn_removed_columns: false
+
+mart:
+  tables:
+    - name: "mart_comuni_sfitto"
+      sql: "sql/mart_comuni_sfitto.sql"
+    - name: "mart_italia_serie"
+      sql: "sql/mart_italia_serie.sql"
+    - name: "mart_affitto_2019"
+      sql: "sql/mart_affitto_2019.sql"
+  required_tables:
+    - "mart_comuni_sfitto"
+    - "mart_italia_serie"
+    - "mart_affitto_2019"
+  validate:
+    table_rules:
+      mart_comuni_sfitto:
+        primary_key: [codice_istat_comune, anno]
+        not_null: [codice_istat_comune, anno, abitazioni, tasso_sfitto_pct]
+        min_rows: 7000
+      mart_italia_serie:
+        primary_key: [anno, misura_codice]
+        not_null: [anno, misura_codice, valore]
+        min_rows: 4
+      mart_affitto_2019:
+        primary_key: [codice_istat_comune, anno]
+        not_null: [codice_istat_comune, anno]
+        min_rows: 7000
+
+validation:
+  fail_on_error: true
