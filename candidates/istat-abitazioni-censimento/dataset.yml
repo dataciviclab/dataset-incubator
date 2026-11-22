@@ -6,8 +6,9 @@ dataset:
   source_id: "istat_sdmx"
   tags: [welfare-lavoro, istat, housing, censimento, sfitto, abitazioni]
   category: welfare-lavoro
-  # anno di run/output, non il perimetro dati: la serie copre 2019-2023 (time_coverage)
-  years: [2021]
+  # years = vintage dell'output, non il perimetro dati (che sta in time_coverage).
+  # Stessa convenzione di istat-migrazioni: file unico, serie 2019-2023, partizione 2026.
+  years: [2026]
   time_coverage:
     start_year: 2019
     end_year: 2023

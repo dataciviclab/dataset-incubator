@@ -18,6 +18,8 @@
 - il perimetro temporale e' **pinnato negli URL** (`startPeriod=2019&endPeriod=2023`):
   quando ISTAT pubblichera' il 2024 la pipeline non lo prendera' finche' non si aggiorna
   la config
+- anche il **version pin** e' esplicito (`...,TV_1,1.0/...`): se ISTAT pubblicasse la 1.1,
+  la 1.0 resta raggiungibile e il candidate continua a leggere la stessa struttura
 - licenza: CC BY 4.0 (ISTAT), nessuna autenticazione
 - copertura: **2019, 2021, 2023** — 7.900+ comuni per anno
 
@@ -39,7 +41,7 @@
 
 ## Output minimo atteso
 
-- `clean`: 96.464 righe, 8 colonne, 2019+2021+2023, gerarchia territoriale esplicita
+- `clean`: 96.464 righe, 9 colonne, 2019+2021+2023, gerarchia territoriale esplicita
   (`italia` / `ripartizione` / `regione` / `provincia` / `comune`)
 - `mart_comuni_sfitto`: ~7.900 comuni per anno, stock / occupate / non occupate / tasso
 - `mart_italia_serie`: 9 righe (3 anni x 3 misure) con `tipo_rilevazione`
