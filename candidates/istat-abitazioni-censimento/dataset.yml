@@ -9,47 +9,57 @@ dataset:
   years: [2021]
   time_coverage:
     start_year: 2019
-    end_year: 2021
+    end_year: 2023
 
-# Censimento permanente popolazione e abitazioni — bulk comunale ISTAT.
-# Il dataflow DCSS_BULK_ABITAZIONI e' annotato NonProductionDataflow: non compare
-# nel catalogo SDMX standard, l'unica via e' il file annidato in ATTACHED_DATA_FILES.
-# Stesso pattern DWL/PERMPOP/... della matrice pendolarismo.
+# Censimento permanente popolazione e abitazioni — tavole comunali via SDMX.
+# Due dataflow, stesso schema (CSV SDMX):
+#   DF_DCSS_ABITAZIONI_TV_1  stock / occupate / non occupate
+#   DF_DCSS_ABITAZIONI_TV_2  occupate per titolo di possesso (ALL/OWN/RENT/OTH_OR)
+# Entrambi coprono 2019, 2021, 2023. Solo il 2021 e' enumerazione completa:
+# 2019 e 2023 sono edizioni campionarie (stime, non conteggi).
+# Chiave: FREQ=A, tutte le aree, ROOM=TOT, FLOOR=ALL, HEATING=ALL, ACCESS=TOTAL,
+# BUILD=TOTAL — le breakdown non servono al perimetro v0.
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_abitazioni_censimento"
+    - name: "istat_abitazioni_tv1"
       type: "http_file"
       client:
         timeout: 180
         retries: 2
-      extractor:
-        type: "unzip_first_csv"
       args:
-        url: "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MUN/DCSS_ABITAZIONI%20-%20Abitazioni%20-%20intero%20ds.csv.zip"
-        filename: "dcss_abitazioni.csv.zip"
+        url: "https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_DCSS_ABITAZIONI_TV_1,1.0/A....TOT.ALL.ALL.TOTAL.TOTAL?startPeriod=2019&endPeriod=2023&format=csv"
+        filename: "dcss_abitazioni_tv1.csv"
       primary: true
+    - name: "istat_abitazioni_tv2"
+      type: "http_file"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        url: "https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_DCSS_ABITAZIONI_TV_2,1.0/A....TOT.ALL.ALL.TOTAL.TOTAL?startPeriod=2019&endPeriod=2023&format=csv"
+        filename: "dcss_abitazioni_tv2.csv"
 
 clean:
   sql: "sql/clean.sql"
   required_columns:
     - anno
     - territorio_codice
-    - territorio
     - livello_geografico
     - misura_codice
-    - misura
     - titolo_possesso_codice
     - valore
   read:
     source: "auto"
-    mode: "latest"
-    delim: "|"
+    # all: il clean legge entrambi i raw (TV_1 + TV_2), stesso schema SDMX
+    mode: "all"
+    glob: "*.csv"
+    delim: ","
     header: true
     encoding: "utf-8"
     quote: '"'
-    # all_varchar obbligatorio: ITTER107 contiene codici con zeri iniziali
-    # (001001) che lo sniffing leggerebbe come interi, perdendoli.
+    # codici con zeri iniziali (001001) e valori numerici: tutto VARCHAR,
+    # i cast sono espliciti in clean.sql
     all_varchar: true
     trim_whitespace: true
   validate:
@@ -57,23 +67,15 @@ clean:
     not_null:
       - anno
       - territorio_codice
-      - territorio
       - livello_geografico
       - misura_codice
       - misura
       - titolo_possesso_codice
       - titolo_possesso
-      - stanze_codice
-      - stanze
-      - superficie_codice
-      - superficie
-      - accessibilita_codice
-      - tipo_edificio_codice
       - valore
-    min_rows: 5000
+    min_rows: 20000
     promotion:
-      # clean.sql rinomina esplicitamente tutte le 21 colonne raw: il monitor di
-      # transizione le legge come "rimosse" a ogni run (rumore, non segnale).
+      # clean.sql rinomina esplicitamente tutte le colonne raw
       warn_removed_columns: false
 
 mart:
@@ -93,11 +95,11 @@ mart:
       mart_comuni_sfitto:
         primary_key: [codice_istat_comune, anno]
         not_null: [codice_istat_comune, anno, abitazioni, tasso_sfitto_pct]
-        min_rows: 7000
+        min_rows: 20000
       mart_italia_serie:
         primary_key: [anno, misura_codice]
         not_null: [anno, misura_codice, valore]
-        min_rows: 4
+        min_rows: 9
       mart_affitto_2019:
         primary_key: [codice_istat_comune, anno]
         not_null: [codice_istat_comune, anno]

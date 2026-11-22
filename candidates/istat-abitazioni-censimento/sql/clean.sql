@@ -1,36 +1,25 @@
--- clean.sql: censimento permanente abitazioni — bulk comunale ISTAT
--- Fonte: DWL/PERMPOP/MUN/DCSS_ABITAZIONI (zip -> csv pipe-delimited, UTF-8 con BOM)
+-- clean.sql: censimento permanente abitazioni — tavole comunali SDMX
+-- Fonti (stesso schema):
+--   DF_DCSS_ABITAZIONI_TV_1  stock / occupate / non occupate      (2019, 2021, 2023)
+--   DF_DCSS_ABITAZIONI_TV_2  occupate per titolo di possesso      (2019, 2021, 2023)
 --
--- 2021 = enumerazione completa: totale / occupate / non occupate, per comune
--- 2019 = edizione campionaria: occupate per titolo di possesso, valori decimali
---        (stima, non conteggio) e senza totale abitazioni a livello comunale
+-- Solo il 2021 e' enumerazione completa: 2019 e 2023 sono edizioni campionarie.
 --
--- all_varchar: true in dataset.yml -> tutti i campi arrivano come stringhe:
--- i codici con zeri iniziali (ITTER107 = 001001) sopravvivono allo sniffing.
+-- all_varchar: true -> i codici con zeri iniziali sopravvivono; i cast sono qui.
 
 with base as (
     select
-        cast_int("Seleziona periodo") as anno,
-        normalize_string(ITTER107) as territorio_codice,
-        normalize_string(Territorio) as territorio,
-        normalize_string(TIPO_DATO_CENS_POP) as misura_codice,
-        normalize_string("Tipo dato") as misura,
-        normalize_string(TIT_POSSESSO) as titolo_possesso_codice,
-        normalize_string("Tipo di possesso") as titolo_possesso,
-        normalize_string(NUMEROSITA) as stanze_codice,
-        normalize_string("Numero di stanze") as stanze,
-        normalize_string(SUPERFICIE) as superficie_codice,
-        normalize_string("Classi di superficie") as superficie,
-        normalize_string(EDIFICI_A) as accessibilita_codice,
-        normalize_string(EDIFICI_B) as tipo_edificio_codice,
-        cast_double(Value) as valore
+        cast_int(TIME_PERIOD) as anno,
+        normalize_string(REF_AREA) as territorio_codice,
+        normalize_string(INDICATOR) as misura_codice,
+        normalize_string(OWNERSHIP_TYPE) as titolo_possesso_codice,
+        cast_double(OBS_VALUE) as valore
     from raw_input
 )
 
-select
+select distinct
     anno,
     territorio_codice,
-    territorio,
     -- IT=2, ripartizioni=3, regioni=4, province=5, comuni=6
     case length(territorio_codice)
         when 2 then 'italia'
@@ -41,19 +30,24 @@ select
         else 'altro'
     end as livello_geografico,
     misura_codice,
-    misura,
+    case misura_codice
+        when 'NUM_DW_AV' then 'abitazioni'
+        when 'NUM_OCC_DW_AV' then 'abitazioni occupate'
+        when 'NUM_UNOCC_DW_AV' then 'abitazioni non occupate'
+    end as misura,
     titolo_possesso_codice,
-    titolo_possesso,
-    stanze_codice,
-    stanze,
-    superficie_codice,
-    superficie,
-    accessibilita_codice,
-    tipo_edificio_codice,
+    case titolo_possesso_codice
+        when 'ALL' then 'tutte le voci'
+        when 'OWN' then 'proprietà'
+        when 'RENT' then 'affitto'
+        when 'OTH_OR' then 'altro titolo diverso da proprietà, affitto'
+    end as titolo_possesso,
     valore
 from base
+-- distinct sopra: TV_1 e TV_2 espongono entrambi la riga di totale (ALL),
+-- che altrimenti verrebbe duplicata nel join dei due raw
 where anno is not null
   and territorio_codice is not null
   and misura_codice is not null
   and valore is not null
-order by anno, territorio_codice, misura_codice
+order by anno, territorio_codice, misura_codice, titolo_possesso_codice

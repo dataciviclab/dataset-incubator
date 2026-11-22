@@ -1,10 +1,8 @@
--- mart_affitto_2019: abitazioni occupate per titolo di possesso, per comune
--- Attenzione: 2019 e' l'edizione campionaria del censimento permanente.
--- I valori sono stime (decimali) e riguardano SOLO le abitazioni occupate:
--- non esiste il totale dello stock comunale per il 2019.
+-- mart_affitto_2019: abitazioni occupate per titolo di possesso, per comune e anno
+-- Fonte: DF_DCSS_ABITAZIONI_TV_2. Il dettaglio per titolo di possesso esiste SOLO per il 2019
+-- (2021 e 2023 espongono solo il totale ALL). Valori campionari: stime, non conteggi.
 select
     territorio_codice as codice_istat_comune,
-    territorio as comune,
     anno,
     round(sum(case when titolo_possesso_codice = 'OWN' then valore end), 0) as occupate_proprieta,
     round(sum(case when titolo_possesso_codice = 'RENT' then valore end), 0) as occupate_affitto,
@@ -13,17 +11,13 @@ select
         100.0 * sum(case when titolo_possesso_codice = 'RENT' then valore end)
         / nullif(sum(case when titolo_possesso_codice in ('OWN', 'RENT', 'OTH_OR') then valore end), 0),
         2
-    ) as quota_affitto_pct
+    ) as quota_affitto_pct,
+    case when anno = 2021 then 'enumerazione' else 'campione' end as tipo_rilevazione
 from clean_input
 where livello_geografico = 'comune'
   and misura_codice = 'NUM_OCC_DW_AV'
   and titolo_possesso_codice in ('OWN', 'RENT', 'OTH_OR')
-  and stanze_codice = 'TOT'
-  and superficie_codice = 'ALL'
-  and accessibilita_codice = 'TOTAL'
-  and tipo_edificio_codice = 'TOTAL'
-group by 1, 2, 3
--- solo le edizioni con il dettaglio per titolo di possesso (2019): il 2021
--- espone le sole righe di totale (ALL) e non deve entrare in questo mart
+group by 1, 2
+-- solo le edizioni con il dettaglio per titolo completo
 having count(distinct titolo_possesso_codice) = 3
-order by quota_affitto_pct desc
+order by anno, quota_affitto_pct desc
