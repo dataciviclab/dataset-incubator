@@ -6,7 +6,7 @@ select
     misura_codice,
     misura,
     cast(round(valore) as bigint) as valore,
-    case when anno = 2021 then 'enumerazione' else 'campione' end as tipo_rilevazione
+    tipo_rilevazione
 from clean_input
 where livello_geografico = 'italia'
   and titolo_possesso_codice = 'ALL'

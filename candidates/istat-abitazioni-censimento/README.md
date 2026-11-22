@@ -15,6 +15,9 @@
   - `DF_DCSS_ABITAZIONI_TV_2` — occupate per titolo di possesso
 - chiave raw: `FREQ=A`, tutte le aree, `NUMB_ROOM=TOT`, `USE_FLOOR_SPACEGROUP=ALL`,
   `HEATING_SYSTEM_TYPE=ALL`, `ACCESS_BUILDING=TOTAL`, `TYPE_OF_BUILDING=TOTAL`
+- il perimetro temporale e' **pinnato negli URL** (`startPeriod=2019&endPeriod=2023`):
+  quando ISTAT pubblichera' il 2024 la pipeline non lo prendera' finche' non si aggiorna
+  la config
 - licenza: CC BY 4.0 (ISTAT), nessuna autenticazione
 - copertura: **2019, 2021, 2023** — 7.900+ comuni per anno
 
@@ -52,8 +55,8 @@
 
 - tasso di sfitto mediano per comune: 35,1% (2019) · 34,6% (2021) · 34,7% (2023)
 - la somma dei mart comunali riproduce i totali nazionali in tutti e tre gli anni
-- 2.076 comuni restano sopra il 50% di sfitto in tutte e tre le edizioni; solo 198 cambiano
-  classe: lo sfitto e' **strutturale**, non un'emergenza in movimento
+- ogni mart espone `tipo_rilevazione`, cosi' l'enumerazione 2021 non si confonde con le
+  edizioni campionarie
 
 ## Criterio di promozione
 

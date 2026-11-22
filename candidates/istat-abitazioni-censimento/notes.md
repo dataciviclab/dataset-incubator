@@ -26,8 +26,10 @@
   `DF_DCSS_HUDW_1_COM`, non come abitazioni: unita' di analisi diversa, non confrontabile.
 - "Non occupata" non significa "disponibile": dentro ci sono seconde case, immobili in
   ristrutturazione, case inagibili, abitazioni in territori senza domanda.
-- Lo sfitto e' **strutturale**: 2.076 comuni restano sopra il 50% in tutte e tre le edizioni,
-  5.582 sempre sotto, solo 198 cambiano classe.
+- Lo sfitto e' stabile: **2.076 comuni** restano sopra il 50% in tutte e tre le edizioni,
+  5.582 sempre sotto, solo **198 cambiano classe** (2,5%). Analisi esterna al candidate
+  (2026-11-22, `_local/notes/current/2026-11-22_HOUSING_SFITTO_ANALISI.md`), calcolata
+  sui mart con join a `comuni_master` — non un output della pipeline.
 
 ## Cautele
 

@@ -12,7 +12,7 @@ select
         / nullif(max(case when misura_codice = 'NUM_DW_AV' then valore end), 0),
         2
     ) as tasso_sfitto_pct,
-    case when anno = 2021 then 'enumerazione' else 'campione' end as tipo_rilevazione
+    max(tipo_rilevazione) as tipo_rilevazione
 from clean_input
 where livello_geografico = 'comune'
   and titolo_possesso_codice = 'ALL'

@@ -12,12 +12,14 @@ select
         / nullif(sum(case when titolo_possesso_codice in ('OWN', 'RENT', 'OTH_OR') then valore end), 0),
         2
     ) as quota_affitto_pct,
-    case when anno = 2021 then 'enumerazione' else 'campione' end as tipo_rilevazione
+    max(tipo_rilevazione) as tipo_rilevazione
 from clean_input
 where livello_geografico = 'comune'
   and misura_codice = 'NUM_OCC_DW_AV'
   and titolo_possesso_codice in ('OWN', 'RENT', 'OTH_OR')
 group by 1, 2
--- solo le edizioni con il dettaglio per titolo completo
+-- tiene solo le edizioni con il dettaglio per titolo completo (il 2019) e, dentro
+-- quelle, solo i comuni con tutti e tre i titoli: 32 comuni hanno un titolo mancante
+-- e la quota verrebbe calcolata su una base parziale (7.914 - 32 = 7.882)
 having count(distinct titolo_possesso_codice) = 3
 order by anno, quota_affitto_pct desc

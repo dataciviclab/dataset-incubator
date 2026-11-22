@@ -42,6 +42,14 @@ select distinct
         when 'RENT' then 'affitto'
         when 'OTH_OR' then 'altro titolo diverso da proprietà, affitto'
     end as titolo_possesso,
+    -- regola unica per tutto il dataset: nel censimento permanente l'enumerazione
+    -- completa e' il 2021 (e il 2011, fuori dal perimetro attuale). Tutte le altre
+    -- edizioni (2019, 2023, ...) sono campionarie: stime, non conteggi.
+    case anno
+        when 2021 then 'enumerazione'
+        when 2011 then 'enumerazione'
+        else 'campione'
+    end as tipo_rilevazione,
     valore
 from base
 -- distinct sopra: TV_1 e TV_2 espongono entrambi la riga di totale (ALL),

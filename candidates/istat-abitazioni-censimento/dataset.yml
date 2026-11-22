@@ -6,6 +6,7 @@ dataset:
   source_id: "istat_sdmx"
   tags: [welfare-lavoro, istat, housing, censimento, sfitto, abitazioni]
   category: welfare-lavoro
+  # anno di run/output, non il perimetro dati: la serie copre 2019-2023 (time_coverage)
   years: [2021]
   time_coverage:
     start_year: 2019
@@ -48,6 +49,7 @@ clean:
     - livello_geografico
     - misura_codice
     - titolo_possesso_codice
+    - tipo_rilevazione
     - valore
   read:
     source: "auto"
@@ -72,6 +74,7 @@ clean:
       - misura
       - titolo_possesso_codice
       - titolo_possesso
+      - tipo_rilevazione
       - valore
     min_rows: 20000
     promotion:
