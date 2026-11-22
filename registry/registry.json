@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-17",
+  "updated_at": "2026-11-22",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -2914,6 +2914,94 @@
       "mart_refs": [
         "ispra_emissioni_ghg__mart_settori_anno",
         "ispra_emissioni_ghg__mart_trend_settori"
+      ]
+    },
+    {
+      "slug": "istat_abitazioni_censimento",
+      "name": "Istat Abitazioni Censimento",
+      "description": "",
+      "source": "",
+      "source_id": "istat_sdmx",
+      "period": {
+        "start": 2019,
+        "end": 2023
+      },
+      "tags": [
+        "welfare-lavoro",
+        "istat",
+        "housing",
+        "censimento",
+        "sfitto",
+        "abitazioni"
+      ],
+      "category": "welfare-lavoro",
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "year"
+        },
+        {
+          "name": "territorio_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "livello_geografico",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "misura_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "misura",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo_possesso_codice",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "titolo_possesso",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_rilevazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_abitazioni_censimento/2026/istat_abitazioni_censimento_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_abitazioni_censimento__mart_comuni_sfitto",
+        "istat_abitazioni_censimento__mart_italia_serie",
+        "istat_abitazioni_censimento__mart_affitto_2019"
       ]
     },
     {
@@ -7910,6 +7998,36 @@
       }
     },
     {
+      "slug": "istat_abitazioni_censimento__mart_affitto_2019",
+      "dataset": "istat_abitazioni_censimento",
+      "table": "mart_affitto_2019",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_abitazioni_censimento/2026/mart_affitto_2019.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_abitazioni_censimento__mart_comuni_sfitto",
+      "dataset": "istat_abitazioni_censimento",
+      "table": "mart_comuni_sfitto",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_abitazioni_censimento/2026/mart_comuni_sfitto.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_abitazioni_censimento__mart_italia_serie",
+      "dataset": "istat_abitazioni_censimento",
+      "table": "mart_italia_serie",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_abitazioni_censimento/2026/mart_italia_serie.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "istat_asia_imprese_addetti__mart_asia_imprese_anno",
       "dataset": "istat_asia_imprese_addetti",
       "table": "mart_asia_imprese_anno",
@@ -9124,6 +9242,37 @@
         "started_at": "2026-11-11T13:51:40.358020+00:00",
         "finished_at": "2026-11-11T13:51:42.043104+00:00",
         "duration_seconds": 1.685
+      }
+    },
+    {
+      "id": "istat_abitazioni_censimento",
+      "source_id": "istat_sdmx",
+      "status": "ok",
+      "label": "istat_abitazioni_censimento",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261122T221940Z_7987f12e",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 120587,
+          "clean": 96464,
+          "mart": 31609
+        },
+        "output_bytes": {
+          "raw": 14279245,
+          "clean": 497554,
+          "mart": 360509
+        },
+        "started_at": "2026-11-22T22:19:40.348159+00:00",
+        "finished_at": "2026-11-22T22:21:50.012092+00:00",
+        "duration_seconds": 129.664
       }
     },
     {
@@ -11035,6 +11184,12 @@
             "semantic_type": "year"
           },
           {
+            "slug": "istat_abitazioni_censimento",
+            "name": "Istat Abitazioni Censimento",
+            "column": "anno",
+            "semantic_type": "year"
+          },
+          {
             "slug": "istat_asia_imprese_addetti",
             "name": "Istat Asia Imprese Addetti",
             "column": "anno",
@@ -11264,7 +11419,7 @@
           }
         ],
         "types": {
-          "year": 48,
+          "year": 49,
           "month": 8
         }
       }
