@@ -18,6 +18,15 @@
   (`2014-2017`, `2014-2024`) e `periodo_monitoraggio` e' la data dello snapshot di
   monitoraggio (2016-10 -> 2020-04).
 
+- **La fonte e' ferma.** `Last-Modified` del CSV: 2022-03-04; ultimo `PeriodoMonitoraggio`:
+  2020-04-01; ultima `LavoriUltimatiData`: 2020-03-06. Il campo `Annualita` ("2014-2024") e'
+  l'etichetta del programma e non la fine dei dati: leggerlo come copertura e' l'errore
+  naturale su questo tracciato. Il catalogo MIT dichiara aggiornamento ogni 6 ore, ma
+  `metadata_modified` della scheda e' 2022-03-04 come il file.
+- Contesto del catalogo: su 71 dataset pubblicati su `dati.mit.gov.it`, **60 hanno
+  `metadata_modified` nel 2022**; solo 5 risultano aggiornati nel 2026. Non e' un caso
+  isolato, e' lo stato del catalogo.
+
 ## Analitico
 
 - La catena e' **finanziato -> alloggi previsti -> date lavori -> assegnati**. "Assegnati" e'

@@ -8,14 +8,19 @@ dataset:
   tags: [welfare-lavoro, housing, erp, edilizia-pubblica, mit]
   category: welfare-lavoro
   # years = vintage dell'output, non il perimetro dati (in time_coverage).
-  # Il CSV e' un unico snapshot aggiornato ogni 6 ore dalla fonte.
   years: [2026]
+  # ATTENZIONE: il catalogo MIT dichiara "aggiornato ogni 6 ore", ma il file ha
+  # Last-Modified 2022-03-04 e il monitoraggio si ferma al 2020-04-01.
+  # `Annualita` = "2014-2017"/"2014-2024" e' l'etichetta del programma, NON la
+  # copertura dei dati. E' uno snapshot chiuso, non un monitoraggio live.
   time_coverage:
     start_year: 2014
-    end_year: 2024
+    end_year: 2020
 
 # Programma art. 4 c. 1 DL 47/2014 (recupero e razionalizzazione ERP di Comuni ed
 # ex IACP), monitoraggio MIT. CSV singolo, nessuna autenticazione, CC-BY-4.0.
+# Fonte FERMA: ultimo aggiornamento 2022-03-04, ultimo periodo di monitoraggio
+# 2020-04-01. Va trattata come fotografia finale di un programma chiuso.
 # Attenzione: la colonna `Descrizione` contiene il NOME DEL COMUNE, non una
 # descrizione dell'intervento.
 raw:
