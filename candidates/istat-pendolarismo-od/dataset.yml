@@ -1,0 +1,102 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_pendolarismo_od"
+  description: "Spostamenti giornalieri casa-lavoro e casa-studio tra comuni: matrice origine-destinazione del censimento permanente 2021."
+  source_id: "istat_sdmx"
+  tags: [welfare-lavoro, istat, pendolarismo, mobilita, lavoro, censimento]
+  category: welfare-lavoro
+  # years = vintage dell'output; i dati sono di una sola edizione censuaria (2021)
+  years: [2026]
+  time_coverage:
+    start_year: 2021
+    end_year: 2021
+
+# comuni_master, non istat_elenco_comuni: l'elenco 2026 usa i nuovi codici sardi
+# 112-119 (riforma 2025) e non copre i codici 090/091/092/095/111 della matrice 2021.
+# comuni_master tiene la generazione 2021 e copre 7.887 dei 7.904 comuni (99,8%).
+support:
+  - name: comuni
+    type: external
+    repo: dataset-incubator
+    slug: comuni_master
+    layer: clean
+    years: [2026]
+
+# Due matrici O/D, stesso tracciato con suffisso diverso (_lav / _stu).
+# Il censimento permanente produce la matrice per edizione censuaria, non ogni anno:
+# 2011 e 2021 sono le uniche disponibili, non esiste 2022-2024 (gli URL restituiscono
+# una pagina HTML di errore, non uno ZIP).
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "pendolarismo_lavoro"
+      type: "http_file"
+      client:
+        timeout: 180
+        retries: 2
+      extractor:
+        type: "unzip_first"
+      args:
+        url: "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_pendoLAVORO_2021.zip"
+        filename: "matrix_pendoLAVORO_2021.zip"
+      primary: true
+    - name: "pendolarismo_studio"
+      type: "http_file"
+      client:
+        timeout: 180
+        retries: 2
+      extractor:
+        type: "unzip_first"
+      args:
+        url: "https://esploradati.istat.it/databrowser/DWL/PERMPOP/MATPEN/matrix_pendoSTUDIO_2021.zip"
+        filename: "matrix_pendoSTUDIO_2021.zip"
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - motivo
+    - comune_residenza
+    - comune_destinazione
+    - pendolari
+  read:
+    source: "auto"
+    # all: legge entrambi i txt (schema diverso solo nel suffisso _lav/_stu:
+    # union_by_name produce le due coppie di colonne, una nulla per file)
+    mode: "all"
+    glob: "*.txt"
+    delim: "\t"
+    header: true
+    encoding: "utf-8"
+    all_varchar: true
+    trim_whitespace: true
+  validate:
+    primary_key: [motivo, comune_residenza, comune_destinazione]
+    not_null: [motivo, comune_residenza, comune_destinazione, pendolari]
+    min_rows: 600000
+    promotion:
+      warn_removed_columns: false
+
+mart:
+  tables:
+    - name: "mart_comuni_pendolarismo"
+      sql: "sql/mart_comuni_pendolarismo.sql"
+    - name: "mart_flussi_top"
+      sql: "sql/mart_flussi_top.sql"
+  required_tables:
+    - "mart_comuni_pendolarismo"
+    - "mart_flussi_top"
+  validate:
+    table_rules:
+      mart_comuni_pendolarismo:
+        primary_key: [codice_istat]
+        not_null: [codice_istat, lavoro_entranti, lavoro_uscenti, lavoro_auto_contenimento_pct]
+        min_rows: 7500
+      mart_flussi_top:
+        primary_key: [motivo, comune_residenza, comune_destinazione]
+        not_null: [motivo, comune_residenza, comune_destinazione, pendolari]
+        min_rows: 200
+
+validation:
+  fail_on_error: true
