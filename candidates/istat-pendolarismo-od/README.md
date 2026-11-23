@@ -15,8 +15,14 @@
   (`matrix_pendoSTUDIO_2021.zip`)
 - formato: ZIP → TXT tab-delimited, CRLF, header, codici ISTAT a 6 cifre
 - licenza: CC BY (ISTAT), nessuna autenticazione
-- copertura: **una sola edizione** (2021, pubblicata 2/10/2025). Non esistono file 2022-2024:
-  gli URL rispondono HTTP 200 ma con una pagina HTML di errore da ~5 KB, non uno ZIP
+- copertura: **una sola edizione** (2021, pubblicata il **2/10/2025**, nota metodologica
+  aggiornata il 3/11/2025). Non esistono file 2022-2024: gli URL rispondono HTTP 200 ma con
+  una pagina HTML di errore da ~5 KB, non uno ZIP
+- **è una stima modellata, non un conteggio**: ISTAT integra il censimento 2021 (campione)
+  con Registro Base degli Individui, dati INPS e Certificazione Unica/Anagrafe Tributaria e
+  una matrice di distanze intercomunali. Pendolare = occupato che si reca almeno 3 giorni a
+  settimana al lavoro, partendo dall'alloggio e rientrando ogni giorno; esclusi chi lavora
+  da casa o non ha sede fissa. I flussi sotto soglia di riservatezza non sono pubblicati
 - volumi: **523.949 coppie** lavoro + **141.226** studio = **665.175 righe**;
   19.565.808 spostamenti per lavoro (9.803.786 intra-comune + 9.762.022 inter) e
   9.279.329 per studio
@@ -35,7 +41,9 @@
   destinazione, pendolari
 - `mart_comuni_pendolarismo`: 7.904 comuni con intra, uscenti, entranti, saldo e
   auto-contenimento (lavoro) + uscenti/entranti studio
-- `mart_flussi_top`: le 200 coppie inter-comune più consistenti, con entrambi i nomi
+- `mart_flussi_top`: le 200 coppie inter-comune più consistenti **complessivamente** (nel
+  2021: 190 lavoro + 10 studio), con entrambi i nomi. Chi filtra `motivo = 'studio'` trova
+  10 righe, non 200: per i volumi per motivo usare `mart_comuni_pendolarismo`
 
 ## Verifica (numeri chiave)
 
@@ -56,7 +64,8 @@ provinciali sardi **112-119** della riforma 2025, mentre la matrice 2021 usa la 
 precedente (090/091/092/095/111). `comuni_master` conserva quella generazione e copre
 **7.887 comuni su 7.904 (99,8%)**.
 
-Restano **17 comuni** senza nome (fusioni recenti: prefissi 012/013/024/025/028), per
+Restano **17 comuni** senza nome (fusioni recenti, 7 province: 005, 012, 013, 018,
+024, 025, 028), per
 **9.917 uscenti — lo 0,1%**. Il mart li tiene con nome `NULL` e `in_anagrafica = false`
 invece di scartarli, e nei 200 flussi top non manca nessun nome (il 6° flusso nazionale è
 Quartu Sant'Elena → Cagliari, 9.501).

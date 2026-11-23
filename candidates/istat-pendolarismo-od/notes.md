@@ -18,10 +18,24 @@
   2026 usa i **nuovi 112-119** (riforma 2025). Un join sull'elenco perdeva 394 comuni.
 - **`comuni_master` conserva la generazione 2021** e copre 7.887 comuni su 7.904 (99,8%):
   è l'anagrafica corretta da usare come support.
-- Restano **17 comuni** (fusioni recenti: 012/013/024/025/028) senza corrispondenza, per
-  9.917 uscenti (0,1%). Il mart li tiene con nome `NULL` e `in_anagrafica = false`.
+- Restano **17 comuni** (fusioni recenti, 7 province: 005, 012, 013, 018, 024, 025, 028)
+  senza corrispondenza, per 9.917 uscenti (0,1%). Il mart li tiene con nome `NULL` e
+  `in_anagrafica = false`.
 - Lezione: quando un join perde un'intera area, il sospetto va prima sull'**anagrafica**
   (vintage dei codici), non sui dati. Il crosswalk esisteva già, in un altro dataset.
+
+## Metodo: è una stima, non un conteggio
+
+- ISTAT **non conta** i pendolari: stima i flussi con un modello che integra il censimento
+  2021 (campione) con Registro Base degli Individui, INPS, Certificazione Unica/Anagrafe
+  Tributaria e una matrice di distanze (nota metodologica 2/10/2025, agg. 3/11/2025).
+  L'approccio predittivo sostituisce il conteggio pieno usato nel 2011.
+- Definizione: occupato che si reca **almeno 3 giorni a settimana** al lavoro, partendo
+  dall'alloggio e rientrando ogni giorno. Esclusi chi lavora da casa e chi non ha sede fissa.
+- I flussi sotto soglia di riservatezza non sono pubblicati: **assenza di coppia ≠ zero
+  pendolari**.
+- 19.565.808 pendolari corrispondono a circa l'83% degli occupati (focus ISTAT sui Sistemi
+  Locali del Lavoro 2021, derivati da questa stessa matrice).
 
 ## Analitico
 
