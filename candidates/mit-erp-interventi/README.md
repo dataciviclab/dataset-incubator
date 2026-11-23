@@ -13,11 +13,14 @@
 - canale: CSV singolo pubblico su `dati.mit.gov.it`, nessuna autenticazione
 - **stato della fonte: ferma e parziale.** Il catalogo dichiara "si aggiorna ogni 6 ore", ma
   il file ha `Last-Modified: 2022-03-04` e l'ultimo periodo di monitoraggio e' **2020-04-01**
-- **il programma non e' chiuso**: prosegue almeno fino al 2025. La relazione annuale al
-  Parlamento (art. 4 c. 9-bis DL 47/2014, Doc. XXVII n. 31, aggiornata al **31/12/2025**)
-  riporta **44.825 alloggi ammessi**, **16.464 ultimati**, **6.705 assegnati**, dotazione
-  **oltre 814 mln**. Questo candidate copre **26.391 alloggi su 44.825** (59%): e' uno
-  snapshot parziale, non lo stato finale del programma
+- **il programma non e' chiuso**, ma la relazione al Parlamento copre **solo la linea b)**
+  (la linea a), interventi sotto 15.000 € **per alloggio**, e' terminata nel 2017). Al
+  **31/12/2025** (Doc. XXVII n. 31, art. 4 c. 9-bis DL 47/2014) la linea b) riporta
+  **44.825 alloggi ammessi, 16.464 ultimati, 6.705 assegnati**, dotazione **oltre 814 mln**
+- **confronto per perimetro**: questo candidate ha **21.234 alloggi di linea b) su 44.825
+  (47,4%)**, 6.039 alloggi in interventi completati su 16.464 (36,7%) e 3.188 assegnati su
+  6.705 (47,5%). Il resto del CSV (5.157 alloggi) e' linea a), che il report non copre:
+  il programma stimato e' ~49.982 alloggi, coperti al ~52,8%
 - licenza: CC-BY-4.0
 - copertura: **5.560 interventi**, 917 comuni, 19 regioni (manca il Trentino-Alto Adige)
 - `Annualita` ("2014-2017", "2014-2024") e' **l'etichetta del programma**, non la copertura

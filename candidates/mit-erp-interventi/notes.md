@@ -27,15 +27,23 @@
 
 - **La fonte e' ferma e parziale.** `Last-Modified` del CSV: 2022-03-04; ultimo
   `PeriodoMonitoraggio`: 2020-04-01; ultima `LavoriUltimatiData`: 2020-03-06.
-- **Il programma prosegue.** Relazione al Parlamento art. 4 c. 9-bis DL 47/2014 (Doc. XXVII
-  n. 31, aggiornata al 31/12/2025): **44.825 alloggi ammessi, 16.464 ultimati, 6.705
-  assegnati**, dotazione **oltre 814 mln**. Il CSV copre 26.391 alloggi (59%): manca la
-  parte finanziata dopo il 2020. La linea a) (interventi <15.000 €) e' terminata nel 2017.
+- **Il programma prosegue, ma il report copre solo la linea b).** Relazione al Parlamento
+  art. 4 c. 9-bis DL 47/2014 (Doc. XXVII n. 31, al 31/12/2025): **44.825 alloggi ammessi,
+  16.464 ultimati, 6.705 assegnati**, dotazione **oltre 814 mln**. Il documento dichiara che
+  i dati si riferiscono *esclusivamente* alla linea b), perche' la linea a) e' terminata nel
+  2017.
+- **Confronto per perimetro (linea b, B1)**: 21.234 / 44.825 alloggi = **47,4%**;
+  6.039 / 16.464 alloggi in interventi completati = **36,7%**; 3.188 / 6.705 assegnati =
+  **47,5%**. La linea a) (A1) vale 5.157 alloggi nel CSV e 62,6 mln: sommando, il programma
+  stimato e' ~49.982 alloggi e la copertura del CSV ~52,8%. **Non confrontare 26.391 con
+  44.825**: sono due perimetri diversi.
 - Il campo `Annualita` ("2014-2024") e' l'etichetta della linea di finanziamento, non la
   copertura dei dati: leggerlo come copertura e' l'errore naturale su questo tracciato.
-- **Conseguenza per l'analisi**: "assegnati" cresce molto meno delle ultime: 6.569 nel 2020,
-  6.705 nel 2025, mentre gli ultimati passano da 7.120 a 16.464. Il collo di bottiglia
-  dell'assegnazione e' reale a livello nazionale, non solo un artefatto di notifica.
+- **Conseguenza per l'analisi**: like-for-like sulla linea b, 2020 -> 2025, gli assegnati
+  passano da 3.188 a 6.705 (**+110%**) e gli alloggi in interventi completati da 6.039 a
+  16.464 (**+173%**). Il rapporto assegnati/completati scende da 52,8% a 40,7%, ma i due
+  numeratori non sono definiti allo stesso modo: il segnale e' coerente con il caveat sulla
+  notifica, non lo dimostra. Non usare il totale CSV (linea a + b) contro il report (solo b).
 - Contesto del catalogo: su 71 dataset pubblicati su `dati.mit.gov.it`, **60 hanno
   `metadata_modified` nel 2022**; solo 5 risultano aggiornati nel 2026. Non e' un caso
   isolato, e' lo stato del catalogo.
