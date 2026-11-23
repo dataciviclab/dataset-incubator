@@ -23,8 +23,13 @@ with base as (
         normalize_string(Localizzazione) as localizzazione,
         cast_double(ImportoIntervento) as importo_intervento,
         cast_int(NumeroAlloggi) as numero_alloggi,
-        safe_date(LavoriIniziatiData) as data_inizio_lavori,
-        safe_date(LavoriUltimatiData) as data_fine_lavori,
+        -- seconda sentinella: 1900-01-01 (1 riga, Rosignano Marittimo) significa
+        -- "data non dichiarata". safe_date accetta 1800-2100 e la lascerebbe passare
+        -- come durata zero: qui diventa NULL come il -1 dei conteggi
+        case when safe_date(LavoriIniziatiData) <= DATE '1900-01-01' then null
+             else safe_date(LavoriIniziatiData) end as data_inizio_lavori,
+        case when safe_date(LavoriUltimatiData) <= DATE '1900-01-01' then null
+             else safe_date(LavoriUltimatiData) end as data_fine_lavori,
         -- -1 e' un sentinella amministrativo per "non dichiarato" (48 interventi
         -- su assegnati, 1 su sfratto): un conteggio negativo non esiste, quindi
         -- diventa NULL invece di essere sommato o interpretato come zero

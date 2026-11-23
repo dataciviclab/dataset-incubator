@@ -13,6 +13,8 @@ dataset:
   # Last-Modified 2022-03-04 e il monitoraggio si ferma al 2020-04-01.
   # `Annualita` = "2014-2017"/"2014-2024" e' l'etichetta del programma, NON la
   # copertura dei dati. E' uno snapshot chiuso, non un monitoraggio live.
+  # 2014 = prima data di inizio lavori nel file (Follonica, 2014-11-04), non il primo
+  # snapshot di monitoraggio (2016-10). 2020 = ultimo PeriodoMonitoraggio.
   time_coverage:
     start_year: 2014
     end_year: 2020

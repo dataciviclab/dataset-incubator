@@ -29,9 +29,11 @@
 > dell'intervento. Mappata su `comune`.
 
 > [!IMPORTANT]
-> `AlloggiAssegnatiNumero = -1` e' un **sentinella amministrativo** per "non dichiarato"
-> (48 interventi), non un conteggio. In clean diventa `NULL`: sommarlo come zero o come -1
-> falsa il totale.
+> Due **sentinelle amministrative** diventano `NULL` in clean, perche' non sono valori:
+> `AlloggiAssegnatiNumero = -1` (48 interventi) e le date lavori a `1900-01-01` (1 intervento,
+> Rosignano Marittimo). Sommare il `-1` sottrae 48 al totale; trattarlo come zero lascia il
+> totale giusto ma trasforma 48 "non dichiarati" in 48 zeri. Nessuno dei due va bene: da qui
+> il `NULL`.
 
 ## Perche vale la pena testarlo
 
@@ -44,7 +46,7 @@
 
 ## Output minimo atteso
 
-- `clean`: 5.560 righe, 20 colonne, date ISO, importi e conteggi numerici, flag
+- `clean`: 5.560 righe, 21 colonne, date ISO, importi e conteggi numerici, flag
   `date_incoerenti` sui 5 interventi con fine lavori precedente all'inizio
 - `mart_comuni_erp`: 917 comuni con interventi, importo, alloggi, assegnati, quota
 - `mart_regioni_erp`: regione x stato

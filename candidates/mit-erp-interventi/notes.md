@@ -7,8 +7,15 @@
 - **`Descrizione` = nome del comune**, non descrizione dell'intervento. Verificato sulle
   prime righe (`A001` -> "Abano Terme").
 - **`-1` come sentinella**: 48 interventi su `AlloggiAssegnatiNumero`, 1 su
-  `AlloggiSfrattoNumero`. Convertito in `NULL` in clean; sommarlo falsa il totale (6.569
-  invece di 6.521 se lo si somma come -1, 6.617 se lo si tratta come zero).
+  `AlloggiSfrattoNumero`. Convertito in `NULL` in clean. Effetto sul totale:
+  - sommandolo come `-1` il totale e' **6.521** (sbagliato: sottrae 48)
+  - trattandolo come **zero** il totale e' **6.569** (giusto) ma 48 righe diventano "0
+    assegnati" quando il valore e' ignoto — ed e' proprio il dato che serve distinguere
+  - escludendolo (NULL) il totale e' **6.569** e le 48 righe restano ignote
+- **seconda sentinella, sulle date**: `090858 Rosignano Marittimo` ha inizio e fine lavori
+  a `1900-01-01`. `safe_date` accetta il 1900 (range 1800-2100), quindi senza intervento
+  diventerebbe una riga con "lavori durati zero giorni nel 1900". In clean le date
+  `<= 1900-01-01` diventano `NULL`, come il `-1`.
 - **5 interventi con date invertite** (fine lavori precedente all'inizio): Aulla, Certaldo,
   Finale Emilia, Novara, Trieste. La durata resta `NULL` e la riga e' marcata con
   `date_incoerenti`, invece di produrre una durata negativa o di scartare il record.
