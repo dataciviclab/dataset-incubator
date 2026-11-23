@@ -3868,6 +3868,62 @@
       ]
     },
     {
+      "slug": "istat_pendolarismo_od",
+      "name": "Istat Pendolarismo Od",
+      "description": "Spostamenti giornalieri casa-lavoro e casa-studio tra comuni: matrice origine-destinazione del censimento permanente 2021.",
+      "source": "",
+      "source_id": "istat_sdmx",
+      "period": {
+        "start": 2021,
+        "end": 2021
+      },
+      "tags": [
+        "welfare-lavoro",
+        "istat",
+        "pendolarismo",
+        "mobilita",
+        "lavoro",
+        "censimento"
+      ],
+      "category": "welfare-lavoro",
+      "columns": [
+        {
+          "name": "motivo",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "comune_residenza",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "comune_destinazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "pendolari",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/istat_pendolarismo_od/2026/istat_pendolarismo_od_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "istat_pendolarismo_od__mart_comuni_pendolarismo",
+        "istat_pendolarismo_od__mart_flussi_top"
+      ]
+    },
+    {
       "slug": "istat_permessi",
       "name": "Istat Permessi",
       "description": "",
@@ -8322,6 +8378,26 @@
       }
     },
     {
+      "slug": "istat_pendolarismo_od__mart_comuni_pendolarismo",
+      "dataset": "istat_pendolarismo_od",
+      "table": "mart_comuni_pendolarismo",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_pendolarismo_od/2026/mart_comuni_pendolarismo.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "istat_pendolarismo_od__mart_flussi_top",
+      "dataset": "istat_pendolarismo_od",
+      "table": "mart_flussi_top",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/istat_pendolarismo_od/2026/mart_flussi_top.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "istat_permessi__mart_permessi",
       "dataset": "istat_permessi",
       "table": "mart_permessi",
@@ -9715,6 +9791,37 @@
         "started_at": "2026-10-11T21:03:07.643067+00:00",
         "finished_at": "2026-10-11T21:03:21.403110+00:00",
         "duration_seconds": 13.76
+      }
+    },
+    {
+      "id": "istat_pendolarismo_od",
+      "source_id": "istat_sdmx",
+      "status": "ok",
+      "label": "istat_pendolarismo_od",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261123T124514Z_24b27da7",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 665175,
+          "clean": 665175,
+          "mart": 8104
+        },
+        "output_bytes": {
+          "raw": 16827059,
+          "clean": 2507293,
+          "mart": 212013
+        },
+        "started_at": "2026-11-23T12:45:14.019025+00:00",
+        "finished_at": "2026-11-23T12:45:22.223558+00:00",
+        "duration_seconds": 8.205
       }
     },
     {
