@@ -2,7 +2,7 @@
   "schema_version": 1,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-22",
+  "updated_at": "2026-11-23",
   "datasets": [
     {
       "slug": "adm_accertato_accise",
@@ -5162,6 +5162,170 @@
       ]
     },
     {
+      "slug": "mit_erp_interventi",
+      "name": "Mit Erp Interventi",
+      "description": "Edilizia residenziale pubblica: interventi finanziati, alloggi previsti, lavori e alloggi assegnati per comune (programma DL 47/2014, monitoraggio MIT).",
+      "source": "",
+      "source_id": "mit_opendata",
+      "period": {
+        "start": 2014,
+        "end": 2020
+      },
+      "tags": [
+        "welfare-lavoro",
+        "housing",
+        "erp",
+        "edilizia-pubblica",
+        "mit"
+      ],
+      "category": "welfare-lavoro",
+      "columns": [
+        {
+          "name": "codice_intervento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "periodo_monitoraggio",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "annualita_programma",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "linea_intervento",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "attuatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "tipo_attuatore",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "stato",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "country_code"
+        },
+        {
+          "name": "codice_catastale",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "cadastral_code"
+        },
+        {
+          "name": "comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "municipality_name"
+        },
+        {
+          "name": "codice_istat_comune",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "municipality_code"
+        },
+        {
+          "name": "provincia",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "province_code"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": "",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "localizzazione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "importo_intervento",
+          "type": "DOUBLE",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "numero_alloggi",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "data_inizio_lavori",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "data_fine_lavori",
+          "type": "DATE",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "date_incoerenti",
+          "type": "BOOLEAN",
+          "role": "dimension",
+          "description": ""
+        },
+        {
+          "name": "durata_lavori_giorni",
+          "type": "BIGINT",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "alloggi_assegnati",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        },
+        {
+          "name": "alloggi_sfratto",
+          "type": "INTEGER",
+          "role": "metric",
+          "description": ""
+        }
+      ],
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-clean/mit_erp_interventi/2026/mit_erp_interventi_2026_clean.parquet",
+        "multi_file": false
+      },
+      "stage": "incubating",
+      "mart_refs": [
+        "mit_erp_interventi__mart_comuni_erp",
+        "mit_erp_interventi__mart_regioni_erp",
+        "mit_erp_interventi__mart_stati_intervento"
+      ]
+    },
+    {
       "slug": "mit_incidentalita_mensile",
       "name": "MIT Incidentalità Stradale Mensile",
       "description": "Serie mensile di incidenti stradali, morti, feriti e indicatori di mortalità/gravità/lesività — Italia 2001-2018, 216 mesi",
@@ -8558,6 +8722,36 @@
       }
     },
     {
+      "slug": "mit_erp_interventi__mart_comuni_erp",
+      "dataset": "mit_erp_interventi",
+      "table": "mart_comuni_erp",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mit_erp_interventi/2026/mart_comuni_erp.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mit_erp_interventi__mart_regioni_erp",
+      "dataset": "mit_erp_interventi",
+      "table": "mart_regioni_erp",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mit_erp_interventi/2026/mart_regioni_erp.parquet",
+        "multi_file": false
+      }
+    },
+    {
+      "slug": "mit_erp_interventi__mart_stati_intervento",
+      "dataset": "mit_erp_interventi",
+      "table": "mart_stati_intervento",
+      "location": {
+        "type": "gcs",
+        "path": "gs://dataciviclab-mart/mit_erp_interventi/2026/mart_stati_intervento.parquet",
+        "multi_file": false
+      }
+    },
+    {
       "slug": "mit_incidentalita_mensile__mart_mensile",
       "dataset": "mit_incidentalita_mensile",
       "table": "mart_mensile",
@@ -9958,6 +10152,37 @@
       }
     },
     {
+      "id": "mit_erp_interventi",
+      "source_id": "mit_opendata",
+      "status": "ok",
+      "label": "mit_erp_interventi",
+      "detail": "anno 2026 — mart: si",
+      "action": "",
+      "run": {
+        "run_id": "20261123T112214Z_a5347676",
+        "year": 2026,
+        "status": "SUCCESS",
+        "quality_score": {
+          "raw": 100,
+          "clean": 100,
+          "mart": 100
+        },
+        "output_rows": {
+          "raw": 5560,
+          "clean": 5560,
+          "mart": 972
+        },
+        "output_bytes": {
+          "raw": 1063838,
+          "clean": 143929,
+          "mart": 25867
+        },
+        "started_at": "2026-11-23T11:22:14.608664+00:00",
+        "finished_at": "2026-11-23T11:22:18.409778+00:00",
+        "duration_seconds": 3.801
+      }
+    },
+    {
       "id": "mit_incidentalita_mensile",
       "source_id": "mit_opendata",
       "status": "ok",
@@ -10454,6 +10679,24 @@
             "semantic_type": "cadastral_code"
           },
           {
+            "slug": "mit_erp_interventi",
+            "name": "Mit Erp Interventi",
+            "column": "codice_catastale",
+            "semantic_type": "cadastral_code"
+          },
+          {
+            "slug": "mit_erp_interventi",
+            "name": "Mit Erp Interventi",
+            "column": "comune",
+            "semantic_type": "municipality_name"
+          },
+          {
+            "slug": "mit_erp_interventi",
+            "name": "Mit Erp Interventi",
+            "column": "codice_istat_comune",
+            "semantic_type": "municipality_code"
+          },
+          {
             "slug": "mit_opere_incompiute_2020",
             "name": "MIT Opere Pubbliche Incompiute",
             "column": "localizzazione_codice_istat",
@@ -10533,9 +10776,9 @@
           }
         ],
         "types": {
-          "municipality_name": 9,
-          "municipality_code": 12,
-          "cadastral_code": 7
+          "municipality_name": 10,
+          "municipality_code": 13,
+          "cadastral_code": 8
         }
       },
       "Ente": {
@@ -10719,6 +10962,12 @@
             "semantic_type": "country_code"
           },
           {
+            "slug": "mit_erp_interventi",
+            "name": "Mit Erp Interventi",
+            "column": "stato",
+            "semantic_type": "country_code"
+          },
+          {
             "slug": "ted_contract_notices",
             "name": "Bandi di gara UE in Italia (TED Contract Notices)",
             "column": "paese",
@@ -10726,7 +10975,7 @@
           }
         ],
         "types": {
-          "country_code": 2
+          "country_code": 3
         }
       },
       "Progetto": {
@@ -10815,6 +11064,12 @@
             "semantic_type": "province_code"
           },
           {
+            "slug": "mit_erp_interventi",
+            "name": "Mit Erp Interventi",
+            "column": "provincia",
+            "semantic_type": "province_code"
+          },
+          {
             "slug": "pensioni_pa_dag",
             "name": "Pensioni Pa Dag",
             "column": "sigla_provincia",
@@ -10858,7 +11113,7 @@
           }
         ],
         "types": {
-          "province_code": 18
+          "province_code": 19
         }
       },
       "Provincia (tramite NUTS3)": {
@@ -11001,6 +11256,12 @@
             "semantic_type": "region_code"
           },
           {
+            "slug": "mit_erp_interventi",
+            "name": "Mit Erp Interventi",
+            "column": "regione",
+            "semantic_type": "region_code"
+          },
+          {
             "slug": "pensioni_pa_dag",
             "name": "Pensioni Pa Dag",
             "column": "regione",
@@ -11068,7 +11329,7 @@
           }
         ],
         "types": {
-          "region_code": 30
+          "region_code": 31
         }
       },
       "Tempo": {
