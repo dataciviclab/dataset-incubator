@@ -12,16 +12,16 @@
   iniziali (`001001`).
 - `warn_removed_columns: false`: il clean rinomina esplicitamente tutte le colonne.
 
-## Il problema dei codici (da risolvere prima della promozione)
+## I codici: anagrafica giusta, non crosswalk mancante
 
-- **394 comuni di origine** della matrice 2021 non esistono nell'anagrafica 2026
-  (`istat_elenco_comuni`): 377 sardi (prefissi 090/091/092/095/111), il resto fusioni.
-- Il mart li mantiene, con `in_anagrafica_2026 = false` e nome `NULL`, e vale 216.023
-  uscenti (2,2%).
-- **Non usare un inner join sull'anagrafica**: sparirebbero 394 comuni, inclusa Sassari.
-  Il primo caso è 092051 → 092009 con 9.501 pendolari, sesto flusso nazionale.
-- Serve un crosswalk 2021 → 2026. Non esiste in casa: va costruito da ISTAT "variazioni
-  territoriali" o mappato a mano (377 codici sardi, una volta).
+- La matrice 2021 usa i codici provinciali sardi **090/091/092/095/111**; l'elenco comuni
+  2026 usa i **nuovi 112-119** (riforma 2025). Un join sull'elenco perdeva 394 comuni.
+- **`comuni_master` conserva la generazione 2021** e copre 7.887 comuni su 7.904 (99,8%):
+  è l'anagrafica corretta da usare come support.
+- Restano **17 comuni** (fusioni recenti: 012/013/024/025/028) senza corrispondenza, per
+  9.917 uscenti (0,1%). Il mart li tiene con nome `NULL` e `in_anagrafica = false`.
+- Lezione: quando un join perde un'intera area, il sospetto va prima sull'**anagrafica**
+  (vintage dei codici), non sui dati. Il crosswalk esisteva già, in un altro dataset.
 
 ## Analitico
 

@@ -13,11 +13,14 @@ dataset:
     start_year: 2021
     end_year: 2021
 
+# comuni_master, non istat_elenco_comuni: l'elenco 2026 usa i nuovi codici sardi
+# 112-119 (riforma 2025) e non copre i codici 090/091/092/095/111 della matrice 2021.
+# comuni_master tiene la generazione 2021 e copre 7.887 dei 7.904 comuni (99,8%).
 support:
   - name: comuni
     type: external
     repo: dataset-incubator
-    slug: istat_elenco_comuni
+    slug: comuni_master
     layer: clean
     years: [2026]
 

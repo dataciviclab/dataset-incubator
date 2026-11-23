@@ -2,7 +2,7 @@
 -- Base = comuni di ORIGINE della matrice (non l'anagrafica): 377 comuni sardi hanno
 -- codice 2021 diverso da quello dell'elenco comuni 2026 (riforma provinciale), quindi
 -- nome/provincia/regione restano NULL invece di far sparire la riga. Il flag
--- `in_anagrafica_2026` rende il gap filtrabile.
+-- `in_anagrafica` rende il gap filtrabile.
 --
 -- "Uscenti" = residenti che lavorano/studiano fuori comune; "entranti" = non residenti
 -- che vengono nel comune. Auto-contenimento = intra / (intra + uscenti): 100% = nessuno esce.
@@ -31,7 +31,7 @@ base as (
         c.provincia,
         c.regione,
         c.popolazione_residente,
-        (c.codice_istat is not null) as in_anagrafica_2026,
+        (c.codice_istat is not null) as in_anagrafica,
         o.motivo,
         coalesce(o.intra, 0) as intra,
         coalesce(o.uscenti, 0) as uscenti,
@@ -47,7 +47,7 @@ select
     any_value(provincia) as provincia,
     any_value(regione) as regione,
     any_value(popolazione_residente) as popolazione_residente,
-    bool_or(in_anagrafica_2026) as in_anagrafica_2026,
+    bool_or(in_anagrafica) as in_anagrafica,
     sum(case when motivo = 'lavoro' then intra else 0 end) as lavoro_intra,
     sum(case when motivo = 'lavoro' then uscenti else 0 end) as lavoro_uscenti,
     sum(case when motivo = 'lavoro' then entranti else 0 end) as lavoro_entranti,

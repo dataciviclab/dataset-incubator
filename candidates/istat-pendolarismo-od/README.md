@@ -48,22 +48,24 @@
 | Polo con il saldo maggiore | Milano **+286.727** (384.744 entranti, 98.017 uscenti) |
 | Comune con auto-contenimento minimo (pop>5.000) | Verderio (LC) **7,9%** |
 
-## Un limite strutturale: i codici sardi
+## Il nodo dei codici sardi (risolto)
 
-**394 comuni di origine non hanno nome** perché il codice 2021 non esiste nell'anagrafica
-2026: 377 sono sardi (riforma provinciale, prefissi 090/091/092/095/111), gli altri sono
-fusioni successive. Il mart li tiene con `in_anagrafica_2026 = false` e nome `NULL`, invece
-di scartarli: valgono **216.023 uscenti (2,2%)** e includono il **6° flusso nazionale**
-(092051 → 092009, Sassari, 9.501 pendolari).
+Il primo run aveva **394 comuni senza nome**, 377 sardi. La causa non era un crosswalk
+mancante ma **l'anagrafica sbagliata**: `istat_elenco_comuni` (2026) usa i nuovi codici
+provinciali sardi **112-119** della riforma 2025, mentre la matrice 2021 usa la generazione
+precedente (090/091/092/095/111). `comuni_master` conserva quella generazione e copre
+**7.887 comuni su 7.904 (99,8%)**.
 
-Un join ingenuo su `codice_istat` contro l'anagrafica corrente perderebbe un'intera regione
-in silenzio. Serve un crosswalk 2021 → 2026 prima della promozione.
+Restano **17 comuni** senza nome (fusioni recenti: prefissi 012/013/024/025/028), per
+**9.917 uscenti — lo 0,1%**. Il mart li tiene con nome `NULL` e `in_anagrafica = false`
+invece di scartarli, e nei 200 flussi top non manca nessun nome (il 6° flusso nazionale è
+Quartu Sant'Elena → Cagliari, 9.501).
 
 ## Criterio di promozione
 
 - run verde con `toolkit` (2/2 mart, quality score 100)
 - readiness 8/8
-- crosswalk dei 394 codici prima di dichiarare il dataset completo
+- 17 comuni residui da mappare per la copertura completa (non bloccante)
 
 ## Stato
 
@@ -72,8 +74,7 @@ in silenzio. Serve un crosswalk 2021 → 2026 prima della promozione.
 
 ## Prossimo passo
 
-- crosswalk anagrafica 2021 → 2026 (ISTAT "variazioni territoriali" o mappatura manuale dei
-  394 codici)
+- mappare i 17 comuni residui (fusioni) se serve copertura completa
 - analysis: "Chi esce, chi entra, e dove" — mappa dei dormitori e dei poli
 - il 2011 è disponibile (`DF_BULK_CPO2011_DICA_PEND`) ma con codici e perimetro diversi:
   eventuale confronto, non serie
