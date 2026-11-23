@@ -34,6 +34,14 @@
   dataset non distingue "non ancora assegnati" da "non comunicato".
 - Per questo la quota di assegnazione e' un **limite inferiore** dell'efficacia, non una
   misura. Il README lo dichiara e il mart non deve essere presentato come "solo 1 su 4".
+- **Il campo non regge il confronto territoriale.** In Veneto il 96% degli interventi
+  completati ha 0 assegnati (27 su 28), in Sardegna l'80%, in Sicilia il 69%, contro l'11%
+  della Liguria: e' pratica di comunicazione, non allocazione. Un ranking regionale basato su
+  `quota_assegnati_pct` e' un artefatto e non va pubblicato.
+- La quota dipende dalla **dimensione**: 49,8% sugli interventi da 1 alloggio, 17,8% su quelli
+  da 21+ (A1 65,6% vs B1 15,0%). Il 24,9% nazionale e' la media di due regimi diversi.
+- **I fallimenti sono micro**: 646 dei 692 "non piu' realizzabile" sono interventi da 1 alloggio.
+- **Un errore nei dati**: `080347 Cattolica` ha 3 alloggi previsti e 6 assegnati (unico su 5.560).
 - 692 interventi "non piu' realizzabile" su 5.560 (12,4%) sono una quota di fallimento
   dichiarata dalla fonte: e' un dato raro e va usato cosi'.
 - La durata mediana (43 giorni sul "Completato") e' la differenza tra due date dichiarate:
