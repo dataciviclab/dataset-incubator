@@ -18,11 +18,17 @@
   (`2014-2017`, `2014-2024`) e `periodo_monitoraggio` e' la data dello snapshot di
   monitoraggio (2016-10 -> 2020-04).
 
-- **La fonte e' ferma.** `Last-Modified` del CSV: 2022-03-04; ultimo `PeriodoMonitoraggio`:
-  2020-04-01; ultima `LavoriUltimatiData`: 2020-03-06. Il campo `Annualita` ("2014-2024") e'
-  l'etichetta del programma e non la fine dei dati: leggerlo come copertura e' l'errore
-  naturale su questo tracciato. Il catalogo MIT dichiara aggiornamento ogni 6 ore, ma
-  `metadata_modified` della scheda e' 2022-03-04 come il file.
+- **La fonte e' ferma e parziale.** `Last-Modified` del CSV: 2022-03-04; ultimo
+  `PeriodoMonitoraggio`: 2020-04-01; ultima `LavoriUltimatiData`: 2020-03-06.
+- **Il programma prosegue.** Relazione al Parlamento art. 4 c. 9-bis DL 47/2014 (Doc. XXVII
+  n. 31, aggiornata al 31/12/2025): **44.825 alloggi ammessi, 16.464 ultimati, 6.705
+  assegnati**, dotazione **oltre 814 mln**. Il CSV copre 26.391 alloggi (59%): manca la
+  parte finanziata dopo il 2020. La linea a) (interventi <15.000 €) e' terminata nel 2017.
+- Il campo `Annualita` ("2014-2024") e' l'etichetta della linea di finanziamento, non la
+  copertura dei dati: leggerlo come copertura e' l'errore naturale su questo tracciato.
+- **Conseguenza per l'analisi**: "assegnati" cresce molto meno delle ultime: 6.569 nel 2020,
+  6.705 nel 2025, mentre gli ultimati passano da 7.120 a 16.464. Il collo di bottiglia
+  dell'assegnazione e' reale a livello nazionale, non solo un artefatto di notifica.
 - Contesto del catalogo: su 71 dataset pubblicati su `dati.mit.gov.it`, **60 hanno
   `metadata_modified` nel 2022**; solo 5 risultano aggiornati nel 2026. Non e' un caso
   isolato, e' lo stato del catalogo.

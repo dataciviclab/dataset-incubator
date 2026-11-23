@@ -11,9 +11,13 @@
 - fonte: Ministero delle Infrastrutture e dei Trasporti, monitoraggio del programma
   art. 4 c. 1 DL 47/2014 (recupero e razionalizzazione degli immobili ERP di Comuni ed ex IACP)
 - canale: CSV singolo pubblico su `dati.mit.gov.it`, nessuna autenticazione
-- **stato della fonte: ferma.** Il catalogo dichiara "si aggiorna ogni 6 ore", ma il file ha
-  `Last-Modified: 2022-03-04` e l'ultimo periodo di monitoraggio e' **2020-04-01**. E' la
-  fotografia finale di un programma chiuso, non un monitoraggio live
+- **stato della fonte: ferma e parziale.** Il catalogo dichiara "si aggiorna ogni 6 ore", ma
+  il file ha `Last-Modified: 2022-03-04` e l'ultimo periodo di monitoraggio e' **2020-04-01**
+- **il programma non e' chiuso**: prosegue almeno fino al 2025. La relazione annuale al
+  Parlamento (art. 4 c. 9-bis DL 47/2014, Doc. XXVII n. 31, aggiornata al **31/12/2025**)
+  riporta **44.825 alloggi ammessi**, **16.464 ultimati**, **6.705 assegnati**, dotazione
+  **oltre 814 mln**. Questo candidate copre **26.391 alloggi su 44.825** (59%): e' uno
+  snapshot parziale, non lo stato finale del programma
 - licenza: CC-BY-4.0
 - copertura: **5.560 interventi**, 917 comuni, 19 regioni (manca il Trentino-Alto Adige)
 - `Annualita` ("2014-2017", "2014-2024") e' **l'etichetta del programma**, non la copertura
