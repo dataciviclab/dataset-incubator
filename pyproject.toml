@@ -23,24 +23,22 @@ classifiers = [
 ]
 
 dependencies = [
-    "jsonschema>=4.0",
+    # CLI + API del toolkit (engine raw→clean→mart).
     "dataciviclab-toolkit @ git+https://github.com/dataciviclab/toolkit.git",
-    "lab-connectors[duckdb,gcs,mcp] @ git+https://github.com/dataciviclab/lab-connectors.git",
+    # Importato direttamente da due preprocess.py dei candidate
+    # (`from lab_connectors.http import download`). Gli extra duckdb/mcp
+    # arrivano gia' da toolkit: le transitive non si ripetono (ADR-001 §8).
+    "lab-connectors @ git+https://github.com/dataciviclab/lab-connectors.git",
 ]
 
 [project.optional-dependencies]
-gcs = [
-  "google-cloud-storage>=3.10.1",
-  "google-cloud-bigquery>=3.41.0",
-  "pandas>=3.0.3",
-  "pyarrow>=24.0.0",
-]
 dev = [
   "pytest>=8.0",
   "pytest-cov>=5.0.0",
   "pytest-timeout>=2.3.0",
   "ruff>=0.3.0",
   "mypy>=1.20",
+  "types-pyyaml>=6.0",
   "build>=1.4.3",
   "twine>=5.0.0",
 ]
@@ -56,9 +54,10 @@ pipeline = [
 [project.urls]
 Repository = "https://github.com/dataciviclab/dataset-incubator"
 
-[tool.setuptools.packages.find]
-include = ["scripts", "scripts.*"]
-exclude = ["tests*"]
+[tool.setuptools]
+# Il repo non espone un package Python: gli script in scripts/ sono importati
+# dai test via sys.path (tests/conftest.py), non come package installabile.
+packages = []
 
 [tool.pytest.ini_options]
 testpaths = "tests"
