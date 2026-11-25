@@ -21,4 +21,6 @@ select
   altri_costi,
   importo_totale
 from clean_input
-where codice_ente_ssn not in ('000', '999')
+-- Stesso perimetro di prima: solo voci di dettaglio e solo enti (no 000/999).
+where tipo_voce = 'dettaglio'
+  and tipo_riga = 'ente'

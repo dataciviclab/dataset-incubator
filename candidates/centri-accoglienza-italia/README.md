@@ -11,11 +11,11 @@ Quante persone immigrate vengono accolte in Italia, dove, a che costo, e in che 
 
 ## Dataset
 
-Singolo centro di accoglienza con data di rilevazione. Il file CSV contiene tutti gli anni 2018-2024.
+Singolo centro di accoglienza per convenzione, con data di rilevazione (uno snapshot al 31/12 per anno). Il file CSV contiene tutti gli anni 2018-2024.
 
 - **Copertura**: 2018–2024 (7 anni)
-- **Granularità**: singolo centro (centro_id), con geografia completa (comune, provincia, regione con codici ISTAT)
-- **Record**: ~47.400
+- **Granularità**: centro × **convenzione** (lo stesso `centro_id` ha più contratti), con geografia completa (comune, provincia, regione con codici ISTAT)
+- **Record**: 47.213 (dopo la dedup delle 206 righe esatte duplicate della fonte)
 - **Metriche**: capienza, presenze_giornaliere, costo_giornaliero_per_ospite (€/giorno)
 - **Tipologie**: CAS ADULTI, CAS MINORI, CPA, HOTSPOT
 - **Info gestionali**: ente_gestore, procedura_affidamento, operativita, date convenzione

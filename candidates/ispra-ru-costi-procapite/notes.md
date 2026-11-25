@@ -1,1 +1,0 @@
-# ispra-ru-costi-procapite

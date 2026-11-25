@@ -1,43 +1,145 @@
--- clean.sql — istat_occupazione_provinciale
---
--- Input: SDMX-CSV dal dataflow ISTAT 150_915 (tasso occupazione).
---
--- Output: formato long, una riga per provincia × anno × sesso × classe età.
+-- clean.sql: tasso occupazione province (150_915)
+-- Canale SDMX diretto (esploradati) · macros toolkit (normalize_string / cast_int / cast_double)
+-- Colonna valore: `value` dal canale SDMX (dbnomics usava OBS_VALUE)
+-- territorio: label NUTS3 da codelist ESTAT GEO (statica nel clean; NUTS stabili)
 
 SELECT
-    "REF_AREA"                                              AS ref_area,
-    "REF_AREA_label"                                        AS territorio,
-    TRY_CAST("TIME_PERIOD" AS INTEGER)                      AS anno,
-    "DATA_TYPE"                                             AS indicatore,
-    "SEX"                                                   AS sesso_codice,
-    CASE "SEX"
-        WHEN '1' THEN 'maschi'
-        WHEN '2' THEN 'femmine'
-        WHEN '9' THEN 'totale'
-    END                                                     AS sesso,
-    "AGE"                                                   AS eta_codice,
-    "AGE_label"                                             AS eta,
-    -- Tasso: OBS_VALUE è già percentuale (0-100)
-    TRY_CAST("value" AS DOUBLE)                             AS valore
-
+    normalize_string(REF_AREA) AS ref_area,
+    case normalize_string(REF_AREA)
+        when 'ITC11' then 'Torino'
+        when 'ITC12' then 'Vercelli'
+        when 'ITC13' then 'Biella'
+        when 'ITC14' then 'Verbano-Cusio-Ossola'
+        when 'ITC15' then 'Novara'
+        when 'ITC16' then 'Cuneo'
+        when 'ITC17' then 'Asti'
+        when 'ITC18' then 'Alessandria'
+        when 'ITC20' then 'Valle d''Aosta'
+        when 'ITC31' then 'Imperia'
+        when 'ITC32' then 'Savona'
+        when 'ITC33' then 'Genova'
+        when 'ITC34' then 'La Spezia'
+        when 'ITC41' then 'Varese'
+        when 'ITC42' then 'Como'
+        when 'ITC43' then 'Lecco'
+        when 'ITC44' then 'Sondrio'
+        when 'ITC45' then 'Milano'
+        when 'ITC46' then 'Bergamo'
+        when 'ITC47' then 'Brescia'
+        when 'ITC48' then 'Pavia'
+        when 'ITC49' then 'Lodi'
+        when 'ITC4A' then 'Cremona'
+        when 'ITC4B' then 'Mantova'
+        when 'ITD31' then 'Verona'
+        when 'ITD32' then 'Vicenza'
+        when 'ITD33' then 'Belluno'
+        when 'ITD34' then 'Treviso'
+        when 'ITD35' then 'Venezia'
+        when 'ITD36' then 'Padova'
+        when 'ITD37' then 'Rovigo'
+        when 'ITD41' then 'Pordenone'
+        when 'ITD42' then 'Udine'
+        when 'ITD43' then 'Gorizia'
+        when 'ITD44' then 'Trieste'
+        when 'ITD51' then 'Piacenza'
+        when 'ITD52' then 'Parma'
+        when 'ITD53' then 'Reggio nell''Emilia'
+        when 'ITD54' then 'Modena'
+        when 'ITD55' then 'Bologna'
+        when 'ITD56' then 'Ferrara'
+        when 'ITD57' then 'Ravenna'
+        when 'ITD58' then 'Forlì-Cesena'
+        when 'ITD59' then 'Rimini'
+        when 'ITE11' then 'Massa-Carrara'
+        when 'ITE12' then 'Lucca'
+        when 'ITE13' then 'Pistoia'
+        when 'ITE14' then 'Firenze'
+        when 'ITE15' then 'Prato'
+        when 'ITE16' then 'Livorno'
+        when 'ITE17' then 'Pisa'
+        when 'ITE18' then 'Arezzo'
+        when 'ITE19' then 'Siena'
+        when 'ITE1A' then 'Grosseto'
+        when 'ITE21' then 'Perugia'
+        when 'ITE22' then 'Terni'
+        when 'ITE31' then 'Pesaro e Urbino'
+        when 'ITE32' then 'Ancona'
+        when 'ITE33' then 'Macerata'
+        when 'ITE34' then 'Ascoli Piceno'
+        when 'ITE41' then 'Viterbo'
+        when 'ITE42' then 'Rieti'
+        when 'ITE43' then 'Roma'
+        when 'ITE44' then 'Latina'
+        when 'ITE45' then 'Frosinone'
+        when 'ITF11' then 'L''Aquila'
+        when 'ITF12' then 'Teramo'
+        when 'ITF13' then 'Pescara'
+        when 'ITF14' then 'Chieti'
+        when 'ITF21' then 'Isernia'
+        when 'ITF22' then 'Campobasso'
+        when 'ITF31' then 'Caserta'
+        when 'ITF32' then 'Benevento'
+        when 'ITF33' then 'Napoli'
+        when 'ITF34' then 'Avellino'
+        when 'ITF35' then 'Salerno'
+        when 'ITF41' then 'Foggia'
+        when 'ITF42' then 'Bari'
+        when 'ITF43' then 'Taranto'
+        when 'ITF44' then 'Brindisi'
+        when 'ITF45' then 'Lecce'
+        when 'ITF51' then 'Potenza'
+        when 'ITF52' then 'Matera'
+        when 'ITF61' then 'Cosenza'
+        when 'ITF62' then 'Crotone'
+        when 'ITF63' then 'Catanzaro'
+        when 'ITF64' then 'Vibo Valentia'
+        when 'ITF65' then 'Reggio Calabria'
+        when 'ITG11' then 'Trapani'
+        when 'ITG12' then 'Palermo'
+        when 'ITG13' then 'Messina'
+        when 'ITG14' then 'Agrigento'
+        when 'ITG15' then 'Caltanissetta'
+        when 'ITG16' then 'Enna'
+        when 'ITG17' then 'Catania'
+        when 'ITG18' then 'Ragusa'
+        when 'ITG19' then 'Siracusa'
+        when 'ITG25' then 'Sassari'
+        when 'ITG26' then 'Nuoro'
+        when 'ITG27' then 'Cagliari'
+        when 'ITG28' then 'Oristano'
+        when 'IT108' then 'Monza e della Brianza'
+        when 'IT109' then 'Fermo'
+        when 'IT110' then 'Barletta-Andria-Trani'
+        when 'IT111' then 'Sud Sardegna'
+        else normalize_string(REF_AREA)
+    end AS territorio,
+    cast_int(TIME_PERIOD) AS anno,
+    normalize_string(DATA_TYPE) AS indicatore,
+    normalize_string(SEX) AS sesso_codice,
+    case normalize_string(SEX)
+        when '1' then 'maschi'
+        when '2' then 'femmine'
+        when '9' then 'totale'
+        else normalize_string(SEX)
+    end AS sesso,
+    normalize_string(AGE) AS eta_codice,
+    case normalize_string(AGE)
+        when 'Y15-24' then '15-24 anni'
+        when 'Y15-64' then '15-64 anni'
+        when 'Y25-34' then '25-34 anni'
+        when 'Y35-44' then '35-44 anni'
+        when 'Y45-54' then '45-54 anni'
+        when 'Y55-64' then '55-64 anni'
+        else normalize_string(AGE)
+    end AS eta,
+    cast_double(value) AS valore
 FROM raw_input
-
 WHERE
-    -- Solo frequenza annuale
-    "FREQ" = 'A'
-    -- Solo livelli territoriali provincia (codice NUTS3 a 5 caratteri)
-    AND LENGTH("REF_AREA") = 5
-    -- Esclude ITC, ITD, ITE, ITF, ITG (regioni/macroaree a 3-4 caratteri) gia filtrate da LENGTH
-    -- NOTA: province con codice ITnnn (3 cifre, es. IT108 Monza) sono corrette a 5 caratteri
-    -- Solo cittadinanza totale
-    AND "CITIZENSHIP" = 'TOTAL'
-    -- Solo istruzione totale (per v0; le singole classi available via EDU_LEV_HIGHEST)
-    AND "EDU_LEV_HIGHEST" = '99'
-    -- Solo classi età principali per v0
-    AND "AGE" IN ('Y15-64', 'Y15-24', 'Y25-34', 'Y35-44', 'Y45-54', 'Y55-64')
-    -- Solo tassi (occupazione e disoccupazione)
-    AND "DATA_TYPE" IN ('EMP_R', 'UNEM_R')
-    -- Anno valido
-    AND TRY_CAST("TIME_PERIOD" AS INTEGER) IS NOT NULL
-    -- Valore non nullo
-    AND TRY_CAST("value" AS DOUBLE) IS NOT NULL
+    normalize_string(FREQ) = 'A'
+    AND length(normalize_string(REF_AREA)) = 5
+    AND normalize_string(CITIZENSHIP) = 'TOTAL'
+    AND normalize_string(EDU_LEV_HIGHEST) = '99'
+    AND normalize_string(AGE) IN ('Y15-64', 'Y15-24', 'Y25-34', 'Y35-44', 'Y45-54', 'Y55-64')
+    AND normalize_string(DATA_TYPE) = 'EMP_R'
+    AND anno IS NOT NULL
+    AND cast_double(value) IS NOT NULL

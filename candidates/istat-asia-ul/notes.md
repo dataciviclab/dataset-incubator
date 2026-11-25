@@ -1,23 +1,59 @@
 # Note tecniche — istat-asia-ul
 
-## SDMX ISTAT (esploradati.istat.it) non raggiungibile
+## Source of truth
 
-L'API SDMX di ISTAT su esploradati.istat.it non risponde (timeout).
-Usiamo DBnomics come proxy per accedere ai dati ISTAT.
+**Candidate DI `dataset-incubator`** — copia `esperimenti-locali/lavoro-int/` **deprecated**.
 
-## Dataflow revisioni DBnomics
+| | |
+|---|---|
+| Canale | **`type: script`** + `preprocess.py` su ISTAT SDMX live |
+| CI | `TOOLKIT_ALLOW_SCRIPT_SOURCE=1` già nel post-merge workflow |
+| Dataflow | `IT1 / 183_1163` (DICA_ASIAULP_TERRIFDATA) |
+| Key | `A..<DATA_TYPE>.<ATECO>.TOTAL` per 18 sezioni (0010 + B–S) |
+| Grano | comuni ISTAT 6 cifre × sezione ATECO |
+| Metriche | `LU` unità locali · `LUEMPDAA` addetti media annua |
+| Anni | 2018–2024 |
 
-- `_1` (latest): Key data, REF_AREA = classi ampiezza demografica, anni 2018-2023
-- `_3`: Dati territoriali completi, REF_AREA = comuni (6 cifre), anni 2018-2020
-- `_4`: Solo livello paese (IT), anni 2018-2021
+## Perché `type: script`
 
-## API limitazioni
+~1,5M osservazioni (7,9k comuni × 18 sezioni × 2 metriche × 7 anni). Il plugin
+SDMX fa una richiesta unica: troppo grande e lenta (oltre 4 min per 6 sezioni).
+`preprocess.py` spezza in **36 richieste piccole** (2 metriche × 18 sezioni) con:
+- rate limiter condiviso a ~5 req/min (limite ISTAT);
+- 4 worker in parallelo;
+- scrittura incrementale (non tiene 1,5M righe in memoria);
+- 4 retry con backoff.
 
-- DBnomics API restituisce max 1.000 serie per chiamata
-- Il preprocess usa paginazione con offset per scaricare tutte le serie
-- Limiti di rate non documentati; in caso di errore 429 attendere prima di riprovare
+Durata misurata: **~14 min**. Il raw timeout in `dataset.yml` è 3000s.
 
-## Dimensioni stimate
+## Perché non DBnomics
 
-- ~40 combinazioni ATECO × DATA_TYPE × circa 7.700 comuni × 3 anni ≈ 925.000 righe
-- ~150-200 chiamate API totali
+Il mirror `183_1163_DF_DICA_ASIAULP_TERRIFDATA_3` è fermo al **2020** (ultimo
+indice 2023-01). La fonte ISTAT espone 2021–2024.
+
+## Perché non `local_file`
+
+`raw_input.csv` è **gitignore** → CI non lo ha a checkout → raw mancante.
+
+## Cautele
+
+- **Comuni storici**: la join con `istat_elenco_comuni` (anagrafica 2026) lascia
+  ~400 comuni/anno senza `regione`/`sigla_provincia`. Sono comuni soppressi o
+  fusi dopo l'anno di riferimento (es. 001005, 001138). Il dato resta valido a
+  livello comunale; manca solo l'arricchimento territoriale. Non è una
+  regressione: la join era già `LEFT JOIN` prima del cambio fonte.
+- **Codici `INH_*`**: la risposta SDMX include righe con `REF_AREA` tipo
+  `INH_GE250001` (località abitate). `preprocess.py` le scarta prima del CSV
+  (il clean faceva lo stesso filtro `length(ref_area)=6`).
+- **Revisioni**: ASIA ricalcola gli anni precedenti a ogni rilascio; i valori
+  2018–2023 possono differire dalla versione pubblicata in precedenza.
+
+## Run
+
+```bash
+export TOOLKIT_ALLOW_SCRIPT_SOURCE=1
+cd candidates/istat-asia-ul
+python -m toolkit.cli.app run raw   -c dataset.yml -y 2024
+python -m toolkit.cli.app run clean -c dataset.yml -y 2024
+python -m toolkit.cli.app run mart  -c dataset.yml -y 2024
+```

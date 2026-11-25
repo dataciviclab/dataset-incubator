@@ -1,0 +1,101 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "bdap_ssn_stato_patrimoniale"
+  source_id: "openbdap"
+  tags: [sanita, bdap, ssn, stato-patrimoniale, bilanci]
+  category: sanita
+  description: "Stato Patrimoniale degli enti del SSN a livello regionale: attivo, patrimonio netto e debiti delle aziende sanitarie, per regione e anno."
+  years: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+  time_coverage: {start_year: 2012, end_year: 2024}
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "bdap_ssn_sp_csv"
+      type: "http_file"
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/"
+        filename: "bdap_ssn_sp_{year}.csv"
+        # UUID del package "Modello di rilevazione dello Stato Patrimoniale
+        # degli enti del SSN a livello Regionale" (uno per annualità).
+        url_suffix_by_year:
+          2012: "c4314c75-8ec5-41d2-9940-c81b51d77cef.csv"
+          2013: "ccc7ee18-673d-4293-9f95-f94b3caa59f0.csv"
+          2014: "c243bf17-68b1-4a76-8403-6705ca0f3769.csv"
+          2015: "999ae56b-adfd-45a2-9f48-e25d149bdf8a.csv"
+          2016: "80108307-c3ae-4ca6-9d6b-04fc91f09864.csv"
+          2017: "f3160c78-fc13-465a-b567-4717b50547dc.csv"
+          2018: "f8b8ad91-76ec-4405-8eb0-6e06811e39ff.csv"
+          2019: "d308298b-8c4d-4415-850c-2299d630d818.csv"
+          2020: "489539a2-6607-4543-9bb3-66a2c5e0e621.csv"
+          2021: "50ed7d49-1144-4e7a-8c93-159b4978fc7e.csv"
+          2022: "769199d1-35d6-4300-ade3-eae514019db4.csv"
+          2023: "2f66f6df-3e04-4e28-8d52-739d0ec386f4.csv"
+          2024: "edf78abc-91da-4639-b184-41d890b0575c.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+    delim: ";"
+    encoding: "cp1252"
+    strict_mode: false
+    trim_whitespace: true
+    # Tipi dichiarati: la fonte esporta tutto come testo e il riconoscimento
+    # automatico della data è ambiguo. La colonna vuota in coda al file viene
+    # ignorata perché non è mappata.
+    columns:
+      "Anno di Riferimento": "VARCHAR"
+      "Codice Regione": "VARCHAR"
+      "Descrizione Regione": "VARCHAR"
+      "Codice Voce Contabile": "VARCHAR"
+      "Descrizione Voce Contabile": "VARCHAR"
+      "Data Aggiornamento": "VARCHAR"
+      "Importo Totale": "VARCHAR"
+  required_columns:
+    - anno
+    - codice_regione
+    - descrizione_regione
+    - codice_voce
+    - descrizione_voce
+    - prospetto
+    - sezione
+    - importo
+  validate:
+    min_rows: 3000
+    not_null:
+      - anno
+      - codice_regione
+      - codice_voce
+      - importo
+    primary_key:
+      - anno
+      - codice_regione
+      - codice_voce
+
+mart:
+  tables:
+    - name: "mart_patrimonio_regionale"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_patrimonio_regionale"
+  validate:
+    table_rules:
+      mart_patrimonio_regionale:
+        required_columns:
+          - anno
+          - codice_regione
+          - attivo
+          - passivo
+          - patrimonio_netto
+          - debiti
+          - quadratura
+        primary_key:
+          - anno
+          - codice_regione
+        min_rows: 20

@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_ipab_aree"
-  source_id: "istat_sdmx"
+  source_id: "istat_dbnomics"
   tags: [welfare-lavoro, istat, ipab, aree]
   category: welfare-lavoro
   years: [2024]
@@ -11,30 +11,39 @@ dataset:
     start_year: 2010
     end_year: 2025
 
+# IPAB aree aggregate — 143_497 via type: dbnomics
+# DATA_TYPE=59 · MEASURE=4 · NEW_DW/EXST_DW · FREQ=Q
+
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_sdmx_ipab_aree"
-      type: "sdmx"
+    - name: "istat_dbnomics_ipab"
+      type: "dbnomics"
       client:
-        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
-        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        timeout: 120
+        retries: 2
       args:
-        agency: "IT1"
-        flow: "143_497"
-        version: "1.0"
-        filters:
-          DATA_TYPE: "59"
-          MEASURE: "4"
-          PURCHASES_DWELLINGS: ["NEW_DW", "EXST_DW"]
-          FREQ: "Q"
-        # `year` non passato: l'endpoint SDMX restituisce l'intera serie con questi filtri.
+        provider: ISTAT
+        dataset: "143_497"
+        dimensions:
+          FREQ: [Q]
+          DATA_TYPE: ["59"]
+          MEASURE: ["4"]
+          PURCHASES_DWELLINGS: [NEW_DW, EXST_DW]
+        page_size: 500
+        max_pages: 20
         filename: "istat_ipab_aree_series.csv"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [area_codice, area, livello_geografico, tipo_abitazione, tipo_abitazione_label, trimestre]
+  required_columns:
+    - area_codice
+    - area
+    - livello_geografico
+    - tipo_abitazione
+    - trimestre
+    - indice_prezzi
   read:
     source: "auto"
     mode: "latest"
@@ -42,7 +51,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    not_null: [area_codice]
+    not_null: [area_codice, trimestre]
     min_rows: 900
 
 mart:
@@ -54,4 +63,3 @@ mart:
 
 validation:
   fail_on_error: true
-

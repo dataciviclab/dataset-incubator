@@ -24,14 +24,14 @@ Un filone entra in DI in due modi:
 
 1. **Valutazione intake** — si verifica che il caso sia abbastanza stretto con `intake-candidate.md`
 2. **Creazione candidate** — si crea la struttura in `candidates/<slug>/` (`dataset.yml`, `sql/`, `notes.md`)
-3. **PR e run automatico** — dopo ogni merge, `post-merge-candidate.yml` esegue il candidate via `toolkit` e valida raw → clean → mart
+3. **PR e run automatico** — dopo ogni merge, `pipeline.yml` esegue il candidate via `toolkit` e valida raw → clean → mart
 4. **Run successivi** — si usano `run-candidate.md` per esecuzioni manuali o verifiche
 
 ### Uscita
 
 Un filone esce da DI in tre modi:
 
-- **`dataciviclab/analisi/`** — quando è pronto per un primo layer pubblico (via skill `new-analysis` in `dataciviclab/skills/`)
+- **`data-explorer`** — quando il dataset è pronto per una pagina pubblica su explorer.dataciviclab.org
 - **repo progetto dedicata** — quando il filone merita una casa autonoma
 - **archiviazione** — quando il caso non regge o non è prioritario
 
@@ -60,6 +60,9 @@ dataset-incubator/
     ISSUE_TEMPLATE/            # template per issue candidate e promotion
   candidates/                  # filoni attivi e passati
   support_datasets/            # basi trasversali riusabili
+  compose/                     # composizioni mart-only su più candidate
+  codelists/                   # dizionari e anagrafiche di supporto
+  docs/                        # standard candidate e documentazione tecnica
   registry/
     registry.json             # artifact unico (fusion ADR) — sezioni datasets/marts/signals/codelists/entities
   templates/
@@ -107,10 +110,13 @@ I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia
 
 | Action | Trigger | Cosa fa |
 |---|---|---|
-| `validate-candidate-structure.yml` | PR su `candidates/` | Verifica che ogni candidate abbia `dataset.yml` valido |
-| `pr-toolkit-check.yml` | PR su `candidates/` | Controlla consistenza schema, path e file obbligatori |
-| `post-merge-candidate.yml` | Merge su `candidates/` | Esegue il candidate via toolkit (raw → clean → mart) + aggiorna `registry/` |
-| `validate-clean-catalog.yml` | Merge su `registry/` | Verifica schema del clean catalog |
+| `check.yml` | PR e push su `main` | Lint + mypy + test (`python-ci`) e preflight dei dataset cambiati (`dataset-config-check-reusable`) |
+| `pipeline.yml` | Merge su `candidates/`, `compose/`, `support_datasets/` + dispatch | `pipeline-reusable`: detect, run (`make run-batch`), sync GCS, registry PR |
+| `smoke-weekly.yml` | Schedule settimanale | Probe di raggiungibilità fonti; la verifica `registry.json` va riallineata a `data-explorer` |
+
+I due workflow di pipeline chiamano i componenti condivisi di
+[`dataciviclab/.github`](https://github.com/dataciviclab/.github) (ADR-001):
+niente logica nei file YAML del repo.
 
 ### Skill markdown
 
@@ -124,13 +130,13 @@ I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia
 
 | Risorsa | Dove | Quando |
 |---|---|---|
-| `new-analysis` | `dataciviclab/skills/` | Quando un filone è pronto per `dataciviclab/analisi/` |
+| `add-to-explorer` | `data-explorer` | Quando un dataset è pronto per una pagina pubblica |
 
 ## Regole operative
 
 - Massimo 2-3 filoni attivi alla volta
 - Ogni filone ha: domanda, dataset, output minimo, criterio di uscita
-- I filoni escono verso `dataciviclab/analisi/` quando il dato è stabile e la domanda è pubblica
+- I filoni escono verso `data-explorer` quando il dato è stabile e la domanda è pubblica
 - I support dataset non entrano mai in `analisi/`
 
 ## Runtime locale

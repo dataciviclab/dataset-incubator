@@ -1,0 +1,124 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "mit_erp_interventi"
+  description: "Edilizia residenziale pubblica: interventi finanziati, alloggi previsti, lavori e alloggi assegnati per comune (programma DL 47/2014, monitoraggio MIT)."
+  source_id: "mit_opendata"
+  tags: [welfare-lavoro, housing, erp, edilizia-pubblica, mit]
+  category: welfare-lavoro
+  # years = vintage dell'output, non il perimetro dati (in time_coverage).
+  years: [2026]
+  # ATTENZIONE: il catalogo MIT dichiara "aggiornato ogni 6 ore", ma il file ha
+  # Last-Modified 2022-03-04 e il monitoraggio si ferma al 2020-04-01.
+  # `Annualita` = "2014-2017"/"2014-2024" e' l'etichetta del programma, NON la
+  # copertura dei dati. E' uno snapshot chiuso, non un monitoraggio live.
+  # 2014 = prima data di inizio lavori nel file (Follonica, 2014-11-04), non il primo
+  # snapshot di monitoraggio (2016-10). 2020 = ultimo PeriodoMonitoraggio.
+  time_coverage:
+    start_year: 2014
+    end_year: 2020
+
+# Programma art. 4 c. 1 DL 47/2014 (recupero e razionalizzazione ERP di Comuni ed
+# ex IACP), monitoraggio MIT. CSV singolo, nessuna autenticazione, CC-BY-4.0.
+# Fonte FERMA: ultimo aggiornamento 2022-03-04, ultimo periodo di monitoraggio
+# 2020-04-01. Va trattata come fotografia finale di un programma chiuso.
+# Attenzione: la colonna `Descrizione` contiene il NOME DEL COMUNE, non una
+# descrizione dell'intervento.
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "mit_erp_interventi"
+      type: "http_file"
+      client:
+        timeout: 120
+        retries: 2
+      args:
+        url: "https://dati.mit.gov.it/catalog/dataset/4e0708df-1d41-4846-a977-5afca2c89aba/resource/605a383a-f3cc-4b8a-a595-138c841b3946/download/interventiediliziapubblica.csv"
+        filename: "interventi_edilizia_pubblica.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - codice_intervento
+    - stato
+    - codice_istat_comune
+    - comune
+    - regione
+    - importo_intervento
+    - numero_alloggi
+    - alloggi_assegnati
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    header: true
+    encoding: "utf-8"
+    quote: '"'
+    # codici con zeri iniziali (028001) e importi: tutto VARCHAR, cast espliciti
+    all_varchar: true
+    trim_whitespace: true
+  validate:
+    primary_key: [codice_intervento]
+    not_null:
+      - codice_intervento
+      - periodo_monitoraggio
+      - annualita_programma
+      - linea_intervento
+      - attuatore
+      - tipo_attuatore
+      - stato
+      - codice_catastale
+      - comune
+      - codice_istat_comune
+      - provincia
+      - regione
+    # importi e conteggi non negativi: contratto semantico, non decorazione
+    ranges:
+      importo_intervento: {min: 0}
+      numero_alloggi: {min: 0}
+      alloggi_assegnati: {min: 0}
+      durata_lavori_giorni: {min: 0}
+    # null attesi e dichiarati: una regressione della fonte che li fa salire
+    # oltre soglia rompe il run invece di passare silenziosa
+    max_null_pct:
+      importo_intervento: 1.0
+      numero_alloggi: 1.0
+      alloggi_assegnati: 1.5
+      alloggi_sfratto: 1.0
+      data_inizio_lavori: 40.0
+      data_fine_lavori: 45.0
+    min_rows: 5000
+    promotion:
+      warn_removed_columns: false
+
+mart:
+  tables:
+    - name: "mart_comuni_erp"
+      sql: "sql/mart_comuni_erp.sql"
+    - name: "mart_regioni_erp"
+      sql: "sql/mart_regioni_erp.sql"
+    - name: "mart_stati_intervento"
+      sql: "sql/mart_stati_intervento.sql"
+  required_tables:
+    - "mart_comuni_erp"
+    - "mart_regioni_erp"
+    - "mart_stati_intervento"
+  validate:
+    table_rules:
+      mart_comuni_erp:
+        primary_key: [codice_istat_comune]
+        not_null: [codice_istat_comune, comune, regione, interventi, alloggi_previsti]
+        min_rows: 800
+      mart_regioni_erp:
+        primary_key: [regione, stato]
+        not_null: [regione, stato, interventi]
+        min_rows: 40
+      mart_stati_intervento:
+        primary_key: [stato]
+        not_null: [stato, interventi, alloggi_previsti]
+        min_rows: 4
+
+validation:
+  fail_on_error: true

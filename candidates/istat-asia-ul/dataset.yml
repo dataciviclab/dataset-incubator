@@ -3,19 +3,41 @@ schema_version: 1
 
 dataset:
   name: "istat_asia_ul"
-  source_id: "istat_dbnomics"
-  tags: [economia, istat, asia, ul]
+  source_id: "istat_sdmx"
+  tags: [economia, istat, asia, ul, comuni]
   category: economia
-  years: [2020]
+  description: "Unità locali e addetti delle imprese attive (ASIA UL) per comune e sezione ATECO (2018-2024). Fonte: ISTAT via SDMX."
+  years: [2024]
   time_coverage:
     mode: full_series
     start_year: 2018
-    end_year: 2020
+    end_year: 2024
+
+# ASIA unità locali + addetti — ISTAT 183_1163 (DICA_ASIAULP_TERRIFDATA)
+# Canale: type: script + preprocess.py parallelo (per sezione ATECO) su SDMX live.
+# Motivo del canale script: ~280k serie comuni×ATECO×2 tipi — il plugin SDMX
+# fa una richiesta unica troppo grande/lenta. Lo script spezza in 36 richieste
+# rate-limited (~5 req/min) e scrive in streaming.
+# Il mirror DBnomics è fermo al 2020: non usarlo.
+# CI: TOOLKIT_ALLOW_SCRIPT_SOURCE=1 già nel post-merge workflow.
+
+# ASIA UL comune × ATECO — join anagrafica comuni via support external (ADR-005)
+
+support:
+  - name: comuni
+    type: external
+    repo: dataset-incubator
+    slug: istat_elenco_comuni
+    layer: clean
+    years: [2026]
 
 raw:
   output_policy: overwrite
   sources:
-    - type: script
+    - name: "istat_sdmx_asia_ul"
+      type: "script"
+      client:
+        timeout: 3000
       args:
         command: "python preprocess.py {year} raw_input.csv"
         output: "raw_input.csv"
@@ -24,7 +46,15 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [codice_comune, anno, ateco_sezione]
+  required_columns:
+    - data_type
+    - codice_comune
+    - anno
+    - ateco_sezione
+    - valore
+    - denominazione
+    - regione
+    - sigla_provincia
   read:
     source: "auto"
     mode: "latest"
@@ -32,7 +62,8 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    not_null: [anno]
+    not_null: [anno, codice_comune]
+    primary_key: [data_type, codice_comune, anno, ateco_sezione]
     min_rows: 100000
 
 mart:
@@ -44,7 +75,12 @@ mart:
   validate:
     table_rules:
       mart_asia_ul_comuni:
+        not_null: [anno, codice_comune, ateco_sezione]
+        primary_key: [anno, codice_comune, ateco_sezione]
         min_rows: 100000
 
 validation:
   fail_on_error: true
+
+output:
+  artifacts: "standard"

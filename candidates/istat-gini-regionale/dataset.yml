@@ -3,7 +3,7 @@ schema_version: 1
 
 dataset:
   name: "istat_gini_regionale"
-  source_id: "istat_sdmx"
+  source_id: "istat_dbnomics"
   tags: [finanza-pubblica, istat, gini]
   category: finanza-pubblica
   years: [2023]
@@ -11,28 +11,31 @@ dataset:
     start_year: 2003
     end_year: 2024
 
+# Gini reddito netto regionale — ISTAT 32_221 via type: dbnomics
+# (no rate-limit SDMX; mirror allineato 2003-2024 su probe 2026-10)
+
 raw:
   output_policy: overwrite
   sources:
-    - name: "istat_sdmx_gini"
-      type: "sdmx"
+    - name: "istat_dbnomics_gini"
+      type: "dbnomics"
       client:
-        data_base_url: "https://esploradati.istat.it/SDMXWS/rest"
-        metadata_base_url: "https://esploradati.istat.it/SDMXWS/rest"
+        timeout: 120
+        retries: 2
       args:
-        agency: "IT1"
-        flow: "32_221"
-        version: "1.0"
-        filters:
-          DATA_TYPE: "DISUG_REDDNET_GINI"
+        provider: ISTAT
+        dataset: "32_221"
+        dimensions:
+          DATA_TYPE: [DISUG_REDDNET_GINI]
           IMPUTED_RENTS: ["1", "2"]
-        year: "2023"
+        page_size: 1000
+        max_pages: 10
         filename: "istat_gini_regionale_series.csv"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [regione_codice, regione, tipo_dato, pres_aff_imp, anno]
+  required_columns: [regione_codice, regione, tipo_dato, pres_aff_imp, anno, gini]
   read:
     source: "auto"
     mode: "latest"
@@ -40,7 +43,7 @@ clean:
     encoding: "utf-8"
     header: true
   validate:
-    not_null: [anno]
+    not_null: [anno, regione_codice, pres_aff_imp]
     min_rows: 50
 
 mart:
@@ -52,8 +55,8 @@ mart:
   validate:
     table_rules:
       mart_gini_regionale:
+        not_null: [anno, regione_codice, pres_aff_imp]
         min_rows: 400
 
 validation:
   fail_on_error: true
-

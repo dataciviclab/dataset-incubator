@@ -6,7 +6,9 @@ dataset:
   source_id: "openbdap"
   tags: [sanita, bdap, lea]
   category: sanita
-  years: [2019, 2020, 2021, 2022, 2023, 2024]
+  description: "Modello LEA degli enti del SSN: costo per voce contabile (prevenzione, distrettuale, ospedaliera, ricerca) per ente e regione."
+  years: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+  time_coverage: {start_year: 2012, end_year: 2024}
 
 raw:
   output_policy: overwrite
@@ -17,6 +19,13 @@ raw:
         url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/"
         filename: "bdap_lea_{year}.csv"
         url_suffix_by_year:
+          2012: "8f5ddfee-ddc6-4501-9976-0349c1144b4f.csv"
+          2013: "4d698f29-c0ad-49f7-96d5-ae32ece1240f.csv"
+          2014: "d5f56bc3-d865-45ce-b628-8b189f73c243.csv"
+          2015: "51b46f0f-a6a7-4d50-9516-bd4ad116cee5.csv"
+          2016: "d4a11625-dd0e-474b-af39-7604f36be6ca.csv"
+          2017: "a1e612a6-5358-4173-bb80-9aa553125989.csv"
+          2018: "493005a0-ae88-47a9-97cd-66548ebe190d.csv"
           2019: "a0904cd1-4cd5-40cd-9cdb-9fc404bde499.csv"
           2020: "d4816c3b-3c63-412e-aa82-ec65acaf64e7.csv"
           2021: "f1cb1b41-d0bb-4d37-b2cb-b077a5720454.csv"
@@ -34,11 +43,12 @@ clean:
     header: true
     delim: ";"
     encoding: "cp1252"
+    # "Oneri Finanziari" esiste solo dal 2019 e non in tutti gli anni (manca nel
+    # 2020 e nel 2023): lo schema dichiarato + align_by_header riempie le
+    # colonne assenti con NULL invece di slittare le posizioni.
     normalize_rows_to_columns: true
     align_by_header: true
-    null_padding: true
     strict_mode: false
-    ignore_errors: true
     sample_size: -1
     trim_whitespace: true
     columns:
@@ -66,20 +76,29 @@ clean:
       "Altri costi": "VARCHAR"
       "Importo Totale": "VARCHAR"
   validate:
-    not_null: [anno_riferimento]
     min_rows: 1000
+    not_null: [anno_riferimento, codice_ente_bdap, codice_ente_ssn, codice_voce_contabile]
+    primary_key: [anno_riferimento, codice_ente_bdap, codice_ente_ssn, codice_voce_contabile]
 
 mart:
   tables:
     - name: "mart_spesa_enti"
       sql: "sql/mart.sql"
+    - name: "mart_totale_ente"
+      sql: "sql/mart_totale_ente.sql"
   required_tables:
     - "mart_spesa_enti"
+    - "mart_totale_ente"
   validate:
     table_rules:
       mart_spesa_enti:
+        required_columns: [anno_riferimento, codice_ente_bdap, codice_voce_contabile, importo_totale]
+        primary_key: [anno_riferimento, codice_ente_bdap, codice_ente_ssn, codice_voce_contabile]
         min_rows: 1000
+      mart_totale_ente:
+        required_columns: [anno_riferimento, codice_ente_bdap, totale, quadratura]
+        primary_key: [anno_riferimento, codice_ente_bdap, codice_ente_ssn]
+        min_rows: 100
 
 validation:
   fail_on_error: true
-

@@ -1,0 +1,105 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "bdap_ssn_conto_economico"
+  source_id: "openbdap"
+  tags: [sanita, bdap, ssn, conto-economico, bilanci]
+  category: sanita
+  years: [2012, 2013, 2014, 2015, 2016, 2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024]
+  # Copertura reale della serie: il catalogo OpenBDAP espone 2012-2024 per il
+  # Conto Economico SSN a livello regionale (13 annualità).
+  time_coverage: {start_year: 2012, end_year: 2024}
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "bdap_ssn_ce_csv"
+      type: "http_file"
+      args:
+        url: "https://bdap-opendata.rgs.mef.gov.it/SpodCkanApi/api/3/datastore/dump/"
+        filename: "bdap_ssn_ce_{year}.csv"
+        # UUID del package CKAN "Modello di rilevazione del Conto Economico
+        # degli enti del SSN a livello Regionale" (uno per annualità).
+        # Derivati dall'inventario source-observatory
+        # (openbdap, package_search) e fissati qui per rendere il run
+        # riproducibile senza dipendere dal catalogo live.
+        url_suffix_by_year:
+          2012: "bb877b38-15de-4dee-b3ec-b8513aa1d900.csv"
+          2013: "f2def62a-a9ef-46e4-9bc8-118cbed372b8.csv"
+          2014: "c423c608-6898-45e5-b33c-a8054438531f.csv"
+          2015: "8b8c6760-5b25-4b8f-8ec3-722e7c51d0db.csv"
+          2016: "259f09c6-c932-4f36-878f-5375cbcdc9c9.csv"
+          2017: "b37489f5-275e-4dd2-8c7a-162af7c27868.csv"
+          2018: "57589d9b-5cc2-4658-973c-9504f06cbc1d.csv"
+          2019: "d5572bea-4fc7-4663-a0e6-3952c96ad095.csv"
+          2020: "5fbff5d7-f6f9-4848-8607-1a067f8f96f7.csv"
+          2021: "2b1df265-c4c0-4fef-9a47-f0a681d85f91.csv"
+          2022: "c0031806-e4e1-4407-bcf7-2d1367f0e5f2.csv"
+          2023: "a2409f84-6d3b-4d17-b5cf-ca417a82a788.csv"
+          2024: "65ff61a2-4cd3-4fce-8031-ced2959d38d3.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  read:
+    source: "auto"
+    mode: "latest"
+    header: true
+    delim: ";"
+    encoding: "cp1252"
+    strict_mode: false
+    trim_whitespace: true
+    # Tipi dichiarati: la fonte esporta tutto come testo e il riconoscimento
+    # automatico di "Data Aggiornamento" (dd/mm/yyyy) è ambiguo tra anni.
+    # La colonna vuota in coda al file viene ignorata perché non è mappata.
+    columns:
+      "Anno di Riferimento": "VARCHAR"
+      "Codice Regione": "VARCHAR"
+      "Descrizione Regione": "VARCHAR"
+      "Codice Voce Contabile": "VARCHAR"
+      "Descrizione Voce Contabile": "VARCHAR"
+      "Data Aggiornamento": "VARCHAR"
+      "Importo Totale": "VARCHAR"
+  required_columns:
+    - anno
+    - codice_regione
+    - descrizione_regione
+    - codice_voce
+    - descrizione_voce
+    - sezione
+    - riga_sintesi
+    - voce_livello1
+    - importo
+  validate:
+    min_rows: 5000
+    not_null:
+      - anno
+      - codice_regione
+      - codice_voce
+      - importo
+    primary_key:
+      - anno
+      - codice_regione
+      - codice_voce
+
+mart:
+  tables:
+    - name: "mart_composizione_regionale"
+      sql: "sql/mart.sql"
+  required_tables:
+    - "mart_composizione_regionale"
+  validate:
+    table_rules:
+      mart_composizione_regionale:
+        required_columns:
+          - anno
+          - codice_regione
+          - totale_ricavi
+          - totale_costi
+          - costo_personale
+          - risultato_esercizio
+        primary_key:
+          - anno
+          - codice_regione
+        min_rows: 20

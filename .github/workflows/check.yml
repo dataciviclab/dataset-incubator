@@ -1,0 +1,103 @@
+# Check — gate unico su PR e push main
+#
+# 1. lint: ruff + mypy + pytest + audit marker (composite action condivisa)
+# 2. validate-config: preflight dei dataset cambiati (reusable condiviso)
+#
+# Nessuna logica in YAML (ADR-001): i passi comuni vivono nei componenti
+# `dataciviclab/.github`.
+
+name: Check
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/**"
+      - ".github/actions/**"
+      - "scripts/**"
+      - "tests/**"
+      - "candidates/**"
+      - "compose/**"
+      - "support_datasets/**"
+      - "registry/**"
+      - "pyproject.toml"
+      - "Makefile"
+  push:
+    branches: [main]
+    paths:
+      - "scripts/**"
+      - "tests/**"
+      - "pyproject.toml"
+      - "Makefile"
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0
+
+      - name: Python setup
+        uses: dataciviclab/.github/actions/python-setup@main
+        with:
+          install-extras: dev,pipeline
+
+      - name: Ruff, mypy, pytest
+        uses: dataciviclab/.github/actions/python-ci@main
+        with:
+          lint_paths: "scripts"
+          mypy_paths: "scripts"
+          test_dir: "tests"
+          pytest_args: "-q --tb=line"
+          cov_module: "scripts"
+          cov_report: "term"
+          cov_threshold: "55"
+
+      - name: Ruff candidate scripts
+        run: |
+          # candidates/ e support_datasets/ contengono i preprocess.py: parser di
+          # layout non tabellari, il codice dove un errore e' silenzioso.
+          # Solo *.py (i notebook hanno lint proprio e issue pre-esistenti).
+          find candidates support_datasets -name '*.py' -print0 | xargs -0 -r ruff check
+
+      - name: Audit test markers
+        if: github.event_name == 'pull_request'
+        shell: bash
+        run: |
+          changed=$(git diff --name-only "origin/${{ github.base_ref }}...HEAD" \
+            -- "tests/test_*.py" "tests/**/test_*.py" || true)
+          if [ -z "$changed" ]; then
+            echo "No test files changed. OK."
+            exit 0
+          fi
+          while IFS= read -r f; do
+            audit-test-markers "$(dirname "$f")" --diff --files "$(basename "$f")"
+          done <<< "$changed"
+
+  detect:
+    # Solo su PR: su push main non c'è un perimetro "cambiato" da validare.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    outputs:
+      dirs: ${{ steps.detect.outputs.dirs }}
+      count: ${{ steps.detect.outputs.count }}
+      found: ${{ steps.detect.outputs.found }}
+    steps:
+      - uses: actions/checkout@v7
+      - uses: dataciviclab/.github/actions/detect-changed-datasets@main
+        id: detect
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          paths: "candidates compose support_datasets"
+
+  validate-config:
+    needs: detect
+    if: needs.detect.outputs.found == 'true'
+    uses: dataciviclab/.github/.github/workflows/dataset-config-check-reusable.yml@main
+    with:
+      install: 'pip install -e ".[dev,pipeline]"'
+      configs: ${{ needs.detect.outputs.dirs }}
+      years: "from-config"

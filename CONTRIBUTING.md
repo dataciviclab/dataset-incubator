@@ -200,23 +200,25 @@ Per contribuire qui ti serve soprattutto:
 
 ```bash
 cd toolkit
-python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/dataset.yml
+python -m toolkit.cli.app run --config ../dataset-incubator/candidates/{slug}/dataset.yml
 ```
 
 Per candidate nested:
 
 ```bash
 cd toolkit
-python -m toolkit.cli.app run all --config ../dataset-incubator/candidates/{slug}/sources/{source}/dataset.yml
+python -m toolkit.cli.app run --config ../dataset-incubator/candidates/{slug}/sources/{source}/dataset.yml
 ```
 
 ## Test
 
-Prima di aprire una PR che tocca `scripts/`, `tools/` o `tests/`, esegui i test in locale:
+Prima di aprire una PR che tocca `scripts/` o `tests/`, esegui i test in locale:
 
 ```bash
 # Dalla root del repo
-python -m pytest tests/ -q --tb=line
+make test          # pytest
+make check         # preflight di tutti i dataset.yml
+make validate-structure   # gate struttura+config (candidate-standard.md)
 ```
 
 Per vedere la copertura:
@@ -234,7 +236,7 @@ I test usano i marker standard del Lab (definiti in `pyproject.toml`):
 - `pure_unit` — logica pura, zero side effect
 - `smoke` — golden path E2E (richiede connettività)
 
-La threshold di coverage CI è al 55%. Ogni test nuovo o modificato in PR deve avere uno e un solo marker — il workflow `test-audit.yml` lo verifica automaticamente.
+La threshold di coverage CI è al 55%. I marker dei test sono opzionali per i repo dati — vedi `tests.md` per i dettagli.
 
 Vedi [test-policy.md](https://github.com/dataciviclab/lab-ops/blob/main/operations/test-policy.md) per la policy completa.
 
@@ -242,7 +244,7 @@ Vedi [test-policy.md](https://github.com/dataciviclab/lab-ops/blob/main/operatio
 
 Usa il template `promotion.yml` quando il filone sembra pronto per:
 
-- `dataciviclab/analisi/`
+- `data-explorer`
 - repo progetto dedicata
 - archiviazione
 
@@ -255,9 +257,9 @@ La promotion serve a fissare:
 
 ## Post-merge: GCS push e clean catalog
 
-Dopo il merge di un candidate, il workflow `Post-Merge Candidate Registry` (GitHub Actions) apre una draft PR di handoff con la checklist dei passi manuali:
+Dopo il merge di un candidate, il workflow `pipeline.yml` (GitHub Actions) apre una draft PR di handoff con la checklist dei passi manuali:
 
-1. Run completo `toolkit run all --config candidates/{slug}/dataset.yml`
+1. Run completo `toolkit run --config candidates/{slug}/dataset.yml`
 2. `toolkit registry build --write`
 
 Vedi [skills/post-merge-candidate.md](skills/post-merge-candidate.md) per il dettaglio completo.
@@ -268,7 +270,7 @@ Vedi [skills/post-merge-candidate.md](skills/post-merge-candidate.md) per il det
 - tieni il perimetro stretto
 - evita di aprire candidate troppo larghi senza una domanda minima chiara
 - se tocchi struttura o workflow della repo, controlla anche `README.md`
-- se aggiungi o modifichi un candidate, prova almeno il `run all` o il `dry-run` piu' adatto
+- se aggiungi o modifichi un candidate, prova almeno `toolkit run --config ...` o il `--dry-run` più adatto
 - se aggiungi o modifichi candidate/support dataset, esegui anche `python scripts/validate_candidate_structure.py`
 
 ## Dove orientarsi

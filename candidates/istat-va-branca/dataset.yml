@@ -1,0 +1,108 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_va_branca"
+  source_id: "istat_dbnomics"
+  tags: [economia, istat, va, pil, branca, nace, conti-territoriali]
+  category: economia
+  years: [2023]
+  time_coverage:
+    start_year: 1995
+    end_year: 2023
+
+# VA per industria — Conti territoriali ISTAT 93_1227
+# Canale: toolkit type: dbnomics (mirror, no rate-limit SDMX)
+# Grano: regioni × NACE. Complemento eurostat_gva_nuts3 / istat_pil_territoriale.
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_dbnomics_va_branca"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        provider: ISTAT
+        dataset: "93_1227_DF_DCCN_TNA1_1"
+        dimensions:
+          FREQ: [A]
+          REF_AREA:
+            - ITC1
+            - ITC2
+            - ITC3
+            - ITC4
+            - ITD1
+            - ITD2
+            - ITD3
+            - ITD4
+            - ITD5
+            - ITE1
+            - ITE2
+            - ITE3
+            - ITE4
+            - ITF1
+            - ITF2
+            - ITF3
+            - ITF4
+            - ITF5
+            - ITF6
+            - ITG1
+            - ITG2
+          DATA_TYPE_AGGR: [B1G_B_W2_S1]
+          VALUATION: [V, L_2020]
+          ADJUSTMENT: [N]
+          PRICE: [B]
+          EDITION: ["2025M6"]
+        page_size: 1000
+        max_pages: 50
+        filename: "istat_va_branca_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - territorio_codice
+    - territorio_nome
+    - livello
+    - anno
+    - nace_codice
+    - tipo_dato_codice
+    - tipo_dato
+    - valutazione_codice
+    - valore_mln_eu
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    not_null: [anno, territorio_codice, nace_codice, tipo_dato_codice]
+    primary_key: [anno, territorio_codice, nace_codice, tipo_dato_codice, valutazione_codice]
+    min_rows: 500
+
+mart:
+  tables:
+    - name: "mart_va_branca"
+      sql: "sql/mart_va_branca.sql"
+    - name: "mart_va_branca_share"
+      sql: "sql/mart_va_branca_share.sql"
+  required_tables:
+    - "mart_va_branca"
+    - "mart_va_branca_share"
+  validate:
+    table_rules:
+      mart_va_branca:
+        required_columns: [anno, territorio_codice, nace_codice, tipo_dato_codice, valore_mln_eu]
+        not_null: [anno, territorio_codice, nace_codice, tipo_dato_codice]
+        primary_key: [anno, territorio_codice, nace_codice, tipo_dato_codice, valutazione_codice]
+        min_rows: 500
+      mart_va_branca_share:
+        required_columns: [anno, territorio_codice, nace_codice, share_pct]
+        not_null: [anno, territorio_codice, nace_codice]
+        min_rows: 200
+
+validation:
+  fail_on_error: true

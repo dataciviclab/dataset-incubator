@@ -1,0 +1,66 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_trasporto_ferroviario"
+  source_id: "istat_dbnomics"
+  tags: [trasporti, ferrovia, merci, intermodale, istat, dbnomics]
+  category: trasporti
+  years: [2026]
+  time_coverage:
+    start_year: 2004
+    end_year: 2024
+
+# Trasporto ferroviario — ISTAT 117_1057 via DBnomics.
+# Include INTERMODAL_TR_UNIT (unita di carico) e l'origine-destinazione per paese:
+# le due grandezze che il Lab aveva dichiarato inesistenti.
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_dbnomics_ferrovia"
+      type: "dbnomics"
+      client:
+        timeout: 240
+        retries: 2
+      args:
+        provider: ISTAT
+        dataset: "117_1057"
+        page_size: 1000
+        max_pages: 2
+        filename: "istat_ferrovia_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns: [anno, unita, valore]
+  read:
+    source: auto
+    mode: latest
+    delim: ","
+    encoding: utf-8
+    header: true
+  validate:
+    not_null: [anno]
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_ferrovia_intermodale"
+      sql: "sql/mart_ferrovia_intermodale.sql"
+  required_tables:
+    - "mart_ferrovia_intermodale"
+  validate:
+    table_rules:
+      mart_ferrovia_intermodale:
+        required_columns: [anno, quota_intermodale_pct]
+        primary_key: [anno]
+        min_rows: 5
+
+validation:
+  fail_on_error: true
+
+registry:
+  theme: "Trasporto ferroviario: merci, intermodale, origine-destinazione"
+  dimensions: ["INTERMODAL_TR_UNIT", "COUNTRY_GOOD_ORIGIN", "COUNTRY_GOOD_DESTINATION"]
+  description: "ISTAT 117_1057 via DBnomics"

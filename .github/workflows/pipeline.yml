@@ -1,0 +1,55 @@
+# Pipeline — dataset-incubator
+#
+# Post-merge + dispatch. Usa pipeline-reusable.yml dell'org.
+# Su PR merged: solo i candidate/compose/support toccati (detect + batch).
+# Su dispatch: uno o più dataset (slug o path, separati da virgola) se
+# `datasets` è valorizzato, altrimenti tutti. Convenzione: ADR-002.
+#
+# ADR-002: la selezione multipla è normalizzata dall'action condivisa; qui
+# resta il comando di run perché `pipeline-reusable` non espone l'input
+# `datasets` (pattern identico a open-politica/open-mur).
+
+name: Pipeline
+
+on:
+  pull_request:
+    types: [closed]
+    paths:
+      - "candidates/**"
+      - "compose/**"
+      - "support_datasets/**"
+  workflow_dispatch:
+    inputs:
+      datasets:
+        description: "Uno o più slug separati da virgola (o path del dataset.yml). Vuoto = tutti. Vedi ADR-002."
+        required: false
+        default: ""
+
+concurrency:
+  group: dataset-incubator-pipeline-${{ github.event.pull_request.number || github.ref || 'dispatch' }}
+  cancel-in-progress: false
+
+jobs:
+  pipeline:
+    if: github.event.pull_request.merged == true || github.event_name != 'pull_request'
+    uses: dataciviclab/.github/.github/workflows/pipeline-reusable.yml@main
+    with:
+      repo-slug: "dataset-incubator"
+      # I candidate pubblicano alla RADICE del bucket
+      # (gs://dataciviclab-{clean,mart}/<slug>/<anno>/), non sotto un prefisso
+      # di repo come gli altri repo dati. Stringa vuota = nessun prefisso.
+      sync-prefix: ""
+      detect-paths: "candidates compose support_datasets"
+      # I candidate dipendono da fonti pubbliche instabili: su dispatch manuale
+      # un run fallito non deve fermare gli altri.
+      run-command: >-
+        ${{ inputs.datasets == '' && 'make run-all'
+            || format('for d in $(echo "{0}" | tr "," " "); do toolkit run --config "$d" || echo "⚠️  run fallito (skip): $d"; done', inputs.datasets) }}
+      run-batch-command: "make run-batch"
+      # Alcuni candidate scaricano via script (non http_file): serve il flag.
+      extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"
+    permissions:
+      contents: write
+      pull-requests: write
+      id-token: write
+    secrets: inherit

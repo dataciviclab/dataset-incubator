@@ -1,33 +1,36 @@
 # Note tecniche - istat-housing-crowding
 
-## Perimetro v0 scelto
+## Canale (2026-10-11)
 
-- `REF_AREA=IT`
-- `TENURE_STATUS=1+2`
-- tutte le altre dimensioni su totale
-- serie storica completa disponibile nel flow
+- toolkit `type: sdmx` · `IT1/33_179` v1.0 su esploradati (default dal fix toolkit #444)
+- Raw senza pinning delle breakdown dimensioni (key vuota = all) → ~990 righe
+  con breakdown completi; richiede toolkit con fix key completa (toolkit PR #501)
+- Il mirror dbnomics esponeva solo i totali (44 righe, sola TENURE_STATUS) —
+  issue #873; il canale SDMX diretto è la recovery
 
-## Nota semantica
+## Correzione mapping TENURE_STATUS
 
-`ABITAZ_AFFOLL_MED` non e il tasso EU-SILC di sovraffollamento.
-Qui il pilot usa un indicatore di densita abitativa media (`componenti per 100 mq`).
-La formulazione e ancorata alle label SDMX osservate nel flow:
+Le label ISTAT dicono `1=rent`, `2=property`. Il clean pre-recovery (#870,
+canale dbnomics) mappava `1→Proprietà`, `2→Affitto` (inverted, scritto senza
+riferimento alle label). Ora: `1→Affitto`, `2→Proprietà`. Le due serie del
+mart si scambiano di etichetta rispetto alla versione precedente.
 
-- `DATA_TYPE_label = household crowding index (number of components of household per square meter)`
-- `MEASURE_label = per hundred values`
+## Perimetro
 
-## Nota tecnica importante
+- `REF_AREA=IT`, `DATA_TYPE=ABITAZ_AFFOLL_MED`, `MEASURE=10`
+- Dato ISTAT: le breakdown esistono SOLO sul totale famiglie (TENURE=99);
+  rent/property (1/2) esistono solo come righe di totale breakdown
+- Clean porta tutto: tenure 1/2 (totali) + righe di totale con breakdown
+  (componenti nucleo, tipologia, figli, anziani, quintile reddito,
+  sesso/età/istruzione/condizione percettore), 990 righe
+- Mart = righe di totale su tutte le breakdown, tenure 1/2 (44 righe:
+  serie storica rent vs property)
 
-Per il dataflow `33_179`, `https://sdmx.istat.it/SDMXWS/rest/dataflow/IT1/33_179`
-restituisce `500` nel setup attuale, mentre `https://esploradati.istat.it/SDMXWS/rest`
-risponde correttamente sia per metadata sia per data.
+## Run
 
-Per questo il candidate forza:
-
-- `client.metadata_base_url = https://esploradati.istat.it/SDMXWS/rest`
-- `client.data_base_url = https://esploradati.istat.it/SDMXWS/rest`
-
-## Rischi residui
-
-- alcuni filtri multi-valore sul flow restituiscono `404`; il pilot evita per ora query piu larghe
-- resta da capire se il flow supporta bene il fetch regionale in modo stabile dal plugin
+```bash
+cd candidates/istat-housing-crowding
+python -m toolkit.cli.app run raw   -c dataset.yml -y 2024 --root ../../out
+python -m toolkit.cli.app run clean -c dataset.yml -y 2024 --root ../../out
+python -m toolkit.cli.app run mart  -c dataset.yml -y 2024 --root ../../out
+```

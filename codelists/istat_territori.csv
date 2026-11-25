@@ -1,0 +1,339 @@
+ref_area,nome,livello
+IT,Italia,nazionale
+ITCDE,Centro-nord,aggregato
+ITCD,Nord,aggregato
+ITC,Nord-ovest,ripartizione
+ITC1,Piemonte,regione
+ITC11,Torino,provincia
+ITC2,Valle d'Aosta / Vallée d'Aoste,regione
+ITC12,Vercelli,provincia
+ITC3,Liguria,regione
+ITC15,Novara,provincia
+ITC4,Lombardia,regione
+ITC16,Cuneo,provincia
+ITD,Nord-est,ripartizione
+ITC17,Asti,provincia
+ITDA,Trentino Alto Adige / Südtirol,aggregato
+ITDA_C,Trentino Alto Adige / Südtirol (comuni capoluogo),aggregato
+ITDA_NC,Trentino Alto Adige / Südtirol (comuni non capoluogo),aggregato
+ITE,Centro,ripartizione
+ITC18,Alessandria,provincia
+ITD1,Provincia Autonoma Bolzano / Bozen,regione
+ITFG,Mezzogiorno,aggregato
+ITC20,Valle d'Aosta / Vallée d'Aoste,aggregato
+ITD2,Provincia Autonoma Trento,regione
+ITF,Sud,ripartizione
+ITC31,Imperia,provincia
+ITD3,Veneto,regione
+ITG,Isole,ripartizione
+ITC32,Savona,provincia
+ITD4,Friuli-Venezia Giulia,regione
+ITZ,Extra-Regio,aggregato
+ITC33,Genova,provincia
+ITD5,Emilia-Romagna,regione
+ITS,Estero,aggregato
+ITC34,La Spezia,provincia
+ITE1,Toscana,regione
+ITNI,Non indicato,aggregato
+ITNI1,Regioni diverse o non specificate,aggregato
+ITNI12,Province diverse,aggregato
+ITC41,Varese,provincia
+ITE2,Umbria,regione
+ITC42,Como,provincia
+ITE3,Marche,regione
+ITTOT,Totale,aggregato
+ITC44,Sondrio,provincia
+ITE4,Lazio,regione
+ITC45,Milano,provincia
+ITF1,Abruzzo,regione
+ITC46,Bergamo,provincia
+ITF2,Molise,regione
+ITC47,Brescia,provincia
+ITF3,Campania,regione
+ITC48,Pavia,provincia
+ITF4,Puglia,regione
+ITC4A,Cremona,aggregato
+ITF5,Basilicata,regione
+ITC4B,Mantova,aggregato
+ITF6,Calabria,regione
+ITNI13,Province non specificate e altri stati membri,aggregato
+ITD10,Bolzano / Bozen,aggregato
+ITG1,Sicilia,regione
+ITD20,Trento,aggregato
+ITG2,Sardegna,regione
+ITD31,Verona,provincia
+ITD32,Vicenza,provincia
+ITD33,Belluno,provincia
+ITD34,Treviso,provincia
+ITD35,Venezia,provincia
+ITD36,Padova,provincia
+ITD37,Rovigo,provincia
+ITD42,Udine,provincia
+ITD43,Gorizia,provincia
+ITD44,Trieste,provincia
+ITD51,Piacenza,provincia
+ITD52,Parma,provincia
+ITD53,Reggio nell'Emilia,provincia
+ITD54,Modena,provincia
+ITD55,Bologna,provincia
+ITD56,Ferrara,provincia
+ITD57,Ravenna,provincia
+ITD58,Forlì-Cesena,provincia
+ITE31,Pesaro e Urbino,provincia
+ITE32,Ancona,provincia
+ITE33,Macerata,provincia
+ITE34,Ascoli Piceno,provincia
+ITE11,Massa-Carrara,provincia
+ITE12,Lucca,provincia
+ITE13,Pistoia,provincia
+ITE14,Firenze,provincia
+ITE16,Livorno,provincia
+ITE17,Pisa,provincia
+ITE18,Arezzo,provincia
+ITE19,Siena,provincia
+ITE1A,Grosseto,aggregato
+ITE21,Perugia,provincia
+ITE22,Terni,provincia
+ITE41,Viterbo,provincia
+ITE42,Rieti,provincia
+ITE43,Roma,provincia
+ITE44,Latina,provincia
+ITE45,Frosinone,provincia
+ITF31,Caserta,provincia
+ITF32,Benevento,provincia
+ITF33,Napoli,provincia
+ITF34,Avellino,provincia
+ITF35,Salerno,provincia
+ITF11,L'Aquila,provincia
+ITF12,Teramo,provincia
+ITF13,Pescara,provincia
+ITF14,Chieti,provincia
+ITF22,Campobasso,provincia
+ITC2_C,Valle d'Aosta / Vallée d'Aoste (comuni capoluogo),aggregato
+ITF41,Foggia,provincia
+ITC2_NC,Valle d'Aosta / Vallée d'Aoste (comuni non capoluogo),aggregato
+ITF42,Bari,provincia
+ITF43,Taranto,provincia
+ITF44,Brindisi,provincia
+ITF45,Lecce,provincia
+ITF51,Potenza,provincia
+ITF52,Matera,provincia
+ITF61,Cosenza,provincia
+ITF63,Catanzaro,provincia
+ITF65,Reggio di Calabria,provincia
+ITG11,Trapani,provincia
+ITG12,Palermo,provincia
+ITG13,Messina,provincia
+ITG14,Agrigento,provincia
+ITG15,Caltanissetta,provincia
+ITG16,Enna,provincia
+ITG17,Catania,provincia
+ITG18,Ragusa,provincia
+ITG19,Siracusa,provincia
+ITG25,Sassari,provincia
+ITG26,Nuoro,provincia
+ITG27,Cagliari,provincia
+ITD41,Pordenone,provincia
+ITF21,Isernia,provincia
+ITG28,Oristano,provincia
+ITC13,Biella,provincia
+ITZZ,Extra-Regio,aggregato
+ITC43,Lecco,provincia
+ITC49,Lodi,provincia
+ITD59,Rimini,provincia
+ITE15,Prato,provincia
+ITF62,Crotone,provincia
+ITF64,Vibo Valentia,provincia
+ITC14,Verbano-Cusio-Ossola,provincia
+ITC1_C,Piemonte (comuni capoluogo),aggregato
+ITG29,Olbia-Tempio,provincia
+ITC1_NC,Piemonte (comuni non capoluogo),aggregato
+ITG2A,Ogliastra,aggregato
+ITG2B,Medio Campidano,aggregato
+ITG2C,Carbonia-Iglesias,aggregato
+IT108,Monza e della Brianza,provincia
+IT109,Fermo,provincia
+IT110,Barletta-Andria-Trani,provincia
+IT111,Sud Sardegna,provincia
+ITC4_C,Lombardia (comuni capoluogo),aggregato
+ITC4_NC,Lombardia (comuni non capoluogo),aggregato
+ITD3_C,Veneto (comuni capoluogo),aggregato
+ITD3_NC,Veneto (comuni non capoluogo),aggregato
+ITD4_C,Friuli-Venezia Giulia (comuni capoluogo),aggregato
+ITD4_NC,Friuli-Venezia Giulia (comuni non capoluogo),aggregato
+ITC3_C,Liguria (comuni capoluogo),aggregato
+ITC3_NC,Liguria (comuni non capoluogo),aggregato
+ITD5_C,Emilia-Romagna (comuni capoluogo),aggregato
+ITD5_NC,Emilia-Romagna (comuni non capoluogo),aggregato
+ITE1_C,Toscana (comuni capoluogo),aggregato
+ITE1_NC,Toscana (comuni non capoluogo),aggregato
+ITE2_C,Umbria (comuni capoluogo),aggregato
+ITE2_NC,Umbria (comuni non capoluogo),aggregato
+ITE3_C,Marche (comuni capoluogo),aggregato
+ITE3_NC,Marche (comuni non capoluogo),aggregato
+ITE4_C,Lazio (comuni capoluogo),aggregato
+ITE4_NC,Lazio (comuni non capoluogo),aggregato
+ITF1_C,Abruzzo (comuni capoluogo),aggregato
+ITF1_NC,Abruzzo (comuni non capoluogo),aggregato
+ITF2_C,Molise (comuni capoluogo),aggregato
+ITF2_NC,Molise (comuni non capoluogo),aggregato
+ITF3_C,Campania (comuni capoluogo),aggregato
+ITF3_NC,Campania (comuni non capoluogo),aggregato
+ITF4_C,Puglia (comuni capoluogo),aggregato
+ITF4_NC,Puglia (comuni non capoluogo),aggregato
+ITF5_C,Basilicata (comuni capoluogo),aggregato
+ITF5_NC,Basilicata (comuni non capoluogo),aggregato
+ITF6_C,Calabria (comuni capoluogo),aggregato
+ITF6_NC,Calabria (comuni non capoluogo),aggregato
+ITG1_C,Sicilia (comuni capoluogo),aggregato
+ITG1_NC,Sicilia (comuni non capoluogo),aggregato
+ITG2_C,Sardegna (comuni capoluogo),aggregato
+ITG2_NC,Sardegna (comuni non capoluogo),aggregato
+ITG14_NC,comuni non capoluogo,aggregato
+ITZZZ,Extra-Regio,aggregato
+ITC18_NC,comuni non capoluogo,aggregato
+ITE32_NC,comuni non capoluogo,aggregato
+ITC20_NC,comuni non capoluogo,aggregato
+ITE18_NC,comuni non capoluogo,aggregato
+ITE34_NC,comuni non capoluogo,aggregato
+ITC17_NC,comuni non capoluogo,aggregato
+ITF34_NC,comuni non capoluogo,aggregato
+ITF42_NC,comuni non capoluogo,aggregato
+ITD33_NC,comuni non capoluogo,aggregato
+ITF32_NC,comuni non capoluogo,aggregato
+ITC46_NC,comuni non capoluogo,aggregato
+ITC13_NC,comuni non capoluogo,aggregato
+ITD55_NC,comuni non capoluogo,aggregato
+ITD10_NC,comuni non capoluogo,aggregato
+ITC47_NC,comuni non capoluogo,aggregato
+ITF44_NC,comuni non capoluogo,aggregato
+ITG27_NC,comuni non capoluogo,aggregato
+ITG15_NC,comuni non capoluogo,aggregato
+ITF22_NC,comuni non capoluogo,aggregato
+ITF31_NC,comuni non capoluogo,aggregato
+ITG17_NC,comuni non capoluogo,aggregato
+ITF63_NC,comuni non capoluogo,aggregato
+ITF14_NC,comuni non capoluogo,aggregato
+ITC42_NC,comuni non capoluogo,aggregato
+ITF61_NC,comuni non capoluogo,aggregato
+ITC4A_NC,comuni non capoluogo,aggregato
+ITF62_NC,comuni non capoluogo,aggregato
+ITC16_NC,comuni non capoluogo,aggregato
+ITG16_NC,comuni non capoluogo,aggregato
+IT109_NC,comuni non capoluogo,aggregato
+ITD56_NC,comuni non capoluogo,aggregato
+ITE14_NC,comuni non capoluogo,aggregato
+ITF41_NC,comuni non capoluogo,aggregato
+ITD58_NC,comuni non capoluogo,aggregato
+ITE45_NC,comuni non capoluogo,aggregato
+ITC33_NC,comuni non capoluogo,aggregato
+ITD43_NC,comuni non capoluogo,aggregato
+ITE1A_NC,comuni non capoluogo,aggregato
+ITG2C_NC,comuni non capoluogo,aggregato
+ITC31_NC,comuni non capoluogo,aggregato
+ITF21_NC,comuni non capoluogo,aggregato
+ITC34_NC,comuni non capoluogo,aggregato
+ITF11_NC,comuni non capoluogo,aggregato
+ITE44_NC,comuni non capoluogo,aggregato
+ITF45_NC,comuni non capoluogo,aggregato
+ITC43_NC,comuni non capoluogo,aggregato
+ITE16_NC,comuni non capoluogo,aggregato
+ITC49_NC,comuni non capoluogo,aggregato
+ITE12_NC,comuni non capoluogo,aggregato
+ITE33_NC,comuni non capoluogo,aggregato
+ITC4B_NC,comuni non capoluogo,aggregato
+ITE11_NC,comuni non capoluogo,aggregato
+ITF52_NC,comuni non capoluogo,aggregato
+ITG13_NC,comuni non capoluogo,aggregato
+ITC45_NC,comuni non capoluogo,aggregato
+ITD54_NC,comuni non capoluogo,aggregato
+IT108_NC,comuni non capoluogo,aggregato
+ITF33_NC,comuni non capoluogo,aggregato
+ITC15_NC,comuni non capoluogo,aggregato
+ITG26_NC,comuni non capoluogo,aggregato
+ITG28_NC,comuni non capoluogo,aggregato
+ITD36_NC,comuni non capoluogo,aggregato
+ITG12_NC,comuni non capoluogo,aggregato
+ITD52_NC,comuni non capoluogo,aggregato
+ITC48_NC,comuni non capoluogo,aggregato
+ITE21_NC,comuni non capoluogo,aggregato
+ITE31_NC,comuni non capoluogo,aggregato
+ITF13_NC,comuni non capoluogo,aggregato
+ITD51_NC,comuni non capoluogo,aggregato
+ITE17_NC,comuni non capoluogo,aggregato
+ITE13_NC,comuni non capoluogo,aggregato
+ITD41_NC,comuni non capoluogo,aggregato
+ITF51_NC,comuni non capoluogo,aggregato
+ITE15_NC,comuni non capoluogo,aggregato
+ITG18_NC,comuni non capoluogo,aggregato
+ITD57_NC,comuni non capoluogo,aggregato
+ITF65_NC,comuni non capoluogo,aggregato
+ITD53_NC,comuni non capoluogo,aggregato
+ITE42_NC,comuni non capoluogo,aggregato
+ITD59_NC,comuni non capoluogo,aggregato
+ITE43_NC,comuni non capoluogo,aggregato
+ITD37_NC,comuni non capoluogo,aggregato
+ITF35_NC,comuni non capoluogo,aggregato
+ITG25_NC,comuni non capoluogo,aggregato
+ITC32_NC,comuni non capoluogo,aggregato
+ITE19_NC,comuni non capoluogo,aggregato
+ITG19_NC,comuni non capoluogo,aggregato
+ITC44_NC,comuni non capoluogo,aggregato
+ITF43_NC,comuni non capoluogo,aggregato
+ITG29_NC,comuni non capoluogo,aggregato
+ITF12_NC,comuni non capoluogo,aggregato
+ITE22_NC,comuni non capoluogo,aggregato
+ITC11_NC,comuni non capoluogo,aggregato
+ITG2A_NC,comuni non capoluogo,aggregato
+IT110_NC,comuni non capoluogo,aggregato
+ITG11_NC,comuni non capoluogo,aggregato
+ITD20_NC,comuni non capoluogo,aggregato
+ITD34_NC,comuni non capoluogo,aggregato
+ITD44_NC,comuni non capoluogo,aggregato
+ITD42_NC,comuni non capoluogo,aggregato
+ITC41_NC,comuni non capoluogo,aggregato
+ITD35_NC,comuni non capoluogo,aggregato
+ITC14_NC,comuni non capoluogo,aggregato
+ITC12_NC,comuni non capoluogo,aggregato
+ITD31_NC,comuni non capoluogo,aggregato
+ITF64_NC,comuni non capoluogo,aggregato
+ITD32_NC,comuni non capoluogo,aggregato
+ITG2B_NC,comuni non capoluogo,aggregato
+IT111_NC,comuni non capoluogo,aggregato
+ITE41_NC,comuni non capoluogo,aggregato
+IT_C,Italia (comuni capoluogo),aggregato
+IT_NC,Italia (comuni non capoluogo),aggregato
+IT_C_M,Capoluoghi di città metropolitana,aggregato
+IT_C_P,Capoluoghi di provincia,aggregato
+ITC1_OTH_TERR,Piemonte: altre tipologie di territorio,aggregato
+ITC2_OTH_TERR,Valle d'Aosta / Vallée d'Aoste: altre tipologie di territorio,aggregato
+ITC3_OTH_TERR,Liguria: altre tipologie di territorio,aggregato
+ITC4_OTH_TERR,Lombardia: altre tipologie di territorio,aggregato
+ITDA_OTH_TERR,Trentino Alto Adige / Südtirol: altre tipologie di territorio,aggregato
+ITD1_OTH_TERR,Provincia Autonoma Bolzano / Bozen: altre tipologie di territorio,aggregato
+ITD2_OTH_TERR,Provincia Autonoma Trento: altre tipologie di territorio,aggregato
+ITD3_OTH_TERR,Veneto: altre tipologie di territorio,aggregato
+ITD4_OTH_TERR,Friuli-Venezia Giulia: altre tipologie di territorio,aggregato
+ITD5_OTH_TERR,Emilia-Romagna: altre tipologie di territorio,aggregato
+ITE1_OTH_TERR,Toscana: altre tipologie di territorio,aggregato
+ITE2_OTH_TERR,Umbria: altre tipologie di territorio,aggregato
+ITE3_OTH_TERR,Marche: altre tipologie di territorio,aggregato
+ITE4_OTH_TERR,Lazio: altre tipologie di territorio,aggregato
+ITF1_OTH_TERR,Abruzzo: altre tipologie di territorio,aggregato
+ITF2_OTH_TERR,Molise: altre tipologie di territorio,aggregato
+ITF3_OTH_TERR,Campania: altre tipologie di territorio,aggregato
+ITF4_OTH_TERR,Puglia: altre tipologie di territorio,aggregato
+ITF5_OTH_TERR,Basilicata: altre tipologie di territorio,aggregato
+ITF6_OTH_TERR,Calabria: altre tipologie di territorio,aggregato
+ITG1_OTH_TERR,Sicilia: altre tipologie di territorio,aggregato
+ITG2_OTH_TERR,Sardegna: altre tipologie di territorio,aggregato
+IT_OTH_TERR,Italia:  altre tipologie di territorio,aggregato
+ITA2018,Distretto idrografico delle Alpi orientali,aggregato
+ITB2018,Distretto idrografico del Fiume Po,aggregato
+ITC2018,Distretto idrografico dell'Appennino settentrionale,aggregato
+ITE2018,Distretto idrografico dell'Appennino centrale,aggregato
+ITF2018,Distretto idrografico dell'Appennino meridionale,aggregato
+ITG2018,Distretto idrografico della Sardegna,aggregato
+ITH2018,Distretto idrografico della Sicilia,aggregato
+IT113,Gallura Nord-Est Sardegna,provincia
+IT119,Sulcis Iglesiente,provincia

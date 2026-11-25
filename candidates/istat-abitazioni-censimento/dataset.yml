@@ -1,0 +1,113 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_abitazioni_censimento"
+  source_id: "istat_sdmx"
+  tags: [welfare-lavoro, istat, housing, censimento, sfitto, abitazioni]
+  category: welfare-lavoro
+  # years = vintage dell'output, non il perimetro dati (che sta in time_coverage).
+  # Stessa convenzione di istat-migrazioni: file unico, serie 2019-2023, partizione 2026.
+  years: [2026]
+  time_coverage:
+    start_year: 2019
+    end_year: 2023
+
+# Censimento permanente popolazione e abitazioni — tavole comunali via SDMX.
+# Due dataflow, stesso schema (CSV SDMX):
+#   DF_DCSS_ABITAZIONI_TV_1  stock / occupate / non occupate
+#   DF_DCSS_ABITAZIONI_TV_2  occupate per titolo di possesso (ALL/OWN/RENT/OTH_OR)
+# Entrambi coprono 2019, 2021, 2023. Solo il 2021 e' enumerazione completa:
+# 2019 e 2023 sono edizioni campionarie (stime, non conteggi).
+# Chiave: FREQ=A, tutte le aree, ROOM=TOT, FLOOR=ALL, HEATING=ALL, ACCESS=TOTAL,
+# BUILD=TOTAL — le breakdown non servono al perimetro v0.
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_abitazioni_tv1"
+      type: "http_file"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        url: "https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_DCSS_ABITAZIONI_TV_1,1.0/A....TOT.ALL.ALL.TOTAL.TOTAL?startPeriod=2019&endPeriod=2023&format=csv"
+        filename: "dcss_abitazioni_tv1.csv"
+      primary: true
+    - name: "istat_abitazioni_tv2"
+      type: "http_file"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        url: "https://esploradati.istat.it/SDMXWS/rest/data/IT1,DF_DCSS_ABITAZIONI_TV_2,1.0/A....TOT.ALL.ALL.TOTAL.TOTAL?startPeriod=2019&endPeriod=2023&format=csv"
+        filename: "dcss_abitazioni_tv2.csv"
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - anno
+    - territorio_codice
+    - livello_geografico
+    - misura_codice
+    - titolo_possesso_codice
+    - tipo_rilevazione
+    - valore
+  read:
+    source: "auto"
+    # all: il clean legge entrambi i raw (TV_1 + TV_2), stesso schema SDMX
+    mode: "all"
+    glob: "*.csv"
+    delim: ","
+    header: true
+    encoding: "utf-8"
+    quote: '"'
+    # codici con zeri iniziali (001001) e valori numerici: tutto VARCHAR,
+    # i cast sono espliciti in clean.sql
+    all_varchar: true
+    trim_whitespace: true
+  validate:
+    primary_key: [anno, territorio_codice, misura_codice, titolo_possesso_codice]
+    not_null:
+      - anno
+      - territorio_codice
+      - livello_geografico
+      - misura_codice
+      - misura
+      - titolo_possesso_codice
+      - titolo_possesso
+      - tipo_rilevazione
+      - valore
+    min_rows: 20000
+    promotion:
+      # clean.sql rinomina esplicitamente tutte le colonne raw
+      warn_removed_columns: false
+
+mart:
+  tables:
+    - name: "mart_comuni_sfitto"
+      sql: "sql/mart_comuni_sfitto.sql"
+    - name: "mart_italia_serie"
+      sql: "sql/mart_italia_serie.sql"
+    - name: "mart_affitto_2019"
+      sql: "sql/mart_affitto_2019.sql"
+  required_tables:
+    - "mart_comuni_sfitto"
+    - "mart_italia_serie"
+    - "mart_affitto_2019"
+  validate:
+    table_rules:
+      mart_comuni_sfitto:
+        primary_key: [codice_istat_comune, anno]
+        not_null: [codice_istat_comune, anno, abitazioni, tasso_sfitto_pct]
+        min_rows: 20000
+      mart_italia_serie:
+        primary_key: [anno, misura_codice]
+        not_null: [anno, misura_codice, valore]
+        min_rows: 9
+      mart_affitto_2019:
+        primary_key: [codice_istat_comune, anno]
+        not_null: [codice_istat_comune, anno]
+        min_rows: 7000
+
+validation:
+  fail_on_error: true

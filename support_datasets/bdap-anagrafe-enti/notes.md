@@ -40,7 +40,7 @@ Dataset di anagrafe enti pubblici italiani. Fonte primaria per join su codici en
 | `provincia` | `codice_provincia`, `sigla_provincia` | consip, openga, civile_flussi |
 | `codice_catastale` | `codice_catastale` | irpef_comunale |
 | `codice_ente` | `codice_ente_ipa`, `codice_ente_siope` | dipendenti_pubblici, bdap_entrate |
-| `codice_scuola` | `codice_ente_miur` | mim_alunni, mim_anagrafica_scuole |
+| `codice_scuola` | `codice_ente_miur` | mim_alunni, mim_anagrafica_scuole (oggi in `open-mim`) |
 
 ## Blocker
 

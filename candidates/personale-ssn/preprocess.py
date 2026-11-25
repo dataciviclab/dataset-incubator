@@ -14,6 +14,8 @@ import csv
 import sys
 from pathlib import Path
 
+from lab_connectors.http import download as _http_download
+
 CACHE_DIR = Path(__file__).resolve().parent / "cache"
 CACHE_DIR.mkdir(exist_ok=True)
 
@@ -49,38 +51,13 @@ HEADERS = [
 
 
 def download(url: str, dest: Path) -> None:
-    import shutil
-    import ssl
-    import subprocess
-    import urllib.request
+    """Scarica il file con la catena HTTP condivisa.
 
-    # 1) Prova curl -k (gestisce SSL meglio, funziona con gov.it)
-    curl = shutil.which("curl")
-    if curl:
-        print(f"Download {url} (via curl)...", flush=True)
-        try:
-            subprocess.run(
-                [curl, "-k", "-sS", "-L", "--max-time", "120", "-o", str(dest), url],
-                check=True,
-                capture_output=True,
-                timeout=120,
-            )
-            print(f"  -> {dest} ({dest.stat().st_size / 1e6:.1f} MB)", flush=True)
-            return
-        except Exception as e:
-            print(f"  curl fallito: {e}", flush=True)
-
-    # 2) Fallback: urllib con TLSv1.2 forzato (gov.it non supporta TLS 1.3)
-    print(f"Download {url} (via urllib TLSv1.2)...", flush=True)
-    ctx = ssl.SSLContext(ssl.PROTOCOL_TLS_CLIENT)
-    ctx.minimum_version = ssl.TLSVersion.TLSv1_2
-    ctx.maximum_version = ssl.TLSVersion.TLSv1_2
-    ctx.check_hostname = False
-    ctx.verify_mode = ssl.CERT_NONE
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=120, context=ctx) as resp:
-        data = resp.read()
-        dest.write_bytes(data)
+    lab-connectors gestisce i fallback TLS (incluso TLSv1.2 per gov.it) in
+    modo confinato alla richiesta: niente curl -k o CERT_NONE a mano.
+    """
+    print(f"Download {url}...", flush=True)
+    dest.write_bytes(_http_download(url, timeout=120, user_agent="Mozilla/5.0"))
     print(f"  -> {dest} ({dest.stat().st_size / 1e6:.1f} MB)", flush=True)
 
 

@@ -128,9 +128,8 @@ parquet). In `table_rules` usa `min_rows: 0` quando 0 righe è un risultato legi
 (anni senza dati territoriali — caso `openga-ricorsi-appalto`, PR #500).
 
 **`mart.hierarchy`** (feature toolkit #269, NON legacy): genera mart per livelli territoriali
-(naz/reg/prv/com) da un solo config. Usata da `mim-alunni-corso-eta`. Va usata quando la
-gerarchia territoriale è il prodotto principale; per mart analitici misti restano le tabelle
-esplicite.
+(naz/reg/prv/com) da un solo config. Va usata quando la gerarchia territoriale è il
+prodotto principale; per mart analitici misti restano le tabelle esplicite.
 
 ### 2.5 Esempio minimo completo
 
