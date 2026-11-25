@@ -5,8 +5,8 @@ import sys
 from pathlib import Path
 from typing import Literal
 
-from toolkit.core.dataset_loader import load_dataset_manifest
 from toolkit.core.config import load_config as load_config_model
+from toolkit.core.dataset_loader import load_dataset_manifest
 
 ROOT = Path(__file__).resolve().parents[1]
 

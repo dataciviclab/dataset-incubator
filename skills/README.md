@@ -18,11 +18,9 @@ Sono il riferimento umano per il comportamento della pipeline toolkit e delle Gi
 
 | Action | Trigger | Cosa fa |
 |---|---|---|---|
-| `validate-candidate-structure.yml` | PR su candidates/, support_datasets/ | Verifica che ogni candidate abbia `dataset.yml` e struttura valida |
-| `lint.yml` | PR e push su scripts/, tools/, pyproject.toml | Mypy + ruff + pytest su codice Python |
-| `pr-toolkit-check.yml` | PR su candidates/, support_datasets/ | `validate_candidate_structure.py` (struttura+config strict) + preflight + `toolkit run` con sample-rows |
-| `post-merge-candidate.yml` | Merge su candidates/, support_datasets/ | Run CI, rebuild `registry.json` (fusion) + proiezioni legacy, apre draft PR handoff |
-| `validate-clean-catalog.yml` | PR e push su `registry/` | Schema JSON, GCS check |
+| `check.yml` | PR e push su main | Lint + mypy + pytest (`python-ci`) e preflight dei dataset cambiati (`dataset-config-check-reusable`) |
+| `pipeline.yml` | Merge su candidates/, compose/, support_datasets/ + dispatch | `pipeline-reusable`: detect, run, sync GCS, registry PR |
+| `smoke-weekly.yml` | Schedule settimanale | Probe raggiungibilità fonti + verifica `registry.json` |
 
 ## Cross-repo
 

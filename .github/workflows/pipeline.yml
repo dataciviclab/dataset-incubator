@@ -1,17 +1,15 @@
-# Post-merge pipeline — dataset-incubator
+# Pipeline — dataset-incubator
 #
-# Dopo il merge di una PR che tocca candidate/compose/support_datasets:
-#   1. detect dei dataset cambiati (action condivisa)
-#   2. run (toolkit, anni dal config) via `make run-batch`
-#   3. sync GCS (clean + mart) via WIF
-#   4. registry → draft PR (composite action registry-update-pr)
+# Post-merge + dispatch. Usa pipeline-reusable.yml dell'org.
+# Su PR merged: solo i candidate/compose/support toccati (detect + batch).
+# Su dispatch: uno o più dataset (slug o path, separati da virgola) se
+# `datasets` è valorizzato, altrimenti tutti. Convenzione: ADR-002.
 #
-# Tutta la logica sta in `pipeline-reusable.yml` e nei target del Makefile
-# (ADR-001). Questo file è solo l'orchestratore.
-#
-# ADR-002: `datasets` accetta uno o più slug separati da virgola; vuoto = tutti.
+# ADR-002: la selezione multipla è normalizzata dall'action condivisa; qui
+# resta il comando di run perché `pipeline-reusable` non espone l'input
+# `datasets` (pattern identico a open-politica/open-mur).
 
-name: Post-merge pipeline
+name: Pipeline
 
 on:
   pull_request:
@@ -28,7 +26,7 @@ on:
         default: ""
 
 concurrency:
-  group: post-merge-pipeline-${{ github.event.pull_request.number || github.ref || 'dispatch' }}
+  group: dataset-incubator-pipeline-${{ github.event.pull_request.number || github.ref || 'dispatch' }}
   cancel-in-progress: false
 
 jobs:
@@ -42,9 +40,11 @@ jobs:
       # di repo come gli altri repo dati. Stringa vuota = nessun prefisso.
       sync-prefix: ""
       detect-paths: "candidates compose support_datasets"
+      # I candidate dipendono da fonti pubbliche instabili: su dispatch manuale
+      # un run fallito non deve fermare gli altri.
       run-command: >-
         ${{ inputs.datasets == '' && 'make run-all'
-            || format('for d in $(echo "{0}" | tr "," " "); do toolkit run -c "$d" || echo "⚠️  run fallito (skip): $d"; done', inputs.datasets) }}
+            || format('for d in $(echo "{0}" | tr "," " "); do toolkit run --config "$d" || echo "⚠️  run fallito (skip): $d"; done', inputs.datasets) }}
       run-batch-command: "make run-batch"
       # Alcuni candidate scaricano via script (non http_file): serve il flag.
       extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"

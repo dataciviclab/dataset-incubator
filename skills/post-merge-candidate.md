@@ -71,7 +71,7 @@ Deve restituire `ok`.
 ```bash
 git add registry/
 git commit -m "fix: compila entry {slug} nel registry"
-git push origin post-merge-candidate/pr-<N>-registry
+git push origin post-merge-registry/pr-<N>-registry
 ```
 
 Marca la PR ready for review e mergia.
