@@ -46,8 +46,11 @@ jobs:
         ${{ inputs.datasets == '' && 'make run-all'
             || format('for d in $(echo "{0}" | tr "," " "); do toolkit run --config "$d" || echo "⚠️  run fallito (skip): $d"; done', inputs.datasets) }}
       run-batch-command: "make run-batch"
-      # Alcuni candidate scaricano via script (non http_file): serve il flag.
-      extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1"
+      # - TOOLKIT_ALLOW_SCRIPT_SOURCE: alcuni candidate scaricano via script.
+      # - BLOCKED_SOURCE_PROXY: fallback su 403/407 (lab-connectors HttpClient);
+      #   la variable è configurata a livello repo. Senza questa riga il
+      #   fallback non esiste e una fonte che blocca il runner torna 403.
+      extra-env: "TOOLKIT_ALLOW_SCRIPT_SOURCE=1\nBLOCKED_SOURCE_PROXY=${{ vars.BLOCKED_SOURCE_PROXY }}"
     permissions:
       contents: write
       pull-requests: write
