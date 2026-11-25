@@ -17,7 +17,9 @@ raw:
     - name: "inps_pensioni_csv"
       type: "http_file"
       args:
-        url: "https://www.inps.it/content/dam/inps-site/opendata/2024/08/dataset_6002.csv"
+        # URL stabile del catalogo CKAN INPS (il vecchio /content/dam/.../2024/08
+        # è una copia datata). Stesso file: "Pensioni 2020-2024".
+        url: "https://opendata.inps.it/download/dataset/migr2024/dataset_6002.csv"
         filename: "dataset_6002_{year}.csv"
       primary: true
 

@@ -18,8 +18,8 @@ raw:
     - name: "farmacie_source"
       type: "http_file"
       args:
-        url: "https://www.dati.salute.gov.it/sites/default/files/opendata/FRM_FARMA_5_20260617.csv"
-        filename: "FRM_FARMA_5_20260617.csv"
+        url: "https://www.dati.salute.gov.it/sites/default/files/opendata/FRM_FARMA_5_20261125.csv"
+        filename: "FRM_FARMA_5_20261125.csv"
       primary: true
 
 clean:
