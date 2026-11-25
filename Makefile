@@ -45,7 +45,7 @@ run-batch:
 	   echo "::warning title=Candidate falliti::alcuni dataset sono falliti (vedi Batch Report) — il publish prosegue"
 
 clean:
-	rm -rf out/data/_runs out/data/probe out/data/raw out/data/clean out/data/mart out/data/cross .tmp/
+	rm -rf out/data/_runs out/data/probe out/data/raw out/data/clean out/data/mart out/data/support out/data/cross .tmp/
 
 registry:
 	$(TOOLKIT) registry build

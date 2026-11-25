@@ -112,7 +112,7 @@ I processi ricorrenti vivono sia come workflow markdown (per umani e agenti) sia
 |---|---|---|
 | `check.yml` | PR e push su `main` | Lint + mypy + test (`python-ci`) e preflight dei dataset cambiati (`dataset-config-check-reusable`) |
 | `pipeline.yml` | Merge su `candidates/`, `compose/`, `support_datasets/` + dispatch | `pipeline-reusable`: detect, run (`make run-batch`), sync GCS, registry PR |
-| `smoke-weekly.yml` | Schedule settimanale | Probe di raggiungibilità fonti + verifica `registry.json` |
+| `smoke-weekly.yml` | Schedule settimanale | Probe di raggiungibilità fonti; la verifica `registry.json` va riallineata a `data-explorer` |
 
 I due workflow di pipeline chiamano i componenti condivisi di
 [`dataciviclab/.github`](https://github.com/dataciviclab/.github) (ADR-001):

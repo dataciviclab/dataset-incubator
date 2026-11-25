@@ -2,8 +2,8 @@
 """Detect changed candidate/support_dataset configs from a git diff.
 
 Replaces the inline Python logic previously duplicated in:
-  - .github/workflows/pr-toolkit-check.yml (detect step)
-  - .github/workflows/post-merge-candidate.yml (detect step)
+  - .github/workflows/check.yml (detect step)
+  - .github/workflows/pipeline.yml (detect step)
 
 Usage:
     # From CI (PR diff):
@@ -102,7 +102,7 @@ def _read_stdin_files() -> list[str]:
 
 
 # Suffissi / path che non influiscono sulla pipeline: un cambio solo a questi
-# non deve triggerare run (pr-toolkit-check) né publish (post-merge).
+# non deve triggerare run (check.yml) né publish (pipeline.yml).
 _NON_PIPELINE_SUFFIXES = {".md", ".ipynb", ".png", ".jpg", ".jpeg", ".gif", ".svg"}
 _NON_PIPELINE_PARTS = {"out", "__pycache__", ".ipynb_checkpoints"}
 

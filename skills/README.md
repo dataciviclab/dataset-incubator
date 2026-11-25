@@ -20,7 +20,7 @@ Sono il riferimento umano per il comportamento della pipeline toolkit e delle Gi
 |---|---|---|---|
 | `check.yml` | PR e push su main | Lint + mypy + pytest (`python-ci`) e preflight dei dataset cambiati (`dataset-config-check-reusable`) |
 | `pipeline.yml` | Merge su candidates/, compose/, support_datasets/ + dispatch | `pipeline-reusable`: detect, run, sync GCS, registry PR |
-| `smoke-weekly.yml` | Schedule settimanale | Probe raggiungibilità fonti + verifica `registry.json` |
+| `smoke-weekly.yml` | Schedule settimanale | Probe raggiungibilità fonti; verifica `registry.json` da riallineare a `data-explorer` |
 
 ## Cross-repo
 
