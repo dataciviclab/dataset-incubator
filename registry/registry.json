@@ -3956,6 +3956,151 @@
       "location": "gs://dataciviclab-clean/istat_pil_territoriale/2024/istat_pil_territoriale_2024_clean.parquet"
     },
     {
+      "slug": "istat_presidi_residenziali",
+      "name": "Istat Presidi Residenziali",
+      "source_id": "istat_sdmx",
+      "tags": [
+        "sanita",
+        "rsa",
+        "anziani",
+        "presidi-residenziali",
+        "posti-letto",
+        "istat"
+      ],
+      "category": "sanita",
+      "period": {
+        "start": 2009,
+        "end": 2023
+      },
+      "partitions": {
+        "2023": 29694
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "semantic_type": "year"
+        },
+        {
+          "name": "ref_area_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "tipo_dato_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "tipo_dato",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "tipo_utenza_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "tipo_utenza",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "livello_assistenza_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "livello_assistenza",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "tipo_residenzialita_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "tipo_residenzialita",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "funzione_protezione_sociale_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "funzione_protezione_sociale",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "natura_giuridica_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "natura_giuridica",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "tipo_gestore_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "tipo_gestore",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "finanziamento_pubblico_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "finanziamento_pubblico",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "professione_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "professione",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "valore",
+          "type": "DOUBLE",
+          "role": "metric"
+        }
+      ],
+      "mart_refs": [
+        "istat_presidi_residenziali__mart_sintesi_regione",
+        "istat_presidi_residenziali__mart_posti_letto_regione",
+        "istat_presidi_residenziali__mart_trend"
+      ],
+      "last_run": {
+        "at": "2026-11-25T18:52:27.156161+00:00",
+        "year": 2023,
+        "status": "SUCCESS"
+      }
+    },
+    {
       "slug": "istat_proiezioni_demografiche",
       "name": "Istat Proiezioni Demografiche",
       "source_id": "istat_demo",
@@ -8063,6 +8208,40 @@
       "table": "pil_territoriale",
       "layout": "year",
       "year": 2024
+    },
+    {
+      "slug": "istat_presidi_residenziali__mart_posti_letto_regione",
+      "dataset": "istat_presidi_residenziali",
+      "table": "mart_posti_letto_regione",
+      "layout": "year",
+      "year": 2023,
+      "primary_key": [
+        "anno",
+        "ref_area_codice",
+        "tipo_utenza_codice",
+        "livello_assistenza_codice"
+      ]
+    },
+    {
+      "slug": "istat_presidi_residenziali__mart_sintesi_regione",
+      "dataset": "istat_presidi_residenziali",
+      "table": "mart_sintesi_regione",
+      "layout": "year",
+      "year": 2023,
+      "primary_key": [
+        "anno",
+        "ref_area_codice"
+      ]
+    },
+    {
+      "slug": "istat_presidi_residenziali__mart_trend",
+      "dataset": "istat_presidi_residenziali",
+      "table": "mart_trend",
+      "layout": "year",
+      "year": 2023,
+      "primary_key": [
+        "ref_area_codice"
+      ]
     },
     {
       "slug": "istat_proiezioni_demografiche__mart_italia",
