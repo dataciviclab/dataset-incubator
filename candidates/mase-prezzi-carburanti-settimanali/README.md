@@ -35,5 +35,7 @@ MASE — DGSAIE (Statistiche energetiche), API open non catalogate su dati.gov.i
 
 ## Stato / prossimo passo
 
-- Branch: `intake/mase-prezzi-carburanti` (con `mase-prezzi-carburanti-mensili`)
-- Prossimo: review PR, poi eventuale confronto con ADM
+- Integrato in `main` con PR #868 (insieme a `mase-prezzi-carburanti-mensili`)
+- Mart rigenerato il 2026-11-25: copertura fino alla rilevazione del 2026-11-23
+- Usato per il post LinkedIn sul record del gasolio (lab-ops#108)
+- Prossimo: eventuale confronto con ADM (accise accertate)
