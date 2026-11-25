@@ -2735,6 +2735,9 @@
         "start": 2020,
         "end": 2024
       },
+      "partitions": {
+        "2024": 161561
+      },
       "columns": [
         {
           "name": "anno",
@@ -2746,7 +2749,7 @@
         {
           "name": "trimestre",
           "type": "INTEGER",
-          "role": "dimension",
+          "role": "metric",
           "description": "Trimestre (1-4)"
         },
         {
@@ -2805,7 +2808,14 @@
           "description": "Numero di pensioni"
         }
       ],
-      "location": "gs://dataciviclab-clean/inps_pensioni_trimestrale/2024/inps_pensioni_trimestrale_2024_clean.parquet"
+      "mart_refs": [
+        "inps_pensioni_trimestrale__mart_pensioni_regione_importo"
+      ],
+      "last_run": {
+        "at": "2026-11-25T21:59:33.745312+00:00",
+        "year": 2024,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "ispra_emissioni_ghg",
