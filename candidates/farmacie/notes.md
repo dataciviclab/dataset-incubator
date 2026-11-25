@@ -1,6 +1,6 @@
 ## Tecnico
 
-- Granularità: singola farmacia (58.691 records)
+- Granularità: singola farmacia (59.309 righe clean al 2026-11-25)
 - Fonte: Ministero della Salute, dataset "Farmacie"
 - URL: non stabile — filename con data `FRM_FARMA_5_YYYYMMDD.csv`
 - Encoding: utf-8, delim: `;`, skip: 0
@@ -23,7 +23,7 @@
 ## Anomalie note
 
 1. **2.433 farmacie senza coordinate** (4%) — probabilmente dati storici o inserimenti manuali senza geolocalizzazione
-2. **URL non stabile**: cambia giornalmente. Lo snapshot del candidate si riferisce al 2026-06-17
+2. **URL non stabile**: cambia giornalmente. Lo snapshot del candidate si riferisce al 2026-11-25
 3. **Una stessa farmacia può avere più record** con date diverse (cambio gestione/P.IVA) — la `cod_farmacia` si ripete con `data_inizio_validita` diversa
 4. **CAP come BIGINT**: alcuni CAP hanno leading zero (es. 07010) che vengono troncati. Per uso postale serve formattazione
 

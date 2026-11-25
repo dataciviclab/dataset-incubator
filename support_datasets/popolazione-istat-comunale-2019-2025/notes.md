@@ -37,4 +37,20 @@ Tutti e 7 gli anni: raw ✅ clean ✅ mart ✅
 
 Con IRPEF 2023: ~7892 match su ~7897 comuni (99,9%). I pochi non-match confermano il dataset come detector di anomalie territoriali.
 
+## POSAS 2026 — schema diverso (verificato 2026-11-25)
+
+`POSAS_2026_it_Comuni.zip` esiste, ma **non è compatibile** con il clean attuale:
+
+| Anno | Colonne | Stato civile | Titolo file |
+|---|---|---|---|
+| 2025 | 21 | sì (`Celibi`, `Coniugati`, …) | "per età, sesso e stato civile" |
+| 2026 | 6 | no | "per età e sesso … (**stima**)" |
+
+Il 2026 contiene solo `Codice comune`, `Comune`, `Età`, `Totale maschi`, `Totale femmine`, `Totale`.
+Il `clean.sql` referenzia le colonne di stato civile → `Binder Error: Column "Celibi" … cannot be referenced before it is defined`.
+
+Quindi **2026 non va aggiunto** a `years` finché ISTAT non pubblica il file completo.
+Se resta solo la stima, serve un support separato (es. `popolazione-istat-comunale-2026`) con un clean semplificato, non un `years` in più su questo.
+
+
 
