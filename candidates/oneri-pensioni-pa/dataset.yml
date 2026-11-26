@@ -1,0 +1,75 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "oneri_pensioni_pa"
+  description: "Oneri pensionistici DAG per amministrazione, capitolo di bilancio e RTS"
+  source_id: "mef_dag"
+  tags: [welfare-lavoro, pensioni, pa, dag, mef, oneri, bilancio]
+  category: welfare-lavoro
+  years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
+  time_coverage:
+    start_year: 2017
+    end_year: 2025
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "dag_oneri_dicembre"
+      type: "script"
+      args:
+        command: "python scripts/download_dag_oneri.py --year {year} --output dag_oneri_{year}.csv"
+        output: "dag_oneri_{year}.csv"
+        filename: "dag_oneri_{year}.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - anno
+    - mese
+    - ministero
+    - capitolo_bilancio
+    - piano_gestione
+    - descrizione_capitolo
+    - rts
+    - descrizione_rts
+    - numero_partite
+    - importi_arretrati_eur
+    - importi_ratei_eur
+    - importi_tredicesima_eur
+    - importi_totale_eur
+  read:
+    source: auto
+    mode: latest
+    header: true
+    delim: ","
+    encoding: "utf-8"
+    trim_whitespace: true
+  validate:
+    not_null: [anno, mese, ministero, rts, numero_partite, importi_totale_eur]
+    primary_key: [anno, mese, ministero, capitolo_bilancio, piano_gestione, rts]
+    min_rows: 100
+
+mart:
+  tables:
+    - name: "mart_oneri_per_ministero"
+      sql: "sql/mart_oneri_per_ministero.sql"
+    - name: "mart_oneri_per_rts"
+      sql: "sql/mart_oneri_per_rts.sql"
+  required_tables:
+    - "mart_oneri_per_ministero"
+    - "mart_oneri_per_rts"
+  validate:
+    table_rules:
+      mart_oneri_per_ministero:
+        required_columns: [anno, ministero, numero_partite, importi_totale_eur, quota_pct]
+        primary_key: [anno, ministero]
+        min_rows: 5
+      mart_oneri_per_rts:
+        required_columns: [anno, rts, descrizione_rts, numero_partite, importi_totale_eur, quota_pct]
+        primary_key: [anno, rts]
+        min_rows: 50
+
+validation:
+  fail_on_error: true

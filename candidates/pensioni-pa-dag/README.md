@@ -1,47 +1,63 @@
 # Pensioni PA DAG
 
-## Domanda
+**Stock delle pensioni dello Stato gestite dalla DAG (MEF) — dicembre 2017-2025**
 
-- Come si distribuisce territorialmente lo stock di pensioni dello Stato gestite dal DAG, e come cambia la composizione tra trattamenti diretti e indiretti/reversibili tra regioni?
+## Domanda civica
+
+Come si distribuisce territorialmente lo stock di pensioni dello Stato gestite dalla DAG, e come cambia la composizione tra trattamenti diretti e indiretti/reversibili tra territori?
 
 ## Dataset
 
-- fonte: MEF DAG, sezione open data `Tipo Pensione`
-- pagina fonte: `https://datipensioni.mef.gov.it/datipensioni/download`
-- download riproducibile: `POST https://datipensioni.mef.gov.it/datipensioni/downloadFile`
-- file cumulativo usato nel v0: `Dati_Tipo_Pensione_totale.csv`
-- licenza dichiarata dalla fonte: `CC BY 4.0`
-- caveat: l'endpoint richiede POST con form-encoded body — gestito via source type `http_post_file` (toolkit#242)
+- **Fonte**: MEF — DAG, open data "Tipo Pensione" (`datipensioni.mef.gov.it`)
+- **Canale**: POST form-encoded su `/datipensioni/downloadFile`; la fonte pubblica file **mensili** `Dati_Tipo_Pensione_YYYYMM.csv`
+- **Script**: `scripts/download_dag.py --year YYYY` (scarica dicembre dell'anno)
+- **Periodo**: dicembre 2017-2025 (9 snapshot annuali)
+- **Licenza**: CC BY 4.0 (verificata sulla pagina di download: <https://creativecommons.org/licenses/by/4.0/deed.it>)
 
-## Perche vale la pena testarlo
+## Perché vale la pena
 
-- fonte pubblica poco usata e distinta dal perimetro INPS
-- granularita utile: anno, mese, territorio, tipo trattamento, microqualifica
-- buon complemento del filone `dipendenti-pubblici` sul lato passivo del settore pubblico
-- domanda civica leggibile su concentrazione territoriale e composizione dei trattamenti
+- Perimetro **distinto da INPS**: pensioni dello Stato gestite dalla DAG, non il totale delle pensioni italiane.
+- Granularità: ufficio/provincia, tipo di pensione, microqualifica, titolo.
+- Serie 2017-2025 per la domanda territoriale, con un taglio di fine anno confrontabile.
 
 ## Output minimo atteso
 
-- raw scaricato via `http_post_file`
-- clean 2024 filtrato su `DIRETTA` e `INDIRETTA/REVERSIBILE`
-- mart regionale su snapshot di dicembre 2024
-- base pronta per notebook v0 o analisi successiva
+- Clean: 18 colonne (territorio, ufficio, tipo, microqualifica, titolo, partite, importi).
+- `mart_territori_dicembre`: `anno`, `mese`, `regione`, `tipo_pensione`, `numero_partite`, `importi_mensili_pagati_eur`, `righe_granulari`.
+- Include **20 regioni + ufficio centrale "Italia" (ROMA - MEF DST UFFICIO V) + Estero**, e tutti i tipi (`DIRETTA`, `INDIRETTA/REVERSIBILE`, `UNA TANTUM` trascurabile).
+
+## Perimetro e numeri
+
+- 2024-12: **102.992 partite** = 83.163 regioni + 18.083 Italia + 1.746 Estero.
+- Serie totale del mart: **180.168 (2017) → 95.990 (2025)**; 22 territori e 95 uffici in tutti gli anni.
+- `Italia` **non è un aggregato**: è l'ufficio centrale di Roma; `Estero` sono uffici reali. Il mart li include, quindi la sua somma coincide col totale del clean.
+- Il calo è nel dato, non nella copertura (95 uffici costanti). Va confermato con un report ufficiale DAG.
+
+## Validazione
+
+```bash
+python candidates/pensioni-pa-dag/scripts/check_dag.py
+```
+
+Controlla: identità `regioni + Italia + Estero = totale`, 0 duplicati sulla chiave naturale, 0 nulli/negativi, 22 territori e 95 uffici, somma del mart = clean e una riga per `(anno, regione, tipo)`.
+
+Controlli già eseguiti:
+- mensile 2024-12 vs cumulativo storico 2024-12: stesse 5.328 righe e 102.992 partite;
+- cross-check con `oneri-pensioni-pa`: stesse partite (2022-12: 119.068; 2024-12: 102.992; 2025-12: 95.990);
+- 9 anni 2017-2025: validazione OK, readiness 8/8;
+- nessun negativo/zero anomalo nel 2024.
 
 ## Criterio di promozione
 
-- perimetro dichiarato con chiarezza: pensioni DAG, non totale pensioni italiane
-- snapshot regionale dicembre 2024 leggibile e difendibile
-- rischio tecnico della fonte POST documentato in modo esplicito
+- Serie dicembre 2017-2025 leggibile, validata e documentata.
+- `source_id: mef_dag` registrato in `source-observatory` (oggi il dataset è ancora elencato sotto `inps`).
 
 ## Stato
 
-- intake
-
-Issue collegata:
-- `dataset-incubator#96`
+`candidate` v1 — run 2017-2025: 9 partizioni, mart validato, readiness 8/8.
 
 ## Prossimo passo
 
-- il source type `http_post_file` è ora disponibile (toolkit#242)
-- candidate allineato: usa `http_post_file` invece di script + `local_file`
-- `scripts/download_raw.py` mantenuto come riferimento storico per pattern cookie GET→POST
+- Monitorare il form MEF: non ha versioning, se cambia il run fallisce nel raw.
+- Registrare `mef_dag` in source-observatory.
+- Confronto esterno con un report DAG ufficiale.

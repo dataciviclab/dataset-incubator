@@ -1,39 +1,49 @@
-# Notes
+# Notes — pensioni-pa-dag
 
 ## Tecnico
 
-- la fonte non espone un URL statico: il download avviene via `POST` su `/datipensioni/downloadFile`
-- il source type `http_post_file` (toolkit#242) gestisce il download direttamente, senza script esterno
-- `dataset.yml` usa quindi `type: http_post_file` con `post_data` per i parametri del form
-- `scripts/download_raw.py` resta come riferimento storico (pattern cookie GET→POST se l'endpoint dovesse richiederlo)
-- il file cumulativo reale contiene almeno un caso di riga corrotta con frammento HTML del bridge WebLogic; per questo il `clean.read` usa `strict_mode: false` e `ignore_errors: true`
-- il v0 sceglie `2024` perche e l'ultimo anno completo nel cumulativo; `2025` parte solo da aprile
-- il mart tiene lo snapshot `mese = 12` per evitare letture distorte da medie mensili su uno stock
-- run locale eseguito il `2026-03-28`: raw, clean e mart prodotti correttamente
-- shape clean verificata via `duckdb_describe`: `63.547` righe x `18` colonne
-- shape mart verificata via `duckdb_describe`: `40` righe x `7` colonne
-- rischio residuo di runtime: su Windows il comando `toolkit run all` chiude i layer ma fallisce nel rename finale del file `_runs/` con `WinError 5`; il bug sembra nel run record, non nel candidate
-- notebook v0 eseguito - celle 1-4 con output testuali leggeri, cella 5 ok con output grafico non committato
+- Fonte: **MEF DAG**, open data "Tipo Pensione" (`datipensioni.mef.gov.it`).
+- Il file cumulativo del v0 (`Dati_Tipo_Pensione_totale.csv`) **non è più servito**: la fonte risponde con una pagina HTML `NOME FILE NON CONSENTITO`. Ora pubblica solo file mensili `Dati_Tipo_Pensione_YYYYMM.csv`.
+- Download riproducibile: `POST /datipensioni/downloadFile` con `categoria=pensioni`, `filename=Dati_Tipo_Pensione_YYYYMM.csv`, `dataset=DOWNLOAD_RDF_MESE_ANNO_PENS`, `mese`, `anno`.
+- `scripts/download_dag.py --year YYYY` scarica **dicembre**; il raw canonico resta in `out/`.
+- Il plugin `http_post_file` non templa `post_data` (`{year}` è sostituito solo nei valori di primo livello), per questo serve lo script.
+- Ogni file mensile è uno snapshot: 5.078-7.525 righe (2017-12 → 2025-12), **22 territori** (20 regioni + Italia + Estero) e **95 uffici** in tutti gli anni.
 
-## Metodologia di ingestion
+## Metodologia
 
-- staging raw: `toolkit run raw` (source type `http_post_file`, fetch via POST)
-- file scaricato: `Dati_Tipo_Pensione_totale.csv`
-- filtro analitico v0:
-  - `Anno = 2024`
-  - `Mese = 12`
-  - `Tipo Pensione in ('DIRETTA', 'INDIRETTA/REVERSIBILE')`
-  - esclusi aggregati `Italia` ed `Estero`
+- **Dicembre** = stock di fine anno, confrontabile tra anni; il mart filtra `mese = 12`.
+- Il mart include **tutti i territori**: le 20 regioni, l'ufficio centrale `Italia` (`ROMA - MEF DST UFFICIO V`) e `Estero`. Non sono aggregati: sono componenti reali dello stock.
+- Include tutti i tipi: `DIRETTA`, `INDIRETTA/REVERSIBILE` e `UNA TANTUM` (1-2 partite nel 2017-2018/2022).
+- La riga `Italia` **non è il totale nazionale**: è un ufficio (R1). Il totale è la somma di tutte le righe.
+- Granularità della fonte: ufficio/provincia; il mart aggrega a territorio.
 
 ## Analitico
 
-- il file nasce a granularita ufficio/provincia, ma il primo mart sale a livello regionale
-- il campo guida del v0 e `Numero Partite`
-- gli importi restano nel clean per possibili estensioni, ma non guidano il primo output
+- Serie del mart: 9 anni (2017-2025). Totali: **180.168 (2017) → 95.990 (2025)**.
+- 2024-12: 102.992 = 83.163 regioni + 18.083 Italia + 1.746 Estero.
+- Per tipo (2024-12): `DIRETTA` 54.537, `INDIRETTA/REVERSIBILE` 48.455.
+- Il calo è in entrambi i tipi; gli uffici sono 95 costanti, quindi non è un buco di copertura.
+- Gli importi (arretrati, ratei, tredicesima, mensili) restano nel clean; il mart espone i mensili pagati.
+
+## Validazione
+
+```bash
+python candidates/pensioni-pa-dag/scripts/check_dag.py
+```
+
+Controlli:
+- identità `regioni + Italia + Estero = totale`;
+- 0 duplicati sulla chiave naturale, 0 nulli/negativi;
+- 22 territori e 95 uffici per anno;
+- somma del mart = clean e una riga per `(anno, regione, tipo)` (44-45 righe/anno).
+
+Cross-vintage: il mensile 2024-12 coincide col cumulativo storico 2024-12 (5.328 righe, 102.992 partite). Il cumulativo conteneva la riga corrotta WebLogic (2024-10) che il v0 mascherava con `ignore_errors`; i mensili non ne hanno bisogno.
+
+**Cross-check con `oneri-pensioni-pa`**: gli oneri per amministrazione hanno le stesse partite di questo dataset (2018-2025 esatti; 2022-12: 119.068; 2024-12: 102.992; 2025-12: 95.990). Nel **2017** i due file differiscono di **10 partite** (R1 +9, CT +1): è una revisione della fonte, non un errore di pipeline.
 
 ## Cautele
 
-- il dataset copre pensioni dello Stato gestite dal DAG, non il totale INPS
-- i nomi territoriali della fonte non sono ancora normalizzati su codifiche ISTAT
-- `Trentino-Sudtirol` e `Valle dAosta` vanno eventualmente armonizzati in uno step successivo
-- il bug sporadico del bridge HTML va tenuto presente se il file cambia comportamento lato fonte
+- Il form MEF non ha versioning: se cambia, il raw fallisce (meglio un errore esplicito che un CSV vuoto).
+- `source_id: mef_dag` non è ancora in source-observatory; il radar elenca il dataset sotto `inps`.
+- Il perimetro è **DAG**, non INPS: non confrontare i totali con `open-inps` senza dichiararlo.
+- Il calo 2017-2025 è nel dato; per una conferma esterna serve un report DAG ufficiale.
