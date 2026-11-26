@@ -1,0 +1,132 @@
+root: "../../out"
+schema_version: 1
+
+dataset:
+  name: "istat_ospiti_presidi"
+  source_id: "istat_dbnomics"
+  tags: [sanita, rsa, anziani, ospiti, presidi-residenziali, istat]
+  category: sanita
+  years: [2023]
+  time_coverage:
+    start_year: 2009
+    end_year: 2023
+
+# Ospiti dei presidi residenziali socio-assistenziali e socio-sanitari — ISTAT 49_62
+# Canale DBnomics (mirror ISTAT verificato 2026-11-04): evita il rate-limit SDMX
+# e il fetch del cubo intero (~400k righe, va in timeout sui 180s).
+#
+# Perimetro v0 (filtro stretto):
+#   DATA_TYPE 80 = ospiti totali, 89 = anziani 65+, 92 = stranieri
+#   AGE TOTAL / Y_GE65 · SEX 9 (totale) · NEED ALL/SELSUFELD/NOSELSUFELD
+#   HEALTHCARE_LEVEL ALL/ABS/LOW/MED/HIGH · SOCIAL_PROT_FUNCTION 99 (totale)
+#   TYPE_RESID_CARE_CENTRE ALL
+# A differenza di 49_37, qui 65+ x livello e' disponibile per tutte le 28 aree:
+# l'intensita' assistenziale regionale si legge dal lato ospiti.
+# Il clean NON filtra per anno: il parquet del run contiene 2009-2023.
+
+raw:
+  output_policy: overwrite
+  sources:
+    - name: "istat_dbnomics_ospiti"
+      type: "dbnomics"
+      client:
+        timeout: 180
+        retries: 2
+      args:
+        provider: ISTAT
+        dataset: "49_62"
+        dimensions:
+          DATA_TYPE: ["80", "89", "92"]
+          AGE: ["TOTAL", "Y_GE65"]
+          SEX: ["9"]
+          NEED_TYPE: ["ALL", "SELSUFELD", "NOSELSUFELD"]
+          HEALTHCARE_LEVEL: ["ALL", "ABS", "LOW", "MED", "HIGH"]
+          SOCIAL_PROT_FUNCTION: ["99"]
+          TYPE_RESID_CARE_CENTRE: ["ALL"]
+        page_size: 1000
+        max_pages: 10
+        filename: "istat_ospiti_presidi_series.csv"
+      primary: true
+
+clean:
+  sql: "sql/clean.sql"
+  required_columns:
+    - anno
+    - ref_area_codice
+    - regione
+    - tipo_dato_codice
+    - tipo_dato
+    - eta_codice
+    - eta
+    - bisogno_codice
+    - bisogno
+    - livello_assistenza_codice
+    - livello_assistenza
+    - ospiti
+  read:
+    source: "auto"
+    mode: "latest"
+    delim: ","
+    encoding: "utf-8"
+    header: true
+  validate:
+    not_null: [anno, ref_area_codice, tipo_dato_codice]
+    min_rows: 3000
+    primary_key:
+      - anno
+      - ref_area_codice
+      - tipo_dato_codice
+      - eta_codice
+      - bisogno_codice
+      - livello_assistenza_codice
+
+mart:
+  tables:
+    - name: "mart_sintesi_regione"
+      sql: "sql/mart_sintesi_regione.sql"
+    - name: "mart_anziani_livello"
+      sql: "sql/mart_anziani_livello.sql"
+    - name: "mart_trend"
+      sql: "sql/mart_trend.sql"
+  required_tables:
+    - "mart_sintesi_regione"
+    - "mart_anziani_livello"
+    - "mart_trend"
+  validate:
+    table_rules:
+      mart_sintesi_regione:
+        required_columns:
+          - anno
+          - ref_area_codice
+          - regione
+          - ospiti_totali
+          - ospiti_65plus
+          - ospiti_65plus_non_autosufficienti
+          - quota_non_autosufficienti_pct
+          - ospiti_stranieri
+        primary_key: [anno, ref_area_codice]
+        min_rows: 250
+      mart_anziani_livello:
+        required_columns:
+          - anno
+          - ref_area_codice
+          - regione
+          - livello_assistenza_codice
+          - ospiti_65plus
+          - is_aggregato
+        primary_key: [anno, ref_area_codice, livello_assistenza_codice]
+        min_rows: 1000
+      mart_trend:
+        required_columns:
+          - ref_area_codice
+          - regione
+          - first_year
+          - last_year
+          - ospiti_totali_first
+          - ospiti_totali_last
+          - cagr_pct
+        primary_key: [ref_area_codice]
+        min_rows: 15
+
+validation:
+  fail_on_error: true
