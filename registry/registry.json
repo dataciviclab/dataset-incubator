@@ -2057,6 +2057,129 @@
       "location": "gs://dataciviclab-clean/dipendenti_pubblici/*/dipendenti_pubblici_*_clean.parquet"
     },
     {
+      "slug": "eu_call_open",
+      "name": "Eu Call Open",
+      "description": "Call UE aperte e in arrivo (Funding & Tenders Portal / SEDIA) con deadline e budget",
+      "source_id": "sedia",
+      "tags": [
+        "finanza-pubblica",
+        "eu",
+        "grants",
+        "bandi",
+        "sedia",
+        "funding-tenders"
+      ],
+      "category": "finanza-pubblica",
+      "period": {
+        "start": 2021,
+        "end": 2027
+      },
+      "partitions": {
+        "2026": 965
+      },
+      "columns": [
+        {
+          "name": "identifier",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "call_identifier",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "call_title",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "title",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "status",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "status_label",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "framework_programme",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "framework_label",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "programme_period",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "types_of_action",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "start_date",
+          "type": "DATE",
+          "role": "dimension"
+        },
+        {
+          "name": "deadline_date",
+          "type": "DATE",
+          "role": "dimension"
+        },
+        {
+          "name": "deadline_model",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "budget_total_eur",
+          "type": "DOUBLE",
+          "role": "metric"
+        },
+        {
+          "name": "expected_grants",
+          "type": "BIGINT",
+          "role": "metric"
+        },
+        {
+          "name": "url",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "giorni_alla_scadenza",
+          "type": "BIGINT",
+          "role": "metric"
+        },
+        {
+          "name": "ha_scadenza_futura",
+          "type": "BOOLEAN",
+          "role": "dimension"
+        }
+      ],
+      "mart_refs": [
+        "eu_call_open__mart_scadenze",
+        "eu_call_open__mart_per_programma"
+      ],
+      "last_run": {
+        "at": "2026-11-26T11:47:50.624080+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
+    },
+    {
       "slug": "farmacie",
       "name": "Farmacie — Anagrafica farmacie italiane (Ministero Salute)",
       "description": "Anagrafica delle farmacie italiane: indirizzo, comune, provincia, regione, coordinate geografiche, tipologia e periodo di validità. Fonte Ministero della Salute.",
@@ -2240,6 +2363,14 @@
         "start": 2020,
         "end": 2025
       },
+      "partitions": {
+        "2020": 8480,
+        "2021": 6127,
+        "2022": 10323,
+        "2023": 8559,
+        "2024": 6934,
+        "2025": 6764
+      },
       "columns": [
         {
           "name": "anno",
@@ -2276,7 +2407,8 @@
           "name": "beneficiario_partita_iva",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Partita IVA/codice fiscale del beneficiario"
+          "description": "Partita IVA/codice fiscale del beneficiario",
+          "semantic_type": "fiscal_code"
         },
         {
           "name": "flag_no_profit",
@@ -2476,20 +2608,30 @@
           "type": "VARCHAR",
           "role": "dimension",
           "description": "Paese beneficiario del contributo"
+        },
+        {
+          "name": "call_id",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "project_id",
+          "type": "VARCHAR",
+          "role": "dimension"
         }
       ],
       "mart_refs": [
         "fts_eu_grants__mart_trend_anno",
         "fts_eu_grants__mart_sintesi_programma",
         "fts_eu_grants__mart_sintesi_beneficiario",
-        "fts_eu_grants__mart_top_beneficiari"
+        "fts_eu_grants__mart_top_beneficiari",
+        "fts_eu_grants__mart_top_call"
       ],
       "last_run": {
-        "at": "2026-08-03T14:26:18.297828+00:00",
-        "year": 2025,
+        "at": "2026-11-26T11:51:11.396178+00:00",
+        "year": 2020,
         "status": "SUCCESS"
-      },
-      "location": "gs://dataciviclab-clean/fts_eu_grants/*/fts_eu_grants_*_clean.parquet"
+      }
     },
     {
       "slug": "gse_cer_elenco",
@@ -7896,6 +8038,26 @@
       "layout": "glob"
     },
     {
+      "slug": "eu_call_open__mart_per_programma",
+      "dataset": "eu_call_open",
+      "table": "mart_per_programma",
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "framework_programme"
+      ]
+    },
+    {
+      "slug": "eu_call_open__mart_scadenze",
+      "dataset": "eu_call_open",
+      "table": "mart_scadenze",
+      "layout": "year",
+      "year": 2026,
+      "primary_key": [
+        "identifier"
+      ]
+    },
+    {
       "slug": "farmacie__farmacie",
       "dataset": "farmacie",
       "table": "farmacie",
@@ -7930,6 +8092,15 @@
       "primary_key": [
         "anno",
         "beneficiario_nome"
+      ]
+    },
+    {
+      "slug": "fts_eu_grants__mart_top_call",
+      "dataset": "fts_eu_grants",
+      "table": "mart_top_call",
+      "layout": "flat",
+      "primary_key": [
+        "call_id"
       ]
     },
     {
