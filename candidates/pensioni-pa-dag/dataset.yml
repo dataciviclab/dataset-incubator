@@ -33,18 +33,21 @@ clean:
     encoding: "utf-8"
     trim_whitespace: true
   validate:
-    not_null: [anno, mese, numero_partite]
+    not_null: [anno, mese, regione, sigla_provincia, ufficio, tipo_pensione, numero_partite]
+    primary_key: [anno, mese, regione, sigla_provincia, ufficio, tipo_pensione, codice_pensione, descrizione_microqualifica, codice_microqualifica, codice_titolo]
     min_rows: 1000
 
 mart:
   tables:
-    - name: "mart_regioni_dicembre"
+    - name: "mart_territori_dicembre"
       sql: "sql/mart.sql"
   required_tables:
-    - "mart_regioni_dicembre"
+    - "mart_territori_dicembre"
   validate:
     table_rules:
-      mart_regioni_dicembre:
+      mart_territori_dicembre:
+        required_columns: [anno, mese, regione, tipo_pensione, numero_partite, importi_mensili_pagati_eur]
+        primary_key: [anno, regione, tipo_pensione]
         min_rows: 20
 
 validation:
