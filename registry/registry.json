@@ -2,7 +2,7 @@
   "schema_version": 2,
   "repo": "dataset-incubator",
   "source_repo": "dataciviclab/dataset-incubator",
-  "updated_at": "2026-11-25",
+  "updated_at": "2026-11-26",
   "gcs": {
     "clean": "year"
   },
@@ -2070,6 +2070,9 @@
         "start": 2026,
         "end": 2026
       },
+      "partitions": {
+        "2026": 59309
+      },
       "columns": [
         {
           "name": "anno",
@@ -2215,7 +2218,11 @@
       "mart_refs": [
         "farmacie__farmacie"
       ],
-      "location": "gs://dataciviclab-clean/farmacie/2026/farmacie_2026_clean.parquet"
+      "last_run": {
+        "at": "2026-11-26T10:09:46.193764+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "fts_eu_grants",
@@ -2735,6 +2742,9 @@
         "start": 2020,
         "end": 2024
       },
+      "partitions": {
+        "2024": 161561
+      },
       "columns": [
         {
           "name": "anno",
@@ -2747,7 +2757,8 @@
           "name": "trimestre",
           "type": "INTEGER",
           "role": "dimension",
-          "description": "Trimestre (1-4)"
+          "description": "Trimestre (1-4)",
+          "semantic_type": "quarter"
         },
         {
           "name": "sesso",
@@ -2805,7 +2816,14 @@
           "description": "Numero di pensioni"
         }
       ],
-      "location": "gs://dataciviclab-clean/inps_pensioni_trimestrale/2024/inps_pensioni_trimestrale_2024_clean.parquet"
+      "mart_refs": [
+        "inps_pensioni_trimestrale__mart_pensioni_regione_importo"
+      ],
+      "last_run": {
+        "at": "2026-11-26T10:09:57.069530+00:00",
+        "year": 2024,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "ispra_emissioni_ghg",
