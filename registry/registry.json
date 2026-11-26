@@ -377,10 +377,13 @@
         "trasporti",
         "comuni"
       ],
-      "category": "mobilita",
+      "category": "trasporti",
       "period": {
         "start": 2024,
         "end": 2024
+      },
+      "partitions": {
+        "2024": 176
       },
       "columns": [
         {
@@ -415,11 +418,10 @@
         "art_taxi_ncc__mart_taxi_ncc_per_capite"
       ],
       "last_run": {
-        "at": "2026-09-19T14:57:53.271286+00:00",
+        "at": "2026-11-26T12:26:51.403162+00:00",
         "year": 2024,
         "status": "SUCCESS"
-      },
-      "location": "gs://dataciviclab-clean/art_taxi_ncc/2024/art_taxi_ncc_2024_clean.parquet"
+      }
     },
     {
       "slug": "bdap_anagrafe_enti",
@@ -437,11 +439,14 @@
         "start": 2026,
         "end": 2026
       },
+      "partitions": {
+        "2026": 38325
+      },
       "columns": [
         {
           "name": "id_ente",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "Identificativo univoco ente (chiave primaria)"
         },
         {
@@ -492,7 +497,7 @@
         {
           "name": "codice_forma_giuridica",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "Codice forma giuridica"
         },
         {
@@ -612,7 +617,7 @@
         {
           "name": "codice_zona",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "Codice zona geografica"
         },
         {
@@ -631,12 +636,13 @@
           "name": "codice_ente_siope",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice SIOPE ente (chiave join BDAP)"
+          "description": "Codice SIOPE ente (chiave join BDAP)",
+          "semantic_type": "siope_code"
         },
         {
           "name": "id_tipologia_siope",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID tipologia SIOPE"
         },
         {
@@ -667,12 +673,13 @@
           "name": "codice_ente_ipa",
           "type": "VARCHAR",
           "role": "dimension",
-          "description": "Codice IPA ente (chiave join PA)"
+          "description": "Codice IPA ente (chiave join PA)",
+          "semantic_type": "ipa_code"
         },
         {
           "name": "id_categoria_ipa",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID categoria IPA"
         },
         {
@@ -721,7 +728,7 @@
         {
           "name": "id_tipologia_miur",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID tipologia MIUR"
         },
         {
@@ -739,13 +746,13 @@
         {
           "name": "id_tipologia_dt",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID tipologia DT"
         },
         {
           "name": "codice_tipologia_dt",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "Codice tipologia DT"
         },
         {
@@ -764,19 +771,19 @@
         {
           "name": "codice_ente_istat_s13",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "Codice ISTAT S13 ente"
         },
         {
           "name": "id_tipologia_istat_s13",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID tipologia ISTAT S13"
         },
         {
           "name": "codice_tipologia_istat_s13",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "Codice tipologia ISTAT S13"
         },
         {
@@ -800,7 +807,7 @@
         {
           "name": "id_tipologia_dlgs_118_2011",
           "type": "BIGINT",
-          "role": "dimension",
+          "role": "metric",
           "description": "ID tipologia DLGS 118/2011"
         },
         {
@@ -828,7 +835,14 @@
           "description": "Data esclusione DLGS 118/2011"
         }
       ],
-      "location": "gs://dataciviclab-clean/bdap_anagrafe_enti/2026/bdap_anagrafe_enti_2026_clean.parquet"
+      "mart_refs": [
+        "bdap_anagrafe_enti__mart_anagrafe_enti"
+      ],
+      "last_run": {
+        "at": "2026-11-26T12:39:56.133467+00:00",
+        "year": 2026,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "bdap_lea",
@@ -1636,6 +1650,9 @@
         "start": 2026,
         "end": 2026
       },
+      "partitions": {
+        "2026": 7894
+      },
       "columns": [
         {
           "name": "codice_istat",
@@ -1879,11 +1896,10 @@
         "comuni_master__mart_comuni_master"
       ],
       "last_run": {
-        "at": "2026-11-13T15:15:39.866538+00:00",
+        "at": "2026-11-26T12:39:46.071003+00:00",
         "year": 2026,
         "status": "SUCCESS"
-      },
-      "location": "gs://dataciviclab-clean/comuni_master/2026/comuni_master_2026_clean.parquet"
+      }
     },
     {
       "slug": "dipendenti_pubblici",
@@ -3360,6 +3376,9 @@
         "start": 2026,
         "end": 2026
       },
+      "partitions": {
+        "2026": 7894
+      },
       "columns": [
         {
           "name": "codice_istat",
@@ -3450,11 +3469,10 @@
         "istat_elenco_comuni__mart_codici_catastali"
       ],
       "last_run": {
-        "at": "2026-08-02T14:46:46.836471+00:00",
+        "at": "2026-11-26T12:40:26.434679+00:00",
         "year": 2026,
         "status": "SUCCESS"
-      },
-      "location": "gs://dataciviclab-clean/istat_elenco_comuni/2026/istat_elenco_comuni_2026_clean.parquet"
+      }
     },
     {
       "slug": "istat_gini_regionale",
@@ -3785,6 +3803,9 @@
         "start": 2002,
         "end": 2024
       },
+      "partitions": {
+        "2026": 3179
+      },
       "columns": [
         {
           "name": "anno",
@@ -3823,11 +3844,10 @@
         "istat_migrazioni__mart_migrazioni_serie"
       ],
       "last_run": {
-        "at": "2026-11-04T17:31:56.136255+00:00",
+        "at": "2026-11-26T12:26:51.730155+00:00",
         "year": 2026,
         "status": "SUCCESS"
-      },
-      "location": "gs://dataciviclab-clean/istat_migrazioni/2026/istat_migrazioni_2026_clean.parquet"
+      }
     },
     {
       "slug": "istat_occupazione_provinciale",
@@ -4073,6 +4093,9 @@
         "start": 2008,
         "end": 2024
       },
+      "partitions": {
+        "2026": 145006
+      },
       "columns": [
         {
           "name": "anno",
@@ -4121,11 +4144,10 @@
         "istat_permessi__mart_permessi_serie"
       ],
       "last_run": {
-        "at": "2026-11-04T17:31:59.875295+00:00",
+        "at": "2026-11-26T12:26:54.819670+00:00",
         "year": 2026,
         "status": "SUCCESS"
-      },
-      "location": "gs://dataciviclab-clean/istat_permessi/2026/istat_permessi_2026_clean.parquet"
+      }
     },
     {
       "slug": "istat_pil_territoriale",
@@ -4520,6 +4542,9 @@
         "start": 2019,
         "end": 2023
       },
+      "partitions": {
+        "2026": 104619
+      },
       "columns": [
         {
           "name": "anno",
@@ -4568,11 +4593,10 @@
         "istat_stranieri_residenti__mart_stranieri_residenti_serie"
       ],
       "last_run": {
-        "at": "2026-11-04T17:33:23.132812+00:00",
+        "at": "2026-11-26T12:29:07.556299+00:00",
         "year": 2026,
         "status": "SUCCESS"
-      },
-      "location": "gs://dataciviclab-clean/istat_stranieri_residenti/2026/istat_stranieri_residenti_2026_clean.parquet"
+      }
     },
     {
       "slug": "istat_trasporto_ferroviario",
@@ -4591,6 +4615,9 @@
       "period": {
         "start": 2004,
         "end": 2024
+      },
+      "partitions": {
+        "2026": 4114
       },
       "columns": [
         {
@@ -4644,11 +4671,10 @@
         "istat_trasporto_ferroviario__mart_ferrovia_intermodale"
       ],
       "last_run": {
-        "at": "2026-11-04T21:59:02.276293+00:00",
+        "at": "2026-11-26T12:37:21.531587+00:00",
         "year": 2026,
         "status": "SUCCESS"
-      },
-      "location": "gs://dataciviclab-clean/istat_trasporto_ferroviario/2026/istat_trasporto_ferroviario_2026_clean.parquet"
+      }
     },
     {
       "slug": "istat_trasporto_merci_strada",
@@ -4667,6 +4693,9 @@
       "period": {
         "start": 2008,
         "end": 2024
+      },
+      "partitions": {
+        "2026": 93899
       },
       "columns": [
         {
@@ -4715,11 +4744,10 @@
         "istat_trasporto_merci_strada__mart_merci_per_direttrice"
       ],
       "last_run": {
-        "at": "2026-11-04T21:59:07.440112+00:00",
+        "at": "2026-11-26T12:37:28.793292+00:00",
         "year": 2026,
         "status": "SUCCESS"
-      },
-      "location": "gs://dataciviclab-clean/istat_trasporto_merci_strada/2026/istat_trasporto_merci_strada_2026_clean.parquet"
+      }
     },
     {
       "slug": "istat_va_branca",
