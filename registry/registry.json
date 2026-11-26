@@ -5924,6 +5924,115 @@
       "location": "gs://dataciviclab-clean/mortalita_istat_evitabile/2022/mortalita_istat_evitabile_2022_clean.parquet"
     },
     {
+      "slug": "oneri_pensioni_pa",
+      "name": "Oneri Pensioni Pa",
+      "description": "Oneri pensionistici DAG per amministrazione, capitolo di bilancio e RTS",
+      "source_id": "mef_dag",
+      "tags": [
+        "welfare-lavoro",
+        "pensioni",
+        "pa",
+        "dag",
+        "mef",
+        "oneri",
+        "bilancio"
+      ],
+      "category": "welfare-lavoro",
+      "period": {
+        "start": 2017,
+        "end": 2025
+      },
+      "partitions": {
+        "2017": 411,
+        "2018": 412,
+        "2019": 409,
+        "2020": 401,
+        "2021": 398,
+        "2022": 396,
+        "2023": 386,
+        "2024": 389,
+        "2025": 384
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "semantic_type": "year"
+        },
+        {
+          "name": "mese",
+          "type": "INTEGER",
+          "role": "dimension",
+          "semantic_type": "month"
+        },
+        {
+          "name": "ministero",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "capitolo_bilancio",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "piano_gestione",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "descrizione_capitolo",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "rts",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "descrizione_rts",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "numero_partite",
+          "type": "INTEGER",
+          "role": "metric"
+        },
+        {
+          "name": "importi_arretrati_eur",
+          "type": "DOUBLE",
+          "role": "metric"
+        },
+        {
+          "name": "importi_ratei_eur",
+          "type": "DOUBLE",
+          "role": "metric"
+        },
+        {
+          "name": "importi_tredicesima_eur",
+          "type": "DOUBLE",
+          "role": "metric"
+        },
+        {
+          "name": "importi_totale_eur",
+          "type": "DOUBLE",
+          "role": "metric"
+        }
+      ],
+      "mart_refs": [
+        "oneri_pensioni_pa__mart_oneri_per_ministero",
+        "oneri_pensioni_pa__mart_oneri_per_rts"
+      ],
+      "last_run": {
+        "at": "2026-11-26T14:01:40.516825+00:00",
+        "year": 2025,
+        "status": "SUCCESS"
+      }
+    },
+    {
       "slug": "pensioni_pa_dag",
       "name": "Pensioni Pa Dag",
       "description": "Pensioni PA: importi pensionistici per gestione, categoria e caratteristiche pensionato",
@@ -5932,12 +6041,24 @@
         "welfare-lavoro",
         "pensioni",
         "pa",
-        "dag"
+        "dag",
+        "mef"
       ],
       "category": "welfare-lavoro",
       "period": {
         "start": 2017,
-        "end": 2022
+        "end": 2025
+      },
+      "partitions": {
+        "2017": 7525,
+        "2018": 7216,
+        "2019": 6876,
+        "2020": 6604,
+        "2021": 6256,
+        "2022": 5877,
+        "2023": 5587,
+        "2024": 5328,
+        "2025": 5078
       },
       "columns": [
         {
@@ -6053,7 +6174,14 @@
           "description": "Importi mensili pagati in euro"
         }
       ],
-      "location": "gs://dataciviclab-clean/pensioni_pa_dag/2024/pensioni_pa_dag_2024_clean.parquet"
+      "mart_refs": [
+        "pensioni_pa_dag__mart_territori_dicembre"
+      ],
+      "last_run": {
+        "at": "2026-11-26T14:02:14.050396+00:00",
+        "year": 2025,
+        "status": "SUCCESS"
+      }
     },
     {
       "slug": "personale_ssn",
@@ -9048,11 +9176,35 @@
       "year": 2022
     },
     {
-      "slug": "pensioni_pa_dag__mart_regioni_dicembre",
+      "slug": "oneri_pensioni_pa__mart_oneri_per_ministero",
+      "dataset": "oneri_pensioni_pa",
+      "table": "mart_oneri_per_ministero",
+      "layout": "glob",
+      "primary_key": [
+        "anno",
+        "ministero"
+      ]
+    },
+    {
+      "slug": "oneri_pensioni_pa__mart_oneri_per_rts",
+      "dataset": "oneri_pensioni_pa",
+      "table": "mart_oneri_per_rts",
+      "layout": "glob",
+      "primary_key": [
+        "anno",
+        "rts"
+      ]
+    },
+    {
+      "slug": "pensioni_pa_dag__mart_territori_dicembre",
       "dataset": "pensioni_pa_dag",
-      "table": "mart_regioni_dicembre",
-      "layout": "year",
-      "year": 2024
+      "table": "mart_territori_dicembre",
+      "layout": "glob",
+      "primary_key": [
+        "anno",
+        "regione",
+        "tipo_pensione"
+      ]
     },
     {
       "slug": "personale_ssn__mart_personale_ssn_serie",
