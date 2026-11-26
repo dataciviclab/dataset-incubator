@@ -50,7 +50,7 @@ clean:
     delim: ","
     encoding: "utf-8"
     header: true
-  required_columns: [anno, territorio_codice, territorio, livello, cittadinanza_codice, cittadinanza, residenti]
+  required_columns: [anno, territorio_codice, territorio, livello, cittadinanza_codice, cittadinanza, aggregato, residenti]
   validate:
     not_null: [anno, territorio_codice, livello, residenti]
     min_rows: 100

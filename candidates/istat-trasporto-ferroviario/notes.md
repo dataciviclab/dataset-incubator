@@ -6,12 +6,13 @@
 - Copertura 2004-2024; `years: [2026]` è l'anno di output.
 - Clean: `anno`, `area`, `unita`, `merce_nst`, `unita_carico`, `paese_origine`, `paese_destinazione`, `categoria_trasporto`, `valore`.
 - Il clean mantiene le dimensioni in chiaro; il mart seleziona quelle che contano.
-- Mart `mart_ferrovia_intermodale`: filtra `unita = 'GC_TKM'` e usa `TOT_INTERMODAL` come numeratore e `ALL` come denominatore.
+- Mart `mart_ferrovia_intermodale`: filtra `unita = 'GC_TKM'`, `merce_nst = 'ALL'`, `paese_origine = 'WORLD'`, `paese_destinazione = 'WORLD'`, `categoria_trasporto = 'ALL'`; usa `TOT_INTERMODAL` come numeratore e `ALL` come denominatore.
 
 ## Analitico
 
-- `TOT_INTERMODAL` è il **subtotale pubblicato dalla fonte**: non va ricostruito sommando container, semi-rimorchi e casse mobili (sono sottoinsiemi non disgiunti).
+- In `GC_TKM` le componenti sommano esattamente a `TOT_INTERMODAL` (2009-2024). Il rischio è nei **subtotali di dimensione**: senza i filtri `ALL`/`WORLD` il mart duplica le righe (2024: 137,8 M tkm contro 48,3 M).
 - La quota è `tkm_intermodale / tkm_totali`, arrotondata a due decimali.
+- `TOT_INTERMODAL` esiste dal 2009: 2004-2008 hanno quota `NULL`.
 
 ## Cautele
 

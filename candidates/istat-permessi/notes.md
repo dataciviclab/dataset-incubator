@@ -18,5 +18,5 @@
 
 - **Cubo multi-livello**: `livello='nazionale'` da solo include `WORLD` **e** i singoli paesi (2×); `NOT aggregato` da solo somma regione **e** provincia (2×).
 - **Provincia parziale**: per totali usare `livello='regione'`.
-- Residuo noto: gli apolidi `999` sono conteggiati anche in `X777`; la somma delle foglie supera `WORLD` di poche centinaia di unità.
+- Le foglie sommano esattamente a `WORLD` ogni anno (2008-2024). Gli apolidi `999` sono una voce **fuori** dalle foglie: non vanno sommati alle regioni.
 - Cross-check con Eurostat `MIGR_RESVALID`: allineato 2020-2021, divergenze nei più recenti (revisioni/definizioni).

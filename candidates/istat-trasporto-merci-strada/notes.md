@@ -10,11 +10,11 @@
 ## Analitico
 
 - Le coppie **regione → regione non esistono**: i flussi sono `regione -> Italia` (uscita) e `Italia -> regione` (entrata). Il mart **non è una matrice origine-destinazione**, misura quanto ogni regione spedisce e riceve rispetto al resto d'Italia.
-- `quota_pct` è la quota della regione sul totale `GC_TKM` dell'anno.
+- `quota_pct` è la quota della regione sul totale dei flussi regionali (esclusi `IT -> IT`).
 
 ## Cautele
 
 - Non leggere il mart come una matrice OD: manca il dettaglio regione → regione.
 - Non aggregare `unita` diverse da `GC_TKM`: misurano grandezze non confrontabili.
-- `DISTANCE_CLASS` e `TITLE_OF_TRANSPORT` possono duplicare lo stesso flusso su più classi: filtrare prima di sommare.
+- `tipo_trasporto`, `merce_nst` e `classe_distanza` hanno subtotali (`ALL`, `TOTAL`): il mart filtra i subtotali; leggendo il clean, filtrare prima di sommare.
 - Confronto con il ferroviario solo a parità di unità (`GC_TKM`) e per anno.

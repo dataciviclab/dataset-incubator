@@ -33,7 +33,7 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno, regione_carico, regione_scarico, merce_nst, tipo_trasporto, unita, valore]
+  required_columns: [anno, regione_carico, regione_scarico, merce_nst, tipo_trasporto, unita, classe_distanza, valore]
   read:
     source: auto
     mode: latest

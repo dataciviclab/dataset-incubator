@@ -26,7 +26,7 @@ Quanta merce viaggia su rotaia e quanta parte è **intermodale** (container, sem
 
 ## Criterio di promozione
 
-- Quota intermodale leggibile su tutta la serie 2004-2024.
+- Quota intermodale leggibile su 2009-2024 (2004-2008 senza `TOT_INTERMODAL`, quota `NULL`).
 - Confronto documentato con `istat-trasporto-merci-strada` e con Eurostat.
 
 ## Stato

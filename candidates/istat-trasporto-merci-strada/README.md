@@ -22,7 +22,7 @@ Quanta merce muove ogni regione su strada, in **entrata** e in **uscita**? Il tr
 ## Output minimo atteso
 
 - Clean: `anno`, `regione_carico`, `regione_scarico`, `merce_nst`, `tipo_trasporto`, `unita`, `classe_distanza`, `valore`.
-- `mart_merci_per_direttrice`: per anno e regione, `tkm_uscita`, `tkm_entrata`, `tkm_movimentati`, `saldo_uscita_entrata`, `quota_pct`.
+- `mart_merci_per_direttrice`: per anno e regione, `tkm_uscita`, `tkm_entrata`, `tkm_movimentati`, `saldo_uscita_entrata`, `quota_pct` (quota sul totale dei flussi regionali, esclusi `IT -> IT`).
 
 ## Criterio di promozione
 
