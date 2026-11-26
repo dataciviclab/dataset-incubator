@@ -9,7 +9,7 @@ dataset:
   name: "art_taxi_ncc"
   source_id: "art_opendata"
   tags: [mobilita, taxi, trasporti, comuni]
-  category: mobilita
+  category: trasporti
   years: [2024]
 
 
