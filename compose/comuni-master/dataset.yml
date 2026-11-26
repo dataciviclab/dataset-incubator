@@ -39,6 +39,20 @@ support:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns:
+    - codice_istat
+    - denominazione
+    - codice_catastale
+    - sigla_provincia
+    - provincia
+    - regione
+    - superficie_km2
+    - popolazione_residente
+    - popolazione_legale
+    - nuts2_2021
+    - nuts2_2024
+    - codice_ipa
+    - codice_fiscale
   read:
     source: config_only
   validate:

@@ -1,13 +1,22 @@
 -- mart_merci_per_direttrice.sql: lettura analitica del trasporto merci su strada.
+--
 -- Nota sui dati: le coppie regione->regione NON esistono; i flussi sono
 -- regione->Italia (uscita) e Italia->regione (entrata). Quindi il mart misura
 -- quanto ogni regione SPEDE e RICEVE rispetto al resto d'Italia, non una matrice.
+--
+-- Filtri: solo le righe di subtotale (tipo_trasporto=ALL, merce_nst=ALL,
+-- classe_distanza=TOTAL). Senza, le dimensioni duplicano lo stesso flusso
+-- (2024 Lombardia: 108,7 M tkm contro 54,3 M).
+-- Il denominatore e' la somma di `flussi` (esclusi IT->IT), non `base`.
 
 with base as (
     select anno, regione_carico, regione_scarico, valore
     from clean_input
     where unita = 'GC_TKM'
-      and regione_carico  like 'IT%'
+      and tipo_trasporto = 'ALL'
+      and merce_nst = 'ALL'
+      and classe_distanza = 'TOTAL'
+      and regione_carico like 'IT%'
       and regione_scarico like 'IT%'
 ),
 flussi as (
@@ -24,7 +33,10 @@ per_regione as (
            sum(case when verso = 'entrata' then valore else 0 end) as tkm_entrata
     from flussi group by 1, 2
 ),
-totale as (select anno, sum(valore) as tkm_totali from base group by 1)
+totale as (
+    select anno, sum(valore) as tkm_totali
+    from flussi group by anno
+)
 select
     p.anno,
     p.regione,

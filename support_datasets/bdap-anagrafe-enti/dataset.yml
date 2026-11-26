@@ -20,6 +20,17 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns:
+    - id_ente
+    - denominazione
+    - cf
+    - piva
+    - codice_istat_comune
+    - codice_catastale
+    - codice_provincia
+    - sigla_provincia
+    - codice_regione
+    - codice_ente_ipa
   read:
     source: "auto"
     mode: "latest"

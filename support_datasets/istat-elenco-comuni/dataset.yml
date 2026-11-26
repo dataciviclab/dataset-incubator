@@ -19,6 +19,20 @@ raw:
 
 clean:
   sql: "sql/clean.sql"
+  required_columns:
+    - codice_istat
+    - denominazione
+    - codice_catastale
+    - superficie_km2
+    - popolazione_residente
+    - popolazione_legale
+    - regione
+    - provincia
+    - sigla_provincia
+    - zona_altimetrica
+    - altitudine
+    - comune_litoraneo
+    - comune_isolano
   read:
     source: "auto"
     mode: "latest"
