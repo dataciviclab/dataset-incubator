@@ -43,6 +43,7 @@ Controlla: identità `regioni + Italia + Estero = totale`, 0 duplicati sulla chi
 
 Controlli già eseguiti:
 - mensile 2024-12 vs cumulativo storico 2024-12: stesse 5.328 righe e 102.992 partite;
+- cross-check con `oneri-pensioni-pa`: stesse partite (2022-12: 119.068; 2024-12: 102.992; 2025-12: 95.990);
 - 9 anni 2017-2025: validazione OK, readiness 8/8;
 - nessun negativo/zero anomalo nel 2024.
 

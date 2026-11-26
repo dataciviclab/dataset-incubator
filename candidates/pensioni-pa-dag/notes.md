@@ -39,6 +39,8 @@ Controlli:
 
 Cross-vintage: il mensile 2024-12 coincide col cumulativo storico 2024-12 (5.328 righe, 102.992 partite). Il cumulativo conteneva la riga corrotta WebLogic (2024-10) che il v0 mascherava con `ignore_errors`; i mensili non ne hanno bisogno.
 
+**Cross-check con `oneri-pensioni-pa`**: gli oneri per amministrazione hanno le stesse partite di questo dataset (2018-2025 esatti; 2022-12: 119.068; 2024-12: 102.992; 2025-12: 95.990). Nel **2017** i due file differiscono di **10 partite** (R1 +9, CT +1): è una revisione della fonte, non un errore di pipeline.
+
 ## Cautele
 
 - Il form MEF non ha versioning: se cambia, il raw fallisce (meglio un errore esplicito che un CSV vuoto).
