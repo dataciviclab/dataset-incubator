@@ -5,7 +5,7 @@
 - Fonte: **MEF DAG**, open data "Amministrazione" / oneri (`datipensioni.mef.gov.it`).
 - Download: `POST /datipensioni/downloadFile` con `categoria=oneri`, `filename=Dati_Amministrazione_YYYYMM.csv`, `dataset=DOWNLOAD_RDF_MESE_ANNO_ONERI`, `mese`, `anno`.
 - `scripts/download_dag_oneri.py --year YYYY` scarica **dicembre**; il raw canonico resta in `out/`.
-- Ogni file mensile: 384-397 righe, 6 Ministeri, 15-16 capitoli, 95 RTS (stessi codici della fonte `Tipo Pensione`).
+- Ogni file mensile: 384-412 righe, 5 Ministeri (6 dal 2022), 13-16 capitoli, 95 RTS (stessi codici della fonte `Tipo Pensione`).
 - Il plugin `http_post_file` non templa `post_data`; per questo serve lo script (stesso pattern di `pensioni-pa-dag`).
 
 ## Metodologia

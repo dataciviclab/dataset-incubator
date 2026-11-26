@@ -67,7 +67,7 @@ mart:
         primary_key: [anno, ministero]
         min_rows: 5
       mart_oneri_per_rts:
-        required_columns: [anno, rts, descrizione_rts, numero_partite, importi_totale_eur]
+        required_columns: [anno, rts, descrizione_rts, numero_partite, importi_totale_eur, quota_pct]
         primary_key: [anno, rts]
         min_rows: 50
 

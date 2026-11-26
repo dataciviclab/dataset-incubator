@@ -12,7 +12,7 @@ Come si distribuisce territorialmente lo stock di pensioni dello Stato gestite d
 - **Canale**: POST form-encoded su `/datipensioni/downloadFile`; la fonte pubblica file **mensili** `Dati_Tipo_Pensione_YYYYMM.csv`
 - **Script**: `scripts/download_dag.py --year YYYY` (scarica dicembre dell'anno)
 - **Periodo**: dicembre 2017-2025 (9 snapshot annuali)
-- **Licenza**: CC BY 4.0 (dichiarata dalla fonte)
+- **Licenza**: CC BY 4.0 (verificata sulla pagina di download: <https://creativecommons.org/licenses/by/4.0/deed.it>)
 
 ## Perché vale la pena
 
