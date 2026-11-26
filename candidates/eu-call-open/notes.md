@@ -34,6 +34,12 @@ Dizionario `frameworkProgramme` parziale in `extract_sedia.py` (`FRAMEWORK_LABEL
 | Forthcoming | 651 | ~299 |
 | Open+forthcoming | 1003 | ~409 |
 
+## Riverifica fonte (2026-11-26)
+
+- Script eseguito sul branch aggiornato: **380 topic open** (`--statuses open`), CSV 381 righe.
+- L'API SEDIA risponde e i codici status non sono cambiati.
+- In questa passata non è stato riverificato `forthcoming`.
+
 ## ⚠️ Status non affidabile da solo
 
 ~2/3 degli "Open" ha `deadlineDate` **passata** (dato non aggiornato sul portale).
