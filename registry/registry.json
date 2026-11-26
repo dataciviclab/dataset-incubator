@@ -3913,6 +3913,101 @@
       "location": "gs://dataciviclab-clean/istat_occupazione_provinciale/2025/istat_occupazione_provinciale_2025_clean.parquet"
     },
     {
+      "slug": "istat_ospiti_presidi",
+      "name": "Istat Ospiti Presidi",
+      "source_id": "istat_dbnomics",
+      "tags": [
+        "sanita",
+        "rsa",
+        "anziani",
+        "ospiti",
+        "presidi-residenziali",
+        "istat"
+      ],
+      "category": "sanita",
+      "period": {
+        "start": 2009,
+        "end": 2023
+      },
+      "partitions": {
+        "2023": 7137
+      },
+      "columns": [
+        {
+          "name": "anno",
+          "type": "INTEGER",
+          "role": "dimension",
+          "semantic_type": "year"
+        },
+        {
+          "name": "ref_area_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "regione",
+          "type": "VARCHAR",
+          "role": "dimension",
+          "semantic_type": "region_code"
+        },
+        {
+          "name": "tipo_dato_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "tipo_dato",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "eta_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "eta",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "bisogno_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "bisogno",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "livello_assistenza_codice",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "livello_assistenza",
+          "type": "VARCHAR",
+          "role": "dimension"
+        },
+        {
+          "name": "ospiti",
+          "type": "INTEGER",
+          "role": "metric"
+        }
+      ],
+      "mart_refs": [
+        "istat_ospiti_presidi__mart_sintesi_regione",
+        "istat_ospiti_presidi__mart_anziani_livello",
+        "istat_ospiti_presidi__mart_trend"
+      ],
+      "last_run": {
+        "at": "2026-11-26T11:53:54.164294+00:00",
+        "year": 2023,
+        "status": "SUCCESS"
+      }
+    },
+    {
       "slug": "istat_pendolarismo_od",
       "name": "Istat Pendolarismo Od",
       "description": "Spostamenti giornalieri casa-lavoro e casa-studio tra comuni: matrice origine-destinazione del censimento permanente 2021.",
@@ -8346,6 +8441,39 @@
       "table": "mart_occupazione_provinciale",
       "layout": "year",
       "year": 2025
+    },
+    {
+      "slug": "istat_ospiti_presidi__mart_anziani_livello",
+      "dataset": "istat_ospiti_presidi",
+      "table": "mart_anziani_livello",
+      "layout": "year",
+      "year": 2023,
+      "primary_key": [
+        "anno",
+        "ref_area_codice",
+        "livello_assistenza_codice"
+      ]
+    },
+    {
+      "slug": "istat_ospiti_presidi__mart_sintesi_regione",
+      "dataset": "istat_ospiti_presidi",
+      "table": "mart_sintesi_regione",
+      "layout": "year",
+      "year": 2023,
+      "primary_key": [
+        "anno",
+        "ref_area_codice"
+      ]
+    },
+    {
+      "slug": "istat_ospiti_presidi__mart_trend",
+      "dataset": "istat_ospiti_presidi",
+      "table": "mart_trend",
+      "layout": "year",
+      "year": 2023,
+      "primary_key": [
+        "ref_area_codice"
+      ]
     },
     {
       "slug": "istat_pendolarismo_od__mart_comuni_pendolarismo",
