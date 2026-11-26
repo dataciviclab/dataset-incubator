@@ -1,2 +1,5 @@
+# Raw scaricato dallo script (il raw canonico vive in out/)
+dag_pensioni_*.csv
+# Vecchio cumulativo locale (non piu servito dalla fonte)
 inputs/*.csv
 !inputs/.gitkeep

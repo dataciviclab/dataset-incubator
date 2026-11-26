@@ -1,39 +1,32 @@
-# Notes
+# Notes — pensioni-pa-dag
 
 ## Tecnico
 
-- la fonte non espone un URL statico: il download avviene via `POST` su `/datipensioni/downloadFile`
-- il source type `http_post_file` (toolkit#242) gestisce il download direttamente, senza script esterno
-- `dataset.yml` usa quindi `type: http_post_file` con `post_data` per i parametri del form
-- `scripts/download_raw.py` resta come riferimento storico (pattern cookie GET→POST se l'endpoint dovesse richiederlo)
-- il file cumulativo reale contiene almeno un caso di riga corrotta con frammento HTML del bridge WebLogic; per questo il `clean.read` usa `strict_mode: false` e `ignore_errors: true`
-- il v0 sceglie `2024` perche e l'ultimo anno completo nel cumulativo; `2025` parte solo da aprile
-- il mart tiene lo snapshot `mese = 12` per evitare letture distorte da medie mensili su uno stock
-- run locale eseguito il `2026-03-28`: raw, clean e mart prodotti correttamente
-- shape clean verificata via `duckdb_describe`: `63.547` righe x `18` colonne
-- shape mart verificata via `duckdb_describe`: `40` righe x `7` colonne
-- rischio residuo di runtime: su Windows il comando `toolkit run all` chiude i layer ma fallisce nel rename finale del file `_runs/` con `WinError 5`; il bug sembra nel run record, non nel candidate
-- notebook v0 eseguito - celle 1-4 con output testuali leggeri, cella 5 ok con output grafico non committato
+- Fonte: **MEF DAG**, open data "Tipo Pensione" (`datipensioni.mef.gov.it`).
+- Il file cumulativo del v0 (`Dati_Tipo_Pensione_totale.csv`) **non è più servito**: la fonte risponde con una pagina HTML `NOME FILE NON CONSENTITO`. Ora pubblica solo file mensili `Dati_Tipo_Pensione_YYYYMM.csv`.
+- Download riproducibile: `POST /datipensioni/downloadFile` con `categoria=pensioni`, `filename=Dati_Tipo_Pensione_YYYYMM.csv`, `dataset=DOWNLOAD_RDF_MESE_ANNO_PENS`, `mese`, `anno`.
+- `scripts/download_dag.py --year YYYY` scarica **dicembre** dell'anno; il raw canonico resta in `out/`.
+- Il plugin `http_post_file` non templa `post_data` (`{year}` è sostituito solo nei valori di primo livello), per questo serve lo script.
+- Ogni file mensile è uno snapshot: 5.078-7.525 righe (2017-12 → 2025-12), 22 territori (20 regioni + Italia + Estero).
+- Il vecchio cumulativo locale in `inputs/` è obsoleto ed è ignorato da git; non è una fonte del run.
 
-## Metodologia di ingestion
+## Metodologia
 
-- staging raw: `toolkit run raw` (source type `http_post_file`, fetch via POST)
-- file scaricato: `Dati_Tipo_Pensione_totale.csv`
-- filtro analitico v0:
-  - `Anno = 2024`
-  - `Mese = 12`
-  - `Tipo Pensione in ('DIRETTA', 'INDIRETTA/REVERSIBILE')`
-  - esclusi aggregati `Italia` ed `Estero`
+- **Dicembre** = stock di fine anno, confrontabile tra anni; il mart filtra `mese = 12`.
+- Tipi: `DIRETTA` e `INDIRETTA/REVERSIBILE`; `UNA TANTUM` (2017) è esclusa.
+- Esclusi gli aggregati `Italia` ed `Estero`.
+- **La riga `Italia` non è il totale nazionale** (2024-12: 18.083 contro 102.992 sommando le regioni): non usarla come denominatore.
+- Granularità della fonte: ufficio/provincia; il mart aggrega a regione.
 
 ## Analitico
 
-- il file nasce a granularita ufficio/provincia, ma il primo mart sale a livello regionale
-- il campo guida del v0 e `Numero Partite`
-- gli importi restano nel clean per possibili estensioni, ma non guidano il primo output
+- Serie del mart: 9 anni (2017-2025), 40 righe/anno (20 regioni × 2 tipi).
+- `numero_partite` nel mart: 158.892 (2017) → 76.339 (2025). Il calo è nel perimetro DAG, non nel totale INPS.
+- Gli importi (arretrati, ratei, tredicesima, mensili) restano nel clean; il mart espone i mensili pagati.
 
 ## Cautele
 
-- il dataset copre pensioni dello Stato gestite dal DAG, non il totale INPS
-- i nomi territoriali della fonte non sono ancora normalizzati su codifiche ISTAT
-- `Trentino-Sudtirol` e `Valle dAosta` vanno eventualmente armonizzati in uno step successivo
-- il bug sporadico del bridge HTML va tenuto presente se il file cambia comportamento lato fonte
+- Il form MEF non ha versioning: se cambia, il raw fallisce (meglio un errore esplicito che un CSV vuoto).
+- `source_id: mef_dag` non è ancora in source-observatory; il radar elenca il dataset sotto `inps`.
+- Il perimetro è **DAG**, non INPS: non confrontare i totali con `open-inps` senza dichiararlo.
+- Non sommare la riga `Italia` alle regioni.

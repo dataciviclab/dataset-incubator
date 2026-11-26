@@ -3,44 +3,38 @@ schema_version: 1
 
 dataset:
   name: "pensioni_pa_dag"
-  source_id: "inps"
-  tags: [welfare-lavoro, pensioni, pa, dag]
+  source_id: "mef_dag"
+  tags: [welfare-lavoro, pensioni, pa, dag, mef]
   category: welfare-lavoro
-  years: [2024]
+  years: [2017, 2018, 2019, 2020, 2021, 2022, 2023, 2024, 2025]
   time_coverage:
     start_year: 2017
-    end_year: 2022
+    end_year: 2025
 
 raw:
   output_policy: overwrite
   sources:
-    - name: "dag_pensioni_totale"
-      type: "http_post_file"
-      client:
-        timeout: 120
-        retries: 2
+    - name: "dag_pensioni_dicembre"
+      type: "script"
       args:
-        url: "https://datipensioni.mef.gov.it/datipensioni/downloadFile"
-        post_data:
-          filename: "Dati_Tipo_Pensione_totale.csv"
-          categoria: "pensioni"
-        filename: "Dati_Tipo_Pensione_totale.csv"
+        command: "python scripts/download_dag.py --year {year} --output dag_pensioni_{year}.csv"
+        output: "dag_pensioni_{year}.csv"
+        filename: "dag_pensioni_{year}.csv"
       primary: true
 
 clean:
   sql: "sql/clean.sql"
-  required_columns: [anno, mese, regione, sigla_provincia, ufficio, tipo_pensione, codice_tipo_pensione, descrizione_pensione, codice_pensione, descrizione_microqualifica, codice_microqualifica, codice_titolo, titolo]
+  required_columns: [anno, mese, regione, sigla_provincia, ufficio, tipo_pensione, codice_tipo_pensione, descrizione_pensione, codice_pensione, descrizione_microqualifica, codice_microqualifica, codice_titolo, titolo, numero_partite, importi_arretrati_eur, importi_ratei_eur, importi_tredicesima_eur, importi_mensili_pagati_eur]
   read:
     source: auto
     mode: latest
     header: true
+    delim: ","
     encoding: "utf-8"
-    strict_mode: false
-    ignore_errors: true
     trim_whitespace: true
   validate:
-    not_null: [anno]
-    min_rows: 5000
+    not_null: [anno, mese, numero_partite]
+    min_rows: 1000
 
 mart:
   tables:
